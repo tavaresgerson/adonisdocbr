@@ -2,13 +2,13 @@
 Tradução da documentação 4.1 do AdonisJS
 
 ## Prefácio
-+ Sobre o AdonisJs
-+ Atualizando do 4.0
-+ Guia de contribuição
++ [Sobre o AdonisJs](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/preface/about.md)
++ [Atualizando do 4.0](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/preface/upgrade-guide.md)
++ [Guia de contribuição](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/preface/contribution-guide.md)
 
 ## Conceito
-+ Ciclo de vida da requisição
-+ IoC Container
++ [Ciclo de vida da requisição](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/concept/request-lifecycle.md)
++ [IoC Container]()
 + Service Providers
 + Ignitor
 
@@ -18,7 +18,7 @@ Tradução da documentação 4.1 do AdonisJS
 + Estrutura de pastas
 
 ## Básico
-+ Roteamento
++ [Roteamento](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/fundamentals/routing.md)
 + Middleware
 + Controllers
 + Requisição
