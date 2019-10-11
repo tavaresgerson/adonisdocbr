@@ -19,7 +19,7 @@ Tradução da documentação 4.1 do AdonisJS
 
 ## Básico
 + [Roteamento](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/fundamentals/routing.md)
-+ Middleware
++ [Middleware](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/fundamentals/middleware.md)
 + Controllers
 + Requisição
 + Resposta
