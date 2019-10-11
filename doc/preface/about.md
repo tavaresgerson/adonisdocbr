@@ -25,7 +25,7 @@ AdonisJs (por exemplo, BodyParser para analisar o corpo da solicitação HTTP ou
 ## FAQ’s
 Abaixo está a lista de perguntas frequentes. Se você acha que uma pergunta comum está faltando na lista, crie um issue aqui.
 
-*Como o AdonisJs é diferente do Express ou do Koa?*
+### Como o AdonisJs é diferente do Express ou do Koa?
 Express e Koa estão roteando bibliotecas com uma camada fina de middlewares no topo. Eles são ótimos para vários casos de 
 uso, mas desmoronam quando os projetos começam a crescer.
 
@@ -33,7 +33,7 @@ Como seus projetos têm seus próprios padrões e convenções, pode ser mais di
 neles. Como o AdonisJs segue um conjunto de convenções padronizadas, deve ser mais fácil contratar alguém para trabalhar em 
 aplicativos existentes do AdonisJs.
 
-*AdonisJs é para aplicativos monolíticos?*
+### AdonisJs é para aplicativos monolíticos?
 Não. O AdonisJs Framework é uma combinação de vários pacotes que se integram graciosamente ao resto de sua aplicação.
 
 A estrutura fornece uma camada de [injeção de dependência](https://adonisjs.com/docs/4.1/ioc-container) robusta, aproveitada por todos os pacotes oficiais e de terceiros 
