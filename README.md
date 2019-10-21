@@ -18,9 +18,9 @@ Tradução da documentação 4.1 do AdonisJS
 + Estrutura de pastas
 
 ## Básico
-+ [Roteamento](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/fundamentals/routing.md)
-+ [Middleware](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/fundamentals/middleware.md)
-+ Controllers
++ [Roteamento](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/basics/routing.md)
++ [Middleware](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/basics/middleware.md)
++ [Controllers](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/basics/controllers.md)
 + Requisição
 + Resposta
 + Views
