@@ -357,3 +357,37 @@ request.is(['json', 'html']) // retorna - json
 
 request.is(['application/*']) // retorna - application/json
 ```
+
+## Método de falsificação
+Formulários HTML só são capazes de fazer solicitações `GET` e `POST`, o que significa que você não pode utilizar as convenções 
+Rest de outros métodos HTTP como `PUT`, `DELETE` e assim por diante.
+
+O AdonisJs simplifica o desvio do método de solicitação adicionando um parâmetro `_method` à sua string de consulta, executando
+automaticamente a rota correta para você, por exemplo, em `start/routes.js`:
+
+``` js
+Route.put('users', 'UserController.update')
+```
+
+``` html
+<form method="POST" action="/users?_method=PUT">
+```
+
+O exemplo acima funciona nos seguintes casos:
+
++ O método de solicitação original é POST.
++ `allowMethodSpoofing` está ativado dentro do arquivo `config/app.js`
+
+## Solicitação de extensão
+Também é possível estender o prototype `Request` adicionando seus próprios métodos, conhecidos como macros.
+
+> Como o código a ser estendido, `Request` precisa ser executado apenas uma vez, você pode usar provedores ou ganchos do Ignitor para 
+> fazer isso. Leia [Estendendo o núcleo](https://adonisjs.com/docs/4.1/extending-adonisjs) para obter mais informações.
+
+``` js
+const Request = use('Adonis/Src/Request')
+
+Request.macro('cartValue', function () {
+  return this.cookie('cartValue', 0)
+})
+```
