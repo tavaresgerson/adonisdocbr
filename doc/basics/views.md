@@ -58,7 +58,7 @@ Se você já fez, sirva seu site:
 > adonis serve --dev
 ```
 
-Por fim, navegue até `127.0.0.1:3333/hello-worl` e você verá:
+Por fim, navegue até `127.0.0.1:3333/hello-world` e você verá:
 
 **"Hello World!"**
 
