@@ -21,10 +21,10 @@ Tradução da documentação 4.1 do AdonisJS
 + [Roteamento](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/basics/routing.md)
 + [Middleware](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/basics/middleware.md)
 + [Controllers](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/basics/controllers.md)
-+ Requisição
-+ Resposta
-+ Views
-+ Sessões
++ [Requisição](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/basics/request.md)
++ [Resposta](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/basics/response.md)
++ [Views](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/basics/views.md)
++ [Sessões](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/basics/sessions.md)
 + Validador
 + Manipulação de Erros
 + Logger
