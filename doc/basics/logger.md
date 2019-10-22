@@ -69,7 +69,7 @@ Logger
 ```
 
 ## Nível de log
-O criador de logs possui um log `level` de configuração padrão que pode ser atualizado em tempo de execução.
+O criador de logs possui `level`s de log de configuração padrão que pode ser atualizado em tempo de execução.
 
 Qualquer mensagem acima do nível de log definido não é registrada. Por exemplo:
 
