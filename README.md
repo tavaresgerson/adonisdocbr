@@ -26,8 +26,8 @@ Tradução da documentação 4.1 do AdonisJS
 + [Views](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/basics/views.md)
 + [Sessões](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/basics/sessions.md)
 + [Validador](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/basics/validator.md)
-+ Manipulação de Erros
-+ Logger
++ [Manipulação de Erros](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/basics/exceptions.md)
++ [Logger](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/basics/logger.md)
 
 ## Segurança
 + Introdução
