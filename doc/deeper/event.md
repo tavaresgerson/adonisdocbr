@@ -41,7 +41,7 @@ Primeiro, precisamos criar a rota e o controlador relevantes em `start/routes.js
 ``` js
 Route.post('register', 'UserController.register')
 ```
-```
+``` js
 const Event = use('Event')
 
 class UserController {
@@ -115,7 +115,7 @@ Event.once('new::user', () => {
 ### onAny (ouvinte)
 Vincular um ouvinte a qualquer evento:
 
-```
+``` js
 Event.onAny(function () {
 
 })
