@@ -94,10 +94,10 @@ Request.getter('id', function () {
 
 Abaixo está a lista de classes às quais você pode adicionar getters/macros:
 
-# [Adonis/Src/HttpContext](https://github.com/adonisjs/adonis-framework/blob/develop/src/Context/index.js)
-# [Adonis/Src/Pedido](https://github.com/adonisjs/adonis-framework/blob/develop/src/Request/index.js)
-# [Adonis/Src/Resposta](https://github.com/adonisjs/adonis-framework/blob/develop/src/Response/index.js)
-# [Adonis/Src/Rota](https://github.com/adonisjs/adonis-framework/blob/develop/src/Route/index.js)
++ [Adonis/Src/HttpContext](https://github.com/adonisjs/adonis-framework/blob/develop/src/Context/index.js)
++ [Adonis/Src/Pedido](https://github.com/adonisjs/adonis-framework/blob/develop/src/Request/index.js)
++ [Adonis/Src/Resposta](https://github.com/adonisjs/adonis-framework/blob/develop/src/Response/index.js)
++ [Adonis/Src/Rota](https://github.com/adonisjs/adonis-framework/blob/develop/src/Route/index.js)
 
 ## Provedores de extensão
 
@@ -138,3 +138,7 @@ class MyProvider extends ServiceProvider {
   }
 }
 ```
+
++ O objeto gerenciador deve ter um método `extend`. Os valores passados para `ioc.extend` serão encaminhados para este método.
++ O `namespace` deve ser o mesmo que o `namespace` de ligação.
++ Você deve gerenciar o registro/ciclo de vida de seus drivers.
