@@ -49,7 +49,7 @@ Tradução da documentação 4.1 do AdonisJS
 + Autenticação com Redes Sociais
 
 ## Banco de Dados
-+ Començando
++ Começando
 + Construtor de Queries
 + Migrations
 + Seeds & Factories
