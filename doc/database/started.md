@@ -1,7 +1,7 @@
 # Começando
 
-A criação de aplicativos orientados a dados do AdonisJ é bastante simplificada por meio do poderoso [Query Builder](https://adonisjs.com/docs/4.1/query-builder), 
-[Lucid ORM](https://adonisjs.com/docs/4.1/lucid), [Migrations](https://adonisjs.com/docs/4.1/migrations), [Fábricas](https://adonisjs.com/docs/4.1/seeds-and-factories) e [Seeds](https://adonisjs.com/docs/4.1/seeds-and-factories).
+A criação de aplicativos orientados a dados do AdonisJ é bastante simplificada por meio do poderoso [Query Builder](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/database/query-builder.md), 
+[Lucid ORM](https://adonisjs.com/docs/4.1/lucid), [Migrations](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/database/migrations.md), [Fábricas](https://adonisjs.com/docs/4.1/seeds-and-factories) e [Seeds](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/database/seeds_and_factories.md).
 
 Neste guia, aprenderemos a configurar e usar o provedor de banco de dados .
 
