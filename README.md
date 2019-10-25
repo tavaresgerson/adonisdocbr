@@ -49,7 +49,7 @@ Tradução da documentação 4.1 do AdonisJS
 + Autenticação com Redes Sociais
 
 ## Banco de Dados
-+ Começando
++ [Começando](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/database/started.md)
 + [Construtor de Queries](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/database/query-builder.md)
 + [Migrations](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/database/migrations.md)
 + [Seeds & Factories](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/database/seeds_and_factories.md)
