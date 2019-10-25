@@ -50,10 +50,10 @@ Tradução da documentação 4.1 do AdonisJS
 
 ## Banco de Dados
 + Começando
-+ Construtor de Queries
-+ Migrations
-+ Seeds & Factories
-+ Redis
++ [Construtor de Queries](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/database/query-builder.md)
++ [Migrations](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/database/migrations.md)
++ [Seeds & Factories](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/database/seeds_and_factories.md)
++ [Redis](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/database/redis.md)
 
 ## Lucid ORM
 + Começando
