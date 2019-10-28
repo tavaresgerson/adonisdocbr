@@ -439,7 +439,7 @@ const results = await Database
 > A saída do método `paginate` é diferente do método `forPage`.
 
 Resultado
-``` json
+```
 {
   total: '',
   perPage: '',
