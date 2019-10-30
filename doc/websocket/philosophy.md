@@ -69,9 +69,8 @@ programação) contendo uma estrutura semelhante a:
 }
 ```
 
-A propriedade `t` é o tipo de pacote (usamos números sobre cadeias, pois os números são menos dados a serem transferidos).
++ A propriedade `t` é o tipo de pacote (usamos números sobre cadeias, pois os números são menos dados a serem transferidos).
++ A propriedade `d` são os dados associados a esse pacote.
 
-A propriedade `d` são os dados associados a esse pacote.
-
-Saiba mais sobre os pacotes AdonisJs WebSocket [aqui](https://github.com/adonisjs/adonis-websocket-protocol).
+> Saiba mais sobre os pacotes AdonisJs WebSocket [aqui](https://github.com/adonisjs/adonis-websocket-protocol).
 
