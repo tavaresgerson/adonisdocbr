@@ -66,7 +66,7 @@ Tradução da documentação 4.1 do AdonisJS
 ## Websockets
 + [Começando](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/websocket/started.md)
 + [Filosofia](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/websocket/philosophy.md)
-+ API Servidor
++ [API Servidor](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/websocket/server.md)
 + API Cliente
 
 ## Testando
