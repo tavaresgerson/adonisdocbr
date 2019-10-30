@@ -64,8 +64,8 @@ Tradução da documentação 4.1 do AdonisJS
 + Serialização
 
 ## Websockets
-+ Começando
-+ Filosofia
++ [Começando](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/websocket/started.md)
++ [Filosofia](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/websocket/philosophy.md)
 + API Servidor
 + API Cliente
 
