@@ -262,14 +262,15 @@ class User extends Model {
 }
 ```
 
-No exemplo acima, nós puxamos os campos de data padrão do pai Modelclasse e empurrar um novo dobcampo para a super.datesmatriz, 
-retornando todos os três campos de data: created_at, updated_ate dob.
+No exemplo acima, nós puxamos os campos de data padrão da classe pai `Model` e inserimos um novo campo `dob` para 
+a matriz `super.dates`, retornando todos os três campos de data: `created_at`, `updated_at` e `dob`.
 
-Formatação de campos de data
+### Formatação de campos de data
 Por padrão, o Lucid formata datas para armazenamento como YYYY-MM-DD HH:mm:ss.
 
-Para personalizar os formatos de data para armazenamento, substitua o formatDatesmétodo:
+Para personalizar os formatos de data para armazenamento, substitua o método `formatDates`:
 
+``` js
 class User extends Model {
   static formatDates (field, value) {
     if (field === 'dob') {
@@ -278,10 +279,14 @@ class User extends Model {
     return super.formatDates(field, value)
   }
 }
-No exemplo acima, o valueparâmetro é a data real fornecida ao definir o campo.
+```
 
-O formatDatesmétodo é chamado antes que a instância do modelo seja salva no banco de dados, portanto, verifique se o valor de retorno é sempre um formato válido para o mecanismo de banco de dados que você está usando.
-Datas de Elenco
+No exemplo acima, o parâmetro `value` é a data real fornecida ao definir o campo.
+
+> O método `formatDates` é chamado antes que a instância do modelo seja salva no banco de dados, portanto, verifique se o 
+> valor de retorno é sempre um formato válido para o mecanismo de banco de dados que você está usando.
+
+### Casting de Datas
 Agora que salvamos as datas no banco de dados, podemos formatá-las de maneira diferente ao exibi-las ao usuário.
 
 Para formatar como as datas são exibidas, use o castDatesmétodo:
