@@ -73,7 +73,8 @@ class User extends Model {
 module.exports = User
 ```
 
-Passe o sinalizador `--migrations` para também gerar um arquivo de migração.
+> Passe o sinalizador `--migrations` para também gerar um arquivo de migração.
+
 ```
 adonis make:model User --migration
 ```
@@ -85,7 +86,7 @@ Resultado
 ```
 
 ### Criando um usuário
-Em seguida, instancie uma instância `User` e salve-a no banco de dados:
+Em seguida, instancie o `User` e salve-a no banco de dados:
 
 ``` js
 const User = use('App/Models/User')
@@ -232,12 +233,12 @@ class Post extends Model {
 
 ### setVisible/setHidden
 
-Você pode definir hiddenou visiblecampos para uma única consulta da seguinte maneira:
+Você pode definir os campos `hidden` ou `visible` para uma única consulta da seguinte maneira:
 
 ``` js
 User.query().setHidden(['password']).fetch()
 
-// ou set visível
+// ou setVisible
 User.query().setVisible(['title', 'body']).fetch()
 ```
 
@@ -289,8 +290,8 @@ No exemplo acima, o parâmetro `value` é a data real fornecida ao definir o cam
 ### Casting de Datas
 Agora que salvamos as datas no banco de dados, podemos formatá-las de maneira diferente ao exibi-las ao usuário.
 
-Para formatar como as datas são exibidas, use o castDatesmétodo:
-
+Para formatar como as datas são exibidas, use o método `castDates`:
+``` js
 class User extends Model {
   static castDates (field, value) {
     if (field === 'dob') {
@@ -299,141 +300,196 @@ class User extends Model {
     return super.formatDates(field, value)
   }
 }
-O valueparâmetro é uma instância do Moment.js , permitindo que você chame qualquer método Moment para formatar suas datas.
+```
 
-Desserialização
-O castDatesmétodo é chamado automaticamente quando uma instância do modelo é desserializada (acionada pela chamada toJSON):
+O parâmetro `value` é uma instância do [Moment.js](https://momentjs.com/), permitindo que você chame qualquer método 
+Moment para formatar suas datas.
 
+### Desserialização
+O método `castDates` é chamado automaticamente quando uma instância do modelo é [desserializada](https://adonisjs.com/docs/4.1/serializers) (acionada pela chamada toJSON):
+
+``` js
 const users = await User.all()
 
-// converting to JSON array
+// converte para um array em json
 const usersJSON = users.toJSON()
-Criador de consultas
+```
+
+## Criador de consultas
 Os modelos Lucid usam o AdonisJs Query Builder para executar consultas ao banco de dados.
 
-Para obter uma instância do Query Builder, chame o querymétodo model :
-
+Para obter uma instância do Query Builder, chame o método `query` da model:
+``` js
 const User = use('App/Models/User')
 
 const adults = await User
   .query()
   .where('age', '>', 18)
   .fetch()
+```
+
 Todos os métodos do Query Builder são totalmente suportados.
 
-O fetchmétodo é necessário para executar a consulta, garantindo que os resultados retornem dentro de uma serializerinstância (consulte a documentação dos serializadores para obter mais informações).
+O método `fetch` é necessário para executar a consulta, garantindo que os resultados retornem dentro de uma instância 
+`serializer` (consulte a documentação dos [serializadores](https://adonisjs.com/docs/4.1/serializers) para obter mais informações).
 
-Métodos estáticos
+## Métodos estáticos
 Os modelos Lucid têm vários métodos estáticos para executar operações comuns sem usar a interface do Query Builder.
 
-Não há necessidade de chamar fetchao usar os seguintes métodos estáticos.
+Não há necessidade de chamar `fetch` ao usar os seguintes métodos estáticos.
 
-encontrar
+### find
 Encontre um registro usando a chave primária (sempre retorna um registro):
 
+``` js
 const User = use('App/Models/User')
 await User.find(1)
-findOrFail
-Semelhante a find, mas lança a ModelNotFoundExceptionquando não é possível encontrar um registro:
+```
 
+### findOrFail
+Semelhante a find, mas lança uma `ModelNotFoundException` quando não é possível encontrar um registro:
+
+``` js
 const User = use('App/Models/User')
 await User.findOrFail(1)
-findBy / findByOrFail
-Encontre um registro usando um par de chave / valor (retorna o primeiro registro correspondente):
+```
 
+### findBy/findByOrFail
+Encontre um registro usando um par de chave/valor (retorna o primeiro registro correspondente):
+
+``` js
 const User = use('App/Models/User')
 await User.findBy('email', 'foo@bar.com')
 
-// or
+// ou
 await User.findByOrFail('email', 'foo@bar.com')
-first / firstOrFail
+```
+
+### first/firstOrFail
 Encontre a primeira linha do banco de dados:
 
+``` js
 const User = use('App/Models/User')
 await User.first()
 
-// or
+// ou
 await User.firstOrFail()
-findOrCreate (whereAttributes, values)
+```
+
+### findOrCreate (whereAttributes, values)
 Encontre um registro, se não for encontrado, um novo registro será criado e retornado:
 
+``` js
 const User = use('App/Models/User')
 const user = await User.findOrCreate(
   { username: 'virk' },
   { username: 'virk', email: 'virk@adonisjs.com' }
 )
-escolha (linhas = 1)
-Escolha o xnúmero de linhas da tabela do banco de dados (o padrão é 1linha):
+```
 
+### pick (linhas = 1)
+Escolha `x` número de linhas da tabela do banco de dados (o padrão é 1 linha):
+
+``` js
 const User = use('App/Models/User')
 await User.pick(3)
-pickInverse (linhas = 1)
-Escolha o xnúmero de linhas da tabela do banco de dados da última (o padrão é 1linha):
+```
 
+### pickInverse (linhas = 1)
+Escolha `x` número de linhas da tabela do banco de dados a partir da última (o padrão é 1 linha):
+
+``` js
 const User = use('App/Models/User')
 await User.pickInverse(3)
-ids
+```
+
+### ids
 Retorne uma matriz de chaves primárias:
 
+``` js
 const User = use('App/Models/User')
 const userIds = await User.ids()
-Se a chave primária for uiduma matriz de uidvalores, será retornado.
-par (lhs, rhs)
-Retorna um objeto de pares chave / valor ( lhsé a chave, rhsé o valor):
+```
 
+> Se a chave primária for `uid`, uma matriz de valores `uid`, será retornado.
+
+### pair (lhs, rhs)
+Retorna um objeto de pares chave/valor (`lhs` é a chave, `rhs` é o valor):
+
+``` js
 const User = use('App/Models/User')
 const users = await User.pair('id', 'country')
 
-// returns { 1: 'ind', 2: 'uk' }
-tudo
-Selecione todas as linhas:
+// retorna { 1: 'ind', 2: 'uk' }
+```
 
+### all
+Selecione todas as linhas:
+``` js
 const User = use('App/Models/User')
 const users = await User.all()
-truncar
+```
+
+### truncate
 Exclua todas as linhas (tabela truncada):
 
+``` js
 const User = use('App/Models/User')
 const users = await User.truncate()
-Métodos de instância
+```
+
+## Métodos de instância
 As instâncias Lucid têm vários métodos para executar operações comuns sem usar a interface do Query Builder.
 
-recarregar
+### reload
 Recarregue um modelo do banco de dados:
-
+``` js
 const User = use('App/Models/User')
 const user = await User.create(props)
 // user.serviceToken === undefined
 
 await user.reload()
 // user.serviceToken === 'E1Fbl3sjH'
-Um modelo com propriedades definidas durante um gancho de criação exigirá recarregamento para recuperar os valores definidos durante esse gancho.
+```
+
+> Um modelo com propriedades definidas durante um hook de criação exigirá recarregamento para recuperar os valores definidos 
+> durante esse gancho.
+
 Ajudantes agregados
-Os auxiliares agregados do Query Builder fornecem atalhos para consultas agregadas comuns.
+Os [auxiliares agregados](https://adonisjs.com/docs/4.1/query-builder#_aggregate_helpers) do Query Builder fornecem atalhos para consultas agregadas comuns.
 
-Os seguintes métodos de modelo estático podem ser usados ​​para agregar uma tabela inteira.
+Os seguintes métodos de modelo estático podem ser usados para agregar uma tabela inteira.
 
-Esses métodos encerram a cadeia do Query Builder e retornam um valor, portanto, não há necessidade de chamar fetch()ao usá-los.
-getCount (columnName = '*')
+> Esses métodos encerram a cadeia do Query Builder e retornam um valor, portanto, não há necessidade de chamar `fetch()` ao 
+> usá-los.
+
+### getCount(columnName = '\*')
 Retorne uma contagem de registros em um determinado conjunto de resultados:
 
+``` js
 const User = use('App/Models/User')
 
-// returns number
+// retorna um numero
 await User.getCount()
-Você pode adicionar restrições de consulta antes de chamar getCount:
+```
 
+Você pode adicionar restrições de consulta antes de chamar `getCount`:
+
+``` js
 await User
   .query()
   .where('is_active', 1)
   .getCount()
-Assim getCount, todos os outros métodos agregados estão disponíveis no Query Builder .
+```
 
-Escopos de consulta
-Os escopos de consulta extraem restrições de consulta em métodos reutilizáveis ​​e poderosos.
+Assim `getCount`, todos os outros métodos agregados estão disponíveis no Query Builder.
+
+## Escopos de consulta
+Os escopos de consulta extraem restrições de consulta em métodos reutilizáveis e poderosos.
 
 Por exemplo, buscando todos os usuários que têm um perfil:
 
+``` js
 const Model = use('Model')
 
 class User extends Model {
@@ -445,26 +501,35 @@ class User extends Model {
     return this.hasOne('App/Models/Profile')
   }
 }
-Ao definir scopeHasProfile, você pode restringir sua consulta da seguinte maneira:
+```
 
+Ao definir `scopeHasProfile`, você pode restringir sua consulta da seguinte maneira:
+
+``` js
 const users = await User.query().hasProfile().fetch()
-Os escopos são definidos com o scopeprefixo seguido pelo nome do método.
+```
 
-Ao chamar escopos, solte a scopepalavra - chave e chame o método no formato camelCase (por exemplo, scopeHasProfile→ hasProfile).
+Os escopos são definidos com o prefixo `scope` seguido pelo nome do método.
+
+Ao chamar escopos, use a palavra-chave `scope` e chame o método no formato camelCase (por exemplo, `scopeHasProfile` → `hasProfile`).
 
 Você pode chamar todos os métodos padrão do construtor de consultas dentro de um escopo de consulta.
 
-Paginação
-O Lucid também suporta o paginatemétodo Query Builder :
+### Paginação
+O Lucid também suporta o paginatemétodo Query Builder:
 
+``` js
 const User = use('App/Models/User')
 const page = 1
 
 const users = await User.query().paginate(page)
 
 return view.render('users', { users: users.toJSON() })
-No exemplo acima, o valor de retorno de paginatenão é uma matriz de usuários, mas um objeto com metadados e uma datapropriedade que contém a lista de usuários:
+```
 
+No exemplo acima, o valor de retorno de `paginate` não é uma matriz de usuários, mas um objeto com metadados e uma 
+propriedade `data` que contém a lista de usuários:
+```
 {
   total: '',
   perPage: '',
@@ -472,10 +537,15 @@ No exemplo acima, o valor de retorno de paginatenão é uma matriz de usuários,
   page: '',
   data: [{...}]
 }
-Inserções e atualizações
-Salve 
-Com os modelos, em vez de inserir valores brutos no banco de dados, você persiste a instância do modelo que, por sua vez, faz a consulta de inserção para você. Por exemplo:
+```
 
+## Inserções e atualizações
+
+### save
+Com os modelos, em vez de inserir valores brutos no banco de dados, você persiste a instância do modelo que, por sua vez, 
+faz a consulta de inserção para você. Por exemplo:
+
+``` js
 const User = use('App/Models/User')
 
 const user = new User()
@@ -483,43 +553,52 @@ user.username = 'virk'
 user.email = 'foo@bar.com'
 
 await user.save()
-O savemétodo persiste a instância no banco de dados, determinando de forma inteligente se deve ser criada uma nova linha ou se deve ser atualizada a linha existente. Por exemplo:
+```
 
+O método `save` persiste a instância no banco de dados, determinando de forma inteligente se deve ser criada uma nova linha 
+ou se deve ser atualizada a linha existente. Por exemplo:
+
+``` js
 const User = use('App/Models/User')
 
 const user = new User()
 user.username = 'virk'
 user.email = 'foo@bar.com'
 
-// Insert
+// Insere
 await user.save()
 
 user.age = 22
 
-// Update
+// Atualiza
 await user.save()
+```
 Uma consulta de atualização ocorre apenas se algo tiver sido alterado.
 
-Ligar savevárias vezes sem atualizar nenhum atributo do modelo não executará nenhuma consulta subsequente.
+Usar `save` várias vezes sem atualizar nenhum atributo do modelo não executará nenhuma consulta subsequente.
 
-preencher / mesclar
-Em vez de definir atributos manualmente, fillou mergepode ser usado.
+### fill/merge
+Em vez de definir atributos manualmente, `fill` ou `merge` pode ser usado.
 
-O fillmétodo substitui os valores de chave / par de instância de modelo existentes:
+O método `fill` substitui os valores de chave/par de instância de modelo existentes:
 
+``` js
 const User = use('App/Models/User')
 
 const user = new User()
 user.username = 'virk'
 user.age = 22
 
-user.fill({ age: 23 }) // remove existing values, only set age.
+user.fill({ age: 23 }) // remove valores existentes, atribui somente 'age'
 
 await user.save()
 
-// returns { age: 23, username: null }
-O mergemétodo modifica apenas os atributos especificados:
+// retorna { age: 23, username: null }
+```
 
+O método `merge` modifica apenas os atributos especificados:
+
+``` js
 const User = use('App/Models/User')
 
 const user = new User()
@@ -529,93 +608,126 @@ user.merge({ age: 23 })
 
 await user.save()
 
-// returns { age: 23, username: 'virk' }
-crio
-Você pode passar dados diretamente para o modelo na criação, em vez de definir atributos manualmente após a instanciação:
+// retorna { age: 23, username: 'virk' }
+```
 
+### create
+Você pode passar dados diretamente para o modelo na criação, em vez de definir atributos manualmente após a instanciação:
+``` js
 const User = use('App/Models/User')
 const userData = request.only(['username', 'email', 'age'])
 
-// save and get instance back
+// salva e retorna a instância novamente
 const user = await User.create(userData)
-createMany
-Assim create, você pode transmitir dados diretamente para várias instâncias na criação:
+```
 
+### createMany
+Assim como `create`, você pode transmitir dados diretamente para várias instâncias na criação:
+
+``` js
 const User = use('App/Models/User')
 const usersData = request.collect(['username' 'email', 'age'])
 
 const users = await User.createMany(usersData)
-O createManymétodo faz n número de consultas em vez de fazer uma inserção em massa, onde n é o número de linhas.
-Atualizações em massa
-As atualizações em massa são executadas com a ajuda do Query Builder (o Lucid garante que as datas sejam formatadas adequadamente durante a atualização):
+```
 
+> O método `createMany` faz `n` número de consultas em vez de fazer uma inserção em massa, onde `n` é o número de linhas.
+
+### Atualizações em massa
+As atualizações em massa são executadas com a ajuda do Query Builder (o Lucid garante que as datas sejam formatadas 
+adequadamente durante a atualização):
+
+``` js
 const User = use('App/Models/User')
 
 await User
   .query()
   .where('username', 'virk')
   .update({ role: 'admin' })
-As atualizações em massa não executam ganchos de modelo.
-Exclui
-Uma instância de modelo único pode ser excluída chamando o deletemétodo:
+```
 
+As atualizações em massa não executam ganchos de modelo.
+
+## Excluir
+Uma instância de modelo único pode ser excluída chamando o método `delete`:
+
+``` js
 const User = use('App/Models/User')
 
 const { id } = params
 const user = await User.find(id)
 
 await user.delete()
-Após a chamada delete, a instância do modelo é proibida de executar atualizações, mas você ainda pode acessar seus dados:
+```
 
+Após a chamada `delete`, a instância do modelo é proibida de executar atualizações, mas você ainda pode acessar seus dados:
+
+```
 await user.delete()
 
-console.log(user.id) // works fine
+console.log(user.id) // funciona normalmente
 
 user.id = 1 // throws exception
-Exclusões em massa
+```
+
+### Exclusões em massa
 As exclusões em massa são realizadas com a ajuda do Query Builder:
 
+``` js
 const User = use('App/Models/User')
 
 await User
   .query()
   .where('role', 'guest')
   .delete()
-Exclusões em massa não executam ganchos de modelo.
-Transações
+```
+
+> Exclusões em massa não executam ganchos de modelo.
+
+## Transações
 A maioria dos métodos Lucid suporta transações.
 
-A primeira etapa é obter o trxobjeto usando o provedor de banco de dados :
+A primeira etapa é obter o objecto `trx` usando o provedor de banco de dados:
 
+``` js
 const Database = use('Database')
 const trx = await Database.beginTransaction()
 
 const user = new User()
 
-// pass the trx object and lucid will use it
+// passe o objeto trx e o lucid o usará
 await user.save(trx)
 
-// once done commit the transaction
+// uma vez feito, confirmar a transação
 trx.commit()
-Como na chamada save, você também pode passar o trxobjeto para o createmétodo:
+```
 
+Como na chamada `save`, você também pode passar o objeto `trx` para o método `create`:
+``` js
 const Database = use('Database')
 const trx = await Database.beginTransaction()
 
 await User.create({ username: 'virk' }, trx)
 
-// once done commit the transaction
+// uma vez feito, confirmar a transação
 await trx.commit()
-// or rollback the transaction
-await trx.rollback()
-Você também pode passar o trxobjeto para o createManymétodo:
 
+// ou reverter a transação
+await trx.rollback()
+```
+
+Você também pode passar o objeto `trx` para o método `createMany`:
+
+``` js
 await User.createMany([
   { username: 'virk' }
 ], trx)
-Transações em Relacionamentos
-Ao usar transações, você precisará passar um trxobjeto como o terceiro parâmetro do relacionamento attache dos detachmétodos:
+```
 
+### Transações em Relacionamentos
+Ao usar transações, você precisará passar um objeto `trx` como terceiro parâmetro do relacionamento dos métodos `attach` e 
+`detach`:
+``` js
 const Database = use('Database')
 const trx = await Database.beginTransaction()
 
@@ -626,13 +738,16 @@ const userRole = await Role.find(1)
 await user.roles().attach([userRole.id], null, trx)
 
 await trx.commit()
-// if something gone wrong
+// se algo der errado
 await trx.rollback
-Ciclo de inicialização
-Cada modelo possui um ciclo de inicialização em que seu bootmétodo é chamado uma vez .
+```
 
-Se você deseja executar algo que deve ocorrer apenas uma vez, considere gravá-lo dentro do bootmétodo model :
+## Ciclo de inicialização
+Cada modelo possui um ciclo de inicialização em que seu método `boot` é chamado uma vez.
 
+Se você deseja executar algo que deve ocorrer apenas uma vez, considere gravá-lo dentro do método `boot` na model:
+
+``` js
 const Model = use('Model')
 
 class User extends Model {
@@ -640,11 +755,11 @@ class User extends Model {
     super.boot()
 
     /**
-      I will be called only once
+      Eu serei chamado apenas uma vez
     */
   }
 }
 
 module.exports = User
-
+```
 
