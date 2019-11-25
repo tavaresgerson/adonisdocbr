@@ -11,7 +11,7 @@ Sob o capô, o Edge suporta:
 * Tags lógicas e tudo mais
 
 ## Exemplo básico
-Vamos começar com o exemplo clássico do 'Hello World' renderizando um modelo de borda.
+Vamos começar com o exemplo clássico do 'Hello World' renderizando um template edge.
 
 > Verifique se o AdonisJs `ViewProvider` está registrado como um provedor dentro do seu arquivo `start/app`.
 
