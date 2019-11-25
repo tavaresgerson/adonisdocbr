@@ -41,7 +41,7 @@ Abra `hello-world.edge` e salve seu conteúdo como:
 <h1>Hello World!</h1>
 ```
 
-Agora, crie uma rota para renderizar a exibição de `hello-world.edge`:
+Agora, crie uma rota para renderizar `hello-world.edge`:
 
 ``` js
 Route.get('hello-world', ({ view }) => {
@@ -135,7 +135,7 @@ Caminho absoluto:
 ```
 
 ### assetsUrl
-Retorna o caminho de um arquivo relativo ao publicdiretório:
+Retorna o caminho de um arquivo relativo ao diretório `public`:
 
 ```
 <img src="{{ assetsUrl('images/logo.png') }}" />
@@ -148,7 +148,7 @@ Retorna o caminho de um arquivo relativo ao publicdiretório:
 ### route
 Retorna o URL para uma rota.
 
-Por exemplo, usando o seguinte exemplo de rota…
+Por exemplo, usando o seguinte exemplo de rota
 
 ``` js
 Route.get('users/:id', 'UserController.show')
@@ -195,7 +195,8 @@ global `auth`:
 ```
 
 ### CSRF
-Se você estiver usando o AdonisJs [Shield Middleware](https://adonisjs.com/docs/4.1/csrf), poderá acessar o campo CSRF token e input usando uma das seguintes globais.
+Se você estiver usando o AdonisJs [Shield Middleware](https://adonisjs.com/docs/4.1/csrf), poderá acessar o 
+campo CSRF token e input usando uma das seguintes globais.
 
 
 ### csrfToken
