@@ -57,9 +57,9 @@ Tradução da documentação 4.1 do AdonisJS
 
 ## Lucid ORM
 + [Começando](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/orm/started.md)
-+ Hooks
-+ Traits
-+ Mutators
++ [Hooks](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/orm/hooks.md)
++ [Traits](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/orm/traits.md)
++ [Mutators](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/orm/mutators.md)
 + Relacionamentos
 + Serialização
 
