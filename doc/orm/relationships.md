@@ -432,7 +432,8 @@ ao banco de dados, na tentativa de evitar o problema [`n + 1`](https://secure.ph
 
 **Sem carregamento rápido**, usando as técnicas discutidas anteriormente nesta seção:
 
-Não recomendado
+*Não recomendado*
+``` js
 const User = use('App/Models/User')
 
 const users = await User.all()
@@ -442,20 +443,30 @@ for (let user of users) {
   const userPosts = await user.posts().fetch()
   posts.push(userPosts)
 }
-O exemplo acima faz n+1consultas ao banco de dados, onde nestá o número de usuários. Fazer um loop em um grande número de usuários resultaria em uma grande sequência de consultas feitas no banco de dados, o que dificilmente é o ideal!
+```
 
-Com o carregamento rápido , são necessárias apenas 2 consultas para buscar todos os usuários e suas postagens:
+O exemplo acima faz consultas `n+1` ao banco de dados, onde nestá o número de usuários. Fazer um loop em 
+um grande número de usuários resultaria em uma grande sequência de consultas feitas no banco de dados, o 
+que dificilmente é o ideal!
 
-Recomendado
+Com o carregamento rápido, são necessárias apenas 2 consultas para buscar todos os usuários e suas postagens:
+
+*Recomendado*
+``` js
 const User = use('App/Models/User')
 
 const users = await User
   .query()
   .with('posts')
   .fetch()
-O withmétodo ansiosamente carrega a relação passada como parte da carga original, portanto, a execução users.toJSON()agora retornará uma saída da seguinte forma:
+```
 
-Saída JSON
+O método `with` ansiosamente carrega a relação passada como parte da carga original, portanto, a execução 
+`users.toJSON()` agora retornará uma saída da seguinte forma:
+
+
+*Saída JSON*
+```
 [
   {
     id: 1,
@@ -467,46 +478,62 @@ Saída JSON
     }]
   }
 ]
-Na saída JSON acima, cada Userobjeto agora tem uma postspropriedade de relacionamento, facilitando a identificação de um relance que Postpertence a qual User.
+```
 
-Adicionando restrições de tempo de execução
+Na saída JSON acima, cada objeto `User` agora tem uma propriedade `posts` de relacionamento, facilitando a 
+identificação em um relance que `Post` pertence a `User`.
+
+### Adicionando restrições de tempo de execução
 Adicione restrições de tempo de execução a relacionamentos carregados ansiosamente, como:
 
+``` js
 const users = await User
   .query()
   .with('posts', (builder) => {
     builder.where('is_published', true)
   })
   .fetch()
-Carregando várias relações
-Múltiplas relações podem ser carregadas encadeando o withmétodo:
+```
 
+### Carregando várias relações
+Múltiplas relações podem ser carregadas encadeando o método `with`:
+
+``` js
 const users = await User
   .query()
   .with('posts')
   .with('profile')
   .fetch()
-Carregando relações aninhadas
-Relações aninhadas são carregadas via notação de ponto .
+```
 
-A consulta a seguir carrega todas as Userpostagens e seus comentários relacionados:
+### Carregando relações aninhadas
+Relações aninhadas são carregadas via notação de ponto.
 
+A consulta a seguir carrega todas as postagens de `User` e seus comentários relacionados:
+
+``` js
 const users = await User
   .query()
   .with('posts.comments')
   .fetch()
-Os retornos de chamada de restrição de relação aninhada aplicam-se apenas à última relação :
+```
 
+Os retornos de chamada de restrição de relação aninhada aplicam-se apenas à última relação:
+
+``` js
 const users = await User
   .query()
   .with('posts.comments', (builder) => {
     builder.where('approved', true)
   })
   .fetch()
-No exemplo acima, a builder.wherecláusula é aplicada apenas ao commentsrelacionamento (não ao postsrelacionamento).
+```
+
+No exemplo acima, a claúsula `builder.where` é aplicada apenas ao relacionamento `comments` (não ao relacionamento `posts`).
 
 Para adicionar uma restrição à primeira relação , use a seguinte abordagem:
 
+``` js
 const users = await User
   .query()
   .with('posts', (builder) => {
@@ -514,51 +541,69 @@ const users = await User
       .with('comments')
   })
   .fetch()
-No exemplo acima, uma whererestrição é adicionada à postsrelação enquanto o carregamento é feito posts.commentsao mesmo tempo.
+```
 
-Recuperando Dados de Modelos Carregados
-Para recuperar os dados carregados, você deve chamar o getRelatedmétodo:
+No exemplo acima, uma restrição `where` é adicionada à relação `posts` enquanto o carregamento de `posts.comments`
+é feito ao mesmo tempo.
 
+### Recuperando Dados de Modelos Carregados
+Para recuperar os dados carregados, você deve chamar o método `getRelated`:
+
+``` js
 const user = await User
   .query()
   .with('posts')
   .fetch()
 
 const posts = user.getRelated('posts')
-Lazy Eager Loading
-Para carregar relacionamentos depois de buscar dados, use o loadmétodo
+```
 
-Por exemplo, para carregar relacionado postsdepois de já buscar um User:
+## Lazy Eager Loading
+Para carregar relacionamentos depois de buscar dados, use o método `load`
 
+Por exemplo, para carregar relacionado de `posts` depois de já buscar um `User`:
+
+``` js
 const user = await User.find(1)
 await user.load('posts')
-Você pode carregar preguiçosamente vários relacionamentos usando o loadManymétodo:
+```
 
+Você pode carregar preguiçosamente vários relacionamentos usando o método `loadMany`:
+
+``` js
 const user = await User.find(1)
 await user.loadMany(['posts', 'profiles'])
-Para definir restrições de consulta via loadManyvocê deve passar um objeto:
+```
 
+Para definir restrições de consulta via `loadMany` você deve passar um objeto:
+
+``` js
 const user = await User.find(1)
 await user.loadMany({
   posts: (builder) => builder.where('is_published', true),
   profiles: null
 })
-Recuperando Dados de Modelos Carregados
-Para recuperar os dados carregados, você deve chamar o getRelatedmétodo:
+```
 
+### Recuperando Dados de Modelos Carregados
+Para recuperar os dados carregados, você deve chamar o método `getRelated`:
+
+``` js
 const user = await User.find(1)
 await user.loadMany(['posts', 'profiles'])
 
 const posts = user.getRelated('posts')
 const profiles = user.getRelated('profiles')
-Filtrando dados
+```
+
+## Filtrando dados
 A API do Lucid simplifica a filtragem de dados, dependendo da existência de um relacionamento.
 
-Vamos usar o exemplo clássico de encontrar todas as postagens com comentários .
+Vamos usar o exemplo clássico de encontrar todas as postagens com comentários.
 
-Aqui está o nosso Postmodelo e sua commentsdefinição de relacionamento:
+Aqui está o nosso modeo `Post` e sua definição de relacionamento com `comments`:
 
-app / Models / Post.js
+``` js
 const Model = use('Model')
 
 class Post extends Model {
@@ -566,103 +611,136 @@ class Post extends Model {
     return this.hasMany('App/Models/Comments')
   }
 }
-tem
+```
+
+### has
 Para recuperar apenas postagens com pelo menos uma Comment, encadeie o hasmétodo:
 
+``` js
 const posts = await Post
   .query()
   .has('comments')
   .fetch()
-É simples assim!  😲
+```
 
-Adicione uma restrição de expressão / valor ao hasmétodo da seguinte maneira:
+**É simples assim!**  😲
 
+Adicione uma restrição de expressão/valor ao método `has` da seguinte maneira:
+
+``` js
 const posts = await Post
   .query()
   .has('comments', '>', 2)
   .fetch()
+```
+
 O exemplo acima recuperará apenas postagens com mais de 2 comentários.
 
-Onde tem
-O whereHasmétodo é semelhante a, hasmas permite restrições mais específicas.
+### whereHas
+O método `whereHas` é semelhante a, `has` mas permite restrições mais específicas.
 
 Por exemplo, para buscar todas as postagens com pelo menos 2 comentários publicados:
 
+``` js
 const posts = await Post
   .query()
   .whereHas('comments', (builder) => {
     builder.where('is_published', true)
   }, '>', 2)
   .fetch()
-doesntHave
-O oposto da hascláusula:
+``` 
 
+### doesntHave
+O oposto da cláusula `has`:
+
+``` js
 const posts = await Post
   .query()
   .doesntHave('comments')
   .fetch()
-Este método não aceita uma restrição de expressão / valor.
-whereDoesntHave
-O oposto da whereHascláusula:
+```
 
+Este método não aceita uma restrição de expressão/valor.
+
+### whereDoesntHave
+O oposto da cláusula `whereHas`:
+
+``` js
 const posts = await Post
   .query()
   .whereDoesntHave('comments', (builder) => {
     builder.where('is_published', false)
   })
   .fetch()
-Este método não aceita uma restrição de expressão / valor.
-Você pode adicionar uma orcláusula chamando os orHas, orWhereHas, orDoesntHavee orWhereDoesntHavemétodos.
+```
 
-Conta
-Recupere contagens de relacionamento chamando o withCountmétodo:
+> Este método não aceita uma restrição de expressão/valor.
 
+Você pode adicionar uma cláusula `or` chamando os métodos `orHas`, `orWhereHas`, `orDoesntHave` e `orWhereDoesntHave`.
+
+## Counts
+Recupere contagens de relacionamento chamando o método `withCount`:
+
+``` js
 const posts = await Post
   .query()
   .withCount('comments')
   .fetch()
 
 posts.toJSON()
+```
+
 Saída JSON
+```
 {
   title: 'Adonis 101',
   __meta__: {
     comments_count: 2
   }
 }
+```
+
 Defina um alias para uma contagem da seguinte maneira:
 
+``` js
 const posts = await Post
   .query()
   .withCount('comments as total_comments')
   .fetch()
+```
+
 Saída JSON
+```
 __meta__: {
   total_comments: 2
 }
-Restrições de contagem
+```
+
+### Restrições de contagem
 Por exemplo, para recuperar apenas a contagem de comentários que foram aprovados:
 
+``` js
 const posts = await Post
   .query()
   .withCount('comments', (builder) => {
     builder.where('is_approved', true)
   })
   .fetch()
-Inserções, atualizações e exclusões
+```
+
+## Inserções, atualizações e exclusões
 Adicionar, atualizar e excluir registros relacionados é tão simples quanto consultar dados.
 
-Salve 
-O savemétodo espera uma instância do modelo relacionado.
+### save
+O método `save` espera uma instância do modelo relacionado.
 
-save pode ser aplicado aos seguintes tipos de relacionamento:
+`save` pode ser aplicado aos seguintes tipos de relacionamento:
 
-hasOne
++ hasOne
++ hasMany
++ belongsToMany
 
-hasMany
-
-belongsToMany
-
+``` js
 const User = use('App/Models/User')
 const Post = use('App/Models/Post')
 
@@ -672,17 +750,19 @@ const post = new Post()
 post.title = 'Adonis 101'
 
 await user.posts().save(post)
-crio
-O createmétodo é semelhante a, savemas espera um objeto JavaScript simples, retornando a instância do modelo relacionado.
+```
 
-create pode ser aplicado aos seguintes tipos de relacionamento:
+### create
+O método `create` é semelhante a `save` mas, espera um objeto JavaScript simples, retornando a 
+instância do modelo relacionado.
 
-hasOne
+`create` pode ser aplicado aos seguintes tipos de relacionamento:
 
-hasMany
++ hasOne
++ hasMany
++ belongsToMany
 
-belongsToMany
-
+``` js
 const User = use('App/Models/User')
 
 const user = await User.find(1)
@@ -690,15 +770,17 @@ const user = await User.find(1)
 const post = await user
   .posts()
   .create({ title: 'Adonis 101' })
-createMany
+```
+
+### createMany
 Salve muitas linhas relacionadas no banco de dados.
 
-createMany pode ser aplicado aos seguintes tipos de relacionamento:
+`createMany` pode ser aplicado aos seguintes tipos de relacionamento:
 
-hasMany
++ hasMany
++ belongsToMany
 
-belongsToMany
-
+``` js
 const User = use('App/Models/User')
 
 const user = await User.find(1)
@@ -709,15 +791,17 @@ const post = await user
     { title: 'Adonis 101' },
     { title: 'Lucid 101' }
   ])
-saveMany
-Semelhante a save, mas salva várias instâncias do modelo relacionado:
+```
 
-saveMany pode ser aplicado aos seguintes tipos de relacionamento:
+### saveMany
+Semelhante a `save`, mas salva várias instâncias do modelo relacionado:
 
-hasMany
+`saveMany` pode ser aplicado aos seguintes tipos de relacionamento:
 
-belongsToMany
++ hasMany
++ belongsToMany
 
+``` js
 const User = use('App/Models/User')
 const Post = use('App/Models/Post')
 
@@ -732,11 +816,15 @@ lucidPost.title = 'Lucid 101'
 await user
   .posts()
   .saveMany([adonisPost, lucidPost])
-associado
-O associatemétodo é exclusivo do belongsTorelacionamento, associando duas instâncias do modelo uma à outra.
+```
 
-Assumindo que a Profilepertence a User, associe a Usera Profile:
+### associate
+O método `associate` é exclusivo do relacionamento `belongsTo`, associando duas instâncias do 
+modelo uma à outra.
 
+Assumindo que `Profile` pertence a `User`, associe `User` a `Profile`:
+
+``` js
 const Profile = use('App/Models/Profile')
 const User = use('App/Models/User')
 
@@ -744,18 +832,24 @@ const user = await User.find(1)
 const profile = await Profile.find(1)
 
 await profile.user().associate(user)
-dissociar
-O dissociatemétodo é o oposto de associate.
+```
+
+### dissociate
+O método `dissociate` é o oposto de associate.
 
 Para descartar um relacionamento associado:
 
+``` js
 const Profile = use('App/Models/Profile')
 const profile = await Profile.find(1)
 
 await profile.user().dissociate()
-anexar
-O attachmétodo é chamado em um belongsToManyrelacionamento para anexar um modelo relacionado via tabela dinâmica:
+```
 
+### attach
+O método `attach` é chamado em um relacionamento `belongsToMany` para anexar um modelo relacionado via tabela dinâmica:
+
+``` js
 const User = use('App/Models/User')
 const Car = use('App/Models/Car')
 
@@ -763,7 +857,10 @@ const mercedes = await Car.findBy('reg_no', '39020103')
 const user = await User.find(1)
 
 await user.cars().attach([mercedes.id])
-O attachmétodo aceita um retorno de chamada opcional que recebe a pivotModelinstância, permitindo definir propriedades extras em uma tabela dinâmica, se necessário:
+```
+
+O método `attach` aceita um retorno de chamada opcional que recebe a instância `pivotModel`, permitindo definir 
+propriedades extras em uma tabela dinâmica, se necessário:
 
 const mercedes = await Car.findBy('reg_no', '39020103')
 const audi = await Car.findBy('reg_no', '99001020')
