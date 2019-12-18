@@ -876,8 +876,8 @@ await user.cars().attach(cars, (row) => {
 })
 ```
 
-Os métodos `create` e `save` para relacionamentos `belongsToMany` também aceitam um retorno de chamada, 
-permitindo definir propriedades extras em uma tabela dinâmica, se necessário.
+> Os métodos `create` e `save` para relacionamentos `belongsToMany` também aceitam um retorno de chamada, 
+> permitindo definir propriedades extras em uma tabela dinâmica, se necessário.
 
 ### detach
 O método `detach` é o oposto do método `attach`, removendo todos os relacionamentos de tabela dinâmica existentes:
@@ -947,4 +947,4 @@ await user
   .delete()
 ```
 
-No caso de `belongsToMany`, esse método também elimina o relacionamento da tabela dinâmica.
+> No caso de `belongsToMany`, esse método também elimina o relacionamento da tabela dinâmica.
