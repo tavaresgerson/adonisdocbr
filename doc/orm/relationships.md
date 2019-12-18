@@ -862,6 +862,7 @@ await user.cars().attach([mercedes.id])
 O método `attach` aceita um retorno de chamada opcional que recebe a instância `pivotModel`, permitindo definir 
 propriedades extras em uma tabela dinâmica, se necessário:
 
+``` js
 const mercedes = await Car.findBy('reg_no', '39020103')
 const audi = await Car.findBy('reg_no', '99001020')
 
@@ -873,42 +874,59 @@ await user.cars().attach(cars, (row) => {
     row.is_current_owner = true
   }
 })
-Os métodos createe savepara belongsToManyrelacionamentos também aceitam um retorno de chamada, permitindo definir propriedades extras em uma tabela dinâmica, se necessário.
-destacar
-O detachmétodo é o oposto do attachmétodo, removendo todos os relacionamentos de tabela dinâmica existentes:
+```
 
+Os métodos `create` e `save` para relacionamentos `belongsToMany` também aceitam um retorno de chamada, 
+permitindo definir propriedades extras em uma tabela dinâmica, se necessário.
+
+### detach
+O método `detach` é o oposto do método `attach`, removendo todos os relacionamentos de tabela dinâmica existentes:
+
+``` js
 const user = await User.find(1)
 await user.cars().detach()
+```
+
 Para desanexar apenas relações selecionadas, passe uma matriz de IDs:
 
+``` js
 const user = await User.find(1)
 const mercedes = await Car.findBy('reg_no', '39020103')
 
 await user.cars().detach([mercedes.id])
-sincronizar
-O syncmétodo fornece um atalho conveniente para detach, em seguida attach:
+```
 
+### sync
+O método `sync` fornece um atalho conveniente para `detach`, e em seguida `attach`:
+
+``` js
 const mercedes = await Car.findBy('reg_no', '39020103')
 const user = await User.find(1)
 
-// Behave the same way as:
+// Comporte-se da mesma maneira que:
 // await user.cars().detach()
 // await user.cars().attach([mercedes.id])
 
 await user.cars().sync([mercedes.id])
-atualizar
-O updatemétodo em massa atualiza as linhas consultadas.
+```
+
+### update
+O método `update` em massa atualiza as linhas consultadas.
 
 Você pode usar os métodos do Query Builder para atualizar apenas campos específicos:
 
+``` js
 const user = await User.find(1)
 
 await user
   .posts()
   .where('title', 'Adonis 101')
   .update({ is_published: true })
-Para atualizar uma tabela dinâmica, ligue pivotQueryantes update:
+```
 
+Para atualizar uma tabela dinâmica, ligue `pivotQuery` antes de `update`:
+
+``` js
 const user = await User.find(1)
 
 await user
@@ -916,13 +934,17 @@ await user
   .pivotQuery()
   .where('name', 'mercedes')
   .update({ is_current_owner: true })
-excluir
-O deletemétodo remove linhas relacionadas do banco de dados:
+```
+### delete
+O método `delete` remove linhas relacionadas do banco de dados:
 
+``` js
 const user = await User.find(1)
 
 await user
   .cars()
   .where('name', 'mercedes')
   .delete()
-No caso de belongsToMany, esse método também elimina o relacionamento da tabela dinâmica.
+```
+
+No caso de `belongsToMany`, esse método também elimina o relacionamento da tabela dinâmica.
