@@ -54,7 +54,7 @@ users.toJSON()
 ``` 
 
 Resultado
-``` json
+```
 [
   {
     id: 1,
