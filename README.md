@@ -61,7 +61,7 @@ Tradução da documentação 4.1 do AdonisJS
 + [Traits](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/orm/traits.md)
 + [Mutators](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/orm/mutators.md)
 + [Relacionamentos](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/orm/relationships.md)
-+ Serialização
++ [Serialização](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/orm/serializers.md)
 
 ## Websockets
 + [Começando](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/websocket/started.md)
