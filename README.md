@@ -8,7 +8,7 @@ Tradução da documentação 4.1 do AdonisJS
 
 ## Conceito
 + [Ciclo de vida da requisição](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/concept/request-lifecycle.md)
-+ [IoC Container]()
++ [IoC Container](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/concept/ioc-container.md)
 + Service Providers
 + Ignitor
 
