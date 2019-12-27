@@ -31,7 +31,7 @@ Tradução da documentação 4.1 do AdonisJS
 
 ## Segurança
 + [Introdução](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/security/introduction.md)
-+ Autenticação
++ [Autenticação](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/security/authentication.md)
 + CORS
 + Proteção CSRF 
 + Encriptação e Hashing
