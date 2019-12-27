@@ -30,7 +30,7 @@ Tradução da documentação 4.1 do AdonisJS
 + [Logger](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/basics/logger.md)
 
 ## Segurança
-+ Introdução
++ [Introdução](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/security/introduction.md)
 + Autenticação
 + CORS
 + Proteção CSRF 
