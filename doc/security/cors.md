@@ -43,8 +43,9 @@ Você pode retornar um dos seguintes valores:
 + Uma matriz de domínios a ser permitida.
 + Uma função que recebe a origem da solicitação atual. Aqui você pode calcular se a origem é ou não permitida retornando verdadeiro ou falso:
 
-* config/cors.js*
+
 ``` js
+// em config/cors.js
 origin: function (currentOrigin) {
   return currentOrigin === 'mywebsite.com'
 }
