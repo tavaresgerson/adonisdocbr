@@ -35,7 +35,7 @@ Tradução da documentação 4.1 do AdonisJS
 + [CORS](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/security/cors.md)
 + [Proteção CSRF](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/security/csrf.md)
 + [Encriptação e Hashing](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/security/encryption-and-hashing.md)
-+ Shield Middleware
++ [Shield Middleware](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/security/shield.md)
 
 ## Aprofundando
 + [Comandos Ace](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/deeper/ace.md)
