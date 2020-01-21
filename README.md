@@ -13,7 +13,7 @@ Tradução da documentação 4.1 do AdonisJS
 + [Ignitor](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/concept/ignitor.md)
 
 ## Começando
-+ Instalando
++ [Instalando](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/started/installation.md)
 + Configurando
 + Estrutura de pastas
 
