@@ -3,7 +3,7 @@
 A instalação do AdonisJs é um processo simples e leva apenas alguns minutos.
 
 Requisitos de sistema
-As únicas dependências da estrutura são Node.jse npm.
+As únicas dependências da estrutura são Node.js e npm.
 
 Verifique se suas versões dessas ferramentas correspondem aos seguintes critérios:
 
@@ -19,7 +19,7 @@ Verifique se suas versões dessas ferramentas correspondem aos seguintes critér
 ### Via CLI do AdonisJs
 A CLI do AdonisJs é uma ferramenta de linha de comando para ajudá-lo a instalar o AdonisJs.
 
-Instale-o globalmente da seguinte npmmaneira:
+Instale o `npm` globalmente da seguinte maneira:
 
 ```
 npm i -g @adonisjs/cli
