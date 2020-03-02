@@ -15,7 +15,7 @@ Tradução da documentação 4.1 do AdonisJS
 ## Começando
 + [Instalando](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/started/installation.md)
 + [Configurando](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/started/configuration-and-env.md)
-+ Estrutura de pastas
++ [Estrutura de pastas](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/started/folder-structure.md)
 
 ## Básico
 + [Roteamento](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/basics/routing.md)
