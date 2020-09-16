@@ -40,8 +40,8 @@ Tradução da documentação 4.1 do AdonisJS
 ## Aprofundando
 + [Comandos Ace](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/deeper/ace.md)
 + [Eventos](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/deeper/event.md)
-+ Extendendo o Core
-+ Upload de Arquivo
++ [Extendendo o Core](doc/deeper/extends.md)
++ [Upload de Arquivo](doc/deeper/file-uploads.md)
 + Armazenando Arquivo
 + Auxiliares (Helpers)
 + Internacionalização
