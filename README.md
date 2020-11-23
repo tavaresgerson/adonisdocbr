@@ -18,31 +18,31 @@ Tradução da documentação 4.1 do AdonisJS
 + [Estrutura de pastas](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/started/folder-structure.md)
 
 ## Básico
-+ [Roteamento](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/basics/routing.md)
-+ [Middleware](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/basics/middleware.md)
-+ [Controllers](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/basics/controllers.md)
-+ [Requisição](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/basics/request.md)
-+ [Resposta](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/basics/response.md)
-+ [Views](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/basics/views.md)
-+ [Sessões](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/basics/sessions.md)
-+ [Validador](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/basics/validator.md)
-+ [Manipulação de Erros](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/basics/exceptions.md)
-+ [Logger](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/basics/logger.md)
++ [Roteamento](doc/basics/routing.md)
++ [Middleware](doc/basics/middleware.md)
++ [Controllers](doc/basics/controllers.md)
++ [Requisição](doc/basics/request.md)
++ [Resposta](doc/basics/response.md)
++ [Views](doc/basics/views.md)
++ [Sessões](doc/basics/sessions.md)
++ [Validador](doc/basics/validator.md)
++ [Manipulação de Erros](doc/basics/exceptions.md)
++ [Logger](doc/basics/logger.md)
 
 ## Segurança
-+ [Introdução](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/security/introduction.md)
-+ [Autenticação](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/security/authentication.md)
-+ [CORS](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/security/cors.md)
-+ [Proteção CSRF](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/security/csrf.md)
-+ [Encriptação e Hashing](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/security/encryption-and-hashing.md)
-+ [Shield Middleware](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/security/shield.md)
++ [Introdução](doc/security/introduction.md)
++ [Autenticação](doc/security/authentication.md)
++ [CORS](doc/security/cors.md)
++ [Proteção CSRF](doc/security/csrf.md)
++ [Encriptação e Hashing](doc/security/encryption-and-hashing.md)
++ [Shield Middleware](doc/security/shield.md)
 
 ## Aprofundando
-+ [Comandos Ace](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/deeper/ace.md)
-+ [Eventos](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/deeper/event.md)
++ [Comandos Ace](doc/deeper/ace.md)
++ [Eventos](doc/deeper/event.md)
 + [Extendendo o Core](doc/deeper/extends.md)
 + [Upload de Arquivo](doc/deeper/file-uploads.md)
-+ Armazenando Arquivo
++ [Armazenando Arquivo](doc/deeper/file-system.md)
 + Auxiliares (Helpers)
 + Internacionalização
 + Email
