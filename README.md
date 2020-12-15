@@ -70,7 +70,7 @@ Tradução da documentação 4.1 do AdonisJS
 + API Cliente
 
 ## Testando
-+ Começando
++ [Começando](doc/testing/started.md)
 + Teste HTTP
 + Browser Teste
 + Fakes
