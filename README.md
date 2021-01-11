@@ -44,7 +44,7 @@ Tradução da documentação 4.1 do AdonisJS
 + [Upload de Arquivo](doc/deeper/file-uploads.md)
 + [Armazenando Arquivo](doc/deeper/file-system.md)
 + [Auxiliares (Helpers)](doc/deeper/helpers.md)
-+ Internacionalização
++ [Internacionalização](doc/deeper/internationalization.md)
 + Email
 + Autenticação com Redes Sociais
 
@@ -64,9 +64,9 @@ Tradução da documentação 4.1 do AdonisJS
 + [Serialização](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/orm/serializers.md)
 
 ## Websockets
-+ [Começando](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/websocket/started.md)
-+ [Filosofia](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/websocket/philosophy.md)
-+ [API Servidor](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/websocket/server.md)
++ [Começando](doc/websocket/started.md)
++ [Filosofia](doc/websocket/philosophy.md)
++ [API Servidor](doc/websocket/server.md)
 + API Cliente
 
 ## Testando
