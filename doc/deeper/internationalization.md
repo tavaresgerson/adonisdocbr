@@ -76,7 +76,8 @@ Ao usar o carregador `database`, todas as localidades são buscadas na tabela `l
 
 O comando `adonis install` cria a migração para a tabela `locales`.
 
-> Você sempre pode consultar o arquivo de origem de migração mais recente no [Github](https://github.com/adonisjs/adonis-antl/blob/master/templates/locales-schema.js).
+> Você sempre pode consultar o arquivo de origem de migração mais recente 
+> no [Github](https://github.com/adonisjs/adonis-antl/blob/master/templates/locales-schema.js).
 
 Um exemplo de tabela `locales` de banco de dados pode ser assim:
 
@@ -187,28 +188,39 @@ O formato `select` define a saída condicional com base no valor passado:
 #### Formato plural
 O formato `plural` define opções de plurilização com base no valor passado:
 
+```
 {count, plural,
    =0 {No candy left}
    one {Got # candy left}
    other {Got # candies left}
 }
+```
+
 Experimente e edite a mensagem acima em seu navegador .
-Valores de formatação
+
+#### Valores de formatação
 Abaixo está a lista de métodos que você pode usar para formatar mensagens ou valores brutos .
 
-##### formatMessage (chave, [dados], [formatos])
-O formatMessagemétodo espera que o keyseja formatado ( group.item ):
+##### formatMessage(chave, [dados], [formatos])
+O método `formatMessage` espera que a `key` seja formatada (**group.item**):
 
+```js
 const Antl = use('Antl')
 
 Antl.formatMessage('messages.greeting')
-Ele também pode aceitar um objeto de dinâmico datapara passar para a mensagem:
+```
 
+Ele também pode aceitar um objeto `data` dinâmico para passar para a mensagem:
+
+```js
 const Antl = use('Antl')
 
 Antl.formatMessage('response.eta', { gender: 'male' })
-Finalmente, ele também pode aceitar uma matriz de formatspara analisar os dados passados ​​com:
+```
 
+Finalmente, ele também pode aceitar uma matriz em `formats` para analisar os dados passados com:
+
+```js
 const Antl = use('Antl')
 const Formats = use('Antl/Formats')
 
@@ -219,61 +231,78 @@ Antl.formatMessage(
     Formats.pass('usd', 'number')
   ]
 )
-formatNumber (valor, [opções])
+```
+
+#### formatNumber(valor, [opções])
 Formate o valor como um número (aceita NumberFormat optionsconforme definido aqui ):
 
+```js
 Antl.formatNumber(10)
 
-// as currency
+// como moeda
 Antl.formatNumber(10, {
   style: 'currency',
   currency: 'usd'
 })
 
-// as percentage
+// como porcentagem
 Antl.formatNumber(10, {
   style: 'percent'
 })
-formatAmount (valor, moeda, [opções])
+```
+
+#### formatAmount (valor, moeda, [opções])
 Formatar o valor com styledefinir como moeda:
 
+```js
 Antl.formatAmount(100, 'usd')
-formatDate (valor, [opções])
-Formate o valor como data (aceita DateTimeFormat optionsconforme definido aqui ):
+```
 
+#### formatDate (valor, [opções])
+Formate o valor como data (aceita DateTimeFormat em `options` conforme definido [aqui](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat)):
+
+```js
 Antl.formatDate(new Date())
 
-// pull weekday for the date
+// puxar dia da semana para a data
 Antl.formatDate(new Date(), {
   weekday: 'long'
 })
 
-// pull day only
+// puxar dia apenas
 Antl.formatDate(new Date(), {
   day: '2-digit'
 })
-formatRelative (valor, [opções])
-Formate uma data em relação à data / hora atual (aceita RelativeFormat optionsconforme definido aqui ):
+```
 
+#### formatRelative (valor, [opções])
+Formate uma data em relação à data/hora atual (aceita RelativeFormat em `options` conforme definido [aqui](https://github.com/yahoo/intl-relativeformat#custom-options)):
+
+```js
 Antl.formatRelative(new Date())
 
-// always in numeric style
+// sempre em estilo numérico
 Antl.formatRelative(new Date(), {
   style: 'numeric'
 })
-Registrando Formatos
-O método formatMessage aceita apenas uma matriz de formatos pré-registrados.
+```
+
+### Registrando Formatos
+O método `formatMessage` aceita apenas uma matriz de formatos pré-registrados.
 
 Para registrar seus formatos para um determinado tipo:
 
+```js
 const Formats = use('Antl/Formats')
 
 Formats.add('usd', {
   style: 'currency',
   currency: 'usd'
 })
+```
 Use-o da seguinte maneira:
 
+```
 Antl.formatMessage(
   'cart.total'
   { total: 20 },
@@ -281,21 +310,26 @@ Antl.formatMessage(
     Formats.pass('usd', 'number')
   ]
 )
-O Formats.passmétodo leva dois argumentos:
+```
 
-O primeiro argumento é o formato a ser usado.
+O método `Formats.pass` leva dois argumentos:
 
-O segundo argumento é o tipo ao qual o formato deve ser aplicado.
+1. O primeiro argumento é o formato a ser usado.
+2. O segundo argumento é o tipo ao qual o formato deve ser aplicado.
 
-Vários formatos de tipo
+### Vários formatos de tipo
 Você pode passar vários formatos para um determinado tipo. Por exemplo:
 
-resources / locales / en / cart.json
+```json
+// resources/locales/en/cart.json
 {
   "total": "USD total { usdTotal, number, usd } or in GBP { gbpTotal, number, gbp }"
 }
-Em seguida, registre os formatos usde gbp.
+```
 
+Em seguida, registre os formatos `us` de `gbp`.
+
+```js
 Formats.add('usd', {
   style: 'currency',
   currency: 'usd'
@@ -305,8 +339,11 @@ Formats.add('gbp', {
   style: 'currency',
   currency: 'gbp'
 })
+```
+
 Finalmente, você pode formatar a mensagem da seguinte maneira:
 
+```js
 Antl.formatMessage(
   'cart.total',
   { usdTotal: 20, gbpTotal: 13 },
@@ -315,50 +352,69 @@ Antl.formatMessage(
     Formats.pass('gbp', 'number')
   ]
 )
+```
+
 Resultado
+```
 USD total $20.00 or in GBP £13.00
-Mudar de local
+```
+
+### Mudar de local
+
 O Provedor Antl simplifica a formatação da localidade em tempo de execução.
 
-Para isso, basta ligar forLocaleantes de formatMessage:
+Para isso, basta ligar `forLocale` antes de `formatMessage`:
 
+```js
 Antl
   .forLocale('fr')
   .formatMessage('response.eta')
-Switch Loader
-Você pode alternar entre os carregadores em tempo de execução chamando o loadermétodo:
+```
 
+### Switch Loader
+
+Você pode alternar entre os carregadores em tempo de execução chamando o método `loader`:
+
+```js
 const Antl = use('Antl')
 
-// asynchronous
+// assincrono
 await Antl.bootLoader()
 
-// get antl instance for a booted loader
+// obter instância antl para um carregador inicializado
 const AntlDb = Antl.loader('database')
 
-// all methods are available
+// todos os métodos estão disponíveis
 AntlDb.formatMessage()
-Sempre ligue bootLoaderantes Antl.loader(você só precisa ligar bootLoaderuma vez).
-Http Request Locale
-O Provedor Antl vincula a localepropriedade ao objeto Http Context :
+```
 
+> Sempre ligue o `bootLoader` antes de `Antl.loader` (você só precisa chamar o `bootLoader` uma vez).
+
+### Http Request Locale
+O Provedor Antl vincula a propriedade `locale` ao objeto [Contexto Http](https://adonisjs.com/docs/4.1/request-lifecycle#_http_context):
+
+```
 Route.get('/', ({ locale }) => {
   return `User language is ${locale}`
 })
-A propriedade locale é resolvida da seguinte forma:
+```
 
-O Accept-Languagecabeçalho HTTP ou langparâmetro de consulta é examinado para detectar o idioma do usuário.
+1. A propriedade `locale` é resolvida da seguinte forma:
 
-O idioma do usuário é comparado com a lista de localidades disponíveis configuradas por seu aplicativo. As localidades configuradas são determinadas por mensagens salvas no banco de dados ou sistema de arquivos para determinados idiomas.
+2. O cabeçalho HTTP `Accept-Language` ou parâmetro `lang` de consulta é examinado para detectar o idioma do usuário.
 
-Se o idioma do usuário não for compatível com seu aplicativo, ele retornará para a localidade padrão definida no config/app.jsarquivo.
+3. O idioma do usuário é comparado com a lista de localidades disponíveis configuradas por seu aplicativo. As localidades 
+configuradas são determinadas por mensagens salvas no banco de dados ou sistema de arquivos para determinados idiomas.
 
-Formatação Http
+Se o idioma do usuário não for compatível com seu aplicativo, ele retornará para a localidade padrão definida no arquivo `config/app.js`.
+
+### Formatação Http
 Como podemos acessar o usuário com localebase em convenções padrão, você pode formatar mensagens de uma das seguintes maneiras.
 
-Importar globalmente
+#### Importar globalmente
 Você pode importar o Provedor Antl globalmente e chamar manualmente o forLocalemétodo ao formatar valores:
 
+```js
 const Antl = use('Antl')
 
 Route.get('/', ({ locale }) => {
@@ -366,27 +422,42 @@ Route.get('/', ({ locale }) => {
     .forLocale(locale)
     .formatNumber(20, { style: 'currency', currency: 'usd' })
 })
-Instância de contexto
-Você também pode usar o antlobjeto que é passado para todos os gerenciadores de rota, como solicitação e resposta :
+```
 
+#### Instância de contexto
+Você também pode usar o objeto `antl` que é passado para todos os gerenciadores de rota, como solicitação e resposta:
+
+```js
 Route.get('/', ({ antl }) => {
   return antl
     .formatNumber(20, { style: 'currency', currency: 'usd' })
 })
-Por exemplo, você pode mudar a localidade para uma visualização como:
+```
 
+Por exemplo, você pode mudar a localidade para uma view como:
+
+```
 Route.get('/', ({ antl, view }) => {
   antl.switchLocale('fr')
   return view.render('some-view')
 }
-Ver Global
-Como a antl instância de contexto é compartilhada com todas as visualizações, você pode acessar seus métodos dentro de seus modelos de visualização da seguinte forma:
+```
 
+### Ver Global
+Como a [instância de contexto](https://adonisjs.com/docs/4.1/internationalization#_context_instance) `antl` é compartilhada com todas as 
+views, você pode acessar seus métodos dentro de seus modelos de visualização da seguinte forma:
+
+```edge
 {{ antl.formatNumber(20, currency = 'usd', style = 'currency')  }}
-Como alternativa, você pode usar a @mustachetag para escrever várias linhas:
+```
 
+Como alternativa, você pode usar a tag `@mustache` para escrever várias linhas:
+
+```
 @mustache(antl.formatNumber(
   20,
   { currency: 'usd', style: 'currency }
 ))
+```
+
 Não há como alternar o carregador dentro dos modelos.
