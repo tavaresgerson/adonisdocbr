@@ -55,6 +55,7 @@ Retorna o caminho para o diretório de migrações ou arquivo dentro do diretór
 const migrationsPath = Helpers.migrationsPath()
 // ou
 const UserSchema = Helpers.migrationsPath('UserSchema.js')
+```
 
 #### seedPath ([toFile])
 Retorna o caminho para o diretório de sementes ou arquivo dentro do diretório:
@@ -62,6 +63,7 @@ Retorna o caminho para o diretório de sementes ou arquivo dentro do diretório:
 const seedsPath = Helpers.seedsPath()
 // ou
 const DatabaseSeed = Helpers.seedsPath('Database.js')
+```
 
 #### databasePath ([toFile])
 Retorna o caminho para o diretório do banco de dados ou arquivo dentro do diretório:
@@ -69,6 +71,7 @@ Retorna o caminho para o diretório do banco de dados ou arquivo dentro do diret
 const databasePath = Helpers.databasePath()
 // ou
 const factoryFile = Helpers.databasePath('factory.js')
+```
 
 #### viewsPath ([toFile])
 Retorna o caminho para o diretório de visualizações ou arquivo dentro do diretório:
