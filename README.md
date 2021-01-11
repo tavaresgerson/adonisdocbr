@@ -43,7 +43,7 @@ Tradução da documentação 4.1 do AdonisJS
 + [Extendendo o Core](doc/deeper/extends.md)
 + [Upload de Arquivo](doc/deeper/file-uploads.md)
 + [Armazenando Arquivo](doc/deeper/file-system.md)
-+ Auxiliares (Helpers)
++ [Auxiliares (Helpers)](doc/deeper/helpers.md)
 + Internacionalização
 + Email
 + Autenticação com Redes Sociais
