@@ -49,7 +49,7 @@
 + [Auxiliares (Helpers)](doc/deeper/helpers.md)
 + [Internacionalização](doc/deeper/internationalization.md)
 + [Email](doc/deeper/mail.md)
-+ Autenticação com Redes Sociais
++ [Autenticação com Redes Sociais](doc/deeper/social-auth.md)
 
 ## Banco de Dados
 + [Começando](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/database/started.md)
