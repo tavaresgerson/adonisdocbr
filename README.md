@@ -70,7 +70,7 @@
 + [Começando](doc/websocket/started.md)
 + [Filosofia](doc/websocket/philosophy.md)
 + [API Servidor](doc/websocket/server.md)
-+ API Cliente
++ [API Cliente](doc/websocket/websocket-client.md)
 
 ## Testando
 + [Começando](doc/testing/started.md)
