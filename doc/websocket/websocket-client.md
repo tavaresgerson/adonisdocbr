@@ -137,7 +137,7 @@ chat.on('leaveError', (response) => {
 })
 ```
 
-#### erro
+#### error
 Emitido quando ocorre um erro na conexão TCP:
 ```js
 chat.on('error', (event) => {
