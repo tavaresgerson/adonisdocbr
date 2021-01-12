@@ -45,7 +45,7 @@ Tradução da documentação 4.1 do AdonisJS
 + [Armazenando Arquivo](doc/deeper/file-system.md)
 + [Auxiliares (Helpers)](doc/deeper/helpers.md)
 + [Internacionalização](doc/deeper/internationalization.md)
-+ Email
++ [Email](doc/deeper/mail.md)
 + Autenticação com Redes Sociais
 
 ## Banco de Dados
