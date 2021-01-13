@@ -195,5 +195,5 @@ const { test, trait } = use('Test/Suite')('User registration')
 trait('DatabaseTransactions')
 ```
 
-Como alternativa, você pode definir um Lifecycle Hook para truncar as tabelas do banco de dados após cada teste, mas usar a trait 
-`DatabaseTransactions` é muito mais simples.
+Como alternativa, você pode definir um [Lifecycle Hook](/doc/testing/started.md#ganchos-de-ciclo-de-vida-lifecycle-hooks) para truncar as 
+tabelas do banco de dados após cada teste, mas usar a trait `DatabaseTransactions` é muito mais simples.
