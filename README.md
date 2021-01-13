@@ -1,7 +1,7 @@
 # Adonisjs 4.1
 <p>
   <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg" width="25" align="left" />
-  Documentação em português brasileiro da versão 4.1 do Adonisjs
+  Documentação completa em português brasileiro da versão 4.1 do Adonisjs
 </p>
 
 ## Prefácio
@@ -75,5 +75,5 @@
 ## Testando
 + [Começando](doc/testing/started.md)
 + [Teste HTTP](doc/testing/api-tests.md)
-+ Browser Teste
-+ Fakes
++ [Browser Teste](doc/testing/browser-tests.md)
++ [Fakes](doc/testing/testing-fakes.md)
