@@ -5,20 +5,20 @@
 </p>
 
 ## Prefácio
-+ [Sobre o AdonisJs](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/preface/about.md)
-+ [Atualizando do 4.0](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/preface/upgrade-guide.md)
-+ [Guia de contribuição](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/preface/contribution-guide.md)
++ [Sobre o AdonisJs](doc/preface/about.md)
++ [Atualizando do 4.0](doc/preface/upgrade-guide.md)
++ [Guia de contribuição](doc/preface/contribution-guide.md)
 
 ## Conceito
-+ [Ciclo de vida da requisição](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/concept/request-lifecycle.md)
-+ [IoC Container](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/concept/ioc-container.md)
-+ [Service Providers](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/concept/service-providers.md)
-+ [Ignitor](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/concept/ignitor.md)
++ [Ciclo de vida da requisição](doc/concept/request-lifecycle.md)
++ [IoC Container](doc/concept/ioc-container.md)
++ [Service Providers](doc/concept/service-providers.md)
++ [Ignitor](doc/concept/ignitor.md)
 
 ## Começando
-+ [Instalando](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/started/installation.md)
-+ [Configurando](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/started/configuration-and-env.md)
-+ [Estrutura de pastas](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/started/folder-structure.md)
++ [Instalando](doc/started/installation.md)
++ [Configurando](doc/started/configuration-and-env.md)
++ [Estrutura de pastas](doc/started/folder-structure.md)
 
 ## Básico
 + [Roteamento](doc/basics/routing.md)
@@ -52,19 +52,19 @@
 + [Autenticação com Redes Sociais](doc/deeper/social-auth.md)
 
 ## Banco de Dados
-+ [Começando](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/database/started.md)
-+ [Construtor de Queries](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/database/query-builder.md)
-+ [Migrations](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/database/migrations.md)
-+ [Seeds & Factories](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/database/seeds_and_factories.md)
-+ [Redis](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/database/redis.md)
++ [Começando](doc/database/started.md)
++ [Construtor de Queries](doc/database/query-builder.md)
++ [Migrations](doc/database/migrations.md)
++ [Seeds & Factories](doc/database/seeds_and_factories.md)
++ [Redis](doc/database/redis.md)
 
 ## Lucid ORM
-+ [Começando](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/orm/started.md)
-+ [Hooks](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/orm/hooks.md)
-+ [Traits](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/orm/traits.md)
-+ [Mutators](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/orm/mutators.md)
-+ [Relacionamentos](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/orm/relationships.md)
-+ [Serialização](https://github.com/tavaresgerson/adonisdocbr/blob/master/doc/orm/serializers.md)
++ [Começando](doc/orm/started.md)
++ [Hooks](doc/orm/hooks.md)
++ [Traits](doc/orm/traits.md)
++ [Mutators](doc/orm/mutators.md)
++ [Relacionamentos](doc/orm/relationships.md)
++ [Serialização](doc/orm/serializers.md)
 
 ## Websockets
 + [Começando](doc/websocket/started.md)
@@ -74,6 +74,6 @@
 
 ## Testando
 + [Começando](doc/testing/started.md)
-+ Teste HTTP
++ [Teste HTTP](doc/testing/api-tests.md)
 + Browser Teste
 + Fakes
