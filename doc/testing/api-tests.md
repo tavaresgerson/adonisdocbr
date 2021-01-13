@@ -256,7 +256,8 @@ response.assertJSONSubset({
 })
 ```
 
-Essa asserção testa um subconjunto de objetos, o que é útil quando os valores dentro de um objeto não são determináveis ​​(por exemplo, carimbos de data / hora).
+> Essa asserção testa um subconjunto de objetos, o que é útil quando os valores dentro de um objeto não são 
+> determináveis (por exemplo, carimbos de data/hora).
 
 #### assertText
 Declarar texto simples retornado pelo servidor:
