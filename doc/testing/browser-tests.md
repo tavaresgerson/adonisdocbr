@@ -288,204 +288,271 @@ ou você pode ter que esperar que uma página da web seja redirecionada e assim 
 
 Os métodos a seguir podem ser usados ​​para lidar com esses cenários.
 
-waitForElement (seletor, tempo limite = 15000)
+#### waitForElement(selector, timeout = 15000)
 Espere até que um elemento apareça dentro do DOM:
-
+```js
 await page
   .waitForElement('div.alert')
   .assertHasIn('div.alert', 'Success!')
-O tempo limite de espera padrão é 15segundos.
-waitUntilMissing (seletor)
-Espere até que um elemento desapareça do DOM:
+```
 
+> O tempo limite de espera padrão é 15segundos.
+
+#### waitUntilMissing(selector)
+Espere até que um elemento desapareça do DOM:
+```js
 await page
   .waitUntilMissing('div.alert')
   .assertNotExists('div.alert')
-waitForNavigation ()
-Aguarde até que uma página tenha navegado adequadamente para um novo URL:
+```
 
+#### waitForNavigation()
+Aguarde até que uma página tenha navegado adequadamente para um novo URL:
+```js
 await page
   .click('a[href="/there"]')
   .waitForNavigation()
   .assertPath('/there')
-waitFor (encerramento)
-Espere até que a função de fechamento passada retorne verdadeiro:
+```
 
+#### waitFor(closure)
+Espere até que a função de fechamento passada retorne verdadeiro:
+```js
 await page
   .waitFor(function () {
     return !!document.querySelector('body.loaded')
   })
-O fechamento é executado no contexto do navegador e tem acesso a variáveis como window, documente assim por diante.
-pausar (tempo limite = 15.000)
+```
+
+> A closure é executada no contexto do navegador e tem acesso a variáveis como `window`, `document` e assim por diante.
+
+#### pause(timeout = 15000)
 Pause a página da web por um determinado período de tempo:
-
+```js
 await page.pause()
-O tempo limite de pausa padrão é 15segundos.
-Lendo Valores
-Os métodos a seguir podem ser usados ​​para ler valores de uma página da web.
+``` 
 
-getText ([selector])
+> O tempo limite de pausa padrão é 15segundos.
+
+## Lendo Valores
+Os métodos a seguir podem ser usados para ler valores de uma página da web.
+
+#### getText([selector])
 Obtenha texto para um determinado elemento ou a página inteira:
-
+```js
 await page
   .getText()
 
-// or
+// ou
 await page
   .getText('span.username')
-getHtml ([selector])
-Obtenha HTML para um determinado elemento ou para a página inteira:
+```
 
+#### getHtml([selector])
+Obtenha HTML para um determinado elemento ou para a página inteira:
+```js
 await page
   .getHtml()
 
-// or
+// ou
 await page
   .getHtml('div.header')
-isVisible (seletor)
-Descubra se um determinado elemento é visível:
+```
 
+#### isVisible(selector)
+Descubra se um determinado elemento é visível:
+```js
 const isVisible = await page
   .isVisible('div.alert')
 
 assert.isFalse(isVisible)
-hasElement (seletor)
-Descubra se existe um elemento no DOM:
+```
 
+#### hasElement (selector)
+Descubra se existe um elemento no DOM:
+```js
 const hasElement = await page
   .hasElement('div.alert')
 
 assert.isFalse(hasElement)
-isChecked (seletor)
-Descubra se uma caixa de seleção está marcada:
+```
 
+#### isChecked(selector)
+Descubra se uma caixa de seleção está marcada:
+```js
 const termsChecked = await page
   .isChecked('[name="terms"]')
 
 assert.isTrue(termsChecked)
-getAttribute (seletor, nome)
-Obtenha o valor de um determinado atributo:
+```
 
+#### getAttribute(selector, name)
+Obtenha o valor de um determinado atributo:
+```js
 const dataTip = await page
   .getAttribute('div.tooltip', 'data-tip')
-getAttributes (seletor)
-Obtenha todos os atributos de um determinado seletor de elemento:
+```
 
+#### getAttributes(selector)
+Obtenha todos os atributos de um determinado seletor de elemento:
+```js
 const attributes = await page
   .getAttributes('div.tooltip')
-getValue (seletor)
-Obtenha o valor de um determinado elemento de formulário:
+```
 
+#### getValue(selector)
+Obtenha o valor de um determinado elemento de formulário:
+```js
 const value = await page
   .getValue('[name="username"]')
 
 assert.equal(value, 'virk')
-getPath ()
-Obtenha o caminho da página da web atual:
+```
 
+#### getPath()
+Obtenha o caminho da página da web atual:
+```js
 await page
   .getPath()
-getQueryParams ()
-Obtenha os parâmetros de consulta atuais:
+```
 
+#### getQueryParams()
+Obtenha os parâmetros de consulta atuais:
+```js
 await page
   .getQueryParams()
-getQueryParam (chave)
-Obtenha o valor de um único parâmetro de consulta:
+```
 
+#### getQueryParam(chave)
+Obtenha o valor de um único parâmetro de consulta:
+```js
 await page
   .getQueryParam('orderBy')
-getTitle ()
-Obtenha o título da página da web:
+```
 
+#### getTitle()
+Obtenha o título da página da web:
+```js
 await page
   .getTitle()
-Afirmações
+```
+
+## Afirmações
 Uma maneira de executar asserções é ler o valor dos elementos de destino e, em seguida, declarar contra esses valores manualmente.
 
-O cliente do navegador AdonisJS fornece vários métodos auxiliares convenientes para executar asserções de página sequenciais para simplificar o processo para você.
+O cliente do navegador AdonisJS fornece vários métodos auxiliares convenientes para executar asserções de página sequenciais para 
+simplificar o processo para você.
 
-assertHas (esperado)
+#### assertHas(expected)
 Assegure que a página da web inclui o valor de texto esperado:
-
+```js
 await page
   .assertHas('Adonis')
-assertHasIn (seletor, esperado)
-Assertar que um determinado seletor contém o valor esperado:
+```
 
+#### assertHasIn(selector, expected)
+Assertar que um determinado seletor contém o valor esperado:
+```js
 await page
   .assertHasIn('div.alert', 'Success!')
-assertAttribute (seletor, atributo, esperado)
-Afirme que o valor de um atributo é igual ao valor esperado:
+```
 
+#### assertAttribute(selector, attribute, expected)
+Afirme que o valor de um atributo é igual ao valor esperado:
+```js
 await page
   .assertAttribute('div.tooltip', 'data-tip', 'Some helpful tooltip')
-assertValue (seletor, esperado)
-Afirme o valor para um determinado elemento do formulário:
+```
 
+#### assertValue(selector, expected)
+Afirme o valor para um determinado elemento do formulário:
+```js
 await page
   .assertValue('[name="username"]', 'virk')
-assertIsChecked (seletor)
-Assert uma caixa de seleção marcada:
+```
 
+#### assertIsChecked(selector)
+Assert uma caixa de seleção marcada:
+```js
 await page
   .assertIsChecked('[name="terms"]')
-assertIsNotChecked (seletor)
-Afirmar que a caixa de seleção não está marcada:
+```
 
+#### assertIsNotChecked(selector)
+Afirmar que a caixa de seleção não está marcada:
+```js
 await page
   .assertIsNotChecked('[name="terms"]')
-assertIsVisible (seletor)
-Afirme que um elemento é visível:
+```
 
+#### assertIsVisible(selector)
+Afirme que um elemento é visível:
+```js
 await page
   .assertIsVisible('div.notification')
-assertIsNotVisible (seletor)
-Afirmar que um elemento não é visível:
+```
 
+#### assertIsNotVisible(selector)
+Afirmar que um elemento não é visível:
+```js
 await page
   .assertIsNotVisible('div.notification')
-assertPath (valor)
-Afirme o valor do caminho atual:
+```
 
+#### assertPath(value)
+Afirme o valor do caminho atual:
+```js
 await page
   .assertPath('/there')
-assertQueryParam (chave, valor)
-Afirme o valor de um parâmetro de consulta:
+```
 
+#### assertQueryParam(key, value)
+Afirme o valor de um parâmetro de consulta:
+```js
 await page
   .assertQueryParam('orderBy', 'id')
-assertExists (seletor)
-Assegure que existe um elemento dentro do DOM:
+```
 
+#### assertExists(selector)
+Assegure que existe um elemento dentro do DOM:
+```js
 await page
   .assertExists('div.notification')
-assertNotExists (seletor)
-Afirmar que um elemento não existe dentro do DOM:
+```
 
+#### assertNotExists(selector)
+Afirmar que um elemento não existe dentro do DOM:
+```js
 await page
   .assertNotExists('div.notification')
-assertCount (seletor, linha esperada)
-Afirme o número de elementos para um determinado seletor:
+```
 
+#### assertCount(selector, expectedCount)
+Afirme o número de elementos para um determinado seletor:
+```js
 await page
   .assertCount('table tr', 2)
-assertTitle (esperado)
+```
+#### assertTitle(expected)
 Afirme o título da página da web:
-
+```js
 await page
   .assertTitle('Welcome to Adonis')
-assertEval (seletor, fn, [args], esperado)
-Afirma o valor de uma função executada em um determinado seletor ( fné executado no contexto do navegador):
+```
 
+#### assertEval(selector, fn, [args], expected)
+Afirma o valor de uma função executada em um determinado seletor (`fn` é executado no contexto do navegador):
+```js
 await page
   .assertEval('table tr', function (el) {
     return el.length
   }, 2)
-No exemplo acima, contamos o número de trdentro de uma tabela e afirmamos que a contagem é 2.
+```
 
-Você também pode passar argumentos ( [args]) para o seletor fn:
+No exemplo acima, contamos o número de `tr` dentro de uma tabela e afirmamos que a contagem é 2.
 
+Você também pode passar argumentos (`[args]`) para o seletor `fn`:
+```js
 await page
   .assertEval(
     'div.notification',
@@ -495,13 +562,18 @@ await page
     ['id'],
     'notification-1'
   )
-No exemplo acima, afirmamos sobre um determinado atributo do div.notificationelemento. O atributo fornecido é dinâmico e passado como um argumento ( ['id']).
+```
 
-assertFn (fn, [args], esperado)
+No exemplo acima, afirmamos sobre um determinado atributo do elemento `div.notification`. 
+O atributo fornecido é dinâmico e passado como um argumento (`['id']`).
+
+#### assertFn(fn, [args], expected)
 Afirma a saída de uma determinada função ( fné executada no contexto do navegador):
-
+```js
 await page
   .assertFn(function () {
     return document.title
   }, 'Welcome to Adonis')
-A diferença entre assertFne assertEvalé que assertEvalseleciona um elemento antes de executar a função.
+```
+
+> A diferença entre `assertFn` e `assertEval` é que `assertEval` seleciona um elemento antes de executar a função.
