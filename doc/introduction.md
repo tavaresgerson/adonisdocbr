@@ -53,5 +53,5 @@ seguir está a lista de extensões para aprimorar sua experiência de desenvolve
 
 1. [A sintaxe do Edge para VS Code](https://marketplace.visualstudio.com/items?itemName=luongnd.edge) é um pacote da comunidade para a sintaxe destacar os textos.
 2. [O VS Code para o controlador](https://marketplace.visualstudio.com/items?itemName=stef-k.adonis-js-goto-controller) é um pacote da comunidade para adicionar "click + ir" para suporte ao controlador.
-3. O [VS Code ir para View] é um pacote da comunidade para adicionar "click + go" como um suporte de arquivo de template.
-4. [Sintaxe do Edge para o Sublime Text] é uma extensão oficia.
+3. O [VS Code ir para View](https://marketplace.visualstudio.com/items?itemName=stef-k.adonis-js-goto-view) é um pacote da comunidade para adicionar "click + go" como um suporte de arquivo de template.
+4. [Sintaxe do Edge para o Sublime Text](https://github.com/edge-js/edge-sublime) é uma extensão oficial.
