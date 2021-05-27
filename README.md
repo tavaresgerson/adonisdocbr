@@ -40,7 +40,7 @@ A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdo
 
 #### Views e Templates
 + Introdução
-+ Renderição
++ Renderização
 + Sintaxe do Template
 + Fluxo de Dados
 + Condicionais
