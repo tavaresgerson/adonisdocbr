@@ -10,7 +10,9 @@ A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdo
 
 **[Introdução](/doc/introduction.md)**
 <br />
+<br />
 **Instalação**
+<br />
 <br />
 **Processo de Versionamento**
 
