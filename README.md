@@ -14,7 +14,7 @@ A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdo
 <br />
 **Processo de Versionamento**
 
-## Fundamentos
+#### Fundamentos
 + Aplicativo
 + Arquivo AdonisRc
 + Config
@@ -22,7 +22,7 @@ A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdo
 + Build com TypeScript
 + Publicação
 
-## Http
+#### Http
 + Contexto
 + Roteamento
 + Controlladores
@@ -36,7 +36,7 @@ A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdo
 + Gerenciando arquivos estáticos
 + Manipulando exceções
 
-## Views e Templates
+#### Views e Templates
 + Introdução
 + Renderição
 + Sintaxe do Template
@@ -49,13 +49,13 @@ A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdo
 + Mutações
 + Debug
 
-## Validador
+#### Validador
 + Introdução
 + Customizando mensagens
 + Reportando erros
 + Cache de esquemas
 
-## Banco de Dados
+#### Banco de Dados
 + Introdução
 + Construtor de Consultas
 + Transações
@@ -64,7 +64,7 @@ A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdo
 + Seeders
 + Debug
 
-## ORM
+#### ORM
 + Introdução
 + Operações CRUD
 + Hooks
@@ -73,7 +73,7 @@ A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdo
 + Relacionamentos
 + Fábrica
 
-## Autenticação
+#### Autenticação
 + Introdução
 + Guarda Web
 + API Tokens
@@ -82,13 +82,13 @@ A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdo
 + Autenticação Social
 + Provedor Customizado
 
-## Segurança
+#### Segurança
 + Segurança Web
 + Encriptação
 + Hashing
 + URLs Assinadas
 
-## Avançado
+#### Avançado
 + Autorização
 + Ace
 + AdonisJS Repl
@@ -100,14 +100,14 @@ A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdo
 + Verificando Status
 
 
-# Cookbooks
+### Cookbooks
 
 + Usando o Socket.io
 + Escrevendo Testes
 
-## Deploy
+#### Deploy
 + Heroku
 + Aplicativos no Digital Ocean
 
-## Validador
+#### Validador
 + Validando formulários no servidor
