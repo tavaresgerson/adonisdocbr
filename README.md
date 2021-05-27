@@ -14,7 +14,7 @@ A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdo
 **[Instalação](/doc/installation.md)**
 <br />
 <br />
-**Processo de Versionamento**
+**[Processo de Versionamento](/doc/release-process.md)**
 
 #### Fundamentos
 + Aplicativo
