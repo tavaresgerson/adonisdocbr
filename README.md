@@ -21,7 +21,7 @@ A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdo
 + [Arquivo AdonisRc](/doc/fundamentals/adonis-rc-file.md)
 + [Config](/doc/fundamentals/config.md)
 + [Variáveis de Ambiente](/doc/fundamentals/environment-variables.md)
-+ Build com TypeScript
++ [Build com TypeScript](/doc/fundamentals/typescript-build-process.md)
 + Publicação
 
 #### Http
