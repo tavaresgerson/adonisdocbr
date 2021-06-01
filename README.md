@@ -22,7 +22,7 @@ A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdo
 + [Config](/doc/fundamentals/config.md)
 + [Variáveis de Ambiente](/doc/fundamentals/environment-variables.md)
 + [Build com TypeScript](/doc/fundamentals/typescript-build-process.md)
-+ Publicação
++ [Publicação](/doc/fundamentals/deployment.md)
 
 #### Http
 + Contexto
