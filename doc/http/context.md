@@ -52,11 +52,11 @@ A seguir está a lista de propriedades disponíveis no contexto HTTP. À medida 
 podem adicionar mais propriedades a este objeto.
 
 <p align="center">
-  <img src="/assets/context-inspect.png" />
+  <img src="/assets/context-inspect.png" width="630" />
 </p>
 
 <p align="center">
-  `Saída de ctx.inspect ({depth: 0})`
+  Saída de `ctx.inspect ({depth: 0})`
 </p>
 
 #### request
