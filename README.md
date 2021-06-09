@@ -27,7 +27,7 @@ A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdo
 #### Http
 + [Contexto](/doc/http/context.md)
 + [Roteamento](/doc/http/routing.md)
-+ Controlladores
++ [Controladores](/doc/http/controllers.md)
 + Requisição
 + Resposta
 + Upload de Arquivos
