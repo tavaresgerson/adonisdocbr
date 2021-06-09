@@ -80,9 +80,8 @@ O AdonisJS aplica essas transformações para garantir que os nomes dos arquivos
 No entanto, você pode instruir a CLI a não aplicar essas transformações usando o sinalizador `--exact`.
 
 <p align="center">
-  <img src="/assets/controller-help-exact-flag.png" width="630" />
+  <img src="/assets/controller-help-exact-flag.png" width="600" />
 </p>
-_Saída de "node ace make --help"_
 
 ### Referência de rotas do controlador
 Como você pode notar, os controladores são referenciados nas rotas como uma expressão de string, ou seja 
