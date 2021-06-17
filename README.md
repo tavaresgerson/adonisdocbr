@@ -30,7 +30,7 @@ A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdo
 + [Controladores](/doc/http/controllers.md)
 + [Requisição](/doc/http/request.md)
 + [Resposta](/doc/http/response.md)
-+ Upload de Arquivos
++ [Upload de Arquivos](/doc/http/file-uploads.md)
 + Middlewares
 + Cookies
 + Sessão
