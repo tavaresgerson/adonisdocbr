@@ -172,7 +172,7 @@ vantagens e desvantagens, conforme listado abaixo.
 
 * Processado diretamente no navegador.
 * Requer uma solicitação HTTP adicional para gerar uma assinatura de autenticação.
-* Usa a propriedade `file.type` do cliente para detectar o tipo de conteúdo do arquivo. Isso pode ser facilmente falsificado.
+* Usa a propriedade [`file.type`](https://developer.mozilla.org/en-US/docs/Web/API/File/type) do cliente para detectar o tipo de conteúdo do arquivo. Isso pode ser facilmente falsificado.
 * Precisa de uma política de intervalo para validar o tipo e tamanho do arquivo.
 * Os uploads de arquivos geralmente são mais rápidos e exigem computação zero em seu servidor.
 
