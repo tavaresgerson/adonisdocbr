@@ -34,7 +34,7 @@ A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdo
 + [Upload direto de arquivos](/doc/http/direct-file-uploads.md)
 + [Middlewares](/doc/http/middleware.md)
 + [Cookies](/doc/http/cookies.md)
-+ Sessão
++ [Sessão](/doc/http/session.md)
 + Arquivos estáticos
 + Gerenciando arquivos estáticos
 + Manipulando exceções
