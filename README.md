@@ -35,7 +35,7 @@ A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdo
 + [Middlewares](/doc/http/middleware.md)
 + [Cookies](/doc/http/cookies.md)
 + [Sessão](/doc/http/session.md)
-+ Arquivos estáticos
++ [Arquivos estáticos](/doc/http/static-assets.md)
 + Gerenciando arquivos estáticos
 + Manipulando exceções
 
