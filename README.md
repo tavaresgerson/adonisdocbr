@@ -36,7 +36,7 @@ A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdo
 + [Cookies](/doc/http/cookies.md)
 + [Sessão](/doc/http/session.md)
 + [Arquivos estáticos](/doc/http/static-assets.md)
-+ Gerenciando arquivos estáticos
++ [Gerenciando arquivos estáticos](/doc/http/assets-manager.md)
 + Manipulando exceções
 
 #### Views e Templates
