@@ -103,14 +103,14 @@ A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdo
 + Verificando Status
 
 
-### Cookbooks
+## Cookbooks
 
 + Usando o Socket.io
 + Escrevendo Testes
 
-#### Deploy
+### Deploy
 + Heroku
 + Aplicativos no Digital Ocean
 
-#### Validador
+### Validador
 + Validando formulários no servidor
