@@ -46,7 +46,7 @@ A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdo
 + [Fluxo de Dados](/doc/views/data-flow.md)
 + [Condicionais](/doc/views/conditionals.md)
 + [Loops](/doc/views/loops.md)
-+ Parciais
++ [Parciais](/doc/views/partials.md)
 + Layouts
 + Componentes
 + Mutações
