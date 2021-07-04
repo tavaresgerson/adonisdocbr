@@ -44,8 +44,8 @@ A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdo
 + [Renderização](/doc/views/rendering.md)
 + [Sintaxe do Template](/doc/views/templating-syntax.md)
 + [Fluxo de Dados](/doc/views/data-flow.md)
-+ Condicionais
-+ Loops
++ [Condicionais](/doc/views/conditionals.md)
++ [Loops](/doc/views/loops.md)
 + Parciais
 + Layouts
 + Componentes
