@@ -47,10 +47,10 @@ A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdo
 + [Condicionais](/doc/views/conditionals.md)
 + [Loops](/doc/views/loops.md)
 + [Parciais](/doc/views/partials.md)
-+ Layouts
-+ Componentes
-+ Mutações
-+ Debug
++ [Layouts](/doc/views/layouts.md)
++ [Componentes](/doc/views/components.md)
++ [Mutações](/doc/views/mutations.md)
++ [Debug](/doc/views/debugging.md)
 
 #### Validador
 + Introdução
