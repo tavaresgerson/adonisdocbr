@@ -43,3 +43,6 @@ Execute o servidor Node com o sinalizador `--inspects` e use o Chrome para depur
 ```bash
 node ace serve --watch --node-args="--inspect"
 ```
+<p align="center">
+  <img width="600" src="https://github.com/tavaresgerson/adonisdocbr/blob/master/assets/edge-debugger.gif" />
+</p>
