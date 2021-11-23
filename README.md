@@ -59,8 +59,8 @@ A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdo
 + [Debug](/doc/views/debugging.md)
 
 #### Validador
-+ Introdução
-+ Customizando mensagens
++ [Introdução](/doc/validator/introduction.md)
++ [Customizando mensagens](/doc/validator/custom-messages.md)
 + Reportando erros
 + Cache de esquemas
 
