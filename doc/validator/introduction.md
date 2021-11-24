@@ -250,6 +250,6 @@ await validator.validate(
 ## Qual é o próximo passo?
 * Leia o livro de receitas sobre validação de formulários renderizados pelo servidor
 * Saiba mais sobre [mensagens personalizadas](/doc/validator/custom-messages.md)
-* Saiba mais sobre relatores de erros
+* Saiba mais sobre [relatores de erros](/doc/validator/error-reporters.md)
 * Veja todos os tipos de esquema disponíveis
 * Veja todas as regras de validação disponíveis
