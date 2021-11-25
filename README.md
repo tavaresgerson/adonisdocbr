@@ -63,7 +63,7 @@ A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdo
 + [Customizando mensagens](/doc/validator/custom-messages.md)
 + [Reportando erros](/doc/validator/error-reporters.md)
 + [Cache de esquemas](/doc/validator/schema-caching.md)
-+ Regras personalizadas
++ [Regras personalizadas](/doc/validator/custom-rules.md)
 
 #### Banco de Dados
 + Introdução
