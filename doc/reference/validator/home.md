@@ -2,7 +2,7 @@
 
 ### Tipos de esquemas
 
-* string
+* [string](/doc/reference/validator/string.md)
 * boolean
 * number
 * date
