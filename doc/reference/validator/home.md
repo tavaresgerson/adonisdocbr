@@ -2,12 +2,12 @@
 
 ### Tipos de esquemas
 
-* [string](/doc/reference/validator/string.md)
-* boolean
-* number
-* date
-* enum/enumSet
-* file
+* [string](/doc/reference/validator/schema/string.md)
+* [boolean](/doc/reference/validator/schema/boolean.md)
+* [number](/doc/reference/validator/schema/number.md)
+* [date](/doc/reference/validator/schema/number.md)
+* [enum/enumSet](/doc/reference/validator/schema/enum.md)
+* [file](/doc/reference/validator/schema/file.md)
 * array
 * object
 
