@@ -13,9 +13,9 @@
 
 ### Regras de validação
 
-* alpha
-* confirmed
-* distinct
+* [alpha](/doc/reference/validator/rules/alpha.md)
+* [confirmed](/doc/reference/validator/rules/confirmed.md)
+* [distinct](/doc/reference/validator/rules/distinct.md)
 * email
 * exists
 * unique
