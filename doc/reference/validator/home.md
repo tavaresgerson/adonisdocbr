@@ -8,8 +8,8 @@
 * [date](/doc/reference/validator/schema/number.md)
 * [enum/enumSet](/doc/reference/validator/schema/enum.md)
 * [file](/doc/reference/validator/schema/file.md)
-* array
-* object
+* [array](/doc/reference/validator/schema/array.md)
+* [object](/doc/reference/validator/schema/object.md)
 
 ### Regras de validação
 
