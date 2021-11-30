@@ -16,8 +16,8 @@
 * [alpha](/doc/reference/validator/rules/alpha.md)
 * [confirmed](/doc/reference/validator/rules/confirmed.md)
 * [distinct](/doc/reference/validator/rules/distinct.md)
-* email
-* exists
+* [email](/doc/reference/validator/rules/email.md)
+* [exists](/doc/reference/validator/rules/exists.md)
 * unique
 * ip
 * maxLength
