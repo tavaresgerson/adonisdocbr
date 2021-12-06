@@ -301,7 +301,111 @@ A seguir está o exemplo de configuração para todos os drivers disponíveis. V
 
 #### SQLite
 ```bash
-MySQL
-PostgreSQL
-Oracle DB
-MSSQL
+npm i sqlite3
+```
+
+```bash
+sqlite: {
+  client: 'sqlite',
+  connection: {
+    filename: Application.tmpPath('db.sqlite3'),
+  },
+  migrations: {
+    naturalSort: true,
+  },
+  useNullAsDefault: true,
+  healthCheck: false,
+  debug: false,
+}
+```
+
+#### MySQL
+```bash
+npm i mysql
+```
+
+```ts
+mysql: {
+  client: 'mysql',
+  connection: {
+    host: Env.get('MYSQL_HOST'),
+    port: Env.get('MYSQL_PORT'),
+    user: Env.get('MYSQL_USER'),
+    password: Env.get('MYSQL_PASSWORD', ''),
+    database: Env.get('MYSQL_DB_NAME'),
+  },
+  migrations: {
+    naturalSort: true,
+  },
+  healthCheck: false,
+  debug: false,
+}
+```
+
+### PostgreSQL
+```bash
+npm i pg
+```
+```ts
+pg: {
+  client: 'pg',
+  connection: {
+    host: Env.get('PG_HOST'),
+    port: Env.get('PG_PORT'),
+    user: Env.get('PG_USER'),
+    password: Env.get('PG_PASSWORD', ''),
+    database: Env.get('PG_DB_NAME'),
+  },
+  migrations: {
+    naturalSort: true,
+  },
+  healthCheck: false,
+  debug: false,
+}
+```
+
+#### Oracle DB
+```bash
+npm i oracledb
+```
+
+```ts
+oracle: {
+  client: 'oracledb',
+  connection: {
+    host: Env.get('ORACLE_HOST'),
+    port: Env.get('ORACLE_PORT'),
+    user: Env.get('ORACLE_USER'),
+    password: Env.get('ORACLE_PASSWORD', ''),
+    database: Env.get('ORACLE_DB_NAME'),
+  },
+  migrations: {
+    naturalSort: true,
+  },
+  healthCheck: false,
+  debug: false,
+}
+```
+
+#### MSSQL
+```bash
+npm i tedious
+```
+
+```ts
+mssql: {
+  client: 'mssql',
+  connection: {
+    user: Env.get('MSSQL_USER'),
+    port: Env.get('MSSQL_PORT'),
+    server: Env.get('MSSQL_SERVER'),
+    password: Env.get('MSSQL_PASSWORD', ''),
+    database: Env.get('MSSQL_DB_NAME'),
+  },
+  migrations: {
+    naturalSort: true,
+  },
+  healthCheck: false,
+  debug: false,
+}
+```
