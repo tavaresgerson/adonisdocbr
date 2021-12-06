@@ -66,7 +66,7 @@ A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdo
 + [Regras personalizadas](/doc/validator/custom-rules.md)
 
 #### Banco de Dados
-+ Introdução
++ [Introdução](/doc/database/introduction.md)
 + Construtor de Consultas
 + Transações
 + Paginação
