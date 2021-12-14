@@ -14,7 +14,7 @@ A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdo
 
 #### [Processo de Versionamento](/doc/release-process.md)
 
-#### Base de Dados
+#### [Base de Dados](/doc/reference/database/index.md)
 
 #### [Validador](/doc/reference/validator/home.md)
 
