@@ -1,0 +1,55 @@
+---
+permalink: contributing
+categories:
+- prologue
+---
+= Contribution Guide
+
+toc::[]
+
+All Open Source projects are maintained and backed by a *vibrant community* of users and collaborators. We encourage you to participate actively in the development and the future of AdonisJs either by contributing to the source code, improving documentation or reporting potential bugs.
+
+== Channels
+
+1. link:https://github.com/adonisjs[Github Repositories, window="_blank"] - Share bugs on the dedicated repository of AdonisJs. Try to help us with the exact issue and requirements to reproduce that issue.
+2. link:https://gitter.im/adonisjs/adonis-framework[Gitter, window="_blank"] - Ask questions or discuss common topics with us here. Feel free to jump in and share your views.
+3. link:https://trello.com/b/yzpqCgdl/adonis-for-humans[Trello, window="_blank"] - The Roadmap of AdonisJs. We try to keep it updated with the plans and features that are about to come into AdonisJs.
+4. link:https://twitter.com/adonisframework[Twitter, window="_blank"] - The official Twitter account to stay up-to-date with the progress we make each day.
+
+== Reporting Bugs
+
+Always try to be descriptive when submitting issues. You should provide enough context and information to reproduce the issue.
+
+1. Share the version of the framework you are on. AdonisJs is a combination of several sub-modules, and you can find the versions of those sub-modules inside your project `package.json` file.
+2. Share a code snippet instead of saying `X` is not working.
+3. It will be great if you can help us with a sample repository with the code to reproduce the issue.
+
+== Coding Style
+
+JavaScript has a handful of linters to keep your coding style consistent. We make use of link:http://standardjs.com[JavaScript Standard Style, window="_blank"] which is a non-configurable module making it easier to stick to a consistent code style.
+
+Each module of AdonisJs installs the *Standard Style Linter* as a development dependency. So before submitting your PR make sure to lint your code.
+
+[source, bash]
+----
+npm run lint
+----
+
+== Sharing PR's & Git Flow
+
+We make use of https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow[Git Flow] to work on new features and manage releases.
+
+Below are the rules we follow every day.
+
+[pretty-list]
+1. When you start working, think of a feature or problem you are trying to fix.
+2. Fork the repository.
+3. Create a new feature branch from *develop branch*.
+4. Work on it until you feel comfortable to create a pull request.
+5. End this feature and push to your forked repository
+6. Create a pull request of your feature to AdonisJs repository *develop branch*.
+7. If all is good, we will merge the changes and thank you for your contribution.
+
+== Commitizen
+
+We make use of link:https://commitizen.github.io/cz-cli[Commitizen, window="_blank"] to follow naming conventions for commit messages.

@@ -1,0 +1,416 @@
+---
+permalink: routing
+categories:
+- getting-started
+---
+= Routing
+
+toc::[]
+
+HTTP routes open the gateway for outside world to interact with your application using URLs. AdonisJs router maps URL's to actions and will invoke them once the end-user calls a certain URL.
+
+All routes are defined inside `app/Http/routes.js` file which at the time of starting the HTTP Server gets autoloaded. Let's start with a basic example
+
+NOTE: All examples in this document makes use of `Closures` as route actions, whereas it is recommended to create *Controllers* and bind them next to your routes. This way you will keep your routes file clean and your route actions testable.
+
+video::w7LD7E53w3w[youtube, width=100%, height=480]
+
+== Basic Example
+.app/Http/routes.js
+[source, javascript]
+----
+const Route = use('Route')
+
+Route.get('/', function * (request, response) {
+  response.send('This is the home page')
+})
+----
+
+Above we defined a route for the *root URL(/)* and attached a closure to it. Here are a couple of things to notice about the closure.
+
+[pretty-list]
+1. The closure is an ES2015 generator which means you can make use of the `yield` keyword to perform async operations. Check out this link:https://strongloop.com/strongblog/write-your-own-co-using-es2015-generators/[post, window="_blank"] by Strongloop on generators.
+2. AdonisJs uses the terms `request` and `response` in place of `req` and `res`.
+
+==== middleware(...middleware)
+Define middleware to a single route
+
+.app/Http/routes.js
+[source, javascript]
+----
+Route.get('/authenticated', function * (request, response) {
+  response.send('This route is authenticated')
+}).middleware('auth')
+----
+
+Or add multiple middlewares
+
+.app/Http/routes.js
+[source, javascript]
+----
+Route.get('/secured', function * (request, response) {
+  response.send('This route is authenticated')
+}).middleware(['auth', 'custom'])
+----
+
+== HTTP Verbs
+HTTP verbs also known as HTTP methods defines the type of request. A very classic example of HTTP verbs is using a form where we define the `method` as POST since we want to submit the forms securely to the web server.
+
+HTTP verbs are not limited to `GET` and `POST` only, there are a handful of other commonly used verbs all supported by AdonisJs.
+
+[options="header"]
+|====
+| Verb | Route method
+| GET | Route.get
+| POST | Route.post
+| PUT | Route.put
+| PATCH | Route.patch
+| DELETE | Route.delete
+|====
+
+For different HTTP verbs/methods, you can make use of the `route` method which gives the freedom of defining any HTTP verb.
+
+==== route(url, verbs, action)
+[source, javascript]
+----
+const Route = use('Route')
+
+Route.route('/', 'COPY', function * (request, response) {
+})
+
+// MULTIPLE VERBS
+
+Route.route('/', ['COPY', 'MOVE'], function * (request, response) {
+})
+----
+
+== Routes For SPA's
+Routing in single page applications (SPA's) is handled by the front-end frameworks and often you are required only to serve a single web page to the browser for all the URLs. AdonisJs has a handy method to achieve this functionality.
+
+==== any(url, action)
+[source, javascript]
+----
+Route.any('*', function * (request, response) {
+  yield response.sendView('home')
+})
+----
+
+`any` method will bind all the HTTP verbs with the defined URL. Whereas `*` wildcard will make sure this route definition handles every URL.
+
+Finally, you can serve an HTML `view` with the startup code for your frontend application.
+
+== Route Parameters
+Route parameters are dynamic segments of a URL which mean you can define URL's and accept dynamic data as part of the URL itself. Consider this example:
+
+[source, javascript]
+----
+Route.get('users/:id', function * (request, response) {
+  const id = request.param('id')
+  response.send(`Profile for user with id ${id}`)
+})
+----
+
+In the above route definition `:id` is the dynamic segment. URL's like `/user/1`, or `/user/20` will be valid, and you can grab the defined id inside the route action using the `param` method.
+
+You can also keep route parameters optional depending upon the nature of your application.
+
+[source, javascript]
+----
+Route.get('make/:drink?', function * (request, response) {
+  const drink = request.param('drink', 'coffee')
+  response.send(`Order for ${drink} has been placed`)
+})
+----
+
+`?` makes a parameter optional which means both URL's `/make` or `/make/shake` are valid.
+
+You may also want to have a parameter that can have every character you want (including `/`). This is generaly use to simulate a storage with URL like `/~/media/xyz.pdf`. If it is the case you can use the `*` parameter and get whatever string you want.
+
+[source, javascript]
+----
+Route.get('/~/*', function * (request, response) {
+  const media = request.param(0)
+  response.send(`You want to download the ${media} file`)
+})
+----
+
+[NOTE]
+====
+You are still able to use query parameter with an `*` parameter.
+[source, javascript]
+----
+// url: `/~/media/xyz.pdf?download`
+Route.get('/~/*', function * (request, response) {
+  const media = request.param(0)
+
+  if (request.input('download') !== null) {
+    // ...
+  }
+
+  response.send(`You want to download the ${media} file`)
+})
+----
+====
+
+
+== Content Negotiation Via Routes
+link:https://en.wikipedia.org/wiki/Content_negotiation[Content negotiation, window="_blank"] is a way of finding the best output type for a given request. Ideally, HTTP header *Accept* is used to negotiate the content, but some modern apps make the output more explicit by defining the output extension within the URL. For example:
+
+A URL `/users.json` will return the JSON output, whereas `/users.html` will render a view.
+
+AdonisJs routes give you the option to define the formats next to your routes.
+
+==== formats(types, [strict=false])
+[source, javascript]
+----
+Route
+  .get('users', function * (request, response) {
+    const format = request.format() <1>
+  })
+  .formats(['json', 'html'])
+----
+
+<1> URL `/users.json` will have the format of `json` and `/users.html` will have the format of `html`. Also `/users` will work and this time format will be *undefined*, if you want to restrict this behavior make sure to set the `strict` option to true when defining formats.
+
+== Route Renderer
+Every application has a requirement of creating some *dumb HTML views*. The reason we call them dumb, because these views do not require any dynamic data or logical processing. For example:
+
+1. An about page.
+2. Contact page to display company contact information.
+
+Let's take the classical example of rendering an about page.
+
+.Not ideal
+[source, javascript]
+----
+Route.get('about', function * (request, response) {
+  yield response.sendView('about')
+})
+----
+
+Above we have registered a route for `/about` URL and inside the closure, we render a view using the `sendView` method. Ideally, there is nothing bad about it, but once the number of routes increase, you will end up writing these one liners quite often.
+
+AdonisJs routing layer eliminates this behavior by introducing the `render` which is called together with the `on` method.
+
+.Ideal
+[source, javascript]
+----
+Route.on('about').render('about')
+----
+
+This is a small feature, but it will save you from typing few more characters and is more explicit about rendering a view.
+
+TIP: *BONUS*: Views rendered via the `render` method has access to the link:/request[request] object.
+
+== Route Groups
+Grouping of routes is required when you want a bunch of routes to share the same attributes without defining them over and over again. For example: Prefixing all routes the current API version `(api/v1)`.
+
+==== group(uniqueName, callback)
+[source, javascript]
+----
+Route.group('version1', function () {
+  Route.get('users', function * (request, response) {
+    // ...
+  })
+}).prefix('api/v1')
+----
+
+All routes inside the above group get prefixed with `/api/v1` which means `/api/v1/users` will invoke the route action defined next to the above route definition.
+
+Route groups are not only limited to prefixing, but also you can define other properties too.
+
+==== middleware(...middleware)
+Define middleware to all the routes inside the group
+
+[source, javascript]
+----
+Route.group('authenticated', function () {
+  // ...
+}).middleware('auth')
+----
+
+==== domain(subdomain)
+Define a subdomain for a group of routes.
+
+[source, javascript]
+----
+Route.group('my-group', function () {
+  Route.get('posts', function * (request, response) {
+    // ...
+  })
+}).domain('blog.mydomain.dev')
+----
+
+Routes defined under a subdomain will be invoked when the URL belongs to a subdomain. For example: `blog.mydomain.dev/posts` will invoke the action for the above route.
+
+==== formats(formats, [strict=false])
+You can also define `formats` to a group of routes. See xref:_formats_types_strict_false[formats]
+
+== Named Routes
+Routes are defined inside `app/Http/routes.js` file, but they are used everywhere. For example:
+
+1. Inside a view, to create the navigation bar.
+2. Inside Controllers, to redirect to a different URL, etc.
+
+As you application will grow, new requirements will lead to changing routes quite often. Now changing them inside the routes file is pretty straight forward but finding their references inside all the views and controllers is not something you are going to enjoy.
+
+It is better to give unique names to your commonly referenced routes and use their name as a reference instead of the URL.
+
+==== as(name)
+[source, javascript]
+----
+Route
+  .get('users/:id', 'UserController.show')
+  .as('profile')
+----
+
+
+Now you can reference the name inside your views as using the linkTo helper.
+
+[source, twig]
+----
+{{ linkTo('profile', 'View Profile', { id: 1 }) }}
+{{ linkTo('profile', 'View Profile', { id: 1 } , '_blank') }}
+----
+
+.output
+[source, html]
+----
+<a href="/users/1"> View Profile </a>
+<a href="/users/1" target="_blank"> View Profile </a>
+----
+
+`linkTo` limits you to an anchor tag, there is a general purpose view filter called `route`, which can be used to resolve a named route inside your views.
+
+[source, twig]
+----
+<form action="{{ 'profile' | route({id: 1}) }}" method="POST"></form>
+----
+
+.output
+[source, html]
+----
+<form action="/user/1" method="POST"></form>
+----
+
+== Resourceful Routes
+Routing layer makes it easier for you to define conventional routes for CRUD based operations. Let's quickly review the syntax of defining resources and their output.
+
+==== resource(name, controller)
+[source, javascript]
+----
+const Route = use('Route')
+Route.resource('users', 'UserController')
+----
+
+.Output
+[options="header"]
+|====
+| Url | Verb | Controller Method | Purpose
+| /users | GET | UserController.index | Show list of all users
+| /users/create | GET | UserController.create | Display a form to create a new user.
+| /users | POST | UserController.store | Save user submitted via form to the database.
+| /users/:id | GET | UserController.show | Display user details using the id
+| /users/:id/edit | GET | UserController.edit | Display the form to edit the user.
+| /users/:id | PUT/PATCH | UserController.update | Update details for a given user with id.
+| /users/:id | DELETE | UserController.destroy | Delete a given user with id.
+|====
+
+Here is a couple of things to notice.
+
+1. You always have to register a controller with route resource.
+2. AdonisJs will automatically bind the methods for each route, and you cannot customize them. It is nice to stick with the defaults since others contributing to your code will find it easier to follow.
+
+=== Nested resources
+Resources can also be nested by making use of `dot notation`.
+
+[source, javascript]
+----
+Route.resource('posts.comments', 'CommentsController')
+----
+
+=== Filtering resources
+`resource` will create a total of seven routes. Depending upon the nature of your application you may or may not need all the registered routes. AdonisJs makes it so easier to filter the routes.
+
+==== except(...actions)
+`except` will remove routes for the given actions.
+[source, javascript]
+----
+Route
+  .resource('users', 'UserController')
+  .except('create', 'edit')
+----
+
+==== only(...actions)
+`only` is the opposite of xref:_except_actions[except].
+
+[source, javascript]
+----
+Route
+  .resource('users', 'UserController')
+  .only('index', 'store', 'show', 'update', 'delete')
+----
+
+=== Extending Resources
+You can also extend the existing resources by adding custom routes and controller actions to them. In the practical world, there are a handful of use cases for extending resources. For example:
+
+1. `authors` can be extended to have a route for *Popular* authors.
+2. `posts` can be extended to have multiple routes for submitting/fetching comments. You can also extract and make *comments* a different resource, but sometimes it is more logical to extend the parent resource.
+
+==== addCollection(route, [verbs=GET], [callback])
+The `addCollection` method will add a new route to the existing resource. By default it binds the route using *GET* verb and controller action name is same as the route name.
+
+[source, javascript]
+----
+Route
+  .resource('authors', 'AuthorsController')
+  .addCollection('popular')
+----
+
+.Output
+[options="header"]
+|====
+| Url | Verb | Controller Method | Purpose
+| /authors/popular | GET | AuthorsController.popular | List popular authors
+|====
+
+Of course, you can define a different HTTP verb and assign a different controller method.
+
+[source, javascript]
+----
+Route
+  .resource('authors', 'AuthorsController')
+  .addCollection('popular', ['GET', 'HEAD'], (collection) => {
+    collection.bindAction('popularAuthors')
+  })
+----
+
+==== addMember(route, [verbs=GET], [callback])
+The `addMember` method has the same signature as xref:_addcollection_route_verbs_get_callback[addCollection], but instead it adds the member for a specific item inside the resource.
+
+[source, javascript]
+----
+Route
+  .resource('posts', 'PostsController')
+  .addMember('comments')
+----
+
+.Output
+[options="header"]
+|====
+| Url | Verb | Controller Method | Purpose
+| /posts/:id/comments | GET | PostsController.comments | List comments for a given post
+|====
+
+As you can notice, `comments` route has been added to a single post. Also you can define xref:_middleware_middleware[middleware] and xref:_as_name[name] on the extended routes.
+
+[source, javascript]
+----
+Route
+  .resource('posts', 'PostsController')
+  .addMember('comments', ['GET'], (member) => {
+    member.middleware('auth').as('postsMember')
+  })
+----
+
+TIP: Middleware can also be added to the entire resource. For Example: `Route.resource().middleware()`
