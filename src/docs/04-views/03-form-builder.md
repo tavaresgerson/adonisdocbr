@@ -1,4 +1,4 @@
-# Formulário de construção
+# Construção de Formulário 
 
 Formulários de construção facilitam a criação de formulários rápidos e mantidos. Imagine uma situação em que você define a ação do formulário para uma rota registrada e quando a definição da rota é alterada, você precisa voltar para as visualizações garantindo que sua ação do formulário aponte para o URL correto.
 

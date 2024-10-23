@@ -45,7 +45,7 @@ A relação `hasOne` define uma relação um para um entre dois modelos usando u
 | Usuário | user_id |
 | Vendedor | seller_id |
 
-![Imagem](http://res.cloudinary.com/adonisjs/image/upload/v1472841270/has-one_zfrkve.jpg)
+![Imagem](/assets/has-one_zfrkve.jpg)
 
 Para configurar a relação mostrada no gráfico acima, você precisa defini-la dentro do seu modelo de usuário.
 
@@ -103,7 +103,7 @@ Você vai se acostumar a usar o `hasMany`, pois é a relação mais comum que vo
 
 A relação 'hasMany' permite que existam vários registros relacionados para uma determinada linha, cada um contendo a chave estrangeira.
 
-![Imagem](http://res.cloudinary.com/adonisjs/image/upload/v1472841272/has-many_p91i9i.jpg)
+![Imagem](/assets/has-many_p91i9i.jpg)
 
 Vamos definir os modelos acima e suas relações no Lucid.
 
@@ -145,7 +145,7 @@ Existem situações onde cada lado do relacionamento pode ter muitas linhas rela
 
 Tomando o exemplo de Estudante e Curso, onde ambos os modelos podem ter muitas linhas relacionadas no banco de dados. Em outras palavras, é uma relação *muitos para muitos*.
 
-![imagem](http://res.cloudinary.com/adonisjs/image/upload/v1472841273/belongsto-many_ymawpb.jpg)
+![imagem](/assets/belongsto-many_ymawpb.jpg)
 
 Olhando para o gráfico acima, você notará que há uma terceira tabela chamada "course_student". Como cada modelo em ambos os lados tem muitos relacionamentos, eles não podem conter a chave estrangeira.
 
@@ -198,7 +198,7 @@ class Student extends Lucid {
 ### Relacionamento HasManyThrough
 Outra relação importante suportada pelo Lucid é o `hasManyThrough`. Onde um modelo específico depende de outro modelo através de um terceiro modelo
 
-![Imagem](http://res.cloudinary.com/adonisjs/image/upload/v1472841274/has-many-through_vux5jm.jpg)
+![Imagem](/assets/has-many-through_vux5jm.jpg)
 
 Tomando o exemplo de buscar *posts* para um determinado  *país* não é possível porque não há relação direta entre países e postagens. Mas com a ajuda do modelo de usuário, podemos configurar uma relação indireta entre países e postagens e isso é chamado de relação `hasManyThrough`.
 

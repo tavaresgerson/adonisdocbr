@@ -1,4 +1,4 @@
-# Pedido
+# Requisição
 
 AdonisJs torna super fácil acessar informações de requisição HTTP. Todos os métodos do controlador e as fechaduras da rota recebem uma instância da classe `Request`, que é uma camada açucarada sobre a [classe de requisição HTTP](https://nodejs.org/dist/latest-v6.x/docs/api/http.html#http_class_http_server) do Node.js.
 
@@ -123,7 +123,7 @@ request.ajax()
 ```
 
 #### pjax
-O Pjax é um pedido híbrido de Ajax. Se você estiver no mundo do Ruby on Rails, é bastante semelhante ao Turbolinks.
+O Pjax é um requisição híbrido de Ajax. Se você estiver no mundo do Ruby on Rails, é bastante semelhante ao Turbolinks.
 
 #### hostname
 Retorna o nome do host da solicitação.

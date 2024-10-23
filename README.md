@@ -2,122 +2,88 @@
 
 A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdocbr/tree/v4.1).
 
+> Aguardando revisão.
+
 <p>
   <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg" width="25" align="left" />
-  Documentação completa em português brasileiro da versão 5 do AdonisJs
+  Documentação completa em português brasileiro da antiga versão 3.2 do AdonisJs, considere atualizar seu projeto.
 </p>
 
+## Prólogo 
 
-#### [Introdução](/doc/introduction.md)
+* [AdonisJs em resumo](src/docs/01-prologue/01-adonisjs-at-a-glance.md)
+* [Guia de contribuição](src/docs/01-prologue/02-contribution-guide.md)
+* [Notas de lançamento](src/docs/01-prologue/03-release-notes.md)
 
-#### [Instalação](/doc/installation.md)
+## Conceitos principais
 
-#### [Processo de Versionamento](/doc/release-process.md)
+* [Padrão MVC](src/docs/02-core-concepts/01-mvc-pattern.md)
+* [IoC Container & Provedores de Serviço](src/docs/02-core-concepts/02-ioc-container.md)
+* [Ciclo de Vida da Aplicação](src/docs/02-core-concepts/04-application-lifecycle.md)
 
-#### [Base de Dados](/doc/reference/database/index.md)
+## Começando
 
-#### [Validador](/doc/reference/validator/home.md)
+* [Instalação](src/docs/03-getting-started/01-installation.md)
+* [Estrutura de diretórios](src/docs/03-getting-started/02-directory-structure.md)
+* [Configuração](src/docs/03-getting-started/03-configuration.md)
+* [Variáveis de Ambiente](src/docs/03-getting-started/04-env.md)
+* [Roteamento](src/docs/03-getting-started/05-routing.md)
+* [Requisição](src/docs/03-getting-started/06-request.md)
+* [Resposta](src/docs/03-getting-started/07-response.md)
+* [Middleware](src/docs/03-getting-started/08-middleware.md)
+* [Controladores](src/docs/03-getting-started/09-controllers.md)
+* [Arquivos](src/docs/03-getting-started/10-files.md)
 
-#### Views & Templates
+## Views
 
-#### Internacionalização
+* [Views](src/docs/04-views/01-views.md)
+* [Modelos Nunjucks](src/docs/04-views/02-templating.md)
+* [Construção de Formulário](src/docs/04-views/03-form-builder.md)
 
-#### Fundamentos
-+ [Aplicativo](/doc/fundamentals/application.md)
-+ [Arquivo AdonisRc](/doc/fundamentals/adonis-rc-file.md)
-+ [Config](/doc/fundamentals/config.md)
-+ [Variáveis de Ambiente](/doc/fundamentals/environment-variables.md)
-+ [Build com TypeScript](/doc/fundamentals/typescript-build-process.md)
-+ [Publicação](/doc/fundamentals/deployment.md)
+## Banco de dados
 
-#### Http
-+ [Contexto](/doc/http/context.md)
-+ [Roteamento](/doc/http/routing.md)
-+ [Controladores](/doc/http/controllers.md)
-+ [Requisição](/doc/http/request.md)
-+ [Resposta](/doc/http/response.md)
-+ [Upload de Arquivos](/doc/http/file-uploads.md)
-+ [Upload direto de arquivos](/doc/http/direct-file-uploads.md)
-+ [Middlewares](/doc/http/middleware.md)
-+ [Cookies](/doc/http/cookies.md)
-+ [Sessão](/doc/http/session.md)
-+ [Arquivos estáticos](/doc/http/static-assets.md)
-+ [Gerenciando arquivos estáticos](/doc/http/assets-manager.md)
-+ [Manipulando exceções](/doc/http/exception-handling.md)
+* [Configuração do Banco de Dados](src/docs/05-database/01-database-setup.md)
+* [Construtor de Consultas](src/docs/05-database/02-query-builder.md)
+* [Migrações](src/docs/05-database/03-migrations.md)
+* [Sementes e Fábricas](src/docs/05-database/04-seeds-and-factories.md)
 
-#### Views e Templates
-+ [Introdução](/doc/views/introduction.md)
-+ [Renderização](/doc/views/rendering.md)
-+ [Sintaxe do Template](/doc/views/templating-syntax.md)
-+ [Fluxo de Dados](/doc/views/data-flow.md)
-+ [Condicionais](/doc/views/conditionals.md)
-+ [Loops](/doc/views/loops.md)
-+ [Parciais](/doc/views/partials.md)
-+ [Layouts](/doc/views/layouts.md)
-+ [Componentes](/doc/views/components.md)
-+ [Mutações](/doc/views/mutations.md)
-+ [Debug](/doc/views/debugging.md)
+## Lucid
 
-#### Validador
-+ [Introdução](/doc/validator/introduction.md)
-+ [Customizando mensagens](/doc/validator/custom-messages.md)
-+ [Reportando erros](/doc/validator/error-reporters.md)
-+ [Cache de esquemas](/doc/validator/schema-caching.md)
-+ [Regras personalizadas](/doc/validator/custom-rules.md)
+* [Lucid](src/docs/06-lucid/01-lucid.md)
+* [Relações](src/docs/06-lucid/02-relationships.md)
+* [Hooks de Banco de Dados](src/docs/06-lucid/03-hooks.md)
+* [Getters & Setters](src/docs/06-lucid/04-getters-setters.md)
 
-#### Banco de Dados
-+ [Introdução](/doc/database/introduction.md)
-+ Construtor de Consultas
-+ Transações
-+ Paginação
-+ Esquemas de migração
-+ Seeders
-+ Debug
+## Ferramentas de Desenvolvimento Web
 
-#### ORM
-+ Introdução
-+ Operações CRUD
-+ Hooks
-+ Escopos de Consulta
-+ Serializando Modelos
-+ Relacionamentos
-+ Fábrica
+* [Interativo Shell a.k.a. Ace](src/docs/07-common-web-tools/01-interactive-shell.md)
+* [Autenticação](src/docs/07-common-web-tools/02-authentication.md)
+* [Cookies](src/docs/07-common-web-tools/03-cookies.md)
+* [E-mail](src/docs/07-common-web-tools/04-mail.md)
+* [Tratamento de erros e exceções](src/docs/07-common-web-tools/07-exceptions.md)
+* [Eventos](src/docs/07-common-web-tools/08-events.md)
+* [Auxiliares](src/docs/07-common-web-tools/09-helpers.md)
+* [Sessões](src/docs/07-common-web-tools/10-sessions.md)
+* [Validação](src/docs/07-common-web-tools/11-validator.md)
+* [Redis](src/docs/07-common-web-tools/12-redis.md)
+* [Internacionalização](src/docs/07-common-web-tools/13-internationalization.md)
+* [Autenticação Social via Ally](src/docs/07-common-web-tools/14-social-auth.md)
+* [WebSocket](src/docs/07-common-web-tools/15-ws.md)
 
-#### Autenticação
-+ Introdução
-+ Guarda Web
-+ API Tokens
-+ Basic Auth
-+ Middleware Auth
-+ Autenticação Social
-+ Provedor Customizado
+## Tutorial
 
-#### Segurança
-+ Segurança Web
-+ Encriptação
-+ Hashing
-+ URLs Assinadas
+* [Introdução](src/docs/08-tutorial/01-getting-started.md)
+* [Rotas e Controladores](src/docs/08-tutorial/02-routes-and-controllers.md)
+* [Modelos de Banco de Dados](src/docs/08-tutorial/03-database-models.md)
+* [Lista de Postagens do Blog](src/docs/08-tutorial/04-list-blog-posts.md)
+* [Criando Artigos de Blog](src/docs/08-tutorial/05-creating-blog-posts.md)
+* [Finalizando](src/docs/08-tutorial/06-finishing-up.md)
 
-#### Avançado
-+ Autorização
-+ Ace
-+ AdonisJS Repl
-+ Logger
-+ Eventos
-+ Auxiliares
-+ Email
-+ Redis
-+ Verificando Status
+## Segurança
 
-
-## Cookbooks
-
-+ Usando o Socket.io
-+ Escrevendo Testes
-
-### Deploy
-+ Heroku
-+ Aplicativos no Digital Ocean
-
-### Validador
-+ Validando formulários no servidor
+* [Introdução](src/docs/09-security/01-security-intro.md)
+* [CORS](src/docs/09-security/02-cors.md)
+* [Proteção CSRF](src/docs/09-security/03-csrf-protection.md)
+* [Criptografia & Hashing](src/docs/09-security/04-encryption-and-hashing.md)
+* [Shield Middleware](src/docs/09-security/05-shield.md)
+* [Sanitização de dados](src/docs/09-security/06-data-sanitization.md)

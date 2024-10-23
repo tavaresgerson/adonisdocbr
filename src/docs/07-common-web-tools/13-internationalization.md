@@ -114,7 +114,7 @@ Antl
 
 1. O método "for" permitirá que você altere o idioma para uma operação única.
 
-![image](http://res.cloudinary.com/adonisjs/image/upload/v1475061511/Adonis-Antl_hlpwxd.gif)
+![image](/assets/Adonis-Antl_hlpwxd.gif)
 
 ### Formatando Mensagens
 Usando o driver padrão "file", podemos definir os locais dentro do diretório "resources/locales". Cada idioma tem seu próprio subdiretório.
@@ -492,11 +492,11 @@ Da mesma forma, você pode definir um grupo ao usar o driver de banco de dados.
 
 | id | localização | grupo | item | texto |
 |----|--------|-------|------|------|
-| 1 | pt | Mensagens | cart.total | Seu carrinho total é {total, número, moeda} |
+| 1 | pt | Mensagens | cart.total | Seu carrinho total é `{total, número, moeda}` |
 | 2 | fallback | Mensagens | Cumprimento | Estou disponível para todos os idiomas |
 
 ## Detectando o Idioma do Usuário
-Até agora, vimos as maneiras de formatar mensagens e valores usando o provedor Antl. Todos os valores serão formatados para o *locale padrão* definido no arquivo config/app.js.
+Até agora, vimos as maneiras de formatar mensagens e valores usando o provedor Antl. Todos os valores serão formatados para o *locale padrão* definido no arquivo `config/app.js`.
 
 ```js
 // config/locale.js

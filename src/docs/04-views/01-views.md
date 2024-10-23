@@ -39,15 +39,16 @@ class UserController {
 ```
 
 ```twig
-// .View
+{# View #}
 <h2> Hello {{ user }} </h2>
 ```
 
 ## Renderizando Visualizações
 As views podem ser renderizadas usando o objeto 'response' ou com a ajuda do provedor 'View'.
 
-> NOTE:
-> É recomendado usar o método `response.sendView` sempre que você tiver acesso ao objeto de resposta.
+::: info NOTE
+É recomendado usar o método `response.sendView` sempre que você tiver acesso ao objeto de resposta.
+:::
 
 #### make(templatePath, dados)
 
@@ -68,10 +69,10 @@ Os modelos são referenciados sem a extensão *.njk* para as funções 'make' ou
 
 | Caminho | Referencia como |
 |------|---------------|
-| resources/views/home.njk | response.sendView('home') |
-| resources/views/user/list.njk | response.sendView('user.list') |
+| `resources/views/home.njk` | `response.sendView('home')` |
+| `resources/views/user/list.njk` | `response.sendView('user.list')` |
 
-## Templação
+## Templates
 A templating refere-se à ligação dinâmica de dados e ao processamento lógico dos dados dentro das suas vistas. Você é obrigado a seguir uma sintaxe especial para fazer tudo isso funcionar.
 
 ### Variáveis
@@ -114,7 +115,7 @@ Filtros transformam dados embutidos e são muito úteis quando você deseja tran
 {# output = John #}
 ```
 
-Aqui 'capitalize' é um filtro para capitalizar o valor de uma determinada string. Aqui está a lista de todos os links disponíveis: templating:_filters[filters].
+Aqui 'capitalize' é um filtro para capitalizar o valor de uma determinada string. Aqui está a lista de todos os links disponíveis: [filters](#filtros).
 
 ## Herança
 Herança significa estender um modelo básico e substituir suas partes individuais. Pense nisso como herdar uma Classe JavaScript.
@@ -122,7 +123,7 @@ Herança significa estender um modelo básico e substituir suas partes individua
 Vamos pegar o exemplo de uma visão principal e uma visão secundária.
 
 ```twig
-// .resources/views/master.njk
+{# .resources/views/master.njk #}
 
 <html>
   <body>
@@ -181,7 +182,7 @@ Saída:
 
 Aqui está a lista de regras para estender modelos
 
-1. You must create a block using the *{% block <name> %}* tag.
+1. Você deve criar um bloco usando a tag `{% block <name> %}`.
 2. Cada bloco deve ter um nome único.
 3. Após estender uma visão, você não pode colocar nada fora das tags de bloco.
 
@@ -348,8 +349,7 @@ CACHE_VIEWS=true
 Você precisa baixar pacotes para o seu editor favorito para ter destaque de sintaxe apropriado para suas visualizações *nunjucks*.
 Você também pode usar o *twitch* highlighter se não conseguir encontrar suporte para Nunjucks no seu editor preferido.
 
-[Atom](https://atom.io/packages/language-nunjucks)
-[Sublime Text (via Twig)](https://packagecontrol.io/packages/PHP-Twig)
-[WebStorm (via Twig)](https://plugins.jetbrains.com/plugin/7303?).
-Aqui está uma lista de tecnologias que você pode usar para desenvolver aplicativos web modernos e responsivos, incluindo frameworks front-end e back-end, linguagens de programação, bibliotecas, ferramentas, tecnologias de banco de dados, servidores, dispositivos móveis, computação em nuvem e muito mais!
-[Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ronnidc.nunjucks).
+* [Atom](https://atom.io/packages/language-nunjucks)
+* [Sublime Text (via Twig)](https://packagecontrol.io/packages/PHP-Twig)
+* [WebStorm (via Twig)](https://plugins.jetbrains.com/plugin/7303?).
+* [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ronnidc.nunjucks).

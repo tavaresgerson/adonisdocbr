@@ -1,0 +1,1 @@
+import{_ as a,c as e,o,a4 as i}from"./chunks/framework.nQaBHiNx.js";const g=JSON.parse('{"title":"Adonisjs 3.2","description":"","frontmatter":{},"headers":[],"relativePath":"index.md","filePath":"index.md"}'),t={name:"index.md"},l=i("",19),s=[l];function r(d,n,c,h,m,u){return o(),e("div",null,s)}const b=a(t,[["render",r]]);export{g as __pageData,b as default};

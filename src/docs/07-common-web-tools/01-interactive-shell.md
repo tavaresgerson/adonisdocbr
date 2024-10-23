@@ -88,7 +88,7 @@ Vamos executar este comando para buscar uma citação inspiradora e exibi-la no 
 ./ace quote
 ```
 
-![Imagem](http://res.cloudinary.com/adonisjs/image/upload/v1473771404/Screen_Shot_2016-09-13_at_6.25.37_PM_hvd2hv.png)
+![Imagem](/assets/Screen_Shot_2016-09-13_at_6.25.37_PM_hvd2hv.png)
 
 ## Assinatura de Comando
 A assinatura do comando define o nome do comando com argumentos ou opções necessários/opcionais.

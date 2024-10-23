@@ -7,7 +7,7 @@ AdonisJs é uma combinação de vários pacotes npm chamados *Provedores de serv
 A atualização v3.2 é uma atualização menor com algumas correções de bugs e atualizações incrementais da API. Todos os recursos/métodos do *v3.1* são totalmente suportados e compatíveis com o *v3.2*. Abaixo está o log de alterações para módulos individuais.
 
 #### adonis-framework (3.0.4 - 3.0.9)
-Não há alterações notáveis para este repositório e todos os recursos existentes do 3.1 continuarão a funcionar. Verifique o [log de alterações do git](https://github.com/adonisjs/adonis-framework/blob/develop/ changelog.md)
+Não há alterações notáveis para este repositório e todos os recursos existentes do 3.1 continuarão a funcionar. Verifique o [log de alterações do git](https://github.com/adonisjs/adonis-framework/blob/develop/)
 
 #### adonis-lucid (3.0.8 - 3.0.13)
 Abaixo está a lista das alterações notáveis:
@@ -20,7 +20,7 @@ yield User.first()
 yield User.last()
 ```
 
-Confira o [changelog completo](https://github.com/adonisjs/adonis-lucid/blob/develop/ CHANGELOG.md) do repositório.
+Confira o [changelog completo](https://github.com/adonisjs/adonis-lucid/blob/develop/) do repositório.
 
 #### adonis-auth(1.0.5)
 Abaixo está a lista das alterações notáveis:
@@ -37,8 +37,9 @@ yield request.auth.generate(user, {
 const payload = yield request.auth.getPayload()
 ```
 
-Confira o [changelog completo](https://github.com/adonisjs/adonis-auth/blob/develop/ CHANGELOG.md)
+Confira o [changelog completo](https://github.com/adonisjs/adonis-auth/blob/develop/)
 
-#### adonis-commands(2.1.5)
+### adonis-commands(2.1.5)
 Não há alterações notáveis para este repositório e todos os recursos existentes do 3.1 continuarão a funcionar. Verifique o arquivo README.md na raiz deste repositório para obter mais detalhes sobre as alterações feitas nesta versão.
+
 Confira o [log de alterações do git](https://github.com/adonisjs/adonis-commands/blob/develop/changelog.md).

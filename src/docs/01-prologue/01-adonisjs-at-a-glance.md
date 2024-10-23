@@ -1,4 +1,4 @@
-# Visão Geral
+# AdonisJs em Resumo
 
 AdonisJs é um [Node.js](https://nodejs.org) MVC framework para escrever aplicativos web com menos código. Nós nos concentramos em escrever código elegante e ser um dos frameworks mais estáveis da comunidade Node. Ao contrário de outros frameworks, AdonisJs vem com uma série de módulos testados em batalha para tornar sua experiência de desenvolvimento agradável.
 
@@ -44,9 +44,9 @@ Aprender um novo framework pode ser avassalador no começo. Como o AdonisJS vem 
 
 Para começar sua jornada de desenvolvimento, recomendamos que você comece lendo os seguintes tópicos:
 
-[Roteamento]
-[Pedido]
-[Resposta]
-[Vistas] e
+* [Roteamento](/docs/03-getting-started/05-routing.md)
+* [Requisição](/docs/03-getting-started/06-request.md)
+* [Resposta](/docs/03-getting-started/07-response.md)
+* [Views](/docs/04-views/01-views.md)
 
-Também certifique-se de seguir o guia [Instalação](/instalacao) para configurar os essenciais.
+Também certifique-se de seguir o guia [Instalação](/docs/03-getting-started/01-installation.md) para configurar os essenciais.
