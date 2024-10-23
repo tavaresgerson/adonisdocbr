@@ -1,13 +1,11 @@
 # AdonisJs 3.2
 
-A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdocbr/tree/v4.1).
+* A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdocbr/tree/v4.1).
 
-> Aguardando revisão.
+> Esta documentação está aguardando revisão.
 
-<p>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg" width="25" align="left" />
-  Documentação completa em português brasileiro da antiga versão 3.2 do AdonisJs, considere atualizar seu projeto.
-</p>
+Documentação completa em português brasileiro da antiga versão 3.2 (considere atualizar seu projeto) - acesse a versão em [website](v3.adonisjs.tavares.in)
+
 
 ## Prólogo 
 
