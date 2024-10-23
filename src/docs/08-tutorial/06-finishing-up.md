@@ -1,42 +1,36 @@
----
-permalink: adonis-blog-part6
-categories:
-- tutorial
----
-= Finishing Up
+# Finishing Up
 
 Let's finish up this tutorial by making final changes to the entire flow. Intentionally it was a simple tutorial to make you feel comfortable with the framework.
 
-== Showing Individual Post
+## Showing Individual Post
 We have got a view listing all the blog posts. But there is no way to view a single blog post. So quickly open the routes file and register a route for same.
 
-.app/Http/routes.js
-[source, javascript]
-----
-Route.get('posts/:id', 'PostsController.show')
-----
+```js
+// app/Http/routes.js
 
-The `id` is a dynamic segment to pass the *post id* in the URL and access it from the controller. You can read more about link:routing#_route_parameters[Route parameters] in the docs.
+Route.get('posts/:id', 'PostsController.show')
+```
+
+The `id` is a dynamic segment to pass the *post id* in the URL and access it from the controller. You can read more about [Route parameters](/getting-started/routing) in the docs.
 
 Next, we need to create the view for showing a post.
 
-[source, bash]
-----
+```bash
 ./ace make:view posts/show
-----
+```
 
-.Output
-[source]
-----
+Output:
+
+```
 create: resources/views/posts/show.njk
-----
+```
 
 
 Paste the below code snippet to the showPost view.
 
-.resources/views/posts/show.njk
-[source, twig]
-----
+```twig
+{# resources/views/posts/show.njk #}
+
 {% extends 'master' %}
 
 {% block content %}
@@ -49,13 +43,13 @@ Paste the below code snippet to the showPost view.
     <p>{{ post.content }}</p>
   </div>
 {% endblock %}
-----
+```
 
 Finally, we need the `PostsController.show` method to fetch the post from the database and send to it view.
 
-.app/Http/Controllers/PostsController.js
-[source, javascript]
-----
+```js
+// app/Http/Controllers/PostsController.js
+
 'use strict'
 
 class PostsController {
@@ -66,26 +60,26 @@ class PostsController {
   }
 
 }
-----
+```
 
 This time, we make use of the `find` method to fetch the post for a given id, and finally, we send the json representation of the post to the view. We are not done yet. Let's open the *home.njk* view and add the link to the individual post.
 
-.resources/views/home.njk
-[source, twig]
-----
+```twig
+{# resources/views/home.njk #}
+
 <h2><a href="posts/{{ post.id }}"> {{ post.title }} </a></h2>
-----
+```
 
 Now refresh the browser and click on the individual posts to view a particular post.
 
-image:http://res.cloudinary.com/adonisjs/image/upload/v1472841295/individual-post_anaymc.png[]
+![image](http://res.cloudinary.com/adonisjs/image/upload/v1472841295/individual-post_anaymc.png)
 
-== Link To Add A New Post
+## Link To Add A New Post
 So far we have been visiting `post/create` route manually to create a new post. Let's add a link on the home page. Paste the below code snippet just before the posts-wrapper div.
 
-.resources/views/home.njk
-[source, html]
-----
+```html
+<!-- resources/views/home.njk -->
+
 <div>
   <p>
     Below is the list of all the awesome posts created by all of us. You can also
@@ -94,18 +88,18 @@ So far we have been visiting `post/create` route manually to create a new post. 
   <a href="posts/create" class="btn btn-success btn-block"> Create New Post </a>
   <hr>
 </div>
-----
+```
 
 Now, we have a big shiny button linked to the post create route.
 
-image:http://res.cloudinary.com/adonisjs/image/upload/v1472841278/add-new-post_d1pm4c.png[]
+![image](http://res.cloudinary.com/adonisjs/image/upload/v1472841278/add-new-post_d1pm4c.png)
 
-== Ordering Posts
+## Ordering Posts
 Another thing we should fix is to list the posts in *desc order*, so that the recent post always shows on the top.
 
-.app/Http/Controllers/PostsController.js
-[source, javascript]
-----
+```js
+// app/Http/Controllers/PostsController.js
+
 'use strict'
 
 class PostsController {
@@ -116,11 +110,11 @@ class PostsController {
   }
 
 }
-----
+```
 
 Now refresh the page and you will find the most recent post on the top instead of bottom.
 
-== Summary
+## Summary
 In the series of these tutorials, we learned a lot about the framework and tools offered by it. This is just the beginning, check out the documentation and cookbooks to explore new and expressive ways of writing maintainable code.
 
-Make sure to follow us on link:https://twitter.com/adonisframework[Twitter, window="_blank"] and star the project on link:https://github.com/adonisjs/adonis-framework[Github, window="_blank"].
+Make sure to follow us on [Twitter](https://twitter.com/adonisframework) and star the project on [Github](https://github.com/adonisjs/adonis-framework).

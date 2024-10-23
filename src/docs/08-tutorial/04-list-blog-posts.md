@@ -1,18 +1,13 @@
----
-permalink: adonis-blog-part4
-categories:
-- tutorial
----
-= Listing Blog Posts
+# Listing Blog Posts
 
-In this tutorial, we will continue the topic of link:adonis-blog-part3[Database Models] by using them inside *PostController*. Make sure your server is up and running on http://localhost:3333.
+In this tutorial, we will continue the topic of [Database Models](/tutorial/03-database-models) by using them inside *PostController*. Make sure your server is up and running on http://localhost:3333.
 
-== Fetching Blog Posts
+## Fetching Blog Posts
 Quickly open the *PostController* file and paste the following snippet into it.
 
-.app/Http/Controllers/PostController.js
-[source, javascript]
-----
+```js
+// app/Http/Controllers/PostController.js
+
 'use strict'
 
 const Post = use('App/Model/Post') <1>
@@ -27,19 +22,19 @@ class PostController {
 }
 
 module.exports = PostController
-----
+```
 
 We have made few changes to the existing controller file.
 
-<1> Here we import the previously created *Post* model.
-<2> Next we call the `all` method on the model to fetch all the posts.
-<3> Finally, we pass the posts to our home view.
+1. Here we import the previously created *Post* model.
+2. Next we call the `all` method on the model to fetch all the posts.
+3. Finally, we pass the posts to our home view.
 
 Replace everything inside your view with the below code snippet.
 
-.resources/views/home.njk
-[source, twig]
-----
+```twig
+{# resources/views/home.njk #}
+
 {% extends 'master' %}
 
 {% block content %}
@@ -52,42 +47,41 @@ Replace everything inside your view with the below code snippet.
     {% endfor %}
   </div>
 {% endblock %}
-----
+```
 
-<1> We make use of the templating engine `for` loop to iterate over the list of posts.
-<2> Here we display the post title and content.
+1. We make use of the templating engine `for` loop to iterate over the list of posts.
+2. Here we display the post title and content.
 
 If you refresh the page, you will see nothing on the screen since there are *no posts* inside our database. Before we add them, let's show a message on the web page if there are no posts.
 
 Just before the {% endfor %} tag add the below snippet.
 
-.resources/views/home.njk
-[source, twig]
-----
+```twig
+{# resources/views/home.njk #}
+
 {% else %}
   <h2> No posts found </h2>
-----
+```
 
 So it will be
 
-[source, twig]
-----
+```twig
 {% for post in posts %}
     .....
 {% else %}
   <h2> No posts found </h2>
 {% endfor %}
-----
+```
 
-== Seeds And Factories
+## Seeds And Factories
 
 Before we implement the logic of adding new posts, we need some dummy posts. You can create new posts by running SQL queries inside your database interface, but that will defeat the whole purpose of rapid development and re-usability.
 
-There are plenty of use cases for link:seeds-and-factories#_about_factories[Database Factories] and link:seeds-and-factories#_about_seeds[Seeds], but for now, we will use them to create some dummy blog posts.
+There are plenty of use cases for [Database Factories](/database/seeds-and-factories) and [Seeds](/database/seeds-and-factories), but for now, we will use them to create some dummy blog posts.
 
-.database/factory.js
-[source, javascript]
-----
+```js
+// database/factory.js
+
 'use strict'
 
 const Factory = use('Factory')
@@ -98,15 +92,15 @@ Factory.blueprint('App/Model/Post', (fake) => {
     content: fake.paragraph()
   }
 })
-----
+```
 
-Factories let you define blueprints for your models. Each blueprint takes the model name as the first parameter and a callback as the second parameter. Callback get's access to the link:http://chancejs.com/[chancejs, window="_blank"] instance, which is used to generate random data.
+Factories let you define blueprints for your models. Each blueprint takes the model name as the first parameter and a callback as the second parameter. Callback get's access to the [chancejs](http://chancejs.com/) instance, which is used to generate random data.
 
 Next, we need to make use of the defined blueprint inside the `database/seeds/Database.js` file.
 
-.database/seeds/Database.js
-[source, javascript]
-----
+```js
+// database/seeds/Database.js
+
 'use strict'
 
 const Factory = use('Factory')
@@ -120,43 +114,43 @@ class DatabaseSeeder {
 }
 
 module.exports = DatabaseSeeder
-----
+```
 
-<1> Here we make use of the blueprint and create five posts using the `create` method.
+1. Here we make use of the blueprint and create five posts using the `create` method.
 
 Finally, we need to seed this file by running an ace command.
 
-[source, bash]
-----
+```bash
 ./ace db:seed
-----
+```
 
-.Output
-[source]
-----
+Output:
+
+```
 ✔ seeded database successfully
-----
+```
 
-== Final Enhancements
+## Final Enhancements
 Now refresh the browser and you will see all the newly created posts. At last, we are going to make some enhancements to the posts list.
 
-.resources/views/home.njk
-[source, twig]
-----
+```twig
+{# resources/views/home.njk #}
+
 {{ post.content | truncate(150) }} <1>
-----
+```
 
-<1> Here we use the `truncate` filter on the post content by limit the characters count to 150.
+1. Here we use the `truncate` filter on the post content by limit the characters count to 150.
 
-.public/style.css
-[source, css]
-----
+```css
+/* public/style.css */
+
 .post {
   margin-top: 30px;
   padding-bottom: 15px;
   border-bottom: 1px solid #e8e8e8;
 }
-----
+```
 
-=== Posts List Preview
-image:http://res.cloudinary.com/adonisjs/image/upload/v1472841292/posts-list_wkpogd.png[]
+### Posts List Preview
+
+![image](http://res.cloudinary.com/adonisjs/image/upload/v1472841292/posts-list_wkpogd.png)
