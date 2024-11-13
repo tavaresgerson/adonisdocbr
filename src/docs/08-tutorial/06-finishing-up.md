@@ -72,7 +72,7 @@ Desta vez, utilizamos o método `find` para buscar a publicação para um determ
 
 Agora atualize o navegador e clique em cada postagem para visualizar uma postagem específica.
 
-![imagem](/assets/individual-post_anaymc.png)
+![imagem](/docs/assets/individual-post_anaymc.png)
 
 ## Link para adicionar um novo post
 Até agora, visitamos manualmente a rota 'post/create' para criar um novo post. Vamos adicionar um link na página inicial. Cole o trecho de código abaixo logo antes da divisão posts-wrapper.
@@ -92,7 +92,7 @@ Até agora, visitamos manualmente a rota 'post/create' para criar um novo post. 
 
 Agora temos um grande botão brilhante que está vinculado à rota de criação do post.
 
-![Imagem](/assets/add-new-post_d1pm4c.png)
+![Imagem](/docs/assets/add-new-post_d1pm4c.png)
 
 ## Ordenando os posts
 Outra coisa que devemos consertar é listar os posts em ordem *desc*, para que o post mais recente sempre apareça no topo.

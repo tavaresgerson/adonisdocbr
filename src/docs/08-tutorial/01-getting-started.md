@@ -152,7 +152,7 @@ Agora atualize o navegador para ver a página inicial.
 
 ### Página inicial em pré-visualização
 
-![Imagem](/assets/home-page_uab9il.png)
+![Imagem](/docs/assets/home-page_uab9il.png)
 
 Vamos também completar as outras visualizações
 

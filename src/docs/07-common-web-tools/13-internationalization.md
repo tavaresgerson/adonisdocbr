@@ -114,7 +114,7 @@ Antl
 
 1. O método "for" permitirá que você altere o idioma para uma operação única.
 
-![image](/assets/Adonis-Antl_hlpwxd.gif)
+![image](/docs/assets/Adonis-Antl_hlpwxd.gif)
 
 ### Formatando Mensagens
 Usando o driver padrão "file", podemos definir os locais dentro do diretório "resources/locales". Cada idioma tem seu próprio subdiretório.

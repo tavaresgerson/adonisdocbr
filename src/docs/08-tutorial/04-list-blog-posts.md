@@ -153,4 +153,4 @@ Agora atualize o navegador e você verá todos os novos artigos criados. Por fim
 
 ### Lista de postagens em destaque
 
-![imagem](/assets/posts-list_wkpogd.png)
+![imagem](/docs/assets/posts-list_wkpogd.png)

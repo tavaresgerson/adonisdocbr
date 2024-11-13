@@ -88,7 +88,7 @@ Vamos executar este comando para buscar uma citação inspiradora e exibi-la no 
 ./ace quote
 ```
 
-![Imagem](/assets/Screen_Shot_2016-09-13_at_6.25.37_PM_hvd2hv.png)
+![Imagem](/docs/assets/Screen_Shot_2016-09-13_at_6.25.37_PM_hvd2hv.png)
 
 ## Assinatura de Comando
 A assinatura do comando define o nome do comando com argumentos ou opções necessários/opcionais.

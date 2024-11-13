@@ -2,7 +2,7 @@
 
 O padrão MVC separa a aplicação em três componentes lógicos principais conhecidos como *Modelo*, *Visualização* e *Controlador*. O Adonis suporta todos eles e torna simples a sua união. Além disso, o roteador do Adonis também desempenha um papel importante no tratamento das requisições HTTP e na passagem para o controlador.
 
-![Imagem](/assets/MVC-Flow-Chart_ccz2zb.jpg)
+![Imagem](/docs/assets/MVC-Flow-Chart_ccz2zb.jpg)
 
 ## Modelo
 O modelo é a camada de dados responsável por buscar dados do banco de dados que no caso de AdonisJS é SQL. Para tornar o processo de busca de dados simples e seguro, o AdonisJS vem com um ORM lindo chamado link:lucid [Lucid].

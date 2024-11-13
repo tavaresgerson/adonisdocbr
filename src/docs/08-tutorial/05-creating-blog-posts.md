@@ -88,7 +88,7 @@ Quanta coisa para cobrir aqui. O construtor de formulários fornece alguns méto
 
 Visite [http://localhost:3333/posts/create](http://localhost:3333/posts/create) e você verá um formulário bonito para criar os posts.
 
-![Imagem](/assets/create-posts_xgghpo.png)
+![Imagem](/docs/assets/create-posts_xgghpo.png)
 
 ## Validação de entradas de formulário
 Validar entrada do usuário é tão importante quanto você nunca pode confiar nos dados fornecidos para você. O AdonisJS tem um validador bonito para tornar esta tarefa muito mais fácil para você.
