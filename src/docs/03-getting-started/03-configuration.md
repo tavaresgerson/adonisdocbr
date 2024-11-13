@@ -3,17 +3,17 @@
 A primeira etapa para remover o código de massa é encontrar um local dedicado para armazenar a configuração da aplicação. O AdonisJs utiliza o diretório `config` para isso. Todo novo projeto criado usando o `adonis-cli` vem com uma série de arquivos de configuração pré-configurados. Além disso, você pode criar seus próprios arquivos de configuração da aplicação dentro do mesmo diretório.
 
 ## Config provedor
-Para manter as coisas simples e secas, o Adonis tem um provedor de configuração integrado que carrega automaticamente todos os arquivos de configuração (terminando com .js) na hora de inicializar o servidor, o que significa que você pode acessar valores de todos os arquivos no diretório "config".
+Para manter tudo simples e DRY, o AdonisJs tem um *Config Provider* embutido que carrega automaticamente todos os arquivos de configuração (terminando com .js) no momento da inicialização do servidor, o que significa que você tem acesso aos valores de todos os arquivos no diretório `config`.
 
-Não se esqueça de não exigir manualmente arquivos de configuração dentro do seu aplicativo e em vez disso aproveite o provedor de configuração.
+Certifique-se de não exigir manualmente os arquivos de configuração dentro do seu aplicativo e, em vez disso, aproveite o Config provider.
 
-Não entendi a sua pergunta. Você poderia esclarecer melhor o que deseja saber?
+Errado:
 ```js
 const app = require('./config/app.js')
 console.log(app.appKey)
 ```
 
-Direita:
+Correto:
 ```js
 const Config = use('Config')
 console.log(Config.get('app.appKey'))
@@ -23,7 +23,7 @@ console.log(Config.get('app.appKey'))
 Ler/escrever valores é uma tarefa bastante simples com a ajuda do provedor *Config*. Além disso, você pode usar a notação de ponto para obter/definir valores.
 
 #### get(chave, [valorPadrão])
-O método 'get' é usado para ler valores. Também ele aceita um parâmetro opcional 'defaultValue', que é retornado quando o valor real for indefinido ou nulo.
+O método `get` é usado para ler valores. Ele também aceita um `defaultValue` opcional, que é retornado quando o valor real é `undefined` ou `null`.
 
 ```js
 const Config = use('Config')

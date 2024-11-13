@@ -87,13 +87,13 @@ NOTE: Se o comando 'new' falhar no meio, certifique-se de que você está dentro
 Você pode fornecer várias opções para imitar o processo de scaffold.
 
 
-| Bandeira | Valor | Descrição |
-|------|-------|--------------|
-| --skip-install | Boolean | Para pular a instalação das dependências do npm ou yarn |
-| --branch | String | Adonisjs utiliza o branch master ao criar um novo projeto. Para alterações de ponta de linha, você pode criar um projeto do branch 'develop'. |
-| -- blueprint | String | O caminho incremental para o repositório do GitHub é o Blueprints. Por padrão, o AdonisJs utiliza o `adonisjs/adonis-app`. |
-| --yarn | Boolean | Faça uso do Yarn para instalar módulos |
-| --npm | Boolean | Faça uso do npm para instalar módulos |
+| Flag              | Valor   | Descrição                                               |
+|-------------------|---------|---------------------------------------------------------|
+| `--skip-install`  | Boolean | Para pular a instalação das dependências do npm ou yarn |
+| `--branch`        | String  | Adonisjs utiliza o branch master ao criar um novo projeto. Para alterações de ponta de linha, você pode criar um projeto do branch 'develop'. |
+| `--blueprint`     | String  | O caminho incremental para o repositório do GitHub é o Blueprints. Por padrão, o AdonisJs utiliza o `adonisjs/adonis-app`. |
+| `--yarn`          | Boolean | Faça uso do Yarn para instalar módulos |
+| `--npm`           | Boolean | Faça uso do npm para instalar módulos |
 
 ## Erro Obtendo Proxy
 Versões mais antigas do Node.js exigem a bandeira `--harmony_proxies` para adicionar suporte para *ES2015 Proxies*. Se você estiver usando o *Node.js < 6.0*, certifique-se de fazer as seguintes alterações.
@@ -132,7 +132,7 @@ Por padrão, o AdonisJs utilizará a porta 3333 para iniciar o servidor, que é 
 
 Aqui está uma possível tradução:
 
-![Página de Boas-vindas](http://i.imgbox.com/xAYvmnBq.png)
+![Página de Boas-vindas](/docs/assets/xAYvmnBq_o.png)
 
 ## Instalação manual
 Se por algum motivo você não estiver usando o [CLI do Adonis](#instalando-o-cli-do-adonis), você precisa realizar os seguintes passos para clonar o repositório do GitHub e instalar manualmente as dependências.

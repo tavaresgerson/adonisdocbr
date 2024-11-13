@@ -8,7 +8,7 @@ O padrão MVC separa a aplicação em três componentes lógicos principais conh
 O modelo é a camada de dados responsável por buscar dados do banco de dados que no caso de AdonisJS é SQL. Para tornar o processo de busca de dados simples e seguro, o AdonisJS vem com um ORM lindo chamado link:lucid [Lucid].
 
 ```js
-// Defing A Model
+// Definindo um modelo
 'use strict'
 
 const Lucid = use('Lucid')
@@ -19,14 +19,14 @@ class User extends Lucid {
 ```
 
 ```js
-// Using Model
+// Usando o modelo
 
 const User = use('App/Model/User')
 
-// All Users
+// Todos os usuários
 const users = yield User.all()
 
-// Using where clause
+// Usando a cláusula where
 const activeUsers = yield User.query().where('status', 'active').fetch()
 ```
 
@@ -36,7 +36,7 @@ Controller, como o nome sugere, controla o fluxo de uma requisição HTTP. Ele u
 Controladores também contêm lógica de negócios para sua aplicação, enquanto você muitas vezes encontra pessoas abstraindo a lógica de domínio em serviços reutilizáveis, mas ainda assim esses serviços são consumidos diretamente pelos controladores, e você nunca acessa eles dentro dos modelos ou visualizações.
 
 ```js
-// Example Of Controller
+// Exemplo de controlador
 
 const User = use('App/Model/User') <1>
 
@@ -57,7 +57,7 @@ class UsersController {
 A visualização é a parte final do fluxo, ela utiliza os dados dinâmicos e renderiza HTML. Para manter suas visualizações declarativas, o AdonisJS oferece uma sintaxe de vinculação de dados agradável para consumir dados dinâmicos e utilizá-los. Você pode aprender mais sobre a sintaxe de vinculação de dados aqui: templating[link].
 
 ```twig
-// Example Of View
+// Exemplo de visualização
 
 <ul>
   {% for user in users %}

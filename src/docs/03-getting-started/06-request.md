@@ -2,8 +2,9 @@
 
 AdonisJs torna super fácil acessar informações de requisição HTTP. Todos os métodos do controlador e as fechaduras da rota recebem uma instância da classe `Request`, que é uma camada açucarada sobre a [classe de requisição HTTP](https://nodejs.org/dist/latest-v6.x/docs/api/http.html#http_class_http_server) do Node.js.
 
-> DICA:
-> Você pode acessar o objeto *raw request* do Node.js como `request.request`.
+::: tip DICA
+Você pode acessar o objeto *raw request* do Node.js como `request.request`.
+:::
 
 ## Exemplo básico
 Vamos pegar o caso clássico de ler o corpo da requisição HTTP para uma determinada requisição.
@@ -14,7 +15,7 @@ const Route = use('Route')
 Route.get('posts', function * (request, response) {
   const body = request.all()
 
-  // cherry picking fields
+  // seleção de campos
   const body = request.only('title', 'description', 'categories')
 })
 ```
@@ -149,7 +150,7 @@ request.url()
 request.originalUrl()
 ```
 
-#### método
+#### method
 
 ```js
 request.method()
@@ -158,21 +159,21 @@ request.method()
 #### param(chave, [valorPadrão])
 Retorna o parâmetro de rota para uma chave específica. Saiba mais sobre parâmetros de rota link: roteamento[_route_parameters][aqui].
 
-#### parâmetros
+#### params
 Retorna todos os parâmetros como um objeto.
 
 ```js
 request.params()
 ```
 
-#### formato
+#### format
 Retorna o formato atual para uma solicitação específica. Para fazer isso funcionar, você precisa definir link:routing:#_content_negotiation_via_routes[route formats].
 
 ```js
 request.format()
 ```
 
-#### match(...chave)
+#### match(...keys)
 Retorna um valor booleano indicando se a URL da requisição atual corresponde a algum dos padrões fornecidos.
 
 ```js
@@ -230,7 +231,7 @@ Muitas aplicações têm requisitos de salvar múltiplas entradas no banco de da
 </form>
 ```
 
-Acima, definimos o 'email []' e 'senha []' como uma matriz para que possamos enviar vários usuários em um único pedido e a entrada no servidor parecerá muito semelhante ao formato abaixo.
+Acima, definimos o 'email[]' e 'senha []' como uma matriz para que possamos enviar vários usuários em um único pedido e a entrada no servidor parecerá muito semelhante ao formato abaixo.
 
 Received:
 ```js
@@ -267,8 +268,9 @@ const savedUsers = yield User.createMany(users)
 ## Negociação de Conteúdo
 Negociação de Conteúdo é uma forma de encontrar o melhor tipo de resposta para um determinado pedido. O usuário final utiliza cabeçalhos HTTP para definir o tipo de resposta que ele espera do servidor.
 
-> DICA:
-> Você também pode usar rotas para definir tipos de retorno explícitos. Saiba mais sobre link:routing#_content_negotiation_via_routes[negociação de conteúdo via rotas].
+::: tip DICA
+Você também pode usar rotas para definir tipos de retorno explícitos. Saiba mais sobre link:routing#_content_negotiation_via_routes[negociação de conteúdo via rotas].
+:::
 
 #### é (chave1 chave2 ...)
 Retorna se uma requisição é de um dos tipos dados. Esse método irá analisar o cabeçalho Content-type da requisição.

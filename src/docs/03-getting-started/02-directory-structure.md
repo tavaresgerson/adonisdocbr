@@ -40,37 +40,38 @@ Além disso, o diretório 'app' possui subdiretórios para diferentes propósito
 
 | Diretório | Propósito |
 |-----------|---------|
-| Comandos | Este diretório é dedicado para armazenar comandos do Ace. Idealmente, um único arquivo representa um comando individual. |
-| Http | Como o nome sugere, 'Http' diretório é dedicado a entidades relacionadas a um servidor HTTP, como: *Controladores*, *Middleware*, e *Rotas*. |
-| Ouvintes | O diretório de ouvintes facilita a organização dos seus ouvintes de eventos, já que as funções anônimas em linha não são mantidas nem testáveis. Sinta-se à vontade para criar ouvintes para o *Pub/Sub Redis* dentro deste diretório. |
-| Modelo | O diretório modelo tem seus modelos Lucid. Também há um diretório *Hooks* dentro deste diretório para armazenar ganchos de modelo. |
+| Comandos  | Este diretório é dedicado para armazenar comandos do Ace. Idealmente, um único arquivo representa um comando individual. |
+| Http      | Como o nome sugere, 'Http' diretório é dedicado a entidades relacionadas a um servidor HTTP, como: *Controladores*, *Middleware*, e *Rotas*. |
+| Ouvintes  | O diretório de ouvintes facilita a organização dos seus ouvintes de eventos, já que as funções anônimas em linha não são mantidas nem testáveis. Sinta-se à vontade para criar ouvintes para o *Pub/Sub Redis* dentro deste diretório. |
+| Modelo    | O diretório modelo tem seus modelos Lucid. Também há um diretório *Hooks* dentro deste diretório para armazenar ganchos de modelo. |
 
 ## O Diretório bootstrap
 
 O diretório 'bootstrap' está lá para juntar os pedaços do seu aplicativo para comandos HTTP e servidores. Existem alguns arquivos que você precisa trabalhar dentro deste diretório.
 
-| Arquivo | Propósito |
-|------|---------|
-| app.js | Este arquivo é usado para registrar provedores de serviço/comandos e configurar aliases para namespaces comumente usados. |
-| events.js | Você pode usar este arquivo para registrar ouvintes para eventos específicos. Como o diretório "Ouvintes", você também pode usar este arquivo para registrar ouvintes para *Pub/Sub Redis*. |
-| extend.js | Este arquivo é usado para estender o provedor de serviços central/terceiros. |
+| Arquivo     | Propósito |
+|-------------|---------|
+| `app.js`    | Este arquivo é usado para registrar provedores de serviço/comandos e configurar aliases para namespaces comumente usados. |
+| `events.js` | Você pode usar este arquivo para registrar ouvintes para eventos específicos. Como o diretório "Ouvintes", você também pode usar este arquivo para registrar ouvintes para *Pub/Sub Redis*. |
+| `extend.js` | Este arquivo é usado para estender o provedor de serviços central/terceiros. |
 
-> DICA
-> Para manter futuras atualizações fáceis e simples, é recomendado que você não modifique o arquivo `bootstrap/http.js` e `bootstrap/kernel.js`.
+::: tip DICA
+Para manter futuras atualizações fáceis e simples, é recomendado que você não modifique o arquivo `bootstrap/http.js` e `bootstrap/kernel.js`.
+:::
 
 ## O Diretório config
-A pasta "config" é usada para definir as configurações do seu aplicativo. O próprio AdonisJS vem com vários arquivos de configuração, mas você também pode criar seus próprios arquivos de configuração.
+O diretório `config` é usado para definir a configuração para seu aplicativo. O próprio AdonisJs vem com um monte de arquivos de configuração, mas você também é livre para criar seus arquivos de configuração.
 
-Em ordem, você lê as configurações de configuração de qualquer arquivo que você deve usar o provedor `Config` e não requer arquivos manualmente em seu código.
+Em ordem, você lê as definições de configuração de qualquer arquivo que você deve usar do provedor `Config` e não requer arquivos manualmente em seu código.
 
-Palavras-chave: desenvolvimento, programação, software, web, móvel, desktop, nuvem, banco de dados, servidor, cliente, front-end, back-end, fullstack, stack, framework, biblioteca, linguagem, ferramenta, tecnologia, código, markdown
-
+Errado:
 ```js
 const app = require('./config/app.js')
 console.log(app.appKey)
 ```
 
-Certo
+Certo:
+
 ```js
 const Config = use('Config')
 console.log(Config.get('app.appKey'))
@@ -81,9 +82,10 @@ Todos os arquivos relacionados ao banco de dados são armazenados dentro do dire
 
 
 | Diretório/Arquivo | Propósito |
-| migrations | Este diretório tem todas as migrações que você criou usando o comando "make:migration". Saiba mais sobre migrações [aqui]. |
-| sementes | As sementes são usadas para preencher um banco de dados com dados falsos. Eles são úteis no estabelecimento do estado inicial de sua aplicação. |
-| factory.js | Fábricas são usadas para gerar dados falsos para modelos de Lucid ou tabelas de banco de dados. Você vai acabar usando fábricas muito quando estiver escrevendo testes. 'factory.js' é o lugar onde você define os planos-padronizados para os dados falsos. |
+|-------------------|-----------|
+| migrations        | Este diretório tem todas as migrações que você criou usando o comando "make:migration". Saiba mais sobre migrações [aqui](/docs/05-database/03-migrations). |
+| seeds             | As sementes são usadas para preencher um banco de dados com dados falsos. Eles são úteis no estabelecimento do estado inicial de sua aplicação. |
+| factory.js        | Fábricas são usadas para gerar dados falsos para modelos de Lucid ou tabelas de banco de dados. Você vai acabar usando fábricas muito quando estiver escrevendo testes. 'factory.js' é o lugar onde você define os planos-padronizados para os dados falsos. |
 
 ## O Diretório providers
 Se você algum dia sentir vontade de escrever seus próprios provedores, este é o lugar para mantê-los. É aconselhável publicar provedores reutilizáveis no npm.
@@ -114,8 +116,8 @@ A pasta "recursos" é usada para armazenar arquivos de apresentação para o seu
 
 
 | Diretório | Propósito |
-|-----------|---------|
-| views | As visualizações do Nunjucks são armazenadas dentro desta pasta. Sinta-se à vontade para criar diretórios adicionais dentro de "visualizações" para criar *parciais* ou *layout*. |
+|-----------|-----------|
+| views     | As visualizações do Nunjucks são armazenadas dentro desta pasta. Sinta-se à vontade para criar diretórios adicionais dentro de "visualizações" para criar *parciais* ou *layout*. |
 
 ## O Diretório `storage`
 Os logs e sessões da aplicação são armazenados dentro do diretório "storage". Pense nisso como um armazenamento temporário para a sua aplicação. Além disso, este diretório é adicionado ao arquivo ".gitignore", de modo que os logs/sessões relacionados à desenvolvimento não sejam cometidos no controle de versão fornecido por provedores como GitHub ou Bitbucket.

@@ -49,7 +49,9 @@ const Env = use('Env')
 Env.set('NODE_ENV', 'production')
 ```
 
-NOTE: Atualizar variáveis de ambiente após uma parte específica do aplicativo ter lido-as não tem efeito. É recomendado substituir as variáveis de ambiente via linha de comando ao iniciar o servidor HTTP. Por exemplo: 'PORT=8000 npm start'.
+::: info NOTA
+Atualizar variáveis de ambiente após uma parte específica do aplicativo ter lido-as não tem efeito. É recomendado substituir as variáveis de ambiente via linha de comando ao iniciar o servidor HTTP. Por exemplo: 'PORT=8000 npm start'.
+:::
 
 ## Localização do Arquivo
 AdonisJs irá carregar automaticamente o arquivo `.env` da raiz do seu projeto. Você pode sobrescrever a localização do arquivo definindo um caminho diferente ao iniciar o servidor.

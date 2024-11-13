@@ -10,7 +10,7 @@ Este documento cobre o conceito e uso do contêiner Inversão de Controle (IoC) 
 Vamos pegar um exemplo simples de vinculação de dependências ao contêiner IoC e depois consumi-los mais tarde. Durante todo esse processo, você será apresentado a muitos novos termos e métodos.
 
 ```js
-// Binding Dependencies
+// Dependências de ligação
 
 const Ioc = require('adonis-fold').Ioc
 const bugsnag = require('bugsnag')
@@ -104,7 +104,7 @@ class BugSnagProvider extends ServiceProvider {
   }
 
   * boot () { <2>
-    // Everything is registered do some hard work
+    // Tudo está registrado, faça um trabalho duro
   }
 
 }
@@ -120,34 +120,34 @@ Abaixo está a lista de eventos disparados pelo contêiner IoC.
 const Ioc = require('adonis-fold').Ioc
 
 Ioc.on('bind:provider', (namespace, isSingleton) => {
-  // binding registered
+// vinculação registrada
 })
 
 Ioc.on('provider:resolved', (namespace, returnValue) => {
-  // binding resolved
+// vinculação resolvida
 })
 
 Ioc.on('module:resolved', (namespace, fromPath, returnValue) => {
-  // resolved autoloaded module
+// módulo autoloaded resolvido
 })
 
 Ioc.on('extend:provider', (key, namespace) => {
-  // a provider has been extended
+// um provedor foi estendido
 })
 
 Ioc.on('bind:autoload', (namespace, directoryPath) => {
-  // defined autoload namespace and directory
+// namespace e diretório de autoload definidos
 })
 
 Ioc.on('bind:alias', (alias, namespace) => {
-  // an alias has been registered
+// um alias foi registrado
 })
 
 Ioc.on('providers:registered', () => {
-  // all providers have been registered
+// todos provedores foram registrados
 })
 
 Ioc.on('providers:booted', () => {
-  // all providers have been booted
+// todos os provedores foram inicializados
 })
 ```

@@ -4,7 +4,7 @@ Rotas HTTP abrem a porta de entrada para o mundo externo interagir com seu aplic
 
 Todas as rotas são definidas dentro do arquivo `app/Http/routes.js`, que é automaticamente carregado quando o servidor HTTP é iniciado. Vamos começar com um exemplo básico
 
-NOTE: Todos os exemplos neste documento utilizam `Encerramentos` como ações de rota, embora seja recomendado criar *Controladores* e vinculá-los às suas rotas. Dessa forma você manterá seu arquivo de rotas limpo e suas ações de rota testáveis.
+NOTE: Todos os exemplos neste documento utilizam `Closures` como ações de rota, embora seja recomendado criar *Controladores* e vinculá-los às suas rotas. Dessa forma você manterá seu arquivo de rotas limpo e suas ações de rota testáveis.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/w7LD7E53w3w?si=oZgxH6ME-hMJqPDA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -23,7 +23,7 @@ Acima definimos uma rota para a URL raiz (/) e anexamos um fechamento a ele. Aqu
 1. O closure é um gerador ES2015, o que significa que você pode usar a palavra-chave yield para realizar operações assíncronas. Veja este [post](https://strongloop.com/strongblog/write-your-own-co-using-es2015-generators/) da Strongloop sobre geradores.
 2. O AdonisJs utiliza os termos "request" e "response" em vez de "req" e "res".
 
-#### Middleware (tecnologia de software que atua como uma camada intermediária entre o sistema operacional e as aplicações, fornecendo serviços comuns a estas últimas, como segurança, gerenciamento de sessões, cache, etc.)
+#### Middleware
 Definir middleware para uma única rota
 
 ```js
@@ -50,13 +50,13 @@ Os verbos HTTP também conhecidos como métodos HTTP definem o tipo de solicita�
 Os verbos HTTP não são limitados apenas aos métodos GET e POST, existem outros métodos comumente usados que também são suportados pelo AdonisJs.
 
 
-| Verbo | Método de rotação |
-|------|--------------|
-| GET | Route.get |
-| POST | Route.post |
-| PUT | Route.put |
-| PATCH | Rota.patch |
-| Excluir | Route.delete |
+| Verbo   | Método |
+|---------|--------------|
+| GET     | Route.get |
+| POST    | Route.post |
+| PUT     | Route.put |
+| PATCH   | Rota.patch |
+| DELETE  | Route.delete |
 
 Para diferentes verbos/métodos HTTP, você pode usar o método 'route', que dá a liberdade de definir qualquer verbo HTTP.
 
@@ -68,7 +68,7 @@ const Route = use('Route')
 Route.route('/', 'COPY', function * (request, response) {
 })
 
-// MULTIPLE VERBS
+// VERBOS MÚLTIPLOS
 
 Route.route('/', ['COPY', 'MOVE'], function * (request, response) {
 })
@@ -121,8 +121,9 @@ Route.get('/~/*', function * (request, response) {
 })
 ```
 
-##### NOTE
+::: info NOTA
 Você ainda pode usar parâmetro de consulta com um parâmetro `*` .
+:::
 
 ```js
 // url: `/~/media/xyz.pdf?download`
@@ -181,8 +182,9 @@ Route.on('about').render('about')
 
 Esta é uma pequena funcionalidade, mas vai te poupar de digitar alguns caracteres a mais e é mais explícito sobre renderizar uma visão.
 
-> DICA
-> *BONUS*: As views renderizadas via o método `render` tem acesso ao objeto [link]/request[requisição].
+::: tip DICA
+*BONUS*: As views renderizadas via o método `render` tem acesso ao objeto [link]/request[requisição].
+:::
 
 ## Grupos de Rotas
 A agrupagem de rotas é necessária quando você deseja um monte de rotas compartilharem os mesmos atributos sem defini-los repetidamente. Por exemplo: prefixando todas as rotas da versão atual da API `(api/v1)`.
@@ -343,7 +345,7 @@ Saída:
 
 | Url | Verbo | Método Controlador | Propósito |
 |-----|------|-------------------|---------|
-| /autores/populares | GET | AuthorsController.popular | Lista de autores populares |
+| /authors/popular | GET | AuthorsController.popular | Lista de autores populares |
 
 Claro, você pode definir um verbo HTTP diferente e atribuir um método de controlador diferente.
 
@@ -368,7 +370,7 @@ Saída:
 
 | Url | Verbo | Método Controlador | Propósito |
 |-----|------|-------------------|---------|
-| /posts/:id/comentários | GET | PostsController.comentários | Listar comentários para uma publicação específica |
+| /posts/:id/comentários | GET | PostsController.comments | Listar comentários para uma publicação específica |
 
 
 Como você pode notar, o `comentários` foi adicionado à rota de um único post. Além disso, você pode definir [middleware](/src/docs/03-getting-started/08-middleware.md) e [nome](#asname) nas rotas estendidas.
@@ -381,5 +383,6 @@ Route
   })
 ```
 
-> DICA:
-> Middleware também pode ser adicionado ao recurso inteiro. Por exemplo: `Route.resource().middleware()`
+::: tip DICA
+Middleware também pode ser adicionado ao recurso inteiro. Por exemplo: `Route.resource().middleware()`
+:::
