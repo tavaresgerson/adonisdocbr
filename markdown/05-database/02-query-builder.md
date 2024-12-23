@@ -1,0 +1,508 @@
+# Query Builder
+
+AdonisJs Query builder gives you a unified syntax to interact with SQL databases using Javascript methods. This guide is a reference to all the available methods on query builder.
+
+Checkout link:database-setup[Database Setup] guide to check the list of *supported databases*, *configuration options* and *debugging queries*.
+
+## Introduction
+Writing SQL queries can be tedious in so many ways, even if you are good with SQL. Let's imagine you write all of your queries for MySQL and after some time your manager asks you to migrate everything to PostgreSQL. Now you will have to re-write/amend your MySQL queries to make sure they work well with PostgreSQL.
+
+Another issue can be of building incremental queries with conditional blocks.
+
+```js
+// Without Query Builder
+
+const sql = 'SELECT * FROM `users`'
+
+if (username) {
+  sql += ' WHERE `username` = ' + username
+}
+```
+
+```js
+// With Query Builder
+
+const query = Database.table('users')
+
+if (username) {
+  query.where('username', username)
+}
+```
+
+## Basic Example
+Let's review a basic example of working with the query builder by chaining different methods.
+
+```js
+const Database = use('Database')
+
+class UserController {
+
+  * index (request, response) {
+    const john = yield Database
+      .table('users')
+      .where('username', 'john')
+      .limit(1)
+
+    response.json(john)
+  }
+
+}
+```
+
+## Selects
+The `select` method will define the fields to be selected for a given *SELECT* query.
+
+```js
+yield Database.select('id', 'username').from('users')
+// or
+yield Database.select('*').from('users')
+```
+
+```sql
+# SQL Output
+
+select `id`, `username` from `users`
+select * from `users`
+```
+
+## Where Clauses
+Query builder offers a bunch of dynamic methods to add *where* clauses. Also, it supports sub-queries by passing a `closure` instead of the actual value.
+
+> NOTE: Passing `undefined` to the where clause will cause an error during SQL compilation. Make sure that dynamic values are not `undefined` before passing them.
+
+#### where(mixed)
+
+```js
+const users = yield Database.from('users').where('id', 1)
+// Or
+const users = yield Database.from('users').where({ id: 1 })
+```
+
+Also, you can define the comparison operator to the where clause.
+
+```js
+const adults = yield Database.from('users').where('age', '>', 18)
+```
+
+You can also add a callback to the *where* clause. Callback outputs a little different SQL query, and will group all where clauses inside a callback.
+
+```js
+// Passing Closure
+
+yield Database.from('users').where(function () {
+  this.where('id', 1)
+})
+```
+
+```sql
+select * from `users` where (`id` = 1)
+```
+
+```js
+// SubQueries
+
+const subquery = Database
+  .from('accounts')
+  .where('account_name', 'somename')
+  .select('account_name')
+
+const users = yield Database
+  .from('users')
+  .whereIn('id', subquery)
+```
+
+```sql
+select * from `users` where `id` in (select `account_name` from `accounts` where `account_name` = 'somename')
+```
+
+#### whereNot(mixed)
+```js
+const kids = yield Database.from('users').whereNot('age', '>', 15)
+// or
+const users = yield Database.from('users').whereNot({username: 'foo'})
+```
+
+#### whereIn(mixed)
+```js
+yield Database.from('users').whereIn('id', [1,2,3])
+```
+
+#### whereNotIn(mixed)
+```js
+yield Database.from('users').whereNotIn('id', [1,2,3])
+```
+
+#### whereNull(mixed)
+```js
+yield Database.from('users').whereNull('deleted_at')
+```
+
+#### whereNotNull(mixed)
+```js
+yield Database.from('users').whereNotNull('created_at')
+```
+
+#### whereExists(mixed)
+```js
+yield Database.from('users').whereExists(function () {
+  this.from('accounts').where('users.id', 'accounts.user_id')
+})
+```
+
+#### whereNotExists(mixed)
+```js
+yield Database.from('users').whereNotExists(function () {
+  this.from('accounts').where('users.id', 'accounts.user_id')
+})
+```
+
+#### whereBetween(mixed)
+```js
+yield Database.table('users').whereBetween('age',[18,32])
+```
+
+#### whereNotBetween(mixed)
+```js
+yield Database.table('users').whereNotBetween('age',[45,60])
+```
+
+#### whereRaw(mixed)
+Convenience helper for `.where(Database.raw(query))`
+
+```js
+yield Database.from('users').whereRaw('id = ?', [20])
+```
+
+## Joins
+
+#### innerJoin(column, mixed)
+
+```js
+yield Database
+  .table('users')
+  .innerJoin('accounts', 'user.id', 'accounts.user_id')
+```
+
+Also, you can pass a closure to construct the join.
+
+```js
+yield Database.table('users').innerJoin('accounts', function () {
+  this
+    .on('users.id', 'accounts.user_id')
+    .orOn('users.id', 'accounts.owner_id')
+})
+```
+
+
+Other Joins Methods:
+
+| Method            |
+|-------------------|
+| leftJoin          |
+| leftOuterJoin     |
+| rightJoin         |
+| rightOuterJoin    |
+| outerJoin         |
+| fullOuterJoin     |
+| crossJoin         |
+| joinRaw           |
+
+## Ordering and Limits
+
+#### distinct(...columns)
+```js
+yield Database.table('users').distinct('age')
+```
+
+#### groupBy(...columns)
+```js
+yield Database.table('users').groupBy('age')
+```
+
+#### groupByRaw(...columns)
+```js
+yield Database.table('users').groupByRaw('age, status')
+```
+
+#### orderBy(column, [direction=asc])
+```js
+yield Database.table('users').orderBy('id', 'desc')
+```
+
+#### orderByRaw(column, [direction=asc])
+```js
+yield Database.table('users').orderByRaw('col NULLS LAST DESC')
+```
+
+#### having(column, operator, value)
+> NOTE: `groupBy()` clause is always required before making use of `having()` method.
+
+```js
+yield Database.table('users').groupBy('age').having('age', '>', 18)
+```
+
+#### offset/limit(value)
+```js
+yield Database.table('users').offset(11).limit(10)
+```
+
+## Inserts
+Insert operation will return the `id` of the inserted row. In the case of bulk inserts, the `id` of the first record will be returned, and it is more of a limitation with MYSQL itself. [LAST_INSERT_ID](http://dev.mysql.com/doc/refman/5.6/en/information-functions.html#function_last-insert-id).
+
+#### insert(values)
+```js
+const userId = yield Database
+  .table('users')
+  .insert({username: 'foo', ...})
+
+// BULK INSERT
+const firstUserId = yield Database
+  .from('users')
+  .insert([{username: 'foo'}, {username: 'bar'}])
+```
+
+#### into(tableName)
+Method `into` is more readable than `table/from` when insert rows to the database.
+
+```js
+const userId = yield Database
+  .insert({username: 'foo', ...})
+  .into('users')
+```
+
+### PostgreSQL Only
+For PostgreSQL, you will have to define the returning column explicitly. All other database clients will ignore this statement.
+
+```js
+const userId = yield Database
+  .insert({ username: 'virk' })
+  .into('users')
+  .returning('id')
+```
+
+## Updates
+All update operations will return the number of affected rows.
+
+```js
+const affectedRows = yield Database
+  .table('users')
+  .where('username', 'tutlage')
+  .update('lastname', 'Virk')
+```
+
+Pass an object for multiple columns.
+
+```js
+const affectedRows = yield Database
+  .table('users')
+  .where('username', 'tutlage')
+  .update({ lastname: 'Virk', firstname: 'Aman' })
+```
+
+## Deletes
+Delete operations will also return the number of affected rows.
+
+#### delete
+Also, you can make use of `del()`, since `delete` is a reserved keyword in Javascript.
+
+```js
+const affectedRows = yield Database
+  .table('users')
+  .where('username', 'tutlage')
+  .delete()
+```
+
+#### truncate
+Truncate will remove all the rows from a database and will set auto increment id back to *0*.
+
+```js
+yield Database.truncate('users')
+```
+
+## Pagination
+Query builder provides a handful of convenient ways to paginate results from the database.
+
+#### forPage(page, [limit=20])
+```js
+const users = yield Database
+  .from('users')
+  .forPage(1, 10)
+```
+
+#### paginate(page, [limit=20])
+```js
+const results = yield Database
+  .from('users')
+  .paginate(2, 10)
+```
+
+> NOTE: The output of the `paginate` method is different from the `forPage` method.
+
+```js
+// Output
+
+{
+  total: 0,
+  currentPage: 2,
+  perPage: 10,
+  lastPage: 0,
+  data: [{...}]
+}
+```
+
+## Database Transactions
+Database transactions are safe operations, which are not reflected in the database until and unless you explicitly commit your changes.
+
+#### beginTransaction
+The `beginTransaction` method will return the transaction object, which can be used to perform any queries.
+
+```js
+const trx = yield Database.beginTransaction()
+yield trx.insert({username: 'virk'}).into('users')
+
+trx.commit() // insert query will take place on commit
+trx.rollback() // will not insert anything
+```
+
+#### transaction
+Also, you can wrap your transactions inside a *callback*. The major difference is, you will not have to call `commit or `rollback` manually if any of your queries throws an error, the transaction will rollback automatically. Otherwise, it will commit.
+
+
+```js
+yield Database.transaction(function * (trx) {
+  yield trx.insert({username: 'virk'}).into('users')
+})
+```
+
+## Chunks
+The `chunk` method will pull records in small chunks and will execute the closure until there are results. This method is helpful when you are planning to select thousands of records.
+
+```js
+yield Database.from('logs').chunk(200, function (logs) {
+  console.log(logs)
+})
+```
+
+## Aggregates
+
+#### count([column])
+```js
+const total = yield Database.from('users').count()
+
+// COUNT A COLUMN
+const total = yield Database.from('users').count('id')
+
+// COUNT COLUMN AS NAME
+const total = yield Database.from('users').count('id as id')
+```
+
+#### countDistinct
+The `countDistinct` is same as count, but adds distinct expression.
+
+```js
+const total = yield Database.from('users').countDistinct('id')
+```
+
+#### min(column)
+
+```js
+yield Database.from('users').min('age')
+yield Database.from('users').min('age as a')
+```
+
+#### max(column)
+
+```js
+yield Database.from('users').max('age')
+yield Database.from('users').max('age as a')
+```
+
+#### sum(column)
+```js
+yield Database.from('cart').sum('total')
+yield Database.from('cart').sum('total as t')
+```
+
+#### sumDistinct(column)
+```js
+yield Database.from('cart').sumDistinct('total')
+yield Database.from('cart').sumDistinct('total as t')
+```
+
+#### avg(column)
+```js
+yield Database.from('users').avg('age')
+yield Database.from('users').avg('age as age')
+```
+
+#### avgDistinct(column)
+```js
+yield Database.from('users').avgDistinct('age')
+yield Database.from('users').avgDistinct('age as age')
+```
+
+#### increment(column, amount)
+Increment the column existing value by *1*.
+
+```js
+yield Database
+  .table('credits')
+  .where('id', 1)
+  .increment('balance', 10)
+```
+
+#### decrement(column, amount)
+Opposite of `increment`.
+
+```js
+yield Database
+  .table('credits')
+  .where('id', 1)
+  .decrement('balance', 10)
+```
+
+## Helpers
+
+#### pluck(column)
+The `pluck` method will return an array of values for the selected column.
+```js
+const usersIds = yield Database.from('users').pluck('id')
+```
+
+#### pluckAll(...columns)
+The `pluckAll` method returns an array of objects.
+
+> NOTE: `pluckAll` has been added as of `adonis-lucid@3.0.12`
+
+```js
+const usersIds = yield Database.from('users').pluckAll('id')
+// or
+const users = yield Database.from('users').pluckAll('id', 'username')
+```
+
+#### first
+The `first` method will add a *limit 1* clause to the query.
+
+```js
+yield Database.from('users').first()
+```
+
+#### clone
+Clone the current query chain for re-usability.
+
+```js
+const query = Database
+  .from('users')
+  .where('username', 'virk')
+  .clone()
+
+// later
+yield query
+```
+
+#### columnInfo([columnName])
+Returns information for a given column.
+
+```js
+const username = yield Database.table('users').columnInfo('username')
+```

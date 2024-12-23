@@ -1,0 +1,52 @@
+# AdonisJs at a Glance
+
+AdonisJs is a [Node.js](https://nodejs.org) MVC framework to write the web application with less code. We focus on writing elegant code and being one of the most stable frameworks in the Node community. Unlike other frameworks, AdonisJs comes with a bunch of battle tested modules to make your development experience enjoyable.
+
+Below is the list of core features:
+
+1. Powerful [ORM](https://en.wikipedia.org/wiki/Object-relational_mapping) to make secure SQL queries.
+2. API & Session based Authentication System.
+3. Easy way to send emails via SMTP or Web Service (Mailgun, Mandrill, etc.)
+4. Validate & Sanitise every user's inputs.
+5. Strong emphasis on security.
+6. Extendable application layout.
+
+## Conventions Over Configuration
+
+This software paradigm is the core of AdonisJs. We attempt to *decrease the time you lose* when making decisions, by following well-known conventions from popular frameworks like Rails, Django or Laravel without losing any flexibility. For example, if you have a User model the corresponding table in the database should be named `users` by default (of course you can change this by overriding a property on your model).
+
+You can learn more about this paradigm on [the Wikipedia page](https://en.wikipedia.org/wiki/Convention_over_configuration).
+
+## Simplest Example
+
+As we said, AdonisJs attempts to remove the big pieces of unmanageable code with *simple, readable API*.
+
+1. AdonisJs removes the unnecessary callbacks from your code and introduces link:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators[ES2015 Generators, window="_blank"].
+2. It organizes everything into different directories so that you can quickly know where your files are.
+3. It does not add anything to the globals except the `use` and `make` function that you will learn about soon.
+
+If we told you that within six lines of code you can fetch all users from the database and send them back as `JSON` response would you believe us?
+
+```js
+const Route = use('Route')
+const User = use('App/Model/User')
+
+Route.get('/', function * (request, response) {
+  const users = yield User.all()
+  response.json(users)
+})
+```
+
+Hopefully, this quick overview has intrigued you and don't worry if you do not fully understand the code above -- the Getting Started chapter is for you!
+
+## Where To Start
+Learning a new framework can be overwhelming at first. Since AdonisJs ships with a bunch of pre-configured modules/addons, you will always feel right at home without spending time searching for the best modules.
+
+To start your development journey, we recommend you begin by reading the following topics:
+
+* [Routing](/routing)
+* [Request](/request)
+* [Response](/response)
+* [Views](views) and [Controllers](/controllers)
+
+Also make sure to follow the [Installation](/installation) guide to setup the essentials.

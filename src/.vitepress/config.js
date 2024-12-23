@@ -34,6 +34,12 @@ export default {
         socialLinks: [
             { icon: 'github', link: 'https://github.com/adonisjs/core' },
         ],
+        editLink: {
+          pattern: ({ filePath }) => {
+            return `https://github.com/tavaresgerson/adonisdocbr/edit/v3/src/docs/${filePath}`
+          },
+          text: 'Corrigir isso no GitHub'
+        },
         search: {
             provider: 'local'
         },

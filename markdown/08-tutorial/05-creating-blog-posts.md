@@ -1,0 +1,185 @@
+# Creating Blog Posts
+
+In the last [tutorial](/markdown/08-tutorial/04-list-blog-posts.md) we displayed the list of blog posts by fetching them from the database. Now let's move one step ahead and add the functionality of creating posts.
+
+This time, we are going to explore a lot of exciting features of AdonisJs including Form Builder and expressive [Validator](/markdown/07-common-web-tools/11-validator.md).
+
+## Creating Routes and Views
+Quickly register a couple of new routes inside the routes file.
+
+```js
+// app/Http/routes.js
+Route.get('posts/create', 'PostsController.create')
+Route.post('posts', 'PostsController.store')
+```
+
+We registered two routes. One is to show the form to create the post, and the other one is to handle the *POST* data of the submitted form.
+
+Let's create the `create` and `store` methods on the existing PostsController.
+
+```js
+// app/Http/Controllers/PostsController.js
+'use strict'
+
+class PostsController {
+
+  * create (request, response) {
+    yield response.sendView('posts.create')
+  }
+
+  * store (request, response) {
+    // ...
+  }
+
+}
+
+module.exports = PostsController
+```
+
+Finally, we need to create the view using the ace command.
+
+```bash
+./ace make:view posts/create
+```
+
+```bash
+# Output
+create: resources/views/posts/create.njk
+```
+
+## Form Builder
+We will make use of [Form Builder](/markdown/04-views/03-form-builder.md) to set up the form for creating a new post.
+
+```twig
+<!-- resources/views/posts/create.njk -->
+{% extends 'master' %}
+
+{% block content %}
+  {{ form.open({action: 'PostsController.store'}) }}
+
+    {{ csrfField }}
+
+    <fieldset class="form-group">
+      {{ form.label('Post Title') }}
+      {{ form.text('title', null, { class: 'form-control' }) }}
+    </fieldset>
+
+    <fieldset class="form-group">
+      {{ form.label('Description') }}
+      {{ form.textarea('content', null, { class: 'form-control' }) }}
+    </fieldset>
+
+    {{ form.submit('Publish', 'publish', { class: 'btn btn-primary btn-block' }) }}
+
+  {{ form.close() }}
+{% endblock %}
+```
+
+Quite a lot to cover here. Form builder provides some convenient methods to create HTML forms.
+
+1. The `form.open` creates the form tag. Here we make use of *action* property to define the controller method for handling the POST request. Form action and the method will be filled automatically for you.
+
+2. All of the forms are protected by [CSRF protection](/markdown/09-security/03-csrf-protection.md). So we need to set the *csrfField* to make sure we can submit forms without any restrictions.
+
+3. Everything else is a part of standard Form Builder API to create the input fields and the submit button.
+
+Visit [http://localhost:3333/posts/create](http://localhost:3333/posts/create) and you will see a nice looking form to create the posts.
+
+![image](http://res.cloudinary.com/adonisjs/image/upload/v1472841279/create-posts_xgghpo.png)
+
+## Validating Form Inputs
+Validating user input is so important as you can never trust the data provided to you. AdonisJs got a beautiful validator to make this task a lot easier for you.
+
+link:validator[Validator] is not part of the base installation, which means we need to pull it off from the npm.
+
+```bash
+npm i --save adonis-validation-provider
+```
+
+Next, we need to register the provider and create an alias. Don't worry if you do not understand the providers completely. It is not something you are supposed to know from day 1.
+
+```js
+// bootstrap/app.js
+const providers = [
+  // ...
+  'adonis-validation-provider/providers/ValidatorProvider'
+  // ...
+]
+```
+
+```js
+// bootstrap/app.js
+const aliases = {
+  // ...
+  Validator: 'Adonis/Addons/Validator'
+  // ...
+}
+```
+
+That's all required on the setup front. Now we are going to validate the form input inside *PostsController*.
+
+```js
+// app/Http/Controllers/PostsController.js
+const Validator = use('Validator')
+
+class PostsController {
+
+  * store (request, response) {
+    const postData = request.only('title', 'content') <1>
+
+    const rules = {
+      title: 'required',
+      content: 'required'
+    }
+
+    const validation = yield Validator.validate(postData, rules) <2>
+
+    if (validation.fails()) {
+      yield request
+        .withOnly('title', 'content')
+        .andWith({ errors: validation.messages() })
+        .flash() <3>
+
+      response.redirect('back')
+      return
+    }
+
+    yield Post.create(postData) <4>
+    response.redirect('/')
+  }
+
+
+}
+
+module.exports = PostsController
+```
+
+1. The `request.only` method will fetch the values of the defined keys.
+2. Here we validate the user input with the defined rules using the `validate` method.
+3. If validation fails, we redirect the user back and flash the *error message* along with the original values for `title` and `content`.
+4. If validation passes, we create the post using the `Post.create` method.
+
+Next, we need make some modifications inside our *create.njk* view to show the errors returned as flash messages.
+
+
+Enter the below piece of code just before the `form.open` tag.
+
+```twig
+<!-- resources/views/posts/create.njk -->
+
+{% if old('errors') %}
+  <div class="alert alert-danger">
+    {% for error in old('errors') %}
+      <li> {{ error.message }} </li>
+    {% endfor %}
+  </div>
+{% endif %}
+```
+
+The `old` method is used to fetch value for a given key from flash messages. Here we need to pull the errors key for getting the errors sent from the Controller.
+
+Let's refresh the page and try to create a new post with empty title and content.
+
+![image](http://res.cloudinary.com/adonisjs/image/upload/v1472841283/validation-failed_dz2d79.png)
+
+Wow, this is fun. We have got a working form with super easy validation and in-place error handling.
