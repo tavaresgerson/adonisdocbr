@@ -1,0 +1,127 @@
+---
+title: Configuration
+category: getting-started
+---
+
+# Configuration
+
+## Config Provider
+
+The first step to having a maintainable codebase is to find a dedicated location for storing application configuration.
+
+AdonisJs uses the `config` directory, where all files are loaded at boot time.
+
+You can access configuration values via the **Config Provider**:
+
+```js
+const Config = use('Config')
+const appSecret = Config.get('app.appSecret')
+```
+
+Config values are fetched using `Config.get` which accepts a string argument referencing the key you want in the form `fileName.key`.
+
+You can fetch nested config values using dot notation:
+
+```js
+// Example of a configuration file e.g. database.js
+{
+  mysql: {
+    host: '127.0.0.1',
+  },
+}
+
+// You can retrieve it like so...
+Config.get('database.mysql.host')
+```
+
+If you aren't sure that a key is defined in your configuration, you can supply a second argument that will be returned as the default value:
+
+```js
+Config.get('database.mysql.host', '127.0.0.1')
+```
+
+If you want to change the in-memory configuration values, use `Config.set`:
+
+```js
+Config.set('database.mysql.host', 'db.example.com')
+```
+
+> NOTE: `Config.set` will only change the value **in-memory**. It will not write the new value to your config file.
+
+## Env Provider
+
+When building an application, you may want different configuration based upon the environment your code is running in.
+
+To fulfill this requirement, AdonisJs uses the [dotenv](https://github.com/motdotla/dotenv) library.
+
+Inside the root of every new AdonisJs project, you'll find an `.env.example` file.
+If you used AdonisJs CLI to install your application, this file will be automatically duplicated as `.env`. Otherwise, you should copy it manually.
+
+WARNING: The `.env` file should never be committed to your source control or shared with other people.
+
+The `.env` file has a simple `key=value` syntax:
+
+```bash
+# .env
+
+APP_SECRET=F7op5n9vx1nAkno0DsNgZm5vjNXpOLIq
+DB_HOST=127.0.0.1
+DB_USER=root
+```
+
+You can access env values using the **Env Provider**:
+
+```js
+const Env = use('Env')
+const appSecret = Env.get('APP_SECRET')
+```
+
+Like the **Config Provider**, you can provide a default value as the second argument:
+
+```js
+Env.get('DB_USER', 'root')
+```
+
+`Env.get` always return a `string`. If you want an `Env` value to act as boolean, you will need to check it via a conditional equality statement, like so:
+
+```js
+const myBoolean = Env.get('MY_BOOLEAN') === 'true'
+```
+
+### Raising errors if a required environment variable does not exist
+
+When you have an environment variable that is required for running your application, you may use `Env.getOrFail()` to throw an error if the required variable is not set.
+
+> TIP: If you want your application to fail quickly at boot time when an environment variable is missing, **only limit access to environment variables from inside your configuration files**, and do not to use the Env Provider anywhere else in the app.
+
+```js
+const Env = use('Env')
+// Throw "Make sure to define APP_SECRET inside .env file."
+Env.getOrFail('APP_SECRET')
+```
+
+### Location of the .env file
+
+You may want to load a different `.env` file.
+
+This can be done by using the `ENV_PATH` environment variable:
+
+```bash
+ENV_PATH=/user/.env adonis serve
+```
+
+### Disabling the .env file
+
+You may want to directly use the environment variables on your server instead of relaying to a file.
+
+This can be done by using the `ENV_SILENT` environment variable:
+
+```bash
+ENV_SILENT=true adonis serve
+```
+
+### Testing Environment
+
+If you are starting your application with `NODE_ENV` set to `testing`, AdonisJs will load your `.env.testing` file and merge its values over your `.env` file.
+
+This is useful to set different credentials when testing your codebase.

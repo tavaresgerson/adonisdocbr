@@ -1,0 +1,100 @@
+---
+permalink: security-introduction
+title: Introduction
+category: security
+---
+
+= Getting Started
+
+toc::[]
+
+AdonisJs provides a handful of tools to keep your websites secure from common web attacks.
+
+In this guide, we learn about the best practices to keep your AdonisJs applications secure.
+
+NOTE: If you discover any security bugs, mailto:virk@adonisjs.com[please inform us immediately via email]. Do not create GitHub issues, as this may impact applications running in production. Found issues will be disclosed once patches have been pushed to the codebase.
+
+== Session Security
+Sessions can leak important information if not handled with care.
+
+AdonisJs encrypts and signs all cookies using the `appKey` defined in the `config/app.js` file.
+
+Keep your `appKey` secret – don't share it with anyone, and never push it to version control systems like Github.
+
+=== Session Config
+Session configuration is saved inside the `config/session.js` file.
+
+When updating your session configuration, considering the following suggestions:
+
+[ul-spaced]
+* The `httpOnly` value should be set to `true`, as setting it to `false` will make your cookies accessible via JavaScript using `document.cookie`.
+* The `sameSite` value should also be set to `true`, ensuring your session cookie is not visible/accessible via different domains.
+
+== Form Method Spoofing
+As HTML forms are only capable of making `GET` and `POST` requests, you cannot use HTTP verbs like `PUT` or `DELETE` to perform resourceful operations via a form's `method` attribute.
+
+To work around this, AdonisJs implements link:request#_method_spoofing[form method spoofing], enabling you to send your intended HTTP method via the request URL's `_method` query string parameter:
+
+.Route
+[source, javascript]
+----
+Route.put('/users/:id', 'UserController.update')
+----
+
+.View
+[source, html]
+----
+<form action="/users/1?_method=PUT" method="POST">
+</form>
+----
+
+In the example above, appending `?_method=PUT` to the form's `action` URL converts the request HTTP method from `POST` to `PUT`.
+
+Here are a couple of things you should know about method spoofing:
+
+[ul-spaced]
+* AdonisJs only spoofs methods where the source HTTP method is `POST`, meaning `GET` requests passing an intented HTTP `_method` are not spoofed.
+* Method spoofing can be disabled by setting `allowMethodSpoofing` to `false` inside the `config/app.js` file:
++
+.config/app.js
+[source, javascript]
+----
+http: {
+  allowMethodSpoofing: false
+}
+----
+
+== File Uploads
+Attackers often try to upload malicious files to servers to later execute and gain access to servers to perform some kind of destructive activity.
+
+Besides uploading malicious files, attackers may also try to upload *huge* files so you server stays busy uploading and starts throwing *TIMEOUT* errors for subsequent requests.
+
+To combat this scenario, AdonisJs lets you define the *maximum upload size* processable by your server. This means any file larger than the specified `maxSize` is denied, keeping your server in a healthy state.
+
+Set your `maxSize` value inside the `config/bodyParser.js` file:
+
+.config/bodyParser.js
+[source, javascript]
+----
+uploads: {
+  maxSize: '2mb'
+}
+----
+
+Here are a few tips to consider when handling file uploads:
+
+[ul-spaced]
+* Rename user files before uploading/storing.
+* Don't store uploaded files inside the `public` directory, since `public` files can be accessed directly.
+* Don't share the actual location of uploaded files with your users. Instead, consider saving a reference to uploaded file paths in your database (each file having a *unique id*), and set up a route to serve those uploaded files via `id`, like so:
++
+.start/routes.js
+[source, javascript]
+----
+const Helpers = use('Helpers')
+
+Route.get('download/:fileId', async ({ params, response }) => {
+  const file = await Files.findorFail(params.fileId)
+  response.download(Helpers.tmpPath('uploads/${file.path}'))
+})
+----

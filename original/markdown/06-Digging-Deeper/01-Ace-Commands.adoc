@@ -1,0 +1,581 @@
+---
+title: Ace Commands
+permalink: ace
+category: digging-deeper
+---
+
+= Ace Commands
+
+toc::[]
+
+*Ace* is a powerful command line tool crafted for AdonisJs.
+
+So far, you have used various Ace commands to generate *controllers*, *models*, or to *run migrations*.
+
+In this guide, we learn about Ace internals and how to create *commands*.
+
+== Introduction
+Every AdonisJs project has an `ace` file in the project root, which is a regular JavaScript file but without the `.js` extension.
+
+The `ace` file is used to execute project-specific commands. For reusable commands, you must bundle them as npm packages.
+
+Run the following code to see the list of available Ace commands:
+
+[source, bash]
+----
+> node ace
+----
+
+.Output
+[source, bash]
+----
+Usage:
+  command [arguments] [options]
+
+Global Options:
+  --env                Set NODE_ENV before running the commands
+  --no-ansi            Disable colored output
+
+Available Commands:
+  seed                 Seed database using seed files
+ migration
+  migration:refresh    Refresh migrations by performing rollback and then running from start
+  migration:reset      Rollback migration to the first batch
+  migration:rollback   Rollback migration to latest batch or a specific batch number
+  migration:run        Run all pending migrations
+  migration:status     Check migrations current status
+----
+
+NOTE: For convenience, the `adonis` command proxies all the commands for a given project. For example, running `adonis migration:run` has the same result as running `node ace migration:run`.
+
+== Creating Commands
+Let's quickly build an Ace command to pull random quotes from *Paul Graham* via the link:http://gophergala.github.io/wisdom[wisdom API] and output them to the terminal.
+
+=== Setup
+[source, bash]
+----
+> adonis make:command Quote
+----
+
+.Output
+[source, bash]
+----
+✔ create  app/Commands/Quote.js
+┌───────────────────────────────────────────────────────────┐
+│        Register command as follows                        │
+│                                                           │
+│        1. Open start/app.js                               │
+│        2. Add App/Commands/Quote to commands array        │
+└───────────────────────────────────────────────────────────┘
+----
+
+Following the output instructions, register your newly created command inside the `commands` array in the `start/app.js` file:
+
+.start/app.js
+[source, javascript]
+----
+const commands = [
+  'App/Commands/Quote',
+]
+----
+
+Now, if we run `adonis`, we should see the `quote` command inside the list of available commands.
+
+=== Showing quotes
+Replace everything inside the command file with the following code:
+
+.app/Commands/Quote.js
+[source, js]
+----
+'use strict'
+
+const { Command } = use('@adonisjs/ace')
+const got = use('got')
+
+class Quote extends Command {
+  static get signature () {
+    return 'quote'
+  }
+
+  static get description () {
+    return 'Shows inspirational quote from Paul Graham'
+  }
+
+  async handle (args, options) {
+    const response = await got('https://wisdomapi.herokuapp.com/v1/author/paulg/random')
+    const quote = JSON.parse(response.body)
+    console.log(`${this.chalk.gray(quote.author.name)} - ${this.chalk.cyan(quote.author.company)}`)
+    console.log(`${quote.content}`)
+  }
+}
+
+module.exports = Quote
+----
+
+NOTE: Make sure to install the link:https://npmjs.org/package/got[got] package via npm, which is used to consume the HTTP API in the command code above.
+
+Running `adonis quote` prints the retrieved quote to the terminal.
+
+
+== Command Signature
+The command signature defines the command name, required/optional options, and flags.
+
+The signature is defined as an expression string, like so:
+
+[source, js]
+----
+static get signature () {
+  return 'greet { name: Name of the user to greet }'
+}
+----
+
+In the example signature above:
+
+[ol-shrinked]
+1. `greet` is the command name
+2. `{ name }` is a required argument to be passed when running the command
+3. Everything after the `:` is the description of the argument name preceding it
+
+The command signature can span multiple lines using ES6 template literals:
+
+[source, js]
+----
+static get signature () {
+  return `
+    greet
+    { name : Name of the user to greet }
+    { age? : User age }
+  `
+}
+----
+
+
+==== Optional arguments
+Arguments can be optional by appending `?` to the argument name:
+
+[source, js]
+----
+'greet { name? : Name of the user to greet }'
+----
+
+==== Default value
+You can also define a default value for an argument like so:
+
+[source, js]
+----
+'greet { name?=virk : Name of the user to greet }'
+----
+
+==== Flags
+Flags are prefixed with `--` and have the same signature as arguments:
+
+[source, js]
+----
+static get signature () {
+  return `
+    send:email
+    { --log : Log email response to the console }
+  `
+}
+----
+
+Using the example signature above, you would pass the `--log` flag when the command is run like so:
+
+[source, bash]
+----
+> adonis send:email --log
+----
+
+==== Flags with values
+At times you may want to accept values with flags.
+
+This can be done by tweaking the signature expression as follows:
+
+[source, js]
+----
+static get signature () {
+  return `
+    send:email
+    { --driver=@value : Define a custom driver to be used  }
+  `
+}
+----
+
+In the example above, `=@value` instructs Ace to ensure a value is always passed with the `--driver` flag.
+
+== Command Action
+The `handle` method on the command class is invoked every time a command is executed, and receives an object of `arguments` and `flags`:
+
+[source, js]
+----
+async handle (args, flags) {
+  console.log(args)
+  console.log(flags)
+}
+----
+
+NOTE: All *arguments* and *flags* are passed in camel case format. For example, a `--file-path` flag would be set as the key `filePath` inside the passed `flags` object.
+
+== Questions
+Within your command, you can prompt users for answers and accept values by asking interactive questions.
+
+==== ask(question, [defaultAnswer])
+Prompt the user for textual input:
+
+[source, js]
+----
+async handle () {
+  const name = await this
+    .ask('Enter project name')
+
+  // with default answer
+  const name = await this
+    .ask('Enter project name', 'yardstick')
+}
+----
+
+==== secure(question, [defaultAnswer])
+The `secure` method is similar to `ask`, but the user's input is hidden (useful when asking for sensitive information e.g. a password):
+
+[source, js]
+----
+const password = await this
+  .secure('What is your password?')
+----
+
+==== confirm(question)
+Prompt the user for a `yes/no` answer:
+
+[source, js]
+----
+const deleteFiles = await this
+  .confirm('Are you sure you want to delete selected files?')
+----
+
+==== multiple(title, choices, [selected])
+Prompt the user for answers to a multiple choice question:
+
+[source, js]
+----
+const lunch = await this
+  .multiple('Friday lunch ( 2 per person )', [
+    'Roasted vegetable lasagna',
+    'Vegetable & feta cheese filo pie',
+    'Roasted Cauliflower + Aubergine'
+  ])
+----
+
+Your `choices` array values can be objects:
+
+[source, js]
+----
+const lunch = await this
+  .multiple('Friday lunch ( 2 per person )', [
+    {
+      name: 'Roasted Cauliflower + Aubergine',
+      value: 'no 1'
+    },
+    {
+      name: 'Carrot + Tabbouleh',
+      value: 'no 2'
+    }
+  ])
+----
+
+You can also pass an array of preselected values:
+
+[source, js]
+----
+const lunch = await this
+  .multiple('Friday lunch ( 2 per person )', [
+    'Roasted vegetable lasagna',
+    'Vegetable & feta cheese filo pie',
+    'Roasted Cauliflower + Aubergine'
+  ], [
+    'Roasted vegetable lasagna',
+  ])
+----
+
+==== choice(question, choices, [selected])
+Prompt the user for a single answer to a multiple choice question:
+
+[source, js]
+----
+const client = await this
+  .choice('Client to use for installing dependencies', [
+    'yarn', 'npm'
+  ])
+----
+
+Your `choices` array values can be objects:
+
+[source, js]
+----
+const client = await this
+  .choice('Client to use for installing dependencies', [
+    {
+      name: 'Use yarn',
+      value: 'yarn'
+    },
+    {
+      name: 'Use npm',
+      value: 'npm'
+    }
+  ])
+----
+
+You can also pass a preselected value:
+
+[source, js]
+----
+const client = await this
+  .choice('Client to use for installing dependencies', [
+    {
+      name: 'Use yarn',
+      value: 'yarn'
+    },
+    {
+      name: 'Use npm',
+      value: 'npm'
+    }
+  ], 'npm')
+----
+
+== Colorful Output
+Ace uses link:https://npmjs.org/package/kleur[kleur, window="_blank"] to output colorful log messages to the terminal.
+
+NOTE: You can access the command kleur instance via `this.chalk`.
+
+=== Helper methods
+
+The following helper methods log consistently styled messages to the terminal.
+
+==== info(message)
+Logs an info message to the console with *cyan* color:
+
+[source, js]
+----
+this.info('Something worth sharing')
+----
+
+==== success(message)
+Logs a success message to the console with *green* color:
+
+[source, js]
+----
+this.success('All went fine')
+----
+
+==== warn(message)
+Logs a warning message to the console with *yellow* color:
+
+[source, js]
+----
+this.warn('Fire in the hole')
+----
+
+NOTE: `warn` uses `console.warn` instead of `console.log`.
+
+==== error(message)
+Logs an error message to the console with *red* color:
+
+[source, js]
+----
+this.error('Something went bad')
+----
+
+NOTE: `error` uses `console.error` instead of `console.log`.
+
+==== completed(action, message)
+Prints an action with message to the console:
+
+[source, js]
+----
+this.completed('create', 'config/app.js')
+----
+
+.Output
+[source, bash]
+----
+create: config/app.js
+----
+
+==== failed(action, message)
+Prints a failed action with message to the console:
+
+[source, js]
+----
+this.failed('create', 'config/app.js')
+----
+
+NOTE: `failed` uses `console.error` instead of `console.log`.
+
+==== table(head, body)
+Prints tabular data to the console:
+
+[source, js]
+----
+const head = ['Name', 'Age']
+const body = [['virk', 22], ['joe', 23]]
+
+this.table(head, body)
+----
+
+.Output
+[source, bash]
+----
+┌──────┬─────┐
+│ Name │ Age │
+├──────┼─────┤
+│ virk │ 22  │
+├──────┼─────┤
+│ joe  │ 23  │
+└──────┴─────┘
+----
+
+The head row color can also be defined:
+
+[source, js]
+----
+const head = ['Name', 'Age']
+const body = [['virk', 22], ['joe', 23]]
+const options = { head: ['red'] }
+
+this.table(head, body, options)
+----
+
+==== icon(type)
+Returns a colored icon for a given type:
+
+[source, js]
+----
+console.log(`${this.icon('success')} Completed`)
+----
+
+.Output
+[source, bash]
+----
+✔ Completed
+----
+
+[options="header"]
+|====
+| Type | Color | Icon
+| `info` | cyan | ℹ
+| `success` | green | ✔
+| `warn` | yellow | ⚠
+| `error` | red | ✖
+|====
+
+== File Management
+Ace makes it simple to interact with the file system by offering a Promise first API.
+
+==== writeFile(location, contents)
+Write file to a given location (automatically creates missing directories):
+
+[source, js]
+----
+await this.writeFile(Helpers.appRoot('Models/User.js'), '…')
+----
+
+==== ensureFile(location)
+Ensure file exists, otherwise create an empty file:
+
+[source, js]
+----
+await this.ensureFile(Helpers.appRoot('Models/User.js'))
+----
+
+==== ensureDir(location)
+Ensure directory exists, otherwise create an empty directory:
+
+[source, js]
+----
+await this.ensureDir(Helpers.appRoot('Models'))
+----
+
+==== pathExists(location)
+Returns a boolean indicating whether path exists or not:
+
+[source, js]
+----
+const exists = await this.pathExists('some-location')
+
+if (exists) {
+  // do something
+}
+----
+
+==== removeFile(location)
+Remove file from a given location:
+
+[source, js]
+----
+await this.removeFile('some-location')
+----
+
+==== removeDir(location)
+Remove directory from a given location:
+
+[source, js]
+----
+await this.removeDir('some-location')
+----
+
+==== readFile(location)
+Read contents of a given file:
+
+[source, js]
+----
+const contents = await this.readFile('some-location', 'utf-8')
+----
+
+==== copy(src, dest)
+Copy file/directory from one location to other:
+
+[source, js]
+----
+await this.copy(src, dest)
+----
+
+==== move(src, dest)
+Move file/directory from one location to other:
+
+[source, js]
+----
+await this.move(src, dest)
+----
+
+== Database Connection Management
+When using database access in an Ace command (via link:lucid[Lucid] or directly), you must remember to manually close the database connection:
+
+[source, js]
+----
+Database.close()
+----
+
+A more complete example:
+
+[source, js]
+----
+const Database = use('Database')
+
+class Quote extends Command {
+  static get signature () {
+    return 'quote'
+  }
+
+  static get description () {
+    return 'Shows inspirational quote from Paul Graham'
+  }
+
+  async handle (args, options) {
+    let quote = await Quote.query().orderByRaw('rand()').first()
+    console.log(quote.content)
+
+    // Without the following line, the command will not exit!
+    Database.close()
+  }
+}
+----
+

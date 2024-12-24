@@ -1,0 +1,251 @@
+---
+title: Server API
+permalink: websocket-server
+category: websockets
+---
+
+= Server API
+
+toc::[]
+
+In this guide we dive deeper into *channels*, *authentication* and exchanging *real time messages*.
+
+== Registering Channels
+WebSocket channels are registered in the `start/socket.js` file:
+
+.start/socket.js
+[source, js]
+----
+const Ws = use('Ws')
+
+Ws.channel('news', ({ socket }) => {
+  console.log('a new subscription for news topic')
+})
+----
+
+Channel handlers receive a `context` object, similar to HTTP  link:request-lifecycle#_http_context[route handlers].
+
+By default, channel `context` objects contain `socket` and `request` properties (with more added by optional middleware like `Auth`, `Session`, etc).
+
+Once a subscription is made, use the `socket` instance to exchange messages:
+
+[source, js]
+----
+socket.on('message', (data) => {
+})
+
+// emit events
+socket.emit('message', 'Hello world')
+socket.emit('typing', true)
+----
+
+=== Dynamic Topics
+Channels can be registered to accept dynamic topic subscriptions:
+
+[source, js]
+----
+Ws.channel('chat:*', ({ socket }) => {
+  console.log(socket.topic)
+})
+----
+
+In the example above, `*` sets the channel to accept any subscriptions to topics beginning with `chat:` (e.g. `chat:watercooler`, `chat:intro`, etc).
+
+Subscriptions to dynamic topics are made via the link:websocket-client#_subscribetopic[Client API]:
+
+[source, js]
+----
+const watercooler = ws.subscribe('chat:watercooler')
+const intro = ws.subscribe('chat:intro')
+const news = ws.subscribe('chat:news')
+----
+
+In the example above, our different topic subscriptions all point to the same channel, but when topic specific events are emitted, they will be delivered to their specific topic subscribers only.
+
+== Registering Middleware
+Middleware is registered inside the `start/wsKernel.js` file:
+
+.start/wsKernel.js
+[source, js]
+----
+const globalMiddleware = [
+  'Adonis/Middleware/Session',
+  'Adonis/Middleware/AuthInit'
+]
+
+const namedMiddleware = {
+  auth: 'Adonis/Middleware/Auth'
+}
+----
+
+Named middleware is applied per channel in the `start/socket.js` file:
+
+.start/socket.js
+[source, js]
+----
+Ws
+  .channel('chat', 'ChatController')
+  .middleware(['auth'])
+----
+
+== Creating Middleware
+WebSocket middleware require a `wsHandle` method.
+
+You can share HTTP and WebSocket middleware by ensuring both `handle` (for HTTP requests) and `wsHandle` methods are defined on your middleware class:
+
+.app/Middleware/CustomMiddleware.js
+[source, js]
+----
+'use strict'
+
+class CustomMiddleware {
+  // for HTTP
+  async handle (ctx, next) {
+  }
+
+  // for WebSocket
+  async wsHandle (ctx, next) {
+  }
+}
+
+module.exports = CustomMiddleware
+----
+
+== Broadcast Anywhere
+As pre-registered WebSocket channels can be accessed from anywhere inside your application, WebSocket communication isn't limited to the socket lifecycle.
+
+Emit WebSocket events during the HTTP lifecycle like so:
+
+.app/Controllers/Http/UserController.js
+[source, js]
+----
+const Ws = use('Ws')
+
+class UserController {
+  async register () {
+    // ...
+
+    const topic = Ws.getChannel('subscriptions').topic('subscriptions')
+    // if no one is listening, so the `topic('subscriptions')` method will return `null`
+    if(topic){
+      topic.broadcast('new:user')
+    }
+  }
+}
+----
+
+In the example above, we:
+
+[ol-shrinked]
+1. Select the channel via the `getChannel(name)` method
+2. Select the channel topic via the `topic(name)` method
+3. Broadcast to topic subscribers via the `broadcast(event)` message
+
+`topic()` returns an object containing the following methods:
+
+[source, js]
+----
+const chat = Ws.getChannel('chat:*')
+const { broadcast, emitTo } = chat.topic('chat:watercooler')
+
+// broadcast: send to everyone (except the caller)
+// emitTo: send to selected socket ids
+----
+
+NOTE: For more info, see the list of link:#_methods[socket methods] below.
+
+== Socket API
+
+=== Events
+
+The following events are reserved and *must not be emitted*.
+
+==== error
+Invoked when an error is received:
+
+[source, js]
+----
+socket.on('error', () => {
+})
+----
+
+==== close
+Invoked when a subscription is closed:
+
+[source, js]
+----
+socket.on('close', () => {
+})
+----
+
+=== Methods
+The following methods can be called on the socket instance.
+
+==== emit(event, data, [ackCallback])
+Emit event to the connected client:
+
+[source, js]
+----
+socket.emit('id', socket.id)
+----
+
+NOTE: This method only sends a message to your own connection.
+
+==== emitTo(event, data, socketIds[])
+Emit event to an array of socket ids:
+
+[source, js]
+----
+socket.emitTo('greeting', 'hello', [someIds])
+----
+
+==== broadcast(event, data)
+Emit event to everyone *except* yourself:
+
+[source, js]
+----
+socket.broadcast('message', 'hello everyone!')
+----
+
+==== broadcastToAll(event, data)
+Emit event to everyone *including* yourself:
+
+[source, js]
+----
+socket.broadcastToAll('message', 'hello everyone!')
+----
+
+==== close()
+Forcefully close a subscription from the server:
+
+[source, js]
+----
+socket.close()
+----
+
+=== Properties
+The following *read-only* properties can be accessed on the socket instance.
+
+==== id
+Socket unique id:
+
+[source, js]
+----
+socket.id
+----
+
+==== topic
+Topic under which the subscription socket was created:
+
+[source, js]
+----
+socket.topic
+----
+
+==== connection
+Reference to the TCP connection (shared across multiple sockets for a single client for multiplexing):
+
+[source, js]
+----
+socket.connection
+----

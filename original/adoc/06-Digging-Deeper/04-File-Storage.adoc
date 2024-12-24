@@ -1,0 +1,152 @@
+---
+title: File Storage
+permalink: file-system
+category: digging-deeper
+---
+
+= File Storage
+
+toc::[]
+
+AdonisJs has a dedicated *Drive Provider* built on top of link:https://github.com/Slynova-Org/node-flydrive[Flydrive] to interact with local and remote file systems like *Amazon S3*.
+
+In this guide, we learn how to set up and use the *Drive Provider*.
+
+== Setup
+As the *Drive Provider* is not installed by default, we need to pull it from `npm`:
+
+[source, bash]
+----
+> adonis install @adonisjs/drive
+----
+
+Next, we need to register the provider inside the `start/app.js` file:
+
+.start/app.js
+[source, js]
+----
+const providers = [
+  '@adonisjs/drive/providers/DriveProvider'
+]
+----
+
+NOTE: Driver configuration is saved inside the `config/drive.js` file, which is created by the `adonis install` command when installing the *Drive Provider*.
+
+== Available Drivers
+The default drivers shipped with the *Drive Provider* are:
+
+[ol-shrinked]
+1. Amazon S3 (`s3`), which requires the link:https://www.npmjs.com/package/aws-sdk[aws-sdk, window="_blank"] package
+2. DigitalOcean Spaces (`spaces`), which requires the link:https://www.npmjs.com/package/aws-sdk[aws-sdk, window="_blank"] package
+2. Local file system (`local`)
+
+== Basic Example
+Here's a basic example of how to interact with the local disk via `adonis repl`:
+
+image:http://res.cloudinary.com/adonisjs/image/upload/q_100/v1505719793/Drive_dlcc3v.gif[]
+
+== Drive API
+While common operations like reading and writing remain the same across drivers, the API of a drive is mainly based upon the driver you're using to interact with that drive's file system.
+
+==== exists(relativePath)
+Find if a file/directory exists or not:
+
+[source, js]
+----
+const exists = await Drive.exists('unicorn.jpg')
+----
+
+==== get(relativePath, encoding = utf-8)
+Get file contents as a buffer or string:
+
+[source, js]
+----
+const unicorn = await Drive.get('unicorn.jpg')
+----
+
+==== getStream(relativePath)
+Get file as a stream:
+
+[source, js]
+----
+Drive.getStream('hello.txt')
+----
+
+==== put(relativePath, content, options = {})
+Create a new file with given contents (creates any missing directories):
+
+[source, js]
+----
+await Drive.put('hello.txt', Buffer.from('Hello world!'))
+----
+
+==== prepend(relativePath, content, options = {})
+Prepend content to a file (creates a new file if path doesn't exist):
+
+[source, js]
+----
+await Drive.prepend('hello.txt', Buffer.from('Prepended!'))
+----
+
+NOTE: The `prepend` method only works with the local driver.
+
+==== append(relativePath, content, options = {})
+Append content to a file (creates a new file if path doesn't exist):
+
+[source, js]
+----
+await Drive.append('hello.txt', Buffer.from('Appended!'))
+----
+
+NOTE: The `append` method only works with the local driver.
+
+==== delete(relativePath)
+Remove existing file:
+
+[source, js]
+----
+await Drive.delete('hello.txt')
+----
+
+==== move(src, dest, options = {})
+Move file from one directory to another:
+
+[source, js]
+----
+await Drive.move('hello.txt', 'hi.txt')
+----
+
+==== copy(src, dest, options = {})
+Copy file from one directory to another:
+
+[source, js]
+----
+await Drive.copy('hi.txt', 'hello.txt')
+----
+
+== S3/Spaces API
+The following methods work for the `s3` and `spaces` drivers only.
+
+==== getObject(location, params)
+Get S3 object for a given file (for `params` info, see link:http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#getObject-property[S3 params]):
+
+[source, js]
+----
+await Drive.disk('s3').getObject('unicorn.jpg')
+----
+
+==== getUrl(location, [bucket])
+Get url for a given file (accepts optional alternative `bucket` param):
+
+[source, js]
+----
+const url = Drive.disk('s3').getUrl('unicorn.jpg')
+----
+
+==== getSignedUrl(location, expiry = 900, params)
+Get signed url for a given file (expiry set to `15mins` by default):
+
+[source, js]
+----
+const url = await Drive.disk('s3').getSignedUrl('unicorn.jpg')
+----

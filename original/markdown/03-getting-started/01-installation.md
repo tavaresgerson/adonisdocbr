@@ -1,0 +1,77 @@
+---
+title: Installation
+category: getting-started
+---
+
+# Installation
+
+Installing AdonisJs is a simple process and will only take a few minutes.
+
+## System Requirements
+
+The only dependencies of the framework are `Node.js` and `npm`.
+
+Ensure your versions of those tools match the following criteria:
+
+- Node.js >= 8.0.0
+- npm >= 3.0.0
+- git
+
+> TIP: You can use tools like link:https://github.com/creationix/nvm[nvm, window="_blank"] to help manage multiple versions of Node.js and npm at the same time.
+
+## Installing AdonisJs
+
+### Via AdonisJs CLI
+
+AdonisJs CLI is a command line tool to help you install AdonisJs.
+
+Install it globally via `npm` like so:
+
+```bash
+npm i -g @adonisjs/cli
+```
+
+> TIP: You can also use `npx` to avoid installing the CLI globally.
+
+Make sure to add the `npm` system-wide `node_modules/.bin` directory to your `$PATH` to be able to access the installed binary.
+
+Once installed, you can use the `adonis new` command to create fresh installations of AdonisJs.
+
+For example, to create a new application called `yardstick`, simply:
+
+```bash
+adonis new yardstick
+```
+
+> NOTE 
+> By default, the link:https://github.com/adonisjs/adonis-fullstack-app[fullstack blueprint, window="_blank"] is cloned from Github. You can customize this by using the options `--api-only` or `--slim`.
+> 
+> You can also specify your own blueprint by using the option `--blueprint=<github-org/repo>`.
+
+
+### Via Git
+
+Alternatively, you can use `git` directly to fetch our boilerplates:
+
+```bash
+# Fullstack
+> git clone --dissociate https://github.com/adonisjs/adonis-fullstack-app
+
+# API
+> git clone --dissociate https://github.com/adonisjs/adonis-api-app
+
+# Slim
+> git clone --dissociate https://github.com/adonisjs/adonis-slim-app
+```
+
+After cloning a boilerplate, install all dependencies by running `npm install`.
+
+## Serving the application
+
+Once the installation process has completed, you can `cd` into your new application directory and run the following command to start the HTTP Server:
+
+```bash
+adonis serve --dev
+```
+
+This command starts the server on the port defined inside the root `.env` file.
