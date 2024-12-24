@@ -1,11 +1,6 @@
 # AdonisJs 3.2
 
-* A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdocbr/tree/v4.1).
-
-> Esta documentação está aguardando revisão.
-
 Documentação completa em português brasileiro da antiga versão 3.2 (considere atualizar seu projeto) - acesse a versão em [website](https://v3.adonisjs.tavares.in)
-
 
 ## Prólogo 
 
