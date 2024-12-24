@@ -1,20 +1,20 @@
-# Getters & Setters
+# Getters e Setters
 
-Um dos passos importantes para a construção de aplicações orientadas a dados é controlar o fluxo de dados. O Lucid oferece getters e setters para facilitar o controle do fluxo de dados.
+Uma das etapas importantes para a construção de aplicativos orientados a dados é controlar o fluxo de dados. O Lucid oferece getters e setters para facilitar o controle do fluxo de dados.
 
-Vamos pegar um exemplo do *Modelo de Postagem* no qual você sempre terá um *título da postagem*, que deve ser capitalizado ao exibi-lo para o usuário final. Por exemplo, um título chamado "Começando com Adonis" deve ser exibido como "Começando com Adonis".
+Vamos dar um exemplo de *Modelo de postagem* no qual você sempre terá um *título de postagem* que deve ser capitalizado ao exibi-lo para o usuário final. Por exemplo, um título chamado *introdução ao adonis* deve ser exibido como *Introdução ao Adonis*.
 
-Existem algumas maneiras de alcançar o resultado final. Primeiro, fale sobre a maneira "ingênua" de fazer isso.
+Há algumas maneiras de atingir os resultados finais. Primeiro, fale sobre a maneira *ingênua* de fazer isso.
 
-1. Utilize a propriedade CSS "text-transform" para capitalizar. E se você também tiver uma API JSON?
-2. Sempre que encontrar um artigo, capitalizar manualmente, modificando a propriedade.
+1. Use a propriedade CSS `text-transform` para capitalizá-la. E se você também tiver uma API JSON?
+2. Sempre que encontrar um artigo, capitalize-o manualmente, modificando a propriedade.
 * Você fará isso para 20 postagens dentro de um loop?
-* E se você estiver buscando publicações como relação de um usuário específico? Isso significa percorrer todos os usuários e depois suas publicações e mutar manualmente o título do artigo.
+* E se você estiver buscando postagens como uma relação para um determinado usuário? Isso significa fazer um loop por todos os usuários e, em seguida, suas postagens e alterar manualmente o título do artigo.
 
-Todas as dicas mencionadas anteriormente não são mantíveis. A melhor maneira é modificar o título de sua origem para garantir que ele retorne o mesmo valor não importa o quê.
+Todos os truques mencionados anteriormente não são sustentáveis. A melhor maneira é modificar o título de sua origem para garantir que ele retorne o mesmo valor, não importa o que aconteça.
 
 ## Getters
-Em Lucid definimos *getters* para tais situações. Os getters mutam um atributo dado no momento sem alterar o valor original no banco de dados.
+No Lucid, definimos *getters* para tais situações. Os getters alteram um determinado atributo imediatamente, sem alterar o valor original no banco de dados.
 
 ```js
 'use strict'
@@ -34,13 +34,13 @@ class Post extends Lucid {
 
 ### Sobre Getters
 
-1. Os getters são sempre definidos com o palavra-chave "get" seguido pelo nome do atributo. Por exemplo, um getter para o atributo "title" será definido como "getTitle".
-2. Os getters são síncronos, o que significa que você não pode executar código assíncrono dentro deles. Você deve usar os ganchos de link:database-hooks[ganchos] para isso.
-3. Os getters receberão o valor atual de um determinado campo.
-4. Os getters são avaliados quando você chama o método `toJSON` em uma instância de modelo ou uma coleção.
+1. Getters são sempre definidos com a palavra-chave `get` seguida pelo nome do atributo. Por exemplo, um getter para o atributo `title` será definido como `getTitle`.
+2. Getters são síncronos, o que significa que você não pode executar código assíncrono dentro deles. Você deve usar link:database-hooks[hooks] para isso.
+3. Getters receberão o valor atual de um determinado campo.
+4. Getters são avaliados quando você chama o método `toJSON` em uma instância de modelo ou uma coleção.
 
 ## Setters
-Os setters são o oposto dos getters e mutam o valor quando você os define em sua instância de modelo. Por exemplo
+Setters são o oposto de getters e eles alteram o valor quando você os define em sua instância de modelo. Por exemplo
 
 ```js
 'use strict'
@@ -62,17 +62,17 @@ console.log(user.access) // will return 1
 yield user.save()
 ```
 
-### Sobre os Setters
+### Sobre Setters
 
-1. Os métodos de acesso são sempre definidos com o nome do atributo seguido da palavra-chave "set". Por exemplo, um método de acesso para o atributo "acesso" será definido como "setAccess".
-2. Os setters são síncronos, o que significa que você não pode executar código assíncrono dentro deles. Você deve usar os ganchos de link:database-hooks[ganchos] para isso.
-3. Os setters receberão o valor atual de um determinado campo.
-4. Eles são executados somente quando você *definir/atualizar* o valor de um determinado campo na instância do modelo.
+1. Setters são sempre definidos com a palavra-chave `set` seguida pelo nome do atributo. Por exemplo, um setter para o atributo `access` será definido como `setAccess`.
+2. Setters são síncronos, o que significa que você não pode executar código assíncrono dentro deles. Você deve usar [hooks](/src/docs/06-lucid/03-hooks.md) para isso.
+3. Setters receberão o valor atual de um determinado campo.
+4. Eles são executados somente quando você *define/atualiza* o valor de um determinado campo na instância do modelo.
 
-## Propriedades Computadas
-Propriedades computadas são como getters, mas os valores virtuais não existem nas tabelas de banco de dados.
+## Propriedades computadas
+Propriedades computadas são como getters, mas são valores virtuais que não existem nas tabelas do seu banco de dados.
 
-Você pode querer propriedades calculadas em muitos casos. Por exemplo, calcular o nome completo de um usuário dado seus primeiro e último nomes.
+Você pode querer propriedades computadas em muitos casos. Por exemplo, calculando o nome completo de um determinado usuário usando seu primeiro e último nome.
 
 ```js
 'use strict'
@@ -92,8 +92,8 @@ class User extends Lucid {
 }
 ```
 
-### Sobre Propriedades Computacionais
+### Sobre propriedades computadas
 
-1. As propriedades computadas devem retornar um array do método getter "computed".
+1. Propriedades computadas devem ser retornadas como uma matriz do getter `computed`.
 2. Métodos computados são definidos da mesma forma que os `getters`.
-3. Eles não recebem nenhum valor e, portanto, acessam os valores da instância do modelo usando a palavra-chave "this".
+3. Eles não recebem nenhum valor e, portanto, acessam os valores da instância do modelo usando a palavra-chave `this`.

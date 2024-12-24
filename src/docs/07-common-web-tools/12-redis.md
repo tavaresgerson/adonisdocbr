@@ -1,20 +1,20 @@
 # Redis
 
-AdonisJs torna tão simples trabalhar com [Redis](http://redis.io/). Internamente, utiliza-se o [ioredis](https://github.com/luin/ioredis), mas a API é ligeiramente diferente para manter seu código legível e fácil de manter.
+O AdonisJs torna muito simples trabalhar com [redis](http://redis.io/). Internamente, ele faz uso do [ioredis](https://github.com/luin/ioredis), mas a API é um pouco diferente para manter seu código sustentável e legível.
 
 ## Recursos
 
-1. Suporte para múltiplas conexões com o Redis.
-2. Conectar ao cluster Redis.
+1. Suporte para múltiplas conexões redis.
+2. Conecte-se ao cluster redis.
 3. Suporte para sentinela e transações.
-4. Ampla suporte para Pub/Sub.
-5. Geração de código amigável para ES2015.
+4. Suporte extensivo para Pub/Sub.
+5. Amigável com geradores ES2015.
 
 ## Configuração
-O provedor Redis não é enviado com a instalação básica do AdonisJs, o que significa que você precisa instalá-lo e configurá-lo manualmente.
+O provedor Redis não é enviado com a instalação base do AdonisJs, o que significa que você precisa instalá-lo e configurá-lo manualmente.
 
 ```bash
-# Installing From Npm
+# Instalando a partir do Npm
 
 npm i --save adonis-redis
 ```
@@ -40,20 +40,21 @@ const aliases = {
 }
 ```
 
-## Configuração
-Além disso, um arquivo de configuração precisa ser salvo como config/redis.js. Você pode baixar a configuração de amostra em [github](https://raw.githubusercontent.com/adonisjs/adonis-redis/develop/examples/redis.js) ou executar o seguinte comando bash para salvar o arquivo automaticamente.
+## Config
+Além disso, um arquivo de configuração precisa ser salvo como config/redis.js. Você pode baixar a configuração de exemplo do [github](https://raw.githubusercontent.com/adonisjs/adonis-redis/develop/examples/redis.js) ou executar o comando bash abaixo para salvar o arquivo automaticamente.
 
 ```bash
-# Download using wget
+# Baixar usando wget
 
 wget https://raw.githubusercontent.com/adonisjs/adonis-redis/develop/examples/redis.js -O config/redis.js
 ```
 
 ## Exemplo básico
-Uma vez que tudo esteja configurado, você está pronto para usar o Redis dentro de seus aplicativos AdonisJs. Vamos começar com um exemplo básico de cache de usuários dentro do Redis.
+Depois que tudo estiver configurado, você estará pronto para usar o Redis dentro de seus aplicativos AdonisJs. Vamos começar com um exemplo básico de cache de usuários dentro do redis.
 
-> NOTE
-> Abaixo exemplo pode não ser a melhor maneira de armazenar em cache usuários, mas dá uma ideia de como usar o provedor Redis.
+::: info OBSERVAÇÃO
+O exemplo abaixo pode não ser a melhor maneira de armazenar usuários em cache, mas dá uma ideia de como usar o provedor redis.
+:::
 
 ```js
 // app/Http/Controllers/UsersController.js
@@ -80,8 +81,8 @@ class UsersController {
 }
 ```
 
-## Comandos do Redis
-Todos os comandos [redis](http://redis.io/commands) são suportados como funções JavaScript. Por exemplo:
+## Comandos Redis
+Todos os comandos [redis](http://redis.io/commands) são suportados como funções javascript. Por exemplo:
 
 ```js
 'use strict'
@@ -96,8 +97,8 @@ yield Redis.hmset('users', user.username, JSON.stringify(user))
 const user = yield Redis.hmget('users', user.username) // returns stringified JSON
 ```
 
-## Publicação/Inscrição
-O Redis oferece suporte integrado para Pub/Sub para compartilhar mensagens em um ou em vários servidores. O AdonisJS oferece uma API limpa para assinar e publicar mensagens sem nenhum esforço adicional.
+## Pub/Sub
+O Redis tem suporte integrado para Pub/Sub para compartilhar mensagens no mesmo servidor ou em vários servidores. O AdonisJs oferece uma API limpa para assinar e publicar mensagens sem nenhum esforço extra.
 
 É recomendado criar um novo arquivo dentro do diretório *bootstrap* para registrar assinantes.
 
@@ -113,7 +114,7 @@ Redis.subscribe('music', function * (track) {
 })
 ```
 
-Em seguida, você precisa exigir este arquivo dentro do arquivo `bootstrap/http.js` para garantir que ele seja carregado quando o servidor HTTP for iniciado logo após a instrução `require('./events')`.
+Em seguida, você precisa exigir este arquivo dentro do arquivo `bootstrap/http.js` para garantir que ele seja carregado ao inicializar o servidor HTTP logo após a declaração `require('./events')`.
 
 ```js
 // bootstrap/http.js
@@ -121,7 +122,7 @@ Em seguida, você precisa exigir este arquivo dentro do arquivo `bootstrap/http.
 require('./redis')
 ```
 
-Agora em qualquer lugar dentro do seu aplicativo, você pode publicar no canal de música e o ouvinte registrado será chamado.
+Agora, em qualquer lugar dentro do seu aplicativo, você pode publicar no canal de música e o ouvinte registrado será chamado.
 
 ```js
 // app/Http/routes.js
@@ -136,17 +137,18 @@ Route.post('musics', function * (request, response) {
 })
 ```
 
-## Métodos Public/Private
-Abaixo está a lista de métodos de publicação/assinatura expostos pelo provedor Redis.
+## Métodos Pub/Sub
+Abaixo está a lista de métodos pub/sub expostos pelo Redis Provider.
 
-#### subscribe(canal, ouvinte)
+#### `subscribe(channel, listener)`
 ```js
+----
 Redis.subscribe('music', function * (track, channel) {
   console.log(track)
 })
 ```
 
-Além disso, o "Listener" pode ser uma referência a um módulo dentro do diretório "app/Listeners".
+Além disso, o `listener` pode ser uma referência a um módulo dentro do diretório `app/Listeners`.
 
 ```js
 Redis.subscribe('music', 'Music.newTrack')
@@ -164,8 +166,8 @@ Music.newTrack = function * (track, channel) {
 }
 ```
 
-#### psubscribe(pattern, listener)
-O método `subscribe` irá assinar um padrão, e as mensagens que combinarem serão enviadas ao ouvinte.
+#### `psubscribe(pattern, listener)`
+O método `psubscribe` assinará um padrão, e mensagens correspondentes serão enviadas ao ouvinte.
 
 ```js
 Redis.psubscribe('h?llo', function * (message, channel, pattern) {
@@ -175,29 +177,29 @@ Redis.publish('hello')
 Redis.publish('hallo')
 ```
 
-#### publicar
-Publicar mensagem em um canal específico.
+#### `publish`
+Publique mensagem em um determinado canal.
 
 ```js
 Redis.publish('music', {id: 1, title: 'Love me like you do', artist: 'Ellie goulding'})
 ```
 
-#### unsubscribe(channel, [callback])
-Cancelar assinatura de um canal específico.
+#### `unsubscribe(channel, [callback])`
+Cancelar inscrição de um determinado canal.
 
 ```js
 Redis.unsubscribe('music')
 ```
 
-#### punsubscribe(pattern, [callback])
-Desuscreva-se de um determinado padrão.
+#### `punsubscribe(pattern, [callback])`
+Cancelar inscrição de um determinado padrão.
 
 ```js
 Redis.punsubscribe('h?llo')
 ```
 
 ## Transações
-As transações são úteis quando você deseja executar operações em massa em um determinado ponto no tempo. Vamos revisar um exemplo de adição de usuários a uma lista.
+As transações são úteis quando você deseja executar operações em massa em um determinado ponto do tempo. Vamos revisar um exemplo de adição de usuários a uma lista.
 
 ```js
 'use strict'
@@ -210,7 +212,7 @@ class UsersController {
   * index (request, response) {
     const users = yield User.all()
 
-    // Creating a transaction
+    // Criando uma transação
     const multi = Redis.multi()
     users.each((user) => {
       multi.lpush('users-list', JSON.stringify(user))
@@ -223,8 +225,8 @@ class UsersController {
 }
 ```
 
-#### multi
-Cria uma nova transação para chamar múltiplos comandos e executá-los juntos.
+#### `multi`
+Cria uma nova transação para chamar vários comandos e executá-los juntos.
 
 ```js
 const multi = Redis.multi()
@@ -237,9 +239,9 @@ const response = yield multi.exec()
 ```
 
 ## Pipelines
-Os pipelines são muito semelhantes às transações, mas não garantem que todos os comandos serão executados em uma transação. Os pipelines são úteis para enviar um lote de comandos para salvar as viagens redondas da rede.
+Pipelines são bem parecidos com transações, mas não garantem que todos os comandos serão executados em uma transação. Pipelines são úteis para enviar um lote de comandos para economizar viagens de ida e volta na rede.
 
-#### pipeline
+#### `pipeline`
 ```js
 const pipeline = Redis.pipeline()
 pipeline
@@ -250,8 +252,8 @@ const response = yield pipeline.exec()
 // [[null, 'OK'], [null, 'OK']]
 ```
 
-## Conexões Múltiplas
-Você pode definir a configuração para múltiplas conexões dentro do arquivo `config/redis.js`, e você pode usar essas conexões chamando o método `connection`.
+## Conexões múltiplas
+Você pode definir a configuração para várias conexões dentro do arquivo `config/redis.js` e pode usar essas conexões chamando o método `connection`.
 
 ```js
 // config/redis.js
@@ -271,24 +273,24 @@ module.exports = {
 }
 ```
 
-#### conexão(nome)
-Altere para uma conexão diferente.
+#### `connection(name)`
+Alternar para uma conexão diferente.
 
 ```js
 yield Redis.connection('secondary').get('users')
 ```
 
-#### quit([nome])
-AdonisJS cria uma piscina de conexões para reutilizar as conexões estabelecidas. Utilize o método 'quit' para fechar uma única/todas as conexões do Redis.
+#### `quit([name])`
+O AdonisJs cria um pool de conexões para reutilizar a conexão estabelecida. Use o método `quit` para fechar uma única/todas as conexões do redis.
 
 ```js
 const response = yield Redis.quit('secondary')
-// or
+// ou
 const response = yield Redis.quit() // close all connections
 ```
 
-## Eventos do Ciclo de Vida
-Você pode registrar um ouvinte para eventos de ciclo de vida da mesma forma que você faria para xref:_pub_sub_methods [Pub / Sub].
+## Eventos do ciclo de vida
+Você pode registrar um ouvinte para eventos do ciclo de vida da mesma forma que faria para [Pub/Sub](#pubsub-methods).
 
 ```js
 // bootstrap/redis.js
@@ -307,14 +309,14 @@ Redis.on('error', function (error) {
 
 Abaixo está a lista de eventos emitidos pelo provedor Redis.
 
-| Evento | Descrição |
-|-------|-------------|
-| conectar | emite quando uma conexão é estabelecida com o servidor Redis. |
-| pronto | emite quando o `CLUSTER INFO` informa que o cluster está pronto para receber comandos (se *enableReadyCheck=true*) ou imediatamente após o evento `connect` (se *enableReadyCheck=false*). |
-| erro | emite quando ocorre um erro ao se conectar com uma propriedade de `lastNodeError` representando o último erro recebido do nó. Este evento é emitido silenciosamente (apenas emitindo se houver pelo menos um ouvinte). |
-| Fechar | emite quando uma conexão com um servidor Redis estabelecido é fechada. |
-| reconectando | emite após o `close` quando uma reconexão será feita. O argumento do evento é o tempo (em ms) antes de se reconectar. |
-| fim | emits after `close` quando não haverá mais reconexões a serem feitas. |
-| +node | emite quando um novo nó é conectado. |
-| -node | emite quando um nó é desconectado. |
-| Erro do nó | emite quando ocorre um erro ao conectar-se a um nó |
+| Evento        | Descrição   |
+|---------------|-------------|
+| connect       | emite quando uma conexão é estabelecida com o servidor Redis. |
+| ready         | emite quando `CLUSTER INFO` relata que o cluster é capaz de receber comandos (se *enableReadyCheck=true*) ou imediatamente após o evento `connect` (se *enableReadyCheck=false*). |
+| error         | emite quando ocorre um erro ao conectar com uma propriedade de `lastNodeError` representando o último erro de nó recebido. Este evento é emitido silenciosamente (emitindo somente se houver pelo menos um ouvinte). |
+| close         | emite quando uma conexão estabelecida do servidor Redis é fechada. |
+| reconnecting  | emite após `close` quando uma reconexão será feita. O argumento do evento é o tempo (em ms) antes da reconexão. |
+| end           | emite após `close` quando nenhuma outra reconexão será feita. |
+| +node         | emite quando um novo nó é conectado. |
+| -node         | emite quando um nó é desconectado. |
+| node error    | emite quando ocorre um erro ao conectar a um nó |

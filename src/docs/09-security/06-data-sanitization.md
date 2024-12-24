@@ -1,21 +1,20 @@
 # Sanitização de dados
 
-AdonisJs tenta automaticamente manter seus sites seguros, evitando injeção de SQL, escapando HTML dentro das visualizações e limitando o tamanho dos uploads de arquivos. No entanto, ainda existem casos em que você é necessário para sanitizar as entradas do usuário antes de usá-los manualmente.
+O AdonisJs tenta automaticamente manter seus sites seguros, impedindo a injeção de SQL, escapando HTML dentro de visualizações e limitando o tamanho dos uploads de arquivos. Ainda assim, há casos em que você precisa sanitizar as entradas do usuário antes de consumi-las manualmente.
 
 ## Configuração
-O AdonisJS vem com um sanitizador de dados para filtrar dados maliciosos da entrada do usuário. O sanitizador faz parte do módulo `adonis-validation-provider`.
+O AdonisJs vem com um prático sanitizador de dados para filtrar dados maliciosos da entrada do usuário. O sanitizador faz parte do módulo `adonis-validation-provider`.
 
 #### Instalar
 ```bash
 npm i --save adonis-validation-provider
 ```
 
-#### Fornecedor de Registro
-Os provedores são registrados no arquivo `bootstrap/app.js`. Uma vez registrados, você pode acessá-los em qualquer lugar dentro do seu aplicativo.
+#### Registrar provedor
+Os provedores são registrados dentro do arquivo `bootstrap/app.js`. Depois que eles são registrados, você pode acessá-los em qualquer lugar dentro do seu aplicativo.
 
 ```js
 // bootstrap/app.js
-
 const providers = [
   // ...
   'adonis-validation-provider/providers/ValidatorProvider'
@@ -23,12 +22,11 @@ const providers = [
 ]
 ```
 
-#### Validador de Aliás
-Vamos criar um alias para o namespace do validador que facilita importar o Validador com um nome menor.
+#### Alias ​​do validador
+Vamos criar um alias para o namespace do validador que facilita a importação do Validador com um nome menor.
 
 ```js
 // bootstrap/app.js
-
 const aliases = {
   // ...
   Validator: 'Adonis/Addons/Validator'
@@ -37,13 +35,13 @@ const aliases = {
 ```
 
 ## Exemplo básico
-Sanitizar dados é tão simples que você só precisa definir as regras de sanitização e passar os dados junto com as regras definidas.
+A higienização de dados é tão simples que você só precisa definir regras para higienização e passar os dados junto com as regras definidas.
 
 ```js
 const Validator = use('Validator')
 
 /**
- * Defining sanitization rules
+ * Definindo regras de higienização
  */
 const sanitizationRules = {
   email: 'normalize_email',
@@ -56,23 +54,23 @@ Route.post('/', function * (request, response) {
 })
 ```
 
-É isso aí! Você começa por definir um objeto de regras e ele cuidará de retornar os dados limpos. Além disso, você pode aproveitar as regras diretamente chamando-as como funções.
+É simples assim! Você começa definindo um objeto de regras, e ele garantirá que os dados limpos sejam retornados. Além disso, você pode aproveitar as regras diretamente chamando-as como funções.
 
 ```js
 const Validator = use('Validator')
 
 const escapedEmail = Validator.sanitizor.normalizeEmail('bar.sneaky+foo@googlemail.com')
-// returns - barsneaky@gmail.com
+// retorna - barsneaky@gmail.com
 ```
 
 ## Filtros disponíveis
 Abaixo está a lista de todos os filtros disponíveis.
 
-#### blacklist(input, palavras-chave)
+#### `blacklist(input, keywords)`
 Remove palavras definidas da string de entrada.
 
 ```js
-// Directly
+// Diretamente
 Validator.sanitizor.blacklist('This is the worst show', ['worst'])
 
 // Via Schema
@@ -81,11 +79,11 @@ Validator.sanitizor.blacklist('This is the worst show', ['worst'])
 }
 ```
 
-#### escape(valor)
-10.25462/edisciple.v3n1p1:1-18
+#### `escape(value)`
+Escapes de entidades HTML.
 
 ```js
-// Directly
+// Diretamente
 Validator.sanitizor.escape('<div> Hello World </div>')
 
 // Via Schema
@@ -94,11 +92,11 @@ Validator.sanitizor.escape('<div> Hello World </div>')
 }
 ```
 
-#### normalizeEmail(valor)
-Normaliza o e-mail removendo caracteres desnecessários.
+#### `normalizeEmail(value)`
+Normaliza e-mail removendo caracteres desnecessários.
 
 ```js
-// Directly
+// Diretamente
 Validator.sanitizor.normalizeEmail('bar.sneaky+foo@gmail.com')
 
 // Via Schema
@@ -107,11 +105,11 @@ Validator.sanitizor.normalizeEmail('bar.sneaky+foo@gmail.com')
 }
 ```
 
-#### toBoolean(valor)
-Converte o valor para um booleano. *0*, *false*, *null*, *undefined*, *''* retornam falso e tudo mais retorna verdadeiro.
+#### `toBoolean(value)`
+Converte valor em um booleano. *0* , *false*, *null*, *undefined*, *''* retornará false e todo o resto retornará true.
 
 ```js
-// Directly
+// Diretamente
 Validator.sanitizor.toBoolean('false')
 
 // Via Schema
@@ -120,11 +118,11 @@ Validator.sanitizor.toBoolean('false')
 }
 ```
 
-#### toFloat(valor)
-Converte o valor para um número de ponto flutuante e retorna 'NaN' se não for possível converter.
+#### `toFloat(value)`
+Converte valor em float e retorna `NaN` se não for possível converter.
 
 ```js
-// Directly
+// Diretamente
 Validator.sanitizor.toFloat('32.55')
 
 // Via Schema
@@ -133,11 +131,11 @@ Validator.sanitizor.toFloat('32.55')
 }
 ```
 
-#### toInt(valor)
-Converte o valor para inteiro e retorna 'NaN' se não for possível converter.
+#### `toInt(value)`
+Converte valor em inteiro e retorna `NaN` se não for possível converter.
 
 ```js
-// Directly
+// Diretamente
 Validator.sanitizor.toInt('32')
 
 // Via Schema
@@ -146,11 +144,11 @@ Validator.sanitizor.toInt('32')
 }
 ```
 
-#### toDate(valor)
-Converte o valor para objeto de data e retorna `nulo` se não for possível converter.
+#### `toDate(value)`
+Converte valor em objeto de data e retorna `null` se não for possível converter.
 
 ```js
-// Directly
+// Diretamente
 Validator.sanitizor.toDate('2010-22-10')
 
 // Via Schema
@@ -159,11 +157,11 @@ Validator.sanitizor.toDate('2010-22-10')
 }
 ```
 
-#### stripLinks(valor)
-Strips `<a></a>` tags from a given string. If input is not a string, actual value will be returned.
+#### `stripLinks(value)`
+Remove as tags `<a></a>` de uma string fornecida. Se a entrada não for uma string, o valor real será retornado.
 
 ```js
-// Directly
+// Diretamente
 Validator.sanitizor.stripLinks('<a href="http://adonisjs.com"> Adonisjs </a>')
 
 // Via Schema
@@ -172,11 +170,11 @@ Validator.sanitizor.stripLinks('<a href="http://adonisjs.com"> Adonisjs </a>')
 }
 ```
 
-#### stripTags(valor)
-Retira as tags HTML de uma determinada string. Se a entrada não for uma string, o valor real será retornado.
+#### `stripTags(value)`
+Remove as tags HTML de uma string fornecida. Se a entrada não for uma string, o valor real será retornado.
 
 ```js
-// Directly
+// Diretamente
 Validator.sanitizor.stripTags('<p> Hello </p>')
 
 // Via Schema
@@ -185,11 +183,11 @@ Validator.sanitizor.stripTags('<p> Hello </p>')
 }
 ```
 
-#### plural(valor)
-Converte um determinado valor para o plural. Ou seja, *pessoa* será convertido para *pessoas*.
+#### `plural(value)`
+Converte um valor fornecido para plural. O que significa que *pessoa* será convertida para *pessoas*.
 
 ```js
-// Directly
+// Diretamente
 Validator.sanitizor.plural('child')
 
 // Via Schema
@@ -198,11 +196,11 @@ Validator.sanitizor.plural('child')
 }
 ```
 
-#### singular(value)
-Converte um determinado valor para o singular. O que significa *pessoas* será convertido para *pessoa*.
+#### `singular(value)`
+Converte um valor fornecido para singular. O que significa que *pessoas* serão convertidas para *pessoa*.
 
 ```js
-// Directly
+// Diretamente
 Validator.sanitizor.plural('children')
 
 // Via Schema
@@ -211,11 +209,11 @@ Validator.sanitizor.plural('children')
 }
 ```
 
-#### camelCase(valor)
-Converte um determinado em camelCase. Ou seja, `users-controller` se tornará `UsersController`.
+#### `camelCase(value)`
+Converte um dado para camelcase. O que significa que `users-controller` se tornará `UsersController`.
 
 ```js
-// Directly
+// Diretamente
 Validator.sanitizor.camelCase('users-controller')
 
 // Via Schema
@@ -224,11 +222,11 @@ Validator.sanitizor.camelCase('users-controller')
 }
 ```
 
-#### capitalize(valor)
-Capitalizar uma determinada string.
+#### `capitalize(value)`
+Coloca uma string dada em maiúscula.
 
 ```js
-// Directly
+// Diretamente
 Validator.sanitizor.capitalize('doe')
 
 // Via Schema
@@ -237,11 +235,11 @@ Validator.sanitizor.capitalize('doe')
 }
 ```
 
-#### decapitalizar(valor)
-Decapitalize uma determinada string.
+#### `decapitalize(value)`
+Coloca uma string dada em minúscula.
 
 ```js
-// Directly
+// Diretamente
 Validator.sanitizor.decapitalize('Bar')
 
 // Via Schema
@@ -250,11 +248,11 @@ Validator.sanitizor.decapitalize('Bar')
 }
 ```
 
-#### title(valor)
-Converte um valor para o caso de título. O que significa que `hello-world` se tornará `Olá Mundo`
+#### `title(value)`
+Converte um valor para title case. O que significa que `hello-world` se tornará `Hello World`
 
 ```js
-// Directly
+// Diretamente
 Validator.sanitizor.title('hello-world')
 
 // Via Schema
@@ -263,11 +261,11 @@ Validator.sanitizor.title('hello-world')
 }
 ```
 
-#### slug(valor)
-Converte um valor para slug amigável de URL.
+#### `slug(value)`
+Converte um valor para slug amigável para URL.
 
 ```js
-// Directly
+// Diretamente
 Validator.sanitizor.slug('Learn AdonisJs In 30 Minutes')
 
 // Via Schema

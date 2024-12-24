@@ -1,47 +1,44 @@
 # Lucid
 
-Lucid é a implementação do [Padrão de registro ativo](https://pt.wikipedia.org/wiki/Padrão_de_registro_ativo), que é um padrão arquitetônico para armazenar e manipular dados SQL como objetos. O Lucid torna tão simples para você escrever aplicativos web não triviais com facilidade e menos código.
+Lucid é a implementação do [Active record](https://en.wikipedia.org/wiki/Active_record_pattern) que é um padrão arquitetônico de armazenamento e manipulação de dados SQL como objetos. Lucid torna muito simples para você escrever aplicativos da web não triviais com facilidade e menos código.
 
 Lucid tem suporte para:
 
-1. Fluente construtor de consulta para consultar dados por meio da cadeia de métodos JavaScript.
+1. Construtor de consultas fluente para consultar dados encadeando métodos javascript.
+    ```js
+    yield User.all()
+    yield User.query().where('status', 'active').fetch()
+    ```
 
-```js
-yield User.all()
-yield User.query().where('status', 'active').fetch()
-```
+2. Suporte sólido para definir relações de banco de dados sem tocar no seu esquema SQL.
+    ```js
+    class User extends Lucid {
 
-2. Forte suporte para definir relações de banco de dados sem tocar no seu esquema SQL.
+      profile () {
+        return this.hasOne('App/Model/Profile')
+      }
 
-```js
-class User extends Lucid {
+      posts () {
+        return this.hasMany('App/Model/Post')
+      }
 
-  profile () {
-    return this.hasOne('App/Model/Profile')
-  }
+    }
+    ```
+3. Executar consultas dentro de transações.
+4. Getters/Setters para mutar dados em tempo real.
+5. Suporte integrado para propriedades computadas.
+6. Ganchos de banco de dados para adicionar lógica de domínio a eventos específicos.
+7. Suporte para definir campos *visíveis/ocultos* para removê-los da saída JSON. O melhor exemplo é esconder o campo `password` da saída JSON.
 
-  posts () {
-    return this.hasMany('App/Model/Post')
-  }
-
-}
-```
-
-1. Executando consultas dentro de transações.
-2. Getters/Setters para mutação de dados no fly.
-3. Suporte integrado para propriedades computadas.
-4. Hooks de banco de dados para adicionar lógica de domínio a eventos específicos.
-5. Suporte para definir *visível/oculto* campos para removê-los da saída JSON. O melhor exemplo é ocultar o campo "senha" da saída JSON.
-
-## Exemplo básico
-Vamos começar com um exemplo básico de criação de um modelo de usuário e consulta de usuários da tabela correspondente do banco de dados.
+## Exemplo Básico
+Vamos começar com um exemplo básico de criação de um modelo de usuário e consulta de usuários da tabela de banco de dados correspondente.
 
 ```bash
-# Creating New Model
+# Criando Novo Modelo
 
 ./ace make:model User
 
-# or with migration
+# ou com migração
 ./ace make:model User --migration
 ```
 
@@ -56,10 +53,10 @@ class User extends Lucid {
 }
 ```
 
-Sim, isso é tudo o que você precisa para definir um modelo de Lucid. O Lucid vai descobrir o nome da tabela do banco de dados usando algumas convenções pré-definidas. Por exemplo, o modelo *Usuário* vai procurar a tabela *usuários*.
+Sim, isso é tudo o que você precisa para definir um modelo Lucid. O Lucid descobrirá o nome da tabela do banco de dados usando algumas convenções predefinidas. Por exemplo, o modelo *User* procurará pela tabela *users*.
 
-```
-users (table)
+```bash
+# users (table)
 
 +---------+-----------+--------------------+------------+
 | id (PK) |  username |  email             | password   |
@@ -69,10 +66,11 @@ users (table)
 +---------+-----------+--------------------+------------+
 ```
 
-> NOTE:
-> Certifique-se de usar [Migrações](/database/migrations) para configurar a tabela 'usuários'. O Lucid não cria/altera tabelas de banco de dados para você.
+::: warning NOTA
+Certifique-se de usar [Migrations](/docs/05-database/03-migrations.md) para configurar a tabela `users`. O Lucid não cria/altera tabelas de banco de dados para você.
+:::
 
-Agora vamos dizer que queremos buscar todos os usuários da tabela "usuários". Para simplificar, vamos fazer a busca dos usuários dentro do arquivo "rotas".
+Agora, digamos que queremos buscar todos os usuários da tabela `users`. Para simplificar, faremos a busca dos usuários dentro do arquivo `routes`.
 
 ```js
 // app/Http/routes.js
@@ -86,22 +84,21 @@ Route.get('/users', function * (request, response) {
 })
 ```
 
-1. O método 'all' buscará todos os registros da tabela do banco de dados. Pense nisso como uma consulta "select * from users".
+1. O método `all` buscará todos os registros da tabela do banco de dados. Pense nisso como uma consulta `select * from "users"`.
 
-## Convenção sobre Configuração
-Os modelos herdam um punhado de propriedades da classe base Lucid, o que impede que você reescreva o mesmo código novamente e novamente. Implemente apenas os métodos abaixo se quiser alterar o comportamento padrão de um modelo.
+## Convenção sobre configuração
+Os modelos herdam um punhado de propriedades da classe base Lucid, o que impede que você reescreva o mesmo código repetidamente. Implemente os métodos abaixo somente se quiser alterar o comportamento padrão de um modelo.
 
-#### tabela
-O nome da tabela é a representação em plural sublinhado do nome da sua classe de modelo.
+#### `table`
+O nome da tabela é a representação plural sublinhada do nome da sua classe de modelo.
 
+| Modelo      | Tabela          |
+|-------------|-----------------|
+| User        | users           |
+| Person      | people          |
+| PostComment | post_comments   |
 
-| Modelo | Nome da Tabela |
-|-------|-------------|
-| Usuário | usuários |
-| Pessoa | pessoas |
-| PostComment | post_comments |
-
-Para sobrescrever o nome da tabela convencional, você pode retornar um valor do getter `table`.
+Para substituir o nome da tabela convencional, você pode retornar um valor do getter `table`.
 
 ```js
 class User extends Lucid {
@@ -113,8 +110,8 @@ class User extends Lucid {
 }
 ```
 
-#### chave primária
-Cada modelo precisa ter uma chave primária que é definida como 'id' por padrão. O valor da chave primária é populado automaticamente pelo Lucid sempre que você salva um novo modelo no banco de dados. Além disso, a chave primária é necessária para resolver as relações entre os modelos.
+#### `primaryKey`
+Cada modelo precisa ter uma chave primária que é definida como `id` por padrão. O valor para a chave primária é preenchido automaticamente pelo Lucid sempre que você salva um novo modelo no banco de dados. Além disso, a chave primária é necessária para resolver as relações do modelo.
 
 ```js
 class User extends Model {
@@ -126,10 +123,10 @@ class User extends Model {
 }
 ```
 
-#### conexão
-Parâmetro de conexão ajuda você em usar diferentes conexões de banco de dados para um modelo dado.
+#### `connection`
+O parâmetro Connection ajuda você a usar diferentes conexões de bancos de dados para um determinado modelo.
 
-As conexões do banco de dados são definidas dentro do arquivo `config/database.js`. O Lucid utiliza a conexão padrão definida no mesmo arquivo. No entanto, você pode trocar esse valor para usar qualquer conexão definida em seu arquivo de configuração do banco de dados.
+As conexões de banco de dados são definidas dentro do arquivo `config/database.js`. O Lucid faz uso da conexão *padrão* definida no mesmo arquivo. No entanto, você pode trocar esse valor para usar qualquer conexão definida no arquivo de configuração do seu banco de dados.
 
 ```js
 // config/database.js
@@ -159,8 +156,8 @@ class Report extends Mysql {
 }
 ```
 
-#### incrementando
-Às vezes aplicações dependem de `uuid` como chaves primárias. Como os UUIDs são gerados antes de persistir o registro do banco de dados, eles não são incrementados automaticamente. É importante informar ao Lucid sobre isso antecipadamente.
+#### `incrementing`
+Às vezes, os aplicativos dependem de `uuid` como suas chaves primárias. Como os uuids são gerados antes de persistir o registro do banco de dados, eles não são incrementados automaticamente. Portanto, é importante informar o Lucid sobre o mesmo com antecedência.
 
 ```js
 class User extends Lucid {
@@ -174,11 +171,11 @@ class User extends Lucid {
 }
 ```
 
-## Timestamps
-Timestamps eliminam a necessidade de configurar carimbos de data e hora manualmente toda vez que você cria ou atualiza um registro. Os seguintes carimbos de data e hora são usados para diferentes operações de banco de dados.
+## Carimbos de tempo
+Os carimbos de tempo eliminam a necessidade de configurar carimbos de tempo manualmente sempre que você cria ou atualiza um registro. Os carimbos de tempo a seguir são usados ​​para diferentes operações de banco de dados.
 
-#### createTimestamp
-Create timestamp define o campo do banco de dados a ser usado para adicionar o tempo de criação da linha à tabela do banco de dados. Você pode substituir esta propriedade para especificar um nome de campo diferente ou retornar 'nulo' para desativá-lo.
+#### `createTimestamp`
+Criar carimbo de tempo define o campo do banco de dados a ser usado para adicionar o tempo de criação da linha à tabela do banco de dados. Você pode substituir esta propriedade para especificar um nome de campo diferente ou retornar `null` para desativá-lo.
 
 ```js
 class User extends Lucid {
@@ -190,8 +187,8 @@ class User extends Lucid {
 }
 ```
 
-#### updateTimestamp
-Sempre que você modificar uma linha em uma tabela de banco de dados o `updateTimestamp` será atualizado para a hora atual.
+#### `updateTimestamp`
+Toda vez que você modificar uma linha em uma tabela de banco de dados, `updateTimestamp` será atualizado para a hora atual.
 
 ```js
 class User extends Lucid {
@@ -203,8 +200,8 @@ class User extends Lucid {
 }
 ```
 
-#### deleteTimestamp
-O `deleteTimestamp` se comporta um pouco diferente dos timestamps *create* e *update*. Você só deve retornar o valor desse método se quiser fazer uso de soft deletes.
+#### `deleteTimestamp`
+O `deleteTimestamp` se comporta um pouco diferente dos timestamps *create* e *update*. Você só deve retornar valor deste método se quiser fazer uso de soft deletes.
 
 ```js
 class User extends Lucid {
@@ -216,15 +213,16 @@ class User extends Lucid {
 }
 ```
 
-Soft deletes é um termo para excluir registros atualizando um carimbo de data e hora de exclusão em vez de remover a linha da tabela do banco de dados. Em outras palavras, *soft deletes são exclusões seguras*, onde você nunca perde dados das suas tabelas SQL.
+Soft deletes é um termo para excluir registros atualizando um timestamp de exclusão em vez de remover a linha do banco de dados. Em outras palavras, *soft deletes são exclusões seguras*, onde você nunca perde dados de suas tabelas SQL.
 
-Os soft deletes estão desativados por padrão e para habilitá-los você deve retornar um nome de campo da tabela do método get `deleteTimestamp`.
+Soft deletes são desabilitadas por padrão e para habilitá-las você deve retornar um nome de campo de tabela do getter `deleteTimestamp`.
 
-> NOTE:
-> Você pode usar o método xref:withtrashed[withTrashed] para buscar linhas excluídas com suavidade.
+::: tip DICA
+Você pode usar o método [withTrashed](#withtrashed) para buscar linhas excluídas temporariamente.
+:::
 
-#### dateFormat
-O formato de data especifica o formato da data em que os carimbos de data/hora devem ser salvos. Internamente, os modelos converterão as datas para uma instância [moment.js](http://momentjs.com/). Você pode definir qualquer formato de data válido suportado pelo momentjs.
+#### `dateFormat`
+O formato de data especifica o formato de data em que os carimbos de data/hora devem ser salvos. Internamente, os modelos converterão as datas para a instância [moment.js](http://momentjs.com/). Você pode definir qualquer formato de data válido suportado pelo momentjs.
 
 ```js
 class User extends Lucid {
@@ -236,16 +234,16 @@ class User extends Lucid {
 }
 ```
 
-## Omitindo Campos do JSON de Saída
-Muitas vezes você vai se encontrar omitindo/escolhendo campos dos resultados do banco de dados. Por exemplo: Esconder a *senha do usuário* do JSON de saída. Fazer isso manualmente pode ser tedioso de várias maneiras.
+## Omitindo campos da saída JSON
+Muitas vezes, você se verá omitindo/escolhendo campos dos resultados do banco de dados. Por exemplo: ocultando a *senha do usuário* da saída JSON. Fazer isso manualmente pode ser tedioso de várias maneiras.
 
-1. Você terá um loop manual sobre as linhas e excluir a chave/valor em pares.
-2. Quando você busca relacionamentos, você terá que percorrer todos os registros pais e depois seus registros filhos para excluir a chave/valor par.
+1. Você terá que fazer um loop manualmente nas linhas e excluir o par chave/valor.
+2. Ao buscar relacionamentos, você terá que fazer um loop em todos os registros pais e, em seguida, nos registros filhos para excluir o par chave/valor.
 
-AdonisJs simplifica isso definindo o *visível* ou *oculto* (um de cada vez) no seu modelo.
+O AdonisJs simplifica isso definindo o *visível* ou *oculto* (um de cada vez) no seu modelo.
 
 ```js
-// Defining Hidden
+// Definindo atributos como ccultos
 
 class User extends Lucid {
 
@@ -257,7 +255,7 @@ class User extends Lucid {
 ```
 
 ```js
-// Defining Visible
+// Definindo atributos como visíveis
 
 class Post extends Lucid {
 
@@ -268,8 +266,8 @@ class Post extends Lucid {
 }
 ```
 
-## Query Scopes
-Query scopes são métodos fluentes definidos em seus modelos como métodos estáticos e podem ser usados dentro da cadeia de construtor de consulta. Pense neles como *convenientes métodos descritivos* para estender o construtor de consulta.
+## Escopos de consulta
+Os escopos de consulta são métodos fluentes definidos em seus modelos como métodos estáticos e podem ser usados ​​dentro da cadeia do construtor de consultas. Pense neles como métodos convenientes *descritivos* para estender o construtor de consultas.
 
 ```js
 class User extends Lucid {
@@ -281,22 +279,22 @@ class User extends Lucid {
 }
 ```
 
-Agora para usar o escopo *ativo*, você só precisa chamar o método na cadeia do construtor de consulta.
+Agora, para usar o escopo *ativo*, você só precisa chamar o método na cadeia do construtor de consultas.
 
 ```js
 const activeUsers = yield User.query().active().fetch()
 ```
 
-### Query Scopes Rules
+### Regras dos escopos de consulta
 
 1. Os escopos de consulta são sempre definidos como métodos estáticos.
-2. Você deve apêndice seus métodos com `scope` seguido pelo nome do método em PascalCase. Por exemplo: `latest()` será usado como `latest`.
-3. Você deve chamar o método `query` no seu modelo antes de chamar qualquer escopo de consulta.
+2. Você deve anexar seus métodos com `scope` seguido pelo nome do método *PascalCase*. Por exemplo: `scopeLatest()` será usado como `latest`.
+3. Você deve chamar o método `query` em seu modelo antes de chamar qualquer escopo de consulta.
 
-## Traços
-Infelizmente, JavaScript não tem uma maneira de definir traços/misturas nativamente. *Lucid* modelos torna mais fácil para você adicionar traços aos seus modelos e estendê-los por adicionar novos métodos/propriedades.
+## Traits
+Infelizmente, o Javascript não tem como definir traits/mixins nativamente. Os modelos *Lucid* facilitam a adição de características aos seus modelos e a sua extensão adicionando novos métodos/propriedades.
 
-#### traços
+#### `traits`
 ```js
 class Post extends Lucid {
 
@@ -307,8 +305,8 @@ class Post extends Lucid {
 }
 ```
 
-#### utilizar(trajetória)
-Além disso, você pode adicionar dinamicamente atributos usando o método `use`.
+#### `use(trait)`
+Além disso, você pode adicionar características dinamicamente usando o método `use`.
 
 ```js
 class Post extends Lucid {
@@ -321,14 +319,15 @@ class Post extends Lucid {
 }
 ```
 
-> NOTE:
-> Certifique-se de definir traços apenas uma vez. A redefinição de traços causará múltiplas inscrições de um traço, e seus modelos se comportarão mal. O melhor lugar para definir *dinâmicos* traços é dentro do método `boot` do modelo.
+::: warning NOTA
+Certifique-se de definir características apenas uma vez. Redefinir características causará vários registros de uma tríade, e seus modelos se comportarão mal. O melhor lugar para definir características *dinâmicas* é dentro do método `boot` do modelo.
+:::
 
 ## Operações CRUD
-CRUD é um termo usado para *Criar*, *Ler*, *Atualizar* e *Excluir* registros de uma tabela de banco de dados. Os modelos Lucid oferecem alguns métodos convenientes para facilitar esse processo. Vamos ver como gerenciar *postagens* usando o modelo Post.
+CRUD é um termo usado para *Criar*, *Ler*, *Atualizar* e *Excluir* registros de uma tabela de banco de dados. Os modelos Lucid oferecem vários métodos convenientes para tornar esse processo mais fácil. Vamos dar um exemplo de gerenciamento de *postagens* usando o modelo Post.
 
-```
-posts (table)
+```bash
+// posts table
 
 +------------+-----------------+
 | name       |  type           |
@@ -342,14 +341,14 @@ posts (table)
 ```
 
 ```bash
-# Create Post Model
+# Criar modelo de post
 
 ./ace make:model Post
 ```
 
-Agora vamos usar o modelo de postagem para realizar operações CRUD
+Agora vamos usar o Post Model para executar operações CRUD
 
-#### criar
+#### `create`
 ```js
 const post = new Post()
 post.title = 'Adonis 101'
@@ -358,7 +357,7 @@ post.body  = 'Adonis 101 is an introductory guide for beginners.'
 yield post.save() // SQL Insert
 ```
 
-O método 'salvar' irá persistir o modelo no banco de dados. Se a linha já existir no banco de dados, ele irá atualizá-la. Alternativamente, você também pode usar o método 'criar', que permite passar todos os valores como parâmetro
+O método `save` persistirá o modelo no banco de dados. Se a linha já existir no banco de dados, ele a atualizará. Como alternativa, você também pode usar o método `create`, que permite que você passe todos os valores como um parâmetro
 
 ```js
 const post = yield Post.create({
@@ -367,17 +366,17 @@ const post = yield Post.create({
 })
 ```
 
-#### ler
-A operação de leitura é dividida em duas partes. A primeira é buscar todos os *posts* e outra é buscar um único post usando o `id` ou qualquer outro identificador exclusivo.
+#### `read`
+A operação de leitura é dividida em dois segmentos. O primeiro é buscar todos os *posts* e o outro é buscar um único post usando `id` ou qualquer outro identificador exclusivo.
 
 ```js
-// Fetching All Posts
+// Obtendo todas as postagens
 
 const posts = yield Post.all()
 ```
 
 ```js
-// Fetching A Single Post
+// Buscando uma única postagem
 
 const postId = request.param('id')
 const post = yield Post.find(postId)
@@ -390,8 +389,8 @@ if (post) {
 response.send('Sorry, cannot find the selected found')
 ```
 
-#### update
-A operação de atualização é realizada em uma instância de modelo existente. Em cenários gerais, você terá um ID de uma linha que deseja atualizar.
+#### `update`
+A operação de atualização é realizada em uma instância de modelo existente. Em cenários gerais, você terá um id de uma linha que deseja atualizar.
 
 ```js
 const post = yield Post.findBy('id', 1)
@@ -400,7 +399,7 @@ post.body = 'Adding some new content'
 yield post.save() // SQL Update
 ```
 
-Alternativamente, você também pode usar o método `fill` para passar todas as novas pares chave/valor como um objeto.
+Alternativamente, você também pode usar o método `fill` para passar todos os novos pares de chave/valor como um objeto.
 
 ```js
 const post = yield Post.findBy('id', 1)
@@ -409,15 +408,15 @@ post.fill({body: 'Adding some new content'})
 yield post.save() // SQL Update
 ```
 
-#### apagar
-A operação de exclusão também é executada em uma instância de modelo existente. Se você tiver ativado o xref:_deletetimestamp[softDeletes], as linhas não serão excluídas do SQL. No entanto, a instância do modelo será considerada excluída.
+#### `delete`
+A operação de exclusão também é realizada em uma instância de modelo existente. Se você ativou xref:_deletetimestamp[softDeletes], as linhas não serão excluídas do SQL. No entanto, a instância do modelo será considerada excluída.
 
 ```js
 const post = yield Post.findBy('id', 1)
 yield post.delete()
 ```
 
-Além disso, a partir deste ponto o modelo de instância será congelado para edições. No entanto, você ainda pode ler dados da instância existente do modelo, mas não poderá editá-lo mais.
+Além disso, a partir deste ponto, a instância do modelo *congelará para edições*. No entanto, você ainda pode ler dados da instância do modelo existente, mas não poderá mais editá-los.
 
 ```js
 const post = yield Post.findById(1)
@@ -425,34 +424,34 @@ yield post.delete()
 
 console.log(post.title) // Adonis 101
 
-post.title = 'New title' // will throw RuntimeException
+post.title = 'New title' //lançará RuntimeException
 ```
 
-## Métodos lúcidos
-Lucid internamente utiliza [Provedor de Banco de Dados](/database/query-builder), o que significa que todos os métodos do provedor de banco de dados estão disponíveis para seus modelos. Além disso, os seguintes métodos foram adicionados para conveniência.
+## Métodos Lucid
+O Lucid internamente faz uso do [Database Provider](/markdown/05-database/02-query-builder.md), o que significa que todos os métodos do Database Provider estão disponíveis para seus modelos. Os métodos abaixo também foram adicionados para sua conveniência.
 
-#### query()
-O método 'query' retornará a instância do construtor de consultas, o que significa que você construirá suas consultas com a mesma facilidade que faria com o provedor de banco de dados.
+#### `query()`
+O método `query` retornará a instância do query builder, o que significa que você cria suas consultas com a mesma facilidade que faria com o Database Provider.
 
 ```js
 yield Post.query().where('title', 'Adonis 101').fetch()
 ```
 
-#### fetch
-É importante entender o papel do método `fetch`. O método fetch executará a cadeia de consulta, mas também garante retornar uma coleção de instâncias do modelo.
+#### `fetch`
+É importante entender a função do método `fetch`. O método Fetch executará a cadeia de consultas, mas também garante o retorno de uma coleção de instâncias de modelo.
 
-Que significa cada item dentro da coleção array não será um objeto regular. Em vez disso, será uma instância completa do modelo. Por exemplo:
+O que significa que cada item dentro da matriz de coleção não será um Objeto regular. Em vez disso, será uma instância de modelo completa. Por exemplo:
 
 ```js
-// Without Fetch
+// Sem buscar
 
 const posts = yield Post.query().where('title', 'Adonis 101')
 console.log(posts)
 ```
 
-Saída:
+```js
+// Saída
 
-```
 [
   {
     id: 1,
@@ -464,16 +463,16 @@ Saída:
 ]
 ```
 
-Com Fetch:
-
 ```js
+// Com Busca
+
 const posts = yield Post.query().where('title', 'Adonis 101').fetch()
 console.log(posts.value())
 ```
 
-Saída:
+```js
+// Saída
 
-```
 [
   Post {
     attributes: {
@@ -488,16 +487,16 @@ Saída:
 ]
 ```
 
-Mais tarde é uma matriz de instâncias de modelo, que tem seus benefícios. Nós falaremos sobre eles em um guia diferente.
+Mais tarde, há uma matriz de instâncias de modelo, que tem seus benefícios. Falaremos sobre elas em um guia diferente.
 
-#### first
-O método `first` retornará apenas a primeira linha correspondente como uma instância do modelo. Se nenhuma linha tiver sido encontrada, ele retornará `nulo`.
+#### `first`
+O método `first` retornará apenas a primeira linha correspondente como a instância do modelo. Se nenhuma linha for encontrada, ele retornará `null`.
 
 ```js
 const post = yield Post.query().where('title', 'Adonis 101').first()
 ```
 
-#### findBy(chave, valor)
+#### `findBy(key, value)`
 Encontre uma única linha para um determinado par chave/valor.
 
 ```js
@@ -506,37 +505,37 @@ yield Post.findBy('body', '...')
 yield Post.findBy('id', '...')
 ```
 
-#### encontrar(valor)
-O método `find` é semelhante ao método `findBy` da xref:_find_by_key_value(findBy), mas em vez disso utiliza a chave primária como chave para buscar a linha.
+#### `find(value)`
+O método `find` é semelhante ao método [findBy](#findbykey-value) em vez disso, ele faz uso da [primaryKey](#primarykey) como a chave para buscar a linha.
 
 ```js
 yield Post.find(1)
 ```
 
-#### all()
-Retorna todas as linhas da tabela correspondente do banco de dados.
+#### `all()`
+Retorna todas as linhas da tabela de banco de dados correspondente.
 
 ```js
 yield Post.all()
 ```
 
-#### ids()
-Retorna um array com todos os *ids* da tabela correspondente do banco de dados.
+#### `ids()`
+Retorna uma matriz de todos os *ids* da tabela de banco de dados correspondente.
 
 ```js
 const ids = yield Post.ids()
 ```
 
-#### pair(lhs, rhs)
-O método `pair` retornará um objeto plano com uma chave/valor par de *lhs* e *rhs*. É útil para preencher as opções da caixa de seleção.
+#### `pair(lhs, rhs)`
+O método `pair` retornará um objeto plano com um par chave/valor de *lhs* e *rhs*. É útil para preencher as opções da caixa de seleção.
 
 ```js
 const countries = yield Country.pair('code', 'name')
 ```
 
-Saída:
-
 ```js
+// Saída
+
 {
   ind: 'India',
   us: 'United States',
@@ -544,36 +543,36 @@ Saída:
 }
 ```
 
-#### paginate(page, [perPage=20])
-O método `paginate` torna tão simples a paginação sobre registros de banco de dados.
+#### `paginate(page, [perPage=20])`
+O método `paginate` simplifica muito a paginação de registros do banco de dados.
 
 ```js
 const posts = yield Post.paginate(request.input('page'))
 ```
 
-#### Escolha uma das seguintes opções:
-O método `pick` irá selecionar o número dado de registros do banco de dados.
+#### `pick([limit=1])`
+O método `pick` selecionará o número fornecido de registros do banco de dados.
 
 ```js
 const posts = yield Post.pick(2)
 ```
 
-#### pickInverse( [limit=1] )
-O método `pickInverse` funciona de forma semelhante ao método `pick`, porém ele irá selecionar as linhas com a cláusula `desc`.
+#### `pickInverse([limit=1])`
+O `pickInverse` funciona de forma semelhante ao método `pick`, mas selecionará linhas com a cláusula `desc`.
 
 ```js
 const posts = yield Post.pickInverse(2)
 ```
 
-#### criar(valores)
+#### `create(values)`
 O método `create` é usado para criar uma nova linha no banco de dados
 
 ```js
 const user = yield User.create({ username: 'virk', email: 'virk@adonisjs.com' })
 ```
 
-#### salvar()
-Criar/atualizar uma instância de modelo
+#### `save()`
+Criar/Atualizar uma instância de modelo
 
 ```js
 const user = new User()
@@ -583,44 +582,44 @@ user.email = 'virk@adonisjs.com'
 yield user.save()
 ```
 
-#### createMany
-Crie múltiplas linhas de uma vez. Este método retornará um array de instâncias do modelo.
+#### `createMany`
+Criar várias linhas de uma vez. Este método retornará uma matriz de instâncias de modelo.
 
 ```js
 const users = yield User.createMany([{...}, {...}])
 ```
 
-#### first
+#### `first`
 Selecione a primeira linha do banco de dados.
 
 ```js
 const user = yield User.first()
 ```
 
-#### last
+#### `last`
 Selecione a última linha do banco de dados.
 
 ```js
 const user = yield User.last()
 ```
 
-## Falhar cedo
-Lucid também possui alguns métodos úteis que lançam exceções quando não conseguem encontrar uma determinada linha usando os métodos 'find' ou 'findBy'. Alguns programadores acham mais simples lançar exceções e capturá-las posteriormente dentro de um manipulador global para evitar cláusulas 'if/else' em todos os lugares.
+## Falha inicial
+O Lucid também tem alguns métodos úteis que lançarão exceções quando não for possível encontrar uma determinada linha usando o método `find` ou `findBy`. Alguns programadores acham mais simples lançar exceções e capturá-las mais tarde dentro de um manipulador global para evitar a cláusula `if/else` em todos os lugares.
 
-#### findOrFail(valor)
+#### `findOrFail(value)`
 
 ```js
 const userId = request.param('id')
 const user = yield User.findOrFail(userId)
 ```
 
-#### findByOrFail(chave, valor)
+#### `findByOrFail(key, value)`
 
 ```js
 const user = yield User.findByOrFail('username', 'virk')
 ```
 
-Se quiser, você pode envolver seus métodos 'orFail' dentro de um bloco 'try/catch', ou você pode tratá-los globalmente dentro do arquivo 'app/Listeners/Http.js'.
+Se desejar, você pode encapsular seus métodos `orFail` dentro de um bloco `try/catch` ou pode manipulá-los globalmente dentro do arquivo `app/Listeners/Http.js`.
 
 ```js
 // app/Listeners/Http.js
@@ -633,8 +632,8 @@ Http.handleError = function * (error, request, response) {
 }
 ```
 
-#### findOrCreate (ondeAtributos, valores)
-O método `findOrCreate` é um atalho para encontrar um registro e se não for encontrado, um novo registro será criado e retornado no local.
+#### `findOrCreate(whereAttributes, values)`
+O método `findOrCreate` é um atalho para encontrar um registro e, se não for encontrado, um novo registro será criado e retornado imediatamente.
 
 ```js
 const user = yield User.findOrCreate(
@@ -643,17 +642,17 @@ const user = yield User.findOrCreate(
 )
 ```
 
-#### withTrashed
-O método `withTrashed` pode ser usado para buscar linhas excluídas suavemente.
+#### `withTrashed`
+O método `withTrashed` pode ser usado para buscar linhas excluídas temporariamente.
 
 ```js
 const users = yield User.query().withTrashed().fetch()
 ```
 
-## Usando Transações
-AdonisJS oferece suporte de primeira classe para executar transações SQL usando o [Provedor de Banco de Dados](/database/query-builder/_#database_transactions). Além disso, seus modelos Lucid podem usar transações ao criar, atualizar ou excluir registros.
+## Usando transações
+O AdonisJs tem suporte de primeira classe para executar transações SQL usando o [Provedor de banco de dados](/docs/05-database/02-query-builder.md#database-transactions). Além disso, seus modelos Lucid podem usar transações ao criar, atualizar ou excluir registros.
 
-#### useTransaction
+#### `useTransaction`
 ```js
 const Database = use('Database')
 const trx = yield Database.beginTransaction() <1>
@@ -666,6 +665,6 @@ yield user.save()
 trx.commit() <3>
 ```
 
-1. Você sempre usa o provedor de banco de dados para iniciar uma nova transação. A razão pela qual desacoplamos as transações dos modelos Lucid é oferecer a flexibilidade de usar a mesma instância de transação de diferentes modelos.
-2. O método `useTransaction` usará a instância de transação para executar as próximas operações SQL.
-3. O método 'commit' permite que você confirme a transação ou faça um 'rollback' se algo inesperado acontecer.
+1. Você sempre usa o provedor de banco de dados para iniciar uma nova transação. O motivo pelo qual desacoplamos as transações dos modelos Lucid é oferecer a flexibilidade de usar a mesma instância de transação de modelos diferentes.
+2. O método `useTransaction` usará a instância da transação para executar as próximas operações SQL.
+3. O método `commit` lhe dá a habilidade de confirmar a transação ou `rollback` dela se algo inesperado acontecer.

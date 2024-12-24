@@ -1,23 +1,23 @@
-# Configuração do Banco de Dados
+# Configuração do banco de dados
 
-AdonisJS tem fora-da-caixa para bancos de dados SQL e oferece uma API unificada JavaScript para interagir com bancos de dados. Abaixo está a lista de bancos de dados suportados.
+O AdonisJs vem pronto para uso para bancos de dados SQL e oferece uma API Javascript unificada para interagir com bancos de dados. Abaixo está a lista de bancos de dados suportados.
 
-## Suporte a Bancos de Dados
+## Bancos de dados suportados
 
-PostgreSQL
+* PostgreSQL
 * SQLite
-MySQL
-MariaDB
+* MySQL
+* MariaDB
 * Oracle
 * MSSQL
 
 ## Configuração
-Todo aplicativo AdonisJS vem com suporte pré-configurado para link: query-builder [Builder de consulta] e link: lucid [Lucid ORM], tudo o que você precisa fazer é ajustar a configuração conforme suas necessidades.
+Todo aplicativo AdonisJs vem com o suporte pré-configurado para [Query builder](/docs/05-database/02-query-builder.md) e [Lucid Orm](/docs/06-lucid/01-lucid.md), tudo o que você precisa fazer é ajustar a configuração conforme suas necessidades.
 
-Por padrão a configuração é para usar o SQLite como banco de dados em desenvolvimento, que pode ser alterado usando o arquivo `config/database.js`.
+Por padrão, a configuração é definida para usar o SQLite como o banco de dados em desenvolvimento, que pode ser alterado usando o arquivo `config/database.js`.
 
 ```js
-// .config/database.js
+// config/database.js
 
 module.exports = {
   connection: Env.get('DB_CONNECTION', 'sqlite'), <1>
@@ -32,14 +32,14 @@ module.exports = {
 }
 ```
 
-1. A propriedade 'conexão' define a conexão padrão a ser usada para fazer consultas SQL.
-2. A configuração de conexão individual é definida ao lado do nome da conexão. Você pode criar vários blocos de configuração.
+1. A propriedade `connection` define a conexão padrão a ser usada para fazer consultas SQL.
+2. A configuração de conexão individual é definida ao lado do nome da conexão. Você está livre para criar vários blocos de configuração.
 
 ## Exemplo básico
-Vamos começar a jogar o provedor de banco de dados selecionando todos os usuários da tabela "usuários".
+Vamos começar a tocar o provedor de banco de dados selecionando todos os usuários da tabela `users`.
 
 ```js
-// Route
+// Rota
 
 Route.get('/users', 'UsersController.index')
 ```
@@ -61,20 +61,21 @@ class UsersController {
 }
 ```
 
-> DICA:
-> A sintaxe do construtor de consultas é fluente o que significa que você pode encadear métodos para construir uma consulta SQL completa. Além disso, você não terá que alterar uma única linha de código quando mudar entre vários bancos de dados.
+::: tip DICA
+A sintaxe do construtor de consultas é fluente, o que significa que você pode encadear métodos para construir uma consulta SQL completa. Além disso, você não terá que alterar uma linha de código ao alternar entre vários bancos de dados.
+:::
 
-## Drivers de Banco de Dados & Suas Configurações
-Como o Adonis suporta todos os bancos de dados SQL populares, você precisa instalar seus drivers equivalentes do npm e configurá-los conforme definido abaixo.
+## Drivers de banco de dados e suas configurações
+Como o AdonisJs suporta todos os bancos de dados SQL populares, você tem que instalar seus drivers equivalentes do npm e configurá-los conforme definido abaixo.
 
 ### MySQL
 
-#### Disponível Drivers
+#### Drivers disponíveis:
 
-[mysql](https://www.npmjs.com/package/mysql)
-[mysql2](https://www.npmjs.com/package/mysql2)
+* [mysql](https://www.npmjs.com/package/mysql)
+* [mysql2](https://www.npmjs.com/package/mysql2)
 
-#### Configuração
+#### Configuração:
 
 ```js
 mysql: {
@@ -89,7 +90,7 @@ mysql: {
 }
 ```
 
-Além disso, você pode definir um caminho de soquete para construir a conexão MySQL. Dar o caminho do soquete ignorará as opções de host e porta.
+Além disso, você pode definir um caminho de soquete para construir a conexão MySQL. Fornecer o caminho do soquete ignorará as opções de host e porta.
 
 ```js
 mysql: {
@@ -105,11 +106,11 @@ mysql: {
 
 ### SQLite
 
-#### Disponível Drivers
+#### Driver disponível:
 
-[sqlite3](https://www.npmjs.com/package/sqlite3)
+* [sqlite3](https://www.npmjs.com/package/sqlite3)
 
-#### Configuração
+#### Configuração:
 
 ```js
 sqlite: {
@@ -122,11 +123,11 @@ sqlite: {
 
 ### PostgreSQL
 
-#### Disponível Drivers
+#### Driver disponível:
 
-[pg](https://www.npmjs.com/package/pg)
+* [pg](https://www.npmjs.com/package/pg)
 
-#### Configuração
+#### Configuração:
 
 ```js
 pg: {
@@ -153,12 +154,12 @@ pg: {
 
 ### Oracle
 
-#### Disponível Drivers
+#### Drivers disponíveis:
 
-Oracle
-strong-oracle
+* [oracle](https://www.npmjs.com/package/oracle)
+* [strong-oracle](https://www.npmjs.com/package/strong-oracle)
 
-#### Configuração
+#### Configuração:
 
 ```js
 oracle: {
@@ -175,11 +176,11 @@ oracle: {
 
 ### MariaDB
 
-#### Disponível Drivers
+#### Driver disponível:
 
-MariaDB
+* [mariasql](https://www.npmjs.com/package/mariasql)
 
-#### Configuração
+#### Configuração:
 
 ```js
 maria: {
@@ -196,11 +197,11 @@ maria: {
 
 ### MSSQL
 
-#### Disponível Drivers
+#### Driver disponível:
 
-[mssql](https://www.npmjs.com/package/mssql)
+* [mssql](https://www.npmjs.com/package/mssql)
 
-#### Configuração
+#### Configuração:
 
 ```js
 mssql: {
@@ -216,13 +217,13 @@ mssql: {
 ```
 
 ## Depuração
-Depurar consultas de banco de dados são úteis para verificar o tempo de resposta do banco de dados ou para garantir que o construtor de consulta realiza a consulta correta. Vamos passar por algumas estratégias diferentes de depuração.
+A depuração de consultas de banco de dados é útil para verificar o tempo de resposta do banco de dados ou para garantir que o construtor de consultas execute o consulta correta. Vamos analisar algumas estratégias de depuração diferentes.
 
 ### Globalmente
-A maneira mais fácil de depurar consultas globalmente é definir a bandeira "debug" no bloco de configuração.
+A maneira mais fácil de depurar consultas globalmente é definir o sinalizador `debug` no bloco de configuração.
 
 ```js
-// .config/database.js
+// config/database.js
 
 mysql: {
   client: 'mysql',
@@ -231,10 +232,10 @@ mysql: {
 }
 ```
 
-Além disso, você pode ativar o depuração dentro do seu código escutando os eventos 'query' ou 'sql' no provedor de banco de dados. O melhor lugar para registrar um ouvinte é no arquivo 'app/Listeners/Http.js'.
+Além disso, você pode ativar a depuração no seu código ouvindo os eventos `query` ou `sql` no provedor de banco de dados. O melhor lugar para registrar um ouvinte é no arquivo `app/Listeners/Http.js`.
 
 ```js
-// .app/Listeners/Http.js
+// app/Listeners/Http.js
 
 Http.onStart = function () {
   Database.on('query', console.log)
@@ -244,13 +245,13 @@ Http.onStart = function () {
 
 A única diferença entre `query` e o evento `sql` é a saída.
 
-#### Saída de evento SQL
+Saída do evento SQL:
 
-```mysql
+```bash
 + 1.38 ms : select * from `users` where `username` = 'doe'
 ```
 
-#### Consulta saída do evento
+Saída do evento de consulta:
 
 ```js
 {
@@ -261,8 +262,8 @@ A única diferença entre `query` e o evento `sql` é a saída.
 }
 ```
 
-### Consulta Individual
-Além disso, você pode depurar uma única consulta por meio da cadeia do ouvinte de eventos quando executar a consulta.
+### Consulta individual
+Além disso, você pode depurar uma única consulta encadeando o ouvinte de eventos ao executar a consulta.
 
 ```js
 yield Database

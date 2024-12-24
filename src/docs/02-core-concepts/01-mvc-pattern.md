@@ -1,14 +1,15 @@
 # Padrão MVC
 
-O padrão MVC separa a aplicação em três componentes lógicos principais conhecidos como *Modelo*, *Visualização* e *Controlador*. O Adonis suporta todos eles e torna simples a sua união. Além disso, o roteador do Adonis também desempenha um papel importante no tratamento das requisições HTTP e na passagem para o controlador.
+O padrão MVC separa o aplicativo em três componentes lógicos principais conhecidos como *Modelo*, *Visualização* e *Controlador*. O AdonisJs suporta todos os três e torna muito simples uni-los. Junto com isso, o Adonis Router também desempenha um papel importante no tratamento de solicitações HTTP e na passagem delas para o controlador.
 
-![Imagem](/docs/assets/MVC-Flow-Chart_ccz2zb.jpg)
+![imagem](/docs/assets/MVC-Flow-Chart_ccz2zb.jpg)
 
 ## Modelo
-O modelo é a camada de dados responsável por buscar dados do banco de dados que no caso de AdonisJS é SQL. Para tornar o processo de busca de dados simples e seguro, o AdonisJS vem com um ORM lindo chamado link:lucid [Lucid].
+O modelo é a camada de dados responsável por buscar dados do banco de dados, que é SQL no caso do AdonisJs. Para tornar o processo de busca de dados simples e seguro, o AdonisJs vem com um belo ORM chamado [Lucid](/docs/06-lucid/01-lucid.md).
 
 ```js
 // Definindo um modelo
+
 'use strict'
 
 const Lucid = use('Lucid')
@@ -31,9 +32,9 @@ const activeUsers = yield User.query().where('status', 'active').fetch()
 ```
 
 ## Controlador
-Controller, como o nome sugere, controla o fluxo de uma requisição HTTP. Ele utiliza o *Modelo* para buscar os dados necessários e passar esses dados para a *Visualização* para criar uma página HTML.
+Controlador, como o nome sugere, controla o fluxo de uma solicitação HTTP. Ele faz uso do *Modelo* para buscar os dados necessários e passar esses dados para a *Visualização* para criar uma página HTML.
 
-Controladores também contêm lógica de negócios para sua aplicação, enquanto você muitas vezes encontra pessoas abstraindo a lógica de domínio em serviços reutilizáveis, mas ainda assim esses serviços são consumidos diretamente pelos controladores, e você nunca acessa eles dentro dos modelos ou visualizações.
+Os controladores também contêm lógica de negócios/domínio para seu aplicativo, enquanto você frequentemente encontrará pessoas abstraindo a lógica de domínio em serviços reutilizáveis, mas ainda assim esses serviços são consumidos diretamente pelos controladores, e você nunca os acessa dentro dos modelos ou visualizações.
 
 ```js
 // Exemplo de controlador
@@ -50,11 +51,11 @@ class UsersController {
 }
 ```
 
-1. Aqui nós importamos o *Modelo de Usuário*.
-2. Em seguida, renderizamos o modelo "users/list.njk" e passamos o objeto do usuário para que ele possa ser usado pelo modelo para exibir uma lista de usuários.
+1. Aqui importamos o *Modelo de Usuário*.
+2. Em seguida, renderizamos a visualização `users/list.njk` e passamos a ela o objeto do usuário que pode ser usado pela visualização para exibir uma lista de usuários.
 
-## Ver
-A visualização é a parte final do fluxo, ela utiliza os dados dinâmicos e renderiza HTML. Para manter suas visualizações declarativas, o AdonisJS oferece uma sintaxe de vinculação de dados agradável para consumir dados dinâmicos e utilizá-los. Você pode aprender mais sobre a sintaxe de vinculação de dados aqui: templating[link].
+## Visualização
+A visualização é a parte final do fluxo, ela faz uso dos dados dinâmicos e renderiza HTML. Para manter suas visualizações declarativas, o AdonisJs oferece uma sintaxe de vinculação de dados agradável para consumir dados dinâmicos e fazer uso deles. Você pode aprender mais sobre o link de templating [aqui](/src/docs/04-views/02-templating.md).
 
 ```twig
 // Exemplo de visualização

@@ -1,26 +1,24 @@
-# Criando Artigos de Blog
+# Criando Posts de Blog
 
-No último [tutorial](/tutorial/04-list-blog-posts) nós exibimos a lista de postagens do blog, buscando-as diretamente do banco de dados. Agora vamos dar um passo à frente e adicionar a funcionalidade de criação de postagens.
+No último [tutorial](/docs/08-tutorial/04-list-blog-posts.md) exibimos a lista de posts de blog buscando-os no banco de dados. Agora vamos dar um passo à frente e adicionar a funcionalidade de criação de posts.
 
-Desta vez, exploraremos muitos recursos interessantes do AdonisJs incluindo o Form Builder e o Expressive [Validator].
+Desta vez, vamos explorar muitos recursos interessantes do AdonisJs, incluindo o Form Builder e o expressivo [Validator](/docs/07-common-web-tools/11-validator.md).
 
 ## Criando Rotas e Visualizações
-Registre rapidamente um par de novas rotas dentro do arquivo de rotas.
+Registre rapidamente algumas novas rotas dentro do arquivo de rotas.
 
 ```js
 // app/Http/routes.js
-
 Route.get('posts/create', 'PostsController.create')
 Route.post('posts', 'PostsController.store')
 ```
 
-Registramos duas rotas. Uma é para mostrar o formulário de criação do post e a outra é para lidar com os dados *POST* do formulário enviado.
+Registramos duas rotas. Uma é para mostrar o formulário para criar o post, e a outra é para manipular os dados *POST* do formulário enviado.
 
-Vamos criar os métodos `create` e `store` no controlador existente de Postagens.
+Vamos criar os métodos `create` e `store` no PostsController existente.
 
 ```js
 // app/Http/Controllers/PostsController.js
-
 'use strict'
 
 class PostsController {
@@ -38,25 +36,22 @@ class PostsController {
 module.exports = PostsController
 ```
 
-Finalmente, precisamos criar a visão usando o comando ace.
+Finalmente, precisamos criar a visualização usando o comando ace.
 
 ```bash
 ./ace make:view posts/create
 ```
 
-Saída:
-
-```
+```bash
+# Output
 create: resources/views/posts/create.njk
 ```
 
-## Formulário de construção
-Nós utilizaremos o [Formulário de Criação de Conteúdo](' /views/form-builder') para configurar o formulário para criar um novo post.
-
+## Form Builder
+Usaremos o [Form Builder](/docs/04-views/03-form-builder.md) para configurar o formulário para criar uma nova postagem.
 
 ```twig
-{# resources/views/posts/create.njk #}
-
+<!-- resources/views/posts/create.njk -->
 {% extends 'master' %}
 
 {% block content %}
@@ -80,30 +75,31 @@ Nós utilizaremos o [Formulário de Criação de Conteúdo](' /views/form-builde
 {% endblock %}
 ```
 
-Quanta coisa para cobrir aqui. O construtor de formulários fornece alguns métodos convenientes para criar formulários HTML.
+Há bastante coisa para abordar aqui. O Form Builder fornece alguns métodos convenientes para criar formulários HTML.
 
-1. O `form.open` cria a tag de formulário. Aqui, usamos a propriedade *action* para definir o método do controlador para lidar com a solicitação POST. A ação e o método do formulário serão preenchidos automaticamente para você.
-2. Todos os formulários são protegidos por [proteção CSRF](/segurança/proteção-csrf). Então precisamos definir o *csrfField* para garantir que possamos enviar formulários sem nenhuma restrição.
-3. Tudo o mais faz parte da API padrão do Formulário para criar os campos de entrada e o botão Enviar.
+1. O `form.open` cria a tag do formulário. Aqui usamos a propriedade *action* para definir o método do controlador para manipular a solicitação POST. A ação do formulário e o método serão preenchidos automaticamente para você.
 
-Visite [http://localhost:3333/posts/create](http://localhost:3333/posts/create) e você verá um formulário bonito para criar os posts.
+2. Todos os formulários são protegidos por [proteção CSRF](/docs/09-security/03-csrf-protection.md). Então precisamos definir o *csrfField* para garantir que podemos enviar formulários sem nenhuma restrição.
 
-![Imagem](/docs/assets/create-posts_xgghpo.png)
+3. Todo o resto é parte da API padrão do Form Builder para criar os campos de entrada e o botão de envio.
 
-## Validação de entradas de formulário
-Validar entrada do usuário é tão importante quanto você nunca pode confiar nos dados fornecidos para você. O AdonisJS tem um validador bonito para tornar esta tarefa muito mais fácil para você.
+Visite [http://localhost:3333/posts/create](http://localhost:3333/posts/create) e você verá um formulário bonito para criar as postagens.
 
-[Validator](/common-web-tools/validator) não faz parte da instalação básica, o que significa que precisamos puxá-lo do npm.
+![imagem](/docs/assets/create-posts_xgghpo.png)
+
+## Validando entradas de formulário
+Validar a entrada do usuário é muito importante, pois você nunca pode confiar nos dados fornecidos a você. O AdonisJs tem um validador bonito para tornar essa tarefa muito mais fácil para você.
+
+O [Validator](/src/docs/07-common-web-tools/11-validator.md) não faz parte da instalação base, o que significa que precisamos puxa-lo do npm.
 
 ```bash
 npm i --save adonis-validation-provider
 ```
 
-Em seguida, precisamos registrar o provedor e criar um apelido. Não se preocupe se você não entender completamente os provedores. Isso não é algo que você deve saber desde o primeiro dia.
+Em seguida, precisamos registrar o provedor e criar um alias. Não se preocupe se você não entender os provedores completamente. Não é algo que você deve saber desde o primeiro dia.
 
 ```js
 // bootstrap/app.js
-
 const providers = [
   // ...
   'adonis-validation-provider/providers/ValidatorProvider'
@@ -113,7 +109,6 @@ const providers = [
 
 ```js
 // bootstrap/app.js
-
 const aliases = {
   // ...
   Validator: 'Adonis/Addons/Validator'
@@ -121,7 +116,7 @@ const aliases = {
 }
 ```
 
-Isso é tudo o que é necessário na frente de configuração. Agora vamos validar a entrada do formulário dentro do *PostsController*.
+Isso é tudo necessário na frente da configuração. Agora vamos validar a entrada do formulário dentro de *PostsController*.
 
 ```js
 // app/Http/Controllers/PostsController.js
@@ -154,24 +149,22 @@ class PostsController {
     response.redirect('/')
   }
 
-
 }
 
 module.exports = PostsController
 ```
 
 1. O método `request.only` buscará os valores das chaves definidas.
-2. Aqui validamos a entrada do usuário com as regras definidas usando o método "validate".
-Se a validação falhar, redirecionamos o usuário de volta e exibimos a mensagem de erro junto com os valores originais para "título" e "conteúdo".
-4. Se a validação passar, criamos o post usando o método `Post.create`.
+2. Aqui validamos a entrada do usuário com as regras definidas usando o método `validate`.
+3. Se a validação falhar, redirecionamos o usuário de volta e exibimos a *mensagem de erro* junto com os valores originais para `title` e `content`.
+4. Se a validação for aprovada, criamos a postagem usando o método `Post.create`.
 
-Em seguida, precisamos fazer algumas modificações dentro do nosso arquivo *create.njk* para mostrar os erros retornados como mensagens de flash.
+Em seguida, precisamos fazer algumas modificações dentro da nossa visualização *create.njk* para mostrar os erros retornados como mensagens flash.
 
-
-Insira o seguinte trecho de código logo antes da tag `form.open`.
+Insira o trecho de código abaixo antes da tag `form.open`.
 
 ```twig
-{# resources/views/posts/create.njk #}
+<!-- resources/views/posts/create.njk -->
 
 {% if old('errors') %}
   <div class="alert alert-danger">
@@ -182,10 +175,10 @@ Insira o seguinte trecho de código logo antes da tag `form.open`.
 {% endif %}
 ```
 
-O método `old` é usado para buscar o valor de uma determinada chave dos mensagens flash. Aqui precisamos buscar a chave "errors" para obter os erros enviados pelo Controlador.
+O método `old` é usado para buscar valor para uma determinada chave de mensagens flash. Aqui, precisamos extrair a chave de erros para obter os erros enviados do Controlador.
 
-Vamos atualizar a página e tentar criar um novo post com título vazio e conteúdo vazio.
+Vamos atualizar a página e tentar criar uma nova postagem com título e conteúdo vazios.
 
-Não foi possível carregar a imagem.
+![imagem](/docs/assets/validation-failed_dz2d79.png)
 
-Uau, isso é divertido. Nós temos um formulário funcional com validação super fácil e tratamento de erros no lugar.
+Uau, isso é divertido. Temos um formulário funcional com validação super fácil e tratamento de erros no local.

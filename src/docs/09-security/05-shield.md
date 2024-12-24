@@ -1,12 +1,13 @@
-# Shield Middleware
+# Middleware Shield
 
-Além de [Cors](/security/cors) e [CSRF](/security/csrf-protection), o Adonis também previne seus aplicativos web contra outros ataques maliciosos como XSS, Sniffing de Conteúdo, Injeção de Script, etc. Todo novo aplicativo é pré-configurado para usar o middleware 'shield', que mantém seu site seguro.
+Além de [CORS](/docs/09-security/02-cors.md) e [CSRF](/docs/09-security/03-csrf-protection.md), o AdonisJs também previne seus aplicativos da web de outros ataques de malware como *XSS*, *Content Sniffing*, *Script Injection*, etc. Cada novo aplicativo é pré-configurado para fazer uso do middleware `shield` que mantém seus sites seguros.
 
-> NOTE
-> Não existe uma bala de prata para proteger completamente seus sites. O AdonisJS como um framework oferece várias maneiras de prevenir ataques comuns na web.
+::: info NOTA
+Não existe uma solução mágica para proteger seus sites completamente. O AdonisJs como uma estrutura oferece várias maneiras de prevenir ataques comuns da web.
+:::
 
-## Configuração & Instalação
-Certifique-se de que o *shield* middleware seja adicionado à lista de middleware global dentro do arquivo `app/Http/kernel.js`.
+## Configuração e configuração
+Certifique-se de que o middleware *shield* seja adicionado à lista de middleware global dentro do arquivo `app/Http/kernel.js`.
 
 ```js
 // app/Http/kernel.js
@@ -17,16 +18,15 @@ const globalMiddlewares = [
 ]
 ```
 
-O arquivo de configuração do escudo está disponível dentro do arquivo config/shield.js. Você é livre para configurá-lo conforme suas necessidades.
+O arquivo de configuração para shield está disponível dentro do arquivo `config/shield.js`. Você é livre para configurá-lo conforme suas necessidades.
 
 ## Política de Segurança de Conteúdo
+A Política de Segurança de Conteúdo (CSP) ajuda você a definir as fontes confiáveis ​​para carregar e executar *scripts*, *estilos*, *fontes* e vários outros recursos.
 
-A Política de Segurança de Conteúdo (CSP) ajuda a definir as fontes confiáveis para carregar e executar scripts, estilos, fontes e outros recursos.
-
-É uma boa prática ser estrito ao permitir a execução de scripts de diferentes fontes. Você deve ler este interessante artigo por [HTML5 rocks](http://www.html5rocks.com/pt-br/tutorials/security/content-security-policy).
+É uma boa prática ser rigoroso ao permitir a execução de scripts de diferentes fontes. Você deve ler este artigo interessante de [HTML5 rocks](http://www.html5rocks.com/en/tutorials/security/content-security-policy).
 
 ### Configuração
-O bloco 'csp' dentro do arquivo de configuração do escudo define a regra para a política de segurança de conteúdo.
+O bloco `csp` dentro do arquivo de configuração do shield define a regra para a política de segurança de conteúdo.
 
 ```js
 csp: {
@@ -42,29 +42,30 @@ csp: {
 }
 ```
 
-| Chave | Valor | Descrição |
-| diretivas | Objeto | Diretivas ajuda você a definir políticas a serem aplicadas em diferentes tipos de recursos. Você pode obter a lista de todas as diretivas em [http://content-security-policy.com](http://content-security-policy.com/). |
-| reportOnly | Boolean | Isso não irá parar a execução da sua página, em vez disso, retornará uma mensagem de aviso dizendo que algumas regras foram violadas. |
-| setAllHeaders | Boolean | O escudo define diferentes cabeçalhos HTTP para diferentes navegadores. Para desativar esse comportamento, você pode este valor como verdadeiro, e todos os cabeçalhos serão definidos. |
-| desativarAndroid | Boolean | Android é bugado com CSP você pode desativá-lo para Android no caso de você enfrentar qualquer problema. |
+| Key             | Value   | Description |
+|-----------------|---------|-------------|
+| directives      | Object  | As diretivas ajudam você a definir políticas a serem aplicadas em diferentes tipos de recursos. Você pode obter a lista de todas as diretivas em [http://content-security-policy.com](http://content-security-policy.com).  |
+| reportOnly      | Boolean | Ela não interromperá a execução da sua página, em vez disso, retornará um aviso de que algumas regras foram violadas.  |
+| setAllHeaders   | Boolean | O Shield define diferentes cabeçalhos HTTP para diferentes navegadores. Para desabilitar esse comportamento, você pode definir esse valor como true e todos os cabeçalhos serão definidos.  |
+| disableAndroid  | Boolean | O Android tem bugs com CSP, você pode desabilitá-lo para Android caso tenha algum problema.  |
 
-### Suporte de navegador
-Quase todos os navegadores modernos suportam o CSP, mas aqui está a lista mais precisa de navegadores compatíveis [lista](http://caniuse.com/#feat=content-security-policy).
+### Suporte ao navegador
+Quase todos os navegadores modernos oferecem suporte amplo ao CSP, mas aqui está a [lista](http://caniuse.com/#feat=contentsecuritypolicy) mais precisa de navegadores suportados.
 
-### Política de Segurança de Conteúdo via Meta Tags
-O `shield` middleware automaticamente define os cabeçalhos HTTP necessários para o CSP funcionar, mas também fornece um auxiliar de visão para definir a tag meta.
+### Política CSP via Meta Tags
+O middleware `shield` define automaticamente os cabeçalhos HTTP necessários para o CSP funcionar, mas também fornece um auxiliar de visualização para definir a meta tag.
 
 ```twig
 {{ cspMeta }}
 ```
 
-Saída:
 ```html
+<!-- Output -->
 <meta http-equiv="Content-Security-Policy" content="xxx">
 ```
 
 ### CSP Nonce
-Tags de script com código JavaScript inline são automaticamente confiáveis e executadas pelo navegador. Para interromper esse comportamento, você deve permitir apenas blocos de script inline confiáveis adicionando `@nonce` ao array `scriptSrc`.
+As tags de script com código javascript inline são automaticamente confiáveis ​​e executadas pelo navegador. Para interromper esse comportamento, você deve permitir apenas os blocos de script inline confiáveis ​​adicionando `@nonce` ao array `scriptSrc`.
 
 ```js
 csp: {
@@ -75,7 +76,7 @@ csp: {
 }
 ```
 
-Agora você tem que dizer ao navegador que seus blocos de script embutidos selecionados devem ser executados, e essa seleção é feita com a ajuda de uma visão global.
+Agora você precisa informar ao navegador que seus blocos de script inline selecionados devem ser executados, e essa seleção é feita com a ajuda de uma visualização global.
 
 ```twig
 <script nonce="{{ cspNonce }}">
@@ -84,10 +85,10 @@ Agora você tem que dizer ao navegador que seus blocos de script embutidos selec
 ```
 
 ## Proteção contra malware
-A proteção contra malware ajuda a proteger seu site de ataques XSS, inserções indesejadas de iframe, sniffing de tipo de conteúdo e para impedir que o IE execute scripts não solicitados no contexto da sua página da web.
+A proteção contra malware ajuda a proteger seu site de ataques *XSS*, *iframe embeds* indesejados, *content-type sniffing* e impede que o IE execute scripts não solicitados no contexto de sua página da web.
 
 ### XSS
-Faça uso da configuração abaixo definida para habilitar/desabilitar a proteção XSS. É feito por meio de um cabeçalho HTTP, que é definido como 'X-XSS-Protection: 1; mode=block'
+Use a configuração definida abaixo para habilitar/desabilitar a proteção XSS. Isso é feito definindo `X-XSS-Protection=1; mode=block`
 
 ```js
 xss: {
@@ -96,10 +97,10 @@ xss: {
 }
 ```
 
-### Sem cheiro
-A maioria dos navegadores modernos tentará detectar o tipo de conteúdo de uma solicitação, analisando seu conteúdo. Isso significa que um arquivo com a extensão  *.txt* pode ser executado como um arquivo JavaScript se contiver código JavaScript. Para desativar esse comportamento, defina 'nosniff=false'.
+### Sem Sniff
+A maioria dos navegadores modernos tentará detectar o *Content-Type* de uma solicitação farejando seu conteúdo. O que significa que um arquivo terminado em *.txt* pode ser executado como um arquivo javascript, se contiver código javascript. Para desabilitar esse comportamento, defina `nosniff=false`.
 
-Abaixo a configuração irá definir o valor do cabeçalho `X-Content-Type-Options` para *nosniff*.
+A configuração abaixo definirá o valor do cabeçalho `X-Content-Type-Options` para *nosniff*.
 
 ```js
 {
@@ -107,8 +108,8 @@ Abaixo a configuração irá definir o valor do cabeçalho `X-Content-Type-Optio
 }
 ```
 
-### Não aberto
-Esta configuração impedirá que o Internet Explorer execute scripts desconhecidos no contexto do seu site. A configuração abaixo definirá o valor de X-Download-Options para *noopen*.
+### No Open
+Esta configuração impedirá que o IE execute script desconhecido no contexto do seu site. A configuração abaixo definirá o valor de `X-Download-Options` para *noopen*.
 
 ```js
 {
@@ -117,7 +118,7 @@ Esta configuração impedirá que o Internet Explorer execute scripts desconheci
 ```
 
 ### XFrame
-A opção xframe no arquivo config/shield.js facilita o controle do comportamento de incorporação do seu site dentro de um iFrame. Você pode escolher entre 'DENY', 'ALLOW' ou 'ALLOW-FROM http://mywebsite.com'.
+A opção xframe dentro do arquivo `config/shield.js` facilita o controle do comportamento de incorporação do seu site dentro de um iframe. Você pode escolher entre `DENY`, `ALLOW` ou `ALLOW-FROM http://mywebsite.com`.
 
 ```js
 {

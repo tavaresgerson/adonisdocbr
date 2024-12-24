@@ -1,116 +1,118 @@
 # Auxiliares
 
-O Helper Provider fornece alguns métodos convenientes para obter *caminhos absolutos* de certos diretórios do seu aplicativo. É útil para os terceiros *Provedores de serviço* desde que confiar em caminhos relativos não é muito útil.
+O Helpers Provider fornece um punhado de métodos convenientes para obter *caminhos absolutos* para determinados diretórios do seu aplicativo. É útil para *provedores de serviços* de terceiros, pois depender de caminhos relativos não é muito útil.
 
 ## Exemplo básico
-Em qualquer lugar dentro do seu aplicativo, você pode usar o provedor de auxiliares para obter os caminhos para diferentes diretórios.
+Em qualquer lugar dentro do seu aplicativo, você pode usar o provedor do Helper para obter caminhos para diferentes diretórios.
 
 ```js
 const Helpers = use('Helpers')
 const storagePath = Helpers.storagePath()
 ```
 
-## Métodos Auxiliares
-Abaixo está a lista de métodos disponíveis no provedor Auxiliares.
+## Métodos do Helper
+Abaixo está a lista de métodos disponíveis no provedor do Helpers.
 
-#### basepath
-Retorna o caminho para a raiz da aplicação.
+#### `basePath`
+Retorna o caminho para a raiz do aplicativo.
 
 ```js
 Helpers.basePath()
 ```
 
-#### appPath
+#### `appPath`
 Retorna o caminho para o diretório do aplicativo.
 
 ```js
 Helpers.appPath()
 ```
 
-#### publicPath([toFile])
+#### `publicPath([toFile])`
 Retorna o caminho para o diretório público ou o caminho para um arquivo dentro do diretório.
 
 ```js
 const publicPath = Helpers.publicPath()
-// or
+// ou
 const cssFile = Helpers.publicPath('style.css')
 ```
 
-#### configPath([para o arquivo])
-Retorna o caminho para o diretório de configuração ou o caminho para um arquivo dentro do diretório.
+#### `configPath([toFile])`
+Retorna o caminho para o diretório de configuração ou caminho para um arquivo dentro do diretório.
 
-NOTE: É recomendado utilizar o [Config Provider](/getting/started/configuration) para ler os valores dos arquivos de configuração.
+::: warning OBSERVAÇÃO
+É recomendável usar o [Config Provider](/docs/03-getting-started/03-configuration.md) para ler os valores dos arquivos de configuração.
+:::
 
 ```js
 const configPath = Helpers.configPath()
-// or
+// ou
 const appConfig = Helpers.configPath('app.js')
 ```
 
-#### storagePath([toFile])
-Retorna o caminho para o diretório de armazenamento ou o caminho para um arquivo dentro do diretório.
+#### `storagePath([toFile])`
+Retorna o caminho para o diretório de armazenamento ou caminho para um arquivo dentro do diretório.
 
 ```js
 const storagePath = Helpers.storagePath()
-// or
+// ou
 const logs = Helpers.storagePath('logs.json')
 ```
 
-#### resourcesPath([toFile])
-Retorna o caminho para o diretório de recursos ou o caminho para um arquivo dentro do diretório.
+#### `resourcesPath([toFile])`
+Retorna o caminho para o diretório de recursos ou caminho para um arquivo dentro do diretório.
 
 ```js
 const resourcesPath = Helpers.resourcesPath()
-// or
+// ou
 const appSass = Helpers.resourcesPath('assets/sass/app.scss')
 ```
 
-#### migrationsPath([paraArquivo])
-Retorna o caminho para o diretório de migrações ou o caminho para um arquivo dentro do diretório.
+#### `migrationsPath([toFile])`
+Retorna o caminho para o diretório migrations ou caminho para um arquivo dentro do diretório.
 
 ```js
 const migrationsPath = Helpers.migrationsPath()
-// or
+// ou
 const UserSchema = Helpers.migrationsPath('UserSchema.js')
 ```
 
-#### seedsPath([paraArquivo])
-Retorna o caminho para o diretório de sementes ou o caminho para um arquivo dentro do diretório.
+#### `seedsPath([toFile])`
+Retorna o caminho para o diretório seeds ou caminho para um arquivo dentro do diretório.
 
 ```js
 const seedsPath = Helpers.seedsPath()
-// or
+// ou
 const DatabaseSeed = Helpers.seedsPath('Database.js')
 ```
 
-#### databasePath([toFile])
-Retorna o caminho para o diretório do banco de dados ou o caminho para um arquivo dentro do diretório.
+#### `databasePath([toFile])`
+Retorna o caminho para o diretório database ou caminho para um arquivo dentro do diretório.
 
 ```js
 const databasePath = Helpers.databasePath()
-// or
+// ou
 const factoryFile = Helpers.databasePath('factory.js')
 ```
 
-#### viewsPath([paraArquivo])
-Retorna o caminho para o diretório de views ou o caminho para um arquivo dentro do diretório.
+#### `viewsPath([toFile])`
+Retorna o caminho para o diretório views ou caminho para um arquivo dentro do diretório.
 
 ```js
 const viewsPath = Helpers.viewsPath()
-// or
+// ou
 const welcomeView = Helpers.viewsPath('welcome.njk')
 ```
 
-#### appNameSpace
-Retorna o namespace mapeado para o diretório 'app' dentro do arquivo 'package.json'.
+#### `appNameSpace`
+Retorna o namespace mapeado para o diretório `app` dentro do arquivo `package.json`.
 
 ```js
 const namespace = Helpers.appNameSpace()
 const UsersController = use(`${namespace}/Http/Controllers/UsersController`)
 ```
 
-#### makeNamespace(diretório, paraArquivo)
-Retorna o namespace completo para um arquivo dentro de um diretório dado.
+#### `makeNameSpace(directory, toFile)`
+Retorna o namespace completo para um arquivo dentro de um diretório fornecido.
 
 ```js
 const httpListener = Helpers.makeNameSpace('Listeners', 'Http')
@@ -118,7 +120,7 @@ const httpListener = Helpers.makeNameSpace('Listeners', 'Http')
 // returns App/Listeners/Http.js
 ```
 
-#### isAceCommand
+#### `isAceCommand`
 Retorna se o processo foi iniciado como o comando ace ou não.
 
 ```js

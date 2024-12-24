@@ -1,36 +1,40 @@
 # Sessões
 
-O AdonisJs possui suporte de caixa único para salvar sessões de longa duração em apenas uma solicitação, chamadas de *Mensagens Flash*. Além disso, você pode escolher entre um dos drivers disponíveis para salvar os dados da sessão.
+O AdonisJs tem suporte pronto para uso para salvar sessões de longa duração em uma única sessão de solicitação chamada *Flash Messages*. Além disso, você pode escolher entre um dos drivers disponíveis para salvar os dados da sessão.
 
-NOTE: Para manter o seu cookie de sessão criptografado, certifique-se de definir o `APP_KEY` dentro do arquivo *.env*. Alternativamente, você pode usar o comando `./ace key:generate` para gerar a chave para você.
+::: warning OBSERVAÇÃO
+Para manter seu cookie de sessão criptografado, certifique-se de definir `APP_KEY` dentro do arquivo *.env*. Como alternativa, você pode usar o comando `./ace key:generate` para gerar a chave para você.
+:::
 
 ## Drivers
 Abaixo está a lista de drivers disponíveis.
 
 1. Cookie (cookie).
-2. Arquivo (arquivo).
+2. Arquivo (file).
 3. Redis (redis).
 
-> NOTE:
-> Certifique-se de configurar o provedor Redis antes de usar o driver Redis.
+
+::: warning OBSERVAÇÃO
+Certifique-se de configurar o [provedor Redis](/docs/07-common-web-tools/12-redis.md) antes de usar o driver redis.
+:::
 
 ## Configuração
 
-Veja o exemplo de arquivo de configuração [arquivo de configuração de exemplo](https://github.com/adonisjs/adonis-app/blob/develop/config/session.js).
+Dê uma olhada no link do arquivo de configuração de exemplo: https://github.com/adonisjs/adonis-app/blob/develop/config/session.js[arquivo de configuração de exemplo].
 
 ```js
 const Env = use('Env')
 
 module.exports = {
-  // available options are file, cookie, redis
+  // as opções disponíveis são arquivo, cookie, redis
   driver: Env.get('SESSION_DRIVER', 'cookie'),
-  // configuration settings for whichever driver you choose
+  // configurações para qualquer driver que você escolher
   redis: Env.get('REDIS_URL', 'redis://localhost:6379'),
   cookie: 'adonis-session',
   file: {
     directory: 'sessions'
   }
-  // other settings
+  // outras configurações
   age: 120,
   clearWithBrowser: false,
   httpOnly: true,
@@ -38,12 +42,11 @@ module.exports = {
   domain: null,
   path: '/',
   secure: false,
-
 }
 ```
 
 ## Exemplo básico
-Vamos passar por um exemplo básico de salvar/ler itens do carrinho para um usuário específico da sessão.
+Vamos percorrer um exemplo básico de salvar/ler itens do carrinho para um determinado usuário da sessão.
 
 ```js
 Route.get('carts', function * (request, response) {
@@ -54,55 +57,55 @@ Route.get('carts', function * (request, response) {
 ```
 
 ## Métodos
-Abaixo está a lista dos métodos de sessão disponíveis.
+Abaixo está a lista de métodos de sessão disponíveis.
 
-#### put(chave, valor)
-Adicione um valor ao armazenamento de sessão.
+#### `put(key, value)`
+Adicione um valor ao armazenamento da sessão.
 
 ```js
 Route.post('users', function * (request, response) {
   yield request.session.put('username', 'doe')
-  // or
+  // ou
   yield request.session.put({ username: 'doe' })
 })
 ```
 
-#### get(chave, [valorPadrão])
-Retorna o valor para uma chave dada. Ele retornará o *valor padrão* quando o valor real for `nulo` ou `indefinido`.
+#### `get(key, [defaultValue])`
+Retorna o valor para uma determinada chave. Ele retornará o *defaultValue* quando o valor real for `null` ou `undefined`.
 
 ```js
 Route.get('users/current', function * (request, response) {
   const username = yield request.session.get('username')
-  // or
+  // ou
   const userId = yield request.session.get('userId', 123)
 })
 ```
 
-#### Tudo
-Retorna todos os valores de sessão como um objeto
+#### `all`
+Retorna todos os valores da sessão como um objeto
 
 ```js
 const sessionValues = yield request.session.all()
 ```
 
-#### Esqueça (chave)
-Remove o valor de uma chave específica
+#### `forget(key)`
+Remove o valor de uma determinada chave
 
 ```js
 yield request.session.forget('name')
 ```
 
-#### pull(chave, [valor padrão])
-Obtenha e remova o valor de uma chave específica. Pense nisso como chamar xref:_get_key_defaultvalue[get] e xref:_forget_key[forget] juntos.
+#### `pull(key, [defaultValue])`
+Obtém e remove o valor de uma determinada chave. Pense nisso como chamar [get](#getkey-defaultvalue) e [forget](#forgetkey) juntos.
 
 ```js
 const username = yield request.session.pull('username')
 ```
 
-## Mensagens de Flash
-As mensagens de flash são usadas para definir uma sessão de curta duração para um único pedido. É útil quando você deseja redirecionar o usuário de volta com os erros do formulário e os valores existentes do formulário, para que eles não tenham que re-digitar tudo e apenas corrigir os erros.
+## Mensagens Flash
+Mensagens Flash são usadas para definir uma sessão de curta duração para uma única solicitação. É útil quando você deseja redirecionar o usuário de volta com os erros do formulário e valores existentes do formulário para que ele não precise digitar tudo novamente e apenas corrigir os erros.
 
-Apenas tenha a certeza de que o `Flash` middleware é adicionado à lista de middleware global.
+Apenas certifique-se de que o middleware `Flash` seja adicionado à lista de middleware global.
 
 ```js
 // app/Http/kernel.js
@@ -114,8 +117,8 @@ const globalMiddleware = [
 ]
 ```
 
-### Uso Básico de Mensagens Flash
-Vamos trabalhar no fluxo de erros de validação de flash com a entrada do formulário e ver como podemos pegá-los dentro da nossa visão.
+### Uso básico de mensagens Flash
+Vamos trabalhar no fluxo de erros de validação de flash com a entrada do formulário e ver como podemos capturá-los dentro da nossa visualização.
 
 ```js
 // app/Http/routes.js
@@ -145,11 +148,11 @@ class UsersController {
 }
 ```
 
-1. O método `withAll` adicionará todos os valores de solicitação à loja de sessão flash.
-2. O método 'andWith' é um ajudante para exibir objetos de dados personalizados. Aqui, usamos isso para exibir os erros de validação.
+1. O método `withAll` adicionará todos os valores de solicitação ao armazenamento de sessão flash.
+2. O método `andWith` é um auxiliar para flashear objetos de dados personalizados. Aqui, o usamos para flashear os erros de validação.
 
 ```twig
-{# resources/views/users/create.njk #}
+<!-- resources/views/users/create.njk -->
 
 {% for error in old('errors') %} <1>
     <li> {{ error.message }} </li>
@@ -165,41 +168,41 @@ class UsersController {
 {{ form.close() }}
 ```
 
-1. O método 'old' dentro das views é usado para buscar valores de uma determinada chave dos flash messages.
+1. O método `old` dentro das visualizações é usado para buscar valores para uma determinada chave das mensagens flash.
 
 ### Métodos Flash
 Abaixo está a lista de métodos para definir mensagens flash.
 
-#### comTudo
-Flashá tudo de `request.all()`.
+#### `withAll`
+Irá piscar tudo de `request.all()`.
 
 ```js
 yield request.withAll().flash()
 ```
 
-#### withOnly(keys...)
-Valores de flash somente para chaves definidas.
+#### `withOnly(keys...)`
+Piscará valores somente para chaves definidas.
 
 ```js
 yield request.withOnly('email').flash()
 ```
 
-#### withOut(keys...)
-Flash todas as teclas, exceto as definidas.
+#### `withOut(keys...)`
+Piscará tudo, exceto chaves definidas.
 
 ```js
 yield request.withOut('password').flash()
 ```
 
-#### with(valores)
-Flash um objeto personalizado.
+#### `with(values)`
+Piscará um objeto personalizado.
 
 ```js
 yield request.with({ error: 'Please fill in all details' }).flash()
 ```
 
-#### andWith(valores)
-Método encadeável para enviar objeto personalizado com dados da requisição.
+#### `andWith(values)`
+Método encadeável para enviar objeto personalizado com dados de solicitação.
 
 ```js
 yield request
@@ -208,18 +211,17 @@ yield request
   .flash()
 ```
 
-### Acessando os valores do flash
-Você pode acessar os valores de mensagens flash dentro de seus modelos usando os auxiliares definidos. Se não houver nada na mensagem flash na chave solicitada, ele exibirá o defaultValue.
+### Acessando valores Flash
+Você pode acessar os valores de mensagens flash dentro de suas visualizações usando os auxiliares definidos. Se não houver nada na mensagem flash na chave solicitada, ela exibirá o defaultValue.
 
-#### old(chave, valorPadrão)
-
+#### `old(chave, valorpadrão)`
 ```twig
 {{ old('username', user.username) }}
 {# or #}
 {{ old('profile.username') }}
 ```
 
-#### flashMessages
+#### `flashMessages`
 ```twig
 {% for key, message in flashMessages %}
   {{ message }}

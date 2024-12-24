@@ -1,33 +1,34 @@
-# Views
+# Visualizações
 
-O mecanismo de exibição do AdonisJs é construído sobre o Nunjucks, uma biblioteca de modelos poderosa e flexível. Tudo o que o Nunjucks oferece é totalmente suportado com algumas funcionalidades exclusivas do AdonisJs.
+O AdonisJs tem um mecanismo de visualização sólido construído em cima do [nunjucks](http://mozilla.github.io/nunjucks/templating.html). Tudo do nunjucks é totalmente suportado com alguns recursos extras exclusivos do AdonisJs.
 
-## Como as Vistas funcionam?
+## Como as visualizações funcionam?
 
-* As views são armazenadas dentro de `resources/views`.
-* Todos eles devem ter uma extensão de ` .njk`.
-Para criar uma visão, você pode usar um comando de geração
+* As visualizações são armazenadas dentro de `resources/views`.
+* Todas elas devem ter uma extensão de `.njk`.
+* Para criar uma visualização, você pode usar um comando gerador
 
 ```bash
-./ace make:view welcome
+  ./ace make:view welcome
 
-# create: resources/views/welcome.njk
-```
-
-Você é livre para criar múltiplos diretórios para gerenciar layouts e parciais.
-Você pode armazenar em cache as visualizações na produção definindo *CACHE_VIEWS=true* no arquivo *.env*.
+  # create: resources/views/welcome.njk
+  ```
+* Você é livre para criar vários diretórios para gerenciar *layouts* e *partials*.
+* Você pode armazenar visualizações em cache na produção definindo *CACHE_VIEWS=true* dentro do arquivo `.env`.
 
 ## Exemplo básico
-Vamos pegar um exemplo básico de renderização de uma visão registrando uma rota e controlador.
+Vamos dar um exemplo básico de renderização de uma visualização registrando uma rota e um controlador.
 
 ```js
-// .Route
+// Route
+
 const Route = use('Route')
 Route.get('/greet/:user', 'UserController.greet')
 ```
 
 ```js
-// .Controller
+// Controller
+
 class UserController {
 
   * greet (request, response) {
@@ -39,44 +40,42 @@ class UserController {
 ```
 
 ```twig
-{# View #}
+<!-- View -->
+
 <h2> Hello {{ user }} </h2>
 ```
 
-## Renderizando Visualizações
-As views podem ser renderizadas usando o objeto 'response' ou com a ajuda do provedor 'View'.
+## Renderizando Views
+Views podem ser renderizadas usando o objeto `response` ou com a ajuda do provedor `View` diretamente.
 
-::: info NOTE
-É recomendado usar o método `response.sendView` sempre que você tiver acesso ao objeto de resposta.
+::: info NOTA
+É recomendado usar `response.sendView` sempre que você tiver acesso ao objeto response.
 :::
 
-#### make(templatePath, dados)
-
+#### `make(templatePath, data)`
 ```js
 const View = use('View')
 const compiledHtml = yield View.make('welcome')
 ```
 
-#### makeString(templateString, dados)
-
+#### `makeString(templateString, data)`
 ```js
 const View = use('View')
 const compiledHtml = View.makeString('<h2> Hello {{ username }} </h2>', {username: 'virk'})
 ```
 
-Os modelos são referenciados sem a extensão *.njk* para as funções 'make' ou 'sendView'. Além disso, você pode aproveitar a notação de ponto para referenciar visualizações aninhadas.
+Templates são referenciados sem a extensão *.njk* para a função `make` ou `sendView`. Além disso, você pode aproveitar a notação de ponto para referenciar views aninhadas.
 
+| Caminho                       | Referenciado como                 |
+|-------------------------------|-----------------------------------|
+| resources/views/home.njk      | `response.sendView('home')`       |
+| resources/views/user/list.njk | `response.sendView('user.list')`  |
 
-| Caminho | Referencia como |
-|------|---------------|
-| `resources/views/home.njk` | `response.sendView('home')` |
-| `resources/views/user/list.njk` | `response.sendView('user.list')` |
-
-## Templates
-A templating refere-se à ligação dinâmica de dados e ao processamento lógico dos dados dentro das suas vistas. Você é obrigado a seguir uma sintaxe especial para fazer tudo isso funcionar.
+## Modelagem
+Modelagem (*templating*) se refere à vinculação dinâmica de dados e ao processamento lógico de dados dentro de suas visualizações. Você precisa seguir uma sintaxe especial para fazer tudo isso funcionar.
 
 ### Variáveis
-Para imprimir o valor de uma variável, você utiliza chaves curvas.
+Para gerar o valor de uma variável, você usa chaves.
 
 ```twig
 {{ user }}
@@ -85,7 +84,7 @@ Para imprimir o valor de uma variável, você utiliza chaves curvas.
 ```
 
 ### Condicionais
-Condicionais são referenciados com uma chave e um sinal de porcentagem.
+Condicionais são referenciadas com uma chave e um sinal `%`.
 
 ```twig
 {% if user.age %}
@@ -93,7 +92,7 @@ Condicionais são referenciados com uma chave e um sinal de porcentagem.
 {% endif %}
 ```
 
-Você não está limitado a uma condição if. As views suportam if, else, elseif.
+Você não está limitado apenas a uma condição if. As visualizações suportam `if`, `else`, `elseif`.
 
 ```twig
 {% if hungry %}
@@ -106,7 +105,7 @@ Você não está limitado a uma condição if. As views suportam if, else, elsei
 ```
 
 ### Filtros
-Filtros transformam dados embutidos e são muito úteis quando você deseja transformar dados apenas para representação.
+Filtros transformam dados em linha e são muito úteis quando você deseja transformar dados apenas para representação.
 
 ```twig
 {# username = 'john' #}
@@ -115,15 +114,15 @@ Filtros transformam dados embutidos e são muito úteis quando você deseja tran
 {# output = John #}
 ```
 
-Aqui 'capitalize' é um filtro para capitalizar o valor de uma determinada string. Aqui está a lista de todos os links disponíveis: [filters](#filtros).
+Aqui `capitalize` é um filtro para capitalizar o valor de uma determinada string. Aqui está a lista de todos os [filtros](/src/docs/04-views/02-templating.md#filtros) disponíveis.
 
 ## Herança
-Herança significa estender um modelo básico e substituir suas partes individuais. Pense nisso como herdar uma Classe JavaScript.
+Herança significa estender um modelo base e substituir suas partes individuais. Pense nisso como herdar uma classe Javascript.
 
-Vamos pegar o exemplo de uma visão principal e uma visão secundária.
+Vamos pegar o exemplo de uma visualização mestre e uma filha.
 
 ```twig
-{# .resources/views/master.njk #}
+<!-- resources/views/master.njk -->
 
 <html>
   <body>
@@ -149,7 +148,7 @@ Vamos pegar o exemplo de uma visão principal e uma visão secundária.
 ```
 
 ```twig
-// .resources/views/home.njk
+<!-- resources/views/home.njk -->
 
 {% extends 'master' %}
 
@@ -158,8 +157,8 @@ Vamos pegar o exemplo de uma visão principal e uma visão secundária.
 {% endblock %}
 ```
 
-Saída:
-```html
+```twig
+<!-- Output -->
 
 <html>
   <body>
@@ -183,16 +182,16 @@ Saída:
 Aqui está a lista de regras para estender modelos
 
 1. Você deve criar um bloco usando a tag `{% block <name> %}`.
-2. Cada bloco deve ter um nome único.
-3. Após estender uma visão, você não pode colocar nada fora das tags de bloco.
+2. Cada bloco deve ter um nome exclusivo.
+3. Após estender uma visualização, você não pode colocar nada fora das tags do bloco.
 
 ## Inclui
-Você também pode incluir diferentes modelos em vez de apenas estendê-los. Você começa criando parciais de marcação reutilizável.
+Você também pode incluir modelos diferentes em vez de apenas estendê-los. Você começa criando parciais de marcação reutilizável.
 
-Vamos pegar um exemplo de uma aplicação de bate-papo, onde o markup para uma mensagem de bate-papo pode ser salvo dentro de uma visão diferente.
+Vamos dar um exemplo de um aplicativo de bate-papo, onde a marcação para uma mensagem de bate-papo pode ser salva dentro de uma visualização diferente.
 
 ```twig
-// .resources/views/chat/message.njk
+<!-- resources/views/chat/message.njk -->
 
 <div class="chat__message">
   <h2> {{ message.from }} </h2>
@@ -200,26 +199,27 @@ Vamos pegar um exemplo de uma aplicação de bate-papo, onde o markup para uma m
 </div>
 ```
 
-Agora no seu arquivo de índice, você pode incluir o modelo de mensagem dentro de um loop.
+Agora, no seu arquivo de índice, você pode incluir o modelo de mensagem dentro de um loop.
 
 ```twig
-// .resources/views/chat/index.njk
+<!-- resources/views/chat/index.njk -->
 
 {% for message in messages %}
   {% include 'message' %}
 {% endfor %}
 ```
 
-> NOTE
-> Os modelos incluídos compartilham o escopo do bloco pai.
+::: info NOTA
+Os modelos incluídos compartilham o escopo do bloco pai.
+:::
 
-## Macros & Importações
-Macros torna fácil criar componentes reutilizáveis. A diferença entre um *parcial* e um *macro* é que você pode passar argumentos para os *macros*, o que os torna reutilizáveis de caixa.
+## Macros e importações
+As macros facilitam muito a criação de componentes reutilizáveis. A diferença entre um *parcial* e uma *macro* é que você pode passar argumentos para as *macros*, o que as torna reutilizáveis ​​imediatamente.
 
-Vamos pegar um exemplo de criação de um componente botão, que irá aderir às classes CSS do Bootstrap.
+Vamos dar um exemplo de criação de um componente de botão, que aderirá às classes CSS do bootstrap.
 
 ```twig
-// .resource/views/macros/button.njk
+<!-- resource/views/macros/button.njk -->
 
 {% macro button(value, style='default') %}
   <button type="button" class="btn btn-{{style}}"> {{ value }} </button>
@@ -229,20 +229,20 @@ Vamos pegar um exemplo de criação de um componente botão, que irá aderir às
 Agora podemos usar a macro importando-a
 
 ```twig
-.resources/views/home.njk
+<!-- resources/views/home.njk -->
 
 {% from 'macros.button' import button %}
 {{ button('Create User', 'primary') }}
 ```
 
-## Trabalhando com Globais
-As views globais estão disponíveis para todos os modelos. O AdonisJS vem com alguns globais predefinidos e alguns são definidos por outros módulos/fornecedores.
+## Trabalhando com globais
+As visualizações globais estão disponíveis para todos os modelos. O AdonisJs vem com alguns globais predefinidos e alguns são definidos por outros módulos/provedores.
 
-### Registrando Globais Específicos do Aplicativo
-O melhor lugar para registrar os globais específicos da aplicação é usando o ouvinte de eventos 'start'.
+### Registrando globais específicos do aplicativo
+O melhor lugar para registrar globais específicos do aplicativo é usar o ouvinte de eventos `start`.
 
 ```js
-// .app/Listeners/Http.js
+// app/Listeners/Http.js
 
 Http.onStart = function () {
   const View = use('View')
@@ -252,8 +252,8 @@ Http.onStart = function () {
 }
 ```
 
-### Via Provedor
-Se você estiver escrevendo um módulo/addon para o AdonisJS, você pode registrar uma visão global dentro do método de inicialização do seu provedor de serviços.
+### Via provedor
+Se você estiver escrevendo um módulo/complemento para o AdonisJs, você pode registrar uma visualização global dentro do método `boot` do seu provedor de serviços.
 
 ```js
 const ServiceProvider = require('adonis-fold').ServiceProvider
@@ -274,23 +274,24 @@ class MyServiceProvider extends ServiceProvider {
 }
 ```
 
-Agora você pode usar o acima definido global dentro de suas visualizações.
+Agora você pode usar o global definido acima dentro de suas visualizações.
 
 ```twig
 {{ time() }}
 ```
 
-## Trabalhando com Filtros
-Assim como os globais, você também pode definir filtros. A função dos filtros é pegar uma entrada e transformar seu valor de acordo com as necessidades. Aqui está a lista de todos os filtros embutidos: templating:_filters[filters].
+## Trabalhando com filtros
+Assim como os globais, você também pode definir filtros. O trabalho dos filtros é pegar uma entrada e transformar seu valor com base nos requisitos. Aqui está a lista de todos os links:templating#_filters[filters] incorporados.
 
-> DICA:
-> Os filtros podem ser registrados escutando o evento `Http.start` ou dentro do método `boot` do provedor, de forma semelhante à maneira como os xref:_working_with_globals[globais] são registrados.
+::: tip DICA
+Os filtros podem ser registrados ouvindo o evento `Http.start` ou dentro do provedor `boot`, semelhante à maneira como [globals](#trabalhando-com-globais) são registrados.
+:::
 
 ```js
-// .Registering A Filter
+// Registrando um filtro
 
 const View = use('Adonis/Src/View')
-const accounting = use('accounting') // npm module
+const accounting = use('accounting') // módulo npm
 
 View.filter('currency', function (amount, symbol) {
   return accounting.formatMoney(amount, {symbol})
@@ -298,15 +299,15 @@ View.filter('currency', function (amount, symbol) {
 ```
 
 ```twig
-// Using Filter
+<!-- Usando o filtro -->
 
 {{ 1000 | currency('$') }}
 
 {# returns $1,000.00 #}
 ```
 
-## Injeção de Provedores
-Você também pode usar provedores de serviço ou qualquer ligação do contêiner IoC dentro das suas visualizações. Vamos pegar um exemplo de busca de usuários diretamente das visualizações.
+## Injetando provedores
+Você também pode usar provedores de serviço ou qualquer ligação do contêiner IoC dentro de suas visualizações. Vamos dar um exemplo de busca de usuários diretamente das visualizações.
 
 ```twig
 {% set User = use('App/Model/User') %}
@@ -317,11 +318,12 @@ Você também pode usar provedores de serviço ou qualquer ligação do contêin
 {% endfor %}
 ```
 
-> NOTE:
-> Injetar provedores pode abrir *buracos de segurança*, especialmente quando você expõe suas visualizações para serem editadas pelo mundo exterior. Pense em um cenário, onde o usuário que edita a visão/modelo injeta o modelo de usuário e cai todos os usuários. *Tenha certeza de desligar a injeção de serviços se você realmente deseja esse recurso*
+::: warning OBSERVAÇÃO
+Injetar provedores pode abrir *brechas de segurança*, especialmente quando você expõe suas visualizações para serem editadas pelo mundo externo. Pense em um cenário em que o usuário que edita a visualização/modelo injeta o modelo de usuário e remove todos os usuários. *Certifique-se de desativar o sinalizador injectServices se você quiser esse recurso*
+:::
 
 ```js
-// .config/app.js
+// config/app.js
 
 views: {
   injectServices: false
@@ -329,10 +331,10 @@ views: {
 ```
 
 ## Cache
-A visualização de cache é controlada através do arquivo `config/app.js`. Certifique-se de desativar o cache durante o desenvolvimento e ativá-lo quando executar seu aplicativo em produção.
+O cache de visualizações é controlado pelo arquivo `config/app.js`. Certifique-se de desabilitar o cache durante o desenvolvimento e habilitá-lo ao executar seu aplicativo em produção.
 
 ```js
-// .config/app.js
+// config/app.js
 
 view: {
   cache: Env.get('CACHE_VIEWS', true)
@@ -340,16 +342,17 @@ view: {
 ```
 
 ```bash
-# .(.env)
+# .env
 
 CACHE_VIEWS=true
 ```
 
-## Destaque de Sintaxe
-Você precisa baixar pacotes para o seu editor favorito para ter destaque de sintaxe apropriado para suas visualizações *nunjucks*.
-Você também pode usar o *twitch* highlighter se não conseguir encontrar suporte para Nunjucks no seu editor preferido.
+## Destaque de sintaxe
+Você precisa baixar pacotes para seu editor favorito para ter o destaque de sintaxe adequado para suas visualizações *nunjucks*.
+Você também pode usar o marcador *twig* se não encontrar suporte para nunjucks para seu editor favorito.
 
 * [Atom](https://atom.io/packages/language-nunjucks)
-* [Sublime Text (via Twig)](https://packagecontrol.io/packages/PHP-Twig)
-* [WebStorm (via Twig)](https://plugins.jetbrains.com/plugin/7303?).
-* [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ronnidc.nunjucks).
+* [Sublime Text (Via Twig)](https://packagecontrol.io/packages/PHP-Twig)
+* [Webstorm (Via Twig)](https://plugins.jetbrains.com/plugin/7303?)
+* [Brackets](https://github.com/axelboc/nunjucks-brackets/)
+* [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ronnidc.nunjucks)

@@ -1,32 +1,30 @@
-# Autenticação Social via Ally
+# Autenticação social via Ally
 
-Ally é um provedor de autenticação social para AdonisJs. Ele torna muito fácil a autenticação de usuários através de sites de terceiros como *Facebook*, *Twitter*, *Google*, etc. com esforços mínimos.
+O Ally é um provedor de autenticação social para AdonisJs. Ele torna super fácil autenticar usuários por meio de sites de terceiros como *Facebook*, *Twitter*, *Google*, etc. com o mínimo de esforço.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/SDKz5qLMeBI?si=4UWfqXDwEa1bTltM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/SDKz5qLMeBI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## Drivers
-Abaixo está a lista de controladores oficialmente suportados enquanto você é livre para contribuir e adicionar mais.
+Abaixo está a lista de drivers oficialmente suportados, enquanto você é livre para contribuir e adicionar mais.
 
-Facebook (facebook)
+* Facebook (facebook)
 * Google (google)
-* Twitter (tweet)
-* GitHub (github)
+* Twitter (twitter)
+* Github (github)
 * LinkedIn (linkedin)
-Instagram (instagram)
-* Quatro Esquinas (quatro esquinas)
+* Instagram (instagram)
+* Four Square (foursquare)
 
-## Sobre a Ally
+## Sobre o Ally
 
-Ally é um provedor de 1ª parte instalado e configurado para adicionar suporte para autenticação social.
-2. Você deve definir a configuração dentro do arquivo `config/services.js`. A configuração inclui um *Client ID*, *Secret* e o *Redirect URI*.
-3. A Ally irá anexar um objeto chamado `ally` à instância de link:request[request] para que você possa acessar os métodos dentro dos seus controladores.
+1. O Ally é um provedor primário instalado e configurado para adicionar suporte para autenticação social.
+2. Você precisa definir a configuração dentro do arquivo `config/services.js`. A configuração inclui um *ID do cliente*, *Segredo* e o *URI de redirecionamento*.
+3. O Ally anexará um objeto chamado `ally` à instância [request](/docs/03-getting-started/06-request.md) para que você possa acessar os métodos dentro dos seus controladores.
 
 ## Configuração
-Vamos começar com o processo de configuração que é incrivelmente simples como sempre.
+Vamos começar com o processo de configuração, que é incrivelmente simples como sempre.
 
 ```bash
-# Installing From Npm
-
 npm i --save adonis-ally
 ```
 
@@ -50,10 +48,10 @@ const globalMiddleware = [
 ]
 ```
 
-Uma vez que o processo de configuração tenha sido feito com sucesso, você está pronto para autenticar seus usuários usando suas redes sociais.
+Depois que o processo de configuração for concluído com sucesso, você poderá autenticar seus usuários usando seus perfis sociais.
 
-## Configuração
-A configuração para o Ally é definida dentro do arquivo config/services.js. Você pode copiar a configuração de amostra do link: https://raw.githubusercontent.com/adonisjs/adonis-ally/develop/examples/config.js [github].
+## Config
+A configuração para ally é definida dentro do arquivo `config/services.js`. Você pode copiar a configuração de exemplo do [github](https://raw.githubusercontent.com/adonisjs/adonis-ally/develop/examples/config.js).
 
 ```js
 // config/services.js
@@ -61,14 +59,14 @@ A configuração para o Ally é definida dentro do arquivo config/services.js. V
 module.exports = {
   ally: {
 
-    // Configuration for facebook
+    // Configuração para facebook
     facebook: {
       clientId: '',
       clientSecret: '',
       redirectUri: ''
     },
 
-    // Configuration for github
+    // Configuração para github
     github: {
       clientId: '',
       clientSecret: '',
@@ -80,13 +78,14 @@ module.exports = {
 ```
 
 ## Exemplo básico
-Vamos começar com o exemplo básico de *Login com Facebook*, onde autenticaremos os usuários usando o Facebook e criaremos suas contas de usuário sem senha.
+Vamos começar com o exemplo básico de *Login com o Facebook*, onde autenticaremos os usuários usando o Facebook e criaremos suas contas de usuário sem uma senha.
 
-> NOTE
-> Certifique-se de ter definido a configuração necessária para o Facebook dentro do arquivo `config/services.js`.
+::: warning OBSERVAÇÃO
+Certifique-se de ter definido a configuração necessária para o Facebook dentro do arquivo `config/services.js`.
+:::
 
 ```js
-// Registering Routes
+// Registrando Rotas
 
 const Route = use('Route')
 
@@ -94,10 +93,9 @@ Route.get('facebook/login', 'LoginController.redirect')
 Route.get('facebook/authenticated', 'LoginController.handleCallback')
 ```
 
-Primeiro, precisamos redirecionar o usuário para o Facebook para permitir que nossa aplicação acesse seu perfil.
-
 ```js
-// Redirecting User To The Provider
+// Redirecionando o usuário para o provedor
+// Primeiro, precisamos redirecionar o usuário para o Facebook para permitir que nosso aplicativo acesse seu perfil.
 
 class LoginController {
 
@@ -109,7 +107,7 @@ class LoginController {
 ```
 
 ```js
-// Handling Provider Callback
+// Lidando com o retorno de chamada do provedor
 
 const User = use('App/Model/User')
 
@@ -136,36 +134,36 @@ class LoginController {
 }
 ```
 
-1. O método `getUser` buscará o perfil do usuário para o provedor dado. Este método só funciona quando o usuário é redirecionado de volta para o `redirectUri`.
-2. O método 'findOrCreate' é um método claro para encontrar um usuário com detalhes do usuário ou criar um novo usuário se não conseguir encontrá-lo.
-3. Finalmente, logamos o usuário usando seu 'id'.
+1. O método `getUser` buscará o perfil do usuário para o provedor fornecido. Este método só funciona quando o usuário foi redirecionado de volta para o `redirectUri`.
+2. O `findOrCreate` é um método lúcido para encontrar um usuário com detalhes do usuário ou criar um novo usuário se não for possível encontrá-lo.
+3. Finalmente, efetuamos login no usuário usando seu `id`.
 
-## Ally Métodos
+## Métodos Ally
 Abaixo está a lista de métodos disponíveis expostos pelo provedor Ally.
 
-#### driver
+#### `driver`
 Selecione o driver
 
 ```js
 request.ally.driver('facebook')
 ```
 
-#### redirecionar
-Redirecione o usuário para o site do provedor
+#### `redirect`
+Redireciona o usuário para o site do provedor
 
 ```js
 yield request.ally.driver('facebook').redirect()
 ```
 
-#### getRedirectUrl
-Retorna a URL de redirecionamento para um provedor específico
+#### `getRedirectUrl`
+Retorna a URL de redirecionamento para um determinado provedor
 
 ```js
 yield request.ally.driver('facebook').getRedirectUrl()
 ```
 
-#### Amplo
-Atualize os escopos a serem usados para pedir permissão.
+#### `scope`
+Atualiza os escopos a serem usados ​​para pedir permissão.
 
 ```js
 yield request.ally.driver('facebook')
@@ -173,14 +171,14 @@ yield request.ally.driver('facebook')
   .redirect()
 ```
 
-#### getUser
-Retorna o perfil do usuário para um provedor dado
+#### `getUser`
+Retorna o perfil do usuário para um determinado provedor
 
 ```js
 yield request.ally.driver('facebook').getUser()
 ```
 
-#### campos
+#### `fields`
 Defina campos personalizados ao tentar acessar o perfil do usuário.
 
 ```js
@@ -189,70 +187,72 @@ yield request.ally.driver('facebook')
   .getUser()
 ```
 
-> NOTE
-> Certifique-se de acessar campos adicionais usando o método xref:_getoriginal[getOriginal] na instância do usuário.
+::: warning OBSERVAÇÃO
+Certifique-se de acessar campos adicionais usando o método [getOriginal](#getoriginal) na instância do usuário.
+:::
 
-## Métodos do Usuário
-Abaixo está a lista de métodos para serem usados para buscar detalhes do perfil do usuário. Todos esses métodos são chamados em *Instância de Usuário* retornada por xref:_getuser [getUser].
+## Métodos do usuário
+Abaixo está a lista de métodos a serem usados ​​para buscar detalhes do perfil do usuário. Todos esses métodos são chamados em *Instância do usuário* retornada por [getUser](#getuser).
 
-#### getNome
+#### `getName`
 ```js
 const user = yield request.ally.driver('facebook').getUser()
 user.getName()
 ```
 
-#### getEmail
+#### `getEmail`
 ```js
 const user = yield request.ally.driver('facebook').getUser()
 user.getEmail()
 ```
 
-#### getNickname
+#### `getNickname`
 ```js
 const user = yield request.ally.driver('facebook').getUser()
 user.getNickname()
 ```
 
-#### getAvatar
+#### `getAvatar`
 ```js
 const user = yield request.ally.driver('facebook').getUser()
 user.getAvatar()
 ```
 
-#### getAccessToken
+#### `getAccessToken`
 ```js
 const user = yield request.ally.driver('facebook').getUser()
 user.getAccessToken()
 ```
 
-#### getRefreshToken
-Retorna o token de atualização a ser utilizado quando o token de acesso tiver expirado. Ele só é retornado quando se utiliza *OAuth2*, e o provedor suporta o término do token de acesso.
+#### `getRefreshToken`
+Retorna o token de atualização a ser usado quando o token de acesso tiver expirado. Ele só é retornado ao usar *OAuth2*, e o provedor suporta expiração de token de acesso.
 
 ```js
 const user = yield request.ally.driver('facebook').getUser()
 user.getRefreshToken()
 ```
 
-#### getExpires
-Tempo de expiração do token de acesso em milissegundos. É retornado somente quando usando *OAuth2*, e o provedor suporta tokens de acesso expirados.
+#### `getExpires`
+Tempo de expiração do token de acesso em milissegundos. Ele só é retornado ao usar *OAuth2*, e o provedor suporta expiração do token de acesso.
 
 ```js
 const user = yield request.ally.driver('facebook').getUser()
 user.getExpires()
 ```
 
-#### getTokenSecret
-Retorna o token de acesso secreto. Ele só é retornado quando se utiliza o *OAuth1*.
+#### `getTokenSecret`
+Retorna o segredo do token de acesso. Ele só é retornado ao usar *OAuth1*.
 
-> DICA
-> O Twitter é o único driver que utiliza o OAuth 1.0.
+::: tip DICA
+O Twitter é o único driver que faz uso do OAuth1.
+:::
 
 ```js
 const user = request.ally.driver('twitter').getUser()
 user.getTokenSecret()
 ```
 
-#### get original
+#### `getOriginal`
 Retorna a resposta original do provedor.
 
 ```js

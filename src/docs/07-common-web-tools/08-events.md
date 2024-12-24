@@ -1,35 +1,33 @@
 # Eventos
 
-AdonisJs tem um [Event Emitter](https://nodejs.org/docs/latest-v6.x/api/events.html) lindo para emitir e escutar eventos com suporte para *geradores ES2015*, *wildcards* e um *diretório dedicado* para armazenar/gerenciar os ouvintes.
+AdonisJs tem um lindo [Event Emitter](https://nodejs.org/docs/latest-v6.x/api/events.html) para emitir e ouvir eventos com suporte para *geradores ES2015*, *curingas* e um *diretório dedicado* para armazenar/gerenciar ouvintes.
 
-## Sobre Eventos
+## Sobre eventos
 
 1. Os eventos são definidos dentro do arquivo `bootstrap/events.js`.
-2. Os ouvintes de eventos podem ser definidos como *Encapsulamentos* ou você pode vincular um contêiner de injeção de dependência namespace.
+2. Os ouvintes de eventos podem ser definidos como *Closures* ou você pode vincular um namespace de contêiner IoC.
+    ```js
+    Event.on('user.registered', function * (user) {
+    })
 
-```js
-Event.on('user.registered', function * (user) {
-})
+    // OU
+    Event.on('user.registered', 'User.registered')
+    ```
 
-// OR
-Event.on('user.registered', 'User.registered')
-```
+3. O diretório `app/Listeners` é dedicado para armazenar ouvintes de eventos.
+4. Ao vincular ouvintes aos eventos, você não precisa inserir o namespace inteiro. Por exemplo, um ouvinte armazenado como `app/Listeners/User.js` será referenciado como `User.<method>`.
+5. Use o comando `make:listener` para criar um novo ouvinte de eventos.
+    ```bash
+    ./ace make:listener User
 
-1. O diretório 'app/Listeners' é dedicado para armazenar ouvintes de eventos.
-2. When binding listeners to the events, you are not required to enter the entire namespace. For example A listener stored as `app/Listeners/User.js` will be referenced as `User.<method>`.
-3. Faça uso do comando `make:listener` para criar um novo ouvinte de eventos.
-
-```bash
-./ace make:listener User
-
-# create: app/Listeners/User.js
-```
+    # create: app/Listeners/User.js
+    ```
 
 ## Configuração
-A configuração para o provedor de eventos é armazenada no arquivo `config/events.js`. Sob o capô, o AdonisJs utiliza [EventEmitter 2](https://github.com/asyncly/EventEmitter2) e implementa todas as opções de configuração disponíveis.
+A configuração do provedor de eventos é armazenada dentro do arquivo `config/events.js`. Por baixo dos panos, o AdonisJs usa [EventEmitter 2](https://github.com/asyncly/EventEmitter2) e implementa todas as opções de configuração disponíveis.
 
 ## Exemplo básico
-Vamos passar por um exemplo básico de envio de um e-mail de boas-vindas para um usuário recém-registrado usando o provedor *Events*. Vamos começar configurando uma rota e usaremos o controlador *UsersController* para disparar o evento após a criação de um novo usuário.
+Vamos percorrer um exemplo básico de envio de um e-mail de boas-vindas a um usuário recém-registrado usando o *provedor de eventos*. Começaremos configurando uma rota e usaremos o *UsersController* para disparar o evento após criar um novo usuário.
 
 ```js
 // app/Http/routes.js
@@ -82,14 +80,14 @@ User.sendWelcomeEmail = function * (user) {
 }
 ```
 
-1. Primeiro precisamos registrar um ouvinte para o evento.
-2. O método `UsersController.store` irá disparar o evento *user.registered* e passar o usuário recém-criado.
+1. Primeiro, precisamos registrar um ouvinte para o evento.
+2. O método `UsersController.store` disparará o evento *user.registered* e passará o usuário recém-criado.
 
 ## Métodos de Evento
-Abaixo está a lista dos métodos disponíveis expostos pelo provedor de eventos.
+Abaixo está a lista de métodos disponíveis expostos pelo Provedor de Eventos.
 
-#### when(evento, [nome], ouvinte)
-Registre um ouvinte para um evento específico. Você também pode definir um nome opcional para um ouvinte, que pode ser usado para removê-lo mais tarde.
+#### `when(event, [name], listener)`
+Registre um ouvinte para um determinado evento. Você também pode definir um nome opcional para um ouvinte, que pode ser usado para removê-lo mais tarde.
 
 ```js
 Event.when('user.registered', 'Mail.sendWelcomeEmail')
@@ -105,15 +103,15 @@ Event.when('user.registered', function * () {
 Event.when('user.registered', 'registration', 'User.sendWelcomeEmail')
 ```
 
-## Aliases
+Aliases
 
-| Alias | Exemplo |
-|-------|---------|
-| ouça | Evento. escutar ('usuário registrado', função * () {}) |
-| em | Evento.on('usuário.registrado', função * () {}) |
+| Alias   ​​| Exemplo |
+|---------|---------|
+| listen  | `Event.listen('user.registered', function * () {})` |
+| on      | `Event.on('user.registered', function * () {})` |
 
-#### Uma vez (evento, manipulador)
-Funciona da mesma forma que `quando`, mas é executado apenas uma vez.
+#### `once(event, handler)`
+Funciona da mesma forma que `when`, mas é executado apenas uma vez.
 
 ```js
 Event.once('app.boot', function * () {
@@ -121,8 +119,8 @@ Event.once('app.boot', function * () {
 })
 ```
 
-#### qualquer(manipulador)
-Anexar um ouvinte de eventos global para escutar todos os eventos.
+#### `any(handler)`
+Anexa um ouvinte de evento global para ouvir todos os eventos.
 
 ```js
 Event.any(function (event) {
@@ -130,8 +128,8 @@ Event.any(function (event) {
 })
 ```
 
-#### times(número)
-Defina um limite para o número de vezes que um ouvinte de eventos será executado e removido depois disso.
+#### `times(number)`
+Define um limite para as vezes que um ouvinte de evento será executado e será removido depois disso.
 
 ```js
 Event.times(4).when('user.registered', function () {
@@ -139,55 +137,54 @@ Event.times(4).when('user.registered', function () {
 })
 ```
 
-#### fire(event, data)
+#### `fire(event, data)`
 Dispara um evento.
 
 ```js
 Event.fire('user.registered', user)
 ```
 
-##### Aliados
+Aliases
 
-| Alias | Exemplo |
-|-------|---------|
-| emitir | Evento.emit('usuário.registrado', usuário)` |
+| Alias ​​| Exemplo                                 |
+|-------|-----------------------------------------|
+| emit  | `Event.emit('user.registered', user)`   |
 
-
-#### removeListeners([event])
-Remova todos os ouvintes de um evento ou para todos os eventos.
+#### `removeListeners([event])`
+Remove todos os ouvintes de um evento fornecido ou de todos os eventos.
 
 ```js
-Event.removeListeners() // will remove all listeners
-Event.removeListeners('user.registered') // will remove listeners for user.registered event only
+Event.removeListeners() // irá remover todos os ouvintes
+Event.removeListeners('user.registered') // removerá ouvintes somente para eventos user.registered
 ```
 
-#### removeListener(event, name)
-Remover um ouvinte nomeado para um determinado evento.
+#### `removeListener(event, name)`
+Remove um ouvinte nomeado para um evento fornecido.
 
 ```js
-// register multiple
+// registrar vários
 Event.when('user.registered', 'Logger.log')
 Event.when('user.registered', 'registration', 'Mail.sendWelcomeEmail')
 
-// remove a specific one
+// remover um específico
 Event.removeListener('user.registered', 'registration')
 ```
 
-#### hasListeners(evento)
-Retorna um valor booleano se um evento tem ou não ouvintes.
+#### `hasListeners(event)`
+Retorna um booleano se um evento tem ouvintes ou não.
 
 ```js
 Event.hasListeners('user.registered')
 ```
 
-#### getListeners(event)
-Retorna um array de ouvintes para um evento específico.
+#### `getListeners(event)`
+Retorna uma matriz de ouvintes para um evento específico.
 
 ```js
 Event.getListeners('user.registered')
 ```
 
-## Emissor Instância
+## Instância do emissor
 Todos os ouvintes de eventos têm acesso à instância do emissor.
 
 ```js

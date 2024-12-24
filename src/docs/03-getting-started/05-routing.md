@@ -1,15 +1,19 @@
 # Roteamento
 
-Rotas HTTP abrem a porta de entrada para o mundo externo interagir com seu aplicativo usando URLs. O roteador do AdonisJS mapeia os URLs para ações e as invocará sempre que um usuário final chamar uma determinada URL.
+As rotas HTTP abrem o gateway para o mundo externo interagir com seu aplicativo usando URLs. O roteador AdonisJs mapeia URLs para ações e as invocará quando o usuário final chamar uma determinada URL.
 
-Todas as rotas são definidas dentro do arquivo `app/Http/routes.js`, que é automaticamente carregado quando o servidor HTTP é iniciado. Vamos começar com um exemplo básico
+Todas as rotas são definidas dentro do arquivo `app/Http/routes.js` que no momento da inicialização do servidor HTTP é carregado automaticamente. Vamos começar com um exemplo básico
 
-NOTE: Todos os exemplos neste documento utilizam `Closures` como ações de rota, embora seja recomendado criar *Controladores* e vinculá-los às suas rotas. Dessa forma você manterá seu arquivo de rotas limpo e suas ações de rota testáveis.
+::: info NOTA
+Todos os exemplos neste documento usam `Closures` como ações de rota, enquanto é recomendado criar *Controllers* e vinculá-los ao lado de suas rotas. Dessa forma, você manterá seu arquivo de rotas limpo e suas ações de rota testáveis.
+:::
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/w7LD7E53w3w?si=oZgxH6ME-hMJqPDA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/w7LD7E53w3w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+## Exemplo básico
 
 ```js
-// .app/Http/routes.js
+// app/Http/routes.js
 
 const Route = use('Route')
 
@@ -18,26 +22,26 @@ Route.get('/', function * (request, response) {
 })
 ```
 
-Acima definimos uma rota para a URL raiz (/) e anexamos um fechamento a ele. Aqui estão algumas coisas para notar sobre o fechamento.
+Acima, definimos uma rota para o *URL raiz(/)* e anexamos um fechamento a ele. Aqui estão algumas coisas a serem observadas sobre o fechamento.
 
-1. O closure é um gerador ES2015, o que significa que você pode usar a palavra-chave yield para realizar operações assíncronas. Veja este [post](https://strongloop.com/strongblog/write-your-own-co-using-es2015-generators/) da Strongloop sobre geradores.
-2. O AdonisJs utiliza os termos "request" e "response" em vez de "req" e "res".
+1. O fechamento é um gerador ES2015, o que significa que você pode usar a palavra-chave `yield` para executar operações assíncronas. Confira esta [postagem](https://strongloop.com/strongblog/write-your-own-co-using-es2015-generators/) da Strongloop sobre geradores.
+2. O AdonisJs usa os termos `request` e `response` no lugar de `req` e `res`.
 
-#### Middleware
-Definir middleware para uma única rota
+#### middleware(...middleware)
+Defina o middleware para uma única rota
 
 ```js
-// .app/Http/routes.js
+// app/Http/routes.js
 
 Route.get('/authenticated', function * (request, response) {
   response.send('This route is authenticated')
 }).middleware('auth')
 ```
 
-Ou adicionar múltiplos middleware
+Ou adicione vários middlewares
 
 ```js
-// .app/Http/routes.js
+// app/Http/routes.js
 
 Route.get('/secured', function * (request, response) {
   response.send('This route is authenticated')
@@ -45,22 +49,21 @@ Route.get('/secured', function * (request, response) {
 ```
 
 ## Verbos HTTP
-Os verbos HTTP também conhecidos como métodos HTTP definem o tipo de solicitação. Um exemplo clássico dos verbos HTTP é usar um formulário onde definimos o método como POST, pois queremos enviar os formulários com segurança para o servidor da web.
+Os verbos HTTP, também conhecidos como métodos HTTP, definem o tipo de solicitação. Um exemplo muito clássico de verbos HTTP é usar um formulário em que definimos o `método` como POST, pois queremos enviar os formulários com segurança para o servidor web.
 
-Os verbos HTTP não são limitados apenas aos métodos GET e POST, existem outros métodos comumente usados que também são suportados pelo AdonisJs.
+Os verbos HTTP não se limitam apenas a `GET` e `POST`, há um punhado de outros verbos comumente usados, todos suportados pelo AdonisJs.
 
+| Verbo   | Método de rota  |
+|---------|-----------------|
+| GET     | Route.get       |
+| POST    | Route.post      |
+| PUT     | Route.put       |
+| PATCH   | Route.patch     |
+| DELETE  | Route.delete    |
 
-| Verbo   | Método |
-|---------|--------------|
-| GET     | Route.get |
-| POST    | Route.post |
-| PUT     | Route.put |
-| PATCH   | Rota.patch |
-| DELETE  | Route.delete |
+Para diferentes verbos/métodos HTTP, você pode usar o método `route`, que dá a liberdade de definir qualquer verbo HTTP.
 
-Para diferentes verbos/métodos HTTP, você pode usar o método 'route', que dá a liberdade de definir qualquer verbo HTTP.
-
-#### route(url, verbos, ação)
+#### route(url, verbs, action)
 
 ```js
 const Route = use('Route')
@@ -74,10 +77,10 @@ Route.route('/', ['COPY', 'MOVE'], function * (request, response) {
 })
 ```
 
-## Rotas para SPA's
-A rota em aplicativos de página única (SPAs) é tratada pelos frameworks front-end e muitas vezes você só precisa servir uma única página da web ao navegador para todas as URLs. O AdonisJS tem um método prático para alcançar essa funcionalidade.
+## Rotas para SPAs
+O roteamento em aplicativos de página única (SPAs) é controlado pelas estruturas front-end e, frequentemente, você só precisa servir uma única página da web para o navegador para todas as URLs. O AdonisJs tem um método prático para atingir essa funcionalidade.
 
-#### any(url, ação)
+#### any(url, action)
 
 ```js
 Route.any('*', function * (request, response) {
@@ -85,12 +88,12 @@ Route.any('*', function * (request, response) {
 })
 ```
 
-qualquer método irá vincular todos os verbos HTTP com a URL definida. Enquanto o caractere curinga "*" garantirá que essa definição de rota manipule todas as URLs.
+O método `any` vinculará todos os verbos HTTP com a URL definida. Enquanto o curinga `*` garantirá que esta definição de rota manipule todas as URLs.
 
-Finalmente você pode servir uma "visualização" HTML com o código de inicialização para sua aplicação frontend.
+Finalmente, você pode servir uma `view` HTML com o código de inicialização para seu aplicativo front-end.
 
-## Parâmetros de Rota
-Parâmetros de rota são segmentos dinâmicos de uma URL que significam que você pode definir URLs e aceitar dados dinâmicos como parte da própria URL. Considere este exemplo:
+## Parâmetros de rota
+Os parâmetros de rota são segmentos dinâmicos de uma URL, o que significa que você pode definir URLs e aceitar dados dinâmicos como parte da própria URL. Considere este exemplo:
 
 ```js
 Route.get('users/:id', function * (request, response) {
@@ -99,9 +102,9 @@ Route.get('users/:id', function * (request, response) {
 })
 ```
 
-No definição de rota acima, ':id' é o segmento dinâmico. URLs como '/user/1', ou '/user/20' serão válidos, e você pode pegar o definido id dentro da ação da rota usando o método 'param'.
+Na definição de rota acima, `:id` é o segmento dinâmico. URLs como `/user/1` ou `/user/20` serão válidas, e você pode pegar o id definido dentro da ação de rota usando o método `param`.
 
-Você também pode manter parâmetros de rota opcionais dependendo da natureza do seu aplicativo.
+Você também pode manter os parâmetros de rota opcionais dependendo da natureza do seu aplicativo.
 
 ```js
 Route.get('make/:drink?', function * (request, response) {
@@ -110,9 +113,9 @@ Route.get('make/:drink?', function * (request, response) {
 })
 ```
 
-`?` torna um parâmetro opcional o que significa que tanto as URLs `/fazer` ou `/fazer/balançar` são válidas.
+`?` torna um parâmetro opcional, o que significa que ambos os URLs `/make` ou `/make/shake` são válidos.
 
-Você também pode querer ter um parâmetro que possa ter qualquer caractere que você deseja (incluindo `/`). Isso geralmente é usado para simular um armazenamento com URLs como `/~/media/xyz.pdf`. Se for esse o caso, você pode usar o parâmetro `*` e obter qualquer string que desejar.
+Você também pode querer ter um parâmetro que pode ter todos os caracteres que você quiser (incluindo `/`). Isso geralmente é usado para simular um armazenamento com URL como `/~/media/xyz.pdf`. Se for o caso, você pode usar o parâmetro `*` e obter qualquer string que desejar.
 
 ```js
 Route.get('/~/*', function * (request, response) {
@@ -121,9 +124,8 @@ Route.get('/~/*', function * (request, response) {
 })
 ```
 
-::: info NOTA
-Você ainda pode usar parâmetro de consulta com um parâmetro `*` .
-:::
+### NOTA
+Você ainda pode usar o parâmetro de consulta com um parâmetro `*`.
 
 ```js
 // url: `/~/media/xyz.pdf?download`
@@ -138,14 +140,14 @@ Route.get('/~/*', function * (request, response) {
 })
 ```
 
-## Negociação de Conteúdo via Rotas
-[Negociação de conteúdo](https://pt.wikipedia.org/wiki/Negocia%C3%A7%C3%A3o_de_conte%C3%BAdos) é uma forma de encontrar o melhor tipo de saída para um determinado pedido. Idealmente, a cabeçalho HTTP *Accept* é usada para negociar o conteúdo, mas alguns aplicativos modernos tornam a saída mais explícita ao definir a extensão da saída dentro da URL. Por exemplo:
+## Negociação de conteúdo por meio de rotas
+[Negociação de conteúdo](https://en.wikipedia.org/wiki/Content_negotiation) é uma maneira de encontrar o melhor tipo de saída para uma determinada solicitação. Idealmente, o cabeçalho HTTP *Accept* é usado para negociar o conteúdo, mas alguns aplicativos modernos tornam a saída mais explícita definindo a extensão de saída dentro da URL. Por exemplo:
 
-Uma URL `/users.json` retornará a saída JSON, enquanto `/users.html` renderizará uma visão.
+Uma URL `/users.json` retornará a saída JSON, enquanto `/users.html` renderizará uma visualização.
 
-As rotas do AdonisJs te dão a opção de definir os formatos ao lado das suas rotas.
+As rotas do AdonisJs oferecem a opção de definir os formatos ao lado de suas rotas.
 
-#### formats(tipos, [estrito=falso])
+#### formats(types, [strict=false])
 ```js
 Route
   .get('users', function * (request, response) {
@@ -154,42 +156,44 @@ Route
   .formats(['json', 'html'])
 ```
 
-1. A URL `/users.json` terá o formato de `json` e `/users.html` terá o formato de `html`. Também `/users` funcionará e neste caso o formato será *indefinido*, se quiser restringir esse comportamento certifique-se de definir a opção `strict` como `true` ao definir os formatos.
+1. A URL `/users.json` terá o formato `json` e `/users.html` terá o formato `html`. Também `/users` funcionará e desta vez o formato será *indefinido*, se você quiser restringir esse comportamento, certifique-se de definir a opção `strict` como true ao definir formatos.
 
 ## Route Renderer
-Todo aplicativo tem um requisito de criar alguns *HTMLs bobos*. A razão que chamamos eles bobos, porque essas visualizações não exigem nenhum dado dinâmico ou processamento lógico. Por exemplo:
+Todo aplicativo tem um requisito de criar algumas *visualizações HTML idiotas*. A razão pela qual as chamamos de idiotas é porque essas visualizações não exigem nenhum dado dinâmico ou processamento lógico. Por exemplo:
 
-1. Uma página sobre nós.
+1. Uma página sobre.
 2. Página de contato para exibir informações de contato da empresa.
 
-Vamos pegar o exemplo clássico de renderizar uma página "Sobre".
+Vamos pegar o exemplo clássico de renderização de uma página sobre.
 
-Não é ideal:
 ```js
+// Não é o ideal
+
 Route.get('about', function * (request, response) {
   yield response.sendView('about')
 })
 ```
 
-Acima registramos uma rota para a URL `/about` e dentro do fechamento, renderizamos uma visão usando o método `sendView`. Idealmente, não há nada de errado com isso, mas uma vez que o número de rotas aumenta, você acabará escrevendo esses um-linha bastante frequentemente.
+Acima, registramos uma rota para a URL `/about` e dentro do fechamento, renderizamos uma visualização usando o método `sendView`. Idealmente, não há nada de ruim nisso, mas uma vez que o número de rotas aumenta, você acabará escrevendo essas linhas com bastante frequência.
 
-A camada de roteamento do AdonisJs elimina esse comportamento ao introduzir o método render, que é chamado junto com o método on.
+A camada de roteamento do AdonisJs elimina esse comportamento introduzindo o `render` que é chamado junto com o método `on`.
 
-Ideal:
 ```js
+// Ideal
+
 Route.on('about').render('about')
 ```
 
-Esta é uma pequena funcionalidade, mas vai te poupar de digitar alguns caracteres a mais e é mais explícito sobre renderizar uma visão.
+Este é um pequeno recurso, mas ele vai poupar você de digitar mais alguns caracteres e é mais explícito sobre a renderização de uma visualização.
 
 ::: tip DICA
-*BONUS*: As views renderizadas via o método `render` tem acesso ao objeto [link]/request[requisição].
+*BÔNUS*: Visualizações renderizadas via método `render` têm acesso ao objeto [request](/src/docs/03-getting-started/06-request.md).
 :::
 
 ## Grupos de Rotas
-A agrupagem de rotas é necessária quando você deseja um monte de rotas compartilharem os mesmos atributos sem defini-los repetidamente. Por exemplo: prefixando todas as rotas da versão atual da API `(api/v1)`.
+O agrupamento de rotas é necessário quando você quer que várias rotas compartilhem os mesmos atributos sem defini-los repetidamente. Por exemplo: prefixar todas as rotas com a versão atual da API `(api/v1)`.
 
-#### group(nomeúnico, retorno_de_chamado)
+#### group(uniqueName, callback)
 
 ```js
 Route.group('version1', function () {
@@ -199,12 +203,12 @@ Route.group('version1', function () {
 }).prefix('api/v1')
 ```
 
-Todas as rotas dentro do grupo acima recebem o prefixo `/api/v1`, ou seja, `/api/v1/usuarios` irá invocar a ação da rota definida logo acima.
+Todas as rotas dentro do grupo acima recebem o prefixo `/api/v1`, o que significa que `/api/v1/users` invocará a ação de rota definida ao lado da definição de rota acima.
 
-Rotas em grupo não são limitadas apenas a prefixos, mas também você pode definir outras propriedades também.
+Os grupos de rotas não são limitados apenas à prefixação, mas você também pode definir outras propriedades.
 
-#### Middleware (tecnologia de software que atua como uma camada intermediária entre o sistema operacional e as aplicações, fornecendo serviços comuns a estas últimas, como segurança, gerenciamento de sessões, cache, etc.)
-Definir middleware para todas as rotas dentro do grupo
+#### middleware(...middleware)
+Defina o middleware para todas as rotas dentro do grupo
 
 ```js
 Route.group('authenticated', function () {
@@ -212,7 +216,7 @@ Route.group('authenticated', function () {
 }).middleware('auth')
 ```
 
-#### domínio (subdomínio)
+#### domain(subdomain)
 Defina um subdomínio para um grupo de rotas.
 
 ```js
@@ -223,93 +227,94 @@ Route.group('my-group', function () {
 }).domain('blog.mydomain.dev')
 ```
 
-Rotas definidas sob um subdomínio serão invocadas quando o URL pertencer a um subdomínio. Por exemplo: `blog.mydomain.dev/posts` irá invocar a ação para a rota acima.
+As rotas definidas em um subdomínio serão invocadas quando a URL pertencer a um subdomínio. Por exemplo: `blog.mydomain.dev/posts` invocará a ação para a rota acima.
 
-#### formatos(formatos, [estrito=falso])
-Você também pode definir `formats` para um grupo de rotas. Veja xref:_formats_types_strict_false[formats]
+#### formats(formats, [strict=false])
+Você também pode definir `formats` para um grupo de rotas. Veja [formats](#formatstypes-strictfalse)
 
 ## Rotas nomeadas
-Rotas são definidas dentro do arquivo `app/Http/routes.js`, mas elas são usadas em todos os lugares. Por exemplo:
+As rotas são definidas dentro do arquivo `app/Http/routes.js`, mas são usadas em todos os lugares. Por exemplo:
 
-1. Dentro de uma visão, para criar a barra de navegação.
-2. Dentro de Controladores, para redirecionar para uma URL diferente, por exemplo.
+1. Dentro de uma visualização, para criar a barra de navegação.
+2. Dentro dos controladores, para redirecionar para uma URL diferente, etc.
 
-À medida que seu aplicativo crescer, novos requisitos levarão a mudanças nas rotas com bastante frequência. Agora, alterá-las dentro do arquivo de rotas é bem simples, mas encontrar suas referências em todos os controladores e visualizações não será algo que você vai gostar.
+À medida que seu aplicativo cresce, novos requisitos levarão à alteração de rotas com bastante frequência. Agora, alterá-las dentro do arquivo de rotas é bem simples, mas encontrar suas referências dentro de todas as visualizações e controladores não é algo que você vai gostar.
 
-É melhor dar nomes únicos às suas rotas de referência comum e usar seu nome como referência em vez da URL.
+É melhor dar nomes exclusivos às suas rotas comumente referenciadas e usar o nome delas como referência em vez da URL.
 
-#### as(nome)
-
+#### as(name)
 ```js
 Route
   .get('users/:id', 'UserController.show')
   .as('profile')
 ```
 
-
-Agora você pode referenciar o nome dentro de suas visualizações usando o helper linkTo.
+Agora você pode referenciar o nome dentro de suas visualizações usando o auxiliar linkTo.
 
 ```twig
 {{ linkTo('profile', 'View Profile', { id: 1 }) }}
 {{ linkTo('profile', 'View Profile', { id: 1 } , '_blank') }}
 ```
 
-Saída:
 ```html
+<!-- Saída -->
+
 <a href="/users/1"> View Profile </a>
 <a href="/users/1" target="_blank"> View Profile </a>
 ```
 
-linkTo limita-se a uma tag âncora, há um filtro de visualização geral chamado rota, que pode ser usado para resolver uma rota nomeada dentro de suas visualizações.
+`linkTo` limita você a uma tag de âncora, há um filtro de visualização de propósito geral chamado `route`, que pode ser usado para resolver uma rota nomeada dentro de suas visualizações.
 
 ```twig
 <form action="{{ 'profile' | route({id: 1}) }}" method="POST"></form>
 ```
 
-Saída:
 ```html
+<!-- Saída -->
+
 <form action="/user/1" method="POST"></form>
 ```
 
-## Rotas Produtivas
-Camada de roteamento facilita a definição de rotas convencionais para operações baseadas em CRUD. Vamos revisar rapidamente a sintaxe da definição de recursos e sua saída.
+## Rotas com recursos
+A camada de roteamento facilita a definição de rotas convencionais para operações baseadas em CRUD. Vamos revisar rapidamente a sintaxe de definição de recursos e sua saída.
 
-#### resource(nome, controlador)
-
+#### resource(name, controller)
 ```js
 const Route = use('Route')
 Route.resource('users', 'UserController')
 ```
 
-Saída:
+```bash
+# Output
 
-| Url | Verbo | Método Controlador | Propósito |
-|-----|------|-------------------|---------|
-| /usuários | GET | UserController.index | Mostrar lista de todos os usuários |
-| /usuarios/criar | GET | UserController.create | Exiba um formulário para criar um novo usuário. |
-| /usuários | POST | UserController.store | Salve os dados enviados pelo usuário no formulário para o banco de dados. |
-| /usuários/:id | GET | UserController.show | Exibir detalhes do usuário usando o ID |
-| /usuarios/:id/editar | GET | UserController.edit | Exibir o formulário para editar o usuário. |
-| /usuários/:id | PUT/PATCH | UserController.update | Atualizar detalhes de um usuário específico com base em seu ID. |
-| /usuários/:id | Excluir | UserController.destroy | Deletar um usuário com um determinado ID. |
+| Url             | Verb      | Controller Method       | Purpose                                         |
+|-----------------|-----------|-------------------------|-------------------------------------------------|
+| /users          | GET       | UserController.index    | Show list of all users                          |
+| /users/create   | GET       | UserController.create   | Display a form to create a new user.            |
+| /users          | POST      | UserController.store    | Save user submitted via form to the database.   |
+| /users/:id      | GET       | UserController.show     | Display user details using the id               |
+| /users/:id/edit | GET       | UserController.edit     | Display the form to edit the user.              |
+| /users/:id      | PUT/PATCH | UserController.update   | Update details for a given user with id.        |
+| /users/:id      | DELETE    | UserController.destroy  | Delete a given user with id.                    |
+```
 
-Aqui estão algumas coisas para notar.
+Aqui estão algumas coisas para observar.
 
 1. Você sempre precisa registrar um controlador com o recurso de rota.
-2. O AdonisJs irá vincular automaticamente os métodos para cada rota, e você não pode personalizá-los. É bom ficar com os padrões, pois outros que contribuirão para o seu código irão achar mais fácil seguir.
+2. O AdonisJs vinculará automaticamente os métodos para cada rota, e você não poderá personalizá-los. É bom manter os padrões, pois outros que contribuem para o seu código acharão mais fácil segui-los.
 
 ### Recursos aninhados
-Recursos também podem ser aninhados usando a notação de ponto.
+Os recursos também podem ser aninhados usando a ``notação de ponto`.
 
 ```js
 Route.resource('posts.comments', 'CommentsController')
 ```
 
 ### Filtrando recursos
-"recurso" criará um total de sete rotas. Dependendo da natureza do seu aplicativo, você pode ou não precisar de todas as rotas registradas. O AdonisJS torna tão fácil filtrar as rotas.
+`resource` criará um total de sete rotas. Dependendo da natureza do seu aplicativo, você pode ou não precisar de todas as rotas registradas. O AdonisJs torna muito mais fácil filtrar as rotas.
 
-#### except(ações)
-`except` removerá as rotas para as ações dadas.
+#### except(...actions)
+`except` removerá rotas para as ações fornecidas.
 
 ```js
 Route
@@ -317,7 +322,7 @@ Route
   .except('create', 'edit')
 ```
 
-#### apenas(ações)
+#### only(...actions)
 `only` é o oposto de xref:_except_actions[except].
 
 ```js
@@ -327,13 +332,13 @@ Route
 ```
 
 ### Estendendo Recursos
-Você também pode estender os recursos existentes adicionando rotas e ações de controlador personalizados a eles. No mundo prático, existem alguns casos de uso para estender recursos. Por exemplo:
+Você também pode estender os recursos existentes adicionando rotas personalizadas e ações do controlador a eles. No mundo prático, há um punhado de casos de uso para estender recursos. Por exemplo:
 
-1. 'autores' pode ser estendido para ter uma rota para *autores populares*.
-2. "posts" podem ser estendidos para ter várias rotas para enviar/buscar comentários. Você também pode extrair e fazer *comentários* um recurso diferente, mas às vezes é mais lógico estender o recurso pai.
+1. `authors` pode ser estendido para ter uma rota para autores *Populares*.
+2. `posts` pode ser estendido para ter várias rotas para enviar/buscar comentários. Você também pode extrair e tornar *comments* um recurso diferente, mas às vezes é mais lógico estender o recurso pai.
 
 #### addCollection(route, [verbs=GET], [callback])
-O método `addCollection` adicionará uma nova rota ao recurso existente. Por padrão, ele vincula a rota usando o verbo GET e o nome da ação do controlador é o mesmo que o nome da rota.
+O método `addCollection` adicionará uma nova rota ao recurso existente. Por padrão, ele vincula a rota usando o verbo *GET* e o nome da ação do controlador é o mesmo que o nome da rota.
 
 ```js
 Route
@@ -341,11 +346,9 @@ Route
   .addCollection('popular')
 ```
 
-Saída:
-
-| Url | Verbo | Método Controlador | Propósito |
-|-----|------|-------------------|---------|
-| /authors/popular | GET | AuthorsController.popular | Lista de autores populares |
+| Url               | Verbo   | Método do Controlador     | Objetivo                  |
+|-------------------|---------|---------------------------|---------------------------|
+| /authors/popular  | GET     | AuthorsController.popular | Listar autores populares  |
 
 Claro, você pode definir um verbo HTTP diferente e atribuir um método de controlador diferente.
 
@@ -358,7 +361,7 @@ Route
 ```
 
 #### addMember(route, [verbs=GET], [callback])
-O método `addMember` tem a mesma assinatura que [addCollection](#addmemberroute-verbsget-callback), mas, em vez disso, adiciona o membro para um item específico dentro do recurso.
+O método `addMember` tem a mesma assinatura que [addCollection](#addcollectionroute-verbsget-callback), mas em vez disso, ele adiciona o membro para um item específico dentro do recurso.
 
 ```js
 Route
@@ -368,12 +371,11 @@ Route
 
 Saída:
 
-| Url | Verbo | Método Controlador | Propósito |
-|-----|------|-------------------|---------|
-| /posts/:id/comentários | GET | PostsController.comments | Listar comentários para uma publicação específica |
+| Url                 | Verbo | Método do controlador     | Objetivo                        |
+|---------------------|-------|---------------------------|---------------------------------|
+| /posts/:id/comments | GET   | PostsController.comments  | Listar comentários para uma determinada postagem |
 
-
-Como você pode notar, o `comentários` foi adicionado à rota de um único post. Além disso, você pode definir [middleware](/src/docs/03-getting-started/08-middleware.md) e [nome](#asname) nas rotas estendidas.
+Como você pode notar, a rota `comments` foi adicionada a uma única postagem. Você também pode definir xref:_middleware_middleware[middleware] e xref:_as_name[name] nas rotas estendidas.
 
 ```js
 Route

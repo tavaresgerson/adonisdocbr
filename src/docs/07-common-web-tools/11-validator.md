@@ -1,12 +1,12 @@
 # Validação
 
-A validação de dados do usuário é um requisito essencial para qualquer aplicação. O AdonisJs utiliza o [Indicative](http://indicative.adonisjs.com/) para sanitizar e validar as entradas do usuário. Ele suporta todas as regras de validação do Indicative, então certifique-se de verificar a documentação do Indicative.
+Validar dados do usuário é um requisito essencial para qualquer aplicativo. O AdonisJs usa [Indicative](http://indicative.adonisjs.com/) para higienizar e validar entradas do usuário. Ele suporta todas as regras de validação do indicative, então certifique-se de verificar a documentação do indicative.
 
 ## Configuração
-O validador não faz parte da instalação básica e, portanto, você precisa instalá-lo e registrá-lo manualmente.
+O validador não faz parte da instalação base e, portanto, você precisa instalá-lo e registrá-lo manualmente.
 
 ```bash
-# Installing From Npm
+# Instalando a partir do Npm
 
 npm i --save adonis-validation-provider
 ```
@@ -32,9 +32,9 @@ const aliases = {
 ```
 
 ## Exemplo básico
-Vamos pegar o exemplo mais básico de validar um formulário para criar um usuário. Por enquanto, vamos realizar todas as validações dentro do controlador, mas você está livre para organizá-las em serviços separados.
+Vamos pegar o exemplo mais básico de validação de um formulário para criar um usuário. Por enquanto, executaremos todas as validações dentro do controlador, mas você está livre para organizá-las em serviços separados.
 
-Vamos começar definindo as regras do modelo de usuário. Certifique-se também de conferir a documentação indicativa sobre [regras de esquema](http://indicative.adonisjs.com/#indicative-schema-rules).
+Vamos começar definindo as regras no modelo Usuário. Certifique-se também de verificar os documentos indicativos sobre [regras de esquema](http://indicative.adonisjs.com/#indicative-schema-rules).
 
 ```js
 // app/Model/User
@@ -58,6 +58,7 @@ class User extends Lucid {
 // app/Http/Controllers/UsersController.js
 
 'use strict'
+
 const Validator = use('Validator')
 const User = use('App/Model/User')
 
@@ -72,45 +73,45 @@ class UsersController {
       return
     }
 
-    // Validation passed, create the user.
+    // Validação aprovada, crie o usuário.
   }
 
 }
 ```
 
 1. Começamos definindo as regras dentro do *Modelo de Usuário*.
-2. Em seguida validamos os dados do usuário da requisição contra as regras previamente definidas.
-3. O método `validation.fails()` retorna verdadeiro se a validação falhar.
-4. O método `validation.messages()` retornará todos os erros como uma matriz.
+2. Em seguida, validamos os dados do usuário da solicitação em relação às regras definidas anteriormente.
+3. `validation.fails()` retorna true, se a validação falhou.
+4. `validation.messages()` retornará todas as mensagens de erro como uma matriz.
 
-## Métodos de Validação
+## Métodos do Validador
 Abaixo está a lista de métodos expostos pelo Provedor de Validação.
 
-#### validate(data, regras, [mensagens])
-Valide os dados do usuário contra regras definidas e retorne assim que a primeira validação falhar.
+#### `validate(data, rules, [messages])`
+Valida os dados do usuário em relação às regras definidas e retorna assim que a primeira validação falhar.
 
 ```js
 const validation = yield Validator.validate(data, rules, messages)
 ```
 
-#### validateAll(dados, regras, [mensagens])
-Igual ao `validate`, mas em vez de continuar até a última validação e retornar múltiplas mensagens de erro.
+#### `validateAll(data, rules, [messages])`
+O mesmo que `validate`, mas continua até a última validação e retorna várias mensagens de erro.
 
 ```js
 const validation = yield Validator.validateAll(data, rules, messages)
 ```
 
-#### falha()
-Retorna um valor booleano indicando se a validação foi bem sucedida ou não.
+#### `fail()`
+Retorna um booleano indicando se a validação falhou ou não.
 
 ```js
 const validation = yield Validator.validate(data, rules, messages)
 if (validation.fails ()) {
-  // validation failed
+  // validação falhou
 }
 ```
 
-#### Mensagens
+#### `messages`
 Retorna uma matriz de mensagens de erro de validação
 
 ```js
@@ -120,8 +121,8 @@ if (validation.fails ()) {
 }
 ```
 
-#### sanitize(dados, regras)
-Sanitizar dados do usuário. Também verifique a documentação [sanitization] para mais informações.
+#### `sanitize(data, rules)`
+Saneie os dados do usuário. Certifique-se também de verificar a documentação [sanitization](/docs/09-security/06-data-sanitization.md) para obter mais informações.
 
 ```js
 const data = request.all()
@@ -134,8 +135,8 @@ const rules = {
 const sanitizedData = Validator.sanitize(data, rules)
 ```
 
-#### é
-Você pode usar esse método para fazer validações inline em vez de passar por todo o ciclo de vida da validação.
+#### `is`
+Você pode usar o método is para fazer validações em linha em vez de passar por um ciclo de vida de validação completo.
 
 ```js
 if (Validator.is.email('foo')) {
@@ -143,22 +144,22 @@ if (Validator.is.email('foo')) {
 }
 ```
 
-#### sanitizador
-Igual ao comando `is`, você pode fazer a sanitização de dados embutida.
+#### sanitizor
+Assim como `is`, você pode fazer a sanitização de dados em linha.
 
 ```js
 const sanitizedEmail = Validator
   .sanitizor
   .normalizeEmail('bar.sneaky+foo@googlemail.com')
 
-// returns barsneaky@gmail.com
+// retorna barsneaky@gmail.com
 ```
 
-## Regras Personalizadas
-AdonisJs suporta todas as regras de validação por Indicative, mas também adiciona algumas que são específicas apenas para AdonisJs. Abaixo está a lista das regras personalizadas.
+## Regras personalizadas
+O AdonisJs suporta todas as regras de validação por Indicative, mas também adiciona algumas que são específicas apenas para o AdonisJs. Abaixo está a lista de regras personalizadas.
 
-#### unique(tableName, [fieldName])
-Garanta que um determinado valor seja único em uma determinada tabela de banco de dados.
+#### `unique(tableName, [fieldName])`
+Garante que um determinado valor seja exclusivo em uma determinada tabela de banco de dados.
 
 ```js
 // app/Model/User
@@ -176,7 +177,7 @@ class User extends Lucid {
 }
 ```
 
-Agora, quando tentar atualizar um usuário, você nunca quer executar a validação única para o mesmo usuário. Isso pode ser alcançado definindo uma cláusula "whereNot".
+Agora, ao tentar atualizar um usuário, você nunca desejará executar a validação exclusiva para o mesmo usuário. O mesmo pode ser alcançado definindo uma cláusula `whereNot`.
 
 ```js
 // app/Model/User
@@ -215,13 +216,13 @@ class UsersController {
 }
 ```
 
-1. Ao buscar as regras do *Modelo de Usuário*, passamos o ID do usuário, que é ignorado ao verificar a unicidade do e-mail.
+1. Ao buscar as regras do *Modelo de Usuário*, passamos o ID do usuário que é ignorado ao verificar a exclusividade do e-mail.
 
-## Extendendo o Validador
-Muitas vezes você tem a necessidade de estender o *Validator Provider* adicionando novas regras de validação. Você pode usar o método `extend` fornecido pelo [Indicative](http://indicative.adonisjs.com/#indicative-extending).
+## Estendendo o Validador
+Muitas vezes você tem o requisito de estender o *Provedor do Validador* adicionando novas regras de validação. Você pode usar o método `extend` fornecido por [Indicative](http://indicative.adonisjs.com/#indicative-extending).
 
-#### Aplicativo Específico
-Para regras específicas de aplicação você pode usar o arquivo `app/Listeners/Http.js` para escutar o evento *start* e sua regra personalizada.
+#### Específico do Aplicativo
+Para regras específicas do aplicativo, você pode usar o arquivo `app/Listeners/Http.js` para ouvir o evento *start* e sua regra personalizada.
 
 ```js
 // app/Listeners/Http.js
@@ -245,8 +246,8 @@ Http.onStart = function () {
 }
 ```
 
-#### Via Provedor
-Se você estiver escrevendo um módulo/addon para o AdonisJS, você pode adicionar suas regras personalizadas dentro do método "boot" de seu provedor de serviços.
+#### Via Provider
+Se você estiver escrevendo um módulo/addon para AdonisJs, você pode adicionar suas regras personalizadas dentro do método `boot` do seu provedor de serviços.
 
 ```js
 const ServiceProvider = require('adonis-fold').ServiceProvider
@@ -278,4 +279,4 @@ class MyServiceProvider extends ServiceProvider {
 }
 ```
 
-Você pode usar o acima definido 'adulto' como qualquer outra regra de validação.
+Você pode fazer uso do `adult` definido acima como qualquer outra regra de validação.

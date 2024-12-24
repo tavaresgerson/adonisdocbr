@@ -1,26 +1,26 @@
-# Interativo Shell aka Ace
+# Shell interativo também conhecido como Ace
 
-Ace é uma ferramenta de linha de comando poderosa construída para AdonisJs. Até agora você tem usado muitos comandos do Ace para gerar *controladores*, *modelos*, executar *migrações*, etc. Neste guia, aprenderemos sobre os internos do Ace e como criar comandos.
+Ace é uma ferramenta de linha de comando poderosa criada para AdonisJs. Até agora, você tem usado muitos comandos ace para gerar *controladores*, *modelos*, executar *migrações*, etc. Neste guia, aprenderemos sobre os internos do Ace e como criar comandos.
 
 ## Sobre o Ace
 
-1. "ace" é um arquivo executável dentro da raiz do seu aplicativo.
-2. Cada comando é específico para um único projeto, para comandos reutilizáveis você deve agrupá-los como um pacote npm.
-3. Os comandos têm acesso a todos os componentes dos aplicativos, como *Modelos*, *Rotas*, etc. Isso torna muito fácil criar comandos úteis.
-4. Os comandos específicos do projeto são armazenados dentro da pasta app/Commands.
+1. `ace` é um arquivo executável dentro da raiz do seu aplicativo.
+2. Cada comando é específico para um único projeto, para comandos reutilizáveis, você deve agrupá-los como um pacote npm.
+3. Os comandos têm acesso a todos os componentes do aplicativo, como *Modelos*, *Rotas*, etc. Isso torna muito fácil criar comandos úteis.
+4. Os comandos específicos do projeto são armazenados dentro do diretório `app/Commands`.
 5. Você deve registrar seus comandos dentro do arquivo `bootstrap/app.js` antes de usá-los.
 
 ## Criando seu primeiro comando
-Vamos criar um comando para buscar citações aleatórias de *Paul Graham* usando [API Wisdom](http://gophergala.github.io/wisdom) e exibir na tela do terminal.
+Vamos criar um comando para extrair citações aleatórias de *Paul Graham* usando [API Wisdom](http://gophergala.github.io/wisdom) e exibi-lo no terminal.
 
 ```bash
-# Creating A New Command
+# Criando um novo comando
 
 ./ace make:command Quote
 ```
 
 ```bash
-# Installing Got (npm module to make HTTP requests)
+# Instalando Got (módulo npm para fazer requisições HTTP)
 
 npm i --save got
 ```
@@ -53,9 +53,9 @@ class Quote extends Command { <1>
 }
 ```
 
-1. Cada comando deve herdar da classe base 'Command'.
-2. A assinatura é usada para definir o nome do comando e suas expectativas. Saiba mais sobre a Assinatura aqui.
-3. A descrição é exibida na tela de ajuda. É um bom lugar para contar ao usuário final sobre o comando.
+1. Cada comando deve ser herdado da classe base `Command`.
+2. A assinatura é usada para definir o nome do comando e suas expectativas. Saiba mais [aqui](#assinatura-de-comando).
+3. A descrição é exibida na tela de ajuda. É um bom lugar para informar o usuário final sobre o comando.
 4. O `handle` é o corpo do seu comando e é chamado automaticamente pelo Ace quando o comando é executado.
 
 Em seguida, precisamos registrar este comando na lista de comandos.
@@ -69,15 +69,15 @@ const commands = [
 ]
 ```
 
-Se tudo der certo, você será capaz de ver seu comando listado na tela de ajuda do Ace.
+Se tudo der certo, você poderá ver seu comando listado na tela de ajuda do Ace.
 
 ```bash
 ./ace --help
 ```
 
-Saída:
-
 ```bash
+# Saída
+
 quote               Display a random quote from Paul Graham
 ....
 ```
@@ -88,12 +88,12 @@ Vamos executar este comando para buscar uma citação inspiradora e exibi-la no 
 ./ace quote
 ```
 
-![Imagem](/docs/assets/Screen_Shot_2016-09-13_at_6.25.37_PM_hvd2hv.png)
+![image](/docs/assets/Screen_Shot_2016-09-13_at_6.25.37_PM_hvd2hv.png)
 
-## Assinatura de Comando
-A assinatura do comando define o nome do comando com argumentos ou opções necessários/opcionais.
+## Assinatura de comando
+A assinatura de comando define o nome do comando com argumentos ou opções obrigatórios/opcionais.
 
-#### Comando Com Apenas O Nome
+#### Comando apenas com o nome
 ```js
 get signature () {
   return 'make:controller'
@@ -103,8 +103,8 @@ get signature () {
 ### Argumentos
 Os comandos podem receber argumentos nomeados.
 
-#### Comando com Argumento(s) Requerido(s)
-Os colchetes rodeiam os argumentos. Um único comando pode ter quantos argumentos quiser.
+#### Comando com argumento(s) obrigatório(s)
+Os argumentos são circundados por chaves. Um único comando pode ter quantos argumentos quiser.
 
 ```js
 get signature () {
@@ -112,8 +112,8 @@ get signature () {
 }
 ```
 
-#### Argumentos Opcionais
-Apêndice `?` ao argumento, nome para torná-lo opcional. Apenas como seus parâmetros de rota.
+#### Argumento(s) opcional(ais)
+Acrescente `?` ao ​​argumento, nome para torná-lo opcional. Assim como seus parâmetros de rota.
 
 ```js
 get signature () {
@@ -121,8 +121,8 @@ get signature () {
 }
 ```
 
-#### Argumentação Descrição
-Além disso, você define uma descrição para um argumento separando-o com dois pontos (:).
+#### Descrição do argumento
+Além disso, você define uma descrição para um argumento separando-o com dois pontos `(:)`.
 
 ```js
 get signature () {
@@ -131,17 +131,17 @@ get signature () {
 ```
 
 ### Opções
-As opções são definidas por apêndice `--` ao início do nome da opção.
+As opções são definidas anexando `--` ao início do nome da opção.
 
-#### Comando com Opção(es) Requerida(s)
+#### Comando com opção(ões) necessária(s)
 ```js
 get signature () {
   return 'make:controller {name} {--resource}'
 }
 ```
 
-#### Opção(es) opcional(is)
-Assim como argumentos, você também pode tornar as opções opcionais ao adicionar um `?`
+#### Opção(ões) opcional(ais)
+Assim como argumentos, você também pode tornar as opções opcionais anexando um `?`.
 
 ```js
 get signature () {
@@ -150,7 +150,7 @@ get signature () {
 ```
 
 #### Opções com aliases
-Opções geralmente precisam de aliases como  "-h" para "--help". Você pode definir vários aliases para uma opção dada separados por vírgula.
+Frequentemente, as opções precisam de aliases como *-h* para `--help`. Você pode definir vários aliases para uma determinada opção separados por uma vírgula.
 
 ```js
 get signature () {
@@ -159,7 +159,7 @@ get signature () {
 ```
 
 #### Opções que aceitam valores
-Às vezes opções querem valores para realizar certas operações e isso pode ser conseguido usando o identificador `@value`.
+Às vezes, as opções querem valores para executar certas operações, e o mesmo pode ser alcançado usando o identificador `@value`.
 
 ```js
 get signature () {
@@ -167,11 +167,11 @@ get signature () {
 }
 ```
 
-## Entradas Interativas
-AdonisJs torna tão simples a criação de comandos interativos ao solicitar que o usuário forneça informações conforme avança.
+## Entradas interativas
+O AdonisJs simplifica muito a criação de comandos interativos, solicitando que o usuário forneça informações conforme eles avançam.
 
-#### ask(pergunta, [valorPadrão])
-O método 'ask' aceitará entrada de texto. Opcionalmente, você pode definir um 'valor padrão', que será retornado quando nenhuma entrada for passada.
+#### `ask(question, [defaultValue])`
+O método `ask` aceitará entrada textual. Opcionalmente, você pode definir `defaultValue` que será retornado quando nenhuma entrada for passada.
 
 ```js
 const projectName = yield this
@@ -179,10 +179,10 @@ const projectName = yield this
   .print()
 ```
 
-Não foi possível traduzir o texto em português.
+![image](/docs/assets/ask_blwh1x.gif)
 
-#### escolha(pergunta, opções, [opção padrão])
-Exibir uma lista de opções para seleção. Apenas uma das opções listadas pode ser selecionada.
+#### `choice(question, choices, [defaultChoice])`
+Exibe uma lista de opções a serem usadas para seleção. Apenas uma das opções listadas pode ser selecionada.
 
 ```js
 const dailyMeal = yield this
@@ -190,15 +190,15 @@ const dailyMeal = yield this
   .print()
 ```
 
-Não foi possível traduzir a imagem devido a limitações técnicas.
+![imagem](/docs/assets/choice_ijyxqz.gif)
 
-#### multiple(pergunta, opções, [opçõesPadrão])
-Exibir uma lista de múltiplas escolhas com um array opcional de valores pré-selecionados. Ao contrário do 'choice', você pode selecionar múltiplos valores.
+#### `multiple(question, choices, [defaultChoices])`
+Exibe uma lista de múltiplas escolhas com uma matriz opcional de valores pré-selecionados. Ao contrário de ``choice`, você pode selecionar múltiplos valores.
 
 ```js
 yield this.multiple('You know?', ['Javascript', 'Elm', 'Haskell', 'Ruby']).print()
 
-// OR
+// OU
 const langs = yield this
   .multiple('You know?', {
     js: 'Javascript',
@@ -208,10 +208,10 @@ const langs = yield this
   }).print()
 ```
 
-Não foi possível traduzir a imagem devido a limitações técnicas.
+![imagem](/docs/assets/multiple_arn7og.gif)
 
-#### antecipar (pergunta, escolhas, [escolha padrão])
-Mostra uma lista de ações com atalhos de teclado. É útil quando você quer que o usuário antecipe algo.
+#### `advance(question, choices, [defaultChoice])`
+Mostra uma lista de ações com os atalhos de teclado. É útil quando você quer que o usuário antecipe algo.
 
 ```js
 const action = yield this
@@ -223,10 +223,10 @@ const action = yield this
   .print()
 ```
 
-Não foi possível traduzir a imagem em questão. Por favor, forneça uma descrição ou contexto adicional para que eu possa tentar novamente.
+![imagem](/docs/assets/anticipate_xmstmk.gif)
 
-#### secure(question, [defaultValue])
-Pergunte por uma entrada segura como um *senha* ou algum *token secreto*. O valor da entrada será mostrado como `\*\*****`.
+#### `secure(question, [defaultValue])`
+Peça uma entrada segura como uma *senha* ou algum *token secreto*. O valor de entrada será mostrado como `\*\*****`.
 
 ```js
 const password = yield this
@@ -234,10 +234,10 @@ const password = yield this
   .print()
 ```
 
-Não foi possível traduzir a imagem devido a limitações técnicas.
+![imagem](/docs/assets/secure_ddk3w3.gif)
 
-#### confirmar(pergunta, [valorPadrão])
-Pergunte sobre uma pergunta sim ou não.
+#### `confirm(question, [defaultValue])`
+Peça uma pergunta sim/não.
 
 ```js
 const deleteFiles = yield this
@@ -245,86 +245,86 @@ const deleteFiles = yield this
   .print()
 ```
 
-Não foi possível traduzir a imagem devido a limitações técnicas.
+![imagem](/docs/assets/confirm_dsoxix.gif)
 
-## Validação de entradas
-É extremamente útil validar a entrada ao aceitar os valores das perguntas interativas. Todas as perguntas de prompt podem ser validadas encadeando o método 'validate' e um retorno 'true' da função de retorno será considerado uma validação bem-sucedida.
+## Validando entradas
+É extremamente útil validar a entrada ao aceitar os valores de perguntas interativas. Todas as perguntas de prompt podem ser validadas encadeando o método `validate` e retornar `true` do retorno de chamada será considerado uma validação bem-sucedida.
 
 ```js
 yield this
   .ask('Enter coupon code')
   .validate(function (input) {
-    return input ### 'adonisjs' ? true : 'Enter a valid coupon code'
+    return input === 'adonisjs' ? true : 'Enter a valid coupon code'
   })
   .print()
 ```
 
 ## Saída ANSI
-Os códigos de escape ANSI são usados para saída de texto colorido no terminal usando uma sequência de vários caracteres. Por exemplo: Para exibir "Olá Mundo" em verde no terminal, você precisa registrar o seguinte.
+[Códigos de escape ANSI](https://en.wikipedia.org/wiki/ANSI_escape_code) são usados ​​para enviar texto colorido para o terminal usando uma sequência de vários caracteres. Por exemplo: para enviar uma cor verde `Hello World` para o terminal, você precisa registrar o seguinte.
 
 ```js
 console.log('\033[32m Hello World')
 ```
 
-É muito difícil lembrar esses códigos e desagradável escrevê-los. Além disso, você terá que lidar com diferentes tipos de *shells* para obter a saída correta. Os comandos do AdonisJs podem facilitar isso com a ajuda dos seguintes métodos.
+É muito difícil lembrar desses códigos e desagradável escrevê-los. Além disso, você terá que lidar com diferentes *tipos de shell* para obter a saída correta. Os comandos do AdonisJs podem facilitar isso com a ajuda dos seguintes métodos.
 
-#### erro(mensagem)
+#### `error(message)`
 ```js
 this.error('Sorry, something went wrong')
 ```
 
-#### sucesso(mensagem)
+#### `success(message)`
 ```js
 this.success('All done!')
 ```
 
-#### info(mensagem)
+#### `info(message)`
 ```js
 this.info('Just letting you know')
 ```
 
-#### aviso(mensagem)
+#### `warn(message)`
 ```js
 this.warn('Wait! something seems fishy')
 ```
 
-#### concluído (ação, mensagem)
-Sairá uma mensagem estruturada para uma ação concluída. O nome da ação ficará em verde.
+#### `completed(action, message)`
+Irá gerar uma mensagem estruturada para uma ação concluída. Onde o nome da ação estará na cor verde.
 
 ```js
 this.completed('create', 'Created the controller file')
 ```
 
-Saída:
-
 ```bash
+# Saída
+
 create: Created the controller file
 ```
 
-#### failed(action, message)
+#### `failed(action, message)`
 ```js
 this.failed('create', 'Sorry controller file already exists')
 ```
 
-Saída:
-
 ```bash
+# Saída
+
 create: Sorry controller file already exists
 ```
 
-#### table(cabeçalho, corpo)
+#### `table(head, body)`
 ```js
 this.table(['username', 'age'], [{'virk': 26}, {nikk: 25}])
 
-// or
+// ou
 this.table(
   ['key', 'value'],
   {username: 'foo', age: 22, email: 'foo@bar.com'}
 )
 ```
 
-## Ícones & Cores
-Além disso, você pode adicionar ícones e cores às suas mensagens de console dentro do seu método `handle`.
+## Ícones e cores
+Além disso, você pode gerar ícones e adicionar cores às suas mensagens de console dentro do seu método de comando `handle`.
 
 ```js
 'use strict'
@@ -339,23 +339,23 @@ class Greet extends Command {
 }
 ```
 
-Saída:
-
 ```bash
+# Saída
+
 ✔ That went great
 ```
 
-### Ícones Lista
+### Lista de ícones
 
 | Ícone | Nome |
-|------|------|
-| Informação | info |
-| ✔ | sucesso |
-| ⚠ | aviso |
-| ✖ | erro |
+|------|---------|
+| ℹ     | info    |
+| ✔    | success |
+| ⚠    | warn    |
+| ✖    | error   |
 
 ### Cores
-Sob o capô, o Ace utiliza [cores](https://www.npmjs.com/package/colors) um módulo npm. Você pode acessar todos os métodos disponíveis no *cor* usando a propriedade de cores.
+Por baixo dos panos, o Ace faz uso de [colors](https://www.npmjs.com/package/colors) um módulo npm. Você pode acessar todos os métodos disponíveis em *colors* usando a propriedade colors.
 
 ```js
 this.colors.green('This is all green')

@@ -2,43 +2,43 @@
 
 Os controladores são anexados às rotas e são o ponto comum de interação entre seus modelos e visualizações.
 
-Em aplicações web típicas, você começará por vincular um método de controlador a uma rota, usar modelos para buscar dados e enviar esses dados à visão para renderizar HTML.
+Em aplicativos da web típicos, você começará vinculando um método de controlador a uma rota, fará uso de modelos para buscar dados e enviará esses dados para a visualização para renderizar HTML.
 
-## Como os controladores funcionam?
+## Como funcionam os controladores?
 
-* Os controladores são definidos dentro do diretório `app/Http/Controllers`. Para manter seu código legível, você é livre para criar subdiretórios dentro do diretório *Controladores*.
+* Os controladores são definidos dentro do diretório `app/Http/Controllers`. Para manter seu código sustentável, você pode criar diretórios aninhados dentro do diretório *Controllers*.
 
-* Utilize o comando `make:controller` para criar um novo controlador.
+* Use o comando `make:controller` para criar um novo controlador.
 
 ```bash
+  ./ace make:controller Home
+  # or
+  ./ace make:controller User --resource
 
-./ace make:controller Home
-# or
-./ace make:controller User --resource
+  # create: app/Http/Controllers/HomeController.js
+  ```
++ O sinalizador `--resource` criará um controlador com métodos [resourceful](/src/docs/03-getting-started/05-routing.md#rotas-com-recursos) predefinidos.
 
-# create: app/Http/Controllers/HomeController.js
-```
-A bandeira `--resource` criará um controlador com métodos de rota pré-definidos: `_resourceful_routes[resourceful]`.
+* Os controladores são definidos como classes ES2015, o que torna mais fácil testá-los, pois você pode injetar dependências de tempo de execução no construtor e simulá-las (se necessário) durante os testes.
 
-* Os controladores são definidos como classes ES2015, o que facilita a sua teste, já que você pode injetar dependências de tempo de execução no construtor e simulá-las (se necessário) durante os testes.
-
-* Os métodos do controlador são referenciados como uma *String* para as rotas.
+* Os métodos dos controladores são referenciados como uma *String* para as rotas.
 ```js
-Route.get('users', 'UsersController.index')
-```
-
-A primeira parte antes do *dot(.)* é uma referência ao arquivo controlador que é o *UserController* e a segunda parte é o método controlador.
+  Route.get('users', 'UsersController.index')
+  ```
+* A primeira parte antes do *ponto(.)* é uma referência ao arquivo do controlador que é *UserController* e a segunda parte é o método do controlador.
 
 ## Exemplo básico
-Vamos pegar um exemplo básico de renderização de todos os usuários usando a rota, controlador, modelo e visualização.
+Vamos dar um exemplo básico de renderização de todos os usuários usando a rota, o controlador, o modelo e a visualização.
 
 ```js
-.Route
+// Rota
+
 Route.get('users', 'UsersController.index')
 ```
 
 ```js
-.Controller
+// Controlador
+
 const User = use('App/Model/User')
 
 class UsersController {
@@ -52,20 +52,21 @@ class UsersController {
 ```
 
 ```twig
-// View
+<!-- Visualização -->
+
 {% for user in users %}
   <h2>{{ user.username }}</h2>
 {% endfor %}
 ```
 
-## Injeção de Dependência
-Como os controladores são classes ES2015, você pode facilmente injetar dependências no construtor, em vez de exigir manualmente. A vantagem de injetar dependências é que você pode simulá-las na hora de testar.
+## Injeção de dependência
+Como os controladores são classes ES2015, você pode facilmente injetar dependências no construtor, em vez de exigi-las manualmente. O benefício de injetar dependências é que você pode simulá-las no momento do teste.
 
-> DICA:
-> Mockar dependências é muito subjetivo e nem sempre necessário. Ainda assim, o Adonis não limita você se quiser mockar as dependências.
+::: tip DICA
+Simular dependências é muito subjetivo e nem sempre é necessário. Ainda assim, o AdonisJs não limita você se você quiser simular dependências.
+:::
 
-### Definindo Controlador
-
+### Definindo o controlador
 ```js
 class UsersController {
 
@@ -84,20 +85,21 @@ class UsersController {
 }
 ```
 
-1. O método getter 'inject' retorna um array de namespaces a serem injetados no construtor. Eles são passados na ordem em que são definidos.
-2. O método construtor receberá os injeções como parâmetros.
+1. O getter `inject` retorna uma matriz de namespaces a serem injetados no construtor. Eles são passados ​​na ordem em que são definidos.
+2. A classe `constructor` receberá as injeções como parâmetros.
 
-### Redação de Teste
+### Escrevendo teste
 
-> NOTE:
-> Abaixo um exemplo de teste é escrito para dar-lhe uma ideia sobre como simular dependências e pode não ser a melhor maneira de escrever testes.
+::: info NOTA
+O exemplo de teste abaixo foi escrito para lhe dar uma ideia de como simular dependências e pode não ser a melhor maneira de escrever testes.
+:::
 
 ```js
 const UsersController = use('App/Http/Controllers/User')
 
 class FakeUser {
   static * all () {
-    return {} // dummy users
+    return {} // usuários fictícios
   }
 }
 

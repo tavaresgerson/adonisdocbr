@@ -1,36 +1,32 @@
 # Finalizando
 
-Vamos terminar este tutorial fazendo as alterações finais no fluxo inteiro. Intencionalmente, foi um tutorial simples para que você se sinta confortável com o framework.
+Vamos finalizar este tutorial fazendo as alterações finais em todo o fluxo. Intencionalmente, foi um tutorial simples para que você se sinta confortável com a estrutura.
 
-## Mostrando Publicação Individual
-Temos uma visão listando todos os posts do blog. Mas não há como visualizar um único post. Então abra rapidamente o arquivo de rotas e registre uma rota para isso.
+## Mostrando Post Individual
+Temos uma visualização listando todos os posts do blog. Mas não há como visualizar um único post do blog. Então, abra rapidamente o arquivo de rotas e registre uma rota para o mesmo.
 
 ```js
 // app/Http/routes.js
-
 Route.get('posts/:id', 'PostsController.show')
 ```
 
-O `id` é um segmento dinâmico para passar o *ID do post* na URL e acessá-lo no controlador. Você pode ler mais sobre [Parâmetros de rota](/getting-started/routing) na documentação.
+O `id` é um segmento dinâmico para passar o *id do post* na URL e acessá-lo do controlador. Você pode ler mais sobre [Parâmetros de rota](/docs/03-getting-started/05-routing.md#route-parameters) nos documentos.
 
-Em seguida, precisamos criar a visualização para mostrar uma publicação.
+Em seguida, precisamos criar a visualização para mostrar um post.
 
 ```bash
 ./ace make:view posts/show
 ```
 
-Saída:
-
-```
+```bash
+# Output
 create: resources/views/posts/show.njk
 ```
 
-
-Cole o trecho de código abaixo na visualização do postagem.
+Cole o trecho de código abaixo na visualização showPost.
 
 ```twig
-{# resources/views/posts/show.njk #}
-
+<!-- resources/views/posts/show.njk -->
 {% extends 'master' %}
 
 {% block content %}
@@ -45,7 +41,7 @@ Cole o trecho de código abaixo na visualização do postagem.
 {% endblock %}
 ```
 
-Finalmente, precisamos do método `PostsController.show` para buscar o post do banco de dados e enviá-lo à visão.
+Finalmente, precisamos do método `PostsController.show` para buscar a postagem do banco de dados e enviar para sua visualização.
 
 ```js
 // app/Http/Controllers/PostsController.js
@@ -62,24 +58,22 @@ class PostsController {
 }
 ```
 
-Desta vez, utilizamos o método `find` para buscar a publicação para um determinado id e, finalmente, enviamos a representação json da publicação para a visualização. Ainda não terminamos. Vamos abrir a visualização *home.njk* e adicionar o link para a publicação individual.
+Desta vez, usamos o método `find` para buscar a postagem para um determinado id e, finalmente, enviamos a representação json da postagem para a visualização. Ainda não terminamos. Vamos abrir a visualização *home.njk* e adicionar o link para a postagem individual.
 
 ```twig
-{# resources/views/home.njk #}
-
+<!-- resources/views/home.njk -->
 <h2><a href="posts/{{ post.id }}"> {{ post.title }} </a></h2>
 ```
 
-Agora atualize o navegador e clique em cada postagem para visualizar uma postagem específica.
+Agora atualize o navegador e clique nas postagens individuais para visualizar uma postagem específica.
 
 ![imagem](/docs/assets/individual-post_anaymc.png)
 
-## Link para adicionar um novo post
-Até agora, visitamos manualmente a rota 'post/create' para criar um novo post. Vamos adicionar um link na página inicial. Cole o trecho de código abaixo logo antes da divisão posts-wrapper.
+## Link para adicionar uma nova postagem
+Até agora, visitamos a rota `post/create` manualmente para criar uma nova postagem. Vamos adicionar um link na página inicial. Cole o trecho de código abaixo antes da div posts-wrapper.
 
 ```html
 <!-- resources/views/home.njk -->
-
 <div>
   <p>
     Below is the list of all the awesome posts created by all of us. You can also
@@ -90,16 +84,15 @@ Até agora, visitamos manualmente a rota 'post/create' para criar um novo post. 
 </div>
 ```
 
-Agora temos um grande botão brilhante que está vinculado à rota de criação do post.
+Agora, temos um grande botão brilhante vinculado à rota de criação de postagem.
 
-![Imagem](/docs/assets/add-new-post_d1pm4c.png)
+![imagem](/docs/assets/add-new-post_d1pm4c.png)
 
-## Ordenando os posts
-Outra coisa que devemos consertar é listar os posts em ordem *desc*, para que o post mais recente sempre apareça no topo.
+## Ordenando postagens
+Outra coisa que devemos consertar é listar as postagens em *ordem desc*, para que a postagem recente sempre apareça no topo.
 
 ```js
 // app/Http/Controllers/PostsController.js
-
 'use strict'
 
 class PostsController {
@@ -112,9 +105,9 @@ class PostsController {
 }
 ```
 
-Agora atualize a página e você encontrará o último post no topo em vez do fundo.
+Agora atualize a página e você encontrará a postagem mais recente no topo em vez de na parte inferior.
 
 ## Resumo
-Na série desses tutoriais, aprendemos muito sobre o framework e as ferramentas oferecidas por ele. Isso é apenas o começo, confira a documentação e os livros de receitas para explorar novas e expressivas maneiras de escrever código mantível.
+Na série desses tutoriais, aprendemos muito sobre o framework e as ferramentas oferecidas por ele. Este é apenas o começo, confira a documentação e os livros de receitas para explorar novas e expressivas maneiras de escrever código sustentável.
 
-Certifique-se de nos seguir em [Twitter](https://twitter.com/adonisframework) e estrela o projeto no [Github](https://github.com/adonisjs/adonis-framework).
+Certifique-se de nos seguir no [Twitter](https://twitter.com/adonisframework) e estrelar o projeto no [Github](https://github.com/adonisjs/adonis-framework).

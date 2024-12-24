@@ -1,20 +1,20 @@
 # Arquivos
 
-AdonisJS possui suporte integrado para lidar com o upload de arquivos. Você pode gerenciar facilmente *uploads em massa*, *validação de tamanho/extensão de arquivo* e adicionar verificações globais para negar solicitações contendo mais do que a carga útil esperada.
+O AdonisJs tem suporte pronto para lidar com uploads de arquivos. Você pode gerenciar facilmente *uploads em massa*, *validação de tamanho/extensão de arquivo* e adicionar verificações globais para negar solicitações que contenham mais do que a carga útil esperada.
 
 ## Exemplo básico
-
-Vamos considerar um exemplo de upload do avatar do usuário. Vamos considerar isso como uma solicitação **PUT** para fazer o upload do avatar do perfil do usuário e executar as validações necessárias para garantir que o usuário esteja fazendo o upload do arquivo correto.
+Vamos dar um exemplo de upload de avatar de usuário. Consideraremos isso como uma solicitação **PUT** para fazer upload do avatar do perfil do usuário e executar as validações necessárias para garantir que o usuário esteja fazendo upload do arquivo correto.
 
 ```js
-// .app/Http/routes.js
+// app/Http/routes.js
+
 Route.put('/users/:id/avatar', 'UsersController.updateAvatar')
 ```
 
-Em seguida, você precisa criar o método `updateAvatar` no controlador `UsersController`.
+Em seguida, você precisa criar o método `updateAvatar` em `UsersController`.
 
 ```js
-// .app/Http/Controllers/UsersController.js
+// app/Http/Controllers/UsersController.js
 
 'use strict'
 
@@ -46,20 +46,21 @@ class UserController {
     response.ok('Avatar updated successfully')
   }
 }
+
 module.exports = UsersController
 ```
 
-1. Primeiro, obtemos um objeto de arquivo do objeto "request". Além disso, podemos definir o "maxSize" e o "allowedExtensions" para validar o arquivo.
-2. É importante renomear o arquivo, mesmo é feito por pegar a data e hora atuais e anexar a extensão do arquivo a ele.
-3. Em seguida, chamamos a operação de movimento no arquivo instância. Quaisquer erros de validação serão retornados usando o método "errors ()".
-4. Se tudo corresse bem, definimos o caminho do avatar ao lado do objeto modelo de usuário e o persistimos no banco de dados.
+1. Primeiro, obtemos um objeto de arquivo do objeto `request`. Além disso, podemos definir `maxSize` e `allowedExtensions` para validar o arquivo.
+2. É importante renomear o arquivo, o mesmo é feito pegando a data e hora atual e anexando a extensão do arquivo a ele.
+3. Em seguida, chamamos a operação de movimentação na instância do arquivo. Quaisquer erros de validação serão retornados usando o método `errors()`.
+4. Se tudo correr bem, definimos o caminho do avatar ao lado do objeto do modelo do usuário e o persistimos no banco de dados.
 
-## Configuração
+## Config
 
-A configuração para o upload de arquivos é armazenada dentro do arquivo `config/bodyParser.js`.
+A configuração para os uploads de arquivo é armazenada dentro do arquivo `config/bodyParser.js`.
 
 ```js
-// .config/bodyParser.js
+// config/bodyParser.js
 
 uploads: {
   multiple: true,
@@ -68,23 +69,23 @@ uploads: {
 }
 ```
 
-1. O 'maxSize' é calculado em todos os arquivos carregados, o que significa que carregar dois arquivos de '1.5mb' cada excederá esse limite.
-2. O `maxSize` é verificado logo no início. Isso garante que os atacantes não engasguem seus servidores enviando **gigabytes** de dados.
+1. O `maxSize` é calculado em todos os arquivos enviados, o que significa que o upload de dois arquivos de `1,5 MB` cada excederá esse limite.
+2. A verificação `maxSize` é realizada logo no início. Isso garante que os invasores não estejam sufocando seus servidores enviando **Gigabytes** de dados.
 
-## Arquivo Instância
+## Instância do arquivo
 
-O método `request.file` retorna uma instância da classe `File`, que possui diversos métodos para obter informações sobre o arquivo enviado e movê-lo para um determinado caminho.
+O método `request.file` retorna uma instância da classe `File`, que tem um punhado de métodos para recuperar informações do arquivo enviado e movê-lo para um determinado caminho.
 
-Carregando vários arquivos retorna uma matriz de instâncias da classe `File`. Por exemplo:
+O upload de vários arquivos retorna uma matriz de instâncias de classe `File`. Por exemplo:
 
 ```js
 const profilePics = request.file('profile[]')
-// profilePics will be an array
+// profilePics será uma matriz
 ```
 
 ## Validação
 
-**Arquivo instância** pode gerenciar a validação no tamanho e extensão do arquivo para você. Você só precisa passar as opções ao acessar a instância.
+**Instância de arquivo** pode gerenciar a validação no tamanho e nas extensões do arquivo para você. Você só precisa passar as opções ao acessar a instância.
 
 ```js
 const avatar = request.file('avatar', {
@@ -93,13 +94,12 @@ const avatar = request.file('avatar', {
 })
 ```
 
-Agora quando você chamar o método "move", as validações serão acionadas com base na configuração definida. Caso as validações acima não sejam suficientes para você, você pode implementar seu próprio método "validate".
+Agora, quando você chamar o método `move`, as validações serão disparadas com base na configuração definida. Caso as validações acima não sejam suficientes para você, você pode implementar seu próprio método `validate`.
 
 ### Validação manual
-Retornar *true* ou *false* do método `validate` irá definir se a validação foi aprovada ou não. Além disso, você será responsável por definir manualmente a mensagem de erro no objeto da instância.
+Retornar *true* ou *false* do método `validate` definirá se a validação foi passada ou não. Além disso, você será responsável por definir a mensagem de erro na instância de arquivo manualmente.
 
 ```js
-----
 const avatar = request.file('avatar')
 
 avatar.validate = function () {
@@ -111,78 +111,78 @@ avatar.validate = function () {
 }
 ```
 
-## Métodos de Instância do Arquivo
-Abaixo está a lista de métodos disponíveis na instância do arquivo.
+## Métodos de instância de arquivo
+Abaixo está a lista de métodos disponíveis na instância de arquivo.
 
-#### clientName
-Retorna o nome do arquivo enviado.
+#### `clientName`
+Retorna o nome do arquivo carregado.
 
 ```js
 avatar.clientName()
 ```
 
-#### tamanho do cliente
+#### `clientSize`
 Retorna o tamanho do arquivo (em bytes).
 
 ```js
 avatar.clientSize()
 ```
 
-#### mimeType
-Retorna o tipo MIME do arquivo.
+#### `mimeType`
+Retorna o tipo mime do arquivo.
 
 ```js
 avatar.mimeType()
 ```
 
-#### extensão
+#### `extension`
 Retorna a extensão do arquivo.
 
 ```js
 avatar.extension()
 ```
 
-#### tmpPath
+#### `tmpPath`
 O caminho para a pasta temporária, onde o arquivo foi carregado.
 
 ```js
 avatar.tmpPath()
 ```
 
-#### existe
-Indica se o arquivo existe ou não dentro da pasta temporária.
+#### `exists`
+Informa se o arquivo existe dentro da pasta temporária ou não.
 
 ```js
 avatar.exists()
 ```
 
-#### move(paraCaminho, [novoNome])
-Mova o arquivo para um local especificado com um nome opcional. Se `newName` não for definido, ele fará uso de `clientName()`
+#### `move(toPath, [newName])`
+Move o arquivo para um local fornecido com um nome opcional. Se `newName` não estiver definido, ele fará uso de `clientName()`
 
 ```js
 yield avatar.move(Helpers.storagePath())
 ```
 
-#### delete()
-Deletar o arquivo da pasta `tmp` após o arquivo ter sido movido.
+#### `delete()`
+Exclui o arquivo do diretório `tmp` após o arquivo ter sido movido.
 
 ```js
 yield avatar.delete()
 ```
 
-#### movido
-Indica se a operação de movimento foi bem sucedida ou não.
+#### `moved`
+Informa se a operação de movimentação foi bem-sucedida ou não.
 
 ```js
 yield avatar.move(Helpers.storagePath())
 
 if (avatar.moved()) {
-    // moved successfully
+    // movido com sucesso
 }
 ```
 
-#### erros
-Retorna erros ocorridos durante o processo de "move".
+#### `errors`
+Retorna erros ocorridos durante o processo de `move`.
 
 ```js
 yield avatar.move(Helpers.storagePath())
@@ -192,9 +192,9 @@ if (!avatar.moved()) {
 }
 ```
 
-#### uploadPath
+#### `uploadPath`
 
-O caminho completo para o diretório de upload com o nome do arquivo.
+Caminho completo para o diretório de upload com o nome do arquivo.
 
 ```js
 yield avatar.move(Helpers.storagePath())
@@ -202,18 +202,19 @@ yield avatar.move(Helpers.storagePath())
 avatar.uploadPath()
 ```
 
-#### nome_do_arquivo
-Nome do arquivo enviado.
+#### `uploadName`
+Nome do arquivo carregado.
 
 ```js
 yield avatar.move(Helpers.storagePath(), 'selfie.jpg')
 avatar.uploadName()
 ```
 
-> NOTE
-> `uploadPath` e `uploadName` só estarão disponíveis após a operação de movimento.
+::: info NOTA
+`uploadPath` e `uploadName` só estarão disponíveis após a operação de movimentação.
+:::
 
-#### toJSON
+#### `toJSON`
 Retorna a representação **JSON** das propriedades do arquivo.
 
 ```js

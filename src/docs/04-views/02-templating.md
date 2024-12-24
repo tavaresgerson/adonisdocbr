@@ -1,12 +1,11 @@
 # Modelos Nunjucks
 
-Esta é uma referência para o mecanismo de modelo AdonisJs, cobrindo tópicos sobre as *tags*, os *filtros* e os *métodos* disponíveis para uso dentro de seus modelos. Leia a [guia de visualizações](/views/views) para entender como funcionam as visualizações no AdonisJs.
+Este é um guia de referência para o mecanismo de modelo AdonisJs, cobrindo tópicos sobre *tags*, *filtros* e *métodos* disponíveis para serem usados ​​dentro de suas visualizações. Leia o [guia de visualizações](/src/docs/04-views/01-views.md) para entender como as visualizações funcionam no AdonisJs.
 
 ## Tags
-Tags são blocos que definem operações lógicas dentro de suas visualizações. Abaixo está a lista das tags disponíveis e seus usos.
+Tags são blocos que definem operações lógicas dentro de suas visualizações. Abaixo está a lista de tags disponíveis e seus usos.
 
-### se
-
+### `if`
 ```twig
 {% if username %}
   {{username}}
@@ -19,7 +18,7 @@ Tags são blocos que definem operações lógicas dentro de suas visualizações
 {% endif %}
 ```
 
-Você também pode fazer comparação usando o operador `==`.
+Você também pode realizar a comparação via `==`.
 
 ```twig
 {% if age == 18 %}
@@ -27,7 +26,7 @@ Você também pode fazer comparação usando o operador `==`.
 {% endif %}
 ```
 
-#### else, elif
+#### `else`, `elif`
 
 ```twig
 {% if hungry %}
@@ -39,17 +38,17 @@ Você também pode fazer comparação usando o operador `==`.
 {% endif %}
 ```
 
-#### Se uma expressão
+#### `If` como uma expressão
 
 ```twig
 {{ 'Party' if weekend else 'Do some work' }}
 ```
 
-#### for/asyncEach
-O loop 'for' itera sobre arrays e objetos.
+#### `for/asyncEach`
+O loop `for` itera sobre matrizes e objetos.
 
 ```twig
-{# Array #}
+<!-- Array -->
 
 {% for item in items %}
   {{ item.text }}
@@ -57,7 +56,8 @@ O loop 'for' itera sobre arrays e objetos.
 ```
 
 ```twig
-{# Object #}
+<!-- Object -->
+
 {#
   var scores = {
     Maths: 88,
@@ -71,10 +71,12 @@ O loop 'for' itera sobre arrays e objetos.
 {% endfor %}
 ```
 
-### asyncAll
-A tag `asyncAll` executará um loop assíncrono em paralelo. É útil quando você realiza uma operação assíncrona dentro de um loop.
+### `asyncAll`
+A tag `asyncAll` executará um loop assíncrono em paralelo. É útil quando você executa uma operação assíncrona dentro de um loop.
 
-NOTE: Abaixo está um exemplo de busca de perfil do usuário dentro de um loop, o que irá causar múltiplas consultas ao banco de dados. É recomendado usar eager loading de relacionamentos usando o Lucid.
+::: warning OBSERVAÇÃO
+Abaixo está um exemplo de busca de perfil de usuário dentro de um loop, o que causará várias consultas ao banco de dados. É recomendado *eagerLoad* relacionamentos usando Lucid.
+:::
 
 ```twig
 <ul>
@@ -84,21 +86,21 @@ NOTE: Abaixo está um exemplo de busca de perfil do usuário dentro de um loop, 
 </ul>
 ```
 
-#### conjunto
-`set` cria uma variável temporária dentro das suas views. Pense nele como `var` dentro do JavaScript.
+#### `set`
+`set` cria uma variável temporária dentro de suas visualizações. Pense nisso como `var` dentro do Javascript.
 
 ```twig
 {% set username = "John" %}
 {{ username }}
 ```
 
-Além disso, você pode definir várias chaves e seus valores de uma só vez.
+Além disso, você pode definir várias chaves e seus valores de uma vez.
 
 ```twig
 {% set x, y, z = 5 %}
 ```
 
-#### yield
+#### `yield`
 Execute um *ES2015 Generator* ou uma *Promise* dentro de suas visualizações.
 
 ```twig
@@ -106,8 +108,8 @@ Execute um *ES2015 Generator* ou uma *Promise* dentro de suas visualizações.
 {{ users | json }}
 ```
 
-#### raw
-Ao construir aplicativos web semânticos front-end, você provavelmente vai usar o *VueJs*, *AngularJS* ou qualquer outro framework semelhante. Para parar suas visualizações de analisar seus modelos front-end, você deve usar a tag "raw".
+#### `raw`
+Ao criar aplicativos web agnósticos de Front-End, você provavelmente usará *VueJs*, *AngularJs* ou qualquer estrutura semelhante. Para impedir que suas visualizações analisem seus modelos de front-end, você deve usar a tag `raw`.
 
 ```twig
 {% raw %}
@@ -116,8 +118,8 @@ Ao construir aplicativos web semânticos front-end, você provavelmente vai usar
 {% endraw %}
 ```
 
-#### filter
-Em vez de usar filtros com um caractere de barra vertical (|), você também pode fazer uso de filtros como uma tag.
+#### `filter`
+Em vez de usar filtros com um símbolo *pipe (|)*, você também pode usar filtros como uma tag.
 
 ```twig
 {% filter title %}
@@ -125,17 +127,17 @@ Em vez de usar filtros com um caractere de barra vertical (|), você também pod
 {% endfilter %}
 ```
 
-Saída:
-
 ```html
+<!-- Saída -->
+
 May The Force Be With You
 ```
 
-#### call/caller
-Uma chamada torna mais fácil passar uma grande quantidade de marcação para suas macros. Uma macro pode acessar o conteúdo passado como "chamador".
+#### `call/caller`
+Uma `call` facilita a passagem de muitas marcações para suas macros. Uma macro pode acessar o conteúdo passado como `caller`.
 
 ```twig
-{# .resources/views/macros/modal.nunjucks #}
+<!-- resources/views/macros/modal.nunjucks -->
 
 {% macro modal(effect='fade') %}
   <div class="modal {{ effect }}">
@@ -149,7 +151,7 @@ Uma chamada torna mais fácil passar uma grande quantidade de marcação para su
 Agora vamos usar a macro *modal*.
 
 ```twig
-{# .resources/views/home.nunjucks #}
+<!-- resources/views/home.nunjucks -->
 
 {% from 'macros.modal' import modal %}
 
@@ -160,9 +162,9 @@ Agora vamos usar a macro *modal*.
 {% endcall %}
 ```
 
-Saída:
-
 ```html
+<!-- Saída -->
+
 <div class="modal fade">
   <div class="modal-dialog">
     <div class="modal-header"></div>
@@ -173,13 +175,12 @@ Saída:
 ```
 
 ## Comentários
-
 ```twig
 {# This is a comment #}
 ```
 
 ## Controle de Espaço em Branco
-A motor de modelo irá renderizar todos os espaços entre suas tags. Utilize da seguinte forma se você quiser remover todos os espaços entre o início e o final da tag.
+O mecanismo de modelo renderizará todos os espaços em branco entre suas tags. Use a seguinte maneira se quiser remover todo o branco entre o início e o fim da tag.
 
 ```twig
 {% for i in [1,2,3,4,5] -%}
@@ -187,32 +188,32 @@ A motor de modelo irá renderizar todos os espaços entre suas tags. Utilize da 
 {%- endfor %}
 ```
 
-- O símbolo `-` define a direção do controle de espaços em branco. Colocá-lo na *esquerda* vai aparar os espaços em branco da esquerda e colocando-o na *direita* terá o efeito desejado.
+O símbolo `-` define a direção do controle de espaço em branco. Colocá-lo na *esquerda* cortará o espaço em branco da esquerda e defini-lo para a *direita* terá o efeito desejado.
 
 ## Expressões
 Todas as expressões fornecidas são suportadas.
 
-#### Strings
+Strings:
 ```
 "How are you?", 'How are you?'
 ```
 
-#### Números
+Numbers:
 ```
 40, 30.123
 ```
 
-#### Arrays
+Arrays:
 ```
 [1, 2, "array"]
 ```
 
-#### Objetos
+Objects:
 ```
 {username: 'John', age: 28}
 ```
 
-#### Boolean
+Boolean:
 ```
 true, false
 ```
@@ -220,17 +221,17 @@ true, false
 ## Operadores Matemáticos
 Abaixo está a lista de operadores matemáticos suportados.
 
-Adição: `+`
+* Adição: `+`
 * Subtração: `-`
 * Divisão: `/`
 * Divisão e truncamento de inteiro: `//`
-* Divisão Resto: `%`
+* Resto da divisão: `%`
 * Multiplicação: `*`
-Power: `***`
-
-Uso:
+* Potência: `**`
 
 ```twig
+<!-- Usage -->
+
 {{ 10 + 2 }} {# 12 #}
 {{ 10 / 2 }} {# 5 #}
 {{ 10 % 2 }} {# 0 #}
@@ -240,61 +241,62 @@ Uso:
 Abaixo está a lista de operadores de comparação suportados.
 
 - Igual a `==`
-- Não é igual a `!=`
+- Diferente de `!=`
 - Maior que `>`
-- Maior que ou igual a `>=`
-- Menos que «<»
-- Menor ou igual a `<=`
-
-Uso:
+- Maior que igual a `>=`
+- Menor que `<`
+- Menor que igual a `<=`
 
 ```twig
+<!-- Uso -->
+
 {% if numUsers < 5 %}...{% endif %}
 {% if i == 0 %}...{% endif %}
 ```
 
-## Operadores Lógicos em Resumo
-Abaixo está a lista dos operadores lógicos abreviados suportados.
+## Operadores Lógicos
+Abaixo está a lista de operadores lógicos suportados.
 
-#### e
+#### `and`
 ```twig
 {% if isLimit and count > limit %}
   You have crossed the limit of {{ limit }} users.
 {% endif %}
 ```
 
-#### ou
+#### `or`
 ```twig
 {% if isAdmin or hasPermission %}
   Welcome!
 {% endif %}
 ```
 
-#### não
+#### `not`
 ```twig
 {% if not isAdmin %}
   You are not allowed to access this record.
 {% endif %}
 ```
 
-> DICA:
-> Use parênteses para agrupar expressões. 'se (x < 5 ou y < 5) e foo'
+::: tip DICA
+Use *parênteses* para agrupar expressões. `if (x < 5 or y < 5) and foo`
+:::
 
 ## Auto Escape
-Todos os valores são automaticamente escapados dentro de suas visualizações para mantê-los seguros de injeção HTML e ataques XSS. No entanto, seu aplicativo pode ter requisitos de injetar fragmentos HTML dentro de suas visualizações e, neste caso, você deve usar o filtro "safe".
-
-Sem Filtro:
+Todos os valores são auto escaped dentro de suas visualizações para mantê-los seguros contra injeção de HTML e ataques XSS. No entanto, seu aplicativo pode ter requisitos de injeção de snippets HTML dentro de suas visualizações e, nesse caso, você deve usar o filtro `safe`.
 
 ```twig
+<!-- Sem filtro -->
+
 {% set title = '<h1> Title </h1>' %}
 {{ title }}
 
 {# output &lt;h1&gt; Title &lt;/h1&gt; #}
 ```
 
-Com Filtro:
-
 ```twig
+<!-- Com filtro -->
+
 {% set title = '<h1> Title </h1>' %}
 {{ title | safe }}
 
@@ -302,49 +304,50 @@ Com Filtro:
 ```
 
 ## Globais
-Aqui falamos sobre os globais pré-definidos registrados pelo framework. Verifique o link:views:_#working_with_globals[Trabalhando com Globais] para saber mais sobre a definição de globais personalizados de visualização.
+Aqui falamos sobre globais predefinidos registrados pelo framework. Confira link:views#_working_with_globals[Trabalhando com globais] para saber mais sobre como definir globais de visualizações personalizadas.
 
-#### linkTo(rota, texto, dados, alvo)
-Retorna o link para uma rota registrada específica
+#### `linkTo(route, text, data, target)`
+Retorna link para uma rota registrada
 
 ```js
-// Route
+// Rota
+
 Route
     .get('/users', 'UserController.index')
     .as('listUsers')
 ```
 
 ```twig
-{# View #}
+<!-- View -->
 
 {{ linkTo('listUsers', 'View All Users') }}
 {{ linkTo('listUsers', 'View All Users', {}, '_blank') }}
 ```
 
-Saída:
-
 ```html
+<!-- Saída -->
+
 <a href="/users"> View Profile </a>
 <a href="/users" target="_blank"> View Profile </a>
 ```
 
-#### linkToAction(actionController, texto, dados, alvo)
-Retorna o link para a rota registrada do controlador de ação.
+#### `linkToAction(controllerAction, text, data, target)`
+Retorna link para ação do controlador de rota registrada.
 
 ```twig
 {{ linkToAction('UserController.index', 'View All Users') }}
 {{ linkToAction('UserController.index', 'View All Users', {}, '_blank') }}
 ```
 
-Saída:
-
 ```html
+<!-- Saída -->
+
 <a href="/users"> View Profile </a>
 <a href="/users" target="_blank"> View Profile </a>
 ```
 
-#### range(início, parada, [passo = 1])
-Loop sobre um intervalo de valores. Pense nisso como chamar um loop "for".
+#### `range(start, stop, [step=1])`
+Faz um loop em um intervalo de valores. Pense nisso como chamar um loop `for`.
 
 ```twig
 {% for i in range(0, 5) -%}
@@ -352,44 +355,44 @@ Loop sobre um intervalo de valores. Pense nisso como chamar um loop "for".
 {%- endfor %}
 ```
 
-Saída:
+```js
+// Saída
 
-```
 0,1,2,3,4
 ```
 
 ## Filtros
-Abaixo está a lista de todos os filtros disponíveis. Ver link: views:_# _working_with_filters [Trabalhando com filtros] para saber mais sobre a definição de filtros.
+Abaixo está a lista de todos os filtros disponíveis. Confira link:views#_working_with_filters[Trabalhando com filtros] para saber mais sobre como definir filtros.
 
-#### idade
-
+#### `age`
 ```twig
 {{ age | abs }}
 ```
 
-#### ação
-Retorna a URL para a ação do controlador registrada.
+#### `action`
+Retorna URL para ação do controlador registrado.
 
 ```js
-// Route
+// Rota
+
 Route.put('/user/:id', 'UserController.update')
 ```
 
 ```twig
-{# View #}
+<!-- View -->
 
 <form method="POST" action="{{ 'UserController.update' | action({id: 1}) }}">
 </form>
 ```
 
-Saída:
-
 ```html
+<!-- Saída -->
+
 <form method="POST" action="/user/1"></form>
 ```
 
-#### batch
-Cria múltiplos pedaços de um array. É útil quando imprimir uma grade HTML.
+#### `batch`
+Cria vários pedaços de uma matriz. É útil ao imprimir grade HTML.
 
 ```twig
 {% for rows in users | batch(3) %}
@@ -401,89 +404,84 @@ Cria múltiplos pedaços de um array. É útil quando imprimir uma grade HTML.
 {% endfor %}
 ```
 
-#### capitalize
-
+#### `capitalize`
 ```twig
 {{ name | capitalize }}
 ```
 
-#### Padrão
-
+#### `default`
 ```twig
 {{ title | default('Adonis') }}
 ```
 
-#### first
-Retorna o primeiro item de um array.
+#### `first`
+Retorna o primeiro item de uma matriz.
 
 ```twig
 {{ ['foo','bar'] | first }}
 ```
 
-#### groupby
-
+#### `groupby`
 ```twig
 {% set users = [{username:'doe', age:22}, {username:'dim', age:22}, {username:'dock', age:21}] %}
 {{ users | groupby('age') | json }}
 ```
 
-#### indente (largura = 2, primeiraLinha = falso)
-Indente cada linha de string com os espaços dados.
+#### `indent(width=2, firstLine=false)`
+Recua cada linha da string com os espaços fornecidos.
 
 ```twig
 {{ text | indent(2, true) }}
 ```
 
-#### juntar-se
-
+#### `join`
 ```twig
 {{ ['hello', 'world'] | join(' ') }}
 ```
 
-#### json(indentaçãot=2)
-
+#### `json(indentation=2)`
 ```twig
 {{ users | json }}
 {{ users | json(4) }}
 ```
 
-#### last
-Retorna o último item de um array.
+#### `last`
+Retorna o último item de uma matriz.
 
 ```twig
 {{ ['foo','bar'] | last }}
 ```
 
-#### comprimento
+#### `length`
 Retorna o comprimento do array.
 
 ```twig
 {{ ['foo','bar'] | length }}
 ```
 
-#### lista
-Converte uma matriz em uma lista, pense nisso como uma substituição para o método 'join', mas também funciona com strings dentro da matriz.
+#### `list`
+Converte um array em uma lista, pense nisso como uma substituição para `join`, mas também funciona com strings dentro do array.
 
 ```twig
 {{ ['foo','bar'] | list }}
 ```
 
-#### lower
-Converte o valor para minúsculas
+#### `lower`
+Converte valor para minúsculas
 
 ```twig
 {{ "Hello World" | lower }}
 {# hello world #}
 ```
 
-#### random
-Retorna um item aleatório de um array
+#### `random`
+Retorna item aleatório de um array
 
 ```twig
 {{ ['foo', 'bar', 'baz'] | random }}
 ```
 
-#### rejeitar
+#### `rejectattr`
 Filtra um array e remove objetos contendo atributos definidos
 
 ```twig
@@ -491,21 +489,21 @@ Filtra um array e remove objetos contendo atributos definidos
 {{ users | rejectattr('admin') | json }}
 ```
 
-#### Substitua
-Implementação do método nativo 'replace' de JavaScript, o primeiro argumento pode ser uma expressão regular.
+#### `replace`
+Implementação do método nativo `replace` do javascript, o primeiro argumento pode ser um regex.
 
 ```twig
 {{ 'Hello World' | replace('World', 'Everyone') }}
 {# Hello Everyone #}
 ```
 
-#### reverter
+#### `reverse`
 ```twig
 {{ 'Hello World' | reverse }}
 ```
 
-#### redondo
-Redondeie o número até uma precisão dada usando um método definido
+#### `round`
+Arredonda o número para uma precisão dada usando o método definido
 
 ```twig
 {{ 42.55 | round }}
@@ -515,11 +513,12 @@ Redondeie o número até uma precisão dada usando um método definido
 {# 42.5 #}
 ```
 
-#### rota
+#### `route`
 Resolve uma rota registrada.
 
 ```js
-// Route
+// Rota
+
 Route
     .put('/profile/:id', 'ProfileController.update')
     .as('updateProfile')
@@ -530,29 +529,29 @@ Route
 </form>
 ```
 
-#### striptags
-Remover *HTML*, *XML* de uma string
+#### `striptags`
+Remove as tags *Html*, *XML* de uma string
 
 ```twig
 {{ '<h2> Hello World </h2>' | striptags }}
 {# Hello World #}
 ```
 
-#### título
+#### `title`
 ```twig
 {{ "hello world" | title }}
 {# Hello World #}
 ```
 
-#### trim
-Recorta espaços em branco.
+#### `trim`
+Corta o espaço em branco.
 
 ```twig
 {{ " Hello World " | trim }}
 {# Hello World #}
 ```
 
-#### truncar
+#### `truncate`
 Retorna uma cópia truncada da string.
 
 ```twig
@@ -560,36 +559,36 @@ Retorna uma cópia truncada da string.
 {# Grumpy wizards make toxic brew... #}
 ```
 
-#### upper
-Faça a string em maiúsculas.
+#### `upper`
+Torna a string em maiúsculas.
 
 ```twig
 {{ 'hello world' | upper }}
 ```
 
-#### urlencode
-Faz o URL amigável (utiliza codificação UTF-8).
+#### `urlencode`
+Torna o valor amigável para URL (usa codificação UTF-8).
 
 ```twig
 {{ 'http://foo.com?bar=baz' | urlencode }}
 ```
 
-#### contagem de palavras
-Contar palavras em uma string.
+#### `wordcount`
+Conta palavras em uma string.
 
 ```twig
 {{ 'Grumpy wizards make toxic brew' | wordcount }}
 ```
 
-#### float
-Converte o valor para um valor flutuante.
+#### `float`
+Converte o valor em um valor float.
 
 ```twig
 {{ '1.2' | float }}
 ```
 
-#### int
-Converte o valor para um inteiro.
+#### `int`
+Converte o valor em um valor inteiro.
 
 ```twig
 {{ '1.2' | int }}

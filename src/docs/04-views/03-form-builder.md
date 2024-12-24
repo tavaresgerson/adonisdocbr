@@ -1,20 +1,20 @@
-# Construção de Formulário 
+# Form Builder
 
-Formulários de construção facilitam a criação de formulários rápidos e mantidos. Imagine uma situação em que você define a ação do formulário para uma rota registrada e quando a definição da rota é alterada, você precisa voltar para as visualizações garantindo que sua ação do formulário aponte para o URL correto.
+A criação de formulários facilita a criação de formulários HTML rápidos e fáceis de manter. Pense em uma situação em que você define a ação do formulário para uma rota registrada e, quando a definição da rota é alterada, você precisa retornar às visualizações para garantir que sua ação do formulário aponte para a URL correta.
 
-O construtor de formulários fornece a você a API para vincular rotas e controladores diretamente aos seus formulários, tornando mais fácil fazer alterações em um único local e o mesmo é refletido dentro de suas visualizações.
+O Form Builder fornece a API para vincular rotas e controladores diretamente aos seus formulários, facilitando a realização de alterações em um só lugar e o mesmo é refletido em suas visualizações.
 
 ## Exemplo básico
-Vamos pegar um exemplo de criação de uma nova forma de usuário usando o construtor de formulários.
+Vamos dar um exemplo de criação de um novo formulário de usuário usando o Form Builder.
 
 ```js
-// Route
+// Rota
 
 Route.post('/users', 'UserController.store')
 ```
 
 ```twig
-{# View #}
+<!-- View -->
 
 {{ form.open({action: 'UserController.store'}) }}
 
@@ -42,36 +42,35 @@ Route.post('/users', 'UserController.store')
 {{ form.close() }}
 ```
 
-O `form.open` permite que você vincule a ação do controlador de rota, o que significa que se mais tarde você mudar a URL da rota de `/usuários` para algo diferente, você não precisará fazer alterações dentro da sua visão, pois está vinculado ao controlador.
+`form.open` permite que você vincule a ação do controlador de rota, o que significa que se mais tarde você alterar a URL da rota de `/users` para outra coisa, não precisará fazer alterações dentro da sua visualização, pois ela está vinculada ao controlador.
 
-## Open/Close Forms
-O método `form.open` pode configurar o atributo *action* e *method* do formulário usando uma das seguintes propriedades.
+## Abrir/Fechar Formulários
+O método `form.open` pode configurar a *ação* e o *método* do formulário usando uma das seguintes propriedades.
 
-### ação
-Recuperar ação e método do formulário usando o método do controlador.
-
+#### `action`
+Buscar ação e método do formulário usando o método do controlador.
 ```twig
 {{ form.open({action: 'UserController.update'}) }}
 {{ form.close() }}
 ```
 
-### rota
-Recuperar ação e método de formulário usando o nome da rota.
+#### `route`
+Buscar ação e método do formulário usando o nome da rota.
 
 ```twig
 {{ form.open({route: 'users.store'}) }}
 {{ form.close() }}
 ```
 
-### url
-Defina manualmente uma URL personalizada e um método de formulário.
+#### `url`
+Defina manualmente uma url e um método de formulário personalizados.
 
 ```twig
 {{ form.open({url: '/users', method: 'POST'}) }}
 {{ form.close() }}
 ```
 
-### parâmetros
+#### `params`
 Passando parâmetros de rota como um objeto. As propriedades *action* e *route* usarão os parâmetros para formar a URL correta
 
 ```twig
@@ -79,8 +78,8 @@ Passando parâmetros de rota como um objeto. As propriedades *action* e *route* 
 {{ form.close() }}
 ```
 
-## Carregando arquivos
-Para fazer o upload de arquivos usando o construtor de formulários, você precisa definir a propriedade `files` como verdadeira no método `open`.
+## Upload de arquivos
+Para fazer upload de arquivos usando o construtor de formulários, você precisa definir a propriedade `files` como true no método `open`.
 
 ```twig
 {{ form.open({ action: 'UserController.store', files: true }) }}
@@ -92,85 +91,79 @@ Para fazer o upload de arquivos usando o construtor de formulários, você preci
 {{ form.close() }}
 ```
 
-## Métodos de Construção de Formulários
+## Métodos do construtor de formulários
 Aqui está a lista de todos os métodos disponíveis na instância do construtor de formulários.
 
-#### rótulo
-
+#### `label`
 ```twig
 {{ form.label('username', 'Enter Username') }}
 {{ form.label('username', 'Enter Username', {class: 'label-class'}) }}
 ```
 
-Saída:
-
 ```html
+<!-- Saída -->
+
 <label name="username"> Enter Username </label>
 ```
 
-#### texto
-
+#### `text`
 ```twig
 {{ form.text('username') }}
 {{ form.text('username', 'John', {class: 'input'}) }}
 ```
 
-Saída:
-
 ```html
+<!-- Saída -->
+
 <input type="text" name="username" value="John" class="input" />
 ```
 
-Assim como `texto`, você pode criar campos de entrada para todos os tipos dados.
+Assim como `text`, você pode criar campos de entrada para todos os tipos fornecidos.
 
-| Tipo de entrada | Método |
-|------------|--------|
-| senha | form.password() |
-| e-mail | form.email() |
-| cor | form.color() |
-| data | form.date() |
-| url | form.url() |
-| pesquisar | form.search() |
-| hidden | form.hidden() |
+| Tipo de entrada | Método            |
+|-----------------|-------------------|
+| password        | form.password()   |
+| email           | form.email()      |
+| color           | form.color()      |
+| date            | form.date()       |
+| url             | form.url()        |
+| search          | form.search()     |
+| hidden          | form.hidden()     |
 
-#### arquivo
-Criar um botão de upload de arquivos
+#### `file`
+Crie um botão de upload de arquivo
 
 ```twig
 {{ form.file('avatar') }}
 ```
 
-#### textarea
-
+#### `textarea`
 ```twig
 {{ form.textarea('description') }}
 {{ form.textarea('description', value) }}
 {{ form.textarea('description', value, {class: 'big'}) }}
 ```
 
-#### radio
-
+#### `radio`
 ```twig
 {{ form.radio('gender', 'male') }}
 {{ form.radio('gender', 'female', true) }}
 ```
 
-#### checkbox
-
+#### `checkbox`
 ```twig
 {{ form.checkbox('terms', 'agree') }}
 {{ form.checkbox('terms', 'agree', true) }}
 ```
 
-#### Selecione
-
+#### `select`
 ```twig
 {{ form.select('countries', ['India', 'US', 'UK'], null, 'Select Country') }}
 ```
 
-Saída:
-
 ```html
+<!-- Saída -->
+
 <select name="countries">
   <option value="">Select Country</option>
   <option value="India">India</option>
@@ -179,22 +172,22 @@ Saída:
 </select>
 ```
 
-Além disso, você pode passar um objeto de pares chave/valor no lugar da matriz simples.
+Além disso, você pode passar um objeto de pares chave/valor no lugar do array simples.
 
 ```twig
 {{ form.select('countries', {ind: 'India', us: 'Usa'}) }}
 ```
 
-Saída:
-
 ```html
+<!-- Saída -->
+
 <select name="countries">
   <option value="ind">India</option>
   <option value="us">US</option>
 </select>
 ```
 
-Você também pode definir *opções selecionadas* para uma caixa de seleção.
+Você também pode definir opções *selecionadas* para uma caixa de seleção.
 
 ```twig
 {{ form.select(
@@ -207,9 +200,9 @@ Você também pode definir *opções selecionadas* para uma caixa de seleção.
 }}
 ```
 
-Saída:
-
 ```html
+<!-- Saída -->
+
 <select name="countries" multiple>
   <option value="">Select Country</option>
   <option value="ind" selected>India</option>
@@ -218,16 +211,16 @@ Saída:
 </select>
 ```
 
-#### selectRange
-Crie uma caixa de seleção com várias opções dentro do intervalo fornecido.
+#### `selectRange`
+Crie uma caixa de seleção com múltiplas opções dentro do intervalo fornecido.
 
 ```twig
 {{ form.selectRange('days', 1, 30) }}
 ```
 
-Saída:
-
 ```html
+<!-- Saída -->
+
 <select name="days">
   <option value="1">1</option>
   <option value="2">3</option>
@@ -236,37 +229,35 @@ Saída:
 </select>
 ```
 
-#### enviar
+#### `submit`
 ```twig
 {{ form.submit('Create Account', 'create') }}
 ```
 
-Saída:
-
 ```html
+<!-- Saída -->
+
 <input type="submit" name="create" value="Create Account" />
 ```
 
-#### botão
-
+#### `button`
 ```twig
 {{ form.button('Create Account', 'create') }}
 ```
 
-Saída:
-
 ```html
+<!-- Saída -->
+
 <button type="submit" name="create"> Create Account </button>
 ```
 
-#### resetButton
-
+#### `resetButton`
 ```twig
 {{ form.resetButton('Clear') }}
 ```
 
-Saída:
-
 ```html
+<!-- Saída -->
+
 <button type="reset" name="Clear"> Clear </button>
 ```

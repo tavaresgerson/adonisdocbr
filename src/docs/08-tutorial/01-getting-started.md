@@ -1,19 +1,19 @@
 # Introdução
 
-Esta é a primeira parte do tutorial. No final desta série, você se sentirá confortável com os conceitos de AdonisJs para criar seu próximo aplicativo ambicioso da web.
+Esta é a primeira parte do tutorial. Ao final desta série, você se sentirá confortável com os conceitos do AdonisJs para criar seu próximo WebApp ambicioso.
 
-Certifique-se de ter seguido o processo de instalação e conseguido executar o servidor Adonis para ver a página inicial. Neste tutorial, começaremos criando um novo aplicativo e registrando algumas rotas para renderizar as visualizações.
+Certifique-se de ter seguido o processo de [instalação](/docs/03-getting-started/01-installation.md) e de ter executado o servidor AdonisJs para ver a página de boas-vindas. Neste tutorial, começaremos criando um novo aplicativo e registrando algumas rotas para renderizar visualizações.
 
 ## Criando um novo aplicativo
-Nós utilizaremos o executável *adonis* para criar uma nova aplicação.
+Faremos uso do executável *adonis* para criar um novo aplicativo.
 
 ```bash
 adonis new blog
 ```
 
-Saída:
+```bash
+# Saída
 
-```
 Cloning into 'blog'...
 cleaning project
 setting up app key
@@ -22,22 +22,22 @@ installing dependencies may take a while
 installing dependencies....
 ```
 
-Acima comando irá criar um novo projeto *blog*. Agora `cd` na pasta e inicie o servidor.
+O comando acima criará um novo projeto *blog*. Agora, `cd` no diretório e inicie o servidor.
 
 ```bash
 cd blog
 npm run dev
 ```
 
-Saída:
+```bash
+# Saída
 
-```
 [nodemon] starting `node --harmony_proxies server.js`
 info adonis:framework serving app on http://localhost:3333
 ```
 
-## Criando Rotas
-AdonisJS vem com uma rota pré-definida que renderiza o arquivo *welcome.njk*. Vamos remover essa rota e começar do zero.
+## Criando rotas
+O AdonisJs vem com uma rota predefinida que renderiza a visualização *welcome.njk*. Vamos remover essa rota e começar do zero.
 
 ```js
 // app/Http/routes.js
@@ -51,10 +51,10 @@ Route.on('/about').render('about')
 Route.on('/contact').render('contact')
 ```
 
-Registramos 3 rotas diferentes para renderizar as páginas *home*, *sobre* e *contato*.
+Registramos 3 rotas diferentes para renderizar as páginas *home*, *about* e *contact*.
 
-## Criando Visualizações
-Vamos criar estas três visualizações digitando os seguintes comandos no terminal.
+## Criando visualizações
+Vamos criar essas três visualizações digitando os comandos abaixo no terminal.
 
 ```bash
 ./ace make:view home
@@ -62,9 +62,9 @@ Vamos criar estas três visualizações digitando os seguintes comandos no termi
 ./ace make:view contact
 ```
 
-link:interactive-shell[Ace] é uma ferramenta de utilitário de linha de comando que vem com o AdonisJs. Você pode usar os comandos do Ace para gerar *visualizações*, *controladores* e *modelos*, etc.
+[Ace](/docs/07-common-web-tools/01-interactive-shell.md) é uma ferramenta de utilitário de linha de comando que vem com o AdonisJs. Você pode usar os comandos ace para gerar *views*, *controllers* e *models*, etc.
 
-As views vivem dentro do diretório `recursos/visualizações` e devem ter a extensão `.njk`. Vamos abrir a visualização `home.njk` e escrever algum HTML dentro dela.
+Views ficam dentro do diretório `resources/views` e devem ter a extensão `.njk`. Vamos abrir a view `home.njk` e escrever algum HTML dentro dela.
 
 ```html
 <!-- resources/views/home.njk -->
@@ -72,12 +72,12 @@ As views vivem dentro do diretório `recursos/visualizações` e devem ter a ext
 <h2> This is the home page </h2>
 ```
 
-Agora atualize o navegador e você verá o cabeçalho que escrevemos dentro da visualização inicial.
+Agora atualize o navegador e você verá o título que escrevemos dentro da view home.
 
-É tão simples renderizar as visualizações do nunjucks no AdonisJs. Vamos escrever algum HTML em todas as visualizações e vinculá-las juntas. Nós vamos usar link:http://v4-alpha.getbootstrap.com/[Bootstrap, window="_blank"] para projetar as páginas da web.
+É muito simples renderizar as views nunjucks no AdonisJs. Vamos escrever algum HTML dentro de todas as views e vinculá-las. Usaremos o [Bootstrap](http://v4-alpha.getbootstrap.com/) para projetar as páginas da web.
 
 ```twig
-{# resources/views/master.njk #}
+<!-- resources/views/master.njk -->
 
 <!DOCTYPE html>
 <html>
@@ -108,10 +108,10 @@ Agora atualize o navegador e você verá o cabeçalho que escrevemos dentro da v
 </html>
 ```
 
-O `master.njk` é o modelo base que vamos estender em cada visualização. Agora copie e cole o código abaixo no arquivo `home.njk`.
+O `master.njk` é o modelo base que estenderemos em cada view. Agora copie e cole o código abaixo dentro do arquivo `home.njk`.
 
 ```twig
-{# resources/views/home.njk #}
+<!-- resources/views/home.njk -->
 
 {% extends 'master' %}
 
@@ -120,7 +120,7 @@ O `master.njk` é o modelo base que vamos estender em cada visualização. Agora
 {% endblock %}
 ```
 
-Também precisaremos de algum *CSS* para deixar a saída um pouco mais bonita. Então copie e cole o trecho abaixo no arquivo "public/style.css".
+Também precisaremos de algum *CSS* para fazer a saída parecer um pouco melhor. Então copie e cole o snippet abaixo no arquivo `public/style.css`.
 
 ```css
 /* public/style.css */
@@ -150,14 +150,13 @@ body {
 
 Agora atualize o navegador para ver a página inicial.
 
-### Página inicial em pré-visualização
-
-![Imagem](/docs/assets/home-page_uab9il.png)
+### Visualização da página inicial
+![imagem](/docs/assets/home-page_uab9il.png)
 
 Vamos também completar as outras visualizações
 
 ```twig
-{# resources/views/about.njk #}
+<!-- resources/views/about.njk -->
 
 {% extends 'master' %}
 
@@ -167,7 +166,7 @@ Vamos também completar as outras visualizações
 ```
 
 ```twig
-{# resources/views/contact.njk #}
+<!-- resources/views/contact.njk -->
 
 {% extends 'master' %}
 

@@ -1,29 +1,30 @@
-# E-mail
+# Mail
 
-Enviar e-mail é uma tarefa comum para aplicativos web. O provedor oficial de e-mail do AdonisJs torna isso tão fácil e intuitivo de usar um dos drivers disponíveis.
+O envio de e-mail é uma tarefa comum para aplicativos da web. O *Mail Provider* oficial do AdonisJs torna muito fácil e intuitivo enviar e-mails usando um dos drivers disponíveis.
 
 ## Drivers
-Abaixo está a lista de drivers disponíveis e você é livre para estendê-los e adicionar seus próprios drivers personalizados.
+Abaixo está a lista de drivers disponíveis e você pode estender e adicionar seus drivers personalizados.
 
 1. SMTP (smtp).
 2. Amazon SES (ses).
-3. Mandril (mandrill).
+3. Mandrill (mandrill).
 4. MailGun (mailgun).
 5. Log (log)
 
-> DICA:
-> O driver 'log' é usado quando executar os testes, pois ele irá registrar e-mails em um arquivo em vez de enviá-los para as pessoas reais.
+::: tip DICA
+O driver `log` é usado ao executar testes, pois ele registrará e-mails em um arquivo em vez de enviá-los para pessoas reais.
+:::
 
 ## Configuração
-O provedor de e-mail não faz parte da instalação básica, e você precisa puxar o pacote do npm e registrar o provedor. Vamos fazer uma configuração rápida de 2min.
+O provedor de e-mail não faz parte da instalação base, e você precisa obter o pacote do *npm* e registrar o provedor. Vamos fazer uma configuração rápida de 2 minutos.
 
 ```bash
-# Install From Npm
+# Instalar do Npm
 
 npm i --save adonis-mail-provider
 ```
 
-Em seguida, precisamos registrar o provedor e configurar um apelido para ele.
+Em seguida, precisamos registrar o provedor e configurar um alias para o mesmo.
 
 ```js
 // bootstrap/app.js
@@ -42,17 +43,17 @@ const aliases = {
 }
 ```
 
-## Configuração
-Além disso, um arquivo de configuração precisa ser salvo como `config/mail.js`. Você pode baixar a configuração de amostra do [github](https://raw.githubusercontent.com/adonisjs/adonis-mail/master/examples/mail.js) ou executar o seguinte comando bash para salvar o arquivo automaticamente.
+## Config
+Além disso, um arquivo de configuração precisa ser salvo como `config/mail.js`. Você pode baixar a configuração de exemplo do [github](https://raw.githubusercontent.com/adonisjs/adonis-mail/master/examples/mail.js) ou executar o comando bash abaixo para salvar o arquivo automaticamente.
 
 ```bash
-# Download using wget
+# Baixar usando wget
 
 wget https://raw.githubusercontent.com/adonisjs/adonis-mail/master/examples/mail.js -O config/mail.js
 ```
 
 ## Exemplo básico
-Vamos pegar um exemplo básico de enviar um e-mail de boas-vindas ao usuário recém-registrado. Precisamos configurar uma rota e uma visão antes de enviar o e-mail.
+Vamos dar um exemplo básico de envio de um e-mail de boas-vindas ao usuário recém-registrado. Precisamos configurar uma rota e uma visualização antes de enviar o e-mail.
 
 ```js
 // app/Http/routes.js
@@ -85,29 +86,28 @@ class UsersController {
 }
 ```
 
-1. Certifique-se de validar os detalhes do usuário antes de salvá-los no banco de dados.
+1. Certifique-se de validar os detalhes do usuário antes de salvá-los no BD.
 2. O método `Mail.send` enviará o e-mail aceitando um caminho para a visualização como o primeiro parâmetro.
 
 ```bash
-# Creating emails.welcome view
+# Criando views de e-mails para boas-vindas
 
 ./ace make:view emails/welcome
 ```
 
-
 ```twig
-{# resources/views/emails/welcome.njk #}
+<!-- resources/views/emails/welcome.njk -->
 
 <h2> Heya {{ firstname}} </h2>
 
 <p> Welcome to the kitten's world. We will be sharing lots of cute kittens with you soon</p>
 ```
 
-## Métodos de Email
-Abaixo está a lista de métodos para enviar e-mails.
+## Métodos de e-mail
+Abaixo está a lista de métodos a serem usados ​​para enviar e-mails.
 
-#### send(view, dados, callback, [configKey])
-O método 'send' irá compilar uma visualização com os dados fornecidos e enviá-la como HTML. O retorno de chamada anexado lhe dá acesso ao xref:_message_builder[construidor de mensagens] para definir as propriedades do e-mail.
+#### `send(view, data, callback, [configKey])`
+O método `send` compilará uma visualização com os dados fornecidos e a enviará como HTML. O retorno de chamada anexado fornece acesso ao [construtor de mensagens](#message-builder) para definir as propriedades do e-mail.
 
 ```js
 yield Mail.send('receipt', {name: 'Doe', amount: 22}, message => {
@@ -115,8 +115,8 @@ yield Mail.send('receipt', {name: 'Doe', amount: 22}, message => {
 })
 ```
 
-#### raw(body, callback, [configKey])
-Enviar e-mail usando texto cru, em vez de usar uma visão.
+#### `raw(body, callback, [configKey])`
+Envie e-mails usando texto bruto, em vez de usar uma visualização.
 
 ```js
 yield Mail.raw('Your security code is 301030', message => {
@@ -125,145 +125,147 @@ yield Mail.raw('Your security code is 301030', message => {
 })
 ```
 
-## Mensageiro
-Message Builder facilita muito a cadeia de métodos e a construção do corpo da mensagem. O argumento "message" passado para o método Mail.send é uma instância do Message Builder, e abaixo está a lista dos métodos que você pode chamar nele.
+## Message Builder
+O Message Builder torna super fácil encadear métodos e construir o corpo da mensagem. O argumento `message` passado para o método *Mail.send* é uma instância do construtor de mensagens e abaixo está a lista de métodos que você pode chamar nele.
 
-#### from(email, [nome])
+#### `from(email, [name])`
 ```js
 yield Mail.send('receipt', {}, message => {
   message.from('awesome@adonisjs.com', 'AdonisJs')
 })
 ```
 
-#### enviar(email, [nome])
+#### `sender(email, [name])`
 ```js
 yield Mail.send('receipt', {}, message => {
   message.sender('awesome@adonisjs.com', 'AdonisJs')
 })
 ```
 
-#### replyTo(email, [nome])
+#### `replyTo(email, [name])`
 ```js
 yield Mail.send('receipt', {}, message => {
   message.replyTo('noreply@adonisjs.com')
 })
 ```
 
-#### para (e-mail, [nome])
+#### `to(email, [name])`
 ```js
 yield Mail.send('receipt', {}, message => {
   message.to('johndoe@example.com', 'John Doe')
 })
 ```
 
-#### cc(email, [nome])
+#### `cc(email, [name])`
 ```js
 yield Mail.send('receipt', {}, message => {
   message.cc('jamie@example.com', 'Jamie Doe')
 })
 ```
 
-#### Enviar email para [nome] com cco(email)
+#### `bcc(email, [name])`
 ```js
 yield Mail.send('receipt', {}, message => {
   message.bcc('finance@example.com')
 })
 ```
 
-#### assunto (mensagem)
+#### `subject(message)`
 ```js
 yield Mail.send('receipt', {}, message => {
   message.subject('Recent purchase receipt')
 })
 ```
 
-#### prioridade(nível)
-Defina a prioridade do e-mail. Ele precisa ser um dos seguintes:
+#### `priority(level)`
+Defina a prioridade do e-mail. Precisa ser uma das seguintes:
 
-* alto
-* baixo
+* high
+* low
 * normal
 
 ```js
 message.priority('high')
 ```
 
-#### header(chave, valor)
+#### `header(key, value)`
 ```js
 message.header('x-id', 1)
 ```
 
-#### headers(arrayOfHeaders)
+#### `headers(arrayOfHeaders)`
 ```js
 message.header([{ key: 'x-id', value: 1 }])
 ```
 
-#### attach(filePath, [options])
-Anexe um arquivo ao e-mail
+#### `attach(filePath, [options])`
+Anexar um arquivo ao e-mail
 
 ```js
 message.attach(path.join(__dirname, '/assets/logo.png'))
 message.attach(path.join(__dirname, '/assets/logo.png'), { filename: 'MyLogo.png' })
 ```
 
-##### Opções de anexo
+Opções de anexo
 
-| Chave | Tipo | Descrição |
-|-----|------|----------------|
-| nome do arquivo | String | Nome do arquivo. Se não for definido, será extraído do caminho do arquivo. |
-| contentType | String | Anexos *Tipo de conteúdo*. Se não for definido, será extraído da extensão do arquivo. |
-| disposição do conteúdo | String | Content-disposition, padrão para download. |
-| codificação | String | A codificação de anexos deve ser de *base64*, *hex* e *binário*. |
+| Chave               | Tipo    | Descrição     |
+|---------------------|---------|---------------|
+| filename            | String  | Nome do arquivo. Se não for definido, será escolhido do caminho do arquivo.  |
+| contentType         | String  | Anexo *Tipo de conteúdo*. Se não for definido, será escolhido da extensão do arquivo.  |
+| contentDisposition  | String  | Disposição de conteúdo, padrão para anexo.  |
+| encoding            | String  | A codificação do anexo deve ser *base64*, *hex* e *binário*. |
 
-#### attachData(dados, nome_arquivo, [opções])
-Anexar dados brutos como um anexo no e-mail.
+#### `attachData(data, filename, [options])`
+Anexe dados brutos como um anexo ao e-mail.
 
-> DICA:
-> As opções de anexação são as mesmas do método `attach`.
+::: tip DICA
+As opções de anexo são as mesmas do método `attach`.
+:::
 
 ```js
 message.attachData('some raw content', 'raw.txt')
 ```
 
-#### embed(filePath, cid, [opções])
-Inserir um arquivo no corpo do e-mail. O 'cid' deve ser único e é necessário para que você possa referenciá-lo dentro de suas visualizações HTML.
+#### `embed(filePath, cid, [options])`
+Incorpore um arquivo no corpo do e-mail. O `cid` deve ser exclusivo e é necessário para que você possa referenciá-lo dentro de suas visualizações HTML.
 
 ```js
 message.embed(path.join(__dirname, '/assets/logo.png'), 'logo')
 ```
 
 ```twig
-{# Embedding inside views #}
+<!-- Embedding inside views -->
 
 <img src="cid:logo" />
 ```
 
-#### html(corpo)
-O HTML do e-mail é criado automaticamente a partir da visualização. Se por algum motivo você quiser sobrescrever, utilize este método.
+#### `html(body)`
+O HTML do e-mail é criado automaticamente a partir da visualização. Se por algum motivo você quiser substituir, use este método.
 
 ```js
 message.html('My custom html')
 ```
 
-#### texto(corpo)
-Defina *texto simples* para o e-mail. É definido para os clientes de e-mail que não suportam HTML.
+#### `text(body)`
+Defina *plaintext* para o e-mail. Ele é definido para os clientes de e-mail que não suportam HTML.
 
-> DICA:
-> Todos os clientes de e-mail populares suportam HTML.
+::: tip DICA
+Todos os clientes de e-mail populares suportam HTML.
+:::
 
 ```js
 message.text('A plaintext view')
 ```
 
-#### watch('body')
-Configure o HTML para ser exibido no *Apple Watch*.
+#### `watchHtml(body)`
+Defina o HTML a ser exibido para o *Apple Watch*.
 
 ```js
 message.watchHtml('Email body for apple watch')
 ```
 
-## Passando Múltiplas Vistas
-Você pode definir múltiplas visualizações para *HTML*, *Texto Simples* e *Apple Watch* passando uma matriz para o método xref:_send_view_data_callback_configkey[send].
+## Passando múltiplas visualizações
+Você pode definir múltiplas visualizações para *HTML*, *Texto simples* e *Apple Watch* passando uma matriz para o método [send](#sendview-data-callback-configkey).
 
 ```js
 yield Mail.send(['welcome', 'welcome-text', 'welcome-watch'], {}, message => {
@@ -271,8 +273,8 @@ yield Mail.send(['welcome', 'welcome-text', 'welcome-watch'], {}, message => {
 })
 ```
 
-## Switching Drivers
-O driver padrão definido dentro do arquivo de configuração é usado para enviar e-mails, mas você pode alternar entre os drivers em tempo de execução usando o método "driver".
+## Trocando drivers
+O driver padrão definido dentro do arquivo de configuração é usado para enviar e-mails, mas você pode alternar entre drivers em tempo de execução usando o método `driver`.
 
 ```js
 const mandrill = Mail.driver('mandrill')
@@ -282,15 +284,15 @@ yield mandrill.send('emails.welcome', {}, message => {
 })
 ```
 
-## Adicionando Novos Drivers
-Você também pode adicionar novos drivers para o *Mail Provider* estendendo-o e aqui estão alguns pontos a se considerar.
+## Adicionando novos drivers
+Você também pode adicionar novos drivers ao *Provedor de e-mail* estendendo-o e aqui estão alguns pontos a serem lembrados.
 
-1. O AdonisJs internamente utiliza [nodemailer](https://github.com/nodemailer/nodemailer) para enviar e-mails. Você também pode envolver um transporte existente do nodemailer em um motorista.
-Seu motorista deve ter um método 'enviar'.
+1. O AdonisJs usa internamente [nodemailer](https://github.com/nodemailer/nodemailer) para enviar e-mails. Você também pode encapsular um transporte nodemailer existente em um driver.
+2. Seu driver deve ter um método `send`.
 
-Vamos usar o [nodemailer postmark transport](https://github.com/killmenot/nodemailer-postmark-transport) para criar um novo driver e registrá-lo via injeção de dependência.
+Vamos usar [nodemailer postmark transport](https://github.com/killmenot/nodemailer-postmark-transport) para criar um novo driver e registrá-lo via contêiner IoC.
 
-### Escrever Driver
+### Escrevendo Driver
 
 ```js
 // src/PostMark.js
@@ -319,14 +321,14 @@ class PostMark {
 }
 ```
 
-1. Criamos um transporte padrão chamando o método `_createTransport` e passando-lhe a chave do bloco de configuração.
-Aqui usamos o método [config provider](/getting-started/configuration) `get` para buscar a configuração para a chave dada.
+1. Criamos um transporte padrão chamando o método `_createTransport` e passando a chave para o bloco de configuração.
+2. Aqui usamos o método `get` [config provider](/docs/03-getting-started/03-configuration.md) para extrair a configuração para a chave fornecida.
 3. Em seguida, retornamos uma instância do transporte nodemailer.
-4. Dentro do método send criamos o transporte se um usuário definir uma chave de configuração diferente em tempo de execução. Caso contrário, usamos o transporte padrão.
+4. Dentro do método `send`, criamos o transporte se um usuário definir uma chave de configuração diferente no tempo de execução. Caso contrário, usamos o transporte padrão.
 5. Finalmente, enviaremos o e-mail usando o método de transporte `sendMail`.
 
-### Registrando o motorista
-Estamos prontos para registrar o provedor de correio estendendo-o.
+### Registrando o driver
+Estamos prontos para registrar o driver estendendo o provedor de e-mail.
 
 ```js
 // bootstrap/extend.js
@@ -340,12 +342,12 @@ Ioc.extend('Adonis/Addons/Mail', 'postmark', function (app) {
 })
 ```
 
-### Usando o driver Postman
+### Usando o driver PostMark
 ```js
 yield Mail.driver('postmark').send('emails.welcome', {}, message => {
   // ...
 })
 ```
 
-## Teste de Email
-O AdonisJS envia um *Driver de Log*, que pode ser usado ao escrever testes. O Driver de Log salvará todos os e-mails no arquivo *storage/logs/mail.eml* como uma string. Você pode analisar este arquivo para fazer afirmações de teste.
+## Testando e-mails
+O AdonisJs envia um *Log Driver*, que pode ser usado ao escrever testes. O Log Driver salvará todos os e-mails no arquivo *storage/logs/mail.eml* como uma string. Você pode analisar esse arquivo para fazer asserções de teste.

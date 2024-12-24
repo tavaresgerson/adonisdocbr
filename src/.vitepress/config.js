@@ -36,7 +36,7 @@ export default {
         ],
         editLink: {
           pattern: ({ filePath }) => {
-            return `https://github.com/tavaresgerson/adonisdocbr/edit/v3/src/docs/${filePath}`
+            return `https://github.com/tavaresgerson/adonisdocbr/edit/v3.2/src/${filePath}`
           },
           text: 'Corrigir isso no GitHub'
         },

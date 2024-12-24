@@ -1,13 +1,13 @@
 # Relações
 
-As bases de dados relacionais são muito poderosas na gestão da relação entre múltiplas tabelas de banco de dados. O Lucid estende esse poder oferecendo associações de banco de dados somente em JavaScript, o que significa que você pode definir uma relação entre duas tabelas sem tocar no esquema SQL.
+Bancos de dados relacionais são muito poderosos no gerenciamento do relacionamento entre várias tabelas de banco de dados. O Lucid estende esse poder oferecendo associações de banco de dados somente Javascript, o que significa que você pode definir um relacionamento entre duas tabelas sem tocar no esquema SQL.
 
 ## Exemplo básico
-As bases de dados relacionais são projetadas para definir relações entre duas ou mais tabelas de banco de dados. Existem vários benefícios em definir relacionamentos, pois eles tornam as operações comuns do banco de dados muito mais fáceis.
+Bancos de dados relacionais têm como objetivo definir relações entre duas ou mais tabelas de banco de dados. Existem vários benefícios em definir relacionamentos, pois eles tornam as operações comuns de banco de dados muito mais fáceis.
 
-Vamos pegar o cenário mais comum de um Usuário e um Modelo de Perfil. Onde todo usuário no seu banco de dados pode ter um perfil social. Chamamos isso de *relação um para um*.
+Vamos pegar o cenário mais comum de um modelo de usuário e perfil. Onde cada usuário em seu banco de dados pode ter um perfil social. Chamamos isso de *relacionamento um para um*.
 
-Para descrever essa relação, você terá que adicionar a seguinte linha de código ao seu modelo de Usuário.
+Para descrever esse relacionamento, você terá que adicionar a seguinte linha de código ao seu modelo de usuário.
 
 ```js
 // app/Model/User.js
@@ -25,31 +25,30 @@ class User extends Lucid {
 }
 ```
 
-1. O método `hasOne` define uma relação um para um em um determinado modelo.
+1. O método `hasOne` define um relacionamento um para um em um determinado modelo.
 
-Agora você pode chamar o método `profile` para acessar o perfil de um usuário específico.
+Agora você pode chamar o método `profile` para acessar o perfil de um determinado usuário.
 
 ```js
 const user = yield User.find(1)
 const userProfile = yield user.profile().fetch()
 ```
 
-## Tipos de Relacionamentos
+## Tipos de relacionamentos
 
-### Tem um relacionamento
-A relação `hasOne` define uma relação um para um entre dois modelos usando uma chave estrangeira. A chave estrangeira é criada usando o nome singular de um determinado modelo seguido por `_id*`. No entanto, você pode sobrescrevê-lo.
+### Relacionamento Has One
+O relacionamento `hasOne` define uma relação um para um entre 2 modelos usando uma chave estrangeira. A chave estrangeira é criada usando o nome singular de um determinado modelo seguido por *_id*. No entanto, você tem a liberdade de substituí-lo.
 
+| Modelo    | Chave estrangeira |
+|-----------|-------------------|
+| User      | user_id           |
+| Seller    | seller_id         |
 
-| Modelo | Chave Estrangeira |
-|-------|-------------|
-| Usuário | user_id |
-| Vendedor | seller_id |
+![image](/docs/assets/has-one_zfrkve.jpg)
 
-![Imagem](/docs/assets/has-one_zfrkve.jpg)
+Para configurar o relacionamento mostrado na figura acima, você precisa defini-lo dentro do seu modelo User.
 
-Para configurar a relação mostrada no gráfico acima, você precisa defini-la dentro do seu modelo de usuário.
-
-#### hasOne(relatedModel, [primaryKey=id], [foreignKey=user_id])
+#### `hasOne(relatedModel, [primaryKey=id], [foreignKey=user_id])`
 
 ```js
 // app/Model/User.js
@@ -63,21 +62,21 @@ class User extends Lucid {
 }
 ```
 
-### Belongsto Relacionamento
-A relação 'belongsTo' é o oposto de 'hasOne' e sempre contém a chave estrangeira. Então, a melhor maneira de se lembrar disso é com a chave estrangeira. Qualquer tabela de banco de dados que tenha a chave estrangeira, seu modelo terá sempre a relação 'belongsTo'.
+### Relacionamento BelongsTo
+O relacionamento `belongsTo` é o oposto de `hasOne` e sempre contém a *chave estrangeira*. Então a melhor maneira de lembrar é com a chave estrangeira. Qualquer tabela de banco de dados que tenha a chave estrangeira, seu Modelo sempre terá a relação `belongsTo`.
 
-Não existem regras rígidas sobre como projetar suas relações, mas é sempre bom projetá-las da maneira mais natural possível. Por exemplo
+Não há regras rígidas sobre como projetar seus relacionamentos, mas é sempre bom projetá-los da maneira mais natural. Por exemplo
 
-| Modelo | Relação | Related Model |
-|-------|----------|----------------|
-| Usuário | hasOne | Perfil |
-| Perfil | Pertence a | Usuário |
-| Aluno | hasOne | IdCard |
-| IdCard | Pertence a | Usuário |
+| Modelo  | Relação   | Modelo Relacionado  |
+|---------|-----------|---------------------|
+| User    | hasOne    | Profile             |
+| Profile | belongsTo | User                |
+| Student | hasOne    | IdCard              |
+| IdCard  | belongsTo | User                |
 
-Espero que isso faça sentido. Continuando com nossa relação de *Perfil do Usuário*, o modelo Perfil conterá a relação 'pertence a' como ele possui uma chave estrangeira.
+Espero que isso faça sentido. Continuando com nosso relacionamento *User* *Profile*, o modelo Profile conterá o relacionamento `belongsTo`, pois ele contém a chave estrangeira.
 
-#### belongsTo(relatedModel, [primaryKey=id], [foreignKey=user_id])
+#### `belongTo(relatedModel, [primaryKey=id], [foreignKey=user_id])`
 
 ```js
 // app/Model/Profile.js
@@ -92,22 +91,22 @@ class Profile extends Lucid {
 ```
 
 ### Relacionamento HasMany
-Você vai se acostumar a usar o `hasMany`, pois é a relação mais comum que você precisará em qualquer aplicação. Vamos analisar alguns exemplos.
+Você se verá usando `hasMany` com bastante frequência, pois esse é o relacionamento mais comum exigido por qualquer aplicativo. Vamos rever alguns exemplos.
 
-| Modelo | Relação | Related Model |
-|-------|----------|---------------|
-| Livro | has many | Capítulo |
-| Capítulo | Pertence a | Livro |
-| Post | has many | Comentário |
-| Comentário | Pertence a | Post |
+| Modelo  | Relação   | Modelo Relacionado  |
+|---------|-----------|---------------------|
+| Book    | hasMany   | Chapter             |
+| Chapter | belongsTo | Book                |
+| Post    | hasMany   | Comment             |
+| Comment | belongsTo | Post                |
 
-A relação 'hasMany' permite que existam vários registros relacionados para uma determinada linha, cada um contendo a chave estrangeira.
+O relacionamento `hasMany` torna possível ter vários registros relacionados para uma determinada linha, cada um contendo a foreignKey.
 
-![Imagem](/docs/assets/has-many_p91i9i.jpg)
+![imagem](/docs/assets/has-many_p91i9i.jpg)
 
-Vamos definir os modelos acima e suas relações no Lucid.
+Vamos definir os modelos acima e seus relacionamentos no Lucid.
 
-#### hasMany(relatedModel, [primaryKey=id], [foreignKey=book_id])
+#### `hasMany(relatedModel, [primaryKey=id], [foreignKey=book_id])`
 
 ```js
 // app/Model/Book.js
@@ -133,25 +132,26 @@ class Chapter extends Lucid {
 }
 ```
 
-### Relação de muitos para um
-Existem situações onde cada lado do relacionamento pode ter muitas linhas relacionadas dentro do banco de dados. Vamos ver alguns exemplos.
+### Relacionamento BelongsToMany
+Há situações em que cada lado do relacionamento pode ter muitas linhas relacionadas dentro do banco de dados. Vamos ver alguns exemplos.
 
-| Modelo | Relação | Related Model |
-|-------|----------|------------------|
-| Aluno | belongsToMany | Cursos |
-| Curso | belongsToMany | Aluno |
-| Post | belongsToMany | Categorias |
-| Categoria | belongsToMany | Posts |
+| Modelo    | Relação       | Modelo Relacionado  |
+|-----------|---------------|-----------------|
+| Student   | belongsToMany | Courses         |
+| Course    | belongsToMany | Students        |
+| Post      | belongsToMany | Categories      |
+| Category  | belongsToMany | Posts           |
 
-Tomando o exemplo de Estudante e Curso, onde ambos os modelos podem ter muitas linhas relacionadas no banco de dados. Em outras palavras, é uma relação *muitos para muitos*.
+Tomando o exemplo de Aluno e Curso, onde ambos os modelos podem ter muitas linhas relacionadas no banco de dados. Em outras palavras, é um *relacionamento de muitos para muitos*.
 
 ![imagem](/docs/assets/belongsto-many_ymawpb.jpg)
 
-Olhando para o gráfico acima, você notará que há uma terceira tabela chamada "course_student". Como cada modelo em ambos os lados tem muitos relacionamentos, eles não podem conter a chave estrangeira.
+Olhando para a figura acima, você notará que há uma terceira tabela chamada `course_student`. Como cada modelo em ambas as extremidades tem muitos relacionamentos, eles não podem conter a chave estrangeira.
 
-A terceira tabela é conhecida como uma *tabela pivot*. Ela contém a Chave Estrangeira para ambos os Modelos e define um relacionamento único entre eles. Vamos definir essa relação no Lucid e revisar as opções configuráveis.
+A terceira tabela é conhecida como uma *tabela dinâmica*. Ela contém a Chave Estrangeira para ambos os Modelos e define um relacionamento exclusivo entre eles. Vamos definir esse relacionamento no Lucid e revisar as opções configuráveis.
 
-#### belongsToMany(relatedModel, [pivotTable], [localKey], [otherKey])
+#### `belongsToMany(relatedModel, [pivotTable], [localKey], [otherKey])`
+
 ```js
 // app/Model/Student.js
 
@@ -163,6 +163,7 @@ class Student extends Lucid {
 
 }
 ```
+
 
 ```js
 // app/Model/Course.js
@@ -176,16 +177,16 @@ class Course extends Lucid {
 }
 ```
 
-O método `belongsToMany` aceita múltiplos argumentos para configurar a tabela/campos da relação.
+O método `belongsToMany` aceita múltiplos argumentos para configurar a tabela/campos para o relacionamento.
 
-| Parâmetro | Requisitos: | Valor Padrão |
-|-----------|----------|----------------|
-| pivotTable | Não | A tabela de pivô é o nome singular de cada modelo de nome, ordenado por nome. Por exemplo, os modelos Course e Student terão *course_student* como nome da tabela de pivô. |
-| Chave local | Não | Referência à chave estrangeira dentro da tabela de junção. |
-| otherKey | Não | Referência ao modelo relacionado chave estrangeira dentro da tabela de junção. |
+| Parâmetro   | Obrigatório | Valor Padrão      |
+|-------------|-------------|-------------------|
+| pivotTable  | No          | A tabela dinâmica é a forma singular de cada nome de modelo, ordenada por nome. Por exemplo, os modelos Course e Student terão *course_student* como o nome da tabela dinâmica.  |
+| localKey    | No          | Referência à chave estrangeira do modelo dentro da tabela dinâmica.  |
+| otherKey    | No          | Referência à chave estrangeira do modelo relacionado dentro da tabela dinâmica.  |
 
-#### withTimestamps
-Além disso, você escolhe salvar carimbos de data e hora na tabela pivot.
+#### `withTimestamps`
+Você também escolhe salvar carimbos de data/hora na tabela dinâmica.
 
 ```js
 class Student extends Lucid {
@@ -196,11 +197,11 @@ class Student extends Lucid {
 ```
 
 ### Relacionamento HasManyThrough
-Outra relação importante suportada pelo Lucid é o `hasManyThrough`. Onde um modelo específico depende de outro modelo através de um terceiro modelo
+Outro tipo de relação importante suportado pelo Lucid é `hasManyThrough`. Onde um determinado modelo é dependente de outro modelo via 3º modelo
 
-![Imagem](/docs/assets/has-many-through_vux5jm.jpg)
+![imagem](/docs/assets/has-many-through_vux5jm.jpg)
 
-Tomando o exemplo de buscar *posts* para um determinado  *país* não é possível porque não há relação direta entre países e postagens. Mas com a ajuda do modelo de usuário, podemos configurar uma relação indireta entre países e postagens e isso é chamado de relação `hasManyThrough`.
+Tomar o exemplo de buscar *postagens* para um determinado *país* não é possível, pois não há relação direta entre países e postagens. Mas com a ajuda do modelo User, podemos configurar uma relação indireta entre países e postagens e isso é chamado de relacionamento `hasManyThrough`.
 
 ```js
 // app/Model/Country.js
@@ -214,7 +215,7 @@ class Country extends Lucid {
 }
 ```
 
-Agora para buscar as postagens de um país específico, você precisa chamar o método `posts` no modelo *Country*.
+Agora, para buscar postagens para um determinado país, você precisa chamar o método `posts` no *modelo Country*.
 
 ```js
 const country = yield Country.findBy('name', 'India')
@@ -222,24 +223,24 @@ const posts = yield country.posts().fetch()
 response.json(posts)
 ```
 
-O método `hasManyThrough` aceita as opções dadas.
+O método `hasManyThrough` aceita opções fornecidas.
 
-| Parâmetro | Requisitos: | Valor Padrão |
-|-----------|-----------|---------------|
-| relatedModel | Sim | null |
-| através do modelo | Sim | null |
-| chave primária | Não | Modelar chave primária |
-| chave estrangeira | Não | Modelar chave estrangeira |
-| através de chave primária | Não | Related model chave primária |
-| através deForeignKey | Não | Relacionado modelo chave estrangeira |
+| Parâmetro         | Obrigatório | Valor Padrão                            |
+|-------------------|-------------|-----------------------------------------|
+| relatedModel      | Yes         | null                                    |
+| throughModel      | Yes         | null                                    |
+| primaryKey        | No          | Chave primária do modelo                |
+| foreignKey        | No          | Chave estrangeira modelo                |
+| throughPrimaryKey | No          | Chave primária do modelo relacionado    |
+| throughForeignKey | No          | Chave estrangeira do modelo relacionado |
 
-## Consultando Relações
-Consultar o banco de dados para relacionamentos é tão direto e intuitivo com Lucid. Você só precisa chamar os métodos de relacionamento definidos sem se preocupar com as consultas *join*.
+## Consultando relacionamentos
+Consultar relacionamentos no banco de dados é tão direto e intuitivo com o Lucid. Você só precisa chamar métodos de relacionamento definidos sem se preocupar com as consultas *join*.
 
-Também consultar relações é dividido em três categorias amplas de *Lazy Loading*, *Eager Loading* e *Lazy Eager Loading*.
+A consulta de relações também é dividida em três categorias amplas de *Lazy Loading*, *Eager Loading* e *Lazy Eager Loading*.
 
-### Carregamento lento
-O carregamento lento é um processo de carregar relacionamentos após buscar o registro principal/pai do banco de dados
+### Lazy Loading
+Lazy loading é um processo de carregar relacionamentos após buscar o registro primário/pai do banco de dados
 
 ```js
 class User extends Lucid {
@@ -256,11 +257,11 @@ const user = yield User.find(1) <1>
 const profile = yield user.profile().fetch() <2>
 ```
 
-1. Primeiro, nós `encontramos` um usuário com a chave primária.
-2. Em seguida chamamos o método previamente definido "profile" para buscar o perfil relacionado ao usuário dado.
+1. Primeiro, `encontramos` um usuário com a chave primária.
+2. Então, chamamos o método `profile` definido anteriormente para buscar o perfil relacionado para o usuário fornecido.
 
-#### Definindo restrições de consulta
-Você também pode anexar métodos de construtor de consulta às suas definições de relacionamento e o Lucid cuidará de executá-los.
+#### Definindo Restrições de Consulta
+Você também pode anexar métodos do construtor de consultas às suas definições de relacionamento, e o Lucid garantirá que eles sejam executados.
 
 ```js
 class User extends Lucid {
@@ -274,10 +275,10 @@ class User extends Lucid {
 }
 ```
 
-1. Agora quando você buscar o perfil relacionado para um usuário específico, ele incluirá apenas o registro onde is_active=true.
+1. Agora, quando você buscar o perfil relacionado para um determinado usuário, ele incluirá apenas o registro onde is_active=true.
 
 #### Restrições de Consulta em Tempo de Execução
-Você também pode definir restrições de consulta em tempo de execução, apenas encadeando os métodos do construtor de consulta.
+Você também pode definir restrições de consulta em tempo de execução, apenas encadeando os métodos do construtor de consultas.
 
 ```js
 const user = yield User.find(1)
@@ -287,8 +288,8 @@ const profile = user
   .fetch()
 ```
 
-### Carregamento Agressivo
-O carregamento lento pode criar o problema *N+1* em determinados cenários. Por exemplo, carregar perfis para dez usuários, um de cada vez, fará um total de 11 consultas ao banco de dados. Para eliminar esse comportamento você pode pré-carregar/carregar com urgência os perfis, o que resultará em um total de 2 consultas ao banco de dados.
+### Carregamento Ansioso
+O carregamento lento pode criar *N+1* problemas em certos cenários. Por exemplo, carregar o perfil para dez usuários, um por um, totalizará *11* consultas. Para eliminar esse comportamento, você pode pré-carregar/carregar perfis com antecedência, o que resultará em um total de *2* consultas de banco de dados.
 
 ```js
 const users = yield User
@@ -299,9 +300,9 @@ const users = yield User
 console.log(users.toJSON())
 ```
 
-Saída:
-
 ```js
+// Saída
+
 [
   {
     id: 1,
@@ -315,9 +316,9 @@ Saída:
 ]
 ```
 
-1. O método 'with' pode ser usado para carregar com antecedência as relações com o registro pai. Além disso, você pode carregar múltiplas/aninhadas relações usando o método 'with'.
+1. O método `with` pode ser usado para carregar relacionamentos com antecedência com o registro pai. Além disso, você pode carregar relacionamentos múltiplos/aninhados usando o método `with`.
 
-#### Carregamento Agressivo de Múltiplas Relações
+#### Carregamento antecipado de múltiplas relações
 
 ```js
 const users = yield User
@@ -326,7 +327,7 @@ const users = yield User
   .fetch()
 ```
 
-#### Carregamento Agressivo de Relações Aninhadas
+#### Carregamento antecipado de relações aninhadas
 
 ```js
 const user = yield User
@@ -335,8 +336,8 @@ const user = yield User
   .fetch()
 ```
 
-#### Restrições de Consulta em Tempo de Execução
-Além disso, você pode construir sobre o construtor de consultas para filtrar os resultados dos modelos relacionados.
+#### Restrições de consulta em tempo de execução
+Além disso, você pode desenvolver o construtor de consultas para filtrar os resultados dos modelos relacionados.
 
 ```js
 const user = yield User
@@ -350,10 +351,10 @@ const user = yield User
   .fetch()
 ```
 
-1. O método `scope` lhe dá acesso ao construtor de consultas do modelo relacionado, o que significa que você pode adicionar a cláusula `where` para filtrar os resultados.
+1. O método `scope` fornece acesso ao construtor de consultas do modelo relacionado, o que significa que você pode adicionar a cláusula `where` para filtrar os resultados.
 
-### Carregamento Preguiçoso Eager
-O carregamento lento e ávido é uma combinação de carregamento lento e carregamento ávido em vez de pré-carregar todos os relacionamentos, você busca a instância do modelo pai e depois carrega com urgência todos os modelos relacionados.
+### Carregamento ansioso lento
+O carregamento ansioso lento é uma combinação de [Carregamento lento](#lazy-loading) e [Carregamento-preguiçoso](#carregamento-ansioso) em vez de pré-carregar todos os relacionamentos, você busca a instância do modelo pai e então carrega ansiosamente todos os modelos relacionados.
 
 ```js
 const user = yield User.find(1)
@@ -362,9 +363,9 @@ yield user.related('profile', 'friends').load()
 console.log(user.toJSON())
 ```
 
-Saída:
-
 ```js
+// Saída
+
 [
   {
     id: 1,
@@ -378,19 +379,20 @@ Saída:
 ]
 ```
 
-## Filtrando Registros
+## Filtrando registros
 
-> NOTE:
-> Suportado por adonis-lucid 3.0.13 ou superior
+::: warning NOTA
+Suportado pelo adonis-lucid 3.0.13 ou superior
+:::
 
-Um caso de uso bastante comum é filtrar os resultados de nível superior com base em alguma condição sobre uma relação. Por exemplo:
+Um caso de uso bastante comum é filtrar resultados de nível superior com base em algumas condições em um relacionamento. Por exemplo:
 
-1. Exibir todos os usuários que contribuíram com pelo menos uma publicação.
-2. Buscar todos os carros com 2 ou mais proprietários em sua vida útil.
+1. Exibir todos os usuários que contribuíram com pelo menos uma postagem.
+2. Buscar todos os carros com 2 ou mais proprietários ao longo da vida.
 
-Idealmente, requer algumas junções complexas, mas o Lucid facilita muito para você.
+O ideal é que isso exija algumas junções complexas, mas o Lucid torna isso muito mais fácil para você.
 
-#### has(relação, [expressão], [valor])
+#### `has(relation, [expression], [value])`
 
 ```js
 class User extends Lucid {
@@ -401,14 +403,14 @@ class User extends Lucid {
 
 }
 
-// filtering
+// filtragem
 const users = yield User.query().has('posts').fetch()
 
-// two or more
+// dois ou mais
 const users = yield User.query().has('posts', '>=', 2).fetch()
 ```
 
-#### whereHas(relação, retorno de chamada, [expressão], [valor])
+#### `whereHas(relation, callback, [expression], [value])`
 
 ```js
 const users = yield User.query().whereHas('posts', (builder) => {
@@ -416,15 +418,15 @@ const users = yield User.query().whereHas('posts', (builder) => {
 }).fetch()
 ```
 
-Além disso, você pode usar os métodos `doesntHave` e `whereDoesntHave`, que são opostos dos acima.
+Você também pode usar os métodos `doesntHave` e `whereDoesntHave`, que são o oposto dos métodos acima.
 
-#### não tem (relação)
+#### `doesntHave(relation)`
 
 ```js
 const users = yield User.query().doesntHave('friends').fetch()
 ```
 
-#### whereDoesntHave(relação, retorno de chamada)
+#### `whereDoesntHave(relation, callback)`
 
 ```js
 const users = yield User.query().whereDoesntHave('friends', (builder) => {
@@ -432,10 +434,10 @@ const users = yield User.query().whereDoesntHave('friends', (builder) => {
 }).fetch()
 ```
 
-### Contando Modelos Relacionados
-Contar relacionamentos é comumente usado por aplicações web. Por exemplo: *Buscar contagem de comentários para cada postagem*.
+### Contagem de modelos relacionados
+Obter contagens de relacionamentos é comumente usado por aplicativos da web. Por exemplo: *Obter contagem de comentários para cada postagem*.
 
-#### withCount(relation)
+#### `withCount(relation)`
 
 ```js
 class Post extends Lucid {
@@ -446,23 +448,24 @@ class Post extends Lucid {
 
 }
 
-// fetching counts
+// buscando contagens
 const posts = yield Posts.query().withCount('comments').fetch()
 
 console.log(posts.first().comments_count)
 ```
 
-## Inserir, Atualizar & Deletar
-As relações também podem ser criadas, atualizadas e excluídas com a mesma facilidade que a busca delas. Enquanto cada tipo de relação tem métodos ligeiramente diferentes para persistir dados relacionados.
+## Inserir, Atualizar e Excluir
+Relacionamentos também podem ser *criados*, *atualizados* e *excluídos* com a mesma facilidade de buscá-los. Considerando que cada tipo de relacionamento tem métodos ligeiramente diferentes para persistir dados relacionados.
 
-#### salvar (modelInstance, [pivotValues])
-O método 'salvar' pode ser usado para criar/atualizar uma instância do modelo relacionado. Ele funciona com as seguintes relações.
+#### `save(modelInstance, [pivotValues])`
+O método `save` pode ser usado para criar/atualizar instâncias de modelo relacionadas. Ele funciona com as seguintes relações.
 
-> NOTE
-> Os valores pivot são suportados apenas pela relação *belongsToMany*. Consulte a documentação do método xref:_attach_rows_pivotvalues[attach] sobre como os valores pivot são definidos.
+::: warning NOTA:
+`pivotValues` são suportados apenas pelo relacionamento *belongsToMany*. Confira a documentação do método [attach](#attachrows-pivotvalues) sobre como os pivotValues ​​são definidos.
+:::
 
-1. temUm
-2. tem-muitos
+1. hasOne
+2. hasMany
 3. belongsToMany
 
 ```js
@@ -475,8 +478,8 @@ profile.avatar =  '...'
 yield user.profile().save(profile)
 ```
 
-#### create(values, [pivotValues])
-O método 'create' é quase semelhante ao método 'save', com a diferença de que você passa um objeto arbitrário em vez de passar uma instância do modelo.
+#### `create(values, [pivotValues])`
+O método `create` é quase semelhante ao método `save`, onde você passa um objeto arbitrário em vez de passar uma instância de modelo.
 
 ```js
 const user = yield User.find(1)
@@ -486,11 +489,11 @@ yield user
   .create({name: '@cybernox', avatar: '...'})
 ```
 
-#### saveMany(arrayOfInstances)
-Salve vários registros relacionados para uma determinada instância de modelo. O 'saveMany' funciona com os seguintes tipos de relação.
+#### `saveMany(arrayOfInstances)`
+Salve vários registros relacionados para uma determinada instância de modelo. `saveMany` funciona com os seguintes tipos de relação.
 
-1. tem-muitos
-2. belongs_to_many
+1. hasMany
+2. belongsToMany
 
 ```js
 const user = yield User.find(1)
@@ -501,8 +504,8 @@ const anotherProfile = new Profile({name: '@jgwhite'})
 yield user.profile.saveMany([profile, anotherProfile])
 ```
 
-#### createMany(arrayOfValues)
-O método `createMany` também criará vários registros, caso você passe um array de objetos em vez de instâncias do modelo.
+#### `createMany(arrayOfValues)`
+O método `createMany` também criará vários registros enquanto você passa uma matriz de objetos em vez de instâncias de modelo.
 
 ```js
 const user = yield User.find(1)
@@ -511,8 +514,8 @@ const profiles = yield user
   .createMany([{name: '@cybernox'}, {name: 'jgwhite'}])
 ```
 
-#### attach(rows, [pivotValues])
-O método `attach` só funciona com relação *belongsToMany*. Você anexa registros existentes para formar uma relação.
+#### `attach(rows, [pivotValues])`
+O método `attach` só funciona com o relacionamento *belongsToMany*. Você anexa registros existentes para formar um relacionamento.
 
 ```js
 const student = yield Student.find(1)
@@ -521,13 +524,13 @@ const coursesIds = yield Courses.ids()
 yield Student.courses().attach(coursesIds)
 ```
 
-Opcionalmente, você pode passar um objeto para preencher campos dentro da *pivotTable*.
+Opcionalmente, você pode passar um objeto para preencher campos dentro da *tabela dinâmica*.
 
 ```js
 yield Student.courses().attach(coursesIds, {enrollment_confirmed: false})
 ```
 
-Ou você também pode definir diferentes pivotValues para cada linha relacionada.
+Ou você também pode definir diferentes pivotValues ​​para cada linha relacionada.
 
 ```js
 const mathsId = yield Courses
@@ -547,11 +550,12 @@ enrollment[englishId] = {enrollment_confirmed: false}
 yield Student.courses().attach(enrollment)
 ```
 
-#### detach(rows)
-O método 'detach' é o oposto do xref: _attach_rows_pivot_values [attach] e removerá as relações da tabela pivotTable.
+#### `detach(rows)`
+O método `detach` é o oposto do [attach](#attachrows-pivotvalues) e removerá os relacionamentos da tabela dinâmica.
 
-> NOTE:
-> O método 'detach' não remove as linhas do modelo relacionado. Ele apenas remove a relação da tabela de junção.
+::: warning OBSERVAÇÃO
+O método `detach` não remove as linhas do modelo relacionado. Ele apenas remove o relacionamento da tabela dinâmica.
+:::
 
 ```js
 const student = yield Student.find(1)
@@ -560,11 +564,12 @@ const coursesIds = yield Courses.ids()
 yield Student.courses().detach(coursesIds)
 ```
 
-#### sync(rows, [pivotValues])
-A sincronização irá remover todas as relações existentes e adicionar apenas as relações fornecidas. Pense nisso como chamar xref:_detach_rows[desconectar] e xref:_attach_rows_pivot_values[conectar] juntos.
+#### `sync(rows, [pivotValues])`
+O `sync` removerá todas as relações existentes e adicionará apenas as relações fornecidas. Pense nisso como chamar [detach](#detachrows) e [attach](#attachrows-pivotvalues) juntos.
 
-> DICA:
-> Você também pode passar *pivotValues* para o método de sincronização, semelhante ao método de anexação.
+::: tip DICA
+Você também pode passar *pivotValues* para o método sync similar ao método attach.
+:::
 
 ```js
 const student = yield Student.find(1)
@@ -573,8 +578,8 @@ const coursesIds = yield Courses.ids()
 yield Student.courses().sync(coursesIds)
 ```
 
-#### updatePivot(valores, [relatedModelId])
-Para atualizar os valores dentro da tabela pivot você pode usar o método `updatePivot`.
+#### `updatePivot(values, [relatedModelId])`
+Para atualizar os valores dentro da tabela dinâmica, você pode usar o método `updatePivot`.
 
 ```js
 const student = yield Student.find(1)
@@ -589,10 +594,12 @@ const maths = yield Course.where('name', 'Maths').first()
 Student.courses().updatePivot({marks: 90}, maths.id)
 ```
 
-#### withPivot(keys)
-Ao buscar registros para *belongsToMany*, o Lucid não selecionará nenhuma linha da tabela de junção. Para buscar campos adicionais, você pode usar o método `withPivot`.
+#### `withPivot(keys)`
+Ao buscar registros para *belongsToMany*, o lucid não selecionará nenhuma linha da tabela dinâmica. Para buscar campos adicionais, você pode usar o método `withPivot`.
 
-NOTE: Os campos da tabela dinâmica serão precedidos por ` _pivot_`. No exemplo abaixo, as notas serão retornadas como `_pivot_notes`
+::: info OBSERVAÇÃO
+Os campos da tabela dinâmica serão prefixados com `\_pivot_`. No exemplo abaixo, as marcas serão retornadas como `_pivot_marks`
+:::
 
 ```js
 'use strict'
@@ -606,15 +613,15 @@ class Student extends Lucid {
 }
 ```
 
-Você também pode definir campos ao executar a consulta SELECT.
+Você também pode definir campos ao executar a consulta de seleção.
 
 ```js
 const student = yield Student.find(1)
 const courses = yield student.courses().withPivot('marks').fetch()
 ```
 
-#### associar(modelInstance)
-O método `associate` é usado com a relação *belongsTo* para associar uma linha de banco de dados existente.
+#### `associate(modelInstance)`
+O método `associate` é usado com o relacionamento *belongsTo* para associar uma linha de banco de dados existente.
 
 ```js
 const user = yield User.find(1)
@@ -625,8 +632,8 @@ profile.user().associate(user)
 yield profile.save()
 ```
 
-#### dissociar
-O método 'dissociar' é o oposto de xref:_associar_modelo_instância[associar] e removerá a relação existente
+#### `dissociate`
+O método `dissociate` é o oposto de [associate](#associatemodelinstance) e removerá o relacionamento existente
 
 ```js
 const profile = yield Profile.find(1)
