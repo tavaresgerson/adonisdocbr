@@ -1,168 +1,157 @@
 ---
-permalink: routing
 title: Routing
 category: basics
 ---
 
-= Routing
-
-toc::[]
+# Routing
 
 Routes enable the outside world to interact with your app via URLs.
 
 Routes are registered inside the `start/routes.js` file.
 
-== Basic Routing
+## Basic Routing
 
 The most basic route binding requires a URL and a closure:
 
-.start/routes.js
-[source, js]
-----
+```js
+// .start/routes.js
+
 Route.get('/', () => 'Hello Adonis')
-----
+```
 
 The return value of the closure will be sent back to the client as a response.
 
 You can also bind a route to a controller using a `controller.method` signature:
 
-.start/routes.js
-[source, js]
-----
+```js
+// .start/routes.js
 Route.get('posts', 'PostController.index')
-----
+```
 
 The above signature `PostController.index` refers to the `App/Controllers/Http/PostController.js` file's `index` method.
 
-=== Available Router Methods
+### Available Router Methods
 
 Resourceful routes use different HTTP verbs to indicate the type of request:
 
-[source, js]
-----
+```js
 Route.get(url, closure)
 Route.post(url, closure)
 Route.put(url, closure)
 Route.patch(url, closure)
 Route.delete(url, closure)
-----
+```
 
 To register a route that responds to multiple verbs, use `Route.route`:
 
-[source, js]
-----
+```js
 Route.route('/', () => {
   //
 }, ['GET', 'POST', 'PUT'])
-----
+```
 
 To render a view directly (e.g. static pages), use `Route.on.render`:
 
-[source, js]
-----
+```js
 Route.on('/').render('welcome')
-----
+```
 
 In the example above, when the root `/` route is loaded, the `resources/view/welcome.edge` file is rendered directly.
 
-== Route Parameters
+## Route Parameters
 
-=== Required Parameters
+### Required Parameters
 
 For dynamic routes, you can define route parameters like so:
 
-.start/routes.js
-[source, js]
-----
+```js
+// .start/routes.js
+
 Route.get('posts/:id', ({ params }) => {
   return `Post ${params.id}`
 })
-----
+```
 
 In the example above, `:id` is a route parameter.
 
 Its value is then retrieved via the `params` object.
 
-=== Optional Parameters
+### Optional Parameters
 
 To define an optional route parameter, append a `?` symbol to its definition:
 
-.start/routes.js
-[source, js]
-----
+```js
+// .start/routes.js
+
 Route.get('make/:drink?', ({ params }) => {
   // use Coffee as fallback when drink is not defined
   const drink = params.drink || 'Coffee'
 
   return `One ${drink}, coming right up!`
 })
-----
+```
 
 In the example above, `:drink?` is an optional route parameter.
 
-== Wildcard Route
+## Wildcard Route
 
 You may want to render a single view from the server and handle routing using your preferred front-end framework:
 
-.start/routes.js
-[source, js]
-----
+```js
+// .start/routes.js
+
 Route.any('*', ({ view }) => view.render('...'))
-----
+```
 
 Any specific routes need to be defined before your wildcard route:
 
-.start/routes.js
-[source, js]
-----
+```js
+// .start/routes.js
+
 Route.get('api/v1/users', closure)
 
 Route.any('*', ({ view }) => view.render('...'))
-----
+```
 
-== Named Route
+## Named Route
 
 Though routes are defined inside the `start/routes.js` file, they are referenced everywhere else in the application (e.g. using the `views` route helper to make a URL for a given route).
 
 By using the `as()` method, you can assign your route a unique name:
 
-.start/routes.js
-[source, js]
-----
+```js
+// .start/routes.js
+
 Route.get('users', closure).as('users.index')
-----
+```
 
 This will enable you to use `route` helpers in your templates and code, like so:
 
-[source, html]
-----
+```html
 <!-- before -->
 <a href="/users">List of users</a>
 
 <!-- after -->
 <a href="{{ route('users.index') }}">List of users</a>
-----
+```
 
-[source, js]
-----
+```js
 foo ({ response }) {
   return response.route('users.index')
 }
-----
+```
 
 Both `route` helpers share the same signature and accept an optional parameters object as their second argument:
 
-[source, js]
-----
+```js
 Route.get('posts/:id', closure).as('posts.show')
 
 route('posts.show', { id: 1 })
-----
+```
 
 `route` helpers also accept an optional parameters object as a third argument to handle `protocol`, `domain` and `query` options:
 
-[source, js]
-----
+```js
 route('posts.show', { id: 1 }, {
   query: { foo: 'bar' }
 });
@@ -177,25 +166,24 @@ route('auth.login', null, {
 });
 
 // resulting in https://auth.example.com/login?redirect=%2Fdashboard
-----
+```
 
 The same rules apply for the view.
 
-[source, html]
-----
+```html
 <a href="{{ route('posts.show', { id: 1 }, {query: { foo: 'bar' }}) }}">Show post</a>
 // href="/post/1?foo=bar"
-----
+```
 
-== Route Formats
+## Route Formats
 
-Route formats open up a new way for link:https://developer.mozilla.org/en-US/docs/Web/HTTP/Content_negotiation[content negotiation, window="_blank"], where you can accept the response format as part of the URL.
+Route formats open up a new way for [content negotiation](https://developer.mozilla.org/en-US/docs/Web/HTTP/Content_negotiation), where you can accept the response format as part of the URL.
 
 A route format is a contract between the client and server for what type of response to return:
 
-.start/routes.js
-[source, js]
-----
+```js
+// .start/routes.js
+
 Route.get('users', async ({ request, view }) => {
   const users = await User.all()
 
@@ -205,35 +193,34 @@ Route.get('users', async ({ request, view }) => {
 
   return view.render('users.index', { users })
 }).formats(['json'])
-----
+```
 
 For the example above, the `/users` endpoint will be able to respond in multiple formats based on the URL:
 
-[source, bash]
-----
+```bash
 GET /users.json     # Returns an array of users in JSON
 GET /users          # Returns the view in HTML
-----
+```
 
 You can also disable the default URL and force the client to define the format:
 
-.start/routes.js
-[source, js]
-----
+```js
+// .start/routes.js
+
 Route.get('users', closure).formats(['json', 'html'], true)
-----
+```
 
 Passing `true` as the second argument ensures the client specifies one of the expected formats. Otherwise, a 404 error is thrown.
 
-== Route Resources
+## Route Resources
 
 You will often create resourceful routes to do CRUD operations on a resource.
 
 `Route.resource` assigns CRUD routes to a controller using a single line of code:
 
-.start/routes.js
-[source, js]
-----
+```js
+// .start/routes.js
+
 // This...
 Route.resource('users', 'UserController')
 
@@ -246,91 +233,91 @@ Route.put('users/:id', 'UserController.update').as('users.update')
 Route.patch('users/:id', 'UserController.update')
 Route.get('users/:id/edit', 'UserController.edit').as('users.edit')
 Route.delete('users/:id', 'UserController.destroy').as('users.destroy')
-----
+```
 
-NOTE: This feature is only available when binding routes to a link:controllers[Controller].
+> NOTE: This feature is only available when binding routes to a [Controller](/original/markdown/04-Basics/03-Controllers.md).
 
 You can also define nested resources:
 
-.start/routes.js
-[source, js]
-----
-Route.resource('posts.comments', 'PostCommentController')
-----
+```js
+// .start/routes.js
 
-=== Filtering Resources
+Route.resource('posts.comments', 'PostCommentController')
+```
+
+### Filtering Resources
 
 You can limit the routes assigned by the `Route.resource` method by chaining one of the filter methods below.
 
-==== apiOnly
+#### `apiOnly`
 
 Removes `GET resource/create` and `GET resource/:id/edit` routes:
 
-.start/routes.js
-[source, js]
-----
+```js
+// .start/routes.js
+
 Route.resource('users', 'UserController')
   .apiOnly()
-----
+```
 
-==== only
+#### `only`
 
 Keeps only the passed routes:
 
-.start/routes.js
-[source, js]
-----
+```js
+// .start/routes.js
+
 Route.resource('users', 'UserController')
   .only(['index', 'show'])
-----
+```
 
-==== except
+#### `except`
 
 Keeps all routes except the passed routes:
 
-.start/routes.js
-[source, js]
-----
+```js
+// .start/routes.js
+
 Route.resource('users', 'UserController')
   .except(['index', 'show'])
-----
+```
 
-=== Resource Middleware
+### Resource Middleware
 
 You can attach middleware to any resource as you would with a single route:
 
-.start/routes.js
-[source, js]
-----
+```js
+// .start/routes.js
+
 Route.resource('users', 'UserController')
   .middleware(['auth'])
-----
+```
 
 If you don't want to attach middleware to all routes generated via `Route.resource`, you can customize this behavior by passing a `Map` to the `middleware` method:
 
-.start/routes.js
-[source, js]
-----
+```js
+// .start/routes.js
+
 Route.resource('users', 'UserController')
   .middleware(new Map([
     [['store', 'update', 'destroy'], ['auth']]
   ]))
-----
+```
 
 In the example above, the auth middleware is only applied to the store, update and destroy routes.
 
-=== Resource Formats
+### Resource Formats
 
 You can define response formats for resourceful routes via the `formats` method:
 
-.start/routes.js
-[source, js]
-----
+```js
+// .start/routes.js
+
 Route.resource('users', 'UserController')
   .formats(['json'])
-----
+```
 
-== Routing Domains
+## Routing Domains
 
 Your application may use multiple domains.
 
@@ -338,27 +325,27 @@ AdonisJs make it super easy to deal with this use-case.
 
 Domains can be a static endpoint like `blog.adonisjs.com`, or a dynamic endpoint like `:user.adonisjs.com`.
 
-NOTE: You can define the domain on a single route as well.
+> NOTE: You can define the domain on a single route as well.
 
-.start/routes.js
-[source, js]
-----
+```js
+// .start/routes.js
+
 Route.group(() => {
   Route.get('/', ({ subdomains }) => {
     return `The username is ${subdomains.user}`
   })
 }).domain(':user.myapp.com')
-----
+```
 
 In the example above, if you visited `virk.myapp.com`, you would see `The username is virk`.
 
-== Route Groups
+## Route Groups
 
 If your application routes share common logic/configuration, instead of redefining the configuration for each route, you can group them like so:
 
-.start/routes.js
-[source, js]
-----
+```js
+// .start/routes.js
+
 // Ungrouped
 Route.get('api/v1/users', closure)
 Route.post('api/v1/users', closure)
@@ -368,68 +355,68 @@ Route.group(() => {
   Route.get('users', closure)
   Route.post('users', closure)
 }).prefix('api/v1')
-----
+```
 
-=== Prefix
+### Prefix
 
 Prefix all route URLs defined in the group:
 
-.start/routes.js
-[source, js]
-----
+```js
+// .start/routes.js
+
 Route.group(() => {
   Route.get('users', closure)   // GET /api/v1/users
   Route.post('users', closure)  // POST /api/v1/users
 }).prefix('api/v1')
-----
+```
 
-=== Middleware
+### Middleware
 
 Assign one or many middleware to the route group:
 
-.start/routes.js
-[source, js]
-----
+```js
+// .start/routes.js
+
 Route.group(() => {
   //
 }).middleware(['auth'])
-----
+```
 
-NOTE: Group middleware executes before route middleware.
+> NOTE: Group middleware executes before route middleware.
 
-=== Namespace
+### Namespace
 
 Prefix the namespace of the bound controller:
 
-.start/routes.js
-[source, js]
-----
+```js
+// .start/routes.js
+
 Route.group(() => {
   // Binds '/users' to 'App/Controllers/Http/Admin/UserController'
   Route.resource('/users', 'UserController')
 }).namespace('Admin')
-----
+```
 
-=== Formats
+### Formats
 
 Defines formats for all routes in the group:
 
-.start/routes.js
-[source, js]
-----
+```js
+// .start/routes.js
+
 Route.group(() => {
   //
 }).formats(['json', 'html'], true)
-----
+```
 
-=== Domain
+### Domain
 
 Specify which domain group routes belong to:
 
-.start/routes.js
-[source, js]
-----
+```js
+// .start/routes.js
+
 Route.group(() => {
   //
 }).domain('blog.adonisjs.com')
-----
+```

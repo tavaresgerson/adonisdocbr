@@ -1,137 +1,124 @@
 ---
-permalink: request
 title: Request
 category: basics
 ---
 
-= Request
+# Request
 
-toc::[]
+This guide outlines how to use the [HTTP Request](https://github.com/adonisjs/adonis-framework/blob/develop/src/Request/index.js) object to read request data.
 
-This guide outlines how to use the link:https://github.com/adonisjs/adonis-framework/blob/develop/src/Request/index.js[HTTP Request, window="_blank"] object to read request data.
-
-TIP: The Node.js raw `req` object can be accessed via `request.request`.
+> TIP: The Node.js raw `req` object can be accessed via `request.request`.
 
 AdonisJs passes the current HTTP request object as part of the link:request-lifecycle#_http_context[HTTP Context] which is sent to all route handlers and middleware:
 
-[source, js]
-----
+```js
 Route.get('/', ({ request }) => {
   //
 })
-----
+```
 
-In the example above, we use link:https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment[ES6 destructuring, window="_blank"] to get the `request` object from the passed HTTP context object.
+In the example above, we use [ES6 destructuring](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) to get the `request` object from the passed HTTP context object.
 
-== Request body
+## Request body
 The request object offers a number of helpful methods to read the request body.
 
 First, make sure you've installed the **BodyParser** middleware.
 
 If not, follow the steps below.
 
-=== Setting up BodyParser
+### Setting up BodyParser
 NOTE: Fullstack and API only boilerplates come pre-configured with BodyParser middleware.
 
 
 Run the BodyParser installation command:
-[source, bash]
-----
-> adonis install @adonisjs/bodyparser
-----
+
+```bash
+adonis install @adonisjs/bodyparser
+```
 
 Then, register the provider inside the `start/app.js` file:
 
-.start/app.js
-[source, js]
-----
+```js
+// .start/app.js
+
 const providers = [
   '@adonisjs/bodyparser/providers/BodyParserProvider'
 ]
-----
+```
 
 Finally, register the global middleware inside the `start/kernel.js` file:
 
-.start/kernel.js
-[source, js]
-----
+```js
+// .start/kernel.js
+
 const globalMiddleware = [
   'Adonis/Middleware/BodyParser'
 ]
-----
+```
 
-=== Body methods
+### Body methods
 The following list of methods can be used to read the request body.
 
-==== all
+#### `all`
 Returns an object containing all request data (merges query params and request body data):
 
-[source, js]
-----
+```js
 const all = request.all()
-----
+```
 
-==== get
+#### `get`
 Returns an object containing query params data:
 
-[source, js]
-----
+```js
 const query = request.get()
-----
+```
 
-==== post
+#### `post`
 Returns an object containing request body data:
 
-[source, js]
-----
+```js
 const body = request.post()
-----
+```
 
-==== raw
+#### `raw`
 Returns raw body data as a string:
 
-[source, js]
-----
+```js
 const raw = request.raw()
-----
+```
 
-NOTE: If raw data is JSON and `Content-type: application/json` is set, BodyParser will parse it smartly and return it as part of the `post` method.
+> NOTE: If raw data is JSON and `Content-type: application/json` is set, BodyParser will parse it smartly and return it as part of the `post` method.
 
-==== only
+#### `only`
 Returns an object with only the specified keys:
 
-[source, js]
-----
+```js
 const data = request.only(['username', 'email', 'age'])
-----
+```
 
-==== except
+#### `except`
 Returns an object with everything except the specified keys (opposite of only):
 
-[source, js]
-----
+```js
 const data = request.except(['csrf_token', 'submit'])
-----
+```
 
-==== input
+#### `input`
 Get the value of a given key (if it doesn't exist, return the `default` value):
 
-[source, js]
-----
+```js
 const drink = request.input('drink')
 
 // with default value
 const drink = request.input('drink', 'coffee')
-----
+```
 
-
-== Request collection
+## Request collection
 Quite often you may want to handle HTML forms that submit an array of data over key/value pairs.
 
 For example, the following form creates multiple users at once:
 
-[source, html]
-----
+```html
 <form method="POST" action="/users">
 
   <input type="text" name="username[0]" />
@@ -141,24 +128,22 @@ For example, the following form creates multiple users at once:
   <input type="text" name="age[1]" />
 
 </form>
-----
+```
 
 Let's say we want to get the username and age inside the controller:
 
-[source, js]
-----
+```js
 const users = request.only(['username', 'age'])
 
 // output
 { username: ['virk', 'nikk'], age: [26, 25] }
-----
+```
 
 The example above can't save to the database as it's not in the right format.
 
 Using `request.collect` we can format it so it's ready to save to the database:
 
-[source, js]
-----
+```js
 const users = request.collect(['username', 'age'])
 
 // output
@@ -166,16 +151,15 @@ const users = request.collect(['username', 'age'])
 
 // save to db
 await User.createMany(users)
-----
+```
 
-== Headers
+## Headers
 You can read headers from the request using one of the following methods.
 
-==== header
+#### `header`
 The header value for a given key (optionally with default value):
 
-[source, js]
-----
+```js
 var auth = request.header('authorization')
 
 // case-insensitive
@@ -183,59 +167,56 @@ var auth = request.header('Authorization')
 
 // with default value
 const other = request.header('some-other-header', 'default')
-----
+```
 
-==== headers
+#### `headers`
 Returns an object of all header data:
 
-[source, js]
-----
+```js
 const headers = request.headers()
-----
+```
 
-== Cookies
+## Cookies
 You can read cookies from the request using one of the following methods.
 
-==== cookie
+#### `cookie`
 The cookie value for a given key (optionally with default value):
 
-[source, js]
-----
+```js
 const cartTotal = request.cookie('cart_total')
 
 // with default value
 const cartTotal = request.cookie('cart_total', 0)
-----
+```
 
-==== cookies
+#### `cookies`
 Returns an object of all cookie data:
 
-[source, js]
-----
+```js
 const cookies = request.cookies()
-----
+```
 
 The following methods are used to read cookies set on client side.
 
-==== plainCookie
+#### `plainCookie`
 The raw cookie value for a given key (optionally with default value):
-[source, js]
-----
+
+```js
 const jsCookie = request.plainCookie('cart_total')
 
 // with default value
 const jsCookie = request.plainCookie('cart_total', 0)
-----
+```
 
-==== plainCookies
+#### `plainCookies`
 Returns an object of all raw cookie data:
-[source, js]
-----
-const plainCookies = request.plainCookies()
-----
 
-== Content negotiation
-link:https://developer.mozilla.org/en-US/docs/Web/HTTP/Content_negotiation[Content negotiation, window="_blank"] is a way for the server and client to decide upon the best response type to be returned from the server.
+```js
+const plainCookies = request.plainCookies()
+```
+
+## Content negotiation
+[Content negotiation](https://developer.mozilla.org/en-US/docs/Web/HTTP/Content_negotiation) is a way for the server and client to decide upon the best response type to be returned from the server.
 
 Web servers don't only serve web pages – they also have to deal with API responses served as *JSON*, *XML*, etc.
 
@@ -243,11 +224,10 @@ Instead of creating separate URLs for each content type, the consumer can ask th
 
 To construct the response in a specific format, the server needs to know the requested format first. This can be done using the `accepts` method.
 
-==== accepts
+#### `accepts`
 Reads the `Accept` header to help determine the response format:
 
-[source, js]
-----
+```js
 const bestFormat = request.accepts(['json', 'html'])
 
 if (bestFormat === 'json') {
@@ -255,178 +235,162 @@ if (bestFormat === 'json') {
 }
 
 return view.render('users.list', { users })
-----
+```
 
-==== language
+#### `language`
 Language can also be negotiated based upon the `Accept-Language` header:
 
-[source, js]
-----
+```js
 const language = request.language(['en', 'fr'])
-----
+```
 
-== Request methods
+## Request methods
 
 Below is a list of all request methods and their example usages.
 
-==== url
+#### `url`
 Returns the current request url:
 
-[source, js]
-----
+```js
 const url = request.url()
-----
+```
 
-==== originalUrl
+#### `originalUrl`
 Returns the full current request url with query strings:
 
-[source, js]
-----
+```js
 const url = request.originalUrl()
-----
+```
 
-==== method
+#### `method`
 Returns the HTTP request method:
 
-[source, js]
-----
+```js
 const method = request.method()
-----
+```
 
-==== intended
-Since AdonisJs allows xref:_method_spoofing[method spoofing], you can fetch the actual method using the `intended` method:
+#### `intended`
+Since AdonisJs allows [method spoofing](#method-spoofing), you can fetch the actual method using the `intended` method:
 
-[source, js]
-----
+```js
 const method = request.intended()
-----
+```
 
-==== ip
+#### `ip`
 Returns the most trusted ip address for the user:
 
-[source, js]
-----
+```js
 const ip = request.ip()
-----
+```
 
-==== ips
+#### `ips`
 Returns an array of ips from most to the least trusted (removes the default ip address, which can be accessed via the `ip` method):
 
-[source, js]
-----
+```js
 const ips = request.ips()
-----
+```
 
-==== subdomains
+#### `subdomains`
 Returns a list of request subdomains (removes `www` from the list):
 
-[source, js]
-----
+```js
 const subdomains = request.subdomains()
-----
+```
 
-==== ajax
+#### `ajax`
 Checks for `X-Requested-With` header to determine if the request is ajax or not:
 
-[source, js]
-----
+```js
 if (request.ajax()) {
   // do something
 }
-----
+```
 
-==== pjax
-link:https://github.com/defunkt/jquery-pjax[Pjax, window="_blank"] is an evolved way to use Ajax to deliver better user experiences for traditional apps. In the Rails world, it is known as Turbolinks.
+#### `pjax`
+[Pjax](https://github.com/defunkt/jquery-pjax) is an evolved way to use Ajax to deliver better user experiences for traditional apps. In the Rails world, it is known as Turbolinks.
 
 This methods looks for the `X-PJAX` header to identify if a request is pjax or not:
-[source, js]
-----
+
+```js
 if (request.pjax()) {
   // do something
 }
-----
+```
 
-==== hostname
+#### `hostname`
 Returns the request hostname:
 
-[source, js]
-----
+```js
 const hostname = request.hostname()
-----
+```
 
-==== protocol
+#### `protocol`
 Return the request protocol:
 
-[source, js]
-----
+```js
 const protocol = request.protocol()
-----
+```
 
-==== match
+#### `match`
 Returns whether the passed set of expressions match the current request URL:
 
-[source, js]
-----
+```js
 // current request url - posts/1
 
 request.match(['posts/:id']) // returns true
-----
+```
 
-==== hasBody
+#### `hasBody`
 A boolean indicating if the request has a post body (mainly used by the BodyParser to determine whether or not to parse the body):
 
-[source, js]
-----
+```js
 if (request.hasBody()) {
   // do something
 }
-----
+```
 
-==== is
+#### `is`
 The `is` method returns the best matching content type for the current request.
 
 The check is entirely based upon the `content-type` header:
 
-[source, js]
-----
+```js
 // assuming content-type is `application/json`
 
 request.is(['json', 'html']) // returns - json
 
 request.is(['application/*']) // returns - application/json
-----
+```
 
-== Method spoofing
+## Method spoofing
 HTML forms are only capable of making `GET` and `POST` requests, which means you cannot utilize the REST conventions of other HTTP methods like `PUT`, `DELETE` and so on.
 
 AdonisJs makes it simple to bypass the request method by adding a `_method` parameter to your query string, executing the correct route for you automatically:
 
-.start/routes.js
-[source, js]
-----
-Route.put('users', 'UserController.update')
-----
+```js
+// .start/routes.js
 
-[source, html]
-----
+Route.put('users', 'UserController.update')
+```
+
+```html
 <form method="POST" action="/users?_method=PUT">
-----
+```
 
 The above example works in the following cases:
 
 1. The original request method is `POST`.
 2. `allowMethodSpoofing` is enabled inside the `config/app.js` file.
 
-== Extending Request
+## Extending Request
 It is also possible to extend the `Request` prototype by adding your own methods, known as macros.
 
-NOTE: Since the code to extend `Request` need only execute once, you could use link:service-providers[providers] or link:ignitor[Ignitor hooks] to do so. Read link:extending-adonisjs[Extending the Core] for more information.
+> NOTE: Since the code to extend `Request` need only execute once, you could use [providers](/original/markdown/02-Concept/03-service-providers.md) or [Ignitor hooks](/original/markdown/02-Concept/05-ignitor.md) to do so. Read [Extending the Core](/original/markdown/06-Digging-Deeper/03-Extending-the-Core.adoc) for more information.
 
-[source, javascript]
-----
+```js
 const Request = use('Adonis/Src/Request')
 
 Request.macro('cartValue', function () {
   return this.cookie('cartValue', 0)
 })
-----
+```

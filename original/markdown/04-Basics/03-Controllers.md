@@ -1,12 +1,9 @@
 ---
 title: Controllers
 category: basics
-permalink: controllers
 ---
 
-= Controllers
-
-toc::[]
+# Controllers
 
 While closures might be enough to handle route logic for small applications, when your application starts to grow, it becomes useful to organize application logic elsewhere.
 
@@ -16,12 +13,11 @@ Controllers attach to one or many routes, grouping related request handling logi
 
 NOTE: A controller's only job is to respond to a HTTP request. Do not use them internally by requiring them inside different files.
 
-== Creating Controllers
+## Creating Controllers
 
 To create a new controller, use the `make:controller` command:
 
-[source, bash]
-----
+```bash
 # HTTP Controller
 > adonis make:controller User --type http
 
@@ -30,13 +26,13 @@ To create a new controller, use the `make:controller` command:
 
 # Will use an Admin subfolder
 > adonis make:controller Admin/User
-----
+```
 
 This command creates a boilerplate file in the `App/Controllers/{TYPE}` folder:
 
-.app/Controllers/Http/UserController.js
-[source, js]
-----
+```js
+// .app/Controllers/Http/UserController.js
+
 'use strict'
 
 class UserController {
@@ -44,21 +40,21 @@ class UserController {
 }
 
 module.exports = UserController
-----
+```
 
-TIP: Use the `--resource` flag to create a resourceful controller.
+> TIP: Use the `--resource` flag to create a resourceful controller.
 
-== Using a Controller
+## Using a Controller
 
 A controller can only be accessed from a route.
 
 This is done by referencing the controller as a **string** in your route definition:
 
-.app/routes.js
-[source, js]
-----
+```js
+// .app/routes.js
+
 Route.get(url, 'UserController.index')
-----
+```
 
 The part before the dot is a reference to the controller file (e.g. `UserController`), and is by default namespaced to `App/Controllers/Http`.
 
@@ -66,9 +62,9 @@ The part after the dot is the name of the method you want to call inside this co
 
 For example:
 
-.app/routes.js
-[source, js]
-----
+```js
+// .app/routes.js
+
 // app/Controllers/Http/UserController -> index()
 Route.get(url, 'UserController.index')
 
@@ -77,13 +73,13 @@ Route.post(url, 'Admin/UserController.store')
 
 // app/MyOwnControllers/UserController -> index()
 Route.post(url, 'App/MyOwnControllers/UserController.index')
-----
+```
 
-As your defined controller methods are route handlers, they will receive the link:request-lifecycle#_http_context[HTTP Context] as an argument:
+As your defined controller methods are route handlers, they will receive the [HTTP Context](/original/markdown/02-Concept/01-Request-Lifecycle.md#http-context) as an argument:
 
-.app/Controllers/Http/UserController.js
-[source, js]
-----
+```js
+// .app/Controllers/Http/UserController.js
+
 'use strict'
 
 class UserController {
@@ -93,4 +89,4 @@ class UserController {
 }
 
 module.exports = UserController
-----
+```
