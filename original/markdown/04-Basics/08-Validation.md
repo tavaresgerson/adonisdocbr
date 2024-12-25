@@ -1,44 +1,39 @@
 ---
 title: Validator
-permalink: validator
 category: basics
 ---
 
-= Validator
-
-toc::[]
+# Validator
 
 AdonisJs makes it simple to validate user input with the help of a dedicated validation provider.
 
 In this guide you learn how to validate data *manually* or via *route validators*.
 
-NOTE: AdonisJs validation uses link:https://indicative-v5.adonisjs.com[Indicative, window="_blank"] under the hood. For full usage details, see the official Indicative link:https://indicative-v5.adonisjs.com[documentation].
+> NOTE: AdonisJs validation uses [Indicative](https://indicative-v5.adonisjs.com) under the hood. For full usage details, see the official Indicative [documentation](https://indicative-v5.adonisjs.com).
 
-== Setup
+## Setup
 Follow the below instructions to set up the validation provider.
 
 First, run the `adonis` command to download the validator provider:
 
-[source, bash]
-----
-> adonis install @adonisjs/validator
-----
+```bash
+adonis install @adonisjs/validator
+```
 
 Then, register the validator provider inside the `start/app.js` file:
 
-.start/app.js
-[source, js]
-----
+```js
+// .start/app.js
+
 const providers = [
   '@adonisjs/validator/providers/ValidatorProvider'
 ]
-----
+```
 
-== Validating user input
+## Validating user input
 Let's start with the example of validating user input received via HTML form:
 
-[source, html]
-----
+```html
 <form method="POST" action="{{ route('UserController.store') }}">
   <div>
     <input type="text" name="email" />
@@ -50,18 +45,17 @@ Let's start with the example of validating user input received via HTML form:
 
   <button type="submit"> Submit </button>
 </form>
-----
+```
 
 Register the route and controller to handle the form submission and use the validator to validate the data:
 
-.start/routes.js
-[source, js]
-----
-Route.post('users', 'UserController.store')
-----
+```js
+// .start/routes.js
 
-[source, js]
-----
+Route.post('users', 'UserController.store')
+```
+
+```js
 const { validate } = use('Validator')
 
 class UserController {
@@ -87,7 +81,7 @@ class UserController {
 }
 
 module.exports = UserController
-----
+```
 
 Let's break down the above controller code into small steps:
 
@@ -95,11 +89,10 @@ Let's break down the above controller code into small steps:
 2. We used the `validate` method to validate all request data against our rules.
 3. If validation fails, we flash all errors and redirect back to our form.
 
-=== Showing flash errors
+### Showing flash errors
 We can modify the HTML form to display our flash messages, which are set when validation fails:
 
-[source, edge]
-----
+```edge
 <form method="POST" action="{{ route('UserController.store') }}">
   <div>
     <input type="text" name="email" value="{{ old('email', '') }}" />
@@ -113,16 +106,15 @@ We can modify the HTML form to display our flash messages, which are set when va
 
   <button type="submit"> Submit </button>
 </form>
-----
+```
 
-== Validator methods
+## Validator methods
 Below is the list of available methods.
 
-==== validate(data, rules, [messages], [formatter])
+#### `validate(data, rules, [messages], [formatter])`
 Validate data with defined rules:
 
-[source, js]
-----
+```js
 const { validate } = use('Validator')
 
 const validation = await validate(data, rules)
@@ -130,53 +122,48 @@ const validation = await validate(data, rules)
 if (validation.fails()) {
   return validation.messages()
 }
-----
+```
 
-NOTE: You can optionally pass link:https://indicative-v5.adonisjs.com/docs/custom-messages[custom error messages, window="_blank"] to return when your validation fails as your third method parameter.
+> NOTE: You can optionally pass [custom error messages](https://indicative-v5.adonisjs.com/docs/custom-messages) to return when your validation fails as your third method parameter.
 
-==== validateAll(data, rules, [messages], [formatter])
+#### `validateAll(data, rules, [messages], [formatter])`
 Same as `validate` but continues to validate all fields, whereas the `validate` method stops on first error:
 
-[source, js]
-----
+```js
 const { validateAll } = use('Validator')
 const validation = await validateAll(data, rules)
-----
+```
 
-==== sanitize(data, rules)
+#### `sanitize(data, rules)`
 This method returns a new object with sanitized data:
 
-[source, js]
-----
+```js
 const { sanitize } = use('Validator')
 const data = sanitize(request.all(), rules)
-----
+```
 
-==== sanitizor
-Returns a reference to Indicative's link:https://indicative-v5.adonisjs.com/docs/api/extend#_adding_sanitization_rules[sanitizor, window="_blank"]:
+#### `sanitizor`
+Returns a reference to Indicative's [sanitizor](https://indicative-v5.adonisjs.com/docs/api/extend#_adding_sanitization_rules):
 
-[source, js]
-----
+```js
 const { sanitizor } = use('Validator')
 const slug = sanitizor.slug('My first blog post')
-----
+```
 
-==== formatters
-Returns a reference to Indicative's link:https://indicative-v5.adonisjs.com/docs/formatters[formatters, window="_blank"]:
+#### `formatters`
+Returns a reference to Indicative's [formatters](https://indicative-v5.adonisjs.com/docs/formatters):
 
-[source, js]
-----
+```js
 const { formatters } = use('Validator')
 validate(data, rules, messages, formatters.JsonApi)
-----
+```
 
-== Route validator
+## Route validator
 Data validation normally occurs during the HTTP request/response lifecycle, and you can end up writing the same validation code inside each controller.
 
 AdonisJs **Route Validators** can make the repetetive process of validation simpler:
 
-[source, js]
-----
+```js
 // For a single route
 Route
   .post('users', 'UserController.store')
@@ -189,28 +176,27 @@ Route
     [['users.store'], ['StoreUser']],
     [['users.update'], ['UpdateUser']]
   ]))
-----
+```
 
-NOTE: Validators live inside the `app/Validators` directory.
+> NOTE: Validators live inside the `app/Validators` directory.
 
 Let's create a `StoreUser` validator by using the `adonis` command:
 
-[source, bash]
-----
-> adonis make:validator StoreUser
-----
+```bash
+adonis make:validator StoreUser
+```
 
+```bash
 .make:validator output
-[source, bash]
-----
+
 create: app/Validators/StoreUser.js
-----
+```
 
 Now, all we need to do is define our rules on the validator:
 
-.app/Validators/StoreUser.js
-[source, js]
-----
+```js
+// .app/Validators/StoreUser.js
+
 'use strict'
 
 class StoreUser {
@@ -223,22 +209,22 @@ class StoreUser {
 }
 
 module.exports = StoreUser
-----
+```
 
 If validation fails, the validator automatically sets the errors as flash messages and redirects the user back to the form.
 
-NOTE: If the request has an `Accept: application/json` header, the response gets sent back as JSON.
+> NOTE: If the request has an `Accept: application/json` header, the response gets sent back as JSON.
 
-=== Custom error messages
+### Custom error messages
 Default error messages can be confusing for the end user so you might want to create your own custom validation error messages.
 
 AdonisJs provides an effortless way to do this.
 
 Simply declare a `messages` method on your route validator and return an object with your messages per rule, like so:
 
-.app/Validators/StoreUser.js
-[source, js]
-----
+```js
+// .app/Validators/StoreUser.js
+
 'use strict'
 
 class StoreUser {
@@ -260,14 +246,14 @@ class StoreUser {
 }
 
 module.exports = StoreUser
-----
+```
 
-=== Validate all
+### Validate all
 To validate all fields, set `validateAll` to true on the class prototype:
 
-.app/Validators/StoreUser.js
-[source, js]
-----
+```js
+// .app/Validators/StoreUser.js
+
 'use strict'
 
 class StoreUser {
@@ -277,14 +263,14 @@ class StoreUser {
 }
 
 module.exports = StoreUser
-----
+```
 
-=== Sanitizing user input
+### Sanitizing user input
 You can sanitize user input by defining `sanitizationRules`, which are performed on request data before validation occurs:
 
-.app/Validators/StoreUser.js
-[source, js]
-----
+```js
+// .app/Validators/StoreUser.js
+
 class StoreUser {
   get sanitizationRules () {
     return {
@@ -295,16 +281,16 @@ class StoreUser {
 }
 
 module.exports = StoreUser
-----
+```
 
-=== Handling validation failure
+### Handling validation failure
 Since every application is structured differently, there are times when automatic failure handling may be undesirable.
 
 You can manually handle failures by adding a `fails` method to your validator:
 
-.app/Validators/StoreUser.js
-[source, js]
-----
+```js
+// .app/Validators/StoreUser.js
+
 class StoreUser {
   async fails (errorMessages) {
     return this.ctx.response.send(errorMessages)
@@ -312,16 +298,16 @@ class StoreUser {
 }
 
 module.exports = StoreUser
-----
+```
 
-=== Custom data object
+### Custom data object
 You may want to validate custom properties which are not part of the request body (for example, headers).
 
 This can be done by defining a `data` property on your validator class:
 
-.app/Validators/StoreUser.js
-[source, js]
-----
+```js
+// .app/Validators/StoreUser.js
+
 class StoreUser {
   get rules () {
     return {
@@ -338,13 +324,12 @@ class StoreUser {
 }
 
 module.exports = StoreUser
-----
+```
 
-=== Formatter
-You can also define the link:https://indicative-v5.adonisjs.com/docs/formatters#_available_formatters[Indicative formatter, window="_blank"] as a property on the validator class:
+### Formatter
+You can also define the [Indicative formatter](https://indicative-v5.adonisjs.com/docs/formatters#_available_formatters) as a property on the validator class:
 
-[source, js]
-----
+```js
 const { formatters } = use('Validator')
 
 class StoreUser {
@@ -352,15 +337,14 @@ class StoreUser {
     return formatters.JsonApi
   }
 }
-----
+```
 
-=== Authorization
+### Authorization
 You may want to perform checks to ensure the user is authorized to take the desired action.
 
 This can be done by defining an `authorize` method on your validator class:
 
-[source, js]
-----
+```js
 class StoreUser {
   async authorize () {
     if (!isAdmin) {
@@ -373,23 +357,22 @@ class StoreUser {
 }
 
 module.exports = StoreUser
-----
+```
 
-NOTE: Return a `boolean` from the `authorize` method to tell the validator whether or not to forward the request to the controller.
+> NOTE: Return a `boolean` from the `authorize` method to tell the validator whether or not to forward the request to the controller.
 
-=== Request context
+### Request context
 All route validators can access the current request context via `this.ctx`.
 
-== Custom Rules
-AdonisJs supports all link:https://indicative-v5.adonisjs.com[Indicative] validations, but also adds a few custom rules.
+## Custom Rules
+AdonisJs supports all [Indicative](https://indicative-v5.adonisjs.com) validations, but also adds a few custom rules.
 
 Below is the list of custom AdonisJs rules.
 
-==== unique(tableName, [fieldName], [ignoreField], [ignoreValue])
+#### `unique(tableName, [fieldName], [ignoreField], [ignoreValue])`
 Ensures a given value is unique to a given database table:
 
-[source, js]
-----
+```js
 'use strict'
 
 class StoreUser {
@@ -399,12 +382,11 @@ class StoreUser {
     }
   }
 }
-----
+```
 
 When updating an existing user profile, there is no point checking their email address when enforcing the `unique` rule. This can be done by defining an `ignoreField (id)` and `ignoreValue (userId)`:
 
-[source, js]
-----
+```js
 class StoreUser {
   get rules () {
     const userId = this.ctx.params.id
@@ -414,15 +396,14 @@ class StoreUser {
     }
   }
 }
-----
+```
 
-== Extending Validator
+## Extending Validator
 As an example of how to extend the AdonisJs `Validator`, let's add a new rule to ensure a *post* exists when adding a new *comment* to the database.
 
 We'll call this rule `exists`:
 
-[source, js]
-----
+```js
 const Validator = use('Validator')
 const Database = use('Database')
 
@@ -445,17 +426,16 @@ const existsFn = async (data, field, message, args, get) => {
 }
 
 Validator.extend('exists', existsFn)
-----
+```
 
 We can use our new `exists` rule like so:
 
-[source, js]
-----
+```js
 get rules () {
   return {
     post_id: 'exists:posts,id'
   }
 }
-----
+```
 
-NOTE: Since the code to extend `Validator` need only execute once, you could use link:service-providers[providers] or link:ignitor[Ignitor hooks] to do so. Read link:extending-adonisjs[Extending the Core] for more information.
+> NOTE: Since the code to extend `Validator` need only execute once, you could use [providers](/original/markdown/02-Concept/03-service-providers.md) or [Ignitor hooks](/original/markdown/02-Concept/05-ignitor.md) to do so. Read [Extending the Core](/original/markdown/06-Digging-Deeper/03-Extending-the-Core.adoc) for more information.

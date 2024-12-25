@@ -1,138 +1,123 @@
 ---
 title: Helpers
-permalink: helpers
 category: digging-deeper
 ---
 
-= Helpers
-
-toc::[]
+# Helpers
 
 The AdonisJs *Helpers Provider* enables a number of convenient methods to supercharge your application.
 
 Many of these methods can be used to retrieve *absolute paths* to specific directories within your application.
 
-== Basic Example
+## Basic Example
 From anywhere within your application, simply pull in the *Helpers Provider* and use it to retrieve paths to your different directories:
 
-[source, js]
-----
+```js
 const Helpers = use('Helpers')
 const welcomeView = Helpers.viewsPath('welcome.edge')
-----
+```
 
-== Path Helpers
+## Path Helpers
 Below is the list of path related helpers available via the *Helpers Provider*.
 
-==== appRoot
+#### `appRoot`
 Returns path to the application root:
 
-[source, js]
-----
+```js
 Helpers.appRoot()
-----
+```
 
-==== publicPath([toFile])
+#### `publicPath([toFile])`
 Returns path to the public directory or file inside the directory:
 
-[source, js]
-----
+```js
 const publicPath = Helpers.publicPath()
 // or
 const cssFile = Helpers.publicPath('style.css')
-----
+```
 
-==== configPath([toFile])
+#### `configPath([toFile])`
 Returns path to the config directory or file inside the directory:
 
-[source, js]
-----
+```js
 const configPath = Helpers.configPath()
 // or
 const appConfig = Helpers.configPath('app.js')
-----
+```
 
-TIP: Use the link:configuration-and-env[Config Provider] to read config file values.
+> TIP: Use the [Config Provider](/original/markdown/03-getting-started/02-Configuration.md) to read config file values.
 
-==== resourcesPath([toFile])
+#### `resourcesPath([toFile])`
 Returns path to the resources directory or file inside the directory:
 
-[source, js]
-----
+```js
 const resourcesPath = Helpers.resourcesPath()
 // or
 const appSass = Helpers.resourcesPath('assets/sass/app.scss')
-----
+```
 
-==== migrationsPath([toFile])
+#### `migrationsPath([toFile])`
 Returns path to the migrations directory or file inside the directory:
 
-[source, js]
-----
+```js
 const migrationsPath = Helpers.migrationsPath()
 // or
 const UserSchema = Helpers.migrationsPath('UserSchema.js')
-----
+```
 
-==== seedsPath([toFile])
+#### `seedsPath([toFile])`
 Returns path to the seeds directory or file inside the directory:
 
-[source, js]
-----
+```js
 const seedsPath = Helpers.seedsPath()
 // or
 const DatabaseSeed = Helpers.seedsPath('Database.js')
-----
+```
 
-==== databasePath([toFile])
+#### `databasePath([toFile])`
 Returns path to the database directory or file inside the directory:
 
-[source, js]
-----
+```js
 const databasePath = Helpers.databasePath()
 // or
 const factoryFile = Helpers.databasePath('factory.js')
-----
+```
 
-==== viewsPath([toFile])
+#### `viewsPath([toFile])`
 Returns path to the views directory or file inside the directory:
 
-[source, js]
-----
+```js
 const viewsPath = Helpers.viewsPath()
 // or
 const welcomeView = Helpers.viewsPath('welcome.edge')
-----
+```
 
-==== tmpPath([toFile])
+#### `tmpPath([toFile])`
 Returns path to the tmp directory or file inside the directory:
 
-[source, js]
-----
+```js
 const tmpPath = Helpers.tmpPath()
 // or
 const resized = Helpers.tmpPath('resized.jpg')
-----
+```
 
-== Other Helpers
+## Other Helpers
 Below is the list of other helpers available via the *Helpers Provider*.
 
-==== promisify
-Returns link:https://www.npmjs.com/package/pify[promisified, window="_blank"] callback functions:
+#### `promisify`
+Returns [promisified](https://www.npmjs.com/package/pify) callback functions:
 
-[source, js]
-----
+```js
 const exists = Helpers.promisify(require('fs').exists)
 const isExist = await exists(Helpers.tmpPath('image.jpg'))
 // or
 const fs = Helpers.promisify(require('fs'))
 await fs.unlink(Helpers.tmpPath('image.jpg'))
-----
+```
 
-==== isAceCommand
+#### `isAceCommand`
 Returns whether the process was started as the ace command or not:
 
-[source, js]
-----
+```js
 Helpers.isAceCommand()
-----
+```

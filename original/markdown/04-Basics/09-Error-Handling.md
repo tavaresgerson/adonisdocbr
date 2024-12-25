@@ -1,46 +1,42 @@
 ---
-permalink: exceptions
 title: Error Handling
 category: basics
 ---
 
-= Handling Exceptions
-
-toc::[]
+# Handling Exceptions
 
 AdonisJs not only treats exceptions as a way to guide the developer on what went wrong, but also as a way to build application flow around them.
 
 In this guide, we learn how exceptions are raised, how to write logic around them and finally creating your own custom exceptions.
 
-== Introduction
+## Introduction
 Exceptions are great since they halt the program at a certain stage and make sure everything is correct before proceeding.
 
 Exceptions are usually just treated as guides to tell the developer what went wrong, but if handled carefully, they can help you build application flow around them.
 
-By default, AdonisJs handles all exceptions for you and displays them in a link:http://res.cloudinary.com/adonisjs/image/upload/v1485520687/Screen_Shot_2017-01-27_at_6.07.28_PM_blcaau.png[nice format, window="_blank"] during development. However, you are free to handle exceptions however you want.
+By default, AdonisJs handles all exceptions for you and displays them in a [nice format](http://res.cloudinary.com/adonisjs/image/upload/v1485520687/Screen_Shot_2017-01-27_at_6.07.28_PM_blcaau.png) during development. However, you are free to handle exceptions however you want.
 
-== Handling exceptions
+## Handling exceptions
 Exceptions can be handled by binding a wildcard exception handler, or handling individual exceptions using their names.
 
-=== Wildcard handler
+### Wildcard handler
 Let's create a wildcard exception handler using the `adonis` command:
 
-[source, bash]
-----
-> adonis make:ehandler
-----
+```bash
+adonis make:ehandler
+```
 
-.make:ehandler output
-[source, bash]
-----
+```bash
+# .make:ehandler output
+
 ✔ create  app/Exceptions/Handler.js
-----
+```
 
 Once created, the wildcard exception handler is passed all exceptions that occurred during the HTTP lifecycle:
 
-.app/Exceptions/Handler.js
-[source, js]
-----
+```js
+// .app/Exceptions/Handler.js
+
 const BaseExceptionHandler = use('BaseExceptionHandler')
 
 class ExceptionHandler extends BaseExceptionHandler {
@@ -57,18 +53,18 @@ class ExceptionHandler extends BaseExceptionHandler {
 }
 
 module.exports = ExceptionHandler
-----
+```
 
 In the example above, the `handle` method handles the `ValidationException` by flashing validation errors back to the form.
 
-=== Individual exceptions
+### Individual exceptions
 You can hook into individual exceptions by defining an inline handler for them.
 
 This can be done inside the `start/hooks.js` file:
 
-.start/hooks.js
-[source, js]
-----
+```js
+// .start/hooks.js
+
 const { hooks } = require('@adonisjs/ignitor')
 
 hooks.after.providersBooted(() => {
@@ -81,48 +77,46 @@ hooks.after.providersBooted(() => {
     return
   })
 })
-----
+```
 
-== Custom exceptions
+## Custom exceptions
 AdonisJs makes it simple to build your own custom exceptions and define handlers for them.
 
 Let's use the `adonis` command to create a custom exception:
 
-[source, bash]
-----
-> adonis make:exception Custom
-----
+```bash
+adonis make:exception Custom
+```
 
-.make:exception output
-[source, bash]
-----
+```bash
+# .make:exception output
+
 ✔ create  app/Exceptions/CustomException.js
-----
+```
 
-.app/Exceptions/CustomException.js
-[source, js]
-----
+```js
+// .app/Exceptions/CustomException.js
+
 const { LogicalException } = require('@adonisjs/generic-exceptions')
 
 class CustomException extends LogicalException {}
 
 module.exports = CustomException
-----
+```
 
 You can throw this exception by importing its source file (the `status` and `code` values are optional):
 
-[source, js]
-----
+```js
 const CustomException = use('App/Exceptions/CustomException')
 
 throw new CustomException(message, status, code)
-----
+```
 
 You can set default messages, status and codes in a custom exception:
 
-.app/Exceptions/NotEditableException.js
-[source, js]
-----
+```js
+// .app/Exceptions/NotEditableException.js
+
 const { LogicalException } = require('@adonisjs/generic-exceptions')
 const message = 'The item is in an status where modifications are disallowed'
 const status = 403
@@ -135,24 +129,22 @@ class NotEditableException extends LogicalException {
 }
 
 module.exports = NotEditableException
-----
+```
 
-[source, js]
-----
+```js
 const NotEditableException = use('App/Exceptions/NotEditableException')
 
 throw new NotEditableException()
-----
+```
 
 The beauty of this approach is that you can give a unique name to your exceptions as the class name, and then catch and respond to them appropriately.
 
-
-=== A step further
+### A step further
 We can take custom exception handling a step further by defining `handle` and `report` methods on our custom exception class:
 
-.app/Exceptions/CustomException.js
-[source, js]
-----
+```js
+// .app/Exceptions/CustomException.js
+
 const { LogicalException } = require('@adonisjs/generic-exceptions')
 
 class CustomException extends LogicalException {
@@ -164,6 +156,6 @@ class CustomException extends LogicalException {
 }
 
 module.exports = CustomException
-----
+```
 
 If set, AdonisJs calls the custom exception's `handle` method to create and return the exception response.

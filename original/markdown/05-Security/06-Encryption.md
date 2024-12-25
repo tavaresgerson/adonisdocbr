@@ -1,50 +1,47 @@
 ---
 title: Encryption and Hashing
-permalink: encryption-and-hashing
 category: security
 ---
 
-= Encryption and Hashing
-
-toc::[]
+# Encryption and Hashing
 
 AdonisJs ships with providers for *hashing values* and *encrypting data*.
 
 *Hashing values* is different to *encrypting data*, since hashed values cannot be decrypted once encrypted.
 
-== Encrypting Data
+## Encrypting Data
 
-The AdonisJs encryption provider uses the link:https://nodejs.org/api/crypto.html[Node.js crypto module, window="_blank"] to encrypt and decrypt values.
+The AdonisJs encryption provider uses the [Node.js crypto module](https://nodejs.org/api/crypto.html) to encrypt and decrypt values.
 
-NOTE: Your *appKey* must be defined inside the `config/app.js` file before you can encrypt values.
+> NOTE: Your *appKey* must be defined inside the `config/app.js` file before you can encrypt values.
 
-==== encrypt(value)
-[source, javascript]
-----
+#### `encrypt(value)`
+
+```js
 const Encryption = use('Encryption')
 const encrypted = Encryption.encrypt('hello world')
-----
+```
 
-==== decrypt
-[source, javascript]
-----
+#### `decrypt`
+
+```js
 const Encryption = use('Encryption')
 const decrypted = Encryption.decrypt('encrypted value')
-----
+```
 
-== Hashing Values
+## Hashing Values
 The AdonisJs hash provider comes with multiple drivers to hash user data.
 
-By default it uses link:https://en.wikipedia.org/wiki/Bcrypt[bcrypt, window="_blank"], however there is Argon support via the link:https://npm.im/argon2[argon2 npm package, window="_blank"].
+By default it uses [bcrypt](https://en.wikipedia.org/wiki/Bcrypt), however there is Argon support via the [argon2 npm package](https://npm.im/argon2).
 
-NOTE: Multiple drivers are supported by `@adonisjs/framework` version `>=5.0.8`.
+> NOTE: Multiple drivers are supported by `@adonisjs/framework` version `>=5.0.8`.
 
-=== Config
+### Config
 The config is defined inside the `config/hash.js` file:
 
-.config/hash.js
-[source, js]
-----
+```js
+// .config/hash.js
+
 module.exports = {
   driver: 'bcrypt',
   bcrypt: {
@@ -54,37 +51,33 @@ module.exports = {
     type: 1
   }
 }
-----
+```
 
-NOTE: If using the `argon` driver, you will have to install the link:https://npm.im/argon2[argon2 npm package, window="_blank"] package via npm.
+> NOTE: If using the `argon` driver, you will have to install the [argon2 npm package](https://npm.im/argon2) package via npm.
 
-==== make(value, [config])
+#### `make(value, [config])`
 Hash a plain string value:
 
-[source, javascript]
-----
+```js
 const Hash = use('Hash')
 const safePassword = await Hash.make(request.input('password'))
-----
+```
 
 Optionally, inline config can be passed to override config file defaults:
 
-[source, javascript]
-----
+```js
 const Hash = use('Hash')
 const safeExample = await Hash.make('example', config)
-----
+```
 
-==== verify(value, hashedValue)
+#### `verify(value, hashedValue)`
 Since you cannot decrypt a hash, you can verify the user input against the previously hashed value.
 
-[source, javascript]
-----
+```js
 const Hash = use('Hash')
 const isSame = await Hash.verify('plain-value', 'hashed-value')
 
 if (isSame) {
   // ...
 }
-----
-
+```

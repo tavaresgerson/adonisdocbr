@@ -1,29 +1,25 @@
 ---
 title: File Uploads
-permalink: file-uploads
 category: digging-deeper
 ---
 
-= File Uploads
-
-toc::[]
+# File Uploads
 
 AdonisJs processes file uploads securely without wasting server resources.
 
-== Basic Example
+## Basic Example
 Let's see how to handle files uploaded via HTML form:
 
-[source, edge]
-----
+```edge
 <form method="POST" action="upload" enctype="multipart/form-data">
   <input type="file" name="profile_pic" />
   <button type="submit"> Submit </button>
 </form>
-----
+```
 
-.start/routes.js
-[source, js]
-----
+```js
+// .start/routes.js
+
 const Helpers = use('Helpers')
 
 Route.post('upload', async ({ request }) => {
@@ -42,29 +38,27 @@ Route.post('upload', async ({ request }) => {
   }
   return 'File moved'
 })
-----
+```
 
-[ol-spaced]
-1. The `request.file` method accepts two arguments (a *field name* and *a validation object* to apply to the uploaded file), and returns a link:https://github.com/adonisjs/adonis-bodyparser/blob/develop/src/Multipart/File.js[File, window="_blank"] instance.
+1. The `request.file` method accepts two arguments (a *field name* and *a validation object* to apply to the uploaded file), and returns a [File](https://github.com/adonisjs/adonis-bodyparser/blob/develop/src/Multipart/File.js) instance.
 2. Next, we call the `profilePic.move` method which attempts to move the file to the defined directory (in this case, called with options to save the file with a new *name* and to *overwrite* the file if needed).
 3. Finally, we check whether the move operation was successful by calling the `profilePic.moved()` method (returning errors if any were found).
 
-== Multiple File Uploads
+## Multiple File Uploads
 AdonisJs makes uploading multiple files as simple as uploading a single file.
 
-When multiple files are uploaded together, `request.file` returns a link:https://github.com/adonisjs/adonis-bodyparser/blob/develop/src/Multipart/FileJar.js[FileJar, window="_blank"] instance instead of a link:https://github.com/adonisjs/adonis-bodyparser/blob/develop/src/Multipart/File.js[File, window="_blank"] instance:
+When multiple files are uploaded together, `request.file` returns a [FileJar](https://github.com/adonisjs/adonis-bodyparser/blob/develop/src/Multipart/FileJar.js) instance instead of a [File](https://github.com/adonisjs/adonis-bodyparser/blob/develop/src/Multipart/File.js) instance:
 
-[source, edge]
-----
+```edge
 <form method="POST" action="upload" enctype="multipart/form-data">
   <input type="file" name="profile_pics[]" multiple />
   <button type="submit"> Submit </button>
 </form>
-----
+```
 
-.start/routes.js
-[source, js]
-----
+```js
+// .start/routes.js
+
 const Helpers = use('Helpers')
 
 Route.post('upload', async ({ request }) => {
@@ -79,42 +73,38 @@ Route.post('upload', async ({ request }) => {
     return profilePics.errors()
   }
 })
-----
+```
 
 In the example above, compared to the way we handle a single file:
 
-[ol-spaced]
 1. Instead of `move`, we use the `moveAll` method (which moves all uploaded files in parallel to a given directory).
 2. Single file methods have been changed to multiple file methods (such as `moved -> movedAll` and `error -> errors`).
 
-=== Changing file names
+### Changing file names
 To move and rename a single file upload, pass an options object to the `move` method defining the file's new `name`:
 
-[source, js]
-----
+```js
 await profilePic.move(Helpers.tmpPath('uploads'), {
   name: 'my-new-name.jpg'
 })
-----
+```
 
-To move and rename multiple file uploads, pass a callback to the `moveAll` method to create a custom options object for each file inside your link:https://github.com/adonisjs/adonis-bodyparser/blob/develop/src/Multipart/FileJar.js[FileJar, window="_blank"] instance:
+To move and rename multiple file uploads, pass a callback to the `moveAll` method to create a custom options object for each file inside your [FileJar](https://github.com/adonisjs/adonis-bodyparser/blob/develop/src/Multipart/FileJar.js) instance:
 
-[source, js]
-----
+```js
 profilePics.moveAll(Helpers.tmpPath('uploads'), (file) => {
   return {
     name: `${new Date().getTime()}.${file.subtype}`
   }
 })
-----
+```
 
-=== Moved list
+### Moved list
 When moving multiple file uploads, it's possible some files move successfully while others reject due to validation failures.
 
 In that case, you can use the `movedAll()` and `movedList()` methods to optimize your workflow:
 
-[source, js]
-----
+```js
 const removeFile = Helpers.promisify(fs.unlink)
 
 if (!profilePics.movedAll()) {
@@ -126,23 +116,20 @@ if (!profilePics.movedAll()) {
 
   return profilePics.errors()
 }
-----
+```
 
-== Validation Options
+## Validation Options
 The following validation options can be passed to validate a file before completing a move operation:
 
-[role="resource-table", options="header", cols="20, 20, 60"]
-|====
-| Key | Value | Description
-| `types` | `String[]` | An array of types to be allowed. The value will be checked against the file link:https://www.npmjs.com/package/media-typer[media type].
-| `size` | `String` OR `Number` | The maximum size allowed for the file. The value is parsed using the link:https://github.com/visionmedia/bytes.js#bytesparsestringnumber-value-numbernull[bytes.parse] method.
-| `extnames` | `String[]` | To have to more granular control over the file type, you can define the allowed extensions over defining the type.
-|====
+| Key         | Value                 | Description |
+|-------------|-----------------------|-------------|
+| `types`     | `String[]`            | An array of types to be allowed. The value will be checked against the file [media type](https://www.npmjs.com/package/media-typer). |
+| `size`      | `String` OR `Number`  | The maximum size allowed for the file. The value is parsed using the [bytes.parse](https://github.com/visionmedia/bytes.js#bytesparsestringnumber-value-numbernull) method. |
+| `extnames`  | `String[]`            | To have to more granular control over the file type, you can define the allowed extensions over defining the type. |
 
 An example of how to apply validation rules is as follows:
 
-[source, js]
-----
+```js
 const validationOptions = {
   types: ['image'],
   size: '2mb',
@@ -152,65 +139,61 @@ const avatar = request.file('avatar', validationOptions)
 
 // this is when validation occurs
 await avatar.move()
-----
+```
 
-== Error Types
+## Error Types
 
-When upload validation fails, the link:https://github.com/adonisjs/adonis-bodyparser/blob/develop/src/Multipart/File.js[File, window="_blank"] `error` method returns an object containing the failed `fieldName`, original `clientName`, an error `message`, and the rule `type` that triggered the error.
+When upload validation fails, the [File](https://github.com/adonisjs/adonis-bodyparser/blob/develop/src/Multipart/File.js) `error` method returns an object containing the failed `fieldName`, original `clientName`, an error `message`, and the rule `type` that triggered the error.
 
-NOTE: The link:https://github.com/adonisjs/adonis-bodyparser/blob/develop/src/Multipart/FileJar.js[FileJar, window="_blank"] `errors` method returns an *array* of errors.
+> NOTE: The [FileJar](https://github.com/adonisjs/adonis-bodyparser/blob/develop/src/Multipart/FileJar.js) `errors` method returns an *array* of errors.
 
 A few example error objects are list below.
 
-==== Type error
+#### Type error
 
-[source, js]
-----
+```js
 {
   fieldName: "field_name",
   clientName: "invalid-file-type.ai",
   message: "Invalid file type postscript or application. Only image is allowed",
   type: "type"
 }
-----
+```
 
-==== Size error
+#### Size error
 
-[source, js]
-----
+```js
 {
   fieldName: "field_name",
   clientName: "invalid-file-size.png",
   message: "File size should be less than 2MB",
   type: "size"
 }
-----
+```
 
-== File Properties
-The following file properties can be accessed on the link:https://github.com/adonisjs/adonis-bodyparser/blob/develop/src/Multipart/File.js[File, window="_blank"] instance:
+## File Properties
+The following file properties can be accessed on the [File](https://github.com/adonisjs/adonis-bodyparser/blob/develop/src/Multipart/File.js) instance:
 
-[role="resource-table", options="header", cols="45, 20, 20, 15"]
-|====
-| Property | Unprocessed | Inside tmp | Moved
-| clientName [description]#File name on client machine# | `String` | `String` | `String`
-| fileName [description]#File name after move operation# | `null` | `null` | `String`
-| fieldName [description]#Form field name# | `String` | `String` | `String`
-| tmpPath [description]#Temporary path#| `null` | `String` | `String`
-| size [description]#File size in bytes#| `0` | `Number` | `Number`
-| type [description]#File primary type#| `String` | `String` | `String`
-| subtype [description]#File sub type#| `String` | `String` | `String`
-| status [description]#File status (set to `error` when failed)#| `pending` | `consumed` | `moved`
-| extname [description]#File extension#| `String` | `String` | `String` |
-|====
+| Property      | Description                               | Unprocessed | Inside tmp  | Moved     |
+|---------------|-------------------------------------------|-------------|-------------|-----------|
+| clientName    | File name on client machine               | `String`    | `String`    | `String`  |
+| fileName      | File name after move operation            | `null`      | `null`      | `String`  |
+| fieldName     | Form field name                           | `String`    | `String`    | `String`  |
+| tmpPath       | Temporary path                            | `null`      | `String`    | `String`  |
+| size          | File size in bytes                        | `0`         | `Number`    | `Number`  |
+| type          | File primary type                         | `String`    | `String`    | `String`  |
+| subtype       | File sub type                             | `String`    | `String`    | `String`  |
+| status        | File status (set to `error` when failed)  | `pending`   | `consumed`  | `moved`   |
+| extname       | File extension                            | `String`    | `String`    | `String`  |
 
-== Route Validators
-link:validator#_route_validator[Route validators] validate uploaded files before passing them to the controller.
+## Route Validators
+[Route validators](/original/markdown/04-Basics/08-Validation.md) validate uploaded files before passing them to the controller.
 
 In the example route validator below:
 
-.app/Validators/StoreUser.js
-[source, js]
-----
+```js
+// .app/Validators/StoreUser.js
+
 'use strict'
 
 class StoreUser {
@@ -222,14 +205,14 @@ class StoreUser {
 }
 
 module.exports = StoreUser
-----
+```
 
-1. The `file` rule ensures the `avatar` field is a valid link:https://github.com/adonisjs/adonis-bodyparser/blob/develop/src/Multipart/File.js[File].
+1. The `file` rule ensures the `avatar` field is a valid [File](https://github.com/adonisjs/adonis-bodyparser/blob/develop/src/Multipart/File.js).
 2. The `file_ext` rule defines the `extnames` allowed for the file.
 3. The `file_size` rule defines the maximum `size` for the file.
 4. The `file_types` rule defines the `types` allowed for the file.
 
-== Streaming Files
+## Streaming Files
 
 The majority of upload libraries/frameworks process files multiple times when streaming to an external service such as *Amazon S3*. Their upload workflows are usually designed like so:
 
@@ -241,23 +224,23 @@ This process wastes server resources *reading/writing* single files multiple tim
 
 AdonisJs makes the process of streaming uploaded files far more efficient.
 
-=== Disable auto-processing
+### Disable auto-processing
 First, disable file auto-processing for your upload routes via the `config/bodyparser.js` file:
 
-.config/bodyparser.js
-[source, js]
-----
+```js
+// .config/bodyparser.js
+
 processManually: ['/upload']
-----
+```
 
 The `processManually` option takes an array of routes or route patterns for which files should not be processed automatically.
 
-=== Process the stream
+### Process the stream
 Finally, call the `request.multipart.process` method inside the file upload controller/route handler:
 
-.start/routes.js
-[source, js]
-----
+```js
+// .start/routes.js
+
 const Drive = use('Drive')
 
 Route.post('upload', async ({ request }) => {
@@ -268,9 +251,9 @@ Route.post('upload', async ({ request }) => {
 
   await request.multipart.process()
 })
-----
+```
 
-NOTE: You must call `await request.multipart.process()` to start processing uploaded files.
+> NOTE: You must call `await request.multipart.process()` to start processing uploaded files.
 
 The `request.multipart.file` method lets you select a specific file and access its readable stream via the `file.stream` property so you can pipe the stream to *Amazon S3* or any other external service you want.
 
