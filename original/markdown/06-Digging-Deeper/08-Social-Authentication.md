@@ -1,12 +1,9 @@
 ---
 title: Social Authentication
-permalink: social-auth
 category: digging-deeper
 ---
 
-= Social Authentication
-
-toc::[]
+# Social Authentication
 
 *Ally* is a 1st party social authentication provider for AdonisJs.
 
@@ -14,7 +11,6 @@ Using *Ally* makes it trivial to authenticate users via 3rd party websites like 
 
 The *Ally Provider* supports the following drivers:
 
-[ul-shrinked]
 - Facebook (`facebook`)
 - Github (`github`)
 - Google (`google`)
@@ -23,66 +19,64 @@ The *Ally Provider* supports the following drivers:
 - Twitter (`twitter`)
 - Foursquare (`foursquare`)
 
-== Setup
+## Setup
 As the *Ally Provider* is not installed by default, we need to pull it from npm:
 
-[source, bash]
-----
-> adonis install @adonisjs/ally
-----
+```bash
+adonis install @adonisjs/ally
+```
 
 Next, register the provider inside the `start/app.js` file:
 
-.start/app.js
-[source, js]
-----
+```js
+// .start/app.js
+
 const providers = [
   '@adonisjs/ally/providers/AllyProvider'
 ]
-----
+```
 
-NOTE: Social authentication configuration is saved inside the `config/services.js` file, which is created by the `adonis install` command when installing the *Ally Provider*.
+> NOTE: Social authentication configuration is saved inside the `config/services.js` file, which is created by the `adonis install` command when installing the *Ally Provider*.
 
-== Config
+## Config
 
 Your config must be stored inside the `config/services.js` file's `ally` object:
 
-.config/services.js
-[source, js]
-----
+```js
+// .config/services.js
+
 module.exports = {
   ally: {
     facebook: {}
   }
 }
-----
+```
 
-TIP: You can always access the latest config source file on link:https://github.com/adonisjs/adonis-ally/blob/master/templates/config.js[Github, window="_blank"].
+> TIP: You can always access the latest config source file on [Github](https://github.com/adonisjs/adonis-ally/blob/master/templates/config.js).
 
-== Basic Example
+## Basic Example
 Let's start with a basic example of logging in using *Facebook*.
 
 First, we need to register routes to redirect the user to Facebook then handle the response when the user is redirected back from Facebook:
 
-.start/routes.js
-[source, js]
-----
+```js
+// .start/routes.js
+
 Route.get('login/facebook', 'LoginController.redirect')
 Route.get('facebook/callback', 'LoginController.callback')
-----
+```
 
-NOTE: Make sure the *Auth Provider* and auth-related middleware is link:authentication#_setup[configured correctly].
+> NOTE: Make sure the *Auth Provider* and auth-related middleware is [configured correctly](/original/markdown/05-Security/02-Authentication.md#setup).
 
 Next, we need to create the controller to implement our route methods:
 
-[source, bash]
-----
-> adonis make:controller Login
-----
+```bash
+adonis make:controller Login
+```
 
-.app/Controllers/Http/LoginController.js
-[source, js]
-----
+```js
+// .app/Controllers/Http/LoginController.js
+
 const User = use('App/Models/User')
 
 class LoginController {
@@ -115,169 +109,153 @@ class LoginController {
     }
   }
 }
-----
+```
 
 We now have a fully working login system in a few lines of code!
 
 *Ally's API* is consistent across drivers, so it's easy to swap `facebook` with `google` or any other driver required by your application.
 
-== Ally API
+## Ally API
 Below is the list of available functions.
 
-==== redirect
+#### `redirect`
 Redirect user to the 3rd party website:
 
-[source, js]
-----
+```js
 await ally.driver('facebook').redirect()
-----
+```
 
-==== getRedirectUrl
+#### `getRedirectUrl`
 Get redirect URL back as a string:
 
-[source, js]
-----
+```js
 const url = await ally.driver('facebook').getRedirectUrl()
 
 return view.render('login', { url })
-----
+```
 
-==== scope(scopesArray)
+#### `scope(scopesArray)`
 Define runtime scopes before redirecting the user:
 
-[source, js]
-----
+```js
 await ally
   .driver('facebook')
   .scope(['email', 'birthday'])
   .redirect()
-----
+```
 
-NOTE: Check the relevant provider's official OAuth documentation for a list of their available scopes.
+> NOTE: Check the relevant provider's official OAuth documentation for a list of their available scopes.
 
-==== fields(fieldsArray)
+#### `fields(fieldsArray)`
 Fields to be fetched when getting the authenticated user profile:
 
-[source, js]
-----
+```js
 await ally
   .driver('facebook')
   .fields(['username', 'email', 'profile_pic'])
   .getUser()
-----
+```
 
-==== getUser
-Get the user profile of an authenticated user (returns an link:https://github.com/adonisjs/adonis-ally/blob/develop/src/AllyUser.js[AllyUser, window="_blank"] instance):
+#### `getUser`
+Get the user profile of an authenticated user (returns an [AllyUser](https://github.com/adonisjs/adonis-ally/blob/develop/src/AllyUser.js) instance):
 
-[source, js]
-----
+```js
 await ally
   .driver('facebook')
   .fields(['email'])
   .getUser()
-----
+```
 
-==== getUserByToken(accessToken, [accessSecret])
+#### `getUserByToken(accessToken, [accessSecret])`
 Returns the user details using the `accessToken`:
 
-[source, js]
-----
+```js
 await ally.getUserByToken(accessToken)
-----
+```
 
 This is helpful when using client-side code to perform the OAuth action and you have access to the `accessToken`.
 
-NOTE: The `accessSecret` parameter is required when the *OAuth 1* protocol is used (e.g. Twitter relies on OAuth 1).
+> NOTE: The `accessSecret` parameter is required when the *OAuth 1* protocol is used (e.g. Twitter relies on OAuth 1).
 
-== User API
-Below is the list of available methods on an link:https://github.com/adonisjs/adonis-ally/blob/develop/src/AllyUser.js[AllyUser, window="_blank"] instance.
+## User API
+Below is the list of available methods on an [AllyUser](https://github.com/adonisjs/adonis-ally/blob/develop/src/AllyUser.js) instance.
 
-==== getId
+#### `getId`
 Returns the user id:
 
-[source, js]
-----
+```js
 const user = await ally.driver('facebook').getUser()
 
 user.getId()
-----
+```
 
-==== getName
+#### `getName`
 Returns the user name:
 
-[source, js]
-----
+```js
 user.getName()
-----
+```
 
-==== getEmail
+#### `getEmail`
 Returns the user email:
 
-[source, js]
-----
+```js
 user.getEmail()
-----
+```
 
-NOTE: Some 3rd party providers do not share email, in which case this method returns `null`.
+> NOTE: Some 3rd party providers do not share email, in which case this method returns `null`.
 
-==== getNickname
+#### `getNickname`
 Returns the nickname / display name of the user:
 
-[source, js]
-----
+```js
 user.getNickname()
-----
+```
 
-==== getAvatar
+#### `getAvatar`
 Returns public URL to the user's profile picture:
 
-[source, js]
-----
+```js
 user.getAvatar()
-----
+```
 
-==== getAccessToken
+#### `getAccessToken`
 Returns the access token which may be used later to update the user profile:
 
-[source, js]
-----
+```js
 user.getAccessToken()
-----
+```
 
-==== getRefreshToken
+#### `getRefreshToken`
 Refresh token to be used when access token expires:
 
-[source, js]
-----
+```js
 user.getRefreshToken()
-----
+```
 
-NOTE: Available only when 3rd party provider implements *OAuth 2*.
+> NOTE: Available only when 3rd party provider implements *OAuth 2*.
 
-==== getExpires
+#### `getExpires`
 Access token expiry data:
 
-[source, js]
-----
+```js
 user.getExpires()
-----
+```
 
-NOTE: Available only when 3rd party provider implements *OAuth 2*.
+> NOTE: Available only when 3rd party provider implements *OAuth 2*.
 
-==== getTokenSecret
+#### `getTokenSecret`
 Returns token secret:
 
-[source, js]
-----
+```js
 user.getTokenSecret()
-----
+```
 
-NOTE: Available only when 3rd party provider implements *OAuth 1*.
+> NOTE: Available only when 3rd party provider implements *OAuth 1*.
 
-==== getOriginal
+#### `getOriginal`
 Original payload returned by the 3rd party provider:
 
-[source, js]
-----
+```js
 user.getOriginal()
-----
+```

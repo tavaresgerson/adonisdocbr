@@ -1,12 +1,9 @@
 ---
 title: Relationships
-permalink: relationships
 category: lucid-orm
 ---
 
-= Relationships
-
-toc::[]
+# Relationships
 
 *Relationships* are the backbone of data-driven applications, linking one model type to another.
 
@@ -14,19 +11,19 @@ For example, a `User` could have many `Post` relations, and each `Post` could ha
 
 Lucid's expressive API makes the process of associating and fetching model relations simple and intuitive, without the need to touch a SQL statement or even edit a SQL schema.
 
-== Basic Example
+## Basic Example
 Let’s examine a scenario containing two models: `User` and `Profile`.
 
 In our example, every `User` instance can have *a single* `Profile`.
 
 We call this a *one to one* relationship.
 
-=== Defining Relationship
+### Defining Relationship
 To define this relationship, add the following method to your `User` model:
 
-.app/Models/User.js
-[source, js]
-----
+```js
+// .app/Models/User.js
+
 const Model = use('Model')
 
 class User extends Model {
@@ -36,66 +33,64 @@ class User extends Model {
 }
 
 module.exports = User
-----
+```
 
 In the example above, we added a `profile` method to the `User` model returning a `hasOne` relationship typed to the `Profile` model.
 
 If the `Profile` model does not exist, generate it:
 
-[source, bash]
-----
-> adonis make:model Profile
-----
+```bash
+adonis make:model Profile
+```
 
-.app/Models/Profile.js
-[source, js]
-----
+```js
+// .app/Models/Profile.js
+
 const Model = use('Model')
 
 class Profile extends Model {
 }
 
 module.exports = Profile
-----
+```
 
-NOTE: There is no need to define a relationship on both the models. Setting it one-way on a single model is all that's required.
+> NOTE: There is no need to define a relationship on both the models. Setting it one-way on a single model is all that's required.
 
-=== Fetching User Profile
+### Fetching User Profile
 Now we've defined the relationship between `User` and `Profile`, we can execute the following code to fetch a user's profile:
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 
 const user = await User.find(1)
 const userProfile = await user.profile().fetch()
-----
+```
 
-== Has One
+## Has One
 A `hasOne` relation defines a *one to one* relationship using a *foreign key* to the related model.
 
-=== API
-[source, js]
-----
+### API
+```js
 hasOne(relatedModel, primaryKey, foreignKey)
-----
+```
 
-relatedModel::
+#### `relatedModel`
 An IoC container reference to the model the current model *has one of*.
 
-primaryKey::
+#### `primaryKey`
 Defaults to the current model primary key (i.e. `id`).
 
-foreignKey::
+#### `foreignKey`
 Defaults to `tableName_primaryKey` of the current model. The singular form of the table name is used (for example, the foreign key `user_id` references the `id` column on the table `users`).
 
-=== Database Tables
-link:http://res.cloudinary.com/adonisjs/image/upload/q_100/v1502900169/HasOne_wechyq.png[image:http://res.cloudinary.com/adonisjs/image/upload/q_100/v1502900169/HasOne_wechyq.png[], window="_blank"]
+### Database Tables
 
-=== Defining Relation
-.app/Models/User.js
-[source, js]
-----
+![image](http://res.cloudinary.com/adonisjs/image/upload/q_100/v1502900169/HasOne_wechyq.png)
+
+### Defining Relation
+```js
+// .app/Models/User.js
+
 const Model = use('Model')
 
 class User extends Model {
@@ -105,34 +100,33 @@ class User extends Model {
 }
 
 module.exports = User
-----
+```
 
-
-== Has Many
+## Has Many
 A `hasMany` relation defines a *one to many* relationship using a *foreign key* to the other related models.
 
-=== API
-[source, js]
-----
+### API
+```js
 hasMany(relatedModel, primaryKey, foreignKey)
-----
+```
 
-relatedModel::
+#### `relatedModel`
 An IoC container reference to the model the current model *has many of*.
 
-primaryKey::
+#### `primaryKey`
 Defaults to the current model primary key (i.e. `id`).
 
-foreignKey::
+#### `foreignKey`
 Defaults to `tableName_primaryKey` of the current model. The singular form of the table name is used (for example, the foreign key `user_id` references the `id` column on the table `users`).
 
-=== Database Tables
-link:http://res.cloudinary.com/adonisjs/image/upload/q_100/v1502900449/HasMany_kkbac9.png[image:http://res.cloudinary.com/adonisjs/image/upload/q_100/v1502900449/HasMany_kkbac9.png[], window="_blank"]
+### Database Tables
 
-=== Defining Relation
-.app/Models/User.js
-[source, js]
-----
+![image](http://res.cloudinary.com/adonisjs/image/upload/q_100/v1502900449/HasMany_kkbac9.png)
+
+### Defining Relation
+```js
+// .app/Models/User.js
+
 const Model = use('Model')
 
 class User extends Model {
@@ -142,35 +136,36 @@ class User extends Model {
 }
 
 module.exports = User
-----
+```
 
-== Belongs To
-The `belongsTo` relationship is the inverse of the xref:_has_one[hasOne] relationship and is applied on the other end of the relation.
+## Belongs To
+The `belongsTo` relationship is the inverse of the [hasOne](#has-one) relationship and is applied on the other end of the relation.
 
 Continuing with our `User` and `Profile` example, the `Profile` model belongs to the `User` model, and thus has the `belongsTo` relationship defined on it.
 
-=== API
-[source, js]
-----
+### API
+```js
 belongsTo(relatedModel, primaryKey, foreignKey)
-----
+```
 
-relatedModel::
+#### `relatedModel`
 An IoC container reference to the model the current model *belongs to*.
 
-primaryKey::
+#### `primaryKey`
 Defaults to the related model foreign key (in our `Profile` belongs to `User` example, this would be `user_id`).
 
-foreignKey::
+#### `foreignKey`
 Defaults to the related model primary key.
 
-=== Database Tables
-link:http://res.cloudinary.com/adonisjs/image/upload/q_100/v1502900684/BelongsTo_fwqdc3.png[image:http://res.cloudinary.com/adonisjs/image/upload/q_100/v1502900684/BelongsTo_fwqdc3.png[], window="_blank"]
+### Database Tables
 
-=== Defining Relation
+![image](http://res.cloudinary.com/adonisjs/image/upload/q_100/v1502900684/BelongsTo_fwqdc3.png)
+
+### Defining Relation
+
+```js
 .app/Models/Profile.js
-[source, js]
-----
+
 const Model = use('Model')
 
 class Profile extends Model {
@@ -180,14 +175,13 @@ class Profile extends Model {
 }
 
 module.exports = Profile
-----
+```
 
-== Belongs To Many
+## Belongs To Many
 The `belongsToMany` relationship allows you to define *many to many* relationships on both the models.
 
 For example:
 
-[ol-shrinked]
 1. A `User` can have many `Car` models.
 2. A `Car` can have many `User` models (i.e. owners) during its lifespan.
 
@@ -197,11 +191,10 @@ When defining a `belongsToMany` relationship, we don't store a foreign key on ei
 
 Instead, we must rely on a third, intermediary table called a *pivot table*.
 
-NOTE: You can create pivot tables using link:migrations[migration files].
+> NOTE: You can create pivot tables using [migration files](/original/markdown/07-Database/03-Migrations.md).
 
-=== API
-[source, js]
-----
+### API
+```js
 belongsToMany(
   relatedModel,
   foreignKey,
@@ -209,31 +202,31 @@ belongsToMany(
   primaryKey,
   relatedPrimaryKey
 )
-----
+```
 
-relatedModel::
+#### `relatedModel`
 An IoC container reference to the model the current model *has many of*.
 
-foreignKey::
+#### `foreignKey`
 Defaults to the current model foreign key (in our `User` belongs to many `Car` example, this would be `user_id`).
 
-relatedForeignKey::
+#### `relatedForeignKey`
 Defaults to the related model foreign key (in our `User` belongs to many `Car` example, this would be `car_id`).
 
-primaryKey::
+#### `primaryKey`
 Defaults to the current model primary key (i.e. `id`).
 
-relatedPrimaryKey::
+#### `relatedPrimaryKey`
 Defaults to the related model primary key (i.e. `id`).
 
-=== Database Tables
+### Database Tables
 
-link:http://res.cloudinary.com/adonisjs/image/upload/q_100/v1502903344/BelongsToMany_ngg7oj.png[image:http://res.cloudinary.com/adonisjs/image/upload/q_100/v1502903344/BelongsToMany_ngg7oj.png[], window="_blank"]
+![image(http://res.cloudinary.com/adonisjs/image/upload/q_100/v1502903344/BelongsToMany_ngg7oj.png)
 
-=== Defining Relation
-.app/Models/Car.js
-[source, js]
-----
+### Defining Relation
+```js
+// .app/Models/Car.js
+
 const Model = use('Model')
 
 class User extends Model {
@@ -243,67 +236,63 @@ class User extends Model {
 }
 
 module.exports = User
-----
+```
 
 In the example above, the table named `car_user` is the *pivot table* storing the unique relationship between `Car` and `User` model primary keys.
 
-==== pivotTable
+#### `pivotTable`
 By default, pivot table names are derived by sorting *lowercased* related model names in *alphabetical order* and joining them with a `_` character (e.g. `User` + `Car` = `car_user`).
 
 To set a custom pivot table name, call `pivotTable` in the relationship definition:
 
-[source, js]
-----
+```js
 cars () {
   return this
     .belongsToMany('App/Models/Car')
     .pivotTable('user_cars')
 }
-----
+```
 
-==== withTimestamps
+#### `withTimestamps`
 By default, pivot tables aren't assumed to have timestamps.
 
 To enable timestamps, call `withTimestamps` in the relationship definition:
 
-[source, js]
-----
+```js
 cars () {
   return this
     .belongsToMany('App/Models/Car')
     .withTimestamps()
 }
-----
+```
 
-==== withPivot
+#### `withPivot`
 By default, only foreign keys are returned from a pivot table.
 
 To return other pivot table fields, call `withPivot` in the relationship definition:
 
-[source, js]
-----
+```js
 cars () {
   return this
     .belongsToMany('App/Models/Car')
     .withPivot(['is_current_owner'])
 }
-----
+```
 
-==== pivotModel
+#### `pivotModel`
 For more control over queries made to a pivot table, you can bind a *pivot model*:
 
-[source, js]
-----
+```js
 cars () {
   return this
     .belongsToMany('App/Models/Car')
     .pivotModel('App/Models/UserCar')
 }
-----
+```
 
-.app/Models/UserCar.js
-[source, js]
-----
+```js
+// .app/Models/UserCar.js
+
 const Model = use('Model')
 
 class UserCar extends Model {
@@ -316,59 +305,59 @@ class UserCar extends Model {
 }
 
 module.exports = UserCar
-----
+```
 
 In the example above, `UserCar` is a regular Lucid model.
 
-With a pivot model assigned, you can use lifecycle link:database-hooks[hooks], link:database-getters-setters[getters/setters], etc.
+With a pivot model assigned, you can use lifecycle [hooks](/original/markdown/08-Lucid-ORM/02-Hooks.md), [getters/setters](/original/markdown/08-Lucid-ORM/04-Mutators.md), etc.
 
-NOTE: After calling `pivotModel` you cannot call the `pivotTable` and `withTimestamps` methods. Instead, you are required to set those values on the pivot model itself.
+> NOTE: After calling `pivotModel` you cannot call the `pivotTable` and `withTimestamps` methods. Instead, you are required to set those values on the pivot model itself.
 
-== Many Through
+## Many Through
 The `manyThrough` relationship is a convenient way to define an *indirect* relation.
 
 For example:
 
-[ol-shrinked]
 1. A `User` belongs to a `Country`.
 2. A `User` has many `Post` models.
 
 Using `manyThrough`, you can fetch all `Post` models for a given `Country`.
 
-=== API
-[source, js]
-----
+### API
+
+```js
 manyThrough(
   relatedModel,
   relatedMethod,
   primaryKey,
   foreignKey
 )
-----
+```
 
-relatedModel::
+#### `relatedModel`
 An IoC container reference to the model the current model *needs access through* to reach the indirectly related model.
 
-relatedMethod::
+#### `relatedMethod`
 The relationship method called on `relatedModel` to fetch the indirectly related model results through.
 
-primaryKey::
+#### `primaryKey`
 Defaults to the current model primary key (i.e. `id`).
 
-foreignKey::
+#### `foreignKey`
 Defaults to the foreign key for the current model (in our `Posts` through `Country` example, this would be `country_id`).
 
-=== Database Tables
-link:http://res.cloudinary.com/adonisjs/image/upload/q_100/v1502905066/HasManyThrough_dcr86k.png[image:http://res.cloudinary.com/adonisjs/image/upload/q_100/v1502905066/HasManyThrough_dcr86k.png[], window="_blank"]
+### Database Tables
 
-=== Defining Relations
+![image](http://res.cloudinary.com/adonisjs/image/upload/q_100/v1502905066/HasManyThrough_dcr86k.png)
+
+### Defining Relations
 The relationships need defining on both primary and intermediary models.
 
 Continuing with our `Posts` through `Country` example, let's define the required `hasMany` relationship on the intermediary `User` model:
 
-.app/Models/User.js
-[source, js]
-----
+```js
+// .app/Models/User.js
+
 const Model = use('Model')
 
 class User extends Model {
@@ -376,13 +365,13 @@ class User extends Model {
     return this.hasMany('App/Models/Post')
   }
 }
-----
+```
 
 Finally, define the `manyThrough` relationship on the primary `Country` model:
 
-.app/Models/Country.js
-[source, js]
-----
+```js
+// .app/Models/Country.js
+
 const Model = use('Model')
 
 class Country extends Model {
@@ -390,29 +379,27 @@ class Country extends Model {
     return this.manyThrough('App/Models/User', 'posts')
   }
 }
-----
+```
 
 In the example above, the second parameter is a reference to the `posts` method on the `User` model. 
 
-NOTE: The `relatedMethod` parameter must always be passed to the `manyThrough` method for a *many through* relationship to work.
+> NOTE: The `relatedMethod` parameter must always be passed to the `manyThrough` method for a *many through* relationship to work.
 
-== Querying Data
+## Querying Data
 Querying related data is greatly simplified by Lucid's intuitive API, providing a consistent interface for all types of model relationships.
 
 If a `User` has many `Post` models, we can fetch all posts for user `id=1` like so:
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 
 const user = await User.find(1)
 const posts = await user.posts().fetch()
-----
+```
 
-Add runtime constraints by calling link:lucid#_query_builder[Query Builder] methods like a typical query:
+Add runtime constraints by calling [Query Builder](/original/markdown/08-Lucid-ORM/01-Getting-Started.md#query-builder) methods like a typical query:
 
-[source, js]
-----
+```js
 const user = await User.find(1)
 
 // published posts
@@ -420,37 +407,36 @@ const posts = await user
   .posts()
   .where('is_published', true)
   .fetch()
-----
+```
 
 The above example fetches all published posts for user `id=1`.
 
-=== Querying Pivot Table
+### Querying Pivot Table
 You can add `where` clauses for `belongsToMany` pivot tables like so:
 
-[source, js]
-----
+```js
 const user = await User.find(1)
 
 const cars = await user
   .cars()
   .wherePivot('is_current_owner', true)
   .fetch()
-----
+```
 
 The above example fetches all cars where their current owner is user `id=1`.
 
 The methods `whereInPivot` and `orWherePivot` are also available.
 
-== Eager Loading
+## Eager Loading
 When you want to fetch relations for more than one base relation (e.g. posts for more than one user), *eager loading* is the preferred way to do so.
 
-*Eager loading* is the concept of fetching relationships with the minimum database queries possible in an attempt to avoid the link:https://secure.phabricator.com/book/phabcontrib/article/n_plus_one/#overview[`n+1` problem, window="_blank"].
+*Eager loading* is the concept of fetching relationships with the minimum database queries possible in an attempt to avoid the [`n+1` problem](https://secure.phabricator.com/book/phabcontrib/article/n_plus_one/#overview).
 
 *Without eager loading*, using the techniques discussed previously in this section:
 
-.Not Recommended
-[source, js]
-----
+```js
+// Not Recommended
+
 const User = use('App/Models/User')
 
 const users = await User.all()
@@ -460,28 +446,28 @@ for (let user of users) {
   const userPosts = await user.posts().fetch()
   posts.push(userPosts)
 }
-----
+```
 
 The above example makes `n+1` queries to the database, where `n` is the number of users. Looping through a large number of users would result in a large sequence of queries made to the database, which is hardly ideal!
 
 *With eager loading*, only 2 queries are required to fetch all users and their posts:
 
-.Recommended
-[source, js]
-----
+```js
+// Recommended
+
 const User = use('App/Models/User')
 
 const users = await User
   .query()
   .with('posts')
   .fetch()
-----
+```
 
 The `with` method eager loads the passed relation as part of the original payload, so running `users.toJSON()` will now return an output like so:
 
-.JSON Output
-[source, js]
-----
+```js
+// JSON Output
+
 [
   {
     id: 1,
@@ -493,65 +479,61 @@ The `with` method eager loads the passed relation as part of the original payloa
     }]
   }
 ]
-----
+```
 
 In the JSON output above, each `User` object now has a `posts` relationship property, making it easy to spot at a glance which `Post` belongs to which `User`.
 
-=== Adding Runtime Constraints
+### Adding Runtime Constraints
 Add runtime constraints to eager loaded relationships like so:
 
-[source, js]
-----
+```js
 const users = await User
   .query()
   .with('posts', (builder) => {
     builder.where('is_published', true)
   })
   .fetch()
-----
+```
 
-=== Loading Multiple Relations
+### Loading Multiple Relations
 Multiple relations can be loaded by chaining the `with` method:
 
-[source, js]
-----
+```js
 const users = await User
   .query()
   .with('posts')
   .with('profile')
   .fetch()
-----
+```
 
-=== Loading Nested Relations
+### Loading Nested Relations
 Nested relations are loaded via *dot notation*.
 
 The following query loads all `User` posts and their related comments:
 
-[source, js]
-----
+```js
 const users = await User
   .query()
   .with('posts.comments')
   .fetch()
-----
+```
 
 Nested relation constraint callbacks apply only to the *last relation*:
 
-[source, js]
-----
+```js
 const users = await User
   .query()
   .with('posts.comments', (builder) => {
     builder.where('approved', true)
   })
   .fetch()
-----
+```
 
 In the example above, the `builder.where` clause is only applied to the `comments` relationship (not the `posts` relationship).
 
 To add a constraint to the *first relation*, use the following approach:
-[source, js]
-----
+
+```js
 const users = await User
   .query()
   .with('posts', (builder) => {
@@ -559,75 +541,70 @@ const users = await User
       .with('comments')
   })
   .fetch()
-----
+```
 
 In the example above, a `where` constraint is added to the `posts` relation while eager loading `posts.comments` at the same time.
 
-=== Retrieving loaded models data
+### Retrieving loaded models data
 To retrieve the loaded data you must call the `getRelated` method:
 
-[source, js]
-----
+```js
 const user = await User
   .query()
   .with('posts')
   .fetch()
 
 const posts = user.getRelated('posts')
-----
+```
 
-== Lazy Eager Loading
+## Lazy Eager Loading
 To load relationships *after* already fetching data, use the `load` method.
 
 For example, to load related `posts` after already fetching a `User`:
 
-[source, js]
-----
+```js
 const user = await User.find(1)
 await user.load('posts')
-----
+```
 
 You can lazily load multiple relationships using the `loadMany` method:
 
-[source, js]
-----
+```js
 const user = await User.find(1)
 await user.loadMany(['posts', 'profiles'])
-----
+```
 
 To set query constraints via `loadMany` you must pass an object:
 
-[source, js]
-----
+```js
 const user = await User.find(1)
 await user.loadMany({
   posts: (builder) => builder.where('is_published', true),
   profiles: null
 })
-----
+```
 
-=== Retrieving loaded models data
+### Retrieving loaded models data
 To retrieve the loaded data you must call the `getRelated` method:
 
-[source, js]
-----
+```js
 const user = await User.find(1)
 await user.loadMany(['posts', 'profiles'])
 
 const posts = user.getRelated('posts')
 const profiles = user.getRelated('profiles')
-----
+```
 
-== Filtering Data
+## Filtering Data
 Lucid's API makes it simple to filter data depending on a relationship's existence.
 
 Let's use the classic example of finding all *posts with comments*.
 
 Here's our `Post` model and its `comments` relationship definition:
 
-.app/Models/Post.js
-[source, js]
-----
+```js
+// .app/Models/Post.js
+
 const Model = use('Model')
 
 class Post extends Model {
@@ -635,148 +612,138 @@ class Post extends Model {
     return this.hasMany('App/Models/Comments')
   }
 }
-----
+```
 
-==== has
+#### `has`
 To only retrieve posts with at least one `Comment`, chain the `has` method:
 
-[source, js]
-----
+```js
 const posts = await Post
   .query()
   .has('comments')
   .fetch()
-----
+```
 
 *It's that simple!*&nbsp;😲
 
 Add an expression/value constraint to the `has` method like so:
 
-[source, js]
-----
+```js
 const posts = await Post
   .query()
   .has('comments', '>', 2)
   .fetch()
-----
+```
 
 The above example will only retrieve posts with more than 2 comments.
 
-==== whereHas
+#### `whereHas`
 The `whereHas` method is similar to `has` but enables more specific constraints.
 
 For example, to fetch all posts with at least 2 published comments:
 
-[source, js]
-----
+```js
 const posts = await Post
   .query()
   .whereHas('comments', (builder) => {
     builder.where('is_published', true)
   }, '>', 2)
   .fetch()
-----
+```
 
-==== doesntHave
+#### `doesntHave`
 The opposite of the `has` clause:
 
-[source, js]
-----
+```js
 const posts = await Post
   .query()
   .doesntHave('comments')
   .fetch()
-----
+```
 
-NOTE: This method does not accept an expression/value constraint.
+> NOTE: This method does not accept an expression/value constraint.
 
-==== whereDoesntHave
+#### `whereDoesntHave`
 The opposite of the `whereHas` clause:
 
-[source, js]
-----
+```js
 const posts = await Post
   .query()
   .whereDoesntHave('comments', (builder) => {
     builder.where('is_published', false)
   })
   .fetch()
-----
+```
 
-NOTE: This method does not accept an expression/value constraint.
+> NOTE: This method does not accept an expression/value constraint.
 
 You can add an `or` clause by calling the `orHas`, `orWhereHas`, `orDoesntHave` and `orWhereDoesntHave` methods.
 
-== Counts
+## Counts
 Retrieve relationship *counts* by calling the `withCount` method:
 
-[source, js]
-----
+```js
 const posts = await Post
   .query()
   .withCount('comments')
   .fetch()
 
 posts.toJSON()
-----
+```
 
-.JSON Output
-[source, js]
-----
+```js
+// JSON Output
+
 {
   title: 'Adonis 101',
   __meta__: {
     comments_count: 2
   }
 }
-----
+```
 
 Define an *alias* for a count like so:
 
-[source, js]
-----
+```js
 const posts = await Post
   .query()
   .withCount('comments as total_comments')
   .fetch()
-----
+```
 
-.JSON Output
-[source, js]
-----
+```js
+// JSON Output
+
 __meta__: {
   total_comments: 2
 }
-----
+```
 
-=== Count Constraints
+### Count Constraints
 For example, to only retrieve the count of comments which have been approved:
 
-[source, js]
-----
+```js
 const posts = await Post
   .query()
   .withCount('comments', (builder) => {
     builder.where('is_approved', true)
   })
   .fetch()
-----
+```
 
-== Inserts, Updates & Deletes
+## Inserts, Updates & Deletes
 Adding, updating and deleting related records is as simple as querying data.
 
-==== save
+#### `save`
 The `save` method expects an instance of the related model.
 
 `save` can be applied to the following relationship types:
 
-[ul-shrinked]
 - `hasOne`
 - `hasMany`
 - `belongsToMany`
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 const Post = use('App/Models/Post')
 
@@ -786,20 +753,18 @@ const post = new Post()
 post.title = 'Adonis 101'
 
 await user.posts().save(post)
-----
+```
 
-==== create
+#### `create`
 The `create` method is similar to `save` but expects a plain JavaScript object, returning the related model instance.
 
 `create` can be applied to the following relationship types:
 
-[ul-shrinked]
 - `hasOne`
 - `hasMany`
 - `belongsToMany`
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 
 const user = await User.find(1)
@@ -807,19 +772,17 @@ const user = await User.find(1)
 const post = await user
   .posts()
   .create({ title: 'Adonis 101' })
-----
+```
 
-==== createMany
+#### `createMany`
 Save many related rows to the database.
 
 `createMany` can be applied to the following relationship types:
 
-[ul-shrinked]
 - `hasMany`
 - `belongsToMany`
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 
 const user = await User.find(1)
@@ -830,19 +793,17 @@ const post = await user
     { title: 'Adonis 101' },
     { title: 'Lucid 101' }
   ])
-----
+```
 
-==== saveMany
+#### `saveMany`
 Similar to `save`, but instead saves multiple instances of the related model:
 
 `saveMany` can be applied to the following relationship types:
 
-[ul-shrinked]
 - `hasMany`
 - `belongsToMany`
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 const Post = use('App/Models/Post')
 
@@ -857,14 +818,14 @@ lucidPost.title = 'Lucid 101'
 await user
   .posts()
   .saveMany([adonisPost, lucidPost])
-----
+```
 
-==== associate
+#### `associate`
 The `associate` method is exclusive to the `belongsTo` relationship, associating two model instances with each other.
 
 Assuming a `Profile` belongs to a `User`, to associate a `User` with a `Profile`:
-[source, js]
-----
+
+```js
 const Profile = use('App/Models/Profile')
 const User = use('App/Models/User')
 
@@ -872,26 +833,24 @@ const user = await User.find(1)
 const profile = await Profile.find(1)
 
 await profile.user().associate(user)
-----
+```
 
-==== dissociate
+#### `dissociate`
 The `dissociate` method is the opposite of `associate`.
 
 To drop an associated relationship:
 
-[source, js]
-----
+```js
 const Profile = use('App/Models/Profile')
 const profile = await Profile.find(1)
 
 await profile.user().dissociate()
-----
+```
 
-==== attach
+#### `attach`
 The `attach` method is called on a `belongsToMany` relationship to attach a related model via pivot table:
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 const Car = use('App/Models/Car')
 
@@ -899,12 +858,11 @@ const mercedes = await Car.findBy('reg_no', '39020103')
 const user = await User.find(1)
 
 await user.cars().attach([mercedes.id])
-----
+```
 
 The `attach` method accepts an optional callback receiving the `pivotModel` instance, allowing you to set extra properties on a pivot table if required:
 
-[source, js]
-----
+```js
 const mercedes = await Car.findBy('reg_no', '39020103')
 const audi = await Car.findBy('reg_no', '99001020')
 
@@ -916,34 +874,31 @@ await user.cars().attach(cars, (row) => {
     row.is_current_owner = true
   }
 })
-----
+```
 
-NOTE: The `create` and `save` methods for `belongsToMany` relationships also accept a callback allowing you to set extra properties on a pivot table if required.
+> NOTE: The `create` and `save` methods for `belongsToMany` relationships also accept a callback allowing you to set extra properties on a pivot table if required.
 
-==== detach
+#### `detach`
 The `detach` method is the opposite of the `attach` method, removing all existing pivot table relationships:
 
-[source, js]
-----
+```js
 const user = await User.find(1)
 await user.cars().detach()
-----
+```
 
 To detach only selected relations, pass an array of ids:
 
-[source, js]
-----
+```js
 const user = await User.find(1)
 const mercedes = await Car.findBy('reg_no', '39020103')
 
 await user.cars().detach([mercedes.id])
-----
+```
 
-==== sync
+#### `sync`
 The `sync` method provides a convenient shortcut for `detach` then `attach`:
 
-[source, js]
-----
+```js
 const mercedes = await Car.findBy('reg_no', '39020103')
 const user = await User.find(1)
 
@@ -952,27 +907,25 @@ const user = await User.find(1)
 // await user.cars().attach([mercedes.id])
 
 await user.cars().sync([mercedes.id])
-----
+```
 
-==== update
+#### `update`
 The `update` method bulk updates queried rows.
 
-You can use link:lucid#_query_builder[Query Builder] methods to update specific fields only:
+You can use [Query Builder](/original/markdown/08-Lucid-ORM/01-Getting-Started.md#query-builder) methods to update specific fields only:
 
-[source, js]
-----
+```js
 const user = await User.find(1)
 
 await user
   .posts()
   .where('title', 'Adonis 101')
   .update({ is_published: true })
-----
+```
 
 To update a pivot table, call `pivotQuery` before `update`:
 
-[source, js]
-----
+```js
 const user = await User.find(1)
 
 await user
@@ -980,19 +933,18 @@ await user
   .pivotQuery()
   .where('name', 'mercedes')
   .update({ is_current_owner: true })
-----
+```
 
-==== delete
+#### `delete`
 The `delete` method removes related rows from the database:
 
-[source, js]
-----
+```js
 const user = await User.find(1)
 
 await user
   .cars()
   .where('name', 'mercedes')
   .delete()
-----
+```
 
-NOTE: In the case of `belongsToMany`, this method also drops the relationship from the pivot table.
+> NOTE: In the case of `belongsToMany`, this method also drops the relationship from the pivot table.

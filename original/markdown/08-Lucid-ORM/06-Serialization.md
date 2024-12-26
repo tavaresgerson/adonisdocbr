@@ -1,70 +1,63 @@
 ---
 title: Serialization
-permalink: serializers
 category: lucid-orm
 ---
 
-= Serialization
-
-toc::[]
+# Serialization
 
 *Serializers* provide clean abstractions to transform database results.
 
-AdonisJs ships with the default link:https://github.com/adonisjs/adonis-lucid/blob/develop/src/Lucid/Serializers/Vanilla.js[Vanilla Serializer, window="_blank"], but you are free to create and use any serializer your application requires.
+AdonisJs ships with the default [Vanilla Serializer](https://github.com/adonisjs/adonis-lucid/blob/develop/src/Lucid/Serializers/Vanilla.js), but you are free to create and use any serializer your application requires.
 
-A common serializer usage is to format data as per the link:http://jsonapi.org/[JSON:API, window="_blank"] spec.
+A common serializer usage is to format data as per the [JSON:API](http://jsonapi.org/) spec.
 
-== Introduction
-Database queries made via link:lucid[Lucid models] return serializable instances:
+## Introduction
+Database queries made via [Lucid models](/original/markdown/08-Lucid-ORM/01-Getting-Started.md) return serializable instances:
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 
 const users = await User.all()
 
 // users -> Vanilla Serializer instance
-----
+```
 
 To convert a serializable instance to a plain array/object, call its `toJSON` method:
 
-[source, js]
-----
+```js
 const json = users.toJSON()
-----
+```
 
 Calling `toJSON` on any serializable instance returns data ready for JSON output.
 
-=== Why Use Serializers?
+### Why Use Serializers?
 When writing an API server, it's unlikely you'll want to return unserialized model instance data to your users.
 
 *Serializers* solve this problem by formatting model data when required.
 
 Assuming a `User` can have many `Post` relations:
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 
 const users = await User
   .query()
   .with('posts')
   .fetch()
-----
+```
 
 In the example above, Lucid loads all `User` models and their `Post` relations, but doesn't format the loaded data for JSON at this point in time.
 
 When `toJSON` is finally called on `users`, the responsibility of formatting the data is delegated to the Vanilla Serializer:
 
-[source, js]
-----
+```js
 // serialize the data
 users.toJSON()
-----
+```
 
-.Output
-[source, js]
-----
+```js
+// Output
+
 [
   {
     id: 1,
@@ -78,65 +71,61 @@ users.toJSON()
     ]
   }
 ]
-----
+```
 
 A serializer executes all `getters`, `setters` and `computed properties` before returning formatted model data.
 
-== Using Serializer
+## Using Serializer
 Serializers can be defined per model by overriding the `Serializer` getter:
 
-.app/Models/User.js
-[source, js]
-----
+```js
+// .app/Models/User.js
+
 class User extends Model {
   static get Serializer () {
     return // your own implementation
   }
 }
-----
+```
 
-== Vanilla Serializer
-The link:https://github.com/adonisjs/adonis-lucid/blob/develop/src/Lucid/Serializers/Vanilla.js[Vanilla Serializer, window="_blank"] performs the following operations:
+## Vanilla Serializer
+The [Vanilla Serializer](https://github.com/adonisjs/adonis-lucid/blob/develop/src/Lucid/Serializers/Vanilla.js) performs the following operations:
 
 1. Attach all relations next to each model record as a property.
 2. Attach all `sideloaded` data to the root `\___meta___` key, for example, *posts counts* for a given user are represented like so:
-+
-[source, js]
-----
-{
-  id: 1,
-  username: 'virk',
-  __meta__: {
-    posts_count: 2
+  ```js
+  {
+    id: 1,
+    username: 'virk',
+    __meta__: {
+      posts_count: 2
+    }
   }
-}
-----
+  ```
 3. Format pagination results:
-+
-[source, js]
-----
-{
-  total: 10,
-  perPage: 20,
-  lastPage: 1,
-  currentPage: 1,
-  data: []
-}
-----
+  ```js
+  {
+    total: 10,
+    perPage: 20,
+    lastPage: 1,
+    currentPage: 1,
+    data: []
+  }
+  ```
 
-== Creating Serializer
+## Creating Serializer
 Create your own serializer to return data in a format not provided by AdonisJs.
 
 The serializer API is intentionally small to make it easy to add new serializers.
 
-NOTE: Avoid custom serializers for small amends to JSON output. Instead, use `getters` and `computed properties`.
+> NOTE: Avoid custom serializers for small amends to JSON output. Instead, use `getters` and `computed properties`.
 
-=== API Overview
+### API Overview
 Below is an example template for a custom serializer:
 
-.app/Serializers/CustomSerializer.js
-[source, js]
-----
+```js
+// .app/Serializers/CustomSerializer.js
+
 class CustomSerializer {
   constructor (rows, pages = null, isOne = false) {
     this.rows = rows
@@ -162,28 +151,28 @@ class CustomSerializer {
 }
 
 module.exports = CustomSerializer
-----
+```
 
-Once your custom serializer is created, bind it to the link:ioc-container[IoC container]:
+Once your custom serializer is created, bind it to the [IoC container](/original/markdown/02-Concept/02-ioc-container.md):
 
-.start/hooks.js
-[source, js]
-----
+```js
+// .start/hooks.js
+
 const { ioc } = require('@adonisjs/fold')
 
 ioc.bind('MyApp/CustomSerializer', () => {
   return require('./app/Serializers/CustomSerializer')
 })
-----
+```
 
 Once bound to the container, define your custom serializer per model:
 
-.app/Models/User.js
-[source, js]
-----
+```js
+// .app/Models/User.js
+
 class User extends Model {
   static get Serializer () {
     return 'MyApp/CustomSerializer'
   }
 }
-----
+```

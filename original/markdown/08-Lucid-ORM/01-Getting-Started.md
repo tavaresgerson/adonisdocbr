@@ -1,80 +1,73 @@
 ---
 title: Getting Started
-permalink: lucid
 category: lucid-orm
 ---
 
-= Getting Started
+# Getting Started
 
-toc::[]
+*Lucid* is the AdonisJS implementation of the [active record pattern](https://en.wikipedia.org/wiki/Active_record_pattern).
 
-*Lucid* is the AdonisJS implementation of the link:https://en.wikipedia.org/wiki/Active_record_pattern[active record pattern, window="_blank"].
+If you're familiar with *Laravel* or *Ruby on Rails*, you'll find many similarities between Lucid and Laravel's [Eloquent](https://laravel.com/docs/eloquent) or Rails' [Active Record](https://guides.rubyonrails.org/active_record_basics.html).
 
-If you're familiar with *Laravel* or *Ruby on Rails*, you'll find many similarities between Lucid and Laravel's link:https://laravel.com/docs/eloquent[Eloquent, window="_blank"] or Rails' link:https://guides.rubyonrails.org/active_record_basics.html[Active Record, window="_blank"].
-
-== Introduction
+## Introduction
 Active record models are generally preferred over plain database queries for their ease of use and powerful APIs to drive application data flow.
 
 *Lucid models* provide many benefits, including:
 
 1. Fetching and persisting model data transparently.
 2. An expressive API to manage relationships:
-+
-.app/Models/User.js
-[source, javascript]
-----
-class User extends Model {
+    ```js
+    // .app/Models/User.js
 
-  profile () {
-    return this.hasOne('App/Models/Profile')
-  }
+    class User extends Model {
 
-  posts () {
-    return this.hasMany('App/Models/Post')
-  }
+      profile () {
+        return this.hasOne('App/Models/Profile')
+      }
 
-}
-----
-3. Lifecycle link:database-hooks[hooks] to keep your code link:https://en.wikipedia.org/wiki/Don%27t_repeat_yourself[DRY, window="_blank"].
-4. link:database-getters-setters[Getters/setters] to mutate data on the fly.
-5. Data link:serializers[serialization] using serializers, computed properties, etc.
-6. link:#_dates[Date format] management.
-7. …and much more.
+      posts () {
+        return this.hasMany('App/Models/Post')
+      }
 
-NOTE: Lucid models aren't tied to your database schema, instead, they manage everything on their own. For example, there's no need to define associations in SQL when using Lucid relationships.
+    }
+    ```
+3. Lifecycle [hooks](/original/markdown/08-Lucid-ORM/02-Hooks.md) to keep your code [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself).
+4. [Getters/setters](/original/markdown/08-Lucid-ORM/04-Mutators.md) to mutate data on the fly.
+5. Data [serialization](/original/markdown/08-Lucid-ORM/06-Serialization.md) using serializers, computed properties, etc.
+6. [Date format](#dates) management.
+7. ...and much more.
+
+> NOTE: Lucid models aren't tied to your database schema, instead, they manage everything on their own. For example, there's no need to define associations in SQL when using Lucid relationships.
 
 *Lucid models* are stored in the `app/Models` directory, where each model represents a database table.
 
 Examples of model/table mappings include:
 
-[options="header", cols="30, 70"]
-|====
-| Model | Database Table
-| User | `users`
-| Post | `posts`
-| Comment | `comments`
-|====
+| Model   | Database Table  |
+|---------|-----------------|
+| User    | `users`         |
+| Post    | `posts`         |
+| Comment | `comments`      |
 
-== Basic Example
+## Basic Example
 Let's see how to create a model and use it to read and write to the database.
 
-=== Making a Model
+### Making a Model
 First, use the `make:model` command to generate a `User` model class:
 
-[source, bash]
-----
-> adonis make:model User
-----
+```bash
+adonis make:model User
+```
 
-.Output
-[source, bash]
-----
+```bash
+# .Output
+
 ✔ create  app/Models/User.js
-----
+```
 
-.app/Models/User.js
-[source, js]
-----
+```js
+// .app/Models/User.js
+
 'use strict'
 
 const Model = use('Model')
@@ -83,27 +76,25 @@ class User extends Model {
 }
 
 module.exports = User
-----
+```
 
-TIP: Pass the `--migration` flag to also generate a migration file.
+> TIP: Pass the `--migration` flag to also generate a migration file.
 
-[source, bash]
-----
-> adonis make:model User --migration
-----
+```bash
+adonis make:model User --migration
+```
 
-.Output
-[source, bash]
-----
+```bash
+# .Output
+
 ✔ create  app/Models/User.js
 ✔ create  database/migrations/1502691651527_users_schema.js
-----
+```
 
-=== Creating a User
+### Creating a User
 Next, instantiate a `User` instance and save it to the database:
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 
 const user = new User()
@@ -112,188 +103,176 @@ user.username = 'virk'
 user.password = 'some-password'
 
 await user.save()
-----
+```
 
-=== Fetching Users
+### Fetching Users
 Finally, inside the `start/routes.js` file, fetch all `User` instances:
 
-.start/routes.js
-[source, js]
-----
+```js
+// .start/routes.js
+
 const Route = use('Route')
 const User = use('App/Models/User')
 
 Route.get('users', async () => {
   return await User.all()
 })
-----
+```
 
-== Convention Over Configuration
+## Convention Over Configuration
 *Lucid models* act based on AdonisJs conventions, but you are free to override the defaults via your application settings.
 
-==== table
+#### `table`
 By default, the model database table name is the *lowercase* and *plural* form of the model name (e.g. `User` → `users`).
 
 To override this behaviour, set a `table` getter on your model:
 
-[source, js]
-----
+```js
 class User extends Model {
   static get table () {
     return 'my_users'
   }
 }
-----
+```
 
-==== connection
+#### `connection`
 By default, models use the default connection defined inside the `config/database.js` file.
 
 To override this behaviour, set a `connection` getter on your model:
 
-[source, js]
-----
+```js
 class User extends Model {
   static get connection () {
     return 'mysql'
   }
 }
-----
+```
 
-==== primaryKey
+#### `primaryKey`
 By default, a model's primary key is set to the `id` column.
 
 To override this behaviour, set a `primaryKey` getter on your model:
 
-[source, js]
-----
+```js
 class User extends Model {
   static get primaryKey () {
     return 'uid'
   }
 }
-----
+```
 
-NOTE: The value of the `primaryKey` field should always be unique.
+> NOTE: The value of the `primaryKey` field should always be unique.
 
-==== createdAtColumn
+#### `createdAtColumn`
 The field name used to set the *creation* timestamp (return `null` to disable):
 
-[source, js]
-----
+```js
 class User extends Model {
   static get createdAtColumn () {
     return 'created_at'
   }
 }
-----
+```
 
-==== updatedAtColumn
+#### `updatedAtColumn`
 The field name used to set the *modified* timestamp (return `null` to disable):
 
-[source, js]
-----
+```js
 class User extends Model {
   static get updatedAtColumn () {
     return 'updated_at'
   }
 }
-----
+```
 
-==== incrementing
+#### `incrementing`
 Lucid assumes each model database table has an auto-incrementing primary key.
 
 To override this behaviour, set an `incrementing` getter returning `false`:
 
-[source, js]
-----
+```js
 class User extends Model {
   static get incrementing () {
     return false
   }
 }
-----
+```
 
-NOTE: When `incrementing` is set to `false`, make sure to set the model `primaryKeyValue` manually.
+> NOTE: When `incrementing` is set to `false`, make sure to set the model `primaryKeyValue` manually.
 
-==== primaryKeyValue
+#### `primaryKeyValue`
 The value of the primary key (only update when `incrementing` is set to `false`):
 
-[source, js]
-----
+```js
 const user = await User.find(1)
 console.log(user.primaryKeyValue)
 
 // when incrementing is false
 user.primaryKeyValue = uuid.v4()
-----
+```
 
-== Hiding Fields
+## Hiding Fields
 Quite often you'll need to omit fields from database results (for example, hiding user passwords from JSON output).
 
 AdonisJs makes this simple by allowing you to define `hidden` or `visible` attributes on your model classes.
 
-==== hidden
-[source, js]
-----
+#### `hidden`
+
+```js
 class User extends Model {
   static get hidden () {
     return ['password']
   }
 }
-----
+```
 
-==== visible
-[source, js]
-----
+#### `visible`
+```js
 class Post extends Model {
   static get visible () {
     return ['title', 'body']
   }
 }
-----
+```
 
-==== setVisible/setHidden
+#### `setVisible/setHidden`
 You can define `hidden` or `visible` fields for a single query like so:
 
-[source, js]
-----
+```js
 User.query().setHidden(['password']).fetch()
 
 // or set visible
 User.query().setVisible(['title', 'body']).fetch()
-----
+```
 
-
-== Dates
+## Dates
 Date management can add complexity to data driven applications.
 
 Your application might need to store and show dates in different formats, which usually requires a degree of manual work.
 
 *Lucid* handles dates gracefully, minimising work required to use them.
 
-=== Defining Date Fields
+### Defining Date Fields
 By default, the timestamps `created_at` and `updated_at` are marked as dates.
 
 Define your own fields by concatenating them in a `dates` getter on your model:
 
-[source, js]
-----
+```js
 class User extends Model {
   static get dates () {
     return super.dates.concat(['dob'])
   }
 }
-----
+```
 
 In the example above, we pull the default date fields from the parent `Model` class and push a new `dob` field to the `super.dates` array, returning all three date fields: `created_at`, `updated_at` and `dob`.
 
-=== Formatting Date Fields
+### Formatting Date Fields
 By default, Lucid formats dates for storage as `YYYY-MM-DD HH:mm:ss`.
 
 To customize date formats for storage, override the `formatDates` method:
 
-[source, js]
-----
+```js
 class User extends Model {
   static formatDates (field, value) {
     if (field === 'dob') {
@@ -302,19 +281,18 @@ class User extends Model {
     return super.formatDates(field, value)
   }
 }
-----
+```
 
 In the example above, the `value` parameter is the actual date provided when setting the field.
 
-NOTE: The `formatDates` method is called before the model instance is saved to the database, so make sure the return value is always a valid format for the database engine you are using.
+> NOTE: The `formatDates` method is called before the model instance is saved to the database, so make sure the return value is always a valid format for the database engine you are using.
 
-=== Casting Dates
+### Casting Dates
 Now we have saved dates to the database, we may want to format them differently when displaying them to the user.
 
 To format how dates are displayed, use the `castDates` method:
 
-[source, js]
-----
+```js
 class User extends Model {
   static castDates (field, value) {
     if (field === 'dob') {
@@ -323,220 +301,203 @@ class User extends Model {
     return super.formatDates(field, value)
   }
 }
-----
+```
 
-The `value` parameter is a link:https://momentjs.com/[Moment.js, window="_blank"] instance, enabling you to call any Moment method to format your dates.
+The `value` parameter is a [Moment.js](https://momentjs.com/) instance, enabling you to call any Moment method to format your dates.
 
-==== Deserialization
+### Deserialization
 
-The `castDates` method is called automatically when a model instance is link:serializers[deserialized] (triggered by calling `toJSON`):
+The `castDates` method is called automatically when a model instance is [deserialized](/original/markdown/08-Lucid-ORM/06-Serialization.adoc) (triggered by calling `toJSON`):
 
-[source, js]
-----
+```js
 const users = await User.all()
 
 // converting to JSON array
 const usersJSON = users.toJSON()
-----
+```
 
-== Query Builder
-Lucid models use the AdonisJs link:query-builder[Query Builder] to run database queries.
+## Query Builder
+Lucid models use the AdonisJs [Query Builder](/original/markdown/07-Database/02-Query-Builder.md) to run database queries.
 
 To obtain a Query Builder instance, call the model `query` method:
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 
 const adults = await User
   .query()
   .where('age', '>', 18)
   .fetch()
-----
+```
 
 1. All Query Builder methods are fully supported.
-2. The `fetch` method is required to to execute the query ensuring results return within a `serializer` instance (see the link:serializers[Serializers] documentation for more information).
+2. The `fetch` method is required to to execute the query ensuring results return within a `serializer` instance (see the [Serializers](/original/markdown/08-Lucid-ORM/06-Serialization.adoc) documentation for more information).
 
-== Static Methods
+## Static Methods
 Lucid models have numerous static methods to perform common operations without using the Query Builder interface.
 
 There is no need to call `fetch` when using the following static methods.
 
-==== find
+#### `find`
 Find a record using the primary key (always returns one record):
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 await User.find(1)
-----
+```
 
-==== findOrFail
+#### `findOrFail`
 Similar to `find`, but instead throws a `ModelNotFoundException` when unable to find a record:
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 await User.findOrFail(1)
-----
+```
 
-==== findBy / findByOrFail
+#### `findBy / findByOrFail`
 Find a record using a key/value pair (returns the first matching record):
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 await User.findBy('email', 'foo@bar.com')
 
 // or
 await User.findByOrFail('email', 'foo@bar.com')
-----
+```
 
-==== first / firstOrFail
+#### `first / firstOrFail`
 Find the first row from the database:
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 await User.first()
 
 // or
 await User.firstOrFail()
-----
+```
 
-==== last
+#### `last`
 Find the latest row from the database:
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 await User.last()
-----
+```
 
-==== findOrCreate (whereAttributes, values)
+#### `findOrCreate(whereAttributes, values)`
 Find a record, if not found a new record will be created and returned:
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 const user = await User.findOrCreate(
   { username: 'virk' },
   { username: 'virk', email: 'virk@adonisjs.com' }
 )
-----
+```
 
-==== pick(rows = 1)
+#### `pick(rows = 1)`
 Pick `x` number of rows from the database table (defaults to `1` row):
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 await User.pick(3)
-----
+```
 
-==== pickInverse(rows = 1)
+#### `pickInverse(rows = 1)`
 Pick `x` number of rows from the database table from last (defaults to `1` row):
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 await User.pickInverse(3)
-----
+```
 
-==== ids
+#### `ids`
 Return an array of primary keys:
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 const userIds = await User.ids()
-----
+```
 
-NOTE: If the primary key is `uid` an array of `uid` values are returned.
+> NOTE: If the primary key is `uid` an array of `uid` values are returned.
 
-==== pair(lhs, rhs)
+#### `pair(lhs, rhs)`
 Returns an object of key/value pairs (`lhs` is the key, `rhs` is the value):
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 const users = await User.pair('id', 'country')
 
 // returns { 1: 'ind', 2: 'uk' }
-----
+```
 
-==== all
+#### `all`
 Select all rows:
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 const users = await User.all()
-----
+```
 
-==== truncate
+#### `truncate`
 Delete all rows (truncate table):
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 const users = await User.truncate()
-----
+```
 
-== Instance Methods
+## Instance Methods
 Lucid instances have numerous methods to perform common operations without using the Query Builder interface.
 
-==== reload
+#### `reload`
 Reload a model from database:
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 const user = await User.create(props)
 // user.serviceToken === undefined
 
 await user.reload()
 // user.serviceToken === 'E1Fbl3sjH'
-----
+```
 
-NOTE: A model with properties set during a creation hook will require *reloading* to retrieve the values set during that hook.
+> NOTE: A model with properties set during a creation hook will require *reloading* to retrieve the values set during that hook.
 
-== Aggregate Helpers
-Query Builder link:query-builder#_aggregate_helpers[aggregate helpers] provide shortcuts to common aggregate queries.
+## Aggregate Helpers
+Query Builder [aggregate helpers](/original/markdown/07-Database/02-Query-Builder.md#aggregate-helpers) provide shortcuts to common aggregate queries.
 
 The following static model methods can be used to aggregate an entire table.
 
-NOTE: These methods end the Query Builder chain and return a value, so there is no need to call `link:#_query_builder[fetch()]` when using them.
+> NOTE: These methods end the Query Builder chain and return a value, so there is no need to call `[fetch()](/original/markdown/07-Database/02-Query-Builder.md#aggregate-helpers)` when using them.
 
-==== getCount(columnName = '*')
+#### `getCount(columnName = '*')`
 Return a count of records in a given result set:
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 
 // returns number
 await User.getCount()
-----
+```
 
 You can add query constraints before calling `getCount`:
-[source, js]
-----
+
+```js
 await User
   .query()
   .where('is_active', 1)
   .getCount()
-----
+```
 
-Like `getCount`, all other aggregate methods are available on the link:query-builder#_aggregate_helpers[Query Builder].
+Like `getCount`, all other aggregate methods are available on the [Query Builder](/original/markdown/07-Database/02-Query-Builder.md).
 
-== Query Scopes
+## Query Scopes
 Query scopes extract query constraints into reuseable, powerful methods.
 
 For example, fetching all users who have a profile:
 
-[source, js]
-----
+```js
 const Model = use('Model')
 
 class User extends Model {
@@ -548,37 +509,33 @@ class User extends Model {
     return this.hasOne('App/Models/Profile')
   }
 }
-----
+```
 
 By setting `scopeHasProfile`, you can constrain your query like so:
 
-[source, js]
-----
+```js
 const users = await User.query().hasProfile().fetch()
-----
+```
 
 1. Scopes are defined with the `scope` prefix followed by the method name.
 2. When calling scopes, drop the `scope` keyword and call the method in *camelCase* form (e.g. `scopeHasProfile` → `hasProfile`).
 3. You can call all standard query builder methods inside a query scope.
 
-
-== Pagination
+## Pagination
 Lucid also supports the Query Builder `paginate` method:
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 const page = 1
 
 const users = await User.query().paginate(page)
 
 return view.render('users', { users: users.toJSON() })
-----
+```
 
 In the example above, the return value of `paginate` is not an array of users, but instead an object with metadata and a `data` property containing the list of users:
 
-[source, js]
-----
+```js
 {
   total: '',
   perPage: '',
@@ -586,15 +543,14 @@ In the example above, the return value of `paginate` is not an array of users, b
   page: '',
   data: [{...}]
 }
-----
+```
 
-== Inserts & Updates
+## Inserts & Updates
 
-==== save
+#### `save`
 With models, instead of inserting raw values into the database, you persist the model instance which in turn makes the insert query for you. For example:
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 
 const user = new User()
@@ -602,12 +558,11 @@ user.username = 'virk'
 user.email = 'foo@bar.com'
 
 await user.save()
-----
+```
 
 The `save` method persists the instance to the database, intelligently determining whether to create a new row or update the existing row. For example:
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 
 const user = new User()
@@ -621,20 +576,19 @@ user.age = 22
 
 // Update
 await user.save()
-----
+```
 
 An *update* query only takes place if something has been changed.
 
 Calling `save` multiple times without updating any model attributes will not perform any subsequent queries.
 
-==== fill / merge
+#### `fill / merge`
 
 Instead of setting attributes manually, `fill` or `merge` may be used.
 
 The `fill` method overrides existing model instance key/pair values:
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 
 const user = new User()
@@ -646,12 +600,11 @@ user.fill({ age: 23 }) // remove existing values, only set age.
 await user.save()
 
 // returns { age: 23, username: null }
-----
+```
 
 The `merge` method only modifies the specified attributes:
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 
 const user = new User()
@@ -662,94 +615,87 @@ user.merge({ age: 23 })
 await user.save()
 
 // returns { age: 23, username: 'virk' }
-----
+```
 
-==== create
+#### `create`
 You can pass data directly to the model on creation, instead of manually setting attributes after instantiation:
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 const userData = request.only(['username', 'email', 'age'])
 
 // save and get instance back
 const user = await User.create(userData)
-----
+```
 
-==== createMany
+#### `createMany`
 Like `create`, you can pass data directly for multiple instances on creation:
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 const usersData = request.collect(['username' 'email', 'age'])
 
 const users = await User.createMany(usersData)
-----
+```
 
-NOTE: The `createMany` method makes *n* number of queries instead of doing a bulk insert, where *n* is the number of rows.
+> NOTE: The `createMany` method makes *n* number of queries instead of doing a bulk insert, where *n* is the number of rows.
 
-=== Bulk Updates
+### Bulk Updates
 Bulk updates are performed with the help of Query Builder (Lucid ensures dates are formatted appropriately when updating):
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 
 await User
   .query()
   .where('username', 'virk')
   .update({ role: 'admin' })
-----
+```
 
-NOTE: Bulk updates don't execute model hooks.
+> NOTE: Bulk updates don't execute model hooks.
 
-== Deletes
+## Deletes
 A single model instance can be deleted by calling the `delete` method:
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 
 const { id } = params
 const user = await User.find(id)
 
 await user.delete()
-----
+```
 
 After calling `delete`, the model instance is prohibited from performing any updates, but you can still access its data:
 
-[source, js]
-----
+```js
 await user.delete()
 
 console.log(user.id) // works fine
 
 user.id = 1 // throws exception
-----
+```
 
-=== Bulk Deletes
+### Bulk Deletes
 Bulk deletes are performed with the help of Query Builder:
 
-[source, js]
-----
+```js
 const User = use('App/Models/User')
 
 await User
   .query()
   .where('role', 'guest')
   .delete()
-----
+```
 
-NOTE: Bulk deletes don't execute model hooks.
+> NOTE: Bulk deletes don't execute model hooks.
 
-== Transactions
+## Transactions
 The majority of Lucid methods support transactions.
 
-The first step is to obtain the `trx` object using the link:database[Database Provider]:
+The first step is to obtain the `trx` object using the [Database Provider](/original/markdown/07-Database/01-Getting-Started.md):
 
-[source, js]
-----
+```js
 const Database = use('Database')
 const trx = await Database.beginTransaction()
 
@@ -760,12 +706,11 @@ await user.save(trx)
 
 // once done commit the transaction
 trx.commit()
-----
+```
 
 Like calling `save`, you can pass the `trx` object to the `create` method as well:
 
-[source, js]
-----
+```js
 const Database = use('Database')
 const trx = await Database.beginTransaction()
 
@@ -775,42 +720,36 @@ await User.create({ username: 'virk' }, trx)
 await trx.commit()
 // or rollback the transaction
 await trx.rollback()
-
-----
+```
 
 You can also pass the `trx` object to the `createMany` method:
 
-[source, js]
-----
+```js
 const user = await User.find(1, trx)
-----
+```
 
-[source, js]
-----
+```js
 const user = await User.query(trx).where('username','virk').first()
-----
+```
 
-[source, js]
-----
+```js
 await User.createMany([
   { username: 'virk' }
 ], trx)
-----
+```
 
 Also you can pass the `trx` object to the `delete` method:
 
-[source, js]
-----
+```js
 const user = await User.find(1, trx)
 
 await user.delete(trx)
-----
+```
 
-=== Transactions in Relationships
+### Transactions in Relationships
 When using transactions, you'll need to pass a `trx` object as the third parameter of the relationship `attach` and `detach` methods:
 
-[source, js]
-----
+```js
 const Database = use('Database')
 const trx = await Database.beginTransaction()
 
@@ -824,15 +763,14 @@ await userRole.load('user', null, trx)
 await trx.commit()
 // if something gone wrong
 await trx.rollback()
-----
+```
 
-== Boot Cycle
+## Boot Cycle
 Each model has a boot cycle where its `boot` method is called *once*.
 
 If you want to perform something that should only occur once, consider writing it inside the model `boot` method:
 
-[source, js]
-----
+```js
 const Model = use('Model')
 
 class User extends Model {
@@ -846,4 +784,4 @@ class User extends Model {
 }
 
 module.exports = User
-----
+```

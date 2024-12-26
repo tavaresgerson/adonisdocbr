@@ -1,47 +1,42 @@
 ---
 title: Getting Started
-permalink: websocket
 category: websockets
 ---
 
-= Getting Started
-
-toc::[]
+# Getting Started
 
 AdonisJs offers a robust *WebSocket Provider* to serve real-time apps.
 
-The server works on pure link:https://developer.mozilla.org/en-US/docs/Glossary/WebSockets[WebSocket, window="_blank"] connections (supported by all major browsers) and scales naturally within a cluster of Node.js processes.
+The server works on pure [WebSocket](https://developer.mozilla.org/en-US/docs/Glossary/WebSockets) connections (supported by all major browsers) and scales naturally within a cluster of Node.js processes.
 
-== Setup
+## Setup
 As the *WebSocket Provider* is not installed by default, pull it from `npm`:
 
-[source, bash]
-----
-> adonis install @adonisjs/websocket
-----
+```bash
+adonis install @adonisjs/websocket
+```
 
 Installing the provider adds the following files to your project:
 
-[ol-shrinked]
 1. `config/socket.js` contains WebSocket server *configuration*.
 2. `start/socket.js` boots the WebSocket server and registers *channels*.
 3. `start/wsKernel.js` *registers middleware* to execute on channel subscription.
 
 Next, register the provider inside the `start/app.js` file:
 
-.start/app.js
-[source, js]
-----
+```js
+// .start/app.js
+
 const providers = [
   '@adonisjs/websocket/providers/WsProvider'
 ]
-----
+```
 
-Finally, instruct link:ignitor[Ignitor] to boot the WebSocket server in the root `server.js` file:
+Finally, instruct [Ignitor](/original/markdown/02-Concept/05-ignitor.md) to boot the WebSocket server in the root `server.js` file:
 
-.server.js
-[source, js]
-----
+```js
+// .server.js
+
 const { Ignitor } = require('@adonisjs/ignitor')
 
 new Ignitor(require('@adonisjs/fold'))
@@ -49,16 +44,16 @@ new Ignitor(require('@adonisjs/fold'))
    .wsServer() // boot the WebSocket server
    .fireHttpServer()
    .catch(console.error)
-----
+```
 
-=== Cluster Support
-When running a link:https://nodejs.org/api/cluster.html[Node.js cluster, window="_blank"], the master node needs to connect the pub/sub communication between worker nodes.
+### Cluster Support
+When running a [Node.js cluster](https://nodejs.org/api/cluster.html), the master node needs to connect the pub/sub communication between worker nodes.
 
 To do so, add the following code to the top of the root `server.js` file:
 
-.server.js
-[source, js]
-----
+```js
+// .server.js
+
 const cluster = require('cluster')
 
 if (cluster.isMaster) {
@@ -70,41 +65,40 @@ if (cluster.isMaster) {
 }
 
 // ...
-----
+```
 
-== Basic Example
+## Basic Example
 Let's build a single room *chat server* for user messaging.
 
 To keep things simple we won't store user messages, just deliver them.
 
 Open the `start/socket.js` file and paste the following code:
 
-.start/socket.js
-[source, js]
-----
+```js
+// .start/socket.js
+
 const Ws = use('Ws')
 
 Ws.channel('chat', 'ChatController')
-----
+```
 
-NOTE: We can also bind a closure to the `Ws.channel` method, but having a dedicated controller is the recommended practice.
+> NOTE: We can also bind a closure to the `Ws.channel` method, but having a dedicated controller is the recommended practice.
 
 Next, create the `ChatController` using the `make:controller` command:
 
-[source, bash]
-----
-> adonis make:controller Chat --type=ws
-----
+```bash
+adonis make:controller Chat --type=ws
+```
 
-.Output
-[source, bash]
-----
+```bash
+# .Output
+
 ✔ create  app/Controllers/Ws/ChatController.js
-----
+```
 
-.app/Controllers/Ws/ChatController.js
-[source, js]
-----
+```js
+// .app/Controllers/Ws/ChatController.js
+
 'use strict'
 
 class ChatController {
@@ -115,24 +109,23 @@ class ChatController {
 }
 
 module.exports = ChatController
-----
+```
 
-=== Client Code
+### Client Code
 Let's switch from server to client and subscribe to the `chat` channel.
 
-First, copy the CSS and HTML template from link:https://gist.github.com/thetutlage/7f0f2252b4d22dad13753ced890051e2[this gist, window="_blank"] to the following locations:
+First, copy the CSS and HTML template from [this gist](https://gist.github.com/thetutlage/7f0f2252b4d22dad13753ced890051e2) to the following locations:
 
-[ol-shrinked]
 1. *CSS* → `public/style.css`
 2. *HTML template* → `resources/views/chat.edge`
 
-NOTE: Make sure to link:routing[define a route] to serve the HTML template.
+> NOTE: Make sure to [define a route](/original/markdown/04-Basics/01-Routing.md) to serve the HTML template.
 
-Next, create a `public/chat.js` file and paste the code below to connect the client to the server (to keep things simple we're using link:https://jquery.com[jQuery, window="_blank"]):
+Next, create a `public/chat.js` file and paste the code below to connect the client to the server (to keep things simple we're using [jQuery](https://jquery.com)):
 
-.public/chat.js
-[source, js]
-----
+```js
+// .public/chat.js
+
 let ws = null
 
 $(function () {
@@ -154,13 +147,13 @@ function startChat () {
     $('.connection-status').removeClass('connected')
   })
 }
-----
+```
 
 Then, add the channel subscription method, binding listeners to handle messages:
 
-.public/chat.js
-[source, js]
-----
+```js
+// .public/chat.js
+
 // ...
 
 function subscribeToChannel () {
@@ -176,13 +169,13 @@ function subscribeToChannel () {
     `)
   })
 }
-----
+```
 
-Finally, add the event handler to send a message when the kbd:[Enter] key is released:
+Finally, add the event handler to send a message when the [Enter] key is released:
 
-.public/chat.js
-[source, js]
-----
+```js
+// .public/chat.js
+
 // ...
 
 $('#message').keyup(function (e) {
@@ -199,16 +192,16 @@ $('#message').keyup(function (e) {
     return
   }
 })
-----
+```
 
-=== Server Code
+### Server Code
 Now finished with the client, let's switch back to the server.
 
-Add the `onMessage` link:#_event_methods[event method] to the `ChatController` file:
+Add the `onMessage` [event method](#event-methods) to the `ChatController` file:
 
-.app/Controllers/Ws/ChatController.js
-[source, js]
-----
+```js
+// .app/Controllers/Ws/ChatController.js
+
 class ChatController {
   constructor ({ socket, request }) {
     this.socket = socket
@@ -219,32 +212,30 @@ class ChatController {
     this.socket.broadcastToAll('message', message)
   }
 }
-----
+```
 
 In the example above, the `onMessage` method sends the same message to all connected clients via the socket `broadcastToAll` method.
 
-== Controllers
+## Controllers
 Controllers keep your code organised by defining separate classes per channel.
 
 WebSocket controllers are stored in the `app/Controllers/Ws` directory.
 
 A new controller instance is created per subscription with a `context` object passed to its constructor, enabling the `socket` instance to be unpacked like so:
 
-[source, js]
-----
+```js
 class ChatController {
   constructor ({ socket }) {
     this.socket = socket
   }
 }
-----
+```
 
-=== Event Methods
+### Event Methods
 
 Bind to WebSocket events by creating controller methods with the same name:
 
-[source, js]
-----
+```js
 class ChatController {
   onMessage () {
     // same as: socket.on('message')
@@ -258,6 +249,6 @@ class ChatController {
     // same as: socket.on('error')
   }
 }
-----
+```
 
-NOTE: Event methods must be prefixed with the `on` keyword.
+> NOTE: Event methods must be prefixed with the `on` keyword.
