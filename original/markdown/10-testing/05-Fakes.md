@@ -1,24 +1,22 @@
 ---
-permalink: testing-fakes
 title: Fakes
 category: testing
 ---
 
-= Fakes
+# Fakes
 
-toc::[]
 Quite often, you'll want to swap out the original implementation of certain parts of your application with a fake implementation when writing tests.
 
 Since AdonisJs leverages an IoC container to manage dependencies, it's incredibly easy to create fake implementations when writing tests.
 
-== Self-Implementing Fakes
+## Self-Implementing Fakes
 Let's start with a basic example of faking a service that normally sends emails.
 
-NOTE: Creating too many test fakes may lead to false tests, where all you are testing is the syntax and not the implementation. As a rule, try to keep fakes as the last option when writing your tests.
+> NOTE: Creating too many test fakes may lead to false tests, where all you are testing is the syntax and not the implementation. As a rule, try to keep fakes as the last option when writing your tests.
 
-.app/Services/UserRegistration.js
-[source, js]
-----
+```js
+// .app/Services/UserRegistration.js
+
 class UserRegistration {
 
   async sendVerificationEmail (user) {
@@ -28,14 +26,13 @@ class UserRegistration {
     })
   }
 }
-----
+```
 
 Without implementing a fake, each time we test our application's user registration logic, a verification email would be sent to the passed email address!
 
 To avoid this behavior, it makes sense to fake the `UserRegistration` service:
 
-[source, js]
-----
+```js
 const { ioc } = use('@adonisjs/fold')
 const { test } = use('Test/Suite')('User registration')
 
@@ -51,19 +48,18 @@ test('register user', async () => {
 
   ioc.restore('App/Services/UserRegistration')
 })
-----
+```
 
 The `ioc.fake` method lets you bind a fake value to the IoC container, and when any part of the application tries to resolve the bound namespace, the fake value is returned instead of the actual value.
 
 Once finished with a fake, `ioc.restore` can be called to remove it.
 
-This approach works great for a majority of use cases until you can create a fake which is similar to the actual implementation. For greater control, you can use external libraries like link:http://sinonjs.org/[Sinon.JS, window="_blank"].
+This approach works great for a majority of use cases until you can create a fake which is similar to the actual implementation. For greater control, you can use external libraries like [Sinon.JS](http://sinonjs.org/).
 
-== Mail Fake
+## Mail Fake
 The AdonisJs link:mail[Mail Provider] comes with a built-in `fake` method:
 
-[source, js]
-----
+```js
 const Mail = use('Mail')
 const { test } = use('Test/Suite')('User registration')
 
@@ -78,58 +74,52 @@ test('register user', async ({ assert }) => {
 
   Mail.restore()
 })
-----
+```
 
 Calling `Mail.fake` binds a fake mailer to the IoC container. Once faked, all emails are stored in memory as an array of objects which can be later run assertions against.
 
 The following methods are available on the fake mailer.
 
-==== recent()
+#### `recent()`
 Returns the most recent email object:
 
-[source, js]
-----
+```js
 Mail.recent()
-----
+```
 
-==== pullRecent()
+#### `pullRecent()`
 Returns the recent email object and removes it from the in-memory array:
 
-[source, js]
-----
+```js
 Mail.pullRecent()
-----
+```
 
-==== all()
+#### `all()`
 Returns all emails:
 
-[source, js]
-----
+```js
 const mails = Mail.all()
 assert.lengthof(mails, 1)
-----
+```
 
-==== clear()
+#### `clear()`
 Clears the in-memory emails array:
 
-[source, js]
-----
+```js
 Mail.clear()
-----
+```
 
-==== restore()
+#### `restore()`
 Restore the original emailer class:
 
-[source, js]
-----
+```js
 Mail.restore()
-----
+```
 
-== Events Fake
-The AdonisJs link:events[Event Provider] also comes with a built-in `fake` method:
+## Events Fake
+The AdonisJs [Event Provider](/original/markdown/06-Digging-Deeper/02-Events.md) also comes with a built-in `fake` method:
 
-[source, js]
-----
+```js
 const Event = use('Event')
 const { test } = use('Test/Suite')('User registration')
 
@@ -144,14 +134,13 @@ test('register user', async ({ assert }) => {
 
   Event.restore()
 })
-----
+```
 
 Calling `Event.fake` binds a fake event emitter to the IoC container. Once faked, all emitted events are stored in memory as an array of objects which can be later run assertions against.
 
 You can also `trap` an event inline and run assertions inside the passed callback:
 
-[source, js]
-----
+```js
 test('register user', async ({ assert }) => {
   assert.plan(2)
   Event.fake()
@@ -166,61 +155,55 @@ test('register user', async ({ assert }) => {
 
   Event.restore()
 })
-----
+```
 
 The following methods are available on the fake event emitter.
 
-==== recent()
+#### `recent()`
 Returns the most recent event object:
 
-[source, js]
-----
+```js
 Event.recent()
-----
+```
 
-==== pullRecent()
+#### `pullRecent()`
 Returns the recent event object and removes it from the in-memory array:
 
-[source, js]
-----
+```js
 Event.pullRecent()
-----
+```
 
-==== all()
+#### `all()`
 Returns all events:
 
-[source, js]
-----
+```js
 const events = Event.all()
 assert.lengthof(events, 1)
-----
+```
 
-==== clear()
+#### `clear()`
 Clears the in-memory array of events:
 
-[source, js]
-----
+```js
 Event.clear()
-----
+```
 
-==== restore()
+#### `restore()`
 Restore the original event class:
 
-[source, js]
-----
+```js
 Event.restore()
-----
+```
 
-== Database Transactions
+## Database Transactions
 Keeping your database clean for each test can be difficult.
 
 AdonisJs ships with a `DatabaseTransactions` trait that wraps your databases queries inside a transaction then rolls them back after each test:
 
-[source, js]
-----
+```js
 const { test, trait } = use('Test/Suite')('User registration')
 
 trait('DatabaseTransactions')
-----
+```
 
-Alternatively, you could set a link:testing#_lifecycle_hooks[Lifecycle Hook] to truncate your database tables after each test, but using the `DatabaseTransactions` trait would be far simpler.
+Alternatively, you could set a [Lifecycle Hook](/original/markdown/10-testing/01-Getting-Started.md) to truncate your database tables after each test, but using the `DatabaseTransactions` trait would be far simpler.

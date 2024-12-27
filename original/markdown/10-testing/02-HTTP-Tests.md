@@ -1,48 +1,44 @@
 ---
-permalink: api-tests
 title: HTTP Tests
 category: testing
 ---
 
-= HTTP Tests
-
-toc::[]
+# HTTP Tests
 
 In this guide, we learn how to write HTTP tests against an API server.
 
 If you are new to testing with AdonisJs, or just testing in general, consider reading the link:testing[Getting Started] guide before continuing further.
 
-== Basic Example
+## Basic Example
 Let's start with a basic example to test a HTTP endpoint returns a list of posts in JSON format.
 
-NOTE: The following example assumes you've created a `Post` model with related database table, and defined a `GET /posts` route that returns all `Post` models.
+> NOTE: The following example assumes you've created a `Post` model with related database table, and defined a `GET /posts` route that returns all `Post` models.
 
 First, make a new *functional test* (since we'll test the API like an end-user):
 
-[source, bash]
-----
-> adonis make:test Post
-----
+```bash
+adonis make:test Post
+```
 
-.make:test Menu
-[source, bash]
-----
+```bash
+# .make:test Menu
+
 > Select the type of test to create
   Unit test
 ❯ Functional test
-----
+```
 
-.Output
-[source, bash]
-----
+```bash
+# Output
+
 create: test/functional/post.spec.js
-----
+```
 
 Next, open the test file and paste in the following code:
 
-.test/functional/post.spec.js
-[source, js]
-----
+```js
+// .test/functional/post.spec.js
+
 const { test, trait } = use('Test/Suite')('Post')
 const Post = use('App/Models/Post')
 
@@ -62,9 +58,9 @@ test('get list of posts', async ({ client }) => {
     body: 'Blog post content'
   }])
 })
-----
+```
 
-Examining our test file…
+Examining our test file...
 
 1. We register the `Test/ApiClient` trait, providing us an HTTP `client` to make requests with
 2. We create a dummy `Post` instance
@@ -74,14 +70,13 @@ and at least one returned post has the same `title` and `body` as our dummy `Pos
 
 Finally, run all your functional tests via the following command:
 
-[source, bash]
-----
-> adonis test functional
-----
+```bash
+adonis test functional
+```
 
-.Output
-[source, bash]
-----
+```bash
+# Output
+
   Post
     ✓ get list of posts (286ms)
 
@@ -90,140 +85,126 @@ Finally, run all your functional tests via the following command:
   total       : 1
   passed      : 1
   time        : 289ms
-----
+```
 
-++++
 Your first HTTP test <span style="background: lightgreen; padding: 0 5px;">PASSED</span>. Congratulations! 🎉
-++++
 
-== Client Methods
+## Client Methods
 The following methods can be called when making HTTP requests.
 
-==== get(url)
+#### `get(url)`
 Make an HTTP `GET` request to a given url:
 
-[source, js]
-----
+```js
 client.get('posts')
-----
+```
 
-TIP: The `post`, `patch`, `put`, `delete`, and `head` methods can also be used to make HTTP requests.
+> TIP: The `post`, `patch`, `put`, `delete`, and `head` methods can also be used to make HTTP requests.
 
-==== header(key, value)
+#### `header(key, value)`
 Set a header `key/value` pair when making the HTTP request:
 
-[source, js]
-----
+```js
 client
   .get('posts')
   .header('accept', 'application/json')
-----
+```
 
-==== send(body)
+#### `send(body)`
 Send request body when making the HTTP request:
 
-[source, js]
-----
+```js
 client
   .post('posts')
   .send({
     title: 'Adonis 101',
     body: 'Post content'
   })
-----
+```
 
-==== query(queryObject)
+#### `query(queryObject)`
 Set query string parameters:
 
-[source, js]
-----
+```js
 client
   .get('posts')
   .query({ order: 'desc', page: 1 }) // ?order=desc&page=1
-----
+```
 
-==== type(type)
+#### `type(type)`
 Set the request content type:
 
-[source, js]
-----
+```js
 client
   .get('posts')
   .type('json')
-----
+```
 
-==== accept(type)
+#### `accept(type)`
 Set the data type you want to accept from the server:
 
-[source, js]
-----
+```js
 client
   .get('posts')
   .accept('json')
-----
+```
 
-==== cookie(key, value)
+#### `cookie(key, value)`
 Set request cookies:
 
-[source, js]
-----
+```js
 client
   .get('posts')
   .cookie('name', 'virk')
-----
+```
 
-NOTE: As all cookies are encrypted in AdonisJs, this method makes sure to encrypt the values properly so that AdonisJs server can parse them.
+> NOTE: As all cookies are encrypted in AdonisJs, this method makes sure to encrypt the values properly so that AdonisJs server can parse them.
 
-==== plainCookie(key, value)
+#### `plainCookie(key, value)`
 Set a cookie which doesn't get encrypted:
 
-[source, js]
-----
+```js
 client
   .get('posts')
   .plainCookie('name', 'virk')
-----
+```
 
-==== end
+#### `end`
 End the HTTP request chain, execute the request and return the response:
 
-[source, js]
-----
+```js
 const response = await client.get('posts').end()
-----
+```
 
-NOTE: You must call `end` to execute HTTP `client` requests.
+> NOTE: You must call `end` to execute HTTP `client` requests.
 
-== Multipart Requests
+## Multipart Requests
 To make multipart requests and send files with the request body:
 
-[source, js]
-----
+```js
 await client
   .post('posts')
   .field('title', 'Adonis 101')
   .attach('cover_image', Helpers.tmpPath('cover-image.jpg'))
   .end()
-----
+```
 
 You can also set HTML form style field names to send an array of data:
 
-[source, js]
-----
+```js
 await client
   .post('user')
   .field('user[name]', 'Virk')
   .field('user[email]', 'virk@adonisjs.com')
   .end()
-----
+```
 
-== Sessions
+## Sessions
 When writing tests, you may want to set sessions beforehand.
 
 This can be done by using the `Session/Client` trait:
 
-[source, js]
-----
+```js
 const { test, trait } = use('Test/Suite')('Post')
 
 trait('Test/ApiClient')
@@ -235,15 +216,14 @@ test('get list of posts', async ({ client }) => {
     .session('adonis-auth', 1)
     .end()
 })
-----
+```
 
-NOTE: The AdonisJs link:sessions#_setup[Session Provider] must be installed before you can take advantage of the `Session/Client` trait.
+> NOTE: The AdonisJs [Session Provider](/original/markdown/04-Basics/07-Sessions.md#setup) must be installed before you can take advantage of the `Session/Client` trait.
 
-== Authentication
+## Authentication
 You can authenticate users beforehand by using the `Auth/Client` trait:
 
-[source, js]
-----
+```js
 const { test, trait } = use('Test/Suite')('Post')
 
 trait('Test/ApiClient')
@@ -258,72 +238,65 @@ test('get list of posts', async ({ client }) => {
     .loginVia(user)
     .end()
 })
-----
+```
 
 To authenticate with a custom scheme:
 
-[source, js]
-----
+```js
 client
   .get('posts')
   .loginVia(user, 'jwt')
-----
+```
 
 For basic auth, pass the user's `username` and the `password`:
 
-[source, js]
-----
+```js
 client
   .get('posts')
   .loginVia(username, password, 'basic')
-----
+```
 
-== Assertions
+## Assertions
 The following assertions can be called on HTTP `client` responses.
 
-==== assertStatus
+#### `assertStatus`
 Assert the response status:
 
-[source, js]
-----
+```js
 response.assertStatus(200)
-----
+```
 
-==== assertJSON
+#### `assertJSON`
 Assert the response body should `deepEqual` the expected value:
 
-[source, js]
-----
+```js
 response.assertJSON({
 })
-----
+```
 
-==== assertJSONSubset
+#### `assertJSONSubset`
 Assert a subset of JSON:
 
-[source, js]
-----
+```js
 response.assertJSONSubset({
   title: 'Adonis 101',
   body: 'Some content'
 })
-----
+```
 
-TIP: This assertion tests a subset of objects, which is helpful when values inside an object are not determinable (e.g. timestamps).
+> TIP: This assertion tests a subset of objects, which is helpful when values inside an object are not determinable (e.g. timestamps).
 
-==== assertText
+#### `assertText`
 Assert plain text returned by the server:
 
-[source, js]
-----
+```js
 response.assertText('Hello world')
-----
+```
 
-==== assertError
+#### `assertError`
 Assert the response error:
 
-[source, js]
-----
+```js
 response.assertError([
   {
     message: 'username is required',
@@ -331,52 +304,46 @@ response.assertError([
     validation: 'required'
   }
 ])
-----
+```
 
-==== assertCookie
+#### `assertCookie`
 Assert the server set a cookie with value:
 
-[source, js]
-----
+```js
 response.assertCookie('key', 'value')
-----
+```
 
-==== assertPlainCookie
+#### `assertPlainCookie`
 Assert a plain cookie value:
 
-[source, js]
-----
+```js
 response.assertPlainCookie('key', 'value')
-----
+```
 
-==== assertCookieExists
+#### `assertCookieExists`
 Assert the server set a cookie with the given name:
 
-[source, js]
-----
+```js
 response.assertCookieExists('key')
-----
+```
 
-==== assertPlainCookieExists
+#### `assertPlainCookieExists`
 Assert a plain cookie exists:
 
-[source, js]
-----
+```js
 response.assertPlainCookieExists('key')
-----
+```
 
-==== assertHeader
+#### `assertHeader`
 Assert the server sent a header:
 
-[source, js]
-----
+```js
 response.assertHeader('content-type', 'application/json')
-----
+```
 
-==== assertRedirect
+#### `assertRedirect`
 Assert the request was redirected to a given URL:
 
-[source, js]
-----
+```js
 response.assertRedirect('/there')
-----
+```

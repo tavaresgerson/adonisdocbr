@@ -1,51 +1,46 @@
 ---
-permalink: frontend-assets
 title: Managing frontend assets
 category: recipes
 ---
-= Managing frontend assets
-
-toc::[]
+# Managing frontend assets
 
 AdonisJs does not make any assumptions, neither provide tools on how to bundle your frontend assets. The goal of the framework is to provide a productive workflow for backend applications only.
 
 Whereas, in this recipe, we discuss some ways on how you can go about managing and bundling your frontend code.
 
-== Webpack
-There are so many build tools in the frontend eco-system that it is quite easy to feel overwhelming. However, link:https://webpack.js.org/concepts/[webpack, window="_blank"] *(as of now)* does manage everything gracefully and is the popular choice for many devs.
+## Webpack
+There are so many build tools in the frontend eco-system that it is quite easy to feel overwhelming. However, [webpack](https://webpack.js.org/concepts/) *(as of now)* does manage everything gracefully and is the popular choice for many devs.
 
 Let's see how to go about storing your assets and then bundling them.
 
-=== Directory structure
-[source, bash]
-----
+### Directory structure
+```bash
 └── resources
     └── assets
         └── sass
         └── scripts
         └── images
-----
+```
 
 We should keep all `source assets` inside the `resources` directory. This directory is already used by Adonis to store the views.
 
 All compiled assets from this directory are placed inside the `public` directory.
 
-=== Webpack base config
+### Webpack base config
 First, make sure to install webpack as a dev dependency and create the config file.
 
-[source, bash]
-----
+```bash
 npm i --save-dev webpack webpack-cli
 
 touch webpack.config.js
-----
+```
 
-.webpack.config.js
-[source, js]
-----
+```js
+// .webpack.config.js
+
 module.exports = {
 }
-----
+```
 
 Run `./node_modules/.bin/webpack` to build your files.
 
@@ -53,22 +48,19 @@ Run `./node_modules/.bin/webpack` to build your files.
 - To start the watcher, make use of `--watch` flag.
 
 example
-[source, bash]
-----
+```bash
 ./node_modules/.bin/webpack --mode development
-----
+```
 
-== Sass setup
+## Sass setup
 
-[source, bash]
-----
+```bash
 npm i --save-dev style-loader css-loader extract-text-webpack-plugin@next node-sass sass-loader
-----
+```
 
 Add following code to your webpack.config.js file.
 
-[source, js]
-----
+```js
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 const extractSass = new ExtractTextPlugin({
@@ -102,32 +94,28 @@ module.exports = {
     extractSass
   ]
 }
-----
+```
 
 Here we make use of `sass-loader` and some related dependencies to compile `resources/assets/sass/app.scss -> public/app.css`.
 
 Require css file from `edge` templates.
 
-[source, edge]
-----
+```edge
 <head>
   {{ style('/public/app') }}
 </head>
-----
+```
 
-
-== Scripts setup
+## Scripts setup
 The scripts setup is done to bundle your frontend JavaScript into a single file. I assume that you want to compile code to ES5 to target all major browsers.
 
-NOTE: We use babel for ES6 to ES5 transpilation. Also *AdonisJs itself does not need babel*, it is just for the JavaScript you are writing for the browser.
+> NOTE: We use babel for ES6 to ES5 transpilation. Also *AdonisJs itself does not need babel*, it is just for the JavaScript you are writing for the browser.
 
-[source, bash]
-----
+```bash
 npm i --save-dev babel-loader @babel/core @babel/preset-env
-----
+```
 
-[source, js]
-----
+```js
 function scriptRules () {
   return [
     {
@@ -154,15 +142,14 @@ module.exports = {
     extractSass
   ]
 }
-----
+```
 
 This time we compile `resources/assets/scripts/app.js -> public/app.js`
 
 Require js file from `edge` templates.
 
-[source, edge]
-----
+```edge
 <head>
   {{ script('/public/app') }}
 </head>
-----
+```

@@ -3,12 +3,12 @@ permalink: using-https
 title: Using Https
 category: recipes
 ---
-toc::[]
 
-The HTTPs server of Node.js can be used with AdonisJs as follows. The idea is use the Node.js `https` module inside `server.js` file. +
-&nbsp;
-[source, js]
-----
+# Using Https
+
+The HTTPs server of Node.js can be used with AdonisJs as follows. The idea is use the Node.js `https` module inside `server.js` file. 
+
+```js
 const { Ignitor } = require('@adonisjs/ignitor')
 const path = require('path')
 const https = require('https')
@@ -26,20 +26,18 @@ new Ignitor(require('@adonisjs/fold'))
     return https.createServer(options, handler)
   })
   .catch(console.error)
-----
+```
 
 The real work happens inside `fireHttpServer` method. This function takes a single argument as the callback, and the return value must be the instance of Node.js server.
 
-== Self-signed certificate
+## Self-signed certificate
 In development, you can also make use of the self-signed certificate. It requires an additional dependency from npm.
 
-[source, bash]
-----
+```bash
 npm i pem
-----
+```
 
-[source, js]
-----
+```js
 const { Ignitor } = require('@adonisjs/ignitor')
 const https = require('https')
 const pem = require('pem')
@@ -61,4 +59,4 @@ pem.createCertificate({ days: 1, selfSigned: true }, (error, keys) => {
     })
     .catch(console.error)
 })
-----
+```
