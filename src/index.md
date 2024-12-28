@@ -1,8 +1,4 @@
-# Adonisjs 4.1
-<p>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg" width="25" align="left" />
-  Documentação completa em português brasileiro da versão 4.1 do Adonisjs
-</p>
+# AdonisJs 4.1
 
 ## Préfacio
 * [Sobre o AdonisJs](/docs/01-Preface/01-about.md)
