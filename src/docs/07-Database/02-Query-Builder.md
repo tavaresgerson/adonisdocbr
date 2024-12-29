@@ -1,15 +1,12 @@
----
-title: Query Builder
-category: database
----
-
 # Query Builder
 
 O AdonisJs *Query Builder* fornece uma sintaxe unificada para interagir com bancos de dados SQL usando métodos JavaScript.
 
 Este guia é uma referência a todos os métodos disponíveis no *Query Builder*.
 
-> DICA: Veja o guia database link:database[Getting Started] para a lista de bancos de dados suportados, opções de configuração e como depurar suas consultas SQL.
+::: tip DICA
+Veja o guia database [Getting Started](/docs/07-Database/01-Getting-Started.md) para a lista de bancos de dados suportados, opções de configuração e como depurar suas consultas SQL.
+:::
 
 ## Introdução
 Escrever consultas SQL pode ser tedioso, mesmo se você for proficiente em SQL.
@@ -90,7 +87,9 @@ Ele também oferece suporte a subconsultas passando um *closure* ou *outra consu
 
 Para informações detalhadas sobre `where`, veja a [documentação](http://knexjs.org/#Builder-wheres) do Knex.
 
-> NOTA: Passar `undefined` para a cláusula `where` causa um erro durante a compilação do SQL, então garanta que valores dinâmicos não sejam `undefined` antes de passá-los.
+::: warning NOTA
+Passar `undefined` para a cláusula `where` causa um erro durante a compilação do SQL, então garanta que valores dinâmicos não sejam `undefined` antes de passá-los.
+:::
 
 #### `where`
 
@@ -349,7 +348,9 @@ await Database
 
 #### `having(column, operator, value)`
 
-> OBSERVAÇÃO: `groupBy()` deve ser chamado antes de `having()`.
+::: warning OBSERVAÇÃO
+`groupBy()` deve ser chamado antes de `having()`.
+:::
 
 ```js
 await Database
@@ -437,7 +438,9 @@ const affectedRows = await Database
   .delete()
 ```
 
-> NOTA: Como `delete` é uma palavra-chave reservada em JavaScript, você também pode usar o método alternativo `del()`.
+::: info NOTA
+Como `delete` é uma palavra-chave reservada em JavaScript, você também pode usar o método alternativo `del()`.
+:::
 
 #### `truncate`
 Truncate remove todas as linhas da tabela, redefinindo o ID de incremento automático da tabela para `0`:
@@ -465,7 +468,9 @@ const results = await Database
   .paginate(2, 10)
 ```
 
-> NOTA: A saída do método `paginate` é diferente do método `forPage`.
+::: info NOTA
+A saída do método `paginate` é diferente do método `forPage`.
+:::
 
 ```js
 // .Output
@@ -479,7 +484,9 @@ const results = await Database
 }
 ```
 
-> NOTA: Se estiver usando *PostgreSQL*, a chave `total` será uma string, pois o JavaScript não consegue manipular `bigint` nativamente (veja [este problema](https://github.com/adonisjs/adonis-lucid/issues/339#issuecomment-387399508) para uma solução recomendada).
+::: warning NOTA
+Se estiver usando *PostgreSQL*, a chave `total` será uma string, pois o JavaScript não consegue manipular `bigint` nativamente (veja [este problema](https://github.com/adonisjs/adonis-lucid/issues/339#issuecomment-387399508) para uma solução recomendada).
+:::
 
 ## Transações de banco de dados
 As transações de banco de dados são operações seguras que não são refletidas no banco de dados até que você confirme explicitamente suas alterações.
@@ -504,7 +511,9 @@ await Database.transaction(async (trx) => {
 })
 ```
 
-> NOTA: Você não precisa chamar `commit` ou `rollback` manualmente dentro deste retorno de chamada.
+::: info NOTA
+Você não precisa chamar `commit` ou `rollback` manualmente dentro deste retorno de chamada.
+:::
 
 Se qualquer uma de suas consultas gerar um erro, a transação será revertida automaticamente, caso contrário, ela será confirmada.
 

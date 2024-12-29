@@ -1,8 +1,3 @@
----
-title: Validator
-category: basics
----
-
 # Validador
 
 O AdonisJs simplifica a validação da entrada do usuário com a ajuda de um provedor de validação dedicado.

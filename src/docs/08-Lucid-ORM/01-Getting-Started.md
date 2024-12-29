@@ -1,8 +1,3 @@
----
-title: Getting Started
-category: lucid-orm
----
-
 # Introdução
 
 *Lucid* é a implementação AdonisJS do [padrão de registro ativo](https://en.wikipedia.org/wiki/Active_record_pattern).
@@ -16,7 +11,7 @@ Os *modelos Lucid* fornecem muitos benefícios, incluindo:
 
 1. Busca e persistência de dados do modelo de forma transparente.
 2. Uma API expressiva para gerenciar relacionamentos:
-```js
+    ```js
     // .app/Models/User.js
 
     class User extends Model {
@@ -31,23 +26,25 @@ Os *modelos Lucid* fornecem muitos benefícios, incluindo:
 
     }
     ```
-3. Ciclo de vida [hooks](/original/markdown/08-Lucid-ORM/02-Hooks.md) para manter seu código [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself).
-4. [Getters/setters](/original/markdown/08-Lucid-ORM/04-Mutators.md) para mutar dados em tempo real.
-5. [Serialização](/original/markdown/08-Lucid-ORM/06-Serialization.md) de dados usando serializadores, propriedades computadas, etc.
+3. Ciclo de vida [hooks](/docs/08-Lucid-ORM/02-Hooks.md) para manter seu código [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself).
+4. [Getters/setters](/docs/08-Lucid-ORM/04-Mutators.md) para mutar dados em tempo real.
+5. [Serialização](/docs/08-Lucid-ORM/06-Serialization.md) de dados usando serializadores, propriedades computadas, etc.
 6. Gerenciamento de [formato de data](#dates).
 7. ...e muito mais.
 
-> NOTA: Os modelos Lucid não estão vinculados ao esquema do seu banco de dados, em vez disso, eles gerenciam tudo por conta própria. Por exemplo, não há necessidade de definir associações em SQL ao usar relacionamentos Lucid.
+::: info NOTA
+Os modelos Lucid não estão vinculados ao esquema do seu banco de dados, em vez disso, eles gerenciam tudo por conta própria. Por exemplo, não há necessidade de definir associações em SQL ao usar relacionamentos Lucid.
+:::
 
 *Modelos Lucid* são armazenados no diretório `app/Models`, onde cada modelo representa uma tabela de banco de dados.
 
 Exemplos de mapeamentos de modelo/tabela incluem:
 
 | Modelo  | Tabela de banco de dados  |
-|---------|-----------------|
-| User    | `users`         |
-| Post    | `posts`         |
-| Comment | `comments`      |
+|---------|---------------------------|
+| User    | `users`                   |
+| Post    | `posts`                   |
+| Comment | `comments`                |
 
 ## Exemplo Básico
 Vamos ver como criar um modelo e usá-lo para ler e escrever no banco de dados.
@@ -78,7 +75,9 @@ class User extends Model {
 module.exports = User
 ```
 
-> DICA: Passe o sinalizador `--migration` para também gerar um arquivo de migração.
+::: tip DICA
+Passe o sinalizador `--migration` para também gerar um arquivo de migração.
+:::
 
 ```bash
 adonis make:model User --migration
@@ -161,7 +160,9 @@ class User extends Model {
 }
 ```
 
-> OBSERVAÇÃO: O valor do campo `primaryKey` deve ser sempre exclusivo.
+::: warning OBSERVAÇÃO
+O valor do campo `primaryKey` deve ser sempre exclusivo.
+:::
 
 #### `createdAtColumn`
 O nome do campo usado para definir o carimbo de data/hora *creation* (retornar `null` para desabilitar):
@@ -198,7 +199,9 @@ class User extends Model {
 }
 ```
 
-> OBSERVAÇÃO: quando `incrementing` estiver definido como `false`, certifique-se de definir o modelo `primaryKeyValue` manualmente.
+::: warning OBSERVAÇÃO
+Quando `incrementing` estiver definido como `false`, certifique-se de definir o modelo `primaryKeyValue` manualmente.
+:::
 
 #### `primaryKeyValue`
 O ​​valor da chave primária (atualizar somente quando `incrementing` estiver definido como `false`):
@@ -285,7 +288,9 @@ class User extends Model {
 
 No exemplo acima, o parâmetro `value` é a data real fornecida ao definir o campo.
 
-> OBSERVAÇÃO: O método `formatDates` é chamado antes que a instância do modelo seja salva no banco de dados, portanto, certifique-se de que o valor de retorno seja sempre um formato válido para o mecanismo de banco de dados que você está usando.
+::: warning OBSERVAÇÃO
+O método `formatDates` é chamado antes que a instância do modelo seja salva no banco de dados, portanto, certifique-se de que o valor de retorno seja sempre um formato válido para o mecanismo de banco de dados que você está usando.
+:::
 
 ### Datas de conversão
 Agora que salvamos as datas no banco de dados, podemos formatá-las de forma diferente ao exibi-las ao usuário.
@@ -307,7 +312,7 @@ O parâmetro `value` é uma instância [Moment.js](https://momentjs.com/), permi
 
 ### Desserialização
 
-O método `castDates` é chamado automaticamente quando uma instância de modelo é [desserializada](/original/markdown/08-Lucid-ORM/06-Serialization.adoc) (acionado pela chamada `toJSON`):
+O método `castDates` é chamado automaticamente quando uma instância de modelo é [desserializada](/docs/08-Lucid-ORM/06-Serialization.md) (acionado pela chamada `toJSON`):
 
 ```js
 const users = await User.all()
@@ -317,7 +322,7 @@ const usersJSON = users.toJSON()
 ```
 
 ## Query Builder
-Os modelos Lucid usam o AdonisJs [Query Builder](/original/markdown/07-Database/02-Query-Builder.md) para executar consultas de banco de dados.
+Os modelos Lucid usam o AdonisJs [Query Builder](/docs/07-Database/02-Query-Builder.md) para executar consultas de banco de dados.
 
 Para obter uma instância do Query Builder, chame o método `query` do modelo:
 
@@ -331,7 +336,7 @@ const adults = await User
 ```
 
 1. Todos os métodos do Query Builder são totalmente suportados.
-2. O método `fetch` é necessário para executar a consulta, garantindo que os resultados retornem dentro de uma instância `serializer` (consulte a documentação [Serializers](/original/markdown/08-Lucid-ORM/06-Serialization.adoc) para obter mais informações).
+2. O método `fetch` é necessário para executar a consulta, garantindo que os resultados retornem dentro de uma instância `serializer` (consulte a documentação [Serializers](/docs/08-Lucid-ORM/06-Serialization.md) para obter mais informações).
 
 ## Métodos estáticos
 Os modelos Lucid têm vários métodos estáticos para executar operações comuns sem usar a interface do Query Builder.
@@ -419,7 +424,9 @@ const User = use('App/Models/User')
 const userIds = await User.ids()
 ```
 
-> NOTA: Se a chave primária for `uid`, uma matriz de valores `uid` será retornada.
+::: info NOTA
+Se a chave primária for `uid`, uma matriz de valores `uid` será retornada.
+:::
 
 #### `pair(lhs, rhs)`
 Retorna um objeto de pares chave/valor (`lhs` é a chave, `rhs` é o valor):
@@ -462,14 +469,18 @@ await user.reload()
 // user.serviceToken === 'E1Fbl3sjH'
 ```
 
-> OBSERVAÇÃO: Um modelo com propriedades definidas durante um gancho de criação exigirá *recarregamento* para recuperar os valores definidos durante esse gancho.
+::: warning OBSERVAÇÃO
+Um modelo com propriedades definidas durante um gancho de criação exigirá *recarregamento* para recuperar os valores definidos durante esse gancho.
+:::
 
 ## Auxiliares de Agregação
-Query Builder [auxiliares de agregação](/original/markdown/07-Database/02-Query-Builder.md#aggregate-helpers) fornece atalhos para consultas de agregação comuns.
+Query Builder [auxiliares de agregação](/docs/07-Database/02-Query-Builder.md#aggregate-helpers) fornece atalhos para consultas de agregação comuns.
 
 Os seguintes métodos de modelo estático podem ser usados ​​para agregar uma tabela inteira.
 
-> OBSERVAÇÃO: Esses métodos encerram a cadeia do Query Builder e retornam um valor, portanto, não há necessidade de chamar `[fetch()](/original/markdown/07-Database/02-Query-Builder.md#aggregate-helpers)` ao usá-los.
+::: warning OBSERVAÇÃO
+Esses métodos encerram a cadeia do Query Builder e retornam um valor, portanto, não há necessidade de chamar `[fetch()](/docs/07-Database/02-Query-Builder.md#aggregate-helpers)` ao usá-los.
+:::
 
 #### `getCount(columnName = '*')`
 Retorna uma contagem de registros em um determinado conjunto de resultados:
@@ -490,7 +501,7 @@ await User
   .getCount()
 ```
 
-Assim como `getCount`, todos os outros métodos de agregação estão disponíveis no [Query Builder](/original/markdown/07-Database/02-Query-Builder.md).
+Assim como `getCount`, todos os outros métodos de agregação estão disponíveis no [Query Builder](/docs/07-Database/02-Query-Builder.md).
 
 ## Escopos de consulta
 Os escopos de consulta extraem restrições de consulta em métodos poderosos e reutilizáveis.
@@ -638,7 +649,9 @@ const usersData = request.collect(['username' 'email', 'age'])
 const users = await User.createMany(usersData)
 ```
 
-> OBSERVAÇÃO: O método `createMany` faz *n* número de consultas em vez de fazer uma inserção em massa, onde *n* é o número de linhas.
+::: warning OBSERVAÇÃO
+O método `createMany` faz *n* número de consultas em vez de fazer uma inserção em massa, onde *n* é o número de linhas.
+:::
 
 ### Atualizações em massa
 Atualizações em massa são realizadas com a ajuda do Query Builder (o Lucid garante que as datas sejam formatadas adequadamente ao atualizar):
@@ -652,7 +665,9 @@ await User
   .update({ role: 'admin' })
 ```
 
-> OBSERVAÇÃO: atualizações em massa não executam ganchos de modelo.
+::: warning OBSERVAÇÃO
+Atualizações em massa não executam ganchos de modelo.
+:::
 
 ## Exclusões
 Uma única instância de modelo pode ser excluída chamando o método `delete`:
@@ -688,12 +703,14 @@ await User
   .delete()
 ```
 
-> OBSERVAÇÃO: Exclusões em massa não executam ganchos de modelo.
+::: warning OBSERVAÇÃO
+Exclusões em massa não executam ganchos de modelo.
+:::
 
 ## Transações
 A maioria dos métodos Lucid oferece suporte a transações.
 
-O primeiro passo é obter o objeto `trx` usando o [Database Provider](/original/markdown/07-Database/01-Getting-Started.md):
+O primeiro passo é obter o objeto `trx` usando o [Database Provider](/docs/07-Database/01-Getting-Started.md):
 
 ```js
 const Database = use('Database')

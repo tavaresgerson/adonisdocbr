@@ -1,8 +1,3 @@
----
-title: Response
-category: basics
----
-
 # Resposta
 
 Este guia descreve como usar o objeto [HTTP Response](https://github.com/adonisjs/adonis-framework/blob/develop/src/Response/index.js) para criar e retornar respostas.

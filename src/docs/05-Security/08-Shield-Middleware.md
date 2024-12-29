@@ -1,8 +1,3 @@
----
-title: Shield Middleware
-category: security
----
-
 # Shield Middleware
 
 Além de [CORS](/docs/05-Security/04-CORS.md) e [CSRF](/docs/05-Security/05-CSRF-Protection.md), o AdonisJs também previne seus aplicativos web de outros ataques de malware como *XSS*, *Content Sniffing*, *Script Injection* e assim por diante.

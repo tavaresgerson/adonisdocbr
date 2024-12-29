@@ -1,8 +1,3 @@
----
-title: Nginx proxy
-category: recipes
----
-
 # Proxy Nginx
 
 Esta receita compartilha as etapas mínimas necessárias para servir o aplicativo AdonisJs usando o proxy `nginx`.

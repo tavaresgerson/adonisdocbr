@@ -1,8 +1,3 @@
----
-title: Traits
-category: lucid-orm
----
-
 # Traits
 
 *Traits* possibilitam adicionar funcionalidades aos modelos *de fora para dentro*.
@@ -10,8 +5,8 @@ category: lucid-orm
 Usando traits de modelo, você pode:
 
 1. Adicionar novos métodos à sua classe de modelo.
-2. Ouvir [hooks](/original/markdown/08-Lucid-ORM/02-Hooks.md) do modelo.
-3. Adicionar métodos à instância [Query Builder](/original/markdown/08-Lucid-ORM/01-Getting-Started.md#query-builder) para um determinado modelo.
+2. Ouvir [hooks](/docs/08-Lucid-ORM/02-Hooks.md) do modelo.
+3. Adicionar métodos à instância [Query Builder](/docs/08-Lucid-ORM/01-Getting-Started.md#query-builder) para um determinado modelo.
 
 ## Criando um Trait
 Traits são armazenados no diretório `app/Models/Traits`.
@@ -120,7 +115,7 @@ module.exports = Slugify
 ```
 
 ## Adicionando ganchos de modelo
-Use traits para [hook](/original/markdown/08-Lucid-ORM/02-Hooks.md) em eventos de ciclo de vida do banco de dados:
+Use traits para [hook](/docs/08-Lucid-ORM/02-Hooks.md) em eventos de ciclo de vida do banco de dados:
 
 ```js
 class Slugify {
@@ -136,7 +131,7 @@ module.exports = Slugify
 ```
 
 ## Estendendo o Query Builder
-Use traits para adicionar macros ao [Query Builder](/original/markdown/08-Lucid-ORM/01-Getting-Started.md#query-builder) de um modelo:
+Use traits para adicionar macros ao [Query Builder](/docs/08-Lucid-ORM/01-Getting-Started.md#query-builder) de um modelo:
 
 ```js
 class Slugify {
@@ -153,7 +148,7 @@ module.exports = Slugify
 ```
 
 
-```
+```js
 // Usage
 
 await User.query().whereSlug('some value')

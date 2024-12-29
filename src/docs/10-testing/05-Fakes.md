@@ -1,8 +1,3 @@
----
-title: Fakes
-category: testing
----
-
 # Fakes
 
 Muitas vezes, você vai querer trocar a implementação original de certas partes do seu aplicativo por uma implementação falsa ao escrever testes.
@@ -12,7 +7,9 @@ Como o AdonisJs utiliza um contêiner IoC para gerenciar dependências, é incri
 ## Fakes de autoimplementação
 Vamos começar com um exemplo básico de falsificação de um serviço que normalmente envia e-mails.
 
-> OBSERVAÇÃO: Criar muitos testes falsos pode levar a testes falsos, onde tudo o que você está testando é a sintaxe e não a implementação. Como regra, tente manter os testes falsos como a última opção ao escrever seus testes.
+::: warning OBSERVAÇÃO
+Criar muitos testes falsos pode levar a testes falsos, onde tudo o que você está testando é a sintaxe e não a implementação. Como regra, tente manter os testes falsos como a última opção ao escrever seus testes.
+:::
 
 ```js
 // .app/Services/UserRegistration.js
@@ -117,7 +114,7 @@ Mail.restore()
 ```
 
 ## Eventos falsos
-O AdonisJs [Provedor de eventos](/original/markdown/06-Digging-Deeper/02-Events.md) também vem com um método `fake` integrado:
+O AdonisJs [Provedor de eventos](/docs/06-Digging-Deeper/02-Events.md) também vem com um método `fake` integrado:
 
 ```js
 const Event = use('Event')
@@ -206,4 +203,4 @@ const { test, trait } = use('Test/Suite')('User registration')
 trait('DatabaseTransactions')
 ```
 
-Alternativamente, você pode definir um [Lifecycle Hook](/original/markdown/10-testing/01-Getting-Started.md) para truncar suas tabelas de banco de dados após cada teste, mas usar o trait `DatabaseTransactions` seria muito mais simples.
+Alternativamente, você pode definir um [Lifecycle Hook](/docs/10-testing/01-Getting-Started.md) para truncar suas tabelas de banco de dados após cada teste, mas usar o trait `DatabaseTransactions` seria muito mais simples.

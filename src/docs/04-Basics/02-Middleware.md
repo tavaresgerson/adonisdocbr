@@ -1,8 +1,3 @@
----
-title: Middleware
-category: basics
----
-
 # Middleware
 
 O middleware se conecta ao ciclo de vida da solicitação do seu aplicativo.

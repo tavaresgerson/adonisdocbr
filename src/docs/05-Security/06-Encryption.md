@@ -1,8 +1,3 @@
----
-title: Encryption and Hashing
-category: security
----
-
 # Criptografia e Hashing
 
 O AdonisJs vem com provedores para *valores de hash* e *dados de criptografia*.

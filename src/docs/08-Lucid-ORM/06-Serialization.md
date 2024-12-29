@@ -1,8 +1,3 @@
----
-title: Serialization
-category: lucid-orm
----
-
 # Serialização
 
 *Serializadores* fornecem abstrações limpas para transformar resultados de banco de dados.
@@ -12,7 +7,7 @@ O AdonisJs vem com o [Vanilla Serializer](https://github.com/adonisjs/adonis-luc
 Um uso comum do serializador é formatar dados de acordo com a especificação [JSON:API](http://jsonapi.org/).
 
 ## Introdução
-Consultas de banco de dados feitas por meio de [modelos Lucid](/original/markdown/08-Lucid-ORM/01-Getting-Started.md) retornam instâncias serializáveis:
+Consultas de banco de dados feitas por meio de [modelos Lucid](/docs/08-Lucid-ORM/01-Getting-Started.md) retornam instâncias serializáveis:
 
 ```js
 const User = use('App/Models/User')
@@ -118,7 +113,9 @@ Crie seu próprio serializador para retornar dados em um formato não fornecido 
 
 A API do serializador é intencionalmente pequena para facilitar a adição de novos serializadores.
 
-> OBSERVAÇÃO: Evite serializadores personalizados para pequenas alterações na saída JSON. Em vez disso, use `getters` e `propriedades computadas`.
+::: warning OBSERVAÇÃO
+Evite serializadores personalizados para pequenas alterações na saída JSON. Em vez disso, use `getters` e `propriedades computadas`.
+:::
 
 ### Visão geral da API
 Abaixo está um modelo de exemplo para um serializador personalizado:
@@ -153,7 +150,7 @@ class CustomSerializer {
 module.exports = CustomSerializer
 ```
 
-Depois que seu serializador personalizado for criado, vincule-o ao [contêiner IoC](/original/markdown/02-Concept/02-ioc-container.md):
+Depois que seu serializador personalizado for criado, vincule-o ao [contêiner IoC](/docs/02-Concept/02-ioc-container.md):
 
 ```js
 // .start/hooks.js

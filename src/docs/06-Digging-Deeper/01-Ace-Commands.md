@@ -1,8 +1,3 @@
----
-title: Ace Commands
-category: digging-deeper
----
-
 # Comandos Ace
 
 *Ace* é uma ferramenta de linha de comando poderosa criada para AdonisJs.
@@ -23,7 +18,7 @@ node ace
 ```
 
 ```bash
-# .Output
+# Saída:
 
 Usage:
   command [arguments] [options]
@@ -42,7 +37,9 @@ Available Commands:
   migration:status     Check migrations current status
 ```
 
-> OBSERVAÇÃO: Por conveniência, o comando `adonis` faz proxy de todos os comandos para um determinado projeto. Por exemplo, executar `adonis migration:run` tem o mesmo resultado que executar `node ace migration:run`.
+::: tip OBSERVAÇÃO
+Por conveniência, o comando `adonis` faz proxy de todos os comandos para um determinado projeto. Por exemplo, executar `adonis migration:run` tem o mesmo resultado que executar `node ace migration:run`.
+:::
 
 ## Criando comandos
 Vamos construir rapidamente um comando Ace para extrair citações aleatórias de *Paul Graham* por meio da [API do Wisdom](http://gophergala.github.io/wisdom) e enviá-las para o terminal.
@@ -54,7 +51,7 @@ adonis make:command Quote
 ```
 
 ```bash
-# .Output
+# Saída:
 
 ✔ create  app/Commands/Quote.js
 ┌───────────────────────────────────────────────────────────┐
@@ -108,7 +105,9 @@ class Quote extends Command {
 module.exports = Quote
 ```
 
-> NOTA: Certifique-se de instalar o pacote [got](https://npmjs.org/package/got) via npm, que é usado para consumir a API HTTP no código de comando acima.
+::: warning NOTA
+Certifique-se de instalar o pacote [got](https://npmjs.org/package/got) via npm, que é usado para consumir a API HTTP no código de comando acima.
+:::
 
 Executar `adonis quote` imprime a citação recuperada no terminal.
 
@@ -199,7 +198,9 @@ async handle (args, flags) {
 }
 ```
 
-> NOTA: Todos os *argumentos* e *flags* são passados ​​no formato camel case. Por exemplo, um sinalizador `--file-path` seria definido como a chave `filePath` dentro do objeto `flags` passado.
+::: warning NOTA:
+Todos os *argumentos* e *flags* são passados ​​no formato camel case. Por exemplo, um sinalizador `--file-path` seria definido como a chave `filePath` dentro do objeto `flags` passado.
+:::
 
 ## Perguntas
 Dentro do seu comando, você pode solicitar respostas aos usuários e aceitar valores fazendo perguntas interativas.
@@ -320,7 +321,9 @@ const client = await this
 ## Saída colorida
 Ace usa [kleur](https://npmjs.org/package/kleur) para enviar mensagens de log coloridas para o terminal.
 
-> NOTA: Você pode acessar a instância do comando kleur via `this.chalk`.
+::: info NOTA
+Você pode acessar a instância do comando kleur via `this.chalk`.
+:::
 
 ### Métodos auxiliares
 
@@ -347,7 +350,9 @@ Registra uma mensagem de aviso no console com a cor *amarela*:
 this.warn('Fire in the hole')
 ```
 
-> NOTA: `warn` usa `console.warn` em vez de `console.log`.
+::: info NOTA
+`warn` usa `console.warn` em vez de `console.log`.
+:::
 
 #### `error(message)`
 Registra uma mensagem de erro no console com a cor *vermelha*:
@@ -356,7 +361,9 @@ Registra uma mensagem de erro no console com a cor *vermelha*:
 this.error('Something went bad')
 ```
 
-> NOTA: `error` usa `console.error` em vez de `console.log`.
+::: info NOTA
+`error` usa `console.error` em vez de `console.log`.
+:::
 
 #### `completed(action, message)`
 Imprime uma ação com mensagem para o console:
@@ -366,7 +373,7 @@ this.completed('create', 'config/app.js')
 ```
 
 ```bash
-# .Output
+# Saída:
 
 create: config/app.js
 ```
@@ -378,7 +385,10 @@ Imprime uma ação com falha com mensagem para o console:
 this.failed('create', 'config/app.js')
 ```
 
-> NOTA: `failed` usa `console.error` em vez de `console.log`.
+
+::: info NOTA
+`failed` usa `console.error` em vez de `console.log`.
+:::
 
 #### `table(head, body)`
 Imprime dados tabulares no console:
@@ -391,7 +401,7 @@ this.table(head, body)
 ```
 
 ```bash
-# .Output
+# Saída:
 
 ┌──────┬─────┐
 │ Name │ Age │
@@ -420,7 +430,7 @@ console.log(`${this.icon('success')} Completed`)
 ```
 
 ```bash
-# .Output
+# Saída:
 
 ✔ Completed
 ```
@@ -503,7 +513,7 @@ await this.move(src, dest)
 ```
 
 ## Gerenciamento de conexão de banco de dados
-Ao usar o acesso ao banco de dados em um comando Ace (via [Lucid](/original/markdown/08-Lucid-ORM/01-Getting-Started.md) ou diretamente), você deve se lembrar de fechar manualmente a conexão do banco de dados:
+Ao usar o acesso ao banco de dados em um comando Ace (via [Lucid](/docs/08-Lucid-ORM/01-Getting-Started.md) ou diretamente), você deve se lembrar de fechar manualmente a conexão do banco de dados:
 
 ```js
 Database.close()

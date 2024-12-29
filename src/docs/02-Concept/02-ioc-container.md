@@ -1,8 +1,3 @@
----
-permalink: ioc-container
-title: IoC Container
----
-
 # Contêiner IoC
 
 ## Introdução

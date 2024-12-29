@@ -1,8 +1,3 @@
----
-title: Installation
-category: getting-started
----
-
 # Instalação
 
 A instalação do AdonisJs é um processo simples e levará apenas alguns minutos.

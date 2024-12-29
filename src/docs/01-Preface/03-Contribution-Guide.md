@@ -1,8 +1,3 @@
----
-title: Contribution Guide
-category: Preface
----
-
 # Guia de Contribuição
 
 Projetos Open Source são mantidos e apoiados por uma **comunidade vibrante** de usuários e colaboradores.

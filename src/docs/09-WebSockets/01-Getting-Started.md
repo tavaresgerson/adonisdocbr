@@ -1,8 +1,3 @@
----
-title: Getting Started
-category: websockets
----
-
 # Introdução
 
 O AdonisJs oferece um *WebSocket Provider* robusto para servir aplicativos em tempo real.
@@ -32,7 +27,7 @@ const providers = [
 ]
 ```
 
-Finalmente, instrua o [Ignitor](/original/markdown/02-Concept/05-ignitor.md) a inicializar o servidor WebSocket no arquivo raiz `server.js`:
+Finalmente, instrua o [Ignitor](/docs/02-Concept/05-ignitor.md) a inicializar o servidor WebSocket no arquivo raiz `server.js`:
 
 ```js
 // .server.js
@@ -82,7 +77,9 @@ const Ws = use('Ws')
 Ws.channel('chat', 'ChatController')
 ```
 
-> NOTA: Também podemos vincular um fechamento ao método `Ws.channel`, mas ter um controlador dedicado é a prática recomendada.
+::: info NOTA
+Também podemos vincular um fechamento ao método `Ws.channel`, mas ter um controlador dedicado é a prática recomendada.
+:::
 
 Em seguida, crie o `ChatController` usando o comando `make:controller`:
 
@@ -119,7 +116,9 @@ Primeiro, copie o modelo CSS e HTML [deste gist](https://gist.github.com/thetutl
 1. *CSS* → `public/style.css`
 2. *Modelo HTML* → `resources/views/chat.edge`
 
-> OBSERVAÇÃO: certifique-se de [definir uma rota](/original/markdown/04-Basics/01-Routing.md) para servir o modelo HTML.
+::: warning OBSERVAÇÃO
+Certifique-se de [definir uma rota](/docs/04-Basics/01-Routing.md) para servir o modelo HTML.
+:::
 
 Em seguida, crie um arquivo `public/chat.js` e cole o código abaixo para conectar o cliente ao servidor (para manter as coisas simples, estamos usando [jQuery](https://jquery.com)):
 
@@ -251,4 +250,6 @@ class ChatController {
 }
 ```
 
-> OBSERVAÇÃO: os métodos de evento devem ser prefixados com a palavra-chave `on`.
+::: warning OBSERVAÇÃO
+Os métodos de evento devem ser prefixados com a palavra-chave `on`.
+:::

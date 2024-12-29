@@ -1,8 +1,3 @@
----
-title: Server API
-category: websockets
----
-
 # API do servidor
 
 Neste guia, nos aprofundamos em *canais*, *autenticação* e troca de *mensagens em tempo real*.
@@ -20,7 +15,7 @@ Ws.channel('news', ({ socket }) => {
 })
 ```
 
-Os manipuladores de canal recebem um objeto `context`, semelhante aos manipuladores de rota HTTP [/original/markdown/02-Concept/01-Request-Lifecycle.md).
+Os manipuladores de canal recebem um objeto `context`, semelhante aos manipuladores de rota HTTP [/docs/02-Concept/01-Request-Lifecycle.md).
 
 Por padrão, os objetos `context` do canal contêm propriedades `socket` e `request` (com mais adicionadas por middleware opcional como `Auth`, `Session`, etc.).
 
@@ -46,7 +41,7 @@ Ws.channel('chat:*', ({ socket }) => {
 
 No exemplo acima, `*` define o canal para aceitar quaisquer assinaturas de tópicos que comecem com `chat:` (por exemplo, `chat:watercooler`, `chat:intro`, etc.).
 
-As assinaturas de tópicos dinâmicos são feitas por meio da [API do cliente](/original/markdown/09-WebSockets/04-Client-API.md):
+As assinaturas de tópicos dinâmicos são feitas por meio da [API do cliente](/docs/09-WebSockets/04-Client-API.md):
 
 ```js
 const watercooler = ws.subscribe('chat:watercooler')
@@ -111,7 +106,7 @@ Como os canais WebSocket pré-registrados podem ser acessados ​​de qualquer 
 Emita eventos WebSocket durante o ciclo de vida HTTP como:
 
 ```js
-.app/Controllers/Http/UserController.js
+// .app/Controllers/Http/UserController.js
 
 const Ws = use('Ws')
 
@@ -144,7 +139,9 @@ const { broadcast, emitTo } = chat.topic('chat:watercooler')
 // emitTo: send to selected socket ids
 ```
 
-> OBSERVAÇÃO: para obter mais informações, consulte a lista de [métodos de soquete](#métodos) abaixo.
+::: warning OBSERVAÇÃO
+Para obter mais informações, consulte a lista de [métodos de soquete](#métodos) abaixo.
+:::
 
 ## API de soquete
 
@@ -178,7 +175,9 @@ Emitir evento para o cliente conectado:
 socket.emit('id', socket.id)
 ```
 
-> OBSERVAÇÃO: Este método envia apenas uma mensagem para sua própria conexão.
+::: warning OBSERVAÇÃO
+Este método envia apenas uma mensagem para sua própria conexão.
+:::
 
 #### `emitTo(event, data, socketIds[])`
 Emitir evento para uma matriz de IDs de soquete:

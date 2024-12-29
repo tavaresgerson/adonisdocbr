@@ -1,8 +1,3 @@
----
-title: Migrations
-category: database
----
-
 # Migrações
 
 Migrações são mutações documentadas de banco de dados, criadas ao longo do ciclo de vida de desenvolvimento do seu aplicativo, que você pode reverter ou executar novamente a qualquer momento.
@@ -11,7 +6,9 @@ As migrações facilitam o trabalho em equipe, permitindo que as alterações no
 
 ## Criando migrações
 
-> OBSERVAÇÃO: para usar migrações, o [Provedor de migrações](/original/markdown/07-Database/03-Migrations.md) deve primeiro ser registrado dentro do array `aceProviders` do arquivo `start/app.js`.
+::: warning OBSERVAÇÃO
+Para usar migrações, o [Provedor de migrações](/docs/07-Database/03-Migrations.md) deve primeiro ser registrado dentro do array `aceProviders` do arquivo `start/app.js`.
+:::
 
 Vamos criar uma tabela *users* com a ajuda de migrações.
 
@@ -98,7 +95,9 @@ O exemplo acima demonstra como criar/alterar uma tabela de banco de dados usando
 
 ## Tipos de coluna/modificadores
 
-> OBSERVAÇÃO: Para obter a lista completa de métodos de tipo e modificador de coluna de esquema, consulte a documentação da [API do Knex](https://knexjs.org/#Schema-Building).
+::: warning OBSERVAÇÃO
+Para obter a lista completa de métodos de tipo e modificador de coluna de esquema, consulte a documentação da [API do Knex](https://knexjs.org/#Schema-Building).
+:::
 
 ### Tipos de coluna
 
@@ -160,7 +159,9 @@ class UsersSchema extends Schema {
 module.exports = UsersSchema
 ```
 
-> NOTA: A tabela de banco de dados `adonis_schema` é sempre criada dentro do banco de dados de conexão padrão para gerenciar o ciclo de vida das migrações (não há opção para substituí-la).
+::: info NOTA
+A tabela de banco de dados `adonis_schema` é sempre criada dentro do banco de dados de conexão padrão para gerenciar o ciclo de vida das migrações (não há opção para substituí-la).
+:::
 
 ## Executar migrações
 Precisamos chamar o comando `migration:run` para executar migrações (que executa o método `up` em todos os arquivos de migração pendentes):
@@ -183,9 +184,11 @@ Você pode verificar o status de todas as migrações executando o seguinte coma
 adonis migration:status
 ```
 
-![imagem](http://res.cloudinary.com/adonisjs/image/upload/q_100/v1502694030/migration-status_zajqib.jpg)
+![imagem](/docs/assets/migration-status_zajqib.jpg)
 
-> DICA: O valor *batch* existe como uma referência que você pode usar para limitar reversões posteriormente.
+::: tip DICA
+O valor *batch* existe como uma referência que você pode usar para limitar reversões posteriormente.
+:::
 
 É assim que as migrações funcionam nos bastidores:
 
@@ -193,21 +196,23 @@ adonis migration:status
 2. Uma vez que um lote de arquivos de migração é executado, eles não são executados novamente.
 3. Chamar `adonis migration:rollback` reverte o último lote de migrações na ordem inversa.
 
-> DICA: Não crie várias tabelas em um único arquivo de esquema. Em vez disso, crie um novo arquivo para cada alteração no banco de dados. Dessa forma, você mantém seu banco de dados atômico e pode reverter para qualquer versão.
+::: tip DICA
+Não crie várias tabelas em um único arquivo de esquema. Em vez disso, crie um novo arquivo para cada alteração no banco de dados. Dessa forma, você mantém seu banco de dados atômico e pode reverter para qualquer versão.
+:::
 
 ## Comandos de migração
 Abaixo está a lista de comandos de migração disponíveis.
 
 ### Lista de comandos
 
-| Comando               | Descrição                                                               |
-|-----------------------|---------------------------------------------------------------------------|
-| `make:migration`      | Crie um novo arquivo de migração. |
-| `migration:run`       | Execute todas as migrações pendentes. |
-| `migration:rollback`  | Reverta o último conjunto de migrações. |
-| `migration:refresh`   | Reverta todas as migrações para o lote `0` e execute-as novamente do início. |
-| `migration:reset`     | Reverta todas as migrações para o lote `0`. |
-| `migration:status`    | Obtenha o status de todas as migrações. |
+| Comando               | Descrição                                                                     |
+|-----------------------|-------------------------------------------------------------------------------|
+| `make:migration`      | Crie um novo arquivo de migração.                                             |
+| `migration:run`       | Execute todas as migrações pendentes.                                         |
+| `migration:rollback`  | Reverta o último conjunto de migrações.                                       |
+| `migration:refresh`   | Reverta todas as migrações para o lote `0` e execute-as novamente do início.  |
+| `migration:reset`     | Reverta todas as migrações para o lote `0`.                                   |
+| `migration:status`    | Obtenha o status de todas as migrações.                                       |
 
 ### Ajuda de comando
 Para opções de comando detalhadas, anexe `--help` a cada comando de migração:
@@ -325,7 +330,9 @@ async up () {
 ## Extensões
 Abaixo está a lista de métodos de extensão que você pode executar ao executar migrações.
 
-> OBSERVAÇÃO: Extensões funcionam apenas com um banco de dados PostgreSQL.
+::: warning OBSERVAÇÃO
+Extensões funcionam apenas com um banco de dados PostgreSQL.
+:::
 
 #### `createExtension(extensionName)`
 Criar uma extensão de banco de dados:
@@ -395,7 +402,9 @@ class UserSchema {
 }
 ```
 
-> NOTA: O método `schedule` recebe um *objeto de transação*. É importante executar todos os comandos de banco de dados dentro da mesma transação, caso contrário, suas consultas ficarão travadas para sempre.
+::: info NOTA
+O método `schedule` recebe um *objeto de transação*. É importante executar todos os comandos de banco de dados dentro da mesma transação, caso contrário, suas consultas ficarão travadas para sempre.
+:::
 
 ## Schema Builder API
 A API do construtor de esquema usa a [API Knex](http://knexjs.org/#Schema-Building), então certifique-se de ler a documentação para mais informações.

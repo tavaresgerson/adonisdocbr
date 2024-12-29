@@ -1,8 +1,3 @@
----
-title: Controllers
-category: basics
----
-
 # Controladores
 
 Embora os fechamentos possam ser suficientes para lidar com a lógica de rota para aplicativos pequenos, quando seu aplicativo começa a crescer, torna-se útil organizar a lógica do aplicativo em outro lugar.

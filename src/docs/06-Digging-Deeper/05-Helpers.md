@@ -1,8 +1,3 @@
----
-title: Helpers
-category: digging-deeper
----
-
 # Helpers
 
 O *Helpers Provider* do AdonisJs permite uma série de métodos convenientes para turbinar seu aplicativo.
@@ -45,7 +40,9 @@ const configPath = Helpers.configPath()
 const appConfig = Helpers.configPath('app.js')
 ```
 
-> DICA: Use o [Config Provider](/original/markdown/03-getting-started/02-Configuration.md) para ler os valores do arquivo de configuração.
+::: tip DICA
+Use o [Config Provider](/docs/03-getting-started/02-Configuration.md) para ler os valores do arquivo de configuração.
+:::
 
 #### `resourcesPath([toFile])`
 Retorna o caminho para o diretório de recursos ou arquivo dentro do diretório:

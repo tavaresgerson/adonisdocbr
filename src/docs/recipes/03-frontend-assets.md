@@ -1,7 +1,3 @@
----
-title: Managing frontend assets
-category: recipes
----
 # Gerenciando ativos frontend
 
 O AdonisJs não faz nenhuma suposição, nem fornece ferramentas sobre como agrupar seus ativos frontend. O objetivo da estrutura é fornecer um fluxo de trabalho produtivo apenas para aplicativos backend.
@@ -109,7 +105,9 @@ Requer arquivo css dos modelos `edge`.
 ## Configuração de scripts
 A configuração de scripts é feita para agrupar seu JavaScript frontend em um único arquivo. Presumo que você queira compilar o código para ES5 para atingir todos os principais navegadores.
 
-> NOTA: Usamos babel para transpilação de ES6 para ES5. Além disso, *o próprio AdonisJs não precisa do babel*, ele é apenas para o JavaScript que você está escrevendo para o navegador.
+::: info NOTA
+Usamos babel para transpilação de ES6 para ES5. Além disso, *o próprio AdonisJs não precisa do babel*, ele é apenas para o JavaScript que você está escrevendo para o navegador.
+:::
 
 ```bash
 npm i --save-dev babel-loader @babel/core @babel/preset-env

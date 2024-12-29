@@ -1,15 +1,10 @@
----
-title: Hooks
-category: lucid-orm
----
-
 # Hooks
 
-*Hooks* são ações executadas antes ou depois dos [eventos do ciclo de vida](/original/markdown/02-Concept/01-Request-Lifecycle.md) do banco de dados.
+*Hooks* são ações executadas antes ou depois dos [eventos do ciclo de vida](/docs/02-Concept/01-Request-Lifecycle.md) do banco de dados.
 
 Usar hooks de modelo ajuda a manter sua base de código [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself), fornecendo injeção de código de ciclo de vida conveniente de onde quer que seus hooks sejam definidos.
 
-Um exemplo clássico de hook é [hashing](/original/markdown/05-Security/06-Encryption.md#hashing-values) a senha do usuário antes de salvá-lo em um banco de dados.
+Um exemplo clássico de hook é [hashing](/docs/05-Security/06-Encryption.md#hashing-values) a senha do usuário antes de salvá-lo em um banco de dados.
 
 ## Definindo Hooks
 Hooks podem ser definidos em um arquivo de classe de modelo por meio de um fechamento ou referenciando qualquer manipulador `file.method` no diretório `app/Models/Hooks`.
@@ -33,7 +28,7 @@ module.exports = User
 ```
 
 ### Gancho Dentro de Transações
-Para usar ganchos dentro de [transações](/original/markdown/08-Lucid-ORM/01-Getting-Started.md#transactions) basta adicionar o segundo parâmetro `trx` no fechamento de gancho
+Para usar ganchos dentro de [transações](/docs/08-Lucid-ORM/01-Getting-Started.md#transactions) basta adicionar o segundo parâmetro `trx` no fechamento de gancho
 
 ```js
 const Model = use('Model')

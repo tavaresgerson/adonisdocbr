@@ -1,8 +1,3 @@
----
-title: Mail
-category: digging-deeper
----
-
 # Mail
 
 O AdonisJs tem suporte de primeira classe para envio de e-mail.
@@ -31,7 +26,9 @@ const providers = [
 ]
 ```
 
-> NOTA: A configuração do e-mail é salva dentro do arquivo `config/mail.js`, que é criado pelo comando `adonis install` ao instalar o *Mail Provider*.
+::: info NOTA
+A configuração do e-mail é salva dentro do arquivo `config/mail.js`, que é criado pelo comando `adonis install` ao instalar o *Mail Provider*.
+:::
 
 ## Exemplo básico
 Vamos começar com o exemplo básico de envio de e-mail no registro do usuário:
@@ -82,7 +79,7 @@ Finalmente, crie o arquivo de visualização `emails/welcome.edge` contendo o co
 Abaixo está a lista de métodos que você pode usar para enviar e-mails.
 
 #### `send(views, data, callback)`
-Envie e-mail usando uma ou muitas [visualizações do Edge](/original/markdown/04-Basics/06-Views.md):
+Envie e-mail usando uma ou muitas [visualizações do Edge](/docs/04-Basics/06-Views.md):
 
 ```js
 await Mail.send('view', data, (message) => {
@@ -100,7 +97,9 @@ await Mail.send(['welcome', 'welcome.text'])
 
 No exemplo acima, a visualização `welcome` é usada para a versão HTML do e-mail, enquanto a visualização `welcome.text` é usada para a versão em texto simples.
 
-> DICA: Se você estiver usando [Edge](http://edge.adonisjs.com/) como seu mecanismo de modelo, também poderá usar `‑text` em vez de `.text` como o sufixo do modelo de corpo de texto simples.
+::: tip DICA
+Se você estiver usando [Edge](http://edge.adonisjs.com/) como seu mecanismo de modelo, também poderá usar `‑text` em vez de `.text` como o sufixo do modelo de corpo de texto simples.
+:::
 
 Usando sufixos de modelo, você também pode definir o corpo do e-mail para *Apple watch*:
 
@@ -166,7 +165,9 @@ message.bcc(user.email)
 message.bcc(user.email, user.name)
 ```
 
-> NOTA: Você pode chamar os métodos acima várias vezes para definir vários endereços.
+::: info NOTA
+Você pode chamar os métodos acima várias vezes para definir vários endereços.
+:::
 
 #### `replyTo(address, [name])`
 Definir endereço de e-mail `replyTo`:
@@ -239,7 +240,9 @@ Então, dentro do modelo, você pode dizer:
 <img src="cid:logo" />
 ```
 
-> OBSERVAÇÃO: Garanta que o `cid` seja exclusivo para cada imagem em um determinado e-mail.
+::: warning OBSERVAÇÃO
+Garanta que o `cid` seja exclusivo para cada imagem em um determinado e-mail.
+:::
 
 #### `driverExtras(extras)`
 Passar um objeto de valores para o driver atual:

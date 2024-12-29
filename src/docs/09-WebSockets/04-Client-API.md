@@ -1,11 +1,6 @@
----
-title: Client API
-category: websockets
----
-
 # API do cliente
 
-Este guia aborda o JavaScript *cliente WebSocket* usado para conectar ao [servidor WebSocket](/original/markdown/09-WebSockets/03-Server-API.md).
+Este guia aborda o JavaScript *cliente WebSocket* usado para conectar ao [servidor WebSocket](/docs/09-WebSockets/03-Server-API.md).
 
 ## Instalação
 
@@ -16,7 +11,9 @@ Como o *cliente WebSocket* não é instalado por padrão, precisamos obtê-lo do
 npm i @adonisjs/websocket-client
 ```
 
-> DICA: Depois de instalado, agrupe o pacote usando Webpack, Rollup, etc.
+::: tip DICA
+Depois de instalado, agrupe o pacote usando Webpack, Rollup, etc.
+:::
 
 Então, importe o cliente WebSocket assim:
 
@@ -52,7 +49,9 @@ const ws = Ws(url, options)
 ws.connect()
 ```
 
-> OBSERVAÇÃO: O parâmetro `url` retornará ao nome do host atual se um valor de url `ws://` completo for omitido.
+::: warning OBSERVAÇÃO
+O parâmetro `url` retornará ao nome do host atual se um valor de url `ws://` completo for omitido.
+:::
 
 #### `options`
 
@@ -138,7 +137,9 @@ chat.on('close', () => {
 chat.close()
 ```
 
-> OBSERVAÇÃO: Ouça o [evento close](#close-2) para confirmar o fechamento da assinatura.
+::: warning OBSERVAÇÃO
+Ouça o [evento close](#close-2) para confirmar o fechamento da assinatura.
+:::
 
 #### `leaveError`
 Emitido quando o servidor se recusa a fechar a assinatura:
@@ -157,7 +158,9 @@ chat.on('error', (event) => {
 })
 ```
 
-> OBSERVAÇÃO: De preferência, ouça o evento `ws.on('error')`.
+::: warning OBSERVAÇÃO
+De preferência, ouça o evento `ws.on('error')`.
+:::
 
 #### `close`
 Emitido quando a assinatura é fechada:
@@ -184,7 +187,9 @@ Fechar a conexão à força:
 ws.close()
 ```
 
-> OBSERVAÇÃO: Remove todas as assinaturas e não aciona uma reconexão.
+::: warning OBSERVAÇÃO
+Remove todas as assinaturas e não aciona uma reconexão.
+:::
 
 #### `getSubscription(topic)`
 Retorna a instância de assinatura para um tópico fornecido:
@@ -196,7 +201,9 @@ ws.getSubscription('chat').on('message', () => {
 })
 ```
 
-> OBSERVAÇÃO: Se não houver assinaturas para o tópico fornecido, retorna `null`.
+::: warning OBSERVAÇÃO
+Se não houver assinaturas para o tópico fornecido, retorna `null`.
+:::
 
 #### `subscribe(topic)`
 Assinar um tópico:
@@ -205,14 +212,18 @@ Assinar um tópico:
 const chat = ws.subscribe('chat')
 ```
 
-> OBSERVAÇÃO: Assinar o mesmo tópico duas vezes gera uma exceção.
+::: warning OBSERVAÇÃO
+Assinar o mesmo tópico duas vezes gera uma exceção.
+:::
 
 ## Autenticação
 O cliente AdonisJs WebSocket simplifica a autenticação de usuários.
 
 As credenciais de autenticação são passadas apenas uma vez para o servidor durante a conexão inicial, portanto, as mesmas informações podem ser reutilizadas para permitir/não permitir assinaturas de canal.
 
-> OBSERVAÇÃO: Se seu aplicativo usar sessões, os usuários serão autenticados automaticamente, desde que tenham uma sessão válida.
+::: warning OBSERVAÇÃO
+Se seu aplicativo usar sessões, os usuários serão autenticados automaticamente, desde que tenham uma sessão válida.
+:::
 
 #### `withBasicAuth(username, password)`
 Autenticar via autenticação básica:
@@ -259,7 +270,9 @@ Ws.channel('chat', ({ auth }) => {
 })
 ```
 
-> OBSERVAÇÃO: [middleware necessário](/original/markdown/09-WebSockets/03-Server-API.md#registering-middleware) deve ser configurado para acessar o objeto `auth`.
+::: warning OBSERVAÇÃO
+O [middleware necessário](/docs/09-WebSockets/03-Server-API.md#registering-middleware) deve ser configurado para acessar o objeto `auth`.
+:::
 
 ### Channel Middleware
 

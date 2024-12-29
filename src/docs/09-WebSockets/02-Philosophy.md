@@ -1,8 +1,3 @@
----
-title: Philosophy
-category: websockets
----
-
 # Filosofia
 
 Este guia aborda a filosofia do servidor WebSocket.
@@ -73,4 +68,6 @@ Seu codificador de dados WebSocket decodifica dados de rede como um *objeto* (ou
 1. A propriedade `t` é o tipo do pacote (usamos números em vez de strings, pois números são menos dados para transferir).
 2. A propriedade `d` são os dados associados a esse pacote.
 
-DICA: Saiba mais sobre os pacotes AdonisJs WebSocket [aqui](https://github.com/adonisjs/adonis-websocket-protocol).
+::: tip DICA
+Saiba mais sobre os pacotes AdonisJs WebSocket [aqui](https://github.com/adonisjs/adonis-websocket-protocol).
+:::

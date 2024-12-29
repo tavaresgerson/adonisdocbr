@@ -1,8 +1,3 @@
----
-title: Events
-category: digging-deeper
----
-
 # Eventos
 
 O AdonisJs vem com um *Event Provider* dedicado.
@@ -15,23 +10,23 @@ O *Event Provider* tem uma implementação [fake](/original/markdown/10-testing/
 
 1. Os ouvintes de eventos são definidos dentro do arquivo `start/events.js`.
 2. Os ouvintes de eventos podem ser definidos como *closures*, ou você pode vincular um *namespace* do contêiner IoC:
-```js
+  ```js
   Event.on('new::user', async (user) => {
   })
 
-  // OR
+  // OU
   Event.on('new::user', 'User.registered')
   ```
 
 3. Os ouvintes de eventos com namespace são armazenados dentro do diretório `app/Listeners`.
 4. Ao vincular ouvintes a eventos, você não precisa inserir o namespace inteiro. Por exemplo, um ouvinte armazenado como `app/Listeners/User.js` é referenciado como `User.<method>`.
 5. O comando `make:listener` pode ser usado para criar novos ouvintes de eventos:
-```bash
+  ```bash
   adonis make:listener User
   ```
 
-```bash
-  # .Output
+  ```bash
+  # Saída:
 
   ✔ create  app/Listeners/User.js
   ```
@@ -162,7 +157,9 @@ Event.on('new::user', 'User.registered')
 Event.removeListener('new::user', 'User.registered')
 ```
 
-> NOTA: Você deve vincular uma referência de contêiner IoC para removê-lo mais tarde.
+::: info NOTA
+Você deve vincular uma referência de contêiner IoC para removê-lo mais tarde.
+:::
 
 #### `off(event, listener)`
 O método `off` alias o método [removeListener](#removelistenerevent-listener).

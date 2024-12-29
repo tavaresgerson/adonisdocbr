@@ -1,8 +1,3 @@
----
-title: File Storage
-category: digging-deeper
----
-
 # Armazenamento de arquivos
 
 O AdonisJs tem um *Drive Provider* dedicado construído sobre o [Flydrive](https://github.com/Slynova-Org/node-flydrive) para interagir com sistemas de arquivos locais e remotos como o *Amazon S3*.
@@ -26,7 +21,9 @@ const providers = [
 ]
 ```
 
-> NOTA: A configuração do driver é salva dentro do arquivo `config/drive.js`, que é criado pelo comando `adonis install` ao instalar o *Drive Provider*.
+::: info NOTA
+A configuração do driver é salva dentro do arquivo `config/drive.js`, que é criado pelo comando `adonis install` ao instalar o *Drive Provider*.
+:::
 
 ## Drivers disponíveis
 Os drivers padrão enviados com o *Drive Provider* são:
@@ -38,7 +35,7 @@ Os drivers padrão enviados com o *Drive Provider* são:
 ## Exemplo básico
 Aqui está um exemplo básico de como interagir com o disco local via `adonis repl`:
 
-![image](http://res.cloudinary.com/adonisjs/image/upload/q_100/v1505719793/Drive_dlcc3v.gif)
+![image](/docs/assets/Drive_dlcc3v.gif)
 
 ## Drive API
 Embora operações comuns como leitura e escrita permaneçam as mesmas em todos os drivers, a API de uma unidade é baseada principalmente no driver que você está usando para interagir com o sistema de arquivos dessa unidade.
@@ -78,7 +75,9 @@ Adicione o conteúdo a um arquivo (crie um novo arquivo se o caminho não exist)
 await Drive.prepend('hello.txt', Buffer.from('Prepended!'))
 ```
 
-> NOTA: O método `prepend` funciona apenas com o driver local.
+::: warning NOTA
+O método `prepend` funciona apenas com o driver local.
+:::
 
 #### `append(relativePath, content, options = {})`
 Acrescenta conteúdo a um arquivo (cria um novo arquivo se o caminho não existir):
@@ -87,7 +86,9 @@ Acrescenta conteúdo a um arquivo (cria um novo arquivo se o caminho não existi
 await Drive.append('hello.txt', Buffer.from('Appended!'))
 ```
 
-> NOTA: O método `append` funciona apenas com o driver local.
+::: warning NOTA
+O método `append` funciona apenas com o driver local.
+:::
 
 #### `delete(relativePath)`
 Remover arquivo existente:

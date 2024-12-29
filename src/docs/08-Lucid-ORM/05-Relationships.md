@@ -1,8 +1,3 @@
----
-title: Relationships
-category: lucid-orm
----
-
 # Relacionamentos
 
 *Relacionamentos* são a espinha dorsal de aplicativos orientados a dados, vinculando um tipo de modelo a outro.
@@ -54,7 +49,9 @@ class Profile extends Model {
 module.exports = Profile
 ```
 
-> OBSERVAÇÃO: Não há necessidade de definir um relacionamento em ambos os modelos. Definir um caminho único em um único modelo é tudo o que é necessário.
+::: warning OBSERVAÇÃO
+Não há necessidade de definir um relacionamento em ambos os modelos. Definir um caminho único em um único modelo é tudo o que é necessário.
+:::
 
 ### Buscando Perfil de Usuário
 Agora que definimos o relacionamento entre `Usuário` e `Perfil`, podemos executar o seguinte código para buscar o perfil de um usuário:
@@ -85,7 +82,7 @@ O padrão é `tableName_primaryKey` do modelo atual. A forma singular do nome da
 
 ### Tabelas de banco de dados
 
-![imagem](http://res.cloudinary.com/adonisjs/image/upload/q_100/v1502900169/HasOne_wechyq.png)
+![imagem](/docs/assets/HasOne_wechyq.png)
 
 ### Definindo relação
 ```js
@@ -121,7 +118,7 @@ O padrão é `tableName_primaryKey` do modelo atual. A forma singular do nome da
 
 ### Tabelas de banco de dados
 
-![imagem](http://res.cloudinary.com/adonisjs/image/upload/q_100/v1502900449/HasMany_kkbac9.png)
+![imagem](/docs/assets/HasMany_kkbac9.png)
 
 ### Definindo relação
 ```js
@@ -159,7 +156,7 @@ O padrão é a chave primária do modelo relacionado.
 
 ### Tabelas de banco de dados
 
-![imagem](http://res.cloudinary.com/adonisjs/image/upload/q_100/v1502900684/BelongsTo_fwqdc3.png)
+![imagem](/docs/assets/BelongsTo_fwqdc3.png)
 
 ### Definindo relação
 
@@ -191,7 +188,9 @@ Ao definir um relacionamento `belongsToMany`, não armazenamos uma chave estrang
 
 Em vez disso, devemos confiar em uma terceira tabela intermediária chamada de *tabela dinâmica*.
 
-> OBSERVAÇÃO: você pode criar tabelas dinâmicas usando [arquivos de migração](/original/markdown/07-Database/03-Migrations.md).
+::: warning OBSERVAÇÃO
+Você pode criar tabelas dinâmicas usando [arquivos de migração](/docs/07-Database/03-Migrations.md).
+:::
 
 ### API
 ```js
@@ -221,7 +220,7 @@ O padrão é a chave primária do modelo relacionado (por exemplo, `id`).
 
 ### Tabelas de banco de dados
 
-![image(http://res.cloudinary.com/adonisjs/image/upload/q_100/v1502903344/BelongsToMany_ngg7oj.png)
+![image](/docs/assets/BelongsToMany_ngg7oj.png)
 
 ### Definindo relação
 ```js
@@ -309,9 +308,11 @@ module.exports = UserCar
 
 No exemplo acima, `UserCar` é um modelo Lucid regular.
 
-Com um modelo dinâmico atribuído, você pode usar [hooks](/original/markdown/08-Lucid-ORM/02-Hooks.md), [getters/setters](/original/markdown/08-Lucid-ORM/04-Mutators.md) do ciclo de vida, etc.
+Com um modelo dinâmico atribuído, você pode usar [hooks](/docs/08-Lucid-ORM/02-Hooks.md), [getters/setters](/docs/08-Lucid-ORM/04-Mutators.md) do ciclo de vida, etc.
 
-> OBSERVAÇÃO: Depois de chamar `pivotModel`, você não pode chamar os métodos `pivotTable` e `withTimestamps`. Em vez disso, você precisa definir esses valores no próprio modelo de pivô.
+::: warning OBSERVAÇÃO
+Depois de chamar `pivotModel`, você não pode chamar os métodos `pivotTable` e `withTimestamps`. Em vez disso, você precisa definir esses valores no próprio modelo de pivô.
+:::
 
 ## Muitos por meio
 O relacionamento `manyThrough` é uma maneira conveniente de definir um relacionamento *indireto*.
@@ -348,7 +349,7 @@ Padrão para a chave estrangeira para o modelo atual (em nosso exemplo de `Posts
 
 ### Tabelas de banco de dados
 
-![imagem](http://res.cloudinary.com/adonisjs/image/upload/q_100/v1502905066/HasManyThrough_dcr86k.png)
+![imagem](/docs/assets/HasManyThrough_dcr86k.png)
 
 ### Definindo relações
 Os relacionamentos precisam ser definidos nos modelos primário e intermediário.
@@ -383,7 +384,9 @@ class Country extends Model {
 
 No exemplo acima, o segundo parâmetro é uma referência ao método `posts` no modelo `User`.
 
-> OBSERVAÇÃO: O parâmetro `relatedMethod` deve sempre ser passado para o método `manyThrough` para que um relacionamento *many through* funcione.
+::: warning OBSERVAÇÃO
+O parâmetro `relatedMethod` deve sempre ser passado para o método `manyThrough` para que um relacionamento *many through* funcione.
+:::
 
 ## Consultando dados
 A consulta de dados relacionados é bastante simplificada pela API intuitiva do Lucid, fornecendo uma interface consistente para todos os tipos de relacionamentos de modelo.
@@ -397,7 +400,7 @@ const user = await User.find(1)
 const posts = await user.posts().fetch()
 ```
 
-Adicione restrições de tempo de execução chamando os métodos [Query Builder](/original/markdown/08-Lucid-ORM/01-Getting-Started.md#query-builder) como uma consulta típica:
+Adicione restrições de tempo de execução chamando os métodos [Query Builder](/docs/08-Lucid-ORM/01-Getting-Started.md#query-builder) como uma consulta típica:
 
 ```js
 const user = await User.find(1)
@@ -661,7 +664,9 @@ const posts = await Post
   .fetch()
 ```
 
-> NOTA: Este método não aceita uma restrição de expressão/valor.
+::: info NOTA
+Este método não aceita uma restrição de expressão/valor.
+:::
 
 #### `whereDoesntHave`
 O oposto da cláusula `whereHas`:
@@ -675,7 +680,9 @@ const posts = await Post
   .fetch()
 ```
 
-> NOTA: Este método não aceita uma restrição de expressão/valor.
+::: info NOTA
+Este método não aceita uma restrição de expressão/valor.
+:::
 
 Você pode adicionar uma cláusula `or` chamando os métodos `orHas`, `orWhereHas`, `orDoesntHave` e `orWhereDoesntHave`.
 
@@ -876,7 +883,9 @@ await user.cars().attach(cars, (row) => {
 })
 ```
 
-> OBSERVAÇÃO: Os métodos `create` e `save` para relacionamentos `belongsToMany` também aceitam um retorno de chamada que permite que você defina propriedades extras em uma tabela dinâmica, se necessário.
+::: warning OBSERVAÇÃO
+Os métodos `create` e `save` para relacionamentos `belongsToMany` também aceitam um retorno de chamada que permite que você defina propriedades extras em uma tabela dinâmica, se necessário.
+:::
 
 #### `detach`
 O método `detach` é o oposto do método `attach`, removendo todos os relacionamentos de tabela dinâmica existentes:
@@ -912,7 +921,7 @@ await user.cars().sync([mercedes.id])
 #### `update`
 O método `update` atualiza em massa as linhas consultadas.
 
-Você pode usar os métodos [Query Builder](/original/markdown/08-Lucid-ORM/01-Getting-Started.md#query-builder) para atualizar apenas campos específicos:
+Você pode usar os métodos [Query Builder](/docs/08-Lucid-ORM/01-Getting-Started.md#query-builder) para atualizar apenas campos específicos:
 
 ```js
 const user = await User.find(1)
@@ -947,4 +956,6 @@ await user
   .delete()
 ```
 
-> OBSERVAÇÃO: No caso de `belongsToMany`, esse método também remove o relacionamento da tabela dinâmica.
+::: warning OBSERVAÇÃO
+No caso de `belongsToMany`, esse método também remove o relacionamento da tabela dinâmica.
+:::

@@ -1,8 +1,3 @@
----
-title: Error Handling
-category: basics
----
-
 # Lidando com exceções
 
 O AdonisJs não trata as exceções apenas como uma forma de orientar o desenvolvedor sobre o que deu errado, mas também como uma forma de construir o fluxo do aplicativo em torno delas.

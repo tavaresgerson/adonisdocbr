@@ -1,8 +1,3 @@
----
-title: Logger
-category: basics
----
-
 # Logger
 
 O AdonisJs vem com um logger completo construído em cima do [winston](https://github.com/winstonjs/winston), usando níveis de registro [RFC5424](https://tools.ietf.org/html/rfc5424#page-11).

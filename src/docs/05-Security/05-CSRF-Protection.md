@@ -1,8 +1,3 @@
----
-title: CSRF Protection
-category: security
----
-
 # Proteção CSRF
 
 [Cross-Site Request Forgery (CSRF)](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)) permite que um invasor execute ações em nome de outro usuário sem seu conhecimento ou permissão.

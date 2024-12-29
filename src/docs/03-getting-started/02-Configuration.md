@@ -1,8 +1,3 @@
----
-title: Configuration
-category: getting-started
----
-
 # Configuração
 
 ## Provedor de configuração

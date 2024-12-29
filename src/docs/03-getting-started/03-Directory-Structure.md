@@ -1,8 +1,3 @@
----
-title: Directory Structure
-category: getting-started
----
-
 # Estrutura de diretório
 
 A estrutura de diretório do AdonisJs pode parecer esmagadora à primeira vista, pois há um punhado de diretórios pré-configurados.

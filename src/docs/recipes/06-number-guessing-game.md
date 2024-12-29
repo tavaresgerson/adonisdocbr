@@ -1,14 +1,12 @@
----
-title: Number guessing game
-category: recipes
----
-
 # Jogo de adivinhação de números
 
 Neste guia, criamos um jogo simples de adivinhação de números como uma forma de aprender mais sobre a estrutura. Ao final deste guia, você saberá como usar *visualizações*, *criar novas rotas* e *vincular controladores* a elas.
 
-> DICA: Você pode ver a versão final de trabalho em [glitch](https://adonis-number-guessing-game.glitch.me/?number=5). Além disso, você pode verificar o código usando o seguinte botão de remix.
-> ![imagem](https://cdn.glitch.com/2703baf2-b643-4da7-ab91-7ee2a2d00b5b%2Fremix-button.svg)
+::: tip DICA
+Você pode ver a versão final de trabalho em [glitch](https://adonis-number-guessing-game.glitch.me/?number=5). Além disso, você pode verificar o código usando o seguinte botão de remix.
+
+![imagem](https://cdn.glitch.com/2703baf2-b643-4da7-ab91-7ee2a2d00b5b%2Fremix-button.svg)
+:::
 
 ## História do jogo
 A adivinhação de números pega a entrada do usuário e a compara com um número aleatório. Se o número corresponder, é chamado de correspondência, caso contrário, é um passe.
@@ -172,7 +170,9 @@ module.exports = GameController
 
 Como você pode ver, o Edge torna muito simples escrever lógica nos arquivos de modelo. Podemos facilmente gerar a declaração que queremos.
 
-> DICA: Se você tiver alguma dúvida ou preocupação, junte-se a nós no [discourse](https://forum.adonisjs.com/c/help/view) para fazer parte da nossa pequena e útil comunidade.
+::: tip DICA
+Se você tiver alguma dúvida ou preocupação, junte-se a nós no [discourse](https://forum.adonisjs.com/c/help/view) para fazer parte da nossa pequena e útil comunidade.
+:::
 
 ## Próximos passos
 Este tutorial foi a tentativa mais fácil de usar diferentes partes e construir um aplicativo simples no AdonisJs. No futuro, considere aprender mais sobre os seguintes tópicos.

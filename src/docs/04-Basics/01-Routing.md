@@ -1,8 +1,3 @@
----
-title: Routing
-category: basics
----
-
 # Roteamento
 
 As rotas permitem que o mundo externo interaja com seu aplicativo por meio de URLs.

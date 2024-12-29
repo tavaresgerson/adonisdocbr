@@ -1,8 +1,3 @@
----
-title: Service Providers
-category: concept
----
-
 # Provedores de serviço
 
 Até agora, aprendemos [como vincular](/original/markdown/02-Concept/02-ioc-container.md#binding-dependencies) dependências ao contêiner IoC.

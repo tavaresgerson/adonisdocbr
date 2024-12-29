@@ -1,9 +1,3 @@
----
-permalink: using-https
-title: Using Https
-category: recipes
----
-
 # Usando Https
 
 O servidor HTTPs do Node.js pode ser usado com o AdonisJs da seguinte forma. A ideia é usar o módulo `https` do Node.js dentro do arquivo `server.js`.

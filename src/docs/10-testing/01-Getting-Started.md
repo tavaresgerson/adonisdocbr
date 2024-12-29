@@ -1,8 +1,3 @@
----
-title: Getting Started
-category: testing
----
-
 # Introdução
 
 Testar manualmente seu aplicativo visitando cada página da web ou ponto de extremidade da API pode ser tedioso e, às vezes, até impossível.
@@ -21,8 +16,8 @@ O teste é dividido em várias categorias, incentivando você a escrever diferen
 
 Essas categorias de teste incluem:
 
-[Testes unitários](#unit-tests)
-[Testes funcionais](#functional-tests)
+* [Testes unitários](#unit-tests)
+* [Testes funcionais](#functional-tests)
 
 #### Testes unitários
 Os testes unitários são escritos para testar pequenos pedaços de código isoladamente.
@@ -93,7 +88,9 @@ const aceProviders = [
 ]
 ```
 
-> OBSERVAÇÃO: O provedor é registrado dentro do array `aceProviders`, pois não queremos inicializar o mecanismo de teste ao executar seu aplicativo em produção.
+::: warning OBSERVAÇÃO
+O provedor é registrado dentro do array `aceProviders`, pois não queremos inicializar o mecanismo de teste ao executar seu aplicativo em produção.
+:::
 
 A instalação de `@adonisjs/vow` cria os seguintes arquivos e diretório:
 
@@ -175,7 +172,9 @@ test('return error when credentials are wrong', async ({ browser }) => {
 })
 ```
 
-> NOTA: No exemplo acima, se removêssemos o trait `Test/Browser`, o objeto `browser` seria `undefined` dentro de nossos testes.
+::: info NOTA
+No exemplo acima, se removêssemos o trait `Test/Browser`, o objeto `browser` seria `undefined` dentro de nossos testes.
+:::
 
 Você pode definir características personalizadas com um fechamento ou vinculação de contêiner IoC:
 
@@ -193,7 +192,9 @@ test('foo must be bar', async ({ foo, assert }) => {
 })
 ```
 
-> NOTA: As características são úteis quando você deseja agrupar um pacote para ser usado por outros, embora para a maioria das situações, você possa simplesmente usar [Lifecycle Hooks](#lifecycle-hooks) em vez disso.
+::: info NOTA
+As características são úteis quando você deseja agrupar um pacote para ser usado por outros, embora para a maioria das situações, você possa simplesmente usar [Lifecycle Hooks](#lifecycle-hooks) em vez disso.
+:::
 
 ### Contexto
 Cada teste tem um contexto isolado.

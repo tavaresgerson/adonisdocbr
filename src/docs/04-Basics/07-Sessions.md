@@ -1,8 +1,3 @@
----
-title: Sessions
-category: basics
----
-
 # Sessões
 
 O AdonisJs tem suporte de sessão de primeira classe com uma variedade de drivers integrados para gerenciar e armazenar sessões de forma eficiente.

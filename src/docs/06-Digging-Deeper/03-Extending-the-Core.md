@@ -1,8 +1,3 @@
----
-title: Extending the Core
-category: digging-deeper
----
-
 # Estendendo o Core
 
 O AdonisJs é totalmente extensível ao core.
@@ -10,7 +5,7 @@ O AdonisJs é totalmente extensível ao core.
 Neste guia, aprendemos como estender partes do framework.
 
 ## Onde escrever código
-A maneira mais fácil de começar é usar [ganchos de aplicativos](/original/markdown/02-Concept/05-ignitor.md#hooks), e somente depois mover o código para dentro de um provedor se você quiser compartilhar seu código como um pacote.
+A maneira mais fácil de começar é usar [ganchos de aplicativos](/docs/02-Concept/05-ignitor.md#hooks), e somente depois mover o código para dentro de um provedor se você quiser compartilhar seu código como um pacote.
 
 Os ganchos ficam dentro do arquivo `start/hooks.js` e podem ser usados ​​para executar código em um momento específico no ciclo de vida do aplicativo:
 
@@ -24,7 +19,9 @@ hooks.after.providersRegistered(() => {
 })
 ```
 
-> OBSERVAÇÃO: Os retornos de chamada de gancho são síncronos. Você deve criar um provedor e usar o método `boot` para escrever código assíncrono.
+::: warning OBSERVAÇÃO
+Os retornos de chamada de gancho são síncronos. Você deve criar um provedor e usar o método `boot` para escrever código assíncrono.
+:::
 
 Os provedores vivem dentro do diretório `providers` na raiz do projeto:
 
@@ -62,7 +59,9 @@ As macros permitem que você adicione métodos a classes existentes.
 
 Uma classe deve estender a classe [Macroable](https://www.npmjs.com/package/macroable) para ser estendida por meio de macros.
 
-> DICA: Use [hooks](/original/markdown/02-Concept/05-ignitor.md#hooks) ou o método `boot` de um provedor para adicionar macros.
+::: tip DICA
+Use [hooks](/docs/02-Concept/05-ignitor.md#hooks) ou o método `boot` de um provedor para adicionar macros.
+:::
 
 Por exemplo, se uma macro fosse definida assim:
 
@@ -108,7 +107,9 @@ Alguns provedores existentes permitem que você os estenda adicionando novas fun
 
 Por exemplo, o **Provedor de sessão** permite que novos drivers sejam adicionados, enquanto o **Provedor de autenticação** permite novos serializadores e esquemas.
 
-> NOTA: consulte a documentação de provedores individuais para entender seus recursos de extensão.
+::: info NOTA
+Consulte a documentação de provedores individuais para entender seus recursos de extensão.
+:::
 
 Para manter a interface de extensão unificada e simples, use o método `Ioc.extend` para adicionar novos drivers ou serializadores:
 

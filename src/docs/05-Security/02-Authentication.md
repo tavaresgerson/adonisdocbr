@@ -1,8 +1,3 @@
----
-title: Authentication
-category: security
----
-
 # Autenticação
 
 O provedor de autenticação AdonisJs é um sistema completo para autenticar solicitações HTTP usando vários autenticadores.

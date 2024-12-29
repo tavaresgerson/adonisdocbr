@@ -1,19 +1,18 @@
----
-title: Browser Tests
-category: testing
----
-
 # Testes de navegador
 
 O AdonisJs simplifica a escrita de *testes funcionais* usando o navegador Chrome. Por baixo dos panos, ele usa o [Puppeteer](https://github.com/GoogleChrome/puppeteer) para iniciar um navegador da web e executar asserções.
 
 Neste guia, aprendemos sobre como abrir um navegador programaticamente e executar testes como se um usuário real estivesse usando seu aplicativo.
 
-> OBSERVAÇÃO: Como o AdonisJs usa o mecanismo do Chrome, você não pode executar seus testes em vários navegadores, como *IE* ou *Firefox*. Os testes entre navegadores geralmente são implementados para JavaScript de front-end, o que está fora do escopo da documentação do AdonisJs.
+::: warning OBSERVAÇÃO
+Como o AdonisJs usa o mecanismo do Chrome, você não pode executar seus testes em vários navegadores, como *IE* ou *Firefox*. Os testes entre navegadores geralmente são implementados para JavaScript de front-end, o que está fora do escopo da documentação do AdonisJs.
+:::
 
 ## Configuração
 
-> OBSERVAÇÃO: O [Puppeteer](https://github.com/GoogleChrome/puppeteer) vem junto com o Chromium e demora um pouco para baixar e instalar. Para pular a instalação do Chromium, passe a variável de ambiente `PUPPETEER_SKIP_CHROMIUM_DOWNLOAD`. Se ignorado, certifique-se de definir seu [caminho personalizado do Chromium](#custom-chromium-path) também.
+::: warning OBSERVAÇÃO
+O [Puppeteer](https://github.com/GoogleChrome/puppeteer) vem junto com o Chromium e demora um pouco para baixar e instalar. Para pular a instalação do Chromium, passe a variável de ambiente `PUPPETEER_SKIP_CHROMIUM_DOWNLOAD`. Se ignorado, certifique-se de definir seu [caminho personalizado do Chromium](#custom-chromium-path) também.
+:::
 
 Como o *Provedor do Navegador* não é instalado por padrão, precisamos obtê-lo do `npm`:
 
@@ -99,39 +98,41 @@ adonis test functional
   time        : 998ms
 ```
 
-Seu primeiro teste de navegador <span style="background: lightgreen; padding: 0 5px;">PASSOU</span>. Parabéns! 🎉
+Seu primeiro teste de navegador <span style="background: lightgreen; padding: 0 5px;">PASSED</span>. Parabéns! 🎉
 
-> OBSERVAÇÃO: se o teste falhou, certifique-se de não ter alterado a saída padrão da rota raiz `/`.
+::: warning OBSERVAÇÃO
+Se o teste falhou, certifique-se de não ter alterado a saída padrão da rota raiz `/`.
+:::
 
 ## Caminho personalizado do Chromium
 Se você usou a variável de ambiente `PUPPETEER_SKIP_CHROMIUM_DOWNLOAD` para instalar o *Provedor do navegador*, o Chromium não é instalado por padrão e você deve passar um caminho executável para o Chromium.
 
 1. Primeiro, baixe [Chromium](https://chromium.woolyss.com/download/) e coloque-o em um diretório acessível do Node.js
 2. Ao usar o trait `Test/Browser`, defina seu caminho executável para o Chromium:
-```js
-  trait('Test/Browser', {
-    executablePath: '/absolute/path/to/chromium'
-  })
-  ```
+    ```js
+    trait('Test/Browser', {
+      executablePath: '/absolute/path/to/chromium'
+    })
+    ```
 
-Como alternativa, defina o caminho executável como uma var env no arquivo `.env.testing`:
-```bash
-  # .env.testing
+    Como alternativa, defina o caminho executável como uma var env no arquivo `.env.testing`:
+    ```bash
+    # .env.testing
 
-  CHROMIUM_PATH=/absolute/path/to/chromium
-  ```
+    CHROMIUM_PATH=/absolute/path/to/chromium
+    ```
 
 ## Configuração
 As seguintes opções do navegador podem ser configuradas por meio do trait `Test/Browser`:
 
 #### `options`
 
-| Chave | Descrição | Descrição |
+| Chave             | Descrição       | Descrição   |
 |-------------------|-----------------|-------------|
-| `headless`        | Boolean <true>  | Se deve executar testes no modo headless ou iniciar um navegador real. |
-| `executablePath`  | String          | Caminho para o executável do Chromium (necessário somente quando você não usa o Chromium empacotado). |
-| `slowMo`          | Number          | Número de milissegundos usados ​​para desacelerar cada interação do navegador (pode ser usado para ver testes em câmera lenta). |
-| `dumpio`          | Boolean <false> | Registre todas as mensagens do console do navegador no terminal. |
+| `headless`        | `Boolean <true>`  | Se deve executar testes no modo headless ou iniciar um navegador real. |
+| `executablePath`  | `String`          | Caminho para o executável do Chromium (necessário somente quando você não usa o Chromium empacotado). |
+| `slowMo`          | `Number`          | Número de milissegundos usados ​​para desacelerar cada interação do navegador (pode ser usado para ver testes em câmera lenta). |
+| `dumpio`          | `Boolean <false>` | Registre todas as mensagens do console do navegador no terminal. |
 
 ```js
 // Example Usage
@@ -175,7 +176,9 @@ test('Visit home page', async ({ browser }) => {
 ## Interações de página
 Os métodos a seguir podem ser usados ​​para interagir com uma página da web.
 
-> DICA: Os métodos de interação de página oferecem suporte a todos os [seletores CSS](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors).
+::: tip DICA
+Os métodos de interação de página oferecem suporte a todos os [seletores CSS](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors).
+:::
 
 #### `type(selector, value)`
 Digite dentro de um elemento com o seletor fornecido:
@@ -320,7 +323,9 @@ await page
   .assertHasIn('div.alert', 'Success!')
 ```
 
-> OBSERVAÇÃO: O tempo limite de espera padrão é de `15` segundos.
+::: warning OBSERVAÇÃO
+O tempo limite de espera padrão é de `15` segundos.
+:::
 
 #### `waitUntilMissing(selector)`
 Aguarde até que um elemento desapareça do DOM:
@@ -342,7 +347,7 @@ await page
 ```
 
 #### `waitFor(closure)`
-Aguarde até que a função de fechamento passada retorne true:
+Aguarde até que a função de closure passada retorne true:
 
 ```js
 await page
@@ -351,7 +356,9 @@ await page
   })
 ```
 
-> OBSERVAÇÃO: O fechamento é executado no contexto do navegador e tem acesso a variáveis ​​como `window`, `document` e assim por diante.
+::: warning OBSERVAÇÃO
+O closure é executado no contexto do navegador e tem acesso a variáveis ​​como `window`, `document` e assim por diante.
+:::
 
 #### `pause(timeout = 15000)`
 Pause a página da web por um determinado período de tempo:
@@ -360,7 +367,9 @@ Pause a página da web por um determinado período de tempo:
 await page.pause()
 ```
 
-> OBSERVAÇÃO: O tempo limite de pausa padrão é de `15` segundos.
+::: warning OBSERVAÇÃO
+O tempo limite de pausa padrão é de `15` segundos.
+:::
 
 ## Lendo Valores
 Os métodos a seguir podem ser usados ​​para ler valores de uma página da web.
@@ -632,4 +641,6 @@ await page
   }, 'Welcome to Adonis')
 ```
 
-> NOTA: A diferença entre `assertFn` e `assertEval` é que `assertEval` seleciona um elemento antes de executar a função.
+::: info NOTA
+A diferença entre `assertFn` e `assertEval` é que `assertEval` seleciona um elemento antes de executar a função.
+:::

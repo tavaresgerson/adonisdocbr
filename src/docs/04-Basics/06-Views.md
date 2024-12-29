@@ -1,8 +1,3 @@
----
-title: Views
-category: basics
----
-
 # Visualizações
 
 O AdonisJs usa [Edge](http://edge.adonisjs.com/) como seu mecanismo de criação de modelos, que é incrivelmente rápido e vem com uma API elegante para criar visualizações dinâmicas.

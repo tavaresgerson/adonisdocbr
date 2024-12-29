@@ -1,8 +1,3 @@
----
-title: Request Lifecycle
-category: concept
----
-
 # Ciclo de vida da solicitação
 
 ## Introdução

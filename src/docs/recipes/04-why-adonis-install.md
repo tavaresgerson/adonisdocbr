@@ -1,7 +1,3 @@
----
-title: Why Adonis install?
-category: recipes
----
 # Por que instalar o Adonis?
 
 O AdonisJs vem com um comando chamado `adonis install <pacote>`, que é o mesmo que `npm install` ou `yarn add`.
@@ -10,7 +6,7 @@ Na verdade, nos bastidores, `adonis install` usa npm ou yarn para instalar o pac
 
 ## Execução de comando
 
-![imagem](http://res.cloudinary.com/adonisjs/image/upload/q_100/v1509020167/adonis-install-flow.png)
+![imagem](/docs/assets/adonis-install-flow.png)
 
 Cada provedor pode ter dois arquivos [instructions.js](https://github.com/adonisjs/adonis-lucid/blob/develop/instructions.js) e [instructions.md](https://github.com/adonisjs/adonis-lucid/blob/develop/instructions.md), que são usados ​​pelo adonis para executar etapas `pós-instalação`.
 

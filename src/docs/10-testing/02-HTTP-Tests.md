@@ -1,8 +1,3 @@
----
-title: HTTP Tests
-category: testing
----
-
 # Testes HTTP
 
 Neste guia, aprendemos como escrever testes HTTP em um servidor de API.
@@ -12,7 +7,9 @@ Se você é novo em testes com AdonisJs, ou apenas testes em geral, considere le
 ## Exemplo básico
 Vamos começar com um exemplo básico para testar um ponto de extremidade HTTP que retorna uma lista de postagens no formato JSON.
 
-> OBSERVAÇÃO: O exemplo a seguir pressupõe que você criou um modelo `Post` com tabela de banco de dados relacionada e definiu uma rota `GET /posts` que retorna todos os modelos `Post`.
+::: warning OBSERVAÇÃO
+O exemplo a seguir pressupõe que você criou um modelo `Post` com tabela de banco de dados relacionada e definiu uma rota `GET /posts` que retorna todos os modelos `Post`.
+:::
 
 Primeiro, faça um novo *teste funcional* (já que testaremos a API como um usuário final):
 
@@ -66,6 +63,7 @@ Examinando nosso arquivo de teste...
 2. Criamos uma instância fictícia `Post`
 3. Solicitamos a URL `/posts` e capturamos a resposta
 4. Executamos asserções na resposta para garantir que o status HTTP seja `200`
+
 e pelo menos um post retornado tenha o mesmo `title` e `body` que nossa instância fictícia `Post`
 
 Finalmente, execute todos os seus testes funcionais por meio do seguinte comando:
@@ -99,7 +97,9 @@ Faça uma solicitação HTTP `GET` para uma URL fornecida:
 client.get('posts')
 ```
 
-> DICA: Os métodos `post`, `patch`, `put`, `delete` e `head` também podem ser usados ​​para fazer solicitações HTTP.
+::: tip DICA
+Os métodos `post`, `patch`, `put`, `delete` e `head` também podem ser usados ​​para fazer solicitações HTTP.
+:::
 
 #### `header(key, value)`
 Defina um par de cabeçalho `chave/valor` ao fazer a solicitação HTTP:
@@ -158,7 +158,9 @@ client
   .cookie('name', 'virk')
 ```
 
-> OBSERVAÇÃO: Como todos os cookies são criptografados no AdonisJs, esse método garante a criptografia adequada dos valores para que o servidor AdonisJs possa analisá-los.
+::: warning OBSERVAÇÃO
+Como todos os cookies são criptografados no AdonisJs, esse método garante a criptografia adequada dos valores para que o servidor AdonisJs possa analisá-los.
+:::
 
 #### `plainCookie(key, value)`
 Defina um cookie que não seja criptografado:
@@ -176,7 +178,9 @@ Finalize a cadeia de solicitações HTTP, execute a solicitação e retorne a re
 const response = await client.get('posts').end()
 ```
 
-> OBSERVAÇÃO: Você deve chamar `end` para executar solicitações HTTP `client`.
+::: warning OBSERVAÇÃO 
+Você deve chamar `end` para executar solicitações HTTP `client`.
+:::
 
 ## Solicitações multipartes
 Para fazer solicitações multipartes e enviar arquivos com o corpo da solicitação:
@@ -218,7 +222,9 @@ test('get list of posts', async ({ client }) => {
 })
 ```
 
-> NOTA: O AdonisJs [Session Provider](/original/markdown/04-Basics/07-Sessions.md#setup) deve ser instalado antes que você possa aproveitar o trait `Session/Client`.
+::: warning OBSERVAÇÃO
+O AdonisJs [Session Provider](/docs/04-Basics/07-Sessions.md#setup) deve ser instalado antes que você possa aproveitar o trait `Session/Client`.
+:::
 
 ## Autenticação
 Você pode autenticar usuários antecipadamente usando o trait `Auth/Client`:
@@ -284,7 +290,9 @@ response.assertJSONSubset({
 })
 ```
 
-> DICA: Esta afirmação testa um subconjunto de objetos, o que é útil quando os valores dentro de um objeto não são determináveis ​​(por exemplo, carimbos de data/hora).
+::: tip DICA
+Esta afirmação testa um subconjunto de objetos, o que é útil quando os valores dentro de um objeto não são determináveis ​​(por exemplo, carimbos de data/hora).
+:::
 
 #### `assertText`
 Declara o texto simples retornado pelo servidor:

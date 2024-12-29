@@ -1,8 +1,3 @@
----
-title: Social Authentication
-category: digging-deeper
----
-
 # Autenticação Social
 
 *Ally* é um provedor de autenticação social de primeira parte para AdonisJs.
@@ -36,7 +31,9 @@ const providers = [
 ]
 ```
 
-> NOTA: A configuração de autenticação social é salva dentro do arquivo `config/services.js`, que é criado pelo comando `adonis install` ao instalar o *Ally Provider*.
+::: info NOTA
+A configuração de autenticação social é salva dentro do arquivo `config/services.js`, que é criado pelo comando `adonis install` ao instalar o *Ally Provider*.
+:::
 
 ## Config
 
@@ -52,7 +49,9 @@ module.exports = {
 }
 ```
 
-> DICA: Você sempre pode acessar o arquivo de origem da configuração mais recente no [Github](https://github.com/adonisjs/adonis-ally/blob/master/templates/config.js).
+::: tip DICA
+Você sempre pode acessar o arquivo de origem da configuração mais recente no [Github](https://github.com/adonisjs/adonis-ally/blob/master/templates/config.js).
+:::
 
 ## Exemplo básico
 Vamos começar com um exemplo básico de login usando o *Facebook*.
@@ -66,7 +65,9 @@ Route.get('login/facebook', 'LoginController.redirect')
 Route.get('facebook/callback', 'LoginController.callback')
 ```
 
-> OBSERVAÇÃO: Certifique-se de que o *Auth Provider* e o middleware relacionado à autenticação estejam [configurados corretamente](/original/markdown/05-Security/02-Authentication.md#setup).
+::: warning OBSERVAÇÃO
+Certifique-se de que o *Auth Provider* e o middleware relacionado à autenticação estejam [configurados corretamente](/docs/05-Security/02-Authentication.md#setup).
+:::
 
 Em seguida, precisamos criar o controlador para implementar nossos métodos de rota:
 
@@ -144,7 +145,9 @@ await ally
   .redirect()
 ```
 
-> OBSERVAÇÃO: Verifique a documentação oficial do OAuth do provedor relevante para obter uma lista de seus escopos disponíveis.
+::: warning OBSERVAÇÃO
+Verifique a documentação oficial do OAuth do provedor relevante para obter uma lista de seus escopos disponíveis.
+:::
 
 #### `fields(fieldsArray)`
 Campos a serem buscados ao obter o perfil de usuário autenticado:
@@ -175,7 +178,9 @@ await ally.getUserByToken(accessToken)
 
 Isso é útil ao usar o código do lado do cliente para executar a ação OAuth e você tem acesso ao `accessToken`.
 
-> OBSERVAÇÃO: O parâmetro `accessSecret` é necessário quando o protocolo *OAuth 1* é usado (por exemplo, o Twitter depende do OAuth 1).
+::: warning OBSERVAÇÃO
+O parâmetro `accessSecret` é necessário quando o protocolo *OAuth 1* é usado (por exemplo, o Twitter depende do OAuth 1).
+:::
 
 ## API do usuário
 Abaixo está a lista de métodos disponíveis em uma instância [AllyUser](https://github.com/adonisjs/adonis-ally/blob/develop/src/AllyUser.js).
@@ -203,7 +208,9 @@ Retorna o e-mail do usuário:
 user.getEmail()
 ```
 
-> OBSERVAÇÃO: Alguns provedores de terceiros não compartilham e-mail, nesse caso esse método retorna `null`.
+::: warning OBSERVAÇÃO
+Alguns provedores de terceiros não compartilham e-mail, nesse caso esse método retorna `null`.
+:::
 
 #### `getNickname`
 Retorna o apelido/nome de exibição do usuário:
@@ -233,7 +240,9 @@ Token de atualização a ser usado quando o token de acesso expirar:
 user.getRefreshToken()
 ```
 
-> OBSERVAÇÃO: disponível somente quando o provedor terceirizado implementa *OAuth 2*.
+::: warning OBSERVAÇÃO
+Disponível somente quando o provedor terceirizado implementa *OAuth 2*.
+:::
 
 #### `getExpires`
 Dados de expiração do token de acesso:
@@ -242,7 +251,9 @@ Dados de expiração do token de acesso:
 user.getExpires()
 ```
 
-> OBSERVAÇÃO: Disponível somente quando o provedor terceirizado implementa *OAuth 2*.
+::: warning OBSERVAÇÃO
+Disponível somente quando o provedor terceirizado implementa *OAuth 2*.
+:::
 
 #### `getTokenSecret`
 Retorna o segredo do token:
@@ -251,7 +262,9 @@ Retorna o segredo do token:
 user.getTokenSecret()
 ```
 
-> OBSERVAÇÃO: Disponível somente quando o provedor terceirizado implementa *OAuth 1*.
+::: warning OBSERVAÇÃO
+Disponível somente quando o provedor terceirizado implementa *OAuth 1*.
+:::
 
 #### `getOriginal`
 Payload original retornado pelo provedor terceirizado:

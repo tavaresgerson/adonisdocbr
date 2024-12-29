@@ -1,8 +1,3 @@
----
-title: Request
-category: basics
----
-
 # Solicitação
 
 Este guia descreve como usar o objeto [Solicitação HTTP](https://github.com/adonisjs/adonis-framework/blob/develop/src/Request/index.js) para ler dados de solicitação.

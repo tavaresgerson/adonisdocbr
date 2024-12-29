@@ -1,13 +1,10 @@
----
-title: Redis
-category: database
----
-
 # Redis
 
 AdonisJs tem suporte de primeira classe para [Redis](https://redis.io/) construído em cima de [ioredis](https://github.com/luin/ioredis) com uma melhor API pub/sub.
 
-> NOTA: Configuração, API de eventos e todos os métodos *ioredis* são 100% suportados. Veja o repositório [ioredis](https://github.com/luin/ioredis) para documentação completa.
+::: info NOTA
+Configuração, API de eventos e todos os métodos *ioredis* são 100% suportados. Veja o repositório [ioredis](https://github.com/luin/ioredis) para documentação completa.
+:::
 
 ## Configuração
 Como o *Provedor Redis* não é instalado por padrão, precisamos obtê-lo de `npm`:
@@ -26,7 +23,9 @@ const providers = [
 ]
 ```
 
-> NOTA: A configuração do Redis é salva dentro do arquivo `config/redis.js`, que é criado pelo comando `adonis install` ao instalar o *Provedor Redis*.
+::: warning NOTA
+A configuração do Redis é salva dentro do arquivo `config/redis.js`, que é criado pelo comando `adonis install` ao instalar o *Provedor Redis*.
+:::
 
 ## Exemplo básico
 Vamos começar com um exemplo básico de cache de usuários dentro do Redis:
@@ -54,7 +53,9 @@ class UserController {
 }
 ```
 
-> NOTA: O exemplo acima pode não ser a melhor maneira de armazenar dados em cache – ele simplesmente fornece uma ideia de como usar o Redis.
+::: info NOTA
+O exemplo acima pode não ser a melhor maneira de armazenar dados em cache – ele simplesmente fornece uma ideia de como usar o Redis.
+:::
 
 ## Comandos
 Todos os [comandos do Redis](http://redis.io/commands) são suportados como funções JavaScript, por exemplo:
@@ -93,7 +94,9 @@ Redis.subscribe('music', async (track) => {
 })
 ```
 
-> OBSERVAÇÃO: Crie o arquivo `start/redis.js` se ele não existir e carregue-o dentro do seu `server.js`: `.preLoad('start/redis')`.
+::: warning OBSERVAÇÃO
+Crie o arquivo `start/redis.js` se ele não existir e carregue-o dentro do seu `server.js`: `.preLoad('start/redis')`.
+:::
 
 Depois que um assinante for registrado, você pode publicar dados neste canal do mesmo servidor ou de um servidor diferente:
 
@@ -106,7 +109,9 @@ Redis.publish('music', track)
 ### Métodos disponíveis
 Abaixo está a lista de métodos para interagir com a camada pub/sub do Redis.
 
-> OBSERVAÇÃO: Você só pode ter um assinante para um determinado canal.
+::: warning OBSERVAÇÃO
+Você só pode ter um assinante para um determinado canal.
+:::
 
 #### `subscribe(channel, listener)`
 

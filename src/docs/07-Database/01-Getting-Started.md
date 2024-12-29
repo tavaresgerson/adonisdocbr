@@ -1,27 +1,24 @@
----
-title: Getting Started
-category: database
----
-
 # Introdução
 
-A criação de aplicativos orientados a dados do AdonisJs é bastante simplificada por meio de seu poderoso [Query Builder](/original/markdown/07-Database/02-Query-Builder.md), [Lucid ORM](/original/markdown/08-Lucid-ORM/01-Getting-Started.adoc), [Migrations](/original/markdown/07-Database/03-Migrations.md), [Factories](/original/markdown/07-Database/04-Seeding.md) e [Seeds](/original/markdown/07-Database/04-Seeding.md).
+A criação de aplicativos orientados a dados do AdonisJs é bastante simplificada por meio de seu poderoso [Query Builder](/docs/07-Database/02-Query-Builder.md), [Lucid ORM](/docs/08-Lucid-ORM/01-Getting-Started.md), [Migrations](/docs/07-Database/03-Migrations.md), [Factories](/docs/07-Database/04-Seeding.md) e [Seeds](/docs/07-Database/04-Seeding.md).
 
 Neste guia, aprenderemos a configurar e usar o *Database Provider*.
 
-> OBSERVAÇÃO: O Data Provider usa [Knex.js](https://knexjs.org) internamente, portanto, navegue pela documentação do Knex sempre que precisar de mais informações.
+::: warning OBSERVAÇÃO
+O Data Provider usa [Knex.js](https://knexjs.org) internamente, portanto, navegue pela documentação do Knex sempre que precisar de mais informações.
+:::
 
 ## Bancos de dados suportados
 A lista de bancos de dados suportados e seus drivers equivalentes são os seguintes:
 
-| Banco de dados | Driver NPM |
-|-------------|-----------------------------------|
-| MariaDB | `npm i mysql` ou `npm i mysql2` |
-| MSSQL | `npm i mssql` |
-| MySQL | `npm i mysql` ou `npm i mysql2` |
-| Oracle | `npm i oracledb` |
-| PostgreSQL | `npm i pg` |
-| SQLite3 | `npm i sqlite3` |
+| Banco de dados  | Driver NPM                        |
+|-----------------|-----------------------------------|
+| MariaDB         | `npm i mysql` ou `npm i mysql2`   |
+| MSSQL           | `npm i mssql`                     |
+| MySQL           | `npm i mysql` ou `npm i mysql2`   |
+| Oracle          | `npm i oracledb`                  |
+| PostgreSQL      | `npm i pg`                        |
+| SQLite3         | `npm i sqlite3`                   |
 
 ## Configuração
 
@@ -46,7 +43,9 @@ const aceProviders = [
 ]
 ```
 
-> NOTA: Muitos boilerplates do AdonisJs têm o *Lucid* instalado por padrão.
+::: info NOTA
+Muitos boilerplates do AdonisJs têm o *Lucid* instalado por padrão.
+:::
 
 ### Configuração
 O *Provedor de Banco de Dados* usa a conexão `sqlite` por padrão.
@@ -94,7 +93,7 @@ Database
   .orWhere('vip', true)
 ```
 
-Consulte a documentação do [Query Builder](/original/markdown/07-Database/02-Query-Builder.md) para obter a referência completa da API.
+Consulte a documentação do [Query Builder](/docs/07-Database/02-Query-Builder.md) para obter a referência completa da API.
 
 ## Conexões múltiplas
 Por padrão, o AdonisJs usa o valor `connection` definido dentro do arquivo `config/database.js` ao fazer consultas de banco de dados.
@@ -107,7 +106,9 @@ Database
   .table('users')
 ```
 
-> NOTA: Como o AdonisJs agrupa conexões para reutilização, todas as conexões usadas são mantidas, a menos que o processo morra.
+::: info NOTA
+Como o AdonisJs agrupa conexões para reutilização, todas as conexões usadas são mantidas, a menos que o processo morra.
+:::
 
 Para fechar uma conexão, chame o método `close` passando quaisquer nomes de conexão:
 
@@ -196,7 +197,9 @@ hooks.after.providersBooted(() => {
 })
 ```
 
-> OBSERVAÇÃO: Crie o arquivo `start/hooks.js` se ele não existir.
+::: warning OBSERVAÇÃO
+Crie o arquivo `start/hooks.js` se ele não existir.
+:::
 
 ### Localmente
 Você pode escutar o evento `query` por consulta em tempo de execução:

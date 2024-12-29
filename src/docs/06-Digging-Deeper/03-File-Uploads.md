@@ -1,8 +1,3 @@
----
-title: File Uploads
-category: digging-deeper
----
-
 # Uploads de arquivo
 
 O AdonisJs processa uploads de arquivo com segurança, sem desperdiçar recursos do servidor.
@@ -121,11 +116,11 @@ if (!profilePics.movedAll()) {
 ## Opções de validação
 As seguintes opções de validação podem ser passadas para validar um arquivo antes de concluir uma operação de movimentação:
 
-| Key         | Value                 | Description |
+| Chave       | Valor                 | Descrição   |
 |-------------|-----------------------|-------------|
-| `types`     | `String[]`            | An array of types to be allowed. The value will be checked against the file [media type](https://www.npmjs.com/package/media-typer). |
-| `size`      | `String` OR `Number`  | The maximum size allowed for the file. The value is parsed using the [bytes.parse](https://github.com/visionmedia/bytes.js#bytesparsestringnumber-value-numbernull) method. |
-| `extnames`  | `String[]`            | To have to more granular control over the file type, you can define the allowed extensions over defining the type. |
+| `types`     | `String[]`            | Uma matriz de tipos a serem permitidos. O valor será verificado em relação ao arquivo [tipo de mídia](https://www.npmjs.com/package/media-typer). |
+| `size`      | `String` ou `Number`  | O tamanho máximo permitido para o arquivo. O valor é analisado usando o método [bytes.parse](https://github.com/visionmedia/bytes.js#bytesparsestringnumber-value-numbernull). |
+| `extnames`  | `String[]`            | Para ter um controle mais granular sobre o tipo de arquivo, você pode definir as extensões permitidas ao definir o tipo. |
 
 Um exemplo de como aplicar regras de validação é o seguinte:
 
@@ -145,7 +140,9 @@ await avatar.move()
 
 Quando a validação de upload falha, o método [File](https://github.com/adonisjs/adonis-bodyparser/blob/develop/src/Multipart/File.js) `error` retorna um objeto contendo o `fieldName` com falha, o `clientName` original, uma `message` de erro e a regra `type` que disparou o erro.
 
-> OBSERVAÇÃO: O método [FileJar](https://github.com/adonisjs/adonis-bodyparser/blob/develop/src/Multipart/FileJar.js) `errors` retorna uma *matriz* de erros.
+::: warning OBSERVAÇÃO
+O método [FileJar](https://github.com/adonisjs/adonis-bodyparser/blob/develop/src/Multipart/FileJar.js) `errors` retorna uma *matriz* de erros.
+:::
 
 Alguns exemplos de objetos de erro estão listados abaixo.
 
@@ -174,7 +171,7 @@ Alguns exemplos de objetos de erro estão listados abaixo.
 ## Propriedades do arquivo
 As seguintes propriedades do arquivo podem ser acessadas na instância [File](https://github.com/adonisjs/adonis-bodyparser/blob/develop/src/Multipart/File.js):
 
-| Propriedade      | Descrição                                            | Não processado  | Dentro do tmp   | Movido     |
+| Propriedade   | Descrição                                               | Não processado  | Dentro do tmp   | Movido    |
 |---------------|---------------------------------------------------------|-----------------|-----------------|-----------|
 | clientName    | Nome do arquivo na máquina cliente                      | `String`        | `String`        | `String`  |
 | fileName      | Nome do arquivo após a operação de movimentação         | `null`          | `null`          | `String`  |
@@ -187,7 +184,7 @@ As seguintes propriedades do arquivo podem ser acessadas na instância [File](ht
 | extname       | Extensão do arquivo                                     | `String`        | `String`        | `String`  |
 
 ## Validadores de rota
-[Validadores de rota](/original/markdown/04-Basics/08-Validation.md) validam arquivos enviados antes de passá-los para o controlador.
+[Validadores de rota](/docs/04-Basics/08-Validation.md) validam arquivos enviados antes de passá-los para o controlador.
 
 No validador de rota de exemplo abaixo:
 
@@ -253,7 +250,9 @@ Route.post('upload', async ({ request }) => {
 })
 ```
 
-> OBSERVAÇÃO: Você deve chamar `await request.multipart.process()` para iniciar o processamento dos arquivos enviados.
+::: warning OBSERVAÇÃO
+Você deve chamar `await request.multipart.process()` para iniciar o processamento dos arquivos enviados.
+:::
 
 O método `request.multipart.file` permite que você selecione um arquivo específico e acesse seu fluxo legível por meio da propriedade `file.stream` para que você possa canalizar o fluxo para o *Amazon S3* ou qualquer outro serviço externo que desejar.
 

@@ -1,8 +1,3 @@
----
-title: Upgrading from 4.0
-category: Preface
----
-
 # Atualizando da versão 4.0
 
 A versão 4.1 contém uma série de *correções de bugs* e *melhorias de API* para manter a base de código simples e menos mágica. Mudanças drásticas foram mantidas no mínimo, no entanto, elas não puderam ser eliminadas completamente.

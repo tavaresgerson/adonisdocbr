@@ -1,8 +1,3 @@
----
-title: Ignitor
-category: concept
----
-
 # Ignitor
 
 O [Ignitor](https://github.com/adonisjs/adonis-ignitor) alimenta o bootstrapping de um aplicativo AdonisJs.

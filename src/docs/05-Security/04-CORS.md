@@ -1,8 +1,3 @@
----
-title: CORS
-category: security
----
-
 # CORS
 
 Cross-Origin Resource Sharing (CORS) é uma maneira de permitir solicitações HTTP de entrada de diferentes domínios.

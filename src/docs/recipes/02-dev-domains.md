@@ -1,13 +1,10 @@
----
-title: Using .dev domains
-category: recipes
----
-
 # Usando domínios .dev
 
 Todos nós adoramos usar domínios `.dev` bonitos ao desenvolver nossos aplicativos em desenvolvimento. Nesta receita, aprendemos como vincular domínios personalizados ao seu aplicativo em vez de acessá-los via `localhost`.
 
-> OBSERVAÇÃO: Esta técnica não tem nenhuma vantagem ou desvantagem técnica e, em vez disso, é usada como uma preferência pessoal em relação a domínios bonitos.
+::: warning OBSERVAÇÃO
+Esta técnica não tem nenhuma vantagem ou desvantagem, em vez disso, é usada como uma preferência pessoal em relação a domínios bonitos.
+:::
 
 ## Configurar hotel
 O primeiro passo é configurar uma ferramenta externa chamada [hotel](https://www.npmjs.com/package/hotel). Ela permite que você registre domínios para um aplicativo ou uma URL.

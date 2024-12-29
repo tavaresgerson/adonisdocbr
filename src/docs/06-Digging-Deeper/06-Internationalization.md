@@ -1,8 +1,3 @@
----
-title: Internationalization
-category: digging-deeper
----
-
 # Internacionalização
 
 O AdonisJs tem suporte de primeira classe para internacionalização construído sobre os padrões [formatjs.io](https://formatjs.io/).
@@ -29,10 +24,10 @@ const providers = [
 Seu objeto de configuração `locales` deve ser salvo dentro do arquivo `config/app.js` com as seguintes opções:
 
 
-| Option    | Value                 | Description |
+| Opção     | Valor                 | Descrição   |
 |-----------|-----------------------|-------------|
-| `locale`  | ISO 639               | The default application locale (must be one of the available locales from [ISO 639 codes](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)). |
-| `loader`  | `database` or `file`  | The loader to use for loading your different language translations. |
+| `locale`  | ISO 639               | O local padrão do aplicativo (deve ser um dos locais disponíveis em [códigos ISO 639](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)). |
+| `loader`  | `database` ou `file`  | O carregador a ser usado para carregar suas traduções em diferentes idiomas. |
 
 ```js
 // .config/app.js
@@ -65,7 +60,9 @@ Cada diretório de localidade deve conter uma lista de arquivos de tradução de
         └── store.json
 ```
 
-> OBSERVAÇÃO: No exemplo acima, cada localidade contém 3 *grupos* de tradução hipotéticos: `alerts`, `cart` e `store`. Crie quantos arquivos de *grupo* por localidade conforme as necessidades do seu aplicativo.
+::: info OBSERVAÇÃO
+No exemplo acima, cada localidade contém 3 *grupos* de tradução hipotéticos: `alerts`, `cart` e `store`. Crie quantos arquivos de *grupo* por localidade conforme as necessidades do seu aplicativo.
+:::
 
 Você também pode criar um diretório chamado `fallback` para armazenar mensagens que são usadas quando a mensagem para o idioma atual não pode ser encontrada:
 
@@ -83,12 +80,15 @@ Você também pode criar um diretório chamado `fallback` para armazenar mensage
 ### Banco de Dados
 Ao usar o carregador `database`, todas as localidades são obtidas da tabela de banco de dados `locales`.
 
-> OBSERVAÇÃO: O comando `adonis install` cria a migração para a tabela `locales`.
+::: warning OBSERVAÇÃO
+O comando `adonis install` cria a migração para a tabela `locales`.
+:::
 
-> DICA: Você sempre pode referenciar o arquivo de origem de migração mais recente no [Github](https://github.com/adonisjs/adonis-antl/blob/master/templates/locales-schema.js).
+::: tip DICA
+Você sempre pode referenciar o arquivo de origem de migração mais recente no [Github](https://github.com/adonisjs/adonis-antl/blob/master/templates/locales-schema.js).
+:::
 
 Um exemplo de tabela de banco de dados `locales` pode se parecer com isto:
-
 
 | id  | locale  | group     | item      | text                                      |
 |-----|---------|-----------|-----------|-------------------------------------------|
@@ -97,7 +97,9 @@ Um exemplo de tabela de banco de dados `locales` pode se parecer com isto:
 | 3   | en      | cart      | total     | Cart total is `{total, number, usd}`      |
 | 4   | fr      | cart      | total     | Le panier est total `{total, number, usd}`|  
 
-> NOTE: You *must* define a *group* value for each `locales` item.
+::: warning OBSERVAÇÃO
+Você *deve* definir um valor de *grupo* para cada item `locales`.
+:::
 
 ## Acessando Localidades
 Você pode acessar a localidade atual e padrão por meio do objeto `Antl`:
@@ -146,7 +148,9 @@ Antl.formatMessage('messages.greeting', { name: 'virk' })
 ### Argumentos formatados
 Os valores passados ​​para uma mensagem podem ser formatados opcionalmente por *tipo*.
 
-> NOTA: Você deve registrar seus formatos antes de poder usá-los (consulte [Registrando formatos](#registering-formats)).
+::: info NOTA
+Você deve registrar seus formatos antes de poder usá-los (consulte [Registrando formatos](#registering-formats)).
+:::
 
 Por exemplo, ao passar um número, podemos formatá-lo como uma `moeda`:
 
@@ -194,7 +198,9 @@ O formato `select` define a saída condicional com base no valor passado:
 } will respond shortly
 ```
 
-> DICA: Tente editar a mensagem acima no seu [navegador](https://format-message.github.io/icu-message-format-for-translators/editor.html?m={gender%2C%20select%2C%0D%0A%20%20%20%20male%20{He}%0D%0A%20%20%20%20female%20{She}%0D%0A%20%20%20%20other%20{They}%0D%0A}%20will%20respond%20shortly&l=en-us&gender=male).
+::: tip DICA
+Tente editar a mensagem acima no seu [navegador](https://format-message.github.io/icu-message-format-for-translators/editor.html?m={gender%2C%20select%2C%0D%0A%20%20%20%20male%20{He}%0D%0A%20%20%20%20female%20{She}%0D%0A%20%20%20%20other%20{They}%0D%0A}%20will%20respond%20shortly&l=en-us&gender=male).
+:::
 
 ### Formato plural
 O formato `plural` define opções de plurilização com base no valor passado:
@@ -207,7 +213,9 @@ O formato `plural` define opções de plurilização com base no valor passado:
 }
 ```
 
-> DICA: Tente editar a mensagem acima em seu [navegador](https://format-message.github.io/icu-message-format-for-translators/editor.html?m=%7B%20count%20%2C%20plural%20%2C%0A%C2%A0%C2%A0%C2%A0%3D0%20%7BNo%20doce%20esquerdo%7D%0A%C2%A0%C2%A0one%20%7BGot%20%23%20doce%20esquerdo%7D%0Aother%20%7BGot%20%23%20doce%20esquerdo%7D%20%7D).
+::: tip DICA
+Tente editar a mensagem acima em seu [navegador](https://format-message.github.io/icu-message-format-for-translators/editor.html?m=%7B%20count%20%2C%20plural%20%2C%0A%C2%A0%C2%A0%C2%A0%3D0%20%7BNo%20doce%20esquerdo%7D%0A%C2%A0%C2%A0one%20%7BGot%20%23%20doce%20esquerdo%7D%0Aother%20%7BGot%20%23%20doce%20esquerdo%7D%20%7D).
+:::
 
 ## Formatando valores
 Abaixo está a lista de métodos que você pode usar para formatar *mensagens* ou *valores brutos*.
@@ -369,7 +377,7 @@ Antl.formatMessage(
 ```
 
 ```bash
-# .Output
+# Saída:
 
 USD total $20.00 or in GBP £13.00
 ```
@@ -401,12 +409,14 @@ const AntlDb = Antl.loader('database')
 AntlDb.formatMessage()
 ```
 
-> NOTA: Sempre chame `bootLoader` antes de `Antl.loader` (você só precisa chamar `bootLoader` uma vez).
+::: info NOTA
+Sempre chame `bootLoader` antes de `Antl.loader` (você só precisa chamar `bootLoader` uma vez).
+:::
 
 ## Localidade de solicitação Http
-O *Provedor Antl* vincula a propriedade `locale` ao objeto [Contexto Http](/original/markdown/02-Concept/01-Request-Lifecycle.md):
+O *Provedor Antl* vincula a propriedade `locale` ao objeto [Contexto Http](/docs/02-Concept/01-Request-Lifecycle.md):
 
-```json
+```js
 Route.get('/', ({ locale }) => {
   return `User language is ${locale}`
 })
@@ -469,4 +479,6 @@ Alternativamente, você pode usar a tag `@mustache` para escrever várias linhas
 ))
 ```
 
-> OBSERVAÇÃO: Não há como alternar o carregador dentro dos modelos.
+::: warning OBSERVAÇÃO
+Não há como alternar o carregador dentro dos modelos.
+:::

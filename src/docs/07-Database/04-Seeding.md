@@ -1,11 +1,6 @@
----
-title: Seeds & Factories
-category: database
----
-
 # Seeds & Factories
 
-Depois de preparar seu esquema de banco de dados com [migrations](/original/markdown/07-Database/03-Migrations.md), o próximo passo é adicionar alguns dados. É aqui que as *seeds* e *factories* do banco de dados entram em cena.
+Depois de preparar seu esquema de banco de dados com [migrations](/docs/07-Database/03-Migrations.md), o próximo passo é adicionar alguns dados. É aqui que as *seeds* e *factories* do banco de dados entram em cena.
 
 ## Seeds
 Seeds são classes JavaScript que contêm um método `run`. Dentro do método `run`, você é livre para escrever quaisquer operações relacionadas ao banco de dados que sua semente requeira.
@@ -83,7 +78,9 @@ const usersArray = await Factory
 ### Criando relacionamentos
 Digamos que queremos criar um modelo `User` e relacionar um `Post` a ele.
 
-> OBSERVAÇÃO: Para o exemplo abaixo, um relacionamento `posts` deve primeiro ser definido no modelo User. Saiba mais sobre relacionamentos [aqui](/original/markdown/08-Lucid-ORM/05-Relationships.md).
+::: warning OBSERVAÇÃO
+Para o exemplo abaixo, um relacionamento `posts` deve primeiro ser definido no modelo User. Saiba mais sobre relacionamentos [aqui](/docs/08-Lucid-ORM/05-Relationships.md).
+:::
 
 Primeiro, crie blueprints para ambos os modelos no arquivo `database/factory.js`:
 
@@ -129,7 +126,7 @@ Abaixo está a lista de comandos de seed disponíveis.
 | `adonis seed`       | `--files` | Execute os arquivos seed (opcionalmente, você pode passar uma lista separada por vírgulas de `--files` a serem executados, caso contrário, todos os arquivos serão executados). |
 
 ## API Model Factory
-Abaixo está a lista de métodos disponíveis ao usar fábricas [modelo Lucid](/original/markdown/08-Lucid-ORM/01-Getting-Started.md).
+Abaixo está a lista de métodos disponíveis ao usar fábricas [modelo Lucid](/docs/08-Lucid-ORM/01-Getting-Started.md).
 
 #### `create`
 Persistir e retornar instância do modelo:
@@ -168,7 +165,7 @@ await Factory
 ```
 
 ## Uso sem Lucid
-Se seu aplicativo não usar link:lucid[modelos Lucid], você ainda poderá usar o [Provedor de banco de dados](/original/markdown/07-Database/02-Query-Builder.md) para gerar registros de banco de dados de fábrica.
+Se seu aplicativo não usar link:lucid[modelos Lucid], você ainda poderá usar o [Provedor de banco de dados](/docs/07-Database/02-Query-Builder.md) para gerar registros de banco de dados de fábrica.
 
 #### `blueprint`
 
@@ -270,6 +267,6 @@ Sim. Importe o provedor de fábrica (`Factory`) para o seu teste e use conforme 
 
 3. *Posso executar apenas arquivos de sementes selecionados?*
 Sim. Passar `--files` com uma lista de nomes de arquivos separados por vírgula para o comando `adonis seed` garante que apenas esses arquivos sejam executados, por exemplo:
-```bash
-  adonis seed --files='UsersSeeder.js, PostsSeeder.js'
-  ```
+    ```bash
+    adonis seed --files='UsersSeeder.js, PostsSeeder.js'
+    ```

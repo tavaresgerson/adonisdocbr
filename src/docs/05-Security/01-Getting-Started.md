@@ -1,8 +1,3 @@
----
-title: Introduction
-category: security
----
-
 # Introdução
 
 O AdonisJs fornece um punhado de ferramentas para manter seus sites seguros contra ataques comuns da web.
