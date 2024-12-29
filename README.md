@@ -2,8 +2,8 @@
 
 * A versão 6.0 está em aguardo
 * A versão 5.x está em andamento
-* A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdocbr/tree/v4.1).
-* A versão 3.2 está disponível [aqui](https://github.com/tavaresgerson/adonisdocbr/tree/v3.2) ou em https://v3.adonisjs.tavares.in.
+* A versão 4.1 está disponível [aqui](https://github.com/tavaresgerson/adonisdocbr/tree/v4.1). ou em https://v4.adonisjs.tavares.in
+* A versão 3.2 está disponível [aqui](https://github.com/tavaresgerson/adonisdocbr/tree/v3.2) ou em https://v3.adonisjs.tavares.in
 
 <p>
   <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg" width="25" align="left" />
