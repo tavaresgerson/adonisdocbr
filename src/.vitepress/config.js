@@ -6,19 +6,20 @@ export default {
     description: 'Node.js web framework',
     lang: 'pt-BR',
     head: [
-        [
-            'link',
-            { rel: 'preconnect', href: 'https://fonts.googleapis.com' }
-          ],
-          [
-            'link',
-            { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }
-          ],
-          [
-            'link',
-            { href: 'https://fonts.googleapis.com/css2?family=Ubuntu&display=swap', rel: 'stylesheet' }
-          ],
-          ['link', { rel: 'icon', href: '/favicon.ico' }]
+      [
+        'script',
+        { async: '', src: 'https://www.googletagmanager.com/gtag/js?id=G-LX5RGD8738' }
+      ],
+      [
+        'script',
+        {},
+        `window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-LX5RGD8738');`
+      ],
+      ['link', { rel: 'icon', href: '/favicon.ico' }]
     ],
     ignoreDeadLinks: true,
     themeConfig: {
