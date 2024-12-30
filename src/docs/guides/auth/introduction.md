@@ -1,26 +1,20 @@
-# Introduction
+# Introdução
 
-AdonisJS comes with a fully fledged authentication system to authenticate the users of your application using **sessions**, **basic auth** or **API tokens**.
+O AdonisJS vem com um sistema de autenticação completo para autenticar os usuários do seu aplicativo usando **sessões**, **autenticação básica** ou **tokens de API**.
 
-The support for authentication is added by the `@adonisjs/auth` package and it must be installed separately.
+O suporte para autenticação é adicionado pelo pacote `@adonisjs/auth` e deve ser instalado separadamente.
 
-:::note
-
-The auth package relies on the `@adonisjs/lucid` package. Make sure to [configure lucid](../database/introduction.md) first.
-
+::: info NOTA
+O pacote auth depende do pacote `@adonisjs/lucid`. Certifique-se de [configurar o lucid](../database/introduction.md) primeiro.
 :::
 
-:::div{class="setup"}
+:::code-group
 
-:::codegroup
-
-```sh
-// title: 1. Install
+```sh [1. Install]
 npm i @adonisjs/auth@8.2.3
 ```
 
-```sh
-// title: 2. Configure
+```sh [2. Configure]
 node ace configure @adonisjs/auth
 
 # CREATE: app/Models/User.ts
@@ -32,24 +26,17 @@ node ace configure @adonisjs/auth
 # UPDATE: .adonisrc.json { providers += "@adonisjs/auth" }
 # CREATE: ace-manifest.json file
 ```
-
 :::
 
+- Vários guardas para autenticação. **Sessões**, **tokens de API** e **autenticação básica**
+- API extensível para adicionar proteções personalizadas e provedores de usuário
 
-:::div{class="features"}
+* [Ver no npm](https://npm.im/@adonisjs/auth)
+* [Ver no GitHub](https://github.com/adonisjs/auth)
 
-- Multiple guards for authentication. **Sessions**, **API tokens**, and **Basic auth**
-- Extensible API to add custom guards and user providers
-
-&nbsp;
-
-- [View on npm](https://npm.im/@adonisjs/auth)
-- [View on GitHub](https://github.com/adonisjs/auth)
-
-:::
 
 ## Config
-The configuration for the auth package is stored inside the `config/auth.ts` file. Inside this file you can define one or more guards to authenticate users. A guard is a **combination of a user provider and one of the available authentication driver**.
+A configuração do pacote auth é armazenada dentro do arquivo `config/auth.ts`. Dentro deste arquivo, você pode definir uma ou mais proteções para autenticar usuários. Uma proteção é uma **combinação de um provedor de usuário e um dos drivers de autenticação disponíveis**.
 
 ```ts
 import { AuthConfig } from '@ioc:Adonis/Addons/Auth'
@@ -75,55 +62,45 @@ export default authConfig
 ```
 
 #### guard
-The top level `guard` property defines the default guard to use for authentication. It must be defined inside the `guards` list.
-
-----
+A propriedade de nível superior `guard` define a proteção padrão a ser usada para autenticação. Ela deve ser definida dentro da lista `guards`.
 
 #### guards
-The `guards` object is a key-value pair of the guards you want to use in your application. You can create multiple guards using the same or a different driver.
-
-----
+O objeto `guards` é um par chave-valor dos guards que você deseja usar em seu aplicativo. Você pode criar vários guards usando o mesmo driver ou um diferente.
 
 #### guards.driver
-The driver to use for login and authenticating users. You can use one of the pre-existing drivers or extend the Auth module to add your own.
+O driver a ser usado para login e autenticação de usuários. Você pode usar um dos drivers pré-existentes ou estender o módulo Auth para adicionar o seu próprio.
 
-- `session` driver makes use of sessions/cookies to login and authenticate requests.
-- `oat` stands for **opaque access token** and uses stateless tokens for authenticating requests.
-- `basic` uses basic auth for authenticating requests.
-
-----
+- O driver `session` faz uso de sessões/cookies para login e autenticação de solicitações.
+- `oat` significa **token de acesso opaco** e usa tokens sem estado para autenticação de solicitações.
+- `basic` usa autenticação básica para autenticação de solicitações.
 
 #### guards.provider
-The `provider` property configures a user provider to lookup users. You can use one of the pre-existing providers or extend the Auth module to add your own.
+A propriedade `provider` configura um provedor de usuário para pesquisar usuários. Você pode usar um dos provedores pré-existentes ou estender o módulo Auth para adicionar o seu próprio.
 
-Following is the list of available drivers for user lookup. Rest of the config values are dependent upon the selected driver.
+A seguir está a lista de drivers disponíveis para pesquisa de usuários. O restante dos valores de configuração depende do driver selecionado.
 
-- `lucid` uses data models to lookup users.
-- `database` queries the database directly to lookup users.
+- `lucid` usa modelos de dados para pesquisar usuários.
+- `database` consulta o banco de dados diretamente para pesquisar usuários.
 
----
+### Configurando novos guards/providers
+Você também pode configurar novos guards e os providers após a configuração inicial. O primeiro passo é registrá-los dentro do arquivo `contracts/auth.ts` para informar o compilador estático TypeScript.
 
-### Configuring new guards/providers
-You can also configure new guards and the providers after initial setup. The first step is to register them inside the `contracts/auth.ts` file to inform the TypeScript static compiler.
+Você pode adicionar um novo provider dentro da interface `ProvidersList`. A chave é o nome do provider, juntamente com os tipos para a configuração e a implementação.
 
-You can add a new provider inside the `ProvidersList` interface. The key is the name of provider, alongside the types for both the config and the implementation.
-
-The `GuardsList` interface is the list of all the guards you want to use. The key is the name of the guard, alongside the types for both the guard config and its implementation.
+A interface `GuardsList` é a lista de todos os guards que você deseja usar. A chave é o nome do guard, juntamente com os tipos para a configuração do guard e sua implementação.
 
 ```ts
-// title: contracts/auth.ts
+// contracts/auth.ts
 declare module '@ioc:Adonis/Addons/Auth' {
   interface ProvidersList {
     user: {
       implementation: LucidProviderContract<typeof User>,
       config: LucidProviderConfig<typeof User>,
     },
-    // highlight-start
-    apps: {
-      implementation: LucidProviderContract<typeof App>,
-      config: LucidProviderConfig<typeof App>,
-    }
-    // highlight-end
+    apps: {                                               // [!code highlight]
+      implementation: LucidProviderContract<typeof App>,  // [!code highlight]
+      config: LucidProviderConfig<typeof App>,            // [!code highlight]
+    }                                                     // [!code highlight]
   }
 
   interface GuardsList {
@@ -131,33 +108,31 @@ declare module '@ioc:Adonis/Addons/Auth' {
       implementation: SessionGuardContract<'user', 'web'>,
       config: SessionGuardConfig<'user'>,
     },
-    // highlight-start
-    api: {
-      implementation: OATGuardContract<'apps', 'api'>,
-      config: OATGuardConfig<'apps'>,
-    }
-    // highlight-end
+    api: {                                                // [!code highlight]
+      implementation: OATGuardContract<'apps', 'api'>,    // [!code highlight]
+      config: OATGuardConfig<'apps'>,                     // [!code highlight]
+    }                                                     // [!code highlight]
   }
 }
 ```
 
-Once, you have added the new guard(s) or provider(s) inside the contracts file, the TypeScript compiler will automatically validate the config file, forcing you to define the configuration for it as well.
+Depois de adicionar o(s) novo(s) guard(s) ou provider(s) dentro do arquivo contracts, o compilador TypeScript validará automaticamente o arquivo de configuração, forçando você a definir a configuração para ele também.
 
-## Migrations
+## Migrações
 
-The setup process also creates the migration files for the `users` table and optionally for the `tokens` table (if using the API tokens guard with SQL storage).
+O processo de configuração também cria os arquivos de migração para a tabela `users` e, opcionalmente, para a tabela `tokens` (se estiver usando o API tokens guard com armazenamento SQL).
 
- The filename of the migrations uses the current timestamp and is placed after all the existing migrations.
+O nome do arquivo das migrações usa o registro de data e hora atual e é colocado após todas as migrações existentes.
 
- There are chances that some of your tables needs to create a foreign key constraint with the `users` table, hence the `users` table migration must run before those migrations.
+Há chances de que algumas de suas tabelas precisem criar uma restrição de chave estrangeira com a tabela `users`, portanto, a migração da tabela `users` deve ser executada antes dessas migrações.
 
- In this scenario, you can manually rename the `users` table migration file and use a smaller timestamp to move it ahead of the other migration files.
+Neste cenário, você pode renomear manualmente o arquivo de migração da tabela `users` e usar um registro de data e hora menor para movê-lo à frente dos outros arquivos de migração.
 
-## Usage
-You can access the `auth` instance inside your route handlers using the `ctx.auth` property. The auth object allows you to both login users and authenticate subsequent requests.
+## Uso
+Você pode acessar a instância `auth` dentro de seus manipuladores de rota usando a propriedade `ctx.auth`. O objeto auth permite que você faça login em usuários e autentique solicitações subsequentes.
 
 ```ts
-// title: Login user
+// Login de usuário
 Route.post('login', async ({ auth, request }) => {
   const email = request.input('email')
   const password = request.input('password')
@@ -167,23 +142,23 @@ Route.post('login', async ({ auth, request }) => {
 ```
 
 ```ts
-// title: Authenticate subsequent request
+// Autenticar solicitação subsequente
 Route.get('dashboard', async ({ auth }) => {
   await auth.use('web').authenticate()
 
-  // ✅ Request authenticated
+  // ✅ Solicitação autenticada
   console.log(auth.user!)
 })
 ```
 
-Beyond the basic usage, we recommend you to read the guides for the individual guards, as their API and flow may vary.
+Além do uso básico, recomendamos que você leia os guias para os guardas individuais, pois sua API e fluxo podem variar.
 
-- [Web guard usage](./web-guard.md)
-- [API tokens guard usage](./api-tokens-guard.md)
-- [Basic auth guard usage](./basic-auth-guard.md)
+* [Uso do guarda da Web](/docs/guides/auth/web-guard.md)
+* [Uso do guarda de tokens de API](/docs/guides/auth/api-tokens-guard.md)
+* [Uso básico do guarda de autenticação](/docs/guides/auth/basic-auth-guard.md)
 
-## Reference inside templates
-The `ctx.auth` property is also shared with the templates. You can use it to display the specific portion of your markup conditionally.
+## Referência dentro de modelos
+A propriedade `ctx.auth` também é compartilhada com os modelos. Você pode usá-la para exibir a parte específica da sua marcação condicionalmente.
 
 ```edge
 @if(auth.isLoggedIn)
@@ -191,11 +166,11 @@ The `ctx.auth` property is also shared with the templates. You can use it to dis
 @endif
 ```
 
-## Providers config reference
-Following is the reference of user providers config and contracts.
+## Referência de configuração de provedores
+A seguir está a referência de configuração e contratos de provedores de usuário.
 
-### Lucid provider
-The `lucid` provider uses the data models to lookup users from the databases. The provider must be configured inside the contracts file first.
+### Provedor Lucid
+O provedor `lucid` usa os modelos de dados para pesquisar usuários nos bancos de dados. O provedor deve ser configurado dentro do arquivo de contratos primeiro.
 
 ```ts
 import User from 'App/Models/User'
@@ -208,7 +183,7 @@ interface ProvidersList {
 }
 ```
 
-Following is the list of all the available configuration options.
+A seguir está a lista de todas as opções de configuração disponíveis.
 
 ```ts
 {
@@ -223,25 +198,19 @@ Following is the list of all the available configuration options.
 }
 ```
 
-#### driver
-The driver name must always be set to `lucid`.
+#### `driver`
+O nome do driver deve ser sempre definido como `lucid`.
 
----
+#### `identifierKey`
+A `identifierKey` geralmente é a chave primária no modelo configurado. O pacote de autenticação precisa dela para identificar exclusivamente um usuário.
 
-#### identifierKey
-The `identifierKey` is usually the primary key on the configured model. The authentication package needs it to uniquely identify a user.
+#### `uids`
+Uma matriz de colunas de modelo para usar na pesquisa de usuário. O método `auth.login` usa os `uids` para encontrar um usuário pelo valor fornecido.
 
----
+Por exemplo: se seu aplicativo permite login com e-mail e nome de usuário, você deve defini-los como `uids`. Além disso, você precisa definir os nomes das colunas do modelo e não os nomes das colunas do banco de dados.
 
-#### uids
-An array of model columns to use for the user lookup. The `auth.login` method uses the `uids` to find a user by the provided value.
-
-For example: If your application allows login with email and username both, then you must define them as `uids`. Also, you need to define the model column names and not the database column names.
-
----
-
-#### model
-The model to use for user lookup. It must be lazily imported using a closure.
+#### `model`
+O modelo a ser usado para pesquisa de usuário. Ele deve ser importado lentamente usando um fechamento.
 
 ```ts
 {
@@ -249,20 +218,14 @@ The model to use for user lookup. It must be lazily imported using a closure.
 }
 ```
 
----
+#### `connection`
+A conexão do banco de dados a ser usada para fazer as consultas SQL. Se não for definida, a conexão do modelo será usada.
 
-#### connection
-The database connection to use to make the SQL queries. If not defined, the model connection will be used.
+#### `hashDriver`
+O driver a ser usado para verificar o hash da senha do usuário. Ele é usado pelo método `auth.login`. Se não for definido, usaremos o driver de hash padrão do arquivo `config/hash.ts`.
 
----
-
-#### hashDriver
-The driver to use for verifying the user password hash. It is used by the `auth.login` method. If not defined, we will use the default hash driver from the `config/hash.ts` file.
-
----
-
-### Database provider
-The database provider queries the database directly using the [Database query builder](../database/query-builder.md). You must register the provider inside the contracts file first.
+### Provedor de banco de dados
+O provedor de banco de dados consulta o banco de dados diretamente usando o [Database query builder](/docs/guides/database/query-builder.md). Você deve registrar o provedor dentro do arquivo de contratos primeiro.
 
 ```ts
 interface ProvidersList {
@@ -273,7 +236,7 @@ interface ProvidersList {
 }
 ```
 
-Following is the list of available configuration options.
+A seguir está a lista de opções de configuração disponíveis.
 
 ```ts
 {
@@ -288,25 +251,19 @@ Following is the list of available configuration options.
 }
 ```
 
-#### driver
-The driver name must always be set to `database`.
+#### `driver`
+O nome do driver deve sempre ser definido como `database`.
 
----
+#### `identifierKey`
+A `identifierKey` geralmente é a chave primária da tabela de banco de dados configurada. O pacote de autenticação precisa dela para identificar exclusivamente um usuário.
 
-#### identifierKey
-The `identifierKey` is usually the primary key of the configured database table. The authentication package needs it to uniquely identify a user.
+#### `uids`
+Uma matriz de colunas de modelo para usar na pesquisa do usuário. O método `auth.login` usa os `uids` para encontrar um usuário pelo valor fornecido.
 
----
+Por exemplo: se seu aplicativo permite login com e-mail e nome de usuário, você deve defini-los como `uids`. Além disso, você precisa definir os nomes das colunas do modelo e não os nomes das colunas do banco de dados.
 
-#### uids
-An array of model columns to use for the user lookup. The `auth.login` method uses the `uids` to find a user by the provided value.
-
-For example: If your application allows login with email and username both, then you must define them as `uids`. Also, you need to define the model column names and not the database column names.
-
----
-
-#### usersTable
-The name of the database table to use for users lookup.
+#### `usersTable`
+O nome da tabela do banco de dados a ser usada para pesquisa de usuários.
 
 ```ts
 {
@@ -314,15 +271,9 @@ The name of the database table to use for users lookup.
 }
 ```
 
----
+#### `connection`
+A conexão do banco de dados a ser usada para fazer as consultas SQL. Se não for definida, a conexão padrão do arquivo `config/database.ts` será usada.
 
-#### connection
-The database connection to use to make the SQL queries. If not defined, the default connection from the `config/database.ts` file is used.
+#### `hashDriver`
 
----
-
-#### hashDriver
-
-The driver to use for verifying the user password hash. It is used by the `auth.login` method. If not defined, we will use the default hash driver from the `config/hash.ts` file.
-
----
+O driver a ser usado para verificar o hash da senha do usuário. Ele é usado pelo método `auth.login`. Se não for definido, usaremos o driver de hash padrão do arquivo `config/hash.ts`.

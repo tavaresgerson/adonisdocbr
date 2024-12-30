@@ -1,24 +1,24 @@
-# Custom user provider
+# Provedor de usuário personalizado
 
-User providers are used for looking up a user for authentication. The auth module ships with a [Database provider](https://github.com/adonisjs/auth/blob/develop/src/UserProviders/Database/index.ts) and a [Lucid provider](https://github.com/adonisjs/auth/blob/develop/src/UserProviders/Lucid/index.ts) to look up users from a SQL database using the Lucid ORM.
+Os provedores de usuário são usados ​​para procurar um usuário para autenticação. O módulo auth é fornecido com um [provedor de banco de dados](https://github.com/adonisjs/auth/blob/develop/src/UserProviders/Database/index.ts) e um [provedor Lucid](https://github.com/adonisjs/auth/blob/develop/src/UserProviders/Lucid/index.ts) para procurar usuários de um banco de dados SQL usando o Lucid ORM.
 
-You can also extend the Auth module and add custom User providers if you want to look up users from a different data source. In this guide, we will go through the process of adding a custom user provider.
+Você também pode estender o módulo Auth e adicionar provedores de usuário personalizados se quiser procurar usuários de uma fonte de dados diferente. Neste guia, passaremos pelo processo de adicionar um provedor de usuário personalizado.
 
-:::note
-Here is an [example project](https://github.com/adonisjs-community/auth-mongoose-provider) using mongoose to lookup users from a MongoDB database. You can use it as an inspiration to create your own provider.
+::: info NOTA
+Aqui está um [projeto de exemplo](https://github.com/adonisjs-community/auth-mongoose-provider) usando o mongoose para procurar usuários de um banco de dados MongoDB. Você pode usá-lo como inspiração para criar seu próprio provedor.
 :::
 
-## Extending from outside in
-Anytime you are extending the core of the framework. It is better to assume that you do not have access to the application code and its dependencies. In other words, write your extensions as if you are writing a third-party package and use dependency injection to rely on other dependencies.
+## Estendendo de fora para dentro
+Sempre que você estiver estendendo o núcleo do framework. É melhor assumir que você não tem acesso ao código do aplicativo e suas dependências. Em outras palavras, escreva suas extensões como se estivesse escrevendo um pacote de terceiros e use injeção de dependência para depender de outras dependências.
 
-Let's begin by creating a user provider that relies on a MongoDB client to look up the users from the database. **The following examples use dummy code for the MongoDB queries, and you must replace them with your own implementation**.
+Vamos começar criando um provedor de usuário que depende de um cliente MongoDB para procurar os usuários do banco de dados. **Os exemplos a seguir usam código fictício para as consultas do MongoDB, e você deve substituí-los por sua própria implementação**.
 
 ```sh
 mkdir providers/MongoDbAuthProvider
 touch providers/MongoDbAuthProvider/index.ts
 ```
 
-The directory structure will look as follows.
+A estrutura do diretório será semelhante à seguinte.
 
 ```
 providers
@@ -26,10 +26,11 @@ providers
     └── index.ts
 ```
 
-Open the newly created `MongoDbAuthProvider/index.ts` file and paste the following code inside it.
+Abra o arquivo `MongoDbAuthProvider/index.ts` recém-criado e cole o seguinte código dentro dele.
 
 ```ts
-// title: providers/MongoDbAuthProvider/index.ts
+// providers/MongoDbAuthProvider/index.ts
+
 import type { HashContract } from '@ioc:Adonis/Core/Hash'
 import type {
     UserProviderContract,
@@ -37,8 +38,8 @@ import type {
 } from '@ioc:Adonis/Addons/Auth'
 
 /**
- * Shape of the user object returned by the "MongoDbAuthProvider"
- * class. Feel free to change the properties as you want
+ * Forma do objeto do usuário retornado pela classe "MongoDbAuthProvider"
+ * Sinta-se à vontade para alterar as propriedades como quiser
  */
 export type User = {
   id: string
@@ -48,16 +49,16 @@ export type User = {
 }
 
 /**
- * The shape of configuration accepted by the MongoDbAuthProvider.
- * At a bare minimum, it needs a driver property
+ * A forma de configuração aceita pelo MongoDbAuthProvider.
+ * No mínimo, ele precisa de uma propriedade de driver
  */
 export type MongoDbAuthProviderConfig = {
   driver: 'mongo'
 }
 
 /**
- * Provider user works as a bridge between your User provider and
- * the AdonisJS auth module.
+ * O usuário provedor funciona como uma ponte entre seu provedor de usuário e
+ * o módulo de autenticação do AdonisJS.
  */
 class ProviderUser implements ProviderUserContract<User> {
   constructor(public user: User | null, private hash: HashContract) {}
@@ -87,8 +88,8 @@ class ProviderUser implements ProviderUserContract<User> {
 }
 
 /**
- * The User provider implementation to lookup a user for different
- * operations
+ * A implementação do provedor de usuário para procurar um usuário para diferentes
+ * operações
  */
 export class MongoDbAuthProvider implements UserProviderContract<User> {
   constructor(
@@ -128,10 +129,10 @@ export class MongoDbAuthProvider implements UserProviderContract<User> {
 }
 ```
 
-That's a lot of code, so let's break it down and understand the purpose of each class and its methods.
+É muito código, então vamos dividi-lo e entender o propósito de cada classe e seus métodos.
 
-### User type
-The `export type User` block defines the shape of the user your provider will return. If you are using an ORM, you can infer the User type from some model, but the main goal is to have a pre-defined representation of a user.
+### Tipo de usuário
+O bloco `export type User` define o formato do usuário que seu provedor retornará. Se estiver usando um ORM, você pode inferir o tipo User de algum modelo, mas o objetivo principal é ter uma representação predefinida de um usuário.
 
 ```ts
 export type User = {
@@ -142,8 +143,8 @@ export type User = {
 }
 ```
 
-### MongoDb Provider config
-The `MongoDbAuthProviderConfig` type defines the shape of the config accepted by your provider. It must have at least the `driver` property reflecting the driver's name you want to register with the auth module.
+### Configuração do provedor MongoDb
+O tipo `MongoDbAuthProviderConfig` define o formato da configuração aceita pelo seu provedor. Ele deve ter pelo menos a propriedade `driver` refletindo o nome do driver que você deseja registrar com o módulo auth.
 
 ```ts
 export type MongoDbAuthProviderConfig = {
@@ -151,12 +152,12 @@ export type MongoDbAuthProviderConfig = {
 }
 ```
 
-### ProviderUser class
-The `ProviderUser` class is a bridge between your **UserProvider** and the AdonisJS auth module. The auth module does not know the properties that exist on the user object you fetched from a data source, and hence it needs some way to **lookup the id** or **verify the user password**. 
+### Classe ProviderUser
+A classe `ProviderUser` é uma ponte entre seu **UserProvider** e o módulo de autenticação do AdonisJS. O módulo de autenticação não conhece as propriedades que existem no objeto de usuário que você buscou de uma fonte de dados e, portanto, precisa de alguma forma de **procurar o id** ou **verificar a senha do usuário**.
 
-This is where the `ProviderUser` class comes into the picture. It must implement the [ProviderUserContract](https://github.com/adonisjs/auth/blob/develop/adonis-typings/auth.ts#L52) interface.
+É aqui que a classe `ProviderUser` entra em cena. Ela deve implementar a interface [ProviderUserContract](https://github.com/adonisjs/auth/blob/develop/adonis-typings/auth.ts#L52).
 
-We also accept the `hash` module as a constructor argument to verify the user passwords using the [AdonisJS hash module](../security/hashing.md).
+Também aceitamos o módulo `hash` como um argumento construtor para verificar as senhas do usuário usando o [módulo de hash do AdonisJS](/docs/security/hashing.md).
 
 ```ts
 class ProviderUser implements ProviderUserContract<User> {
@@ -187,32 +188,24 @@ class ProviderUser implements ProviderUserContract<User> {
 }
 ```
 
-#### getId
-Return the value for a property that uniquely identifies the user.
+#### `getId`
+Retorna o valor de uma propriedade que identifica exclusivamente o usuário.
 
----
+#### `getRememberMeToken`
+Retorna o valor do token de lembrar-me. Deve ser uma string ou `null` quando nenhum token de lembrar-me foi gerado.
 
-#### getRememberMeToken
-Return the value of the remember me token. It must be a string or `null` when no remember me token was generated.
+#### `setRememberMeToken`
+Obtém a propriedade do token de lembrar-me no objeto do usuário. Observe; você não persiste o token de lembrar-me dentro deste método. Você apenas atualiza a propriedade.
 
----
+O token é persistido pelo `updateRememberMeToken` na classe `UserProvider`.
 
-#### setRememberMeToken
-Get the remember me token property on the user object. Do note; you do not persist the remember me token inside this method. You just update the property.
+#### `verifyPassword`
+Verifica a senha do usuário. Este método recebe a senha em texto simples do módulo auth e deve retornar `true` se a senha corresponder ou `false` se a senha estiver incorreta.
 
-The token is persisted by the `updateRememberMeToken` on the `UserProvider` class.
+### Classe UserProvider
+A classe `UserProvider` é usada para procurar um usuário ou persistir o token de lembrar-me para um determinado usuário. Esta é a classe que você registrará mais tarde com o módulo de autenticação do AdonisJS.
 
----
-
-#### verifyPassword
-Verify the user password. This method receives the plain text password from the auth module and must return `true` if the password matches or `false` if the password is incorrect.
-
----
-
-### UserProvider class
-The `UserProvider` class is used to look up a user or persist the remember me token for a given user. This is the class that you will later register with the AdonisJS auth module.
-
-The `UserProvider` must implement the [UserProviderContract](https://github.com/adonisjs/auth/blob/develop/adonis-typings/auth.ts#L63) interface.
+O `UserProvider` deve implementar a interface [UserProviderContract](https://github.com/adonisjs/auth/blob/develop/adonis-typings/auth.ts#L63).
 
 ```ts
 export class MongoDbAuthProvider implements UserProviderContract<User> {
@@ -253,40 +246,32 @@ export class MongoDbAuthProvider implements UserProviderContract<User> {
 }
 ```
 
-#### getUserFor
-Returns a [ProviderUser](#provideruser-class) instance for the user object you lookup from a data source.
+#### `getUserFor`
+Retorna uma instância [ProviderUser](#provideruser-class) para o objeto de usuário que você procura em uma fonte de dados.
 
----
+#### `updateRememberMeToken`
+Atualiza a fonte de dados com o novo token de lembrar-me. Este método recebe uma instância da classe `ProviderUser` com a propriedade de atualização `rememberMeToken`.
 
-#### updateRememberMeToken
-Update the data source with the new remember me token. This method receives an instance of the `ProviderUser` class with the update `rememberMeToken` property.
+#### `findById`
+Encontre um usuário pelo seu id exclusivo. Este método deve retornar uma instância da classe [ProviderUser](#provideruser-class).
 
----
+#### `findByUid`
+Encontre um usuário para login usando seu endereço de e-mail ou nome de usuário ou qualquer outra propriedade aplicável à sua fonte de dados.
 
-#### findById
-Find a user by their unique id. This method must return an instance of the [ProviderUser](#provideruser-class) class.
+Por exemplo, o provedor Lucid [depende da configuração](https://github.com/adonisjs/auth/blob/develop/src/UserProviders/Lucid/index.ts#L160-L162) para procurar um usuário pelo uid.
 
----
+Este método deve retornar uma instância da classe [ProviderUser](#provideruser-class).
 
-#### findByUid
-Find a user for login by using either their email address or username or any other property applicable to your data source.
+#### `findByRememberMeToken`
+Encontre um usuário pelo token "lembre-se de mim". O método recebe o id do usuário e o token "lembre-se de mim".
 
-For example, The Lucid provider [relies on the config](https://github.com/adonisjs/auth/blob/develop/src/UserProviders/Lucid/index.ts#L160-L162) to look up a user by uid.
+Este método deve retornar uma instância da classe [ProviderUser](#provideruser-class).
 
-This method must return an instance of the [ProviderUser](#provideruser-class) class.
-
----
-
-#### findByRememberMeToken
-Find a user by their remember me token. The method receives the user id, and the remember me token both.
-
-This method must return an instance of the [ProviderUser](#provideruser-class) class.
-
-## Registering the User provider
-The next step is to register the User provider with the auth module. You must do it inside the provider's` boot` method. For this example, we will make use of the `providers/AppProvider.ts` file.
+## Registrando o provedor User
+O próximo passo é registrar o provedor User com o módulo auth. Você deve fazer isso dentro do método boot do provedor. Para este exemplo, usaremos o arquivo `providers/AppProvider.ts`.
 
 ```ts
-// title providers/AppProvider.ts
+// providers/AppProvider.ts
 import { ApplicationContract } from '@ioc:Adonis/Core/Application'
 
 export default class AppProvider {
@@ -305,19 +290,20 @@ export default class AppProvider {
 }
 ```
 
-The `Auth.extend` method accepts a total of three arguments.
+O método `Auth.extend` aceita um total de três argumentos.
 
-- The type of extension. It should always be set to `provider` when adding a user provider.
-- The name of the provider
-- And finally, a callback that returns an instance of the User provider. The callback method receives the `config` as the 3rd argument.
+- O tipo de extensão. Ele deve sempre ser definido como `provider` ao adicionar um provedor user.
+- O nome do provedor
+- E, finalmente, um retorno de chamada que retorna uma instância do provedor User. O método de retorno de chamada recebe o `config` como o terceiro argumento.
 
-## Update types and config
-Before you can start using the `mongo` provider, you will have to define it inside the contract file and define its config.
+## Atualizar tipos e configuração
+Antes de começar a usar o provedor `mongo`, você terá que defini-lo dentro do arquivo de contrato e definir sua configuração.
 
-Open the `contracts/auth.ts` file and append the following code snippet inside it.
+Abra o arquivo `contracts/auth.ts` e anexe o seguinte trecho de código dentro dele.
 
 ```ts
-// title: contracts/auth.ts
+// contracts/auth.ts
+
 import type {
   MongoDbAuthProvider,
   MongoDbAuthProviderConfig,
@@ -325,12 +311,10 @@ import type {
 
 declare module '@ioc:Adonis/Addons/Auth' {
   interface ProvidersList {
-    // highlight-start
-    user: {
-      implementation: MongoDbAuthProvider
-      config: MongoDbAuthProviderConfig
-    }
-    // highlight-end
+    user: {                               // [!code highlight]
+      implementation: MongoDbAuthProvider // [!code highlight]
+      config: MongoDbAuthProviderConfig   // [!code highlight]
+    }                                     // [!code highlight]
   }
 
   interface GuardsList {
@@ -342,21 +326,19 @@ declare module '@ioc:Adonis/Addons/Auth' {
 }
 ```
 
-Finally, let's update the `config/auth.ts` file and define the config for the user provider.
+Finalmente, vamos atualizar o arquivo `config/auth.ts` e definir a configuração para o provedor de usuário.
 
 ```ts
-// title: config/auth.ts
+// config/auth.ts
 const authConfig: AuthConfig = {
   guard: 'web',
   guards: {
     web: {
       driver: 'session',
 
-      // highlight-start
-      provider: {
-        driver: 'mongo'
-      }
-      // highlight-end
+      provider: {         // [!code highlight]
+        driver: 'mongo'   // [!code highlight]
+      }                   // [!code highlight]
     }
   }
 }

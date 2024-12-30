@@ -1,18 +1,19 @@
-# Auth middleware
+# Middleware de autenticação
 
-During the setup process, the auth package creates the following two middleware inside the `./app/Middleware` directory. You can use these middleware to guard the routes against the un-authenticated requests.
+Durante o processo de configuração, o pacote de autenticação cria os dois middlewares a seguir dentro do diretório `./app/Middleware`. Você pode usar esses middlewares para proteger as rotas contra solicitações não autenticadas.
 
-## Auth middleware
-The auth middleware is stored inside the `app/Middleware/Auth.ts` file. You must register it as a named middleware inside the `start/kernel.ts` file.
+## Middleware de autenticação
+O middleware de autenticação é armazenado dentro do arquivo `app/Middleware/Auth.ts`. Você deve registrá-lo como um middleware nomeado dentro do arquivo `start/kernel.ts`.
 
 ```ts
-// title: start/kernel.ts
+// start/kernel.ts
+
 Server.middleware.registerNamed({
   auth: () => import('App/Middleware/Auth')
 })
 ```
 
-Once registered, you can attach the `auth` middleware to the application routes. For example:
+Depois de registrado, você pode anexar o middleware `auth` às rotas do aplicativo. Por exemplo:
 
 ```ts
 Route.group(() => {
@@ -20,10 +21,10 @@ Route.group(() => {
 }).middleware('auth')
 ```
 
-The auth middleware optionally accepts the guards to use for authenticating the current request. It will loop over all the defined guards and stops when any of the guards is able to authenticate the request.
+O middleware de autenticação aceita opcionalmente os guards para usar na autenticação da solicitação atual. Ele fará um loop em todos os guards definidos e parará quando qualquer um dos guards for capaz de autenticar a solicitação.
 
-- The request continues when the request is authenticated
-- Otherwise, the [AuthenticationException](https://github.com/adonisjs/auth/blob/develop/src/Exceptions/AuthenticationException.ts) is raised. The exception uses [content negotiation](https://github.com/adonisjs/auth/blob/develop/src/Exceptions/AuthenticationException.ts#L113-L149) to make the response.
+- A solicitação continua quando a solicitação é autenticada
+[AuthenticationException](https://github.com/adonisjs/auth/blob/develop/src/Exceptions/AuthenticationException.ts) é gerada. A exceção usa
 
 ```ts
 Route.group(() => {
@@ -31,21 +32,20 @@ Route.group(() => {
 }).middleware('auth:web,api')
 ```
 
-## Silent Auth middleware
-The silent auth middleware silently checks if the user is logged-in or not. The request still continues as usual, even when the user is not logged-in.
+## Middleware de autenticação silenciosa
+O middleware de autenticação silenciosa verifica silenciosamente se o usuário está logado ou não. A solicitação continua normalmente, mesmo quando o usuário não está logado.
 
-This middleware is helpful when you want to render a public webpage, but also show the currently logged in user details somewhere in the page (maybe the header).
+Este middleware é útil quando você deseja renderizar uma página da web pública, mas também mostrar os detalhes do usuário atualmente logado em algum lugar da página (talvez o cabeçalho).
 
-To summarize, this middleware does not force the users to be logged-in, but will fetch their details if they are logged-in and provide it to you through out the request lifecycle.
+Para resumir, este middleware não força os usuários a estarem logados, mas buscará seus detalhes se estiverem logados e os fornecerá a você durante todo o ciclo de vida da solicitação.
 
-If you plan to use this middleware, then you must register it inside the list of global middleware.
+Se você planeja usar este middleware, deverá registrá-lo na lista de middleware global.
 
 ```ts
-// title: start/kernel.ts
+// start/kernel.ts
+
 Server.middleware.register([
   () => import('@ioc:Adonis/Core/BodyParser'),
-  // highlight-start
-  () => import('App/Middleware/SilentAuth')
-  // highlight-end
+  () => import('App/Middleware/SilentAuth') // [!code highlight]
 ])
 ```

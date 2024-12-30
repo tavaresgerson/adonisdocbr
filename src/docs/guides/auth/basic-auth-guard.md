@@ -1,16 +1,14 @@
-# Basic auth
+# Autenticação básica
 
-The basic auth guard uses the [HTTP basic authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#basic_authentication_scheme) for authenticating the requests.
+A proteção de autenticação básica usa a [autenticação básica HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#basic_authentication_scheme) para autenticar as solicitações.
 
-There is no concept of **explicit login and logout** with basic auth. The credentials for authentication are sent on every request and you can validate them using the `auth.authenticate` method.
+Não há conceito de **login e logout explícitos** com autenticação básica. As credenciais para autenticação são enviadas em cada solicitação e você pode validá-las usando o método `auth.authenticate`.
 
-- If the user credentials are incorrect, then the auth package will deny the request with `WWW-Authenticate` header.
-- If the credentials are correct, then you will be able to access the logged in user details.
+- Se as credenciais do usuário estiverem incorretas, o pacote de autenticação negará a solicitação com o cabeçalho `WWW-Authenticate`.
+- Se as credenciais estiverem corretas, você poderá acessar os detalhes do usuário conectado.
 
-:::note
-
-The basic auth guard relies on the underlying user provider to lookup and validate the user credentials
-
+::: info NOTA
+A proteção de autenticação básica depende do provedor de usuário subjacente para pesquisar e validar as credenciais do usuário
 :::
 
 ```ts
@@ -24,7 +22,7 @@ Route
   })
 ```
 
-You can also make use of the [auth middleware](./middleware.md) to guard routes using the basic auth guard.
+Você também pode usar o [auth middleware](/docs/guides/auth/middleware.md) para proteger rotas usando a proteção de autenticação básica.
 
 ```ts
 import Route from '@ioc:Adonis/Core/Route'

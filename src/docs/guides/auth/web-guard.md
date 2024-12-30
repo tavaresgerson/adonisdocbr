@@ -1,18 +1,16 @@
 # Web guard
 
-The web guard uses sessions/cookies to login a user. You must use the web guard when **creating a server rendered application**, or for **an API having a first-party client running on the same domain/sub-domain**.
+O web guard usa sessões/cookies para fazer login de um usuário. Você deve usar o web guard ao **criar um aplicativo renderizado pelo servidor** ou para **uma API com um cliente primário em execução no mesmo domínio/subdomínio**.
 
-:::note
-
-The web guard relies on the `@adonisjs/session` package. Make sure to install and [configure](../http/session.md) it first.
-
+::: info NOTA
+O web guard depende do pacote `@adonisjs/session`. Certifique-se de instalá-lo e [configurá-lo](../http/session.md) primeiro.
 :::
 
 ## Login
-You can login the user using the `auth.attempt` or the `auth.login` method. The `auth.attempt` method lookup the user from the database and verifies their password.
+Você pode fazer login do usuário usando o método `auth.attempt` ou `auth.login`. O método `auth.attempt` pesquisa o usuário no banco de dados e verifica sua senha.
 
-- If the user credentials are correct, it will internally call the `auth.login` method and create the session.
-- Otherwise an [InvalidCredentialsException](https://github.com/adonisjs/auth/blob/develop/src/Exceptions/InvalidCredentialsException.ts) is raised.
+- Se as credenciais do usuário estiverem corretas, ele chamará internamente o método `auth.login` e criará a sessão.
+[InvalidCredentialsException](https://github.com/adonisjs/auth/blob/develop/src/Exceptions/InvalidCredentialsException.ts) é gerado.
 
 ```ts
 import Route from '@ioc:Adonis/Core/Route'
@@ -22,22 +20,18 @@ Route.post('login', async ({ auth, request, response }) => {
   const password = request.input('password')
 
   try {
-    // highlight-start
-    await auth.use('web').attempt(email, password)
-    response.redirect('/dashboard')
-    // highlight-end
+    await auth.use('web').attempt(email, password)  // [!code highlight]
+    response.redirect('/dashboard')                 // [!code highlight]
   } catch {
     return response.badRequest('Invalid credentials')
   }
 })
 ```
 
-You can either manually handle the exception and return a response, or let the exception handle itself and create a response using [content negotiation](https://github.com/adonisjs/auth/blob/develop/src/Exceptions/InvalidCredentialsException.ts#L87-L105).
+Você pode manipular manualmente a exceção e retornar uma resposta, ou deixar que a exceção se automanipule e crie uma resposta usando [negociação de conteúdo](https://github.com/adonisjs/auth/blob/develop/src/Exceptions/InvalidCredentialsException.ts#L87-L105).
 
----
-
-### auth.login
-If the `auth.attempt` lookup strategy does not fit your use case, then you can manually lookup the user, verify their password and call the `auth.login` method to create a session for them.
+### `auth.login`
+Se a estratégia de pesquisa `auth.attempt` não se encaixar no seu caso de uso, você pode pesquisar manualmente o usuário, verificar sua senha e chamar o método `auth.login` para criar uma sessão para ele.
 
 ```ts
 import User from 'App/Models/User'
@@ -66,20 +60,16 @@ Route.post('login', async ({ auth, request, response }) => {
 })
 ```
 
----
-
-### auth.loginViaId
-Similar to the `auth.login` method, the `loginViaId` method creates the login session for the user using their id.
+### `auth.loginViaId`
+Semelhante ao método `auth.login`, o método `loginViaId` cria a sessão de login para o usuário usando seu id.
 
 ```ts
 // Login user using the id
 await auth.use('web').loginViaId(1)
 ```
 
----
-
-### Using remember me option
-All the login methods `attempt`, `login`, and `loginViaId` accepts a boolean value as the last argument to create a remember me cookie for the logged in user.
+### Usando a opção lembrar de mim
+Todos os métodos de login `attempt`, `login` e `loginViaId` aceitam um valor booleano como o último argumento para criar um cookie lembrar de mim para o usuário conectado.
 
 ```ts
 const rememberMe = true
@@ -89,14 +79,14 @@ await auth.use('web').login(user, rememberMe)
 await auth.use('web').loginViaId(1, rememberMe)
 ```
 
-If the user session expires, the remember me cookie will be used to create another session for the user. The remember me token is stored inside the `users` table itself and currently only one remember me token is allowed.
+Se a sessão do usuário expirar, o cookie lembrar de mim será usado para criar outra sessão para o usuário. O token lembrar de mim é armazenado dentro da própria tabela `users` e atualmente apenas um token lembrar de mim é permitido.
 
-## Authenticate subsequent requests
-Once the user is logged-in with the login session, you can authenticate the subsequent requests using the `auth.authenticate` method. It will verify the user session and lookup the user inside the database.
+## Autentique solicitações subsequentes
+Depois que o usuário estiver logado com a sessão de login, você pode autenticar as solicitações subsequentes usando o método `auth.authenticate`. Ele verificará a sessão do usuário e pesquisará o usuário dentro do banco de dados.
 
-The [AuthenticationException](https://github.com/adonisjs/auth/blob/develop/src/Exceptions/AuthenticationException.ts) is raised, if the session is invalid or the user does not exists inside the database.
+A [AuthenticationException](https://github.com/adonisjs/auth/blob/develop/src/Exceptions/AuthenticationException.ts) é gerada se a sessão for inválida ou se o usuário não existir dentro do banco de dados.
 
-Otherwise, you can access the logged-in user using the `auth.user` property.
+Caso contrário, você pode acessar o usuário logado usando a propriedade `auth.user`.
 
 ```ts
 import Route from '@ioc:Adonis/Core/Route'
@@ -107,16 +97,12 @@ Route.get('dashboard', async ({ auth }) => {
 })
 ```
 
-Calling this method manually inside every single route is not practical and hence you can make use of the auth middleware stored inside the `./app/Middleware/Auth.ts` file.
+Chamar esse método manualmente dentro de cada rota não é prático e, portanto, você pode usar o middleware auth armazenado dentro do arquivo `./app/Middleware/Auth.ts`.
 
-<div class="doc-cta-wrapper">
-
-[Learn more about the auth middleware →](./middleware.md)
-
-</div>
+* [Saiba mais sobre o middleware auth →](./middleware.md)
 
 ## Logout
-You can logout the user by calling the `auth.logout` method. It will destroy the user login session and the remember me cookie. The remember me token inside the `users` is also set to null.
+Você pode sair do usuário chamando o método `auth.logout`. Ele destruirá a sessão de login do usuário e o cookie "lembre-se de mim". O token "lembre-se de mim" dentro de `users` também é definido como nulo.
 
 ```ts
 import Route from '@ioc:Adonis/Core/Route'
@@ -127,23 +113,21 @@ Route.post('/logout', async ({ auth, response }) => {
 })
 ```
 
-## Other methods/properties
-Following is the list of available methods/properties available for the `web` guard.
+## Outros métodos/propriedades
+A seguir está a lista de métodos/propriedades disponíveis para o `web` guard.
 
-### viaRemember
-Find it the current request is authenticated using the remember token or not. This is will be set to `true` when:
+### `viaRemember`
+Descubra se a solicitação atual é autenticada usando o token "lembre-se de mim" ou não. Isso será definido como `true` quando:
 
-- You initially logged in the user with the remember me token.
-- The login session has expired during the current request and the remember me cookie was present and valid to login the user.
+- Você fez login inicialmente no usuário com o token "lembre-se de mim".
+- A sessão de login expirou durante a solicitação atual e o cookie "lembre-se de mim" estava presente e válido para fazer login no usuário.
 
 ```ts
 auth.use('web').viaRemember
 ```
 
----
-
-### isLoggedOut
-Find if the user has been logged out during the current request. The value will be `true` right after calling the `auth.logout` method.
+### `isLoggedOut`
+Descubra se o usuário foi desconectado durante a solicitação atual. O valor será `true` logo após chamar o método `auth.logout`.
 
 ```ts
 await auth.use('web').logout()
@@ -151,10 +135,8 @@ await auth.use('web').logout()
 auth.use('web').isLoggedOut
 ```
 
----
-
-### isLoggedIn
-Find if user is logged in or not. The value is `true` right after calling the `auth.login` method or when the `auth.authenticate` check passes.
+### `isLoggedIn`
+Descubra se o usuário está conectado ou não. O valor é `true` logo após chamar o método `auth.login` ou quando a verificação `auth.authenticate` passa.
 
 ```ts
 await auth.use('web').authenticate()
@@ -166,16 +148,11 @@ await auth.use('web').attempt(email, password)
 auth.use('web').isLoggedIn // true
 ```
 
----
+### `isGuest`
+Descubra se o usuário é um convidado (ou seja, não conectado). O valor é sempre o oposto do sinalizador `isLoggedIn`.
 
-### isGuest
-Find if the user is a guest (meaning not logged in). The value is always the opposite of the `isLoggedIn` flag.
-
----
-
-### isAuthenticated
-Find if the current request has passed the authentication check. This flag is different from the `isLoggedIn` flag and not set to true during the `auth.login` call.
-
+### `isAuthenticated`
+Descubra se a solicitação atual passou na verificação de autenticação. Este sinalizador é diferente do sinalizador `isLoggedIn` e não é definido como true durante a chamada `auth.login`.
 
 ```ts
 await auth.use('web').authenticate()
@@ -187,10 +164,8 @@ await auth.use('web').attempt(email, password)
 auth.use('web').isAuthenticated // false
 ```
 
----
-
-### authenticationAttempted
-Find if an attempt to authenticate the current request has been made. The value is set to `true` when you call the `auth.authenticate` method
+### `authenticationAttempted`
+Descubra se uma tentativa de autenticação da solicitação atual foi feita. O valor é definido como `true` quando você chama o método `auth.authenticate`
 
 ```ts
 auth.use('web').authenticationAttempted // false
@@ -199,15 +174,11 @@ await auth.use('web').authenticate()
 auth.use('web').authenticationAttempted // true
 ```
 
----
+### `provider`
+Referência ao provedor de usuário subjacente usado pelo guard.
 
-### provider
-Reference to the underlying user provider used by the guard.
-
----
-
-### verifyCredentials
-A method to verify the user credentials. The `auth.attempt` method uses this method under the hood. The [InvalidCredentialsException](https://github.com/adonisjs/auth/blob/develop/src/Exceptions/InvalidCredentialsException.ts) exception is raised when the credentials are invalid.
+### `verifyCredentials`
+Um método para verificar as credenciais do usuário. O método `auth.attempt` usa este método por baixo dos panos. A exceção [InvalidCredentialsException](https://github.com/adonisjs/auth/blob/develop/src/Exceptions/InvalidCredentialsException.ts) é gerada quando as credenciais são inválidas.
 
 ```ts
 try {
@@ -217,10 +188,8 @@ try {
 }
 ```
 
----
-
-### check
-The method is same as the `auth.authenticate` method. However, it does not raise any exception when the request is not authenticated. Think of it as an optional attempt to check if the user is logged in or not.
+### `check`
+O método é o mesmo que o método `auth.authenticate`. No entanto, ele não gera nenhuma exceção quando a solicitação não é autenticada. Pense nisso como uma tentativa opcional de verificar se o usuário está logado ou não.
 
 ```ts
 await auth.use('web').check()

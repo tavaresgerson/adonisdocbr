@@ -1,67 +1,16 @@
-# API tokens
+# Tokens de API
 
-The API guard uses the database-backed **opaque access token** to authenticate the user requests. You may want to use the API guard when creating an API that should be accessed by a third-party client, or for any other system that does not support cookies.
+A proteção de API usa o **token de acesso opaco** com suporte de banco de dados para autenticar as solicitações do usuário. Você pode querer usar a proteção de API ao criar uma API que deve ser acessada por um cliente de terceiros ou para qualquer outro sistema que não suporte cookies.
 
-## Tokens storage
-The API tokens guard allows you store tokens either in a SQL database or store them inside Redis. Both the storage options have their own use cases.
+## Armazenamento de tokens
+A proteção de tokens de API permite que você armazene tokens em um banco de dados SQL ou armazene-os dentro do Redis. Ambas as opções de armazenamento têm seus próprios casos de uso.
 
-### SQL storage
-The SQL storage method is suitable when API tokens are not the primary mode of authentication. For example: You may want to allow the users of your application to create personal access tokens (just like the way GitHub does) and authenticate the API requests using that.
+### Armazenamento de SQL
+O método de armazenamento de SQL é adequado quando os tokens de API não são o modo principal de autenticação. Por exemplo: você pode querer permitir que os usuários do seu aplicativo criem tokens de acesso pessoais (assim como o GitHub faz) e autentiquem as solicitações de API usando isso.
 
-In this scenario, you will not generate too many tokens in bulk and also most of the tokens will live forever.
+Neste cenário, você não gerará muitos tokens em massa e também a maioria dos tokens viverá para sempre.
 
-Configuration for tokens is managed inside the `config/auth.ts` file under the guard config object.
-
-```ts
-{
-  api: {
-    driver: 'oat',
-    provider: {
-      driver: 'lucid',
-      identifierKey: 'id',
-      uids: ['email'],
-      model: () => import('App/Models/User'),
-    },
-    // highlight-start
-    tokenProvider: {
-      type: 'api',
-      driver: 'database',
-      table: 'api_tokens',
-      foreignKey: 'user_id',
-    },
-    // highlight-end
-  }
-}
-```
-
-#### type
-The type property holds the type of the token you are generating. Make sure to give it a unique name when you have multiple API token guards in use.
-
-The unique name ensures that two guards generating the token for the same user does not have overlap or any conflicts.
-
----
-
-#### driver
-The name of the driver. It will always be `database` when storing the tokens inside a SQL table.
-
----
-
-#### table
-The database table to use for storing the tokens. During the initial setup process, AdonisJS will create the migration file for the tokens table. However, you can also create a migration manually and copy the contents from the [stub file](https://github.com/adonisjs/auth/blob/develop/templates/migrations/api_tokens.txt)
-
-----
-
-#### foreignKey
-The foreign key to build the relationship between the user and the token. Later, this will allow you to also list all the tokens for a given user.
-
----
-
-### Redis storage
-The redis storage is suitable when API tokens are the primary mode of authentication. For example: You authenticate the requests from your mobile app using token-based authentication.
-
-In this scenario, you would also want tokens to expire after a given period of time and redis can automatically clear the expired tokens from its storage.
-
-Configuration for tokens is managed inside the `config/auth.ts` file under the guard config object.
+A configuração dos tokens é gerenciada dentro do arquivo `config/auth.ts` sob o objeto de configuração de proteção.
 
 ```ts
 {
@@ -73,43 +22,76 @@ Configuration for tokens is managed inside the `config/auth.ts` file under the g
       uids: ['email'],
       model: () => import('App/Models/User'),
     },
-    // highlight-start
-    tokenProvider: {
-      type: 'api',
-      driver: 'redis',
-      redisConnection: 'local',
-      foreignKey: 'user_id',
-    },
-    // highlight-end
+    tokenProvider: {          // [!code highlight]
+      type: 'api',            // [!code highlight]
+      driver: 'database',     // [!code highlight]
+      table: 'api_tokens',    // [!code highlight]
+      foreignKey: 'user_id',  // [!code highlight]
+    },                        // [!code highlight]
   }
 }
 ```
 
-#### type
-The type property holds the type of the token you are generating. Make sure to give it a unique name when you have multiple API token guards in use.
+#### `type`
+A propriedade type contém o tipo do token que você está gerando. Certifique-se de dar a ele um nome exclusivo quando tiver vários guardas de token de API em uso.
 
-The unique name ensures that two guards generating the token for the same user does not have overlap or any conflicts.
+O nome exclusivo garante que dois guardas gerando o token para o mesmo usuário não tenham sobreposição ou conflitos.
 
----
+#### `driver`
+O nome do driver. Ele sempre será `database` ao armazenar os tokens dentro de uma tabela SQL.
 
-#### driver
-The name of the driver. It will always be `redis` when storing the tokens in a redis database.
+#### `table`
+A tabela do banco de dados a ser usada para armazenar os tokens. Durante o processo de configuração inicial, o AdonisJS criará o arquivo de migração para a tabela de tokens. No entanto, você também pode criar uma migração manualmente e copiar o conteúdo do [arquivo stub](https://github.com/adonisjs/auth/blob/develop/templates/migrations/api_tokens.txt)
 
----
+#### `foreignKey`
+A chave estrangeira para construir o relacionamento entre o usuário e o token. Mais tarde, isso permitirá que você também liste todos os tokens para um determinado usuário.
 
-#### redisConnection
-Reference to a connection defined inside the `config/redis.ts` file. Make sure to read the [redis guide](../digging-deeper/redis.md) for the initial setup.
+### Armazenamento Redis
+O armazenamento Redis é adequado quando os tokens de API são o modo principal de autenticação. Por exemplo: você autentica as solicitações do seu aplicativo móvel usando autenticação baseada em token.
 
-----
+Neste cenário, você também desejaria que os tokens expirassem após um determinado período de tempo e o Redis pode limpar automaticamente os tokens expirados de seu armazenamento.
 
-#### foreignKey
-The foreign key to build the relationship between the user and the token.
+A configuração para tokens é gerenciada dentro do arquivo `config/auth.ts` sob o objeto de configuração guard.
 
-## Generating tokens
-You can generate an API token for a user using the `auth.generate` or the `auth.attempt` method. The `auth.attempt` method lookup the user from the database and verifies their password.
+```ts
+{
+  api: {
+    driver: 'oat',
+    provider: {
+      driver: 'lucid',
+      identifierKey: 'id',
+      uids: ['email'],
+      model: () => import('App/Models/User'),
+    },
+    tokenProvider: {            // [!code highlight]
+      type: 'api',              // [!code highlight]
+      driver: 'redis',          // [!code highlight]
+      redisConnection: 'local', // [!code highlight]
+      foreignKey: 'user_id',    // [!code highlight]
+    },                          // [!code highlight]
+  }
+}
+```
 
-- If the user credentials are correct, it will internally call the `auth.generate` method and returns the token.
-- Otherwise an [InvalidCredentialsException](https://github.com/adonisjs/auth/blob/develop/src/Exceptions/InvalidCredentialsException.ts) is raised.
+#### `type`
+A propriedade type contém o tipo do token que você está gerando. Certifique-se de dar a ele um nome exclusivo quando tiver vários guardas de token de API em uso.
+
+O nome exclusivo garante que dois guardas gerando o token para o mesmo usuário não tenham sobreposição ou conflitos.
+
+#### `driver`
+O nome do driver. Ele sempre será `redis` ao armazenar os tokens em um banco de dados redis.
+
+#### `redisConnection`
+Referência a uma conexão definida dentro do arquivo `config/redis.ts`. Certifique-se de ler o [guia redis](/docs/digging-deeper/redis.md) para a configuração inicial.
+
+#### `foreignKey`
+A chave estrangeira para construir o relacionamento entre o usuário e o token.
+
+## Gerando tokens
+Você pode gerar um token de API para um usuário usando o método `auth.generate` ou `auth.attempt`. O método `auth.attempt` pesquisa o usuário no banco de dados e verifica sua senha.
+
+- Se as credenciais do usuário estiverem corretas, ele chamará internamente o método `auth.generate` e retornará o token.
+[InvalidCredentialsException](https://github.com/adonisjs/auth/blob/develop/src/Exceptions/InvalidCredentialsException.ts) é gerado.
 
 ```ts
 import Route from '@ioc:Adonis/Core/Route'
@@ -119,27 +101,21 @@ Route.post('login', async ({ auth, request, response }) => {
   const password = request.input('password')
 
   try {
-    // highlight-start
-    const token = await auth.use('api').attempt(email, password)
-    return token
-    // highlight-end
+    const token = await auth.use('api').attempt(email, password)  // [!code highlight]
+    return token                                                  // [!code highlight]
   } catch {
     return response.unauthorized('Invalid credentials')
   }
 })
 ```
 
-You can either manually handle the exception and return a response, or let the exception handle itself and create a response using [content negotiation](https://github.com/adonisjs/auth/blob/develop/src/Exceptions/InvalidCredentialsException.ts#L87-L105).
+Você pode manipular manualmente a exceção e retornar uma resposta ou deixar que a exceção se manipule e crie uma resposta usando [negociação de conteúdo](https://github.com/adonisjs/auth/blob/develop/src/Exceptions/InvalidCredentialsException.ts#L87-L105).
 
----
+### `auth.generate`
+Se a estratégia de pesquisa `auth.attempt` não se encaixar no seu caso de uso, você pode pesquisar manualmente o usuário, verificar sua senha e chamar o método `auth.generate` para gerar um token para ele.
 
-### auth.generate
-If the `auth.attempt` lookup strategy does not fit your use case, then you can manually lookup the user, verify their password and call the `auth.generate` method to generate a token for them.
-
-:::note
-
-The `auth.login` method is an alias for the `auth.generate` method.
-
+::: info NOTA
+O método `auth.login` é um alias para o método `auth.generate`.
 :::
 
 ```ts
@@ -151,7 +127,7 @@ Route.post('login', async ({ auth, request, response }) => {
   const email = request.input('email')
   const password = request.input('password')
 
-  // Lookup user manually
+  // Pesquisar usuário manualmente
   const user = await User
     .query()
     .where('email', email)
@@ -159,20 +135,18 @@ Route.post('login', async ({ auth, request, response }) => {
     .whereNull('is_deleted')
     .firstOrFail()
 
-  // Verify password
+  // Verificar senha
   if (!(await Hash.verify(user.password, password))) {
     return response.unauthorized('Invalid credentials')
   }
 
-  // Generate token
+  // Gerar token
   const token = await auth.use('api').generate(user)
 })
 ```
 
----
-
-### Managing tokens expiry
-You can also define the expiry for the token at the time of the generating it.
+### Gerenciando a expiração de tokens
+Você também pode definir a expiração do token no momento da geração.
 
 ```ts
 await auth.use('api').attempt(email, password, {
@@ -184,38 +158,28 @@ await auth.use('api').generate(user, {
 })
 ```
 
-The redis driver will automatically delete the expired tokens. However, for SQL storage, you will have write a custom script and delete token with `expires_at` timestamp smaller than today.
+O driver redis excluirá automaticamente os tokens expirados. No entanto, para armazenamento SQL, você terá que escrever um script personalizado e excluir o token com o carimbo de data/hora `expires_at` menor que o de hoje.
 
-## Token properties
-Following is the list of properties on the token object generated using the `auth.generate` method.
+## Propriedades do token
+A seguir está a lista de propriedades no objeto de token gerado usando o método `auth.generate`.
 
-### type
-The token is always set to `'bearer'`.
+### `type`
+O token é sempre definido como `'bearer'`.
 
----
+### `user`
+O usuário para o qual o token foi gerado. O valor do usuário depende do provedor de usuário subjacente usado pelo guard.
 
-### user
-The user for which the token was generated. The value of the user relies on the underlying user provider used by the guard.
+### `expiresAt`
+Uma instância do [luxon Datetime](https://moment.github.io/luxon/api-docs/index.html#datetime) representando um tempo estático no qual o token irá expirar. Só existe se tiver definido explicitamente a expiração para o token.
 
----
+### `expiresIn`
+Tempo em segundos após o qual o token irá expirar. É um valor estático e não muda com o passar do tempo.
 
-### expiresAt
-An instance of the [luxon Datetime](https://moment.github.io/luxon/api-docs/index.html#datetime) representing a static time at which the token will expire. Only exists, if have explicitly defined the expiry for the token.
+### `meta`
+Quaisquer metadados anexados ao token. Você pode definir os metadados no objeto options no momento da geração do token.
 
----
-
-### expiresIn
-Time in seconds after which the token will expire. It is a static value and does not change as the time passes by.
-
----
-
-### meta
-Any meta data attached with the token. You can define the meta data in the options object at the time of generating the token.
-
-:::note
-
-The underlying storage drivers will persist the meta data to the database. In case of SQL, make sure to also create the required columns.
-
+::: info NOTA
+Os drivers de armazenamento subjacentes persistirão os metadados no banco de dados. No caso de SQL, certifique-se de também criar as colunas necessárias.
 :::
 
 ```ts
@@ -224,12 +188,10 @@ await auth.use('api').attempt(email, password, {
 })
 ```
 
----
+### `name`
+O nome a ser associado ao token. Isso geralmente é útil quando você permite que os usuários do seu aplicativo gerem tokens de acesso pessoais (assim como o GitHub faz) e dá a eles um nome memorável.
 
-### name
-The name to associate with the token. This is usually helpful when you allow the users of your application to generate personal access tokens (just like the way GitHub does) and give them a memorable name.
-
-The name property only exists, when you have defined it at the time of generating the token.
+A propriedade name só existe quando você a define no momento da geração do token.
 
 ```ts
 await auth.use('api').attempt(email, password, {
@@ -237,25 +199,18 @@ await auth.use('api').attempt(email, password, {
 })
 ```
 
----
+### `token`
+O valor do token gerado. Você deve compartilhar esse valor com o cliente e o cliente deve armazená-lo com segurança.
 
-### token
-The value for the generated token. You must share this value with the client and the client must store it securely.
+Você não pode obter acesso a esse valor mais tarde, pois o valor armazenado dentro do banco de dados é um hash do token que não pode ser convertido em um valor simples.
 
-You cannot get access to this value later, as the value stored inside the database is a hash of the token that cannot be converted to a plain value.
+### `tokenHash`
+O valor armazenado dentro do banco de dados. Certifique-se de nunca compartilhar o hash do token com o cliente.
 
----
+Durante a solicitação `auth.authenticate`, compararemos o valor fornecido pelo cliente com o hash do token.
 
-### tokenHash
-The value stored inside the database. Make sure to never share the token hash with the client.
-
-During the `auth.authenticate` request, we will compare the value provided by the client against the token hash.
-
-
----
-
-### toJSON
-Converts the token to an object that you can send back in response to a request. The `toJSON` method contains the following properties.
+### `toJSON`
+Converte o token em um objeto que você pode enviar de volta em resposta a uma solicitação. O método `toJSON` contém as seguintes propriedades.
 
 ```ts
 {
@@ -266,16 +221,16 @@ Converts the token to an object that you can send back in response to a request.
 }
 ```
 
-## Authenticate subsequent requests
-Once the client receives the API token, they must send it back on every HTTP request under the `Authorization` header. The header must be formatted as follows:
+## Autenticar solicitações subsequentes
+Depois que o cliente recebe o token da API, ele deve enviá-lo de volta em cada solicitação HTTP sob o cabeçalho `Authorization`. O cabeçalho deve ser formatado da seguinte forma:
 
 ```text
 Authorization = Bearer TOKEN_VALUE
 ```
 
-You can verify if the token is valid or not using the `auth.authenticate` method. The [AuthenticationException](https://github.com/adonisjs/auth/blob/develop/src/Exceptions/AuthenticationException.ts) is raised, if the token is invalid or the user does not exists inside the database.
+Você pode verificar se o token é válido ou não usando o método `auth.authenticate`. A [AuthenticationException](https://github.com/adonisjs/auth/blob/develop/src/Exceptions/AuthenticationException.ts) é gerada se o token for inválido ou se o usuário não existir dentro do banco de dados.
 
-Otherwise, you can access the logged-in user using the `auth.user` property.
+Caso contrário, você pode acessar o usuário logado usando a propriedade `auth.user`.
 
 ```ts
 import Route from '@ioc:Adonis/Core/Route'
@@ -286,18 +241,14 @@ Route.get('dashboard', async ({ auth }) => {
 })
 ```
 
-Calling this method manually inside every single route is not practical and hence you can make use of the auth middleware stored inside the `./app/Middleware/Auth.ts` file.
+Chamar esse método manualmente dentro de cada rota não é prático e, portanto, você pode usar o middleware auth armazenado dentro do arquivo `./app/Middleware/Auth.ts`.
 
-<div class="doc-cta-wrapper">
+* [Saiba mais sobre o middleware auth →](/docs/auth/middleware.md)
 
-[Learn more about the auth middleware →](./middleware.md)
+## Revogar tokens
+Durante a fase de logout, você pode revogar o token excluindo-o do banco de dados. O token novamente deve ser enviado sob o cabeçalho `Authorization`.
 
-</div>
-
-## Revoke tokens
-During the logout phase, you can revoke the token by deleting it from the database. The token again must be sent under the `Authorization` header.
-
-The `auth.revoke` method will remove the token sent during the current request from the database.
+O método `auth.revoke` removerá o token enviado durante a solicitação atual do banco de dados.
 
 ```ts
 import Route from '@ioc:Adonis/Core/Route'
@@ -310,11 +261,11 @@ Route.post('/logout', async ({ auth, response }) => {
 })
 ```
 
-## Other methods/properties
-Following is the list of available methods/properties available for the `api` guard.
+## Outros métodos/propriedades
+A seguir está a lista de métodos/propriedades disponíveis para o `api` guard.
 
-### isLoggedIn
-Find if user is logged in or not. The value is `true` right after calling the `auth.generate` method or when the `auth.authenticate` check passes.
+### `isLoggedIn`
+Descubra se o usuário está logado ou não. O valor é `true` logo após chamar o método `auth.generate` ou quando a verificação `auth.authenticate` passa.
 
 ```ts
 await auth.use('api').authenticate()
@@ -326,16 +277,11 @@ await auth.use('api').attempt(email, password)
 auth.use('api').isLoggedIn // true
 ```
 
----
+### `isGuest`
+Descubra se o usuário é um convidado (ou seja, não está logado). O valor é sempre o oposto do sinalizador `isLoggedIn`.
 
-### isGuest
-Find if the user is a guest (meaning not logged in). The value is always the opposite of the `isLoggedIn` flag.
-
----
-
-### isAuthenticated
-Find if the current request has passed the authentication check. This flag is different from the `isLoggedIn` flag and NOT set to true during the `auth.login` call.
-
+### `isAuthenticated`
+Descubra se a solicitação atual passou na verificação de autenticação. Este sinalizador é diferente do sinalizador `isLoggedIn` e NÃO é definido como true durante a chamada `auth.login`.
 
 ```ts
 await auth.use('api').authenticate()
@@ -347,21 +293,16 @@ await auth.use('api').attempt(email, password)
 auth.use('api').isAuthenticated // false
 ```
 
----
-
-### isLoggedOut
-Find if the token was revoked during the current request. The value will be `true` right after calling the `auth.revoke` method.
+### `isLoggedOut`
+Descubra se o token foi revogado durante a solicitação atual. O valor será `true` logo após chamar o método `auth.revoke`.
 
 ```ts
 await auth.use('api').revoke()
 auth.use('api').isLoggedOut
 ```
 
----
-
-
-### authenticationAttempted
-Find if an attempt to authenticate the current request has been made. The value is set to `true` when you call the `auth.authenticate` method
+### `authenticationAttempted`
+Descubra se uma tentativa de autenticação da solicitação atual foi feita. O valor é definido como `true` quando você chama o método `auth.authenticate`
 
 ```ts
 auth.use('api').authenticationAttempted // false
@@ -370,20 +311,14 @@ await auth.use('api').authenticate()
 auth.use('api').authenticationAttempted // true
 ```
 
----
+### `provider`
+Referência ao provedor de usuário subjacente usado pelo guard.
 
-### provider
-Reference to the underlying user provider used by the guard.
+### `tokenProvider`
+Referência ao provedor de token subjacente usado pelo guard.
 
----
-
-### tokenProvider
-Reference to the underlying token provider used by the guard.
-
----
-
-### verifyCredentials
-A method to verify the user credentials. The `auth.attempt` method uses this method under the hood. The [InvalidCredentialsException](https://github.com/adonisjs/auth/blob/develop/src/Exceptions/InvalidCredentialsException.ts) exception is raised when the credentials are invalid.
+### `verifyCredentials`
+Um método para verificar as credenciais do usuário. O método `auth.attempt` usa esse método por baixo dos panos. A exceção [InvalidCredentialsException](https://github.com/adonisjs/auth/blob/develop/src/Exceptions/InvalidCredentialsException.ts) é gerada quando as credenciais são inválidas.
 
 ```ts
 try {
@@ -393,10 +328,8 @@ try {
 }
 ```
 
----
-
-### check
-The method is same as the `auth.authenticate` method. However, it does not raise any exception when the request is not authenticated. Think of it as an optional attempt to check if the token is valid for the current request or not.
+### `check`
+O método é o mesmo que o método `auth.authenticate`. No entanto, ele não levanta nenhuma exceção quando a solicitação não é autenticada. Pense nisso como uma tentativa opcional de verificar se o token é válido para a solicitação atual ou não.
 
 ```ts
 await auth.use('api').check()
