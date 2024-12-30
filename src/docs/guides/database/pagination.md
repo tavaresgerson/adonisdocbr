@@ -1,8 +1,8 @@
-# Pagination
+# Paginação
 
-Lucid has inbuilt support for **offset-based pagination**. You can paginate the results of a query by chaining the `.paginate` method.
+O Lucid tem suporte interno para **paginação baseada em deslocamento**. Você pode paginar os resultados de uma consulta encadeando o método `.paginate`.
 
-The `paginate` method accepts the page number as the first argument and the rows to fetch as the second argument. Internally, we execute an additional query to count the total number of rows.
+O método `paginate` aceita o número da página como o primeiro argumento e as linhas a serem buscadas como o segundo argumento. Internamente, executamos uma consulta adicional para contar o número total de linhas.
 
 ```ts
 const page = request.input('page', 1)
@@ -12,7 +12,7 @@ const posts = await Database.from('posts').paginate(page, limit)
 console.log(posts)
 ```
 
-The `paginate` method returns an instance of the [SimplePaginatorClass](../../reference/database/query-builder.md#pagination). It holds the meta data for the pagination, alongside the fetched `rows`.
+O método `paginate` retorna uma instância do [SimplePaginatorClass](../../reference/database/query-builder.md#pagination). Ele contém os metadados para a paginação, juntamente com as `rows` buscadas.
 
 ```ts
 SimplePaginator {
@@ -27,12 +27,12 @@ SimplePaginator {
   hasPages: true
 }
 ```
-:::note
-It is recommended to use the `orderBy` method when using pagination to avoid a different order every time you query the data. 
+::: info NOTA
+É recomendável usar o método `orderBy` ao usar a paginação para evitar uma ordem diferente toda vez que você consultar os dados.
 :::
 
-## Displaying pagination links
-Following is a complete example of displaying the pagination links inside an Edge template.
+## Exibindo links de paginação
+A seguir está um exemplo completo de exibição de links de paginação dentro de um modelo Edge.
 
 ```ts
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
@@ -45,7 +45,7 @@ class PostsController {
 
     const posts = await Database.from('posts').paginate(page, limit)
 
-    // Changes the baseURL for the pagination links
+    // Altera a baseURL para os links de paginação
     posts.baseUrl('/posts')
 
     return view.render('posts/index', { posts })
@@ -53,7 +53,7 @@ class PostsController {
 }
 ```
 
-Open the `posts/index.edge` file and paste the following code snippet inside it.
+Abra o arquivo `posts/index.edge` e cole o seguinte trecho de código dentro dele.
 
 ```edge
 <div>
@@ -65,18 +65,16 @@ Open the `posts/index.edge` file and paste the following code snippet inside it.
 
 <hr>
 
-// highlight-start
-<div>
-  @each(anchor in posts.getUrlsForRange(1, posts.lastPage))
-    <a href="{{ anchor.url }}">
-      {{ anchor.page }}
-    </a>
-  @endeach
-</div>
-// highlight-end
+<div> // [!code highlight]
+  @each(anchor in posts.getUrlsForRange(1, posts.lastPage)) // [!code highlight]
+    <a href="{{ anchor.url }}"> // [!code highlight]
+      {{ anchor.page }} // [!code highlight]
+    </a>  // [!code highlight]
+  @endeach  // [!code highlight]
+</div> // [!code highlight]
 ```
 
-The `getUrlsForRange` method accepts a range of pages and returns an array of objects with the following properties.
+O método `getUrlsForRange` aceita um intervalo de páginas e retorna uma matriz de objetos com as seguintes propriedades.
 
 ```ts
 [
@@ -96,10 +94,10 @@ The `getUrlsForRange` method accepts a range of pages and returns an array of ob
 ]
 ```
 
-![](https://res.cloudinary.com/adonis-js/image/upload/v1596970976/adonisjs.com/lucid-pagination.png)
+![](/docs/assets/lucid-pagination.png)
 
-## Serializing to JSON
-You can also serialize the paginator results to JSON by calling the `toJSON` method. It returns the key names in `snake_case` by default. However, you can pass a [naming strategy](../../reference/orm/naming-strategy.md#paginationmetakeys) to override the default convention.
+## Serializando para JSON
+Você também pode serializar os resultados do paginador para JSON chamando o método `toJSON`. Ele retorna os nomes das chaves em `snake_case` por padrão. No entanto, você pode passar uma [estratégia de nomenclatura](../../reference/orm/naming-strategy.md#paginationmetakeys) para substituir a convenção padrão.
 
 ```ts
 const posts = await Database.from('posts').paginate(page, limit)
@@ -123,7 +121,7 @@ return posts.toJSON()
 }
 ```
 
-In the following example, we override the naming strategy to return keys in `camelCase`.
+No exemplo a seguir, substituímos a estratégia de nomenclatura para retornar chaves em `camelCase`.
 
 ```ts
 const posts = await Database.from('posts').paginate(page, limit)
@@ -147,7 +145,7 @@ posts.namingStrategy = {
 return posts.toJSON()
 ```
 
-You can also assign a custom naming strategy to the `SimplePaginator` class constructor to override it globally. The following code must go inside a provider or a [preload file](../fundamentals/adonisrc-file.md#preloads).
+Você também pode atribuir uma estratégia de nomenclatura personalizada ao construtor de classe `SimplePaginator` para substituí-la globalmente. O código a seguir deve ir dentro de um provedor ou um [arquivo de pré-carregamento](../fundamentals/adonisrc-file.md#preloads).
 
 ```ts
 import { ApplicationContract } from '@ioc:Adonis/Core/Application'
@@ -156,21 +154,19 @@ export default class AppProvider {
   constructor(protected app: ApplicationContract) {}
 
   public async ready() {
-    // highlight-start
-    const Db = this.app.container.use('Adonis/Lucid/Database')
-
-    Db.SimplePaginator.namingStrategy = {
-      paginationMetaKeys() {
-        return {
-          // ... same as above
-        }
-      }
-    }
-    // highlight-end
+    const Db = this.app.container.use('Adonis/Lucid/Database')  // [!code highlight]
+                                                                // [!code highlight]
+    Db.SimplePaginator.namingStrategy = {                       // [!code highlight]
+      paginationMetaKeys() {                                    // [!code highlight]
+        return {                                                // [!code highlight]
+          // ... o mesmo que acima                              // [!code highlight]
+        }                                                       // [!code highlight]
+      }                                                         // [!code highlight]
+    }                                                           // [!code highlight]
   }
 }
 
 ```
 
-## Additional reading
-- [Paginator class reference guide](../../reference/database/query-builder.md#pagination)
+## Leitura adicional
+[Guia de referência da classe Paginator](../../reference/database/query-builder.md#pagination)

@@ -1,8 +1,8 @@
-# Debugging
+# Depuração
 
-Lucid emits the `db:query` event when debugging is enabled globally or for an individual query.
+O Lucid emite o evento `db:query` quando a depuração é habilitada globalmente ou para uma consulta individual.
 
-You can enable debugging globally by setting the `debug` flag to `true` inside the `config/database.ts` file.
+Você pode habilitar a depuração globalmente definindo o sinalizador `debug` como `true` dentro do arquivo `config/database.ts`.
 
 ```ts
 {
@@ -12,28 +12,25 @@ You can enable debugging globally by setting the `debug` flag to `true` inside t
 }
 ```
 
-You can enable debugging for an individual query using the `debug` method on the query builder.
+Você pode habilitar a depuração para uma consulta individual usando o método `debug` no construtor de consultas.
 
-:::codegroup
+::: code-group
 
-```ts
-// title: Select
+```ts [Select]
 Database
   .query()
   .select('*')
   .debug(true) // 👈
 ```
 
-```ts
-// title: Insert
+```ts [Insert]
 Database
   .insertQuery()
   .debug(true) // 👈
   .insert({})
 ```
 
-```ts
-// title: Raw
+```ts [Raw]
 Database
   .rawQuery('select * from users')
   .debug(true) // 👈
@@ -41,11 +38,12 @@ Database
 
 :::
 
-## Listening to the Event
-Once you have enabled debugging, you can listen for the `db:query` event using the [Event](../digging-deeper/events.md) module.
+## Ouvindo o evento
+Depois de habilitar a depuração, você pode ouvir o evento `db:query` usando o módulo [Event](../digging-deeper/events.md).
 
 ```ts
-// title: start/events.ts
+// start/events.ts
+
 import Event from '@ioc:Adonis/Core/Event'
 
 Event.on('db:query', function ({ sql, bindings }) {
@@ -53,8 +51,8 @@ Event.on('db:query', function ({ sql, bindings }) {
 })
 ```
 
-### Pretty print queries
-You can use the `Database.prettyPrint` method as the event listener to pretty-print the queries on the console.
+### Consultas de impressão bonita
+Você pode usar o método `Database.prettyPrint` como o ouvinte de eventos para imprimir as consultas no console.
 
 ```ts
 import Event from '@ioc:Adonis/Core/Event'
@@ -63,12 +61,12 @@ import Database from '@ioc:Adonis/Lucid/Database'
 Event.on('db:query', Database.prettyPrint)
 ```
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1618890917/v5/query-events.png)
+![](/docs/assets/query-events.webp)
 
-## Debugging in production
-Pretty printing queries add additional overhead to the process and can impact the performance of your application. Hence, we recommend using the [Logger](../digging-deeper/logger.md) to log the database queries during production. 
+## Depuração em produção
+Consultas de impressão bonita adicionam sobrecarga adicional ao processo e podem impactar o desempenho do seu aplicativo. Portanto, recomendamos usar o [Logger](../digging-deeper/logger.md) para registrar as consultas do banco de dados durante a produção.
 
-Following is a complete example of switching the event listener based upon the application environment.
+A seguir está um exemplo completo de como alternar o ouvinte de eventos com base no ambiente do aplicativo.
 
 ```ts
 import Event from '@ioc:Adonis/Core/Event'

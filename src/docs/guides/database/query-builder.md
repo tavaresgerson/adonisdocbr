@@ -1,66 +1,62 @@
-# Query builder
+# Construtor de consultas
 
-Lucid query builder allows you to write and execute SQL queries. It is built on top of [Knex.js](https://knexjs.org/#) with few opinionated changes.
+O construtor de consultas Lucid permite que você escreva e execute consultas SQL. Ele é construído em cima do [Knex.js](https://knexjs.org/#) com poucas alterações opinativas.
 
-We have divided the query builders into following categories
+Nós dividimos os construtores de consultas nas seguintes categorias
 
-- The standard query builder allows you to construct SQL queries for **select**, **update** and **delete** operations.
-- The insert query builder allows you to construct SQL queries for the **insert** operations.
-- The raw query builder let you write and execute queries from a raw SQL string.
+- O construtor de consultas padrão permite que você construa consultas SQL para operações **select**, **update** e **delete**.
+- O construtor de consultas insert permite que você construa consultas SQL para as operações **insert**.
+- O construtor de consultas raw permite que você escreva e execute consultas a partir de uma string SQL raw.
 
-## Select queries
-You can perform select operations by creating a query builder instance using the `.query` method.
+## Consultas select
+Você pode executar operações select criando uma instância do construtor de consultas usando o método `.query`.
 
 ```ts
 import Database from '@ioc:Adonis/Lucid/Database'
 
 const users = await Database
-  .query()  // 👈 gives an instance of select query builder
+  .query()  // 👈 fornece uma instância do construtor de consultas select
   .from('users')
   .select('*')
 ```
 
-You can also create the query builder instance by directly calling the `.from` method.
+Você também pode criar a instância do construtor de consultas chamando diretamente o método `.from`.
 
 ```ts
 import Database from '@ioc:Adonis/Lucid/Database'
 
 const users = await Database
-  .from('users') // 👈 gives an instance of select query builder
+  .from('users') // 👈 fornece uma instância do construtor de consultas select
   .select('*')
 ```
 
-<div class="doc-cta-wrapper">
+[Guia de referência do construtor de consultas →](../../reference/database/query-builder.md)
 
-[Query builder reference guide →](../../reference/database/query-builder.md)
-
-</div>
-
-## Insert queries
-The insert query builder exposes the API to insert new rows to the database. You can get an instance of the query builder using the `.insertQuery` method.
+## Consultas de inserção
+O construtor de consultas de inserção expõe a API para inserir novas linhas no banco de dados. Você pode obter uma instância do construtor de consultas usando o método `.insertQuery`.
 
 ```ts
 import Database from '@ioc:Adonis/Lucid/Database'
 
 await Database
-  .insertQuery() // 👈 gives an instance of insert query builder
+  .insertQuery() // 👈 fornece uma instância do construtor de consulta de inserção
   .table('users')
   .insert({ username: 'virk', email: 'virk@adonisjs.com' })
 ```
 
-You can also create the query builder instance by directly calling the `.table` method.
+Você também pode criar a instância do construtor de consultas chamando diretamente o método `.table`.
 
 ```ts
 await Database
-  .table('users') // 👈 gives an instance of insert query builder
+  .table('users') // 👈 fornece uma instância do construtor de consulta de inserção
   .insert({ username: 'virk', email: 'virk@adonisjs.com' })
 ```
 
-### Multi-insert
-You can make use of the `.multiInsert` method in order to insert multiple rows in a single insert query.
+### Inserção múltipla
+Você pode usar o método `.multiInsert` para inserir várias linhas em uma única consulta de inserção.
 
-:::note
-MySQL and SQLite only returns the id for the last row and not all the rows.
+::: info NOTA
+MySQL e SQLite retornam apenas o id da última linha e não de todas as linhas.
 :::
 
 ```ts
@@ -70,16 +66,12 @@ await Database.table('users').multiInsert([
 ])
 ```
 
-<div class="doc-cta-wrapper">
+* [Inserir guia de referência do construtor de consultas →](../../reference/database/insert-query-builder.md)
 
-[Insert query builder reference guide →](../../reference/database/insert-query-builder.md)
+## Consultas brutas
+Consultas brutas permitem executar uma instrução SQL a partir de uma entrada de string. Isso geralmente é útil quando você deseja executar consultas complexas que não são suportadas pelo construtor de consultas padrão.
 
-</div>
-
-## Raw queries
-Raw queries allows to execute a SQL statement from a string input. This is usually helpful, when you want to execute complex queries that are not supported by the standard query builder.
-
-You can create an instance of the raw query builder using the `.rawQuery` method. It accepts the SQL string as the first argument and its positional/named bindings as the second argument.
+Você pode criar uma instância do construtor de consultas brutas usando o método `.rawQuery`. Ele aceita a string SQL como o primeiro argumento e suas ligações posicionais/nomeadas como o segundo argumento.
 
 ```ts
 import Database from '@ioc:Adonis/Lucid/Database'
@@ -88,16 +80,12 @@ const user = await Database
   .rawQuery('select * from users where id = ?', [1])
 ```
 
-<div class="doc-cta-wrapper">
+* [Guia de referência do construtor de consultas brutas →](../../reference/database/raw-query-builder.md)
 
-[Raw query builder reference guide →](../../reference/database/raw-query-builder.md)
+## Estendendo construtores de consultas
+Você pode estender as classes do construtor de consultas usando **macros** e **getters**. O melhor lugar para estender os construtores de consultas é dentro de um provedor de serviços personalizado.
 
-</div>
-
-## Extending query builders
-You can extend the query builder classes using **macros** and **getters**. The best place to extend the query builders is inside a custom service provider.
-
-Open the pre-existing `providers/AppProvider.ts` file and write the following code inside the `boot` method.
+Abra o arquivo `providers/AppProvider.ts` pré-existente e escreva o seguinte código dentro do método `boot`.
 
 ```ts
 import { ApplicationContract } from '@ioc:Adonis/Core/Application'
@@ -106,29 +94,28 @@ export default class AppProvider {
   constructor(protected app: ApplicationContract) {}
 
   public async boot() {
-    // highlight-start
-    const {
-      DatabaseQueryBuilder
-    } = this.app.container.use('Adonis/Lucid/Database')
+    const {                                                     // [!code highlight]
+      DatabaseQueryBuilder                                      // [!code highlight]
+    } = this.app.container.use('Adonis/Lucid/Database')         // [!code highlight]
 
-    DatabaseQueryBuilder.macro('getCount', async function () {
-      const result = await this.count('* as total')
-      return BigInt(result[0].total)
-    })
-    // highlight-end
+    DatabaseQueryBuilder.macro('getCount', async function () {  // [!code highlight]
+      const result = await this.count('* as total')             // [!code highlight]
+      return BigInt(result[0].total)                            // [!code highlight]
+    })                                                          // [!code highlight]
   }
 }
 ```
 
-In the above example, we have added a `getCount` method on the [database query builder](../../reference/database/query-builder.md). The method adds a `count` function to the query, executes it right away and returns the result back as a **BigInt**.
+No exemplo acima, adicionamos um método `getCount` no [construtor de consultas de banco de dados](../../reference/database/query-builder.md). O método adiciona uma função `count` à consulta, executa-a imediatamente e retorna o resultado como um **BigInt**.
 
-###  Informing TypeScript about the method
-The `getCount` property is added at the runtime, and hence TypeScript does not know about it. To inform the TypeScript, we will use [declaration merging](https://www.typescriptlang.org/docs/handbook/declaration-merging.html#merging-interfaces) and add the property to the `DatabaseQueryBuilderContract` interface.
+### Informando o TypeScript sobre o método
+A propriedade `getCount` é adicionada no tempo de execução e, portanto, o TypeScript não sabe sobre ela. Para informar o TypeScript, usaremos [declaration merging](https://www.typescriptlang.org/docs/handbook/declaration-merging.html#merging-interfaces) e adicionaremos a propriedade à interface `DatabaseQueryBuilderContract`.
 
-Create a new file at path `contracts/database.ts` (the filename is not important) and paste the following contents inside it.
+Crie um novo arquivo no caminho `contracts/database.ts` (o nome do arquivo não é importante) e cole o seguinte conteúdo dentro dele.
 
 ```ts
-// title: contracts/database.ts
+// contracts/database.ts
+
 declare module '@ioc:Adonis/Lucid/Database' {
   interface DatabaseQueryBuilderContract<Result> {
     getCount(): Promise<BigInt>
@@ -136,17 +123,17 @@ declare module '@ioc:Adonis/Lucid/Database' {
 }
 ```
 
-### Test run
-Let's try using the `getCount` method as follows:
+### Execução de teste
+Vamos tentar usar o método `getCount` da seguinte forma:
 
 ```ts
 await Database.query().from('users').getCount()
 ```
 
-## Extending ModelQueryBuilder
-Similar to the `DatabaseQueryBuilder`, you can also extend the [ModelQueryBuilder](../../reference/orm/query-builder.md) as follows.
+## Estendendo ModelQueryBuilder
+Semelhante ao `DatabaseQueryBuilder`, você também pode estender o [ModelQueryBuilder](../../reference/orm/query-builder.md) da seguinte forma.
 
-#### Runtime code
+#### Código de tempo de execução
 
 ```ts
 const {
@@ -159,7 +146,7 @@ ModelQueryBuilder.macro('getCount', async function () {
 })
 ```
 
-#### Extending the type definition
+#### Estendendo a definição de tipo
 
 ```ts
 declare module '@ioc:Adonis/Lucid/Orm' {
@@ -172,17 +159,17 @@ declare module '@ioc:Adonis/Lucid/Orm' {
 }
 ```
 
-#### Usage
+#### Uso
 
 ```ts
 import User from 'App/Models/User'
 await User.query().getCount()
 ```
 
-## Extending InsertQueryBuilder
-Finally you can also extend the [InsertQueryBuilder](../../reference/database/insert-query-builder.md) as follows.
+## Estendendo InsertQueryBuilder
+Finalmente, você também pode estender o [InsertQueryBuilder](../../reference/database/insert-query-builder.md) da seguinte forma.
 
-#### Runtime code
+#### Código de tempo de execução
 
 ```ts
 const {
@@ -190,11 +177,11 @@ const {
 } = this.app.container.use('Adonis/Lucid/Database')
 
 InsertQueryBuilder.macro('customMethod', async function () {
-  // implementation
+  // implementação
 })
 ```
 
-#### Extending the type definition
+#### Estendendo a definição de tipo
 
 ```ts
 declare module '@ioc:Adonis/Lucid/Database' {
@@ -204,7 +191,7 @@ declare module '@ioc:Adonis/Lucid/Database' {
 }
 ```
 
-#### Usage
+#### Uso
 
 ```ts
 import Database from '@ioc:Adonis/Lucid/Database'

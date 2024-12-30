@@ -37,7 +37,7 @@ export default {
         },
         sidebar: sidebar
     },
-    // markdown: {
-    //   lineNumbers: true
-    // }
+    markdown: {
+      lineNumbers: true
+    }
 }

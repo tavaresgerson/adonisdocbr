@@ -1,18 +1,14 @@
-# Introduction
+# Introdução
 
-AdonisJS is one of the few Node.js frameworks (if not the only one) with first-class support for SQL databases. Lucid powers the data layer of the framework, and you must install the package separately.
+AdonisJS é um dos poucos frameworks Node.js (se não o único) com suporte de primeira classe para bancos de dados SQL. O Lucid alimenta a camada de dados do framework, e você deve instalar o pacote separadamente.
 
-:::div{class="setup"}
+::: code-group
 
-:::codegroup
-
-```sh
-// title: 1. Install
+```sh [Instale]
 npm i @adonisjs/lucid@18.4.0
 ```
 
-```sh
-// title: 2. Configure
+```sh [Configure]
 node ace configure @adonisjs/lucid
 
 # CREATE: config/database.ts
@@ -22,13 +18,12 @@ node ace configure @adonisjs/lucid
 # UPDATE: .adonisrc.json { providers += "@adonisjs/lucid" }
 ```
 
-```ts
-// title: 3. Validate environment variables
+```ts [Validar variáveis ​​de ambiente]
 /**
- * Depending upon the database driver you are using, you must validate
- * the environment variables defined.
+ * Dependendo do driver de banco de dados que você estiver usando, você deve validar
+ * as variáveis ​​de ambiente definidas.
  *
- * The following is an example for PostgreSQL.
+ * O seguinte é um exemplo para PostgreSQL.
  */
 export default Env.rules({
   PG_HOST: Env.schema.string({ format: 'host' }),
@@ -41,34 +36,27 @@ export default Env.rules({
 
 :::
 
+- Suporte para vários bancos de dados SQL. **PostgreSQL**, **MySQL**, **MSSQL**, **MariaDB** e **SQLite**
+- [Knex.js](https://knexjs.org)
+- Modelos de dados baseados em Active Record
+- Sistema de migrações
+- Fábricas de modelos e seeders de banco de dados
 
-:::div{class="features"}
-
-- Support for multiple SQL database. **PostgreSQL**, **MySQL**, **MSSQL**, **MariaDB** and **SQLite**.
-- Query builder built on top of [Knex.js](https://knexjs.org)
-- Active Record based data models
-- Migrations system
-- Model factories and database seeders
-
-&nbsp;
-
-- [View on npm](https://npm.im/@adonisjs/lucid)
-- [View on GitHub](https://github.com/adonisjs/lucid)
-
-:::
+* [Visualizar no npm](https://npm.im/@adonisjs/lucid)
+* [Visualizar no GitHub](https://github.com/adonisjs/lucid)
 
 ## Configuration
-The configuration for all the database drivers is stored inside the `config/database.ts` file.
+A configuração de todos os drivers de banco de dados é armazenada dentro do arquivo `config/database.ts`.
 
 ```ts
 import Env from '@ioc:Adonis/Core/Env'
 import { DatabaseConfig } from '@ioc:Adonis/Lucid/Database'
 
 const databaseConfig: DatabaseConfig = {
-  // Default connection
+  // Conexão padrão
   connection: Env.get('DB_CONNECTION'),
 
-  // List of available connections
+  // Lista de conexões disponíveis
   connections: {
     pg: {
       client: 'pg',
@@ -91,36 +79,32 @@ const databaseConfig: DatabaseConfig = {
 export default databaseConfig
 ```
 
-#### connection
-The `connection` property defines the default connection to use for making database queries. The value relies on the `DB_CONNECTION` environment.
+#### `connection`
+A propriedade `connection` define a conexão padrão a ser usada para fazer consultas de banco de dados. O valor depende do ambiente `DB_CONNECTION`.
 
----
+#### `connections`
+O objeto `connections` define uma ou mais conexões de banco de dados que você deseja usar em seu aplicativo. Você pode definir várias conexões usando o mesmo driver de banco de dados ou um diferente.
 
-#### connections
-The `connections` object defines one or more database connections you want to use in your application. You can define multiple connections using the same or the different database driver.
-
----
-
-#### migrations
-The `migrations` property configures the settings for the database migrations. It accepts the following options.
+#### `migrations`
+A propriedade `migrations` configura as configurações para as migrações de banco de dados. Ela aceita as seguintes opções.
 
 <table>
 <thead>
 <tr>
-<th>Option</th>
-<th>Description</th>
+<th>Opção</th>
+<th>Descrição</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><strong>naturalSort</strong></td>
-<td>Use natural sort to sort the migration files. Most of the editors use natural sort and hence the migrations will run in the same order as you see them listed in your editor.</td>
+<td>Use a classificação natural para classificar os arquivos de migração. A maioria dos editores usa classificação natural e, portanto, as migrações serão executadas na mesma ordem em que você as vê listadas no seu editor.</td>
 </tr>
 <tr>
 <td><strong>paths</strong></td>
 <td>
   <p>
-    An array of paths to look up for migrations. You can also define a path to an installed package. For example:
+    Uma matriz de caminhos para procurar migrações. Você também pode definir um caminho para um pacote instalado. Por exemplo:
   </p>
 
 ```ts
@@ -134,33 +118,29 @@ paths: [
 </tr>
 <tr>
 <td><strong>tableName</strong></td>
-<td>The name of the table for storing the migrations state. Defaults to <code>adonis_schema</code>.</td>
+<td>O nome da tabela para armazenar o estado das migrações. O padrão é <code>adonis_schema</code>.</td>
 </tr>
 <tr>
 <td><strong>disableRollbacksInProduction</strong></td>
-<td>Disable migration rollback in production. It is recommended that you should never rollback migrations in production.</td>
+<td>Desabilite o rollback de migração em produção. É recomendado que você nunca faça rollback de migrações em produção.</td>
 </tr>
 <tr>
 <td><strong>disableTransactions</strong></td>
-<td>Set the value to <code>true</code> to not wrap migration statements inside a transaction. By default, Lucid will run each migration file in its own transaction.</td>
+<td>Defina o valor como <code>true</code> para não encapsular instruções de migração dentro de uma transação. Por padrão, o Lucid executará cada arquivo de migração em sua própria transação.</td>
 </tr>
 </tbody>
 </table>
 
-#### healthCheck
+#### `healthCheck`
 
-A boolean to enable/disable health checks.
+Um booleano para habilitar/desabilitar verificações de integridade.
 
----
+#### `debug`
 
-#### debug
+Um booleano para habilitar globalmente a depuração de consultas. Você deve ler o [guia de depuração](./debugging.md) para obter mais informações.
 
-A boolean to globally enable query debugging. You must read the [debugging guide](./debugging.md) for more information.
-
----
-
-#### seeders
-The `seeders` object allows you to define the paths for loading the database seeder files. You can also specify a path to an installed package. For example:
+#### `seeders`
+O objeto `seeders` permite que você defina os caminhos para carregar os arquivos do seeder do banco de dados. Você também pode especificar um caminho para um pacote instalado. Por exemplo:
 
 ```ts
 {
@@ -170,10 +150,10 @@ The `seeders` object allows you to define the paths for loading the database see
 }
 ```
 
-## Usage
-The easiest way to make SQL queries is to use the Database query builder. It allows you to construct simple and complex SQL queries using JavaScript methods.
+## Uso
+A maneira mais fácil de fazer consultas SQL é usar o construtor de consultas do banco de dados. Ele permite que você construa consultas SQL simples e complexas usando métodos JavaScript.
 
-In the following example, we select all the posts from the `posts` table.
+No exemplo a seguir, selecionamos todas as postagens da tabela `posts`.
 
 ```ts
 import Database from '@ioc:Adonis/Lucid/Database'
@@ -184,7 +164,7 @@ Route.get('posts', async () => {
 })
 ```
 
-Let's sort the post by their id and also paginate them.
+Vamos classificar as postagens por id e também paginá-las.
 
 ```ts
 import Database from '@ioc:Adonis/Lucid/Database'
@@ -202,9 +182,9 @@ Route.get('posts', async ({ request }) => {
 })
 ```
 
-You are not only limited to the select queries. You can also use the query builder to perform **updates**, **inserts** and **deletes**.
+Você não está limitado apenas às consultas selecionadas. Você também pode usar o construtor de consultas para executar **atualizações**, **inserções** e **exclusões**.
 
-#### Insert a new row
+#### Inserir uma nova linha
 
 ```ts
 const postId = await Database
@@ -213,10 +193,10 @@ const postId = await Database
     title: 'Adonis 101',
     description: 'Let\'s learn AdonisJS'
   })
-  .returning('id') // For PostgreSQL
+  .returning('id') // Para PostgreSQL
 ```
 
-#### Update existing row by id
+#### Atualizar linha existente por id
 
 ```ts
 const updatedRowsCount = await Database
@@ -225,7 +205,7 @@ const updatedRowsCount = await Database
   .update({ title: 'AdonisJS 101' })
 ```
 
-#### Delete existing row by id
+#### Excluir linha existente por id
 
 ```ts
 const deletedRowsCount = await Database
@@ -234,17 +214,14 @@ const deletedRowsCount = await Database
   .delete()
 ```
 
-## Read/write replicas
-AdonisJS supports **read/write replicas** as a first-class citizen. You can configure one write database server, along with multiple read servers. All read queries are sent to the read servers in **round-robin fashion**, and write queries are sent to the write server.
+## Réplicas de leitura/gravação
+O AdonisJS suporta **réplicas de leitura/gravação** como um cidadão de primeira classe. Você pode configurar um servidor de banco de dados de gravação, juntamente com vários servidores de leitura. Todas as consultas de leitura são enviadas para os servidores de leitura em **modo round-robin**, e as consultas de gravação são enviadas para o servidor de gravação.
 
-:::note
-
-Lucid does not perform any data replication for you. So you still have to rely on your database server for that.
-
-
+::: info NOTA
+O Lucid não executa nenhuma replicação de dados para você. Então você ainda tem que confiar no seu servidor de banco de dados para isso.
 :::
 
-Following is the example config for defining read/write connections. We merge the properties defined inside the `connection` object with every node of the read/write connections. So, you can keep the shared `username` and `password` in the connection object.
+A seguir está o exemplo de configuração para definir conexões de leitura/gravação. Nós mesclamos as propriedades definidas dentro do objeto `connection` com cada nó das conexões de leitura/gravação. Então, você pode manter o `username` e `password` compartilhados no objeto de conexão.
 
 ```ts
 {
@@ -255,60 +232,54 @@ Following is the example config for defining read/write connections. We merge th
         password: Env.get('MYSQL_PASSWORD'),
         database: Env.get('MYSQL_DB_NAME'),
       },
-      // highlight-start
-      replicas: {
-        read: {
-          connection: [
-            {
-              host: '192.168.1.1',
-            },
-            {
-              host: '192.168.1.2',
-            },
-          ]
-        },
-        write: {
-          connection: {
-            host: '196.168.1.3',
-          },
-        },
-      },
-      // highlight-end
+      replicas: { // [!code highlight]
+        read: {   // [!code highlight]
+          connection: [ // [!code highlight]
+            {         // [!code highlight]
+              host: '192.168.1.1',  // [!code highlight]
+            },                      // [!code highlight]
+            {                       // [!code highlight]
+              host: '192.168.1.2',  // [!code highlight]
+            },                      // [!code highlight]
+          ]                         // [!code highlight]
+        },                          // [!code highlight]
+        write: {                    // [!code highlight]
+          connection: {             // [!code highlight]
+            host: '196.168.1.3',    // [!code highlight]
+          },                        // [!code highlight]
+        },                          // [!code highlight]
+      },                            // [!code highlight]
     }
   }
 }
 ```
 
-## Connection pooling
-[Connection pooling](https://en.wikipedia.org/wiki/Connection_pool) is a standard practice of maintaining minimum and maximum connections with the database server.
+## Pool de conexões
+[Pool de conexões](https://en.wikipedia.org/wiki/Connection_pool) é uma prática padrão de manter conexões mínimas e máximas com o servidor de banco de dados.
 
-The **minimum connections** are maintained for improving the application performance. Since establishing a new connection is an expensive operation, it is always recommended to have a couple of connections ready to execute the database queries.
+As **conexões mínimas** são mantidas para melhorar o desempenho do aplicativo. Como estabelecer uma nova conexão é uma operação cara, é sempre recomendado ter algumas conexões prontas para executar as consultas de banco de dados.
 
-The **maximum connections** are defined to ensure that your application doesn't overwhelm the database server with too many concurrent connections.
+As **conexões máximas** são definidas para garantir que seu aplicativo não sobrecarregue o servidor de banco de dados com muitas conexões simultâneas.
 
-Lucid will queue new queries when the pool is full and waits for the pool to have free resources until the configured timeout. The default timeout is set to **60 seconds** and can be configured using the `pool.acquireTimeoutMillis` property.
+O Lucid enfileirará novas consultas quando o pool estiver cheio e aguardará que o pool tenha recursos livres até o tempo limite configurado. O tempo limite padrão é definido como **60 segundos** e pode ser configurado usando a propriedade `pool.acquireTimeoutMillis`.
 
 ```ts
 {
   mysql: {
     client: 'mysql2',
     connection: {},
-    // highlight-start
-    pool: {
-      acquireTimeoutMillis: 60 * 1000,
-    }
-    // highlight-end
+    pool: {                             // [!code highlight]
+      acquireTimeoutMillis: 60 * 1000,  // [!code highlight]
+    }                                   // [!code highlight]
   }
 }
 ```
 
-:::tip
-
-Bigger the pool size, the better the performance is a misconception. We recommend you read this [document](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing) to understand how the smaller pool size can boost the application performance.
-
+::: tip DICA
+Quanto maior o tamanho do pool, melhor o desempenho é um equívoco. Recomendamos que você leia este [documento](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing) para entender como o tamanho menor do pool pode aumentar o desempenho do aplicativo.
 :::
 
-You can configure the pool settings for a given connection inside the `config/database.ts` file.
+Você pode configurar as configurações do pool para uma determinada conexão dentro do arquivo `config/database.ts`.
 
 ```ts
 {
@@ -317,20 +288,18 @@ You can configure the pool settings for a given connection inside the `config/da
       client: 'mysql2',
       connection: {
       },
-      // highlight-start
-      pool: {
-        min: 2,
-        max: 20,
-      },
-      // highlight-end
+      pool: {           // [!code highlight]
+        min: 2,         // [!code highlight]
+        max: 20,        // [!code highlight]
+      },                // [!code highlight]
       healthCheck: false,
     },
   }
 }
 ```
 
-## Switching between multiple connections
-Using the ' .connection ' method, you can switch between the connections defined inside the `config/database.ts` file using the `.connection` method. It accepts the connection name and returns an instance of the [Query client](../../reference/database/query-client.md)
+## Alternando entre várias conexões
+Usando o método ' .connection ', você pode alternar entre as conexões definidas dentro do arquivo `config/database.ts` usando o método `.connection`. Ele aceita o nome da conexão e retorna uma instância do [cliente de consulta](../../reference/database/query-client.md)
 
 ```ts
 import Database from '@ioc:Adonis/Lucid/Database'
@@ -341,34 +310,34 @@ Database
   .select('*')
 ```
 
-## Closing connections
-You can close the opened database connections using the `.close` method. Usually, you should let the connections stay for better performance unless you have a specific reason for closing them.
+## Fechando conexões
+Você pode fechar as conexões de banco de dados abertas usando o método `.close`. Normalmente, você deve deixar as conexões permanecerem para melhor desempenho, a menos que tenha um motivo específico para fechá-las.
 
 ```ts
-// Close a specific connection
+// Fechar uma conexão específica
 await Database.manager.close('mysql')
 
-// Close all connections
+// Feche todas as conexões
 await Database.manager.closeAll()
 ```
 
-## Health checks
-You can enable [health checks](../digging-deeper/health-check.md#lucid-checker) for registered database connections by enabling the `healthCheck` boolean flag inside the `config/database.ts` file.
+## Verificações de integridade
+Você pode habilitar [verificações de integridade](../digging-deeper/health-check.md#lucid-checker) para conexões de banco de dados registradas habilitando o sinalizador booleano `healthCheck` dentro do arquivo `config/database.ts`.
 
 ```ts
 {
   pg: {
     client: 'pg',
     connection: {
-      // ... connection details
+      // ... detalhes de conexão
     },
-    healthCheck: true, // 👈 enabled
+    healthCheck: true, // 👈 habilitado
   }
 }
 ```
 
-## Drivers config
-Following is the example configuration for all the available drivers. You can use it as a reference and tweak the required parts as necessary.
+## Configuração de drivers
+A seguir está a configuração de exemplo para todos os drivers disponíveis. Você pode usá-la como referência e ajustar as partes necessárias conforme necessário.
 
 <details>
   <summary>SQLite</summary>
@@ -393,8 +362,6 @@ sqlite: {
 ```
 
 </details>
-
----
 
 <details>
   <summary>MySQL</summary>
@@ -437,8 +404,6 @@ mysql: {
 </details>
 
 
----
-
 <details>
   <summary>PostgreSQL</summary>
 
@@ -467,8 +432,6 @@ pg: {
 </details>
 
 
----
-
 <details>
   <summary>Oracle DB</summary>
 
@@ -495,8 +458,6 @@ oracle: {
 ```
 
 </details>
-
----
 
 <details>
   <summary>MSSQL</summary>
