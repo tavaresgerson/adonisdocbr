@@ -1,15 +1,15 @@
-# Events
+# Eventos
 
-The AdonisJS event emitter module is built on top of [Emittery](https://github.com/sindresorhus/emittery). It differs from the Node.js native Events module in the following ways.
+O módulo emissor de eventos AdonisJS é construído em cima do [Emittery](https://github.com/sindresorhus/emittery). Ele difere do módulo Eventos nativo do Node.js das seguintes maneiras.
 
-- It is asynchronous, whereas the Node.js events module emits events synchronously. So make sure to also [read the Emittery](https://github.com/sindresorhus/emittery#how-is-this-different-than-the-built-in-eventemitter-in-nodejs) explanation on this as well.
-- Ability to make events type-safe.
-- Ability to trap events during tests instead of triggering the actual event.
+[leia a explicação do Emittery](https://github.com/sindresorhus/emittery#how-is-this-different-than-the-built-in-eventemitter-in-nodejs) sobre isso também.
+- Capacidade de tornar os eventos seguros para o tipo.
+- Capacidade de capturar eventos durante os testes em vez de disparar o evento real.
 
-## Usage
-We recommend defining all the event listeners inside a dedicated file, just like how you define routes in a single file.
+## Uso
+Recomendamos definir todos os ouvintes de eventos dentro de um arquivo dedicado, assim como você define rotas em um único arquivo.
 
-For this guide, let's define the event listeners inside the `start/events.ts` file. You can create this file manually or run the following Ace command.
+Para este guia, vamos definir os ouvintes de eventos dentro do arquivo `start/events.ts`. Você pode criar este arquivo manualmente ou executar o seguinte comando Ace.
 
 ```sh
 node ace make:prldfile events
@@ -17,7 +17,7 @@ node ace make:prldfile events
 # SELECT ALL THE ENVIRONMENTS
 ```
 
-Open the newly created file and write the following code inside it. The `Event.on` method registers an event listener. It accepts the event name as the first argument, followed by a method to handle the event.
+Abra o arquivo recém-criado e escreva o seguinte código dentro dele. O método `Event.on` registra um ouvinte de evento. Ele aceita o nome do evento como o primeiro argumento, seguido por um método para manipular o evento.
 
 ```ts
 import Event from '@ioc:Adonis/Core/Event'
@@ -27,34 +27,33 @@ Event.on('new:user', (user) => {
 })
 ```
 
-To trigger the `new:user` event listener, you will have to emit this event. You can do it from anywhere inside your application after it has been booted.
+Para disparar o ouvinte de evento `new:user`, você terá que emitir este evento. Você pode fazer isso de qualquer lugar dentro do seu aplicativo depois que ele for inicializado.
 
-```ts
+```ts {7}
 import Event from '@ioc:Adonis/Core/Event'
 
 export default class UsersController {
   public async store() {
-    // ... code to create a new user
-    // highlight-start
+    // ... código para criar um novo usuário
+    
     Event.emit('new:user', { id: 1 })
-    // highlight-end
   }
 }
 ```
 
-## Making events type-safe
-The event listeners and the code that emits the event are usually not in the same place/file. Therefore, it is very easy for some of your code to emit the event and send the wrong data. For example:
+## Tornando os eventos seguros para o tipo
+Os ouvintes de evento e o código que emite o evento geralmente não estão no mesmo lugar/arquivo. Portanto, é muito fácil para parte do seu código emitir o evento e enviar os dados errados. Por exemplo:
 
 ```ts
 Event.on('new:user', (user) => {
   console.log(user.email)
 })
 
-// There is no email property defined here
+// Não há nenhuma propriedade de e-mail definida aqui
 Event.emit('new:user', { id: 1 })
 ```
 
-You can prevent this behavior by defining the argument's type for a given event inside the `contracts/events.ts` file.
+Você pode evitar esse comportamento definindo o tipo do argumento para um determinado evento dentro do arquivo `contracts/events.ts`.
 
 ```ts
 declare module '@ioc:Adonis/Core/Event' {
@@ -64,17 +63,17 @@ declare module '@ioc:Adonis/Core/Event' {
 }
 ```
 
-The TypeScript static compiler will ensure that all `Event.emit` calls for the `new:user` event are type-safe.
+O compilador estático TypeScript garantirá que todas as chamadas `Event.emit` para o evento `new:user` sejam seguras quanto ao tipo.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1618599912/v5/type-safe-events.jpg)
+![](/docs/assets/type-safe-events.webp)
 
-## Listener classes
-Like controllers and middleware, you can also extract the inline event listeners to their dedicated classes.
+## Classes de ouvinte
+Como controladores e middleware, você também pode extrair os ouvintes de eventos inline para suas classes dedicadas.
 
-Conventionally event listeners are stored inside the `app/Listeners` directory. However, you can customize the namespace inside the `.adonisrc.json` file.
+Convencionalmente, os ouvintes de eventos são armazenados dentro do diretório `app/Listeners`. No entanto, você pode personalizar o namespace dentro do arquivo `.adonisrc.json`.
 
-<details>
-<summary> Customize event listeners namespace </summary>
+<detalhes>
+<resumo> Personalize o namespace dos ouvintes de eventos </resumo>
 
 ```json
 {
@@ -84,9 +83,9 @@ Conventionally event listeners are stored inside the `app/Listeners` directory. 
 }
 ```
 
-</details>
+</detalhes>
 
-You can create a listener class by running the following Ace command.
+Você pode criar uma classe de ouvinte executando o seguinte comando Ace.
 
 ```sh
 node ace make:listener User
@@ -94,51 +93,51 @@ node ace make:listener User
 # CREATE: app/Listeners/User.ts
 ```
 
-Open the newly created file and define the following method on the class.
+Abra o arquivo recém-criado e defina o seguinte método na classe.
 
 ```ts
 import { EventsList } from '@ioc:Adonis/Core/Event'
 
 export default class User {
   public async onNewUser(user: EventsList['new:user']) {
-    // send email to the new user
+    // enviar e-mail para o novo usuário
   }
 }
 ```
 
-Finally, you can bind the `onNewUser` method as the event listener inside the `start/events.ts` file. The binding process is similar to a Route controller binding, and there is no need to define the complete namespace.
+Finalmente, você pode vincular o método `onNewUser` como o ouvinte de eventos dentro do arquivo `start/events.ts`. O processo de vinculação é semelhante a uma vinculação do controlador de rota e não há necessidade de definir o namespace completo.
 
 ```ts
 Event.on('new:user', 'User.onNewUser')
 ```
 
-## Error handling
-Emittery emits events asynchronously when you call the `Event.emit` method. One way to handle the errors is to wrap your emit calls inside a `try/catch` block.
+## Tratamento de erros
+O Emittery emite eventos de forma assíncrona quando você chama o método `Event.emit`. Uma maneira de lidar com os erros é envolver suas chamadas emit dentro de um bloco `try/catch`.
 
 ```ts
 try {
   await Event.emit('new:user', { id: 1 })
 } catch (error) {
-  // Handle error
+  // Lidar com o erro
 }
 ```
 
-However, this is not the most intuitive way to write code. Usually, you want to emit events and then forget about them.
+No entanto, esta não é a maneira mais intuitiva de escrever código. Normalmente, você deseja emitir eventos e depois esquecê-los.
 
-AdonisJS allows you to register an error handler invoked for all the errors that occurred during the event emit lifecycle to make error handling a bit easier.
+O AdonisJS permite que você registre um manipulador de erros invocado para todos os erros que ocorreram durante o ciclo de vida de emissão do evento para tornar o tratamento de erros um pouco mais fácil.
 
-You should define the error handler only once (maybe alongside the rest of the event handlers).
+Você deve definir o manipulador de erros apenas uma vez (talvez junto com o restante dos manipuladores de eventos).
 
 ```ts
 Event.onError((event, error, eventData) => {
-  // handle the error
+  // Lidar com o erro
 })
 ```
 
-## Differences from the Node.js event emitter
-As mentioned earlier, the Event module of AdonisJS is built on top of [Emittery](https://github.com/sindresorhus/emittery), and it is different from the Node.js event emitter in the following ways.
+## Diferenças do emissor de eventos do Node.js
+Conforme mencionado anteriormente, o módulo Event do AdonisJS é construído em cima do [Emittery](https://github.com/sindresorhus/emittery), e é diferente do emissor de eventos do Node.js das seguintes maneiras.
 
-- Emittery is asynchronous and does not block the event loop.
-- It does not have the magic error event
-- It does not place a limit on the number of listeners you can define for a specific event.
-- **It only allows you to pass a [single argument](https://github.com/sindresorhus/emittery#can-you-support-multiple-arguments-for-emit) during the `emit` calls.**
+- Emittery é assíncrono e não bloqueia o loop de eventos.
+- Ele não tem o evento de erro mágico
+- Ele não coloca um limite no número de ouvintes que você pode definir para um evento específico.
+- [argumento único](https://github.com/sindresorhus/emittery#can-you-support-multiple-arguments-for-emit) durante as chamadas `emit`.

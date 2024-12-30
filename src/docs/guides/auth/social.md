@@ -39,6 +39,8 @@ export default Env.rules({
 - Suporte para vários provedores. **Google**, **Twitter**, **LinkedIn**, **Facebook**, **Discord**, **Spotify** e **GitHub**
 - API extensível para adicionar provedores sociais personalizados
 
+&nbsp;
+
 * [Visualizar no npm](https://npm.im/@adonisjs/ally)
 * [Visualizar no GitHub](https://github.com/adonisjs/ally)
 
@@ -414,8 +416,6 @@ google: {
 
 </details>
 
----
-
 <details>
   <summary>Twitter</summary>
 
@@ -429,8 +429,6 @@ twitter: {
 ```
 
 </details>
-
----
 
 <details>
   <summary>Discord</summary>
@@ -454,8 +452,6 @@ discord: {
 
 </details>
 
----
-
 <details>
   <summary>LinkedIn</summary>
 
@@ -472,8 +468,6 @@ linkedin: {
 ```
 
 </details>
-
----
 
 <details>
   <summary>Facebook</summary>
@@ -494,8 +488,6 @@ facebook: {
 ```
 
 </details>
-
----
 
 <details>
   <summary>Spotify</summary>

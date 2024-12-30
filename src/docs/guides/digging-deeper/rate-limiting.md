@@ -1,20 +1,16 @@
-# Rate limiting
+# Limitação de taxa
 
-AdonisJS ships with an official package (`@adonisjs/limiter`) to help you implement rate limiting within your applications.
+O AdonisJS vem com um pacote oficial (`@adonisjs/limiter`) para ajudar você a implementar a limitação de taxa em seus aplicativos.
 
-The package must be installed and configured separately.
+O pacote deve ser instalado e configurado separadamente.
 
-:::div{class="setup"}
+:::code-group
 
-:::codegroup
-
-```sh
-// title: 1. Install
+```sh [Instale]
 npm i @adonisjs/limiter@1.0.2
 ```
 
-```sh
-// title: 2. Configure
+```sh [Configure]
 node ace configure @adonisjs/limiter
 
 # CREATE:  config/limiter.ts
@@ -23,11 +19,10 @@ node ace configure @adonisjs/limiter
 # UPDATE: .adonisrc.json { providers += "@adonisjs/limiter" }
 ```
 
-```ts
-// title: 3. Register throttle middleware
+```ts [Registre o middleware de regulação]
 /**
- * Make sure to add the following named middleware inside
- * the start/kernel.ts file
+ * Certifique-se de adicionar o seguinte middleware nomeado dentro
+ * do arquivo start/kernel.ts
  */
 Server.middleware.registerNamed({
   throttle: () => import('@adonisjs/limiter/build/throttle'),
@@ -36,23 +31,18 @@ Server.middleware.registerNamed({
 
 :::
 
-
-:::div{class="features"}
-
-- Support for multiple storage backends. **Redis**, **PostgreSQL/MySQL** and **Memory**.
-- Atomic increments
-- Extensible API to add custom storage backends.
-- Built on top of [rate-limiter-flexible](https://github.com/animir/node-rate-limiter-flexible)
+- Suporte para múltiplos backends de armazenamento. **Redis**, **PostgreSQL/MySQL** e **Memory**.
+- Incrementos atômicos
+- API extensível para adicionar backends de armazenamento personalizados.
+[rate-limiter-flexible](https://github.com/animir/node-rate-limiter-flexible)
 
 &nbsp;
 
-- [View on npm](https://npm.im/@adonisjs/limiter)
-- [View on GitHub](https://github.com/adonisjs/limiter)
+* [Ver no npm](https://npm.im/@adonisjs/limiter)
+* [Ver no GitHub](https://github.com/adonisjs/limiter)
 
-:::
-
-## Configuration
-The configuration for the rate limiter is stored inside the `config/limiter.ts` file. Inside this file, you can define one or multiple stores to persist the limiter data. 
+## Configuração
+A configuração do limitador de taxa é armazenada dentro do arquivo `config/limiter.ts`. Dentro deste arquivo, você pode definir um ou vários armazenamentos para persistir os dados do limitador.
 
 ```ts
 import { limiterConfig } from '@adonisjs/limiter/build/config'
@@ -68,27 +58,21 @@ export default limiterConfig({
 })
 ```
 
-#### default
-The `default` property is used to pick the default store for reading and writing limiter data.
+#### `default`
+A propriedade `default` é usada para escolher o armazenamento padrão para leitura e gravação de dados do limitador.
 
----
+#### `stores`
+Você pode definir vários armazenamentos nomeados dentro do objeto `stores`. Normalmente, você usará apenas um armazenamento. No entanto, há uma possibilidade de definir vários armazenamentos para atender às necessidades de dimensionamento do seu aplicativo.
 
-#### stores
-You can define multiple named stores within the `stores` object. Usually, you will be using only one store. However, there is a possibility to define multiple stores to meet the scaling needs of your application.
+#### Armazenamento Redis
+O armazenamento Redis depende do pacote `@adonisjs/redis`. Portanto, certifique-se de instalá-lo e configurá-lo primeiro.
 
----
+Os detalhes da conexão do redis são definidos dentro do arquivo `config/redis.ts`. Além disso, você deve mencionar o nome da conexão no arquivo de configuração do limitador.
 
-#### Redis store
-The Redis store relies on the `@adonisjs/redis` package. Therefore, make sure to install and configure it first.
+#### Armazenamento do banco de dados
+O armazenamento do banco de dados depende do pacote `@adonisjs/lucid`. Portanto, certifique-se de instalá-lo e configurá-lo primeiro.
 
-The redis connection details are defined inside the `config/redis.ts` file. In addition, you must mention the connection's name in the limiter's config file.
-
----
-
-#### Database store
-The Database store relies on the `@adonisjs/lucid` package. Therefore, make sure to install and configure it first.
-
-The database connection details are defined inside the `config/database.ts` file. In addition, you should mention the connection's name inside the limiter's config file.
+Os detalhes da conexão do banco de dados são definidos dentro do arquivo `config/database.ts`. Além disso, você deve mencionar o nome da conexão dentro do arquivo de configuração do limitador.
 
 ```ts
 export default limiterConfig({
@@ -105,7 +89,7 @@ export default limiterConfig({
 })
 ```
 
-If you decide to use the database store, you must create the `rate_limits` table using the following schema class.
+Se você decidir usar o armazenamento de banco de dados, você deve criar a tabela `rate_limits` usando a seguinte classe de esquema.
 
 ```sh
 node ace make:migration rate_limits
@@ -131,16 +115,17 @@ export default class extends BaseSchema {
 }
 ```
 
-## Rate limiting HTTP requests
-You can rate limit incoming HTTP requests by defining the limiter conditions at runtime based upon the user IP address, user id, or any other unique identifier.
+## Limitação de taxa de solicitações HTTP
+Você pode limitar a taxa de solicitações HTTP recebidas definindo as condições do limitador no tempo de execução com base no endereço IP do usuário, ID do usuário ou qualquer outro identificador exclusivo.
 
-You can define the rate limit conditions within the `start/limiter.ts` file using the `Limiter.define` method.
+Você pode definir as condições de limite de taxa dentro do arquivo `start/limiter.ts` usando o método `Limiter.define`.
 
-- The first argument is the limiter's unique name.
-- The second argument is the callback function that returns the config for the limiter. The callback receives the [HTTP context](../http/context.md) as the only argument.
+- O primeiro argumento é o nome exclusivo do limitador.
+[Contexto HTTP](../http/context.md) como o único argumento.
 
 ```ts
-// title: start/limiter.ts
+// start/limiter.ts
+
 import { Limiter } from '@adonisjs/limiter/build/services'
 
 export const { limiters } = Limiter
@@ -149,7 +134,7 @@ export const { limiters } = Limiter
   })
 ```
 
-Once you have defined a limiter, you can apply it on a route using the `throttle` middleware.
+Depois de definir um limitador, você pode aplicá-lo em uma rota usando o middleware `throttle`.
 
 ```ts
 Route
@@ -157,8 +142,8 @@ Route
   .middleware('throttle:global')
 ```
 
-### Changing the throttle key
-By default, we apply the rate limit on the request IP address. However, you can change to it any other identification key. For example, you can use the user id as the throttle key.
+### Alterando a chave de aceleração
+Por padrão, aplicamos o limite de taxa no endereço IP da solicitação. No entanto, você pode alterar qualquer outra chave de identificação. Por exemplo, você pode usar o ID do usuário como a chave de aceleração.
 
 ```ts
 export const { limiters } = Limiter
@@ -167,39 +152,37 @@ export const { limiters } = Limiter
       return Limiter
         .allowRequests(5000)
         .every('1 min')
-        .usingKey(user.id) // 👈 using user id as the key
+        .usingKey(user.id) // 👈 usando o ID do usuário como chave
     }
 
-    // Defaults to IP address
+    // Padrão para endereço IP
     return Limiter
       .allowRequests(1000)
       .every('1 min')
   })
 ```
 
-### Changing the throttle response
-You can change the throttle exception message by capturing the raised exception and mutating its properties. For example:
+### Alterando a resposta de aceleração
+Você pode alterar a mensagem de exceção de aceleração capturando a exceção gerada e alterando suas propriedades. Por exemplo:
 
-```ts
+```ts {6-12}
 export const { limiters } = Limiter
   .define('main', function (ctx) {
     return Limiter
       .allowRequests(1000)
       .every('1 min')
-      // highlight-start
       .limitExceeded((error) => {
         error.message = 'Rate limit exceeded'
         error.status = 429
 
-        // A key-value pair of headers to set on the response
+        // Um par de cabeçalhos chave-valor para definir na resposta
         console.log(error.headers)
       })
-      // highlight-end
   })
 ```
 
-### Allowing unlimited requests
-You can allow unlimited requests for a given user or IP address by returning the `Limiter.noLimit()` return value from the callback. For example, allow unlimited calls for a premium client.
+### Permitindo solicitações ilimitadas
+Você pode permitir solicitações ilimitadas para um determinado usuário ou endereço IP retornando o valor de retorno `Limiter.noLimit()` do retorno de chamada. Por exemplo, permitir chamadas ilimitadas para um cliente premium.
 
 ```ts
 export const { limiters } = Limiter
@@ -215,35 +198,33 @@ export const { limiters } = Limiter
   })
 ```
 
-### Switching between stores
-You can specify the store you want to use by calling the `store` method.
+### Alternando entre `store`
+Você pode especificar a loja que deseja usar chamando o método `store`.
 
-```ts
+```ts {6}
 export const { limiters } = Limiter
   .define('main', function (ctx) {
     return Limiter
       .allowRequests(1000)
       .every('1 min')
-      // highlight-start
       .store('redis')
-      // highlight-end
   })
 ```
 
-## Login endpoint brute force protection
-Login endpoints usually become the victim of brute force attacks. However, with the help of the rate limiter, you can minimize the risk of brute force by blocking the user's IP address after several login failures.
+## Proteção contra força bruta de endpoint de login
+Os endpoints de login geralmente se tornam vítimas de ataques de força bruta. No entanto, com a ajuda do limitador de taxa, você pode minimizar o risco de força bruta bloqueando o endereço IP do usuário após várias falhas de login.
 
-:::note
-Feel free to tweak the block duration and number of allowed attempts per your application requirements.
+::: info NOTA
+Sinta-se à vontade para ajustar a duração do bloqueio e o número de tentativas permitidas de acordo com os requisitos do seu aplicativo.
 :::
 
-In the following example, we use the Limiter APIs to consume one request on login failure manually.
+No exemplo a seguir, usamos as APIs do Limitador para consumir uma solicitação em caso de falha de login manualmente.
 
 ```ts
 Route.post('login', 'AuthController.store')
 ```
 
-```ts
+```ts {9-10,12-17,19-22,27-28,32-33}
 import { Limiter } from '@adonisjs/limiter/build/services'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
@@ -252,65 +233,52 @@ export default class AuthController {
     const email = request.input('email')
     const password = request.input('password')
 
-    // highlight-start
-    // Step 1
+    // Etapa 1
     const throttleKey = `login_${email}_${request.ip()}`
-    // highlight-end
 
-    // highlight-start
-    // Step 2
+    // Etapa 2
     const limiter = Limiter.use({
       requests: 10,
       duration: '15 mins',
       blockDuration: '30 mins',
     })
-    // highlight-end
 
-    // highlight-start
-    // Step 3
+    // Etapa 3
     if (await limiter.isBlocked(throttleKey)) {
       return response.tooManyRequests('Login attempts exhausted. Please try after some time')
     }
 
-    // highlight-end
-
     try {
       await auth.attempt(email, password)
     } catch (error) {
-      // highlight-start
-      // Step 4
+      // Etapa 4
       await limiter.increment(throttleKey)
-      // highlight-end
       throw error
     }
 
-    // highlight-start
-    // Step 5
+    // Etapa 5
     await limiter.delete(throttleKey)
-    // highlight-end
   }
 }
 ```
 
-1. The first step is to create a unique key using the email and the IP address. We also prefix the key with the action being performed.
-2. Next, we create an instance of limiter allowing **10 failed login attempts** within the **window of 15 minutes**. If the user exhausts all the attempts, we will block them for the next **30 minutes**.
-3. Before trying to log in, we check if the `throttleKey` has been blocked. If it is blocked, we return early by denying the request.
-4. If the user login fails, we will increment the counter and re-throw the exception.
-5. On successful login, we will delete the user attempts from the storage.
+1. O primeiro passo é criar uma chave exclusiva usando o e-mail e o endereço IP. Também prefixamos a chave com a ação que está sendo executada.
+2. Em seguida, criamos uma instância do limitador permitindo **10 tentativas de login com falha** dentro da **janela de 15 minutos**. Se o usuário esgotar todas as tentativas, nós o bloquearemos pelos próximos **30 minutos**.
+3. Antes de tentar efetuar login, verificamos se o `throttleKey` foi bloqueado. Se estiver bloqueado, retornamos mais cedo negando a solicitação.
+4. Se o login do usuário falhar, incrementaremos o contador e lançaremos a exceção novamente.
+5. Após o login bem-sucedido, excluiremos as tentativas do usuário do armazenamento.
 
-## Limiter manager API
-Following is the list of available methods and properties on the Limiter manager class.
+## API do gerenciador de limitadores
+A seguir está a lista de métodos e propriedades disponíveis na classe do gerenciador de limitadores.
 
-You can import the limiter manager as follows.
+Você pode importar o gerenciador de limitadores da seguinte forma.
 
 ```ts
 import { Limiter } from '@adonisjs/limiters/services'
 ```
 
----
-
-### use
-Create a limiter instance with the allowed number of requests and the duration. Optionally, you can also specify the backend store. The default store set inside the `start/limiter.ts` file will be used if not defined.
+### `use`
+Crie uma instância do limitador com o número permitido de solicitações e a duração. Opcionalmente, você também pode especificar o armazenamento de backend. O armazenamento padrão definido dentro do arquivo `start/limiter.ts` será usado se não for definido.
 
 ```ts
 import { Limiter } from '@adonisjs/limiters/services'
@@ -320,33 +288,29 @@ const limiter = Limiter.use({
   every: '1 min',
 })
 
-// Use a specific store
+// Use um store específica
 const limiter = Limiter.use('db', {
   request: 100,
   every: '1 min',
 })
 ```
 
----
-
-You can also define the block duration to block the user from making any more requests after they have exhausted their limit. You should consider blocking when trying to prevent specific endpoints from brute force attacks.
+Você também pode definir a duração do bloqueio para impedir que o usuário faça mais solicitações após ele ter esgotado seu limite. Você deve considerar o bloqueio ao tentar impedir que endpoints específicos sofram ataques de força bruta.
 
 ```ts
 const limiter = Limiter.use({
   request: 100,
   every: '1 min',
   /**
-   * Use will be blocked for 30mins once they
-   * make 100 requests within one minute
+   * O uso será bloqueado por 30 minutos quando eles
+   * fizerem 100 solicitações em um minuto
    */
   blockDuration: '30 mins'
 })
 ```
 
----
-
-### define
-Define a named limiter to be used during HTTP requests. The method accepts the limiter name as the first argument and a callback function as the second argument.
+### `define`
+Defina um limitador nomeado para ser usado durante solicitações HTTP. O método aceita o nome do limitador como o primeiro argumento e uma função de retorno de chamada como o segundo argumento.
 
 ```ts
 Limiter.define('global', (ctx) => {
@@ -354,26 +318,22 @@ Limiter.define('global', (ctx) => {
 })
 ```
 
-Since you have access to the current request HTTP context, you can dynamically apply different request limits based upon the logged-in user or an IP address.
+Como você tem acesso ao contexto HTTP da solicitação atual, pode aplicar dinamicamente diferentes limites de solicitação com base no usuário conectado ou em um endereço IP.
 
----
-
-### allowRequests
-The `allowRequests` method creates an instance of the [Config builder](#limiter-config-builder). You can use the config builder further to define the duration of requests and the block duration.
+### `allowRequests`
+O método `allowRequests` cria uma instância do [Construtor de configuração](#limiter-config-builder). Você pode usar o construtor de configuração para definir a duração das solicitações e a duração do bloco.
 
 ```ts
-Limiter.allowRequests(1000) // returns new HttpLimiterConfigBuilder()
+Limiter.allowRequests(1000) // retorna new HttpLimiterConfigBuilder()
 ```
 
----
+### `noLimit`
+O método `noLimit` é uma maneira descritiva de não aplicar nenhum limite na solicitação atual retornando `null` do retorno de chamada do limitador.
 
-### noLimit
-The `noLimit` method is a descriptive way to not apply any limit on the current request by returning `null` from the limiter callback.
+## API do limitador
+A seguir está a lista de métodos disponíveis que você pode chamar no limitador para implementar manualmente a limitação de taxa em seu aplicativo.
 
-## Limiter API
-Following is the list of available methods you can call on the Limiter to manually implement rate limiting within your app.
-
-You can access the limiter instance using the `Limiter.use` method.
+Você pode acessar a instância do limitador usando o método `Limiter.use`.
 
 ```ts
 import { Limiter } from '@adonisjs/limiters/services'
@@ -383,50 +343,44 @@ const limiter = Limiter.use({
   every: '15 mins',
 })
 
-// Use a specific store
+// Use uma store específica
 const limiter = Limiter.use('db', {
   request: 10,
   every: '15 mins',
 })
 ```
 
----
-
-### get
-Get the metadata of a given key. The method returns `null` if no requests have been consumed on the given key yet.
+### `get`
+Obtenha os metadados de uma determinada chave. O método retorna `null` se nenhuma solicitação tiver sido consumida na chave fornecida ainda.
 
 ```ts
 const response = await limiter.get(`global_${user.id}`)
 if (!response) {
-  // no requests consumed yet
+  // nenhuma solicitação consumida ainda
 }
 
-response.remaining // Remaining number of requests
-response.limit // Allowed number of requests
-response.consumed // Requests consumed so far
-response.retryAfter // Milliseconds to wait before limit gets revised
+response.remaining  // Número restante de solicitações
+response.limit      // Número permitido de solicitações
+response.consumed   // Solicitações consumidas até o momento
+response.retryAfter // Milissegundos para esperar antes que o limite seja revisado
 ```
 
----
-
-### remaining
-Get the number of remaining requests for a given key.
+### `remaining`
+Obtenha o número de solicitações restantes para uma determinada chave.
 
 ```ts
 if (await limiter.remaining(`global_${user.id}`)) {
-  // key has requests remaining
+  // chave tem solicitações restantes
 }
 ```
 
----
-
-### consume
-Consume one request for the given key. The method raised an exception when all requests have already been consumed.
+### `consume`
+Consuma uma solicitação para a chave fornecida. O método gerou uma exceção quando todas as solicitações já foram consumidas.
 
 ```ts
 try {
   const response = await limiter.consume(`global_${user.id}`)
-  // response is same as "limiter.get" response
+  // a resposta é a mesma que a resposta "limiter.get"
 } catch (error) {
   console.log(error instanceof ThrottleException)
   console.log(error.status)
@@ -437,68 +391,54 @@ try {
 }
 ```
 
----
-
-### delete
-Delete the key from the storage. Deleting a key will essentially revise the consumed requests.
+### `delete`
+Exclua a chave do armazenamento. Excluir uma chave essencialmente revisará as solicitações consumidas.
 
 ```ts
 await limiter.delete(`global_${user.id}`)
 ```
 
----
-
-### block
-Block a given key for the mentioned duration. For example, setting the duration to `0` will block the key forever. Blocking is usually helpful to slow down brute force attacks.
+### `block`
+Bloqueie uma determinada chave pela duração mencionada. Por exemplo, definir a duração como `0` bloqueará a chave para sempre. O bloqueio geralmente é útil para desacelerar ataques de força bruta.
 
 ```ts
 await limiter.block(`login_${email}_${ip}`, '30 mins')
 ```
 
----
-
-### increment
-Increment the count of consumed requests by one. The method is same as the `consume` method. However, it does not raise an exception when the limit is exhausted.
+### `increment`
+Aumente a contagem de solicitações consumidas em um. O método é o mesmo que o método `consume`. No entanto, ele não gera uma exceção quando o limite é esgotado.
 
 ```ts
 await limiter.increment(`global_${user.id}`)
 ```
 
----
-
-### isBlocked
-Check if the key is blocked from making any more requests. The [rate-limiter-flexible](https://github.com/animir/node-rate-limiter-flexible) package does not have any special flag to know if a key is blocked, therefore we check if the consumed requests is greater than the allowed requests to find if the key is blocked or not.
+### `isBlocked`
+Verifique se a chave está bloqueada para fazer mais solicitações. O pacote [rate-limiter-flexible](https://github.com/animir/node-rate-limiter-flexible) não tem nenhum sinalizador especial para saber se uma chave está bloqueada, portanto, verificamos se as solicitações consumidas são maiores do que as solicitações permitidas para descobrir se a chave está bloqueada ou não.
 
 ```ts
 if (await limiter.isBlocked(`global_${user.id}`)) {
-  // consumed more than allowed limit
+  // consumiu mais do que o limite permitido
 }
 ```
 
-## Limiter config builder
-The config builder allows you to use the fluent method chaining and create the config that you can use to apply the rate limit during HTTP requests.
+## Construtor de configuração do limitador
+O construtor de configuração permite que você use o encadeamento de métodos fluentes e crie a configuração que você pode usar para aplicar o limite de taxa durante solicitações HTTP.
 
-You can access an instance of the config builder by calling the `allowRequests` method on the Limiter manager.
+Você pode acessar uma instância do construtor de configuração chamando o método `allowRequests` no gerenciador do limitador.
 
 ```ts
 import { Limiter } from '@adonisjs/limiters/services'
 Limiter.allowRequests(1000)
 ```
 
-### allowRequests
-Define the number of requests to be allowed for the given time duration.
+### `allowRequests`
+Defina o número de solicitações a serem permitidas para a duração de tempo fornecida.
 
----
+### `every`
+Defina a duração de tempo. Você pode especificar o tempo em milissegundos ou definir uma expressão de string suportada pelo pacote [ms](https://npm.im/ms).
 
-### every
-Define the time duration. Either you can specify the time in milliseconds or define a string expression supported by the [ms](https://npm.im/ms) package.
-
----
-
-### limitExceeded
-Define the callback to mutate the error raised when the request exceeds the number of allowed requests.
-
----
+### `limitExceeded`
+Defina o retorno de chamada para alterar o erro gerado quando a solicitação excede o número de solicitações permitidas.
 
 ```ts
 Limiter
@@ -513,10 +453,8 @@ Limiter
   })
 ```
 
----
-
-### store
-Specify the backend store to use for persisting limiter data.
+### `store`
+Especifique o armazenamento de backend a ser usado para persistir dados do limitador.
 
 ```ts
 Limiter
@@ -524,10 +462,8 @@ Limiter
   .store('db')
 ```
 
----
-
-### usingKey
-Define a custom key for throttling the requests. By default, the IP address is used.
+### `usingKey`
+Defina uma chave personalizada para limitar as solicitações. Por padrão, o endereço IP é usado.
 
 ```ts
 Limiter

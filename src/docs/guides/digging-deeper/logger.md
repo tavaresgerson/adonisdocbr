@@ -1,6 +1,6 @@
 # Logger
 
-The core of the framework ships with an inbuilt logger built on top of [Pino](https://getpino.io/#/)(one of the fastest logging libraries for Node.js). You can import and use the Logger as follows:
+O núcleo do framework vem com um logger embutido construído em cima do [Pino](https://getpino.io/#/)(uma das bibliotecas de logging mais rápidas para Node.js). Você pode importar e usar o Logger da seguinte forma:
 
 ```ts
 import Logger from '@ioc:Adonis/Core/Logger'
@@ -9,12 +9,10 @@ Logger.info('A info message')
 Logger.warn('A warning')
 ```
 
-During an HTTP request, you must use the `ctx.logger` object. It is an isolated child instance of the logger that adds the unique request-id to all the log messages.
+Durante uma requisição HTTP, você deve usar o objeto `ctx.logger`. É uma instância filha isolada do logger que adiciona o request-id exclusivo a todas as mensagens de log.
 
-:::note
-
-Make sure to enable request id generation by setting `generateRequestId = true` inside `config/app.ts` file.
-
+::: info NOTA
+Certifique-se de habilitar a geração de id de requisição definindo `generateRequestId = true` dentro do arquivo `config/app.ts`.
 :::
 
 ```ts
@@ -24,12 +22,12 @@ Route.get('/', async ({ logger }) => {
 })
 ```
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1592211987/adonisjs.com/http-logger.png)
+![](/docs/assets/http-logger.webp)
 
 ## Config
-The configuration for the logger is stored inside the `config/app.ts` file under the `logger` export. The options are the same [as documented by Pino](https://getpino.io/#/docs/api?id=options).
+A configuração do logger é armazenada dentro do arquivo `config/app.ts` na exportação `logger`. As opções são as mesmas [conforme documentado por Pino](https://getpino.io/#/docs/api?id=options).
 
-Following the bare minimum options required to configure the logger:
+Seguindo as opções mínimas necessárias para configurar o logger:
 
 ```ts
 {
@@ -43,79 +41,70 @@ Following the bare minimum options required to configure the logger:
 }
 ```
 
-#### name
-The name of the logger. The `APP_NAME` environment variable uses the `name` property inside the package.json file.
+#### `name`
+O nome do logger. A variável de ambiente `APP_NAME` usa a propriedade `name` dentro do arquivo package.json.
 
----
+#### `enabled`
+Alterne para habilitar/desabilitar o logger
 
-#### enabled
-Toggle switch to enable/disable the logger
+#### `level`
+O nível de registro atual. Ele é derivado da variável de ambiente `LOG_LEVEL`.
 
----
+#### `redact`
+Remova/redija caminhos sensíveis da saída de registro. Leia a [seção Redact](#redact-values).
 
-#### level
-The current logging level. It is derived from the `LOG_LEVEL` environment variable.
+#### `prettyPrint`
+Se deve ou não imprimir os logs de forma bonita. Recomendamos desativar a impressão bonita na produção, pois isso tem alguma sobrecarga de desempenho.
 
----
+## Como o AdonisJS Logger funciona?
+Como o Node.js é um loop de eventos de thread única, é muito importante manter o thread principal livre de qualquer trabalho extra necessário para processar ou reformatar logs.
 
-#### redact
-Remove/redact sensitive paths from the logging output. Read the [Redact section](#redact-values).
+Por esse motivo, optamos pelo [Pino](https://getpino.io/), que não executa nenhuma formatação de log em processo e, em vez disso, incentiva você a usar um processo separado para isso. Em poucas palavras, é assim que o registro funciona.
 
----
+1. Você pode registrar em diferentes níveis usando a API do Logger, por exemplo: `Logger.info('some message')`.
+2. Os registros são sempre enviados para `stdout`.
+3. Você pode redirecionar o fluxo `stdout` para um arquivo ou usar um processo separado para lê-los e formatá-los.
 
-#### prettyPrint
-Whether or not to pretty-print the logs. We recommend turning off pretty printing in production, as it has some performance overhead.
+## Registro em desenvolvimento
+Como os registros são sempre gravados em `stdout`, não há nada especial necessário no ambiente de desenvolvimento. Além disso, o AdonisJS irá automaticamente [pretty print](https://github.com/pinojs/pino-pretty) os registros quando `NODE_ENV=development`.
 
-## How does AdonisJS Logger work?
-Since Node.js is a single-threaded event-loop, it is very important to keep the main thread free from any extra work required to process or reformat logs. 
+## Registro em produção
+Na produção, você desejaria transmitir seus registros para um serviço externo como Datadog ou Papertrail. A seguir estão algumas das maneiras de enviar registros para um serviço externo.
 
-For this very reason, we opted for [Pino](https://getpino.io/), which does not perform any in-process log formatting and instead encourages you to use a separate process for that. In a nutshell, this is how logging works.
-
-1. You can log at different levels using the Logger API, for example: `Logger.info('some message')`.
-2. The logs are always sent out to `stdout`.
-3. You can redirect the `stdout` stream to a file or use a separate process to read and format them.
-
-## Logging in development
-Since logs are always written to `stdout`, there is nothing special required in the development environment. Also, AdonisJS will automatically [pretty print](https://github.com/pinojs/pino-pretty) the logs when `NODE_ENV=development`.
-
-## Logging in production
-In production, you would want to stream your logs to an external service like Datadog or Papertrail. Following are some of the ways to send logs to an external service.
-
-:::note
-
-There is an additional operational overhead of piping the stdout stream to a service. But, the trade-off is worth the performance boost you receive. Make sure to check [Pino benchmarks](https://getpino.io/#/docs/benchmarks) as well.
-
+::: info NOTA
+Há uma sobrecarga operacional adicional de canalizar o fluxo stdout para um serviço. Mas, a troca vale o aumento de desempenho que você recebe. Certifique-se de verificar [benchmarks Pino](https://getpino.io/#/docs/benchmarks) também.
 :::
 
-### Using Pino transports
-The simplest way to process the `stdout` stream is to use [Pino transports](https://getpino.io/#/docs/transports?id=known-transports). All you need to do is pipe the output to the transport of your choice. 
+### Usando transportes Pino
+A maneira mais simples de processar o fluxo `stdout` é usar [transportes Pino](https://getpino.io/#/docs/transports?id=known-transports). Tudo o que você precisa fazer é canalizar a saída para o transporte de sua escolha.
 
-For demonstration, let's install the `pino-datadog package to send logs to Datadog.
+Para demonstração, vamos instalar o pacote `pino-datadog para enviar logs para o Datadog.
 
 ```sh
 npm i pino-datadog
 ```
 
-Next, start the production server and pipe the `stdout` output to `pino-datadog`.
+Em seguida, inicie o servidor de produção e canalize a saída `stdout` para `pino-datadog`.
 
 ```sh
 node build/server.js | ./node_modules/.bin/pino-datadog --key DD_API_KEY
 ```
 
-### Streaming to a file
-Another approach is to forward the output of `stdout` to a physical file on the disk and then configure your logging service to read and rotate the log files.
+### Transmitindo para um arquivo
+Outra abordagem é encaminhar a saída de `stdout` para um arquivo físico no disco e então configurar seu serviço de registro para ler e rotacionar os arquivos de registro.
 
 ```sh
 node build/server.js >> app.log
 ```
 
-Now, configure your logging service to read logs from the `app.log` file.
+Agora, configure seu serviço de registro para ler registros do arquivo `app.log`.
 
-## Redact values
-You can redact/remove sensitive values from the logging output by defining a path to the keys to remove. For example: Removing user password from the logging output.
+## Redigir valores
+Você pode redigir/remover valores sensíveis da saída de registro definindo um caminho para as chaves a serem removidas. Por exemplo: Removendo a senha do usuário da saída de registro.
 
 ```ts
-// title: config/app.ts
+// config/app.ts
+
 {
   redact: {
     paths: ['password'],
@@ -123,14 +112,14 @@ You can redact/remove sensitive values from the logging output by defining a pat
 }
 ```
 
-The above config will remove the password from the merging object.
+A configuração acima removerá a senha do objeto de mesclagem.
 
 ```ts
 Logger.info({ username: 'virk', password: 'secret' }, 'user signup')
-// output: {"username":"virk","password":"[Redacted]","msg":"user signup"}
+// saída: {"username":"virk","password":"[Redacted]","msg":"user signup"}
 ```
 
-You can define a custom placeholder for the redacted values or remove them altogether from the output.
+Você pode definir um espaço reservado personalizado para os valores redigidos ou removê-los completamente da saída.
 
 ```ts
 {
@@ -140,7 +129,7 @@ You can define a custom placeholder for the redacted values or remove them altog
   }
 }
 
-// or remove the property
+// ou remover a propriedade
 {
   redact: {
     paths: ['password'],
@@ -149,44 +138,44 @@ You can define a custom placeholder for the redacted values or remove them altog
 }
 ```
 
-Check out the [fast-redact](https://github.com/davidmarkclements/fast-redact) package to view the expressions available for the paths array.
+Confira o pacote [fast-redact](https://github.com/davidmarkclements/fast-redact) para visualizar as expressões disponíveis para a matriz de caminhos.
 
-## Logger API
-Following is the list of available methods/properties on the Logger module. All of the logging methods accept the following arguments.
+## API do Logger
+A seguir está a lista de métodos/propriedades disponíveis no módulo Logger. Todos os métodos de registro aceitam os seguintes argumentos.
 
-- The first argument can be a string message or an object of properties to merge with the final log message.
-- If the first argument was a merging object, then the second argument is the string message.
-- Rest of the parameters are the interpolation values for the message placeholders.
+- O primeiro argumento pode ser uma mensagem de string ou um objeto de propriedades para mesclar com a mensagem de log final.
+- Se o primeiro argumento foi um objeto de mesclagem, o segundo argumento é a mensagem de string.
+- O restante dos parâmetros são os valores de interpolação para os marcadores de posição de mensagem.
 
 ```ts
 import Logger from '@ioc:Adonis/Core/Logger'
 
 Logger.info('hello %s', 'world')
-// output: {"msg": "hello world"}
+// saída: {"msg": "hello world"}
 
 Logger.info('user details: %o', { username: 'virk' })
-// output: {"msg":"user details: {\"username\":\"virk\"}"
+// saída: {"msg":"user details: {\"username\":\"virk\"}"
 ```
 
-Define a merging object as follows:
+Defina um objeto de mesclagem da seguinte forma:
 
 ```ts
 import Logger from '@ioc:Adonis/Core/Logger'
 
 Logger.info({ username: 'virk' }, 'user signup')
-// output: {"username":"virk","msg":"user signup"}
+// saída: {"username":"virk","msg":"user signup"}
 ```
 
-You can pass error objects under the `err` key.
+Você pode passar objetos de erro sob a chave `err`.
 
 ```ts
 import Logger from '@ioc:Adonis/Core/Logger'
 
 Logger.error({ err: new Error('signup failed') }, 'user signup')
-// output: {"err":{"type":"Error","message":"foo","stack":"..."},"msg":"user signup"}
+// saída: {"err":{"type":"Error","message":"foo","stack":"..."},"msg":"user signup"}
 ```
 
-Following is the list of logging methods.
+A seguir está a lista de métodos de registro.
 
 - `Logger.trace`
 - `Logger.debug`
@@ -195,66 +184,54 @@ Following is the list of logging methods.
 - `Logger.error`
 - `Logger.fatal`
 
----
-
-### isLevelEnabled
-Find if a given logging level is enabled inside the config file.
+### `isLevelEnabled`
+Descubra se um determinado nível de registro está habilitado dentro do arquivo de configuração.
 
 ```ts
 Logger.isLevelEnabled('info')
 Logger.isLevelEnabled('trace')
 ```
 
----
-
-### bindings
-Returns an object containing all the current bindings, cloned from the ones passed in via `Logger.child()`.
+### `bindings`
+Retorna um objeto contendo todos os vínculos atuais, clonados dos passados ​​via `Logger.child()`.
 
 ```ts
 Logger.bindings()
 ```
 
----
-
-### child
-Create a child logger instance. You can create the child logger with a different logging level as well.
+### `child`
+Cria uma instância de registrador filho. Você também pode criar o registrador filho com um nível de registro diferente.
 
 ```ts
 const childLogger = Logger.child({ level: 'trace' })
 childLogger.info('an info message')
 ```
 
-You can also define custom bindings for a child logger. The bindings are added to the logging output.
+Você também pode definir vínculos personalizados para um registrador filho. Os vínculos são adicionados à saída de registro.
 
 ```ts
 const childLogger = Logger.child({ userId: user.id })
 childLogger.info('an info message')
 ```
 
----
-
-### level
-The current logging level value, as a string.
+### `level`
+O valor do nível de registro atual, como uma string.
 
 ```ts
 console.log(Logger.level)
 // info
 ```
 
----
-
-### levelNumber
-The current logging level value, as a number.
+### `levelNumber`
+O valor atual do nível de registro, como um número.
 
 ```ts
 console.log(Logger.levelNumber)
 // 30
 ```
 
----
-
-### levels
-An object of logging `labels` and `values`.
+### `levels`
+Um objeto de `labels` e `values` de registro.
 
 ```ts
 console.log(Logger.levels)
@@ -281,10 +258,8 @@ console.log(Logger.levels)
  */
 ```
 
----
-
-### pinoVersion
-The version of Pino.
+### `pinoVersion`
+A versão do Pino.
 
 ```ts
 console.log(Logger.pinoVersion)

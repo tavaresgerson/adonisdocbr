@@ -1,20 +1,16 @@
 # Mailer
 
-You can send emails from your application using the Mailer module of AdonisJS. It is built on top of [nodemailer](https://nodemailer.com/about/) with a few additions like **previewing emails** and the ability to **trap emails during tests**.
+Você pode enviar e-mails do seu aplicativo usando o módulo Mailer do AdonisJS. Ele é construído em cima do [nodemailer](https://nodemailer.com/about/) com algumas adições como **visualização de e-mails** e a capacidade de **capturar e-mails durante os testes**.
 
-Before you can start sending emails, make sure to install and configure the package using the following instructions.
+Antes de começar a enviar e-mails, certifique-se de instalar e configurar o pacote usando as seguintes instruções.
 
-:::div{class="setup"}
+::: code-group
 
-:::codegroup
-
-```sh
-// title: 1. Install
+```sh [Instale]
 npm i @adonisjs/mail@8.2.1
 ```
 
-```sh
-// title: 2. Configure
+```sh [Configure]
 node ace configure @adonisjs/mail
 
 # CREATE: config/mail.ts
@@ -25,13 +21,12 @@ node ace configure @adonisjs/mail
 # UPDATE: .adonisrc.json { providers += "@adonisjs/mail" }
 ```
 
-```ts
-// title: 3. Validate environment variables
+```ts [Validar variáveis ​​de ambiente]
 /**
- * Depending upon the mail driver you are using, you must validate
- * the environment variables required by it.
+ * Dependendo do driver de e-mail que você está usando, você deve validar
+ * as variáveis ​​de ambiente necessárias para ele.
  *
- * Following is an example with Mailgun
+ * A seguir está um exemplo com Mailgun
  */
 export default Env.rules({
   MAILGUN_API_KEY: Env.schema.string(),
@@ -41,23 +36,18 @@ export default Env.rules({
 
 :::
 
-
-:::div{class="features"}
-
-- Support for multiple drivers. **SparkPost**, **SES**, **Mailgun** and **Smtp**
-- Ability to trap emails during tests
-- Use Edge templates to define the email markup
-- Preview emails on a dummy SMTP server
+- Suporte para vários drivers. **SparkPost**, **SES**, **Mailgun** e **Smtp**
+- Capacidade de capturar e-mails durante os testes
+- Use modelos do Edge para definir a marcação de e-mail
+- Visualize e-mails em um servidor SMTP fictício
 
 &nbsp;
 
-- [View on npm](https://npm.im/@adonisjs/mail)
-- [View on GitHub](https://github.com/adonisjs/mail)
-
-:::
+* [Visualizar no npm](https://npm.im/@adonisjs/mail)
+* [Visualizar no GitHub](https://github.com/adonisjs/mail)
 
 ## Config
-The configuration for the mail package is stored inside the `config/mail.ts` file. Inside this file, you can define multiple mailers using the same or different drivers.
+A configuração do pacote de e-mail é armazenada dentro do arquivo `config/mail.ts`. Dentro deste arquivo, você pode definir vários mailers usando os mesmos drivers ou drivers diferentes.
 
 ```ts
 import { mailConfig } from '@adonisjs/mail/build/config'
@@ -81,32 +71,28 @@ export default mailConfig({
 })
 ```
 
-#### mailer
-The mailer property defines the default mailer to use for sending emails.
+#### `mailer`
+A propriedade mailer define o mailer padrão a ser usado para enviar e-mails.
 
----
+#### `mailers`
 
-#### mailers
+O objeto `mailers` define uma lista de mailers que você deseja usar. Cada mailer deve especificar o driver que deseja usar.
 
-The `mailers` object defines a list of mailers you want to use. Each mailer must specify the driver it wants to use.
+#### Opções do Mailgun
+O driver do mailgun aceita opcionalmente as seguintes opções.
 
----
+| Opção de configuração | Variante do Mailgun |
+|-----------------------|---------------------|
+| `oTags`               | o\:tag              |
+| `oDeliverytime`       | o\:deliverytime     |
+| `oTestMode`           | o\:testmode         |
+| `oTracking`           | o\:tracking         |
+| `oTrackingClick`      | o\:tracking-clicks  |
+| `oTrackingOpens`      | o\:tracking-opens   |
+| `oDkim`               | o\:dkim             |
+| `headers`             | h\:\<header-name>   |
 
-#### Mailgun options
-The mailgun driver optionally accepts the following options.
-
-| Config option | Mailgun variant |
-|---------------|---------------|
-| `oTags` | o\:tag |
-| `oDeliverytime` | o\:deliverytime |
-| `oTestMode` | o\:testmode |
-| `oTracking` | o\:tracking |
-| `oTrackingClick` | o\:tracking-clicks |
-| `oTrackingOpens` | o\:tracking-opens |
-| `oDkim` | o\:dkim |
-| `headers` | h\:\<header-name> |
-
-You can pass all of the options except `oDkim` during the `Mail.send` call as well.
+Você também pode passar todas as opções, exceto `oDkim`, durante a chamada `Mail.send`.
 
 ```ts
 await Mail.use('mailgun').send((message) => {
@@ -116,22 +102,20 @@ await Mail.use('mailgun').send((message) => {
 })
 ```
 
----
+#### Opções do Sparkpost
+O driver sparkpost aceita opcionalmente as seguintes opções.
 
-#### Sparkpost options
-The sparkpost driver optionally accepts the following options.
+| Opção de configuração | Variante Sparkpost |
+|-------------------|-------------------|
+| `startTime`       | start_time        |
+| `openTracking`    | open_tracking     |
+| `clickTracking`   | click_tracking    |
+| `transactional`   | transactional     |
+| `sandbox`         | sandbox           |
+| `skipSuppression` | skip_suppression  |
+| `ipPool`          | ip_pool           |
 
-| Config option | Sparkpost variant |
-|---------------|---------------|
-| `startTime` | start_time |
-| `openTracking` | open_tracking |
-| `clickTracking` | click_tracking |
-| `transactional` | transactional |
-| `sandbox` | sandbox |
-| `skipSuppression` | skip_suppression |
-| `ipPool` | ip_pool |
-
-You can also define all configuration options at runtime during the `Mail.send` call.
+Você também pode definir todas as opções de configuração em tempo de execução durante a chamada `Mail.send`.
 
 ```ts
 await Mail.use('sparkpost').send((message) => {
@@ -142,10 +126,8 @@ await Mail.use('sparkpost').send((message) => {
 })
 ```
 
----
-
-#### Smtp auth options
-You can define the authentication options for the SMTP connections as follows:
+#### Opções de autenticação SMTP
+Você pode definir as opções de autenticação para as conexões SMTP da seguinte forma:
 
 ```ts
 {
@@ -159,7 +141,7 @@ You can define the authentication options for the SMTP connections as follows:
   }
 }
 
-// Using Oauth2
+// Usando Oauth2
 {
   smtp: {
     driver: 'smtp',
@@ -177,10 +159,10 @@ You can define the authentication options for the SMTP connections as follows:
 }
 ```
 
-### Configuring new mailers
-You can also configure new mailers after the initial setup. Use the [config stub](https://github.com/adonisjs/mail/blob/develop/templates/config.txt) as a reference to copy the default options for all the drivers.
+### Configurando novos mailers
+Você também pode configurar novos mailers após a configuração inicial. Use o [config stub](https://github.com/adonisjs/mail/blob/develop/templates/config.txt) como referência para copiar as opções padrão para todos os drivers.
 
-Also, you must define the mailers inside the `contracts/mail.ts` file before you can define its config or use it to send emails. The contracts file is a way to inform the TypeScript static compiler about the existence of the mailer.
+Além disso, você deve definir os mailers dentro do arquivo `contracts/mail.ts` antes de poder definir sua configuração ou usá-lo para enviar e-mails. O arquivo contracts é uma maneira de informar o compilador estático TypeScript sobre a existência do mailer.
 
 ```ts
 declare module '@ioc:Adonis/Addons/Mail' {
@@ -195,7 +177,7 @@ declare module '@ioc:Adonis/Addons/Mail' {
 }
 ```
 
-The `MailersList` interface is a key-value pair of the mailer name and the driver it uses. The key can be anything. For example:
+A interface `MailersList` é um par de chave-valor do nome do mailer e do driver que ele usa. A chave pode ser qualquer coisa. Por exemplo:
 
 ```ts
 interface MailersList {
@@ -204,19 +186,16 @@ interface MailersList {
 }
 ```
 
-## Usage
-Once done with the setup, you can import the `Mail` module and send emails using the `Mail.send` method. It accepts a callback function to let you configure the outgoing message.
+## Uso
+Depois de concluir a configuração, você pode importar o módulo `Mail` e enviar e-mails usando o método `Mail.send`. Ele aceita uma função de retorno de chamada para permitir que você configure a mensagem de saída.
 
-In the following example, the `htmlView` method accepts the path to an Edge template and the data you want to pass to it.
+No exemplo a seguir, o método `htmlView` aceita o caminho para um modelo do Edge e os dados que você deseja passar para ele.
 
-```ts
-// highlight-start
+```ts {1,5-11}
 import Mail from '@ioc:Adonis/Addons/Mail'
-// highlight-end
 
 class UsersController {
   public async store() {
-    // highlight-start
     await Mail.send((message) => {
       message
         .from('info@example.com')
@@ -224,21 +203,18 @@ class UsersController {
         .subject('Welcome Onboard!')
         .htmlView('emails/welcome', { name: 'Virk' })
     })
-    // highlight-end
   }
 }
 ```
 
-### Defer email sending
-You can make use of the `Mail.sendLater` method to push the email to an in-memory queue. This ensures that the email is sent in the background and doesn't block the ongoing HTTP request. For example:
+### Adiar envio de e-mail
+Você pode usar o método `Mail.sendLater` para enviar o e-mail para uma fila na memória. Isso garante que o e-mail seja enviado em segundo plano e não bloqueie a solicitação HTTP em andamento. Por exemplo:
 
-```ts
+```ts {3-4}
 class UsersController {
   public async store() {
-    // highlight-start
-    // Pushed to in-memory queue
+    // Enviado para a fila na memória
     await Mail.sendLater((message) => {
-    // highlight-end
       message
         .from('info@example.com')
         .to('virk@adonisjs.com')
@@ -249,8 +225,8 @@ class UsersController {
 }
 ```
 
-## Email templates
-You can make use of standard Edge templates for defining the email content. The templates live inside the same `resources/views` directory. For better organization, you can move them inside a sub-directory called `emails`. For example:
+## Modelos de e-mail
+Você pode usar modelos padrão do Edge para definir o conteúdo do e-mail. Os modelos ficam dentro do mesmo diretório `resources/views`. Para melhor organização, você pode movê-los para dentro de um subdiretório chamado `emails`. Por exemplo:
 
 ```sh
 node ace make:view emails/welcome
@@ -258,7 +234,7 @@ node ace make:view emails/welcome
 # ✔  create    resources/views/emails/welcome.edge
 ```
 
-Open the newly created template file and paste the following contents inside it.
+Abra o arquivo de modelo recém-criado e cole o seguinte conteúdo dentro dele.
 
 ```edge
 <h1> Welcome {{ user.fullName }} </h1>
@@ -267,7 +243,7 @@ Open the newly created template file and paste the following contents inside it.
 </p>
 ```
 
-Finally, you can reference the template as follows.
+Finalmente, você pode referenciar o modelo da seguinte forma.
 
 ```ts
 await Mail.sendLater((message) => {
@@ -278,25 +254,27 @@ await Mail.sendLater((message) => {
 })
 ```
 
-You can also assign templates for the plain text and the apple watch content.
+Você também pode atribuir modelos para o texto simples e o conteúdo do Apple Watch.
 
 ```ts
-// title: Plain text
+// Plain text
+
 message.textView('emails/welcome.plain', {})
 ```
 
 ```ts
-// title: Apple watch
+// Apple watch
+
 message.watchView('emails/welcome.watch', {})
 ```
 
-### Using MJML to create your template
-Here's a screencast showing how to use [MJML](https://mjml.io/) as your markup language for emails.
+### Usando MJML para criar seu modelo
+Aqui está um screencast mostrando como usar [MJML](https://mjml.io/) como sua linguagem de marcação para e-mails.
 
-::youtube{url="https://youtu.be/zehb-qUzRCM"}
+<iframe width="560" height="315" src="https://www.youtube.com/embed/zehb-qUzRCM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-## Attachments
-You can send attachments using the `message.attach` method. It takes an absolute path to the file to attach.
+## Anexos
+Você pode enviar anexos usando o método `message.attach`. Ele pega um caminho absoluto para o arquivo a ser anexado.
 
 ```ts
 import Mail from '@ioc:Adonis/Addons/Mail'
@@ -307,7 +285,7 @@ await Mail.sendLater((message) => {
 })
 ```
 
-The file content type, encoding, and headers are derived from the filename. However, you can overwrite the defaults by explicitly defining them.
+O tipo de conteúdo do arquivo, codificação e cabeçalhos são derivados do nome do arquivo. No entanto, você pode substituir os padrões definindo-os explicitamente.
 
 ```ts
 message.attach(
@@ -320,14 +298,12 @@ message.attach(
 )
 ```
 
-### Streams and buffers as attachments
-You can also send a Buffer or a stream directly as an attachment using the `message.attachData` method.
+### Streams e buffers como anexos
+Você também pode enviar um Buffer ou um stream diretamente como um anexo usando o método `message.attachData`.
 
-:::note
-
-- Make sure to define the filename explicitly when passing a buffer or a stream.
-- You cannot use the `attachData` method with `Mail.sendLater` as streams and buffers cannot be serialized into queue jobs.
-
+::: info NOTA
+- Certifique-se de definir o nome do arquivo explicitamente ao passar um buffer ou um stream.
+- Você não pode usar o método `attachData` com `Mail.sendLater`, pois streams e buffers não podem ser serializados em trabalhos de fila.
 :::
 
 ```ts
@@ -348,10 +324,10 @@ message.attachData(
 )
 ```
 
-## Embedding images
-There are [multiple ways](https://blog.mailtrap.io/embedding-images-in-html-email-have-the-rules-changed) to render images inside the email body. One example is sending the image as an attachment and then adding it to the HTML using it's Content-Id (CID).
+## Incorporando imagens
+Existem [várias maneiras](https://blog.mailtrap.io/embedding-images-in-html-email-have-the-rules-changed) de renderizar imagens dentro do corpo do e-mail. Um exemplo é enviar a imagem como um anexo e então adicioná-la ao HTML usando seu Content-Id (CID).
 
-You can use the `message.embed` method and pass it the file's absolute path, along with a unique id as the second argument.
+Você pode usar o método `message.embed` e passar o caminho absoluto do arquivo, junto com um id exclusivo como o segundo argumento.
 
 ```ts
 await Mail.sendLater((message) => {
@@ -362,19 +338,18 @@ await Mail.sendLater((message) => {
 })
 ```
 
-Inside the Edge template, you can use the earlier defined unique id as the `img` src.
+Dentro do modelo Edge, você pode usar o id exclusivo definido anteriormente como o src `img`.
 
 ```edge
-// title: Email template
+<!-- Email template -->
+
 <img src="cid:a-unique-id-for-the-attachment" />
 ```
 
-Similar to the [message.attachData](#streams-and-buffers-as-attachments), you can also embed a Buffer or a stream directly using the `embedData` method.
+Semelhante ao [message.attachData](#streams-and-buffers-as-attachments), você também pode incorporar um Buffer ou um fluxo diretamente usando o método `embedData`.
 
-:::note
-
-You cannot use the `embedData` method with `Mail.sendLater` as streams and buffers cannot be serialized into queue jobs.
-
+::: info NOTA
+Você não pode usar o método `embedData` com `Mail.sendLater`, pois fluxos e buffers não podem ser serializados em trabalhos de fila.
 :::
 
 ```ts
@@ -384,8 +359,8 @@ message.embedData(
 )
 ```
 
-## Calendar events
-You can attach calendar events (.ics files) using the `message.icalEvent` method. The method accepts the invite content as a string or a callback to generate the content programmatically.
+## Eventos de calendário
+Você pode anexar eventos de calendário (arquivos .ics) usando o método `message.icalEvent`. O método aceita o conteúdo do convite como uma string ou um retorno de chamada para gerar o conteúdo programaticamente.
 
 ```ts
 message.icalEvent(eventContent, {
@@ -394,7 +369,7 @@ message.icalEvent(eventContent, {
 })
 ```
 
-Or generate the content using the calendar's fluent API. The `calendar` object passed to the callback is an instance of [ICalCalendar](https://sebbo2002.github.io/ical-generator/develop/reference/classes/icalcalendar.html) class from the [ical-generator](https://www.npmjs.com/package/ical-generator) package.
+Ou gere o conteúdo usando a API fluente do calendário. O objeto `calendar` passado para o retorno de chamada é uma instância da classe [ICalCalendar](https://sebbo2002.github.io/ical-generator/develop/reference/classes/icalcalendar.html) do pacote [ical-generator](https://www.npmjs.com/package/ical-generator).
 
 ```ts
 import { DateTime } from 'luxon'
@@ -410,7 +385,7 @@ message.icalEvent((calendar) => {
 ```
 
 ### icalEventFromFile
-You can attach a pre-existing `.ics` file using the `message.icalEventFromFile` method. The first argument is the absolute path to the file.
+Você pode anexar um arquivo `.ics` pré-existente usando o método `message.icalEventFromFile`. O primeiro argumento é o caminho absoluto para o arquivo.
 
 ```ts
 message.icalEventFromFile(
@@ -423,7 +398,7 @@ message.icalEventFromFile(
 ```
 
 ### icalEventFromUrl
-You can attach the event from a URL that returns the content for the invite.
+Você pode anexar o evento de uma URL que retorna o conteúdo do convite.
 
 ```ts
 message.icalEventFromUrl(
@@ -435,83 +410,69 @@ message.icalEventFromUrl(
 )
 ```
 
-## Messages API
-Following is the list of available methods on the `message` object.
+## API de mensagens
+A seguir está a lista de métodos disponíveis no objeto `message`.
 
-#### from
-Define the sender of the email.
+#### `from`
+Defina o remetente do e-mail.
 
 ```ts
 message.from('admin@example.com')
 
-// Define name alongside the email
+// Defina o nome junto com o e-mail
 message.from('admin@example.com', 'Admin')
 ```
 
----
-
-#### to
-Define the recipient of the email. Calling this method multiple times will push a new recipient to the list. Similarly, you can call the `cc` and the `bcc` methods to add respect recipients.
+#### `to`
+Defina o destinatário do e-mail. Chamar esse método várias vezes enviará um novo destinatário para a lista. Da mesma forma, você pode chamar os métodos `cc` e `bcc` para adicionar destinatários de respeito.
 
 ```ts
 message.to('foo@bar.com')
 
-// Define name alongside the email
+// Defina o nome junto com o e-mail
 message.to('foo@bar.com', 'Mr foo')
 ```
 
----
-
-#### subject
-Define the subject for the email.
+#### `subject`
+Defina o assunto do e-mail.
 
 ```ts
 message.subject('Verify email address')
 ```
 
----
-
-#### replyTo
-An email address that will appear on the `Reply-To: field.` Calling this method multiple times will push a new replyTo recipient to the list.
+#### `replyTo`
+Um endereço de e-mail que aparecerá no campo `Reply-To:`. Chamar esse método várias vezes enviará um novo destinatário replyTo para a lista.
 
 ```ts
 message.replyTo('support@example.com')
 
-// Define name alongside the email
+// Defina o nome junto com o e-mail
 message.replyTo('support@example.com', 'Support team')
 ```
 
----
-
-#### messageId
-Optional `Message-Id` value. We will generate a random value if not set.
+#### `messageId`
+Valor opcional `Message-Id`. Geraremos um valor aleatório se não for definido.
 
 ```ts
 message.messageId('Custom-message-id')
 ```
 
----
-
-#### inReplyTo
-The Message-ID this message is replying to
+#### `inReplyTo`
+O Message-ID ao qual esta mensagem está respondendo
 
 ```ts
 message.replyTo('some-existing-message-id')
 ```
 
----
-
-#### references
-An array of Message-IDs.
+#### `reference`
+Uma matriz de Message-IDs.
 
 ```ts
 message.references(['id-1', 'id-2'])
 ```
 
----
-
-#### envelope
-Optionally define the SMTP envelope, if auto generated envelope is not suitable (see [SMTP envelope](https://nodemailer.com/smtp/envelope/) for details)
+#### `envelope`
+Opcionalmente, defina o envelope SMTP, se o envelope gerado automaticamente não for adequado (consulte [envelope SMTP](https://nodemailer.com/smtp/envelope/) para obter detalhes)
 
 ```ts
 message.envelope({
@@ -522,68 +483,56 @@ message.envelope({
 })
 ```
 
----
-
-#### priority
-Sets message importance headers. Value must be either **high**, **normal** (default) or **low**.
+#### `priority`
+Define os cabeçalhos de importância da mensagem. O valor deve ser **high**, **normal** (padrão) ou **low**.
 
 ```ts
 message.priority('high')
 ```
 
----
-
-#### encoding
-Identifies encoding for text/html strings (defaults to `utf-8`, other values are `hex` and `base64`).
+#### `encoding`
+Identifica a codificação para strings de texto/html (o padrão é `utf-8`, outros valores são `hex` e `base64`).
 
 ```ts
 message.encoding('utf-8')
 ```
 
----
-
-#### htmlView
-Define the HTML body of the email by rendering an Edge template. Optionally, it accepts the data to pass to the template.
+#### `htmlView`
+Defina o corpo HTML do e-mail renderizando um modelo Edge. Opcionalmente, ele aceita os dados para passar para o modelo.
 
 ```ts
 message.htmlView('emails/verify-email', { user: user })
 ```
 
-You can use the `textView` method to define the email's plain-text body and the `watchView` method to specify the apple watch body.
+Você pode usar o método `textView` para definir o corpo de texto simples do e-mail e o método `watchView` para especificar o corpo do Apple Watch.
 
----
-
-#### html
-Define the email HTML as a string directly. You must use either `html` or the `htmlView` method.
+#### `html`
+Defina o HTML do e-mail como uma string diretamente. Você deve usar o método `html` ou `htmlView`.
 
 ```ts
 message.html(`<p> Welcome </p>`)
 ```
 
-Use the `text` and the `watch` methods to define the email body from a raw string.
+Use os métodos `text` e `watch` para definir o corpo do e-mail a partir de uma string bruta.
 
----
-
-#### header
-Define an email header.
+#### `header`
+Defina um cabeçalho de e-mail.
 
 ```ts
 message.header('X-Key-Name', 'X-Value')
 ```
 
----
+#### `preparedHeader`
+O Nodemailer codifica e dobra internamente os cabeçalhos para atender ao requisito de ter mensagens ASCII simples com linhas de no máximo 78 bytes.
 
-#### preparedHeader
-Nodemailer internally encodes and folds the headers to meet the requirement of having plain-ASCII messages with lines no longer than 78 bytes.
-
-Sometimes it is preferable not to modify header values and pass these as provided. This can be achieved using the `preparedHeader` method.
+Às vezes, é preferível não modificar os valores do cabeçalho e passá-los conforme fornecidos. Isso pode ser obtido usando o método `preparedHeader`.
 
 ```ts
 message.preparedHeader('X-Key-Name', 'X-Value')
 ```
 
-## Switching mailers at runtime
-You can use the `Mail.use()` method to switch between the mailers. The `use` method accepts the mailer name defined inside the `config/mail.ts` file under the `mailers` object.
+## Trocando mailers em tempo de execução
+Você pode usar o método `Mail.use()` para alternar entre os mailers. O método `use` aceita o nome do mailer definido dentro do arquivo `config/mail.ts` sob o objeto `mailers`.
 
 ```ts
 await Mail.use('mailgun').sendLater(() => {
@@ -593,8 +542,8 @@ await Mail.use('smtp').sendLater(() => {
 })
 ```
 
-## Mailer classes
-Mailer classes allow you to extract the inline mail configuration to its dedicated class. The mailers are stored inside the `app/Mailers` directory, and you can create a new mailer by running the following Ace command.
+## Classes do Mailer
+As classes do Mailer permitem que você extraia a configuração de e-mail inline para sua classe dedicada. Os mailers são armazenados dentro do diretório `app/Mailers`, e você pode criar um novo mailer executando o seguinte comando Ace.
 
 ```sh
 node ace make:mailer VerifyEmail
@@ -602,7 +551,7 @@ node ace make:mailer VerifyEmail
 # CREATE: app/Emails/VerifyEmail.ts
 ```
 
-Every mailer class must extend the [BaseMailer](https://github.com/adonisjs/mail/blob/develop/src/BaseMailer/index.ts) to inherit the capabilities for sending an email. For the most part, you will be working inside the `prepare` method to configure the mail message.
+Toda classe do mailer deve estender o [BaseMailer](https://github.com/adonisjs/mail/blob/develop/src/BaseMailer/index.ts) para herdar os recursos de envio de um e-mail. Na maior parte, você estará trabalhando dentro do método `prepare` para configurar a mensagem de e-mail.
 
 ```ts
 import { BaseMailer, MessageContract } from '@ioc:Adonis/Addons/Mail'
@@ -617,56 +566,48 @@ export default class VerifyEmail extends BaseMailer {
 }
 ```
 
-Now, you can replace the inline `Mail.send` method call with the Mailer class.
+Agora, você pode substituir a chamada do método `Mail.send` inline pela classe Mailer.
 
 ```ts
 import VerifyEmail from 'App/Mailers/VerifyEmail'
 
-// Instantiate the class and send email
+// Instanciar a classe e enviar e-mail
 await new VerifyEmail().sendLater()
 ```
 
-### Passing data to the mailer
-Mailer can accept data using the constructor arguments. For example:
+### Passando dados para o mailer
+O Mailer pode aceitar dados usando os argumentos do construtor. Por exemplo:
 
-```ts
+```ts {2-4,10}
 export default class VerifyEmail extends BaseMailer {
-  // highlight-start
   constructor (private user: User) {
     super()
   }
-  // highlight-end
 
   public prepare(message: MessageContract) {
     message
       .subject('The email subject')
       .from('admin@example.com')
-      // highlight-start
       .to(this.user.email)
-      // highlight-end
   }
 }
 ```
 
-Here's how you can pass the `user` at the time of instantiating the class.
+Veja como você pode passar o `user` no momento da instanciação da classe.
 
 ```ts
 const user = await User.find(1)
 await new VerifyEmail(user).sendLater()
 ```
 
-### Using a different mailer
-The mailer classes use the default mailer configured inside the `config/mail.ts` file. However, you can use a different one by defining the following property on the class instance.
+### Usando um mailer diferente
+As classes do mailer usam o mailer padrão configurado dentro do arquivo `config/mail.ts`. No entanto, você pode usar um diferente definindo a seguinte propriedade na instância da classe.
 
-```ts
-// highlight-start
+```ts {1,4}
 import Mail, { BaseMailer, MessageContract } from '@ioc:Adonis/Addons/Mail'
-// highlight-end
 
 export default class VerifyEmail extends BaseMailer {
-  // highlight-start
   public mailer = Mail.use('mailgun')
-  // highlight-end
 
   public prepare(message: MessageContract) {
     message
@@ -677,8 +618,8 @@ export default class VerifyEmail extends BaseMailer {
 }
 ```
 
-### Customizing mailers directory
-You can change the namespace for storing the mailers by defining the `namespaces.mailers` property inside the `.adonisrc.json` file. After the following change, the `make:mailer` Ace command will create new files inside the configured directory.
+### Personalizando o diretório de mailers
+Você pode alterar o namespace para armazenar os mailers definindo a propriedade `namespaces.mailers` dentro do arquivo `.adonisrc.json`. Após a alteração a seguir, o comando Ace `make:mailer` criará novos arquivos dentro do diretório configurado.
 
 ```json
 "namespaces": {
@@ -686,24 +627,24 @@ You can change the namespace for storing the mailers by defining the `namespaces
 }
 ```
 
-### Mailer classes methods
-The BaseMailer class exposes the following methods to send or preview the email.
+### Métodos de classes de mailer
+A classe BaseMailer expõe os seguintes métodos para enviar ou visualizar o e-mail.
 
 ```ts
-// Send email
+// Enviar e-mail
 await new VerifyEmail().send()
 
-// Send email by pushing it to in-memory queue
+// Enviar e-mail empurrando-o para a fila na memória
 await new VerifyEmail().sendLater()
 
-// Preview email using fake SMTP server
+// Visualizar e-mail usando servidor SMTP falso
 await new VerifyEmail().preview()
 ```
 
-## Preview emails
-You can preview your emails by sending them to a [fake SMTP server](https://ethereal.email/). This allows you to check if your email has any broken links or attachments before sending them to the actual users.
+## Visualizar e-mails
+Você pode visualizar seus e-mails enviando-os para um [servidor SMTP falso](https://ethereal.email/). Isso permite que você verifique se seu e-mail tem links ou anexos quebrados antes de enviá-los para os usuários reais.
 
-All you need to do is, replace the `sendLater` method with the `preview` method.
+Tudo o que você precisa fazer é substituir o método `sendLater` pelo método `preview`.
 
 ```ts
 await Mail.preview((message) => {
@@ -715,19 +656,20 @@ await Mail.preview((message) => {
 })
 ```
 
-When using mailer classes, you can call the `preview` method directly on the class instance. Following is a demo of previewing emails via the Ace REPL.
+Ao usar classes de mailer, você pode chamar o método `preview` diretamente na instância da classe. A seguir, uma demonstração de visualização de e-mails por meio do Ace REPL.
 
-::video{url="https://res.cloudinary.com/adonis-js/video/upload/v1618142771/v5/mailer-preview-repl.mp4" controls}
+<video src="/docs/assets/mailer-preview-repl.mp4" controls />
 
-## Monitory mailer queue
-The emails sent using the `Mail.sendLater` method are moved into an in-memory queue. You can monitor this queue using the `Mail.monitorQueue` method.
+## Fila de mailer de monitoramento
+Os e-mails enviados usando o método `Mail.sendLater` são movidos para uma fila na memória. Você pode monitorar essa fila usando o método `Mail.monitorQueue`.
 
-If you do not explicitly monitor the queue, the Mail module will log the errors using the [logger](./logger.md).
+Se você não monitorar explicitamente a fila, o módulo Mail registrará os erros usando o [logger](./logger.md).
 
-You can write the following code inside a [preload file](../fundamentals/adonisrc-file.md#preloads).
+Você pode escrever o seguinte código dentro de um [arquivo de pré-carregamento](../fundamentals/adonisrc-file.md#preloads).
 
 ```ts
-// title: start/mail.ts
+// start/mail.ts
+
 import Mail from '@ioc:Adonis/Addons/Mail'
 
 Mail.monitorQueue((error, result) => {
@@ -743,11 +685,12 @@ Mail.monitorQueue((error, result) => {
 })
 ```
 
-## Events
-The mail module emits the `mail:sent` event to listen to observe the outgoing emails. You can place the code for the event listener inside a [preload]() file.
+## Eventos
+O módulo de e-mail emite o evento `mail:sent` para ouvir e observar os e-mails enviados. Você pode colocar o código para o ouvinte de eventos dentro de um arquivo [preload]().
 
 ```ts
-// title: start/events.ts
+// start/events.ts
+
 import Event from '@ioc:Adonis/Core/Event'
 
 Event.on('mail:sent', ({ message, views, mailer, response }) => {
@@ -758,10 +701,10 @@ Event.on('mail:sent', ({ message, views, mailer, response }) => {
 })
 ```
 
-You can use the `Mail.prettyPrint` method to print the outgoing email on the terminal.
+Você pode usar o método `Mail.prettyPrint` para imprimir o e-mail enviado no terminal.
 
 ```ts
-// title: start/events.ts
+// start/events.ts
 
 import Event from '@ioc:Adonis/Core/Event'
 import Mail from '@ioc:Adonis/Addons/Mail'
@@ -769,10 +712,10 @@ import Mail from '@ioc:Adonis/Addons/Mail'
 Event.on('mail:sent', Mail.prettyPrint)
 ```
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1618150428/v5/adonis-mail-event-pretty-print.png)
+![](/docs/assets/adonis-mail-event-pretty-print.webp)
 
-## Creating a custom mail driver
-The mail package exposes the API to add your custom drivers. Every driver must adhere to the [MailDriverContract](https://github.com/adonisjs/mail/blob/develop/adonis-typings/mail.ts#L192).
+## Criando um driver de e-mail personalizado
+O pacote de e-mail expõe a API para adicionar seus drivers personalizados. Cada driver deve aderir ao [MailDriverContract](https://github.com/adonisjs/mail/blob/develop/adonis-typings/mail.ts#L192).
 
 ```ts
 interface MailDriverContract {
@@ -781,27 +724,23 @@ interface MailDriverContract {
 }
 ```
 
-#### send
-The `send` method is responsible for sending the email. It receives the message object and optional runtime config (if your driver accepts it).
+#### `send`
+O método `send` é responsável por enviar o e-mail. Ele recebe o objeto de mensagem e a configuração de tempo de execução opcional (se seu driver aceitar).
 
----
+#### `close`
+O método close deve limpar todos os recursos que adquiriu. Por exemplo, o [driver SES](https://github.com/adonisjs/mail/blob/develop/src/Drivers/Ses.ts#L54-L57) oficial fecha o transporte nodemailer subjacente
 
-#### close
-The close method should clean up any resources it has acquired. For example, The official [SES driver](https://github.com/adonisjs/mail/blob/develop/src/Drivers/Ses.ts#L54-L57) closes the underlying nodemailer transport
+### Estendendo de fora para dentro
+Sempre que você estiver estendendo o núcleo da estrutura. É melhor assumir que você não tem acesso ao código do aplicativo e suas dependências. Em outras palavras, escreva suas extensões como se estivesse escrevendo um pacote de terceiros e use injeção de dependência para confiar em outras dependências.
 
----
-
-### Extending from outside in
-Anytime you are extending the core of the framework. It is better to assume that you do not have access to the application code and its dependencies. In other words, write your extensions as if you are writing a third-party package and use dependency injection to rely on other dependencies.
-
-For demonstration purposes, let's create a mail driver that wraps the existing nodemailer postmark transport.
+Para fins de demonstração, vamos criar um driver de e-mail que envolva o transporte de carimbo postal nodemailer existente.
 
 ```sh
 mkdir providers/PostMarkDriver
 touch providers/PostMarkDriver/index.ts
 ```
 
-The directory structure will look as follows.
+A estrutura do diretório será a seguinte.
 
 ```sh
 providers
@@ -809,22 +748,21 @@ providers
     └── index.ts
 ```
 
-Open the `PostMarkDriver/index.ts` file and paste the following contents inside it.
+Abra o arquivo `PostMarkDriver/index.ts` e cole o seguinte conteúdo dentro dele.
 
-:::note
-
-Make sure to install the `nodemailer` and the `nodemailer-postmark-transport` dependencies as well.
-
+::: info NOTA
+Certifique-se de instalar as dependências `nodemailer` e `nodemailer-postmark-transport` também.
 :::
 
 ```ts
-// title: providers/PostMarkDriver/index.ts
+// providers/PostMarkDriver/index.ts
+
 import nodemailer from 'nodemailer'
 import postMarkTransport from 'nodemailer-postmark-transport'
 import { MailDriverContract, MessageNode } from '@ioc:Adonis/Addons/Mail'
 
 /**
- * Config accepted by the driver
+ * Configuração aceita pelo driver
  */
 export type PostMarkConfig = {
   driver: 'postmark',
@@ -838,7 +776,7 @@ export class PostMarkDriver implements MailDriverContract {
 
   constructor(private config: PostMarkConfig) {
     /**
-     * Instantiate the nodemailer transport
+     * Instanciar o transporte nodemailer
      */
     this.transporter = nodemailer.createTransport(
       postMarkTransport(this.config)
@@ -846,14 +784,14 @@ export class PostMarkDriver implements MailDriverContract {
   }
 
   /**
-   * Send email using the underlying transport
+   * Enviar e-mail usando o transporte subjacente
    */
   public async send(message: MessageNode) {
     return this.transporter.sendMail(message)
   }
 
   /**
-   * Cleanup resources
+   * Recursos de limpeza
    */
   public close() {
     this.transporter.close()
@@ -862,54 +800,48 @@ export class PostMarkDriver implements MailDriverContract {
 }
 ```
 
-Next, you must register the driver with the `Mail` module of AdonisJS. You must do it inside the `boot` method of a service provider. Open the pre-existing `providers/AppProvider.ts` file and paste the following code inside it.
+Em seguida, você deve registrar o driver com o módulo `Mail` do AdonisJS. Você deve fazer isso dentro do método `boot` de um provedor de serviços. Abra o arquivo `providers/AppProvider.ts` pré-existente e cole o seguinte código dentro dele.
 
-```ts
+```ts {7-12}
 import { ApplicationContract } from '@ioc:Adonis/Core/Application'
 
 export default class AppProvider {
   constructor(protected app: ApplicationContract) {}
 
   public async boot() {
-    // highlight-start
     const { PostMarkDriver } = await import('./PostMarkDriver')
     const Mail = this.app.container.use('Adonis/Addons/Mail')
 
     Mail.extend('postmark', (_mail, _mapping, config) => {
       return new PostMarkDriver(config)
     })
-    // highlight-end
   }
 }
 ```
 
-### Driver lifecycle
-The mail module internally creates a single instance of the driver and uses it throughout the application's lifecycle unless someone decides to close it manually.
+### Ciclo de vida do driver
+O módulo de e-mail cria internamente uma única instância do driver e a usa durante todo o ciclo de vida do aplicativo, a menos que alguém decida fechá-lo manualmente.
 
-### Informing TypeScript about the new driver
-Before someone can reference this driver within the `config/mail.ts` file. You will have to inform TypeScript static compiler about its existence.
+### Informando o TypeScript sobre o novo driver
+Antes que alguém possa referenciar este driver dentro do arquivo `config/mail.ts`. Você terá que informar o compilador estático do TypeScript sobre sua existência.
 
-If you are creating a package, then you can write the following code inside your package main file, otherwise you can write it inside the `contracts/mail.ts` file.
+Se estiver criando um pacote, você pode escrever o seguinte código dentro do arquivo principal do pacote, caso contrário, você pode escrevê-lo dentro do arquivo `contracts/mail.ts`.
 
 ```ts
-// insert-start
-import { PostMarkConfig } from '../providers/PostMarkDriver'
-// insert-end
+import { PostMarkConfig } from '../providers/PostMarkDriver' // [!code ++]
 
 declare module '@ioc:Adonis/Addons/Mail' {
   interface MailDrivers {
-    // insert-start
-    postmark: {
-      config: PostMarkConfig,
-      implementation: MailDriverContract
-    }
-    // insert-end
+    postmark: {                           // [!code ++]
+      config: PostMarkConfig,             // [!code ++]
+      implementation: MailDriverContract  // [!code ++]
+    }                                     // [!code ++]
   }
 }
 ```
 
-### Using the driver
-Alright, we are now ready to use the postmark driver. Let's start by defining the config for a new mailer inside the `config/mail.ts` file.
+### Usando o driver
+Tudo bem, agora estamos prontos para usar o driver de carimbo postal. Vamos começar definindo a configuração para um novo mailer dentro do arquivo `config/mail.ts`.
 
 ```ts
 {
@@ -924,7 +856,7 @@ Alright, we are now ready to use the postmark driver. Let's start by defining th
 }
 ```
 
-And use it as follows:
+E use-o da seguinte forma:
 
 ```ts
 import Mail from '@ioc:Adonis/Core/Mail'

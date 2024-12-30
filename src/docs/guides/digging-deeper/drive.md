@@ -1,48 +1,48 @@
 # Drive
 
-AdonisJS Drive is an abstraction on top of cloud storage services, such as: **Amazon S3**, **DigitalOcean Spaces**, and **Google Cloud Storage**.
+AdonisJS Drive é uma abstração sobre serviços de armazenamento em nuvem, como: **Amazon S3**, **DigitalOcean Spaces** e **Google Cloud Storage**.
 
-The Drive comes pre-bundled with the framework's core, and hence no extra installation steps are required (except for drivers). You can use Drive as follows:
+O Drive vem pré-empacotado com o núcleo do framework e, portanto, nenhuma etapa extra de instalação é necessária (exceto para drivers). Você pode usar o Drive da seguinte forma:
 
 ```ts
 import Drive from '@ioc:Adonis/Core/Drive'
 
-// Write a file
+// Escreva um arquivo
 await Drive.put(filePath, stringOrBuffer)
 await Drive.putStream(filePath, readableStream)
 
-// Read a file
+// Lê um arquivo
 const contents = await Drive.get(filePath)
 const readableStream = await Drive.getStream(filePath)
 
-// Find if a file exists
+// Descubra se um arquivo existe
 if (await Drive.exists(filePath)) {
   await Drive.get(filePath)
 }
 ```
 
-## Goals & design limitations
-The primary goal of Drive is to provide a consistent API that works across all the storage providers. So, for example, you can use the **local file system** during development and switch to **S3** in production without changing a single line of code.
+## Metas e limitações de design
+O objetivo principal do Drive é fornecer uma API consistente que funcione em todos os provedores de armazenamento. Então, por exemplo, você pode usar o **sistema de arquivos local** durante o desenvolvimento e alternar para o **S3** na produção sem alterar uma única linha de código.
 
-To guarantee a consistent API, Drive cannot work with the specifics of a given storage service.
+Para garantir uma API consistente, o Drive não pode funcionar com as especificidades de um determinado serviço de armazenamento.
 
-For example, you cannot create symlinks using Drive since [symlinks](https://en.wikipedia.org/wiki/Symbolic_link) are a Unix-based file systems concept and cannot be replicated with S3 or GCS.
+Por exemplo, você não pode criar links simbólicos usando o Drive, pois [links simbólicos](https://en.wikipedia.org/wiki/Symbolic_link) são um conceito de sistemas de arquivos baseado em Unix e não podem ser replicados com S3 ou GCS.
 
-Similarly, the proprietary features of a cloud service that cannot be replicated across drivers are also not supported.
+Da mesma forma, os recursos proprietários de um serviço de nuvem que não podem ser replicados entre drivers também não são suportados.
 
-## Use cases
-The Drive is NOT a replacement for managing your website static assets like CSS, JavaScript, or the images/icons you use to design your website/web app.
+## Casos de uso
+O Drive NÃO é um substituto para gerenciar os ativos estáticos do seu site, como CSS, JavaScript ou as imagens/ícones que você usa para projetar seu site/aplicativo da web.
 
-The primary use case for Drive is to help you quickly manage user-uploaded files. These can be user avatars, blog post cover images, or any other runtime managed documents.
+O principal caso de uso do Drive é ajudar você a gerenciar rapidamente os arquivos enviados pelo usuário. Eles podem ser avatares de usuários, imagens de capa de postagens de blog ou quaisquer outros documentos gerenciados em tempo de execução.
 
-## Configuration
+## Configuração
+A configuração do Drive é armazenada dentro do arquivo `config/drive.ts`. Dentro desse arquivo, você pode definir vários discos usando os mesmos/diferentes drivers.
 
-The configuration for Drive is stored inside the `config/drive.ts` file. Inside this file, you can define multiple disks using the same/different drivers.
-
-Feel free to create the config file (if missing) using the [config stub](https://github.com/adonisjs/core/blob/master/templates/config/drive.txt).
+Sinta-se à vontade para criar o arquivo de configuração (se estiver faltando) usando o [config stub](https://github.com/adonisjs/core/blob/master/templates/config/drive.txt).
 
 ```ts
-// title: config/drive.ts
+// config/drive.ts
+
 import { driveConfig } from '@adonisjs/core/build/config'
 
 export default driveConfig({
@@ -66,45 +66,38 @@ export default driveConfig({
       bucket: Env.get('S3_BUCKET'),
       endpoint: Env.get('S3_ENDPOINT'),
       
-      // For minio to work
+      // Para o minio funcionar
       // forcePathStyle: true,
     },
   },
 })
 ```
 
-#### disk
-The `disk` property represents the default disk to use for file system operations. Usually, you will define the disk as an environment variable to use different disks for local development and production.
+#### `disk`
+A propriedade `disk` representa o disco padrão a ser usado para operações do sistema de arquivos. Normalmente, você definirá o disco como uma variável de ambiente para usar discos diferentes para desenvolvimento e produção locais.
 
----
-
-#### disks
-The `disks` object defines the disks you want to use throughout your application. Each disk must specify the driver it wants to use.
+#### `disks`
+O objeto `disks` define os discos que você deseja usar em todo o seu aplicativo. Cada disco deve especificar o driver que deseja usar.
 
 ## Drivers
-Following is the list of the official drivers.
+A seguir está a lista dos drivers oficiais.
 
-### Local driver
+### Driver local
+O driver `local` é pré-empacotado no núcleo do framework. Ele usa o sistema de arquivos local para ler/escrever arquivos.
 
-The `local` driver is pre-bundled into the framework core. It uses the local file system for reading/writing files.
+Você deve configurar o diretório raiz para o driver local dentro do arquivo de configuração. O caminho pode estar em qualquer lugar do seu computador (mesmo fora da raiz do projeto funcionará).
 
-You must configure the root directory for the local driver inside the config file. The path can be anywhere on your computer (even outside the project root will work). 
-
-```ts
+```ts {3}
 local: {
   driver: 'local',
-  // highlight-start
   root: Application.tmpPath('uploads'),
-  // highlight-end
 },
 ```
 
-To mimic the behavior of Cloud services, the local driver can also serve files when a `basePath` is defined, and the `serveFiles` option is enabled.
+Para imitar o comportamento dos serviços de nuvem, o driver local também pode servir arquivos quando um `basePath` é definido e a opção `serveFiles` está habilitada.
 
-:::note
-
-Ensure you do not define any other routes in your application using the same prefix as the `basePath`.
-
+::: info NOTA
+Certifique-se de não definir nenhuma outra rota no seu aplicativo usando o mesmo prefixo que o `basePath`.
 :::
 
 ```ts
@@ -114,29 +107,27 @@ local: {
 }
 ```
 
-Once configured, the `Drive.getUrl` method will generate the URL to download the file. The URLs are relative to the current domain.
+Uma vez configurado, o método `Drive.getUrl` gerará a URL para baixar o arquivo. As URLs são relativas ao domínio atual.
 
 ```ts
 await Drive.getUrl('avatar.jpg')
 
-// Returns
+// Retorna
 // /uploads/avatar.jpg
 ```
 
 ```ts
 await Drive.getSignedUrl('avatar.jpg')
 
-// Returns
+// Retorna
 // /uploads/avatar.jpg?signature=eyJtZXNzYWdlIjoiL3YxL3VzZXJzIn0.CGHY99jESI-AxPFBu1lE26TXjCASfC83XTyu58NivFw
 ```
 
----
+### Driver S3
 
-### S3 driver
+O driver `s3` faz uso do armazenamento em nuvem Amazon S3 para ler/escrever arquivos. Você terá que instalar o driver separadamente.
 
-The `s3` driver makes use of Amazon S3 cloud storage for reading/writing files. You will have to install the driver separately.
-
-Make sure to follow the `configure` command instructions to set up the driver correctly. You can also read the same instructions [here](https://github.com/adonisjs/drive-s3/blob/master/instructions.md).
+Certifique-se de seguir as instruções do comando `configure` para configurar o driver corretamente. Você também pode ler as mesmas instruções [aqui](https://github.com/adonisjs/drive-s3/blob/master/instructions.md).
 
 ```sh
 npm i @adonisjs/drive-s3
@@ -146,9 +137,9 @@ npm i @adonisjs/drive-s3
 node ace configure @adonisjs/drive-s3
 ```
 
-You can also use the `s3` driver with S3-compatible services like [DigitalOcean Spaces](https://www.digitalocean.com/products/spaces/) and [MinIO](https://min.io/). 
+Você também pode usar o driver `s3` com serviços compatíveis com S3, como [DigitalOcean Spaces](https://www.digitalocean.com/products/spaces/) e [MinIO](https://min.io/).
 
-When using a different service, you will have to define the bucket endpoint as well.
+Ao usar um serviço diferente, você terá que definir o ponto final do bucket também.
 
 ```ts
 {
@@ -159,11 +150,11 @@ When using a different service, you will have to define the bucket endpoint as w
 
 ---
 
-### GCS driver
+### Driver GCS
 
-The `gcs` driver makes use of Google Cloud Storage for reading/writing files. You will have to install the driver separately.
+O driver `gcs` faz uso do Google Cloud Storage para ler/escrever arquivos. Você terá que instalar o driver separadamente.
 
-Make sure to follow the `configure` command instructions to set up the driver correctly. You can also read the same instructions [here](https://github.com/adonisjs/drive-gcs/blob/master/instructions.md).
+Certifique-se de seguir as instruções do comando `configure` para configurar o driver corretamente. Você também pode ler as mesmas instruções [aqui](https://github.com/adonisjs/drive-gcs/blob/master/instructions.md).
 
 ```sh
 npm i @adonisjs/drive-gcs
@@ -173,51 +164,49 @@ npm i @adonisjs/drive-gcs
 node ace configure @adonisjs/drive-gcs
 ```
 
-Make sure to set the `usingUniformAcl` option to true if you use GCS [uniform ACL](https://cloud.google.com/storage/docs/uniform-bucket-level-access).
+Certifique-se de definir a opção `usingUniformAcl` como true se você usar GCS [uniform ACL](https://cloud.google.com/storage/docs/uniform-bucket-level-access).
 
-## Files visibility
-Drive allows you to save files with either `public` or `private` visibility. The public files are accessible using the file URL, whereas the private files can either be read on the server or accessed using a signed URL.
+## Visibilidade dos arquivos
+O Drive permite que você salve arquivos com visibilidade `public` ou `private`. Os arquivos públicos são acessíveis usando a URL do arquivo, enquanto os arquivos privados podem ser lidos no servidor ou acessados ​​usando uma URL assinada.
 
-You can configure visibility for the entire disk by defining the `visibility` option in the config file.
+Você pode configurar a visibilidade para todo o disco definindo a opção `visibility` no arquivo de configuração.
 
-```ts
+```ts {5}
 {
   disks: {
     local: {
       driver: 'local',
-      // highlight-start
       visibility: 'private'
-      // highlight-end
-      // ... rest of the config
+      // ... resto da configuração
     }
   }
 }
 ```
 
-The `s3` and the `gcs` drivers also allow you to define visibility for individual files. However, we recommend using a separate bucket for public and private files for the following reasons.
+Os drivers `s3` e `gcs` também permitem que você defina a visibilidade para arquivos individuais. No entanto, recomendamos usar um bucket separado para arquivos públicos e privados pelos seguintes motivos.
 
-- When using a separate bucket, you can configure a CDN on the entire bucket to serve public files.
-- You get better cross-compatibility with the `local` file driver since the local driver does not allow file-level visibility control.
+- Ao usar um bucket separado, você pode configurar um CDN em todo o bucket para servir arquivos públicos.
+- Você obtém melhor compatibilidade cruzada com o driver de arquivo `local`, pois o driver local não permite controle de visibilidade em nível de arquivo.
 
-Regardless of the driver's use, you cannot access the `private` files with just the file URL. Instead, you need to create a signed URL or use the `Drive.get` method to access the file.
+Independentemente do uso do driver, você não pode acessar os arquivos `privados` apenas com a URL do arquivo. Em vez disso, você precisa criar uma URL assinada ou usar o método `Drive.get` para acessar o arquivo.
 
 ```ts
-// ✅ Works
+// ✅ Funciona
 const contents = await Drive.get(filePath)
 
-// ❌ Cannot access private files with a URL
+// ❌ Não é possível acessar arquivos privados com uma URL
 const url = await Drive.getUrl(filePath)
 
-// ✅ Can be accessed using a signed url
+// ✅ Pode ser acessado usando uma URL assinada
 const signedUrl = await Drive.getSignedUrl(filePath)
 ```
 
-## Writing files
-You can create/update files using one of the following methods. If a file already exists, it will be updated.
+## Escrevendo arquivos
+Você pode criar/atualizar arquivos usando um dos seguintes métodos. Se um arquivo já existir, ele será atualizado.
 
-### put
+### `put`
 
-The `put` method accepts the file name as the first argument and the file content (either string or buffer) as the second argument.
+O método `put` aceita o nome do arquivo como o primeiro argumento e o conteúdo do arquivo (string ou buffer) como o segundo argumento.
 
 ```ts
 import Drive from '@ioc:Adonis/Core/Drive'
@@ -225,7 +214,7 @@ import Drive from '@ioc:Adonis/Core/Drive'
 await Drive.put(filePath, contents)
 ```
 
-You can also define the file metadata using the third argument.
+Você também pode definir os metadados do arquivo usando o terceiro argumento.
 
 ```ts
 await Drive.put(filePath, contents, {
@@ -234,20 +223,20 @@ await Drive.put(filePath, contents, {
 })
 ```
 
-Following is the list of available options.
+A seguir está a lista de opções disponíveis.
 
-| Option | Description        |
-|--------|--------------------|
-| `visibility` | The file visibility | 
-| `contentType` | The file content type | 
-| `contentLanguage` | The file language. Used to set the **content-language** header when downloading the file | 
-| `contentEncoding` | The file contents encoding. Used to set the **content-encoding** header when downloading the file | 
-| `contentDisposition` | Value for the **content-disposition** response header | 
-| `cacheControl` | Value for the **cache-control** response header. GCS driver ignores this option, as the underlying SDK does not allow configuring it. | 
+| Opção                 | Descrição          |
+|-----------------------|--------------------|
+| `visibility`          | A visibilidade do arquivo | 
+| `contentType`         | O tipo de conteúdo do arquivo | 
+| `contentLanguage`     | O idioma do arquivo. Usado para definir o cabeçalho **content-language** ao baixar o arquivo | 
+| `contentEncoding`     | A codificação do conteúdo do arquivo. Usado para definir o cabeçalho **content-encoding** ao baixar o arquivo | 
+| `contentDisposition`  | Valor para o cabeçalho de resposta **content-disposition** | 
+| `cacheControl`        | Valor para o cabeçalho de resposta **cache-control**. O driver GCS ignora esta opção, pois o SDK subjacente não permite configurá-la. | 
 
-### putStream
+### `putStream`
 
-The `putStream` method accepts the content as a readable stream. The options are the same as the `put` method.
+O método `putStream` aceita o conteúdo como um fluxo legível. As opções são as mesmas do método `put`.
 
 ```ts
 import Drive from '@ioc:Adonis/Core/Drive'
@@ -255,35 +244,31 @@ import Drive from '@ioc:Adonis/Core/Drive'
 await Drive.putStream(filePath, readableStream)
 ```
 
----
-
 ### BodyParser `moveToDisk`
-You can move the user uploaded files to a given disk using the `file.moveToDisk` method.
+Você pode mover os arquivos enviados pelo usuário para um disco específico usando o método `file.moveToDisk`.
 
-The method accepts the following arguments.
+O método aceita os seguintes argumentos.
 
-- The file location (without the filename).
-- The metadata options. Same as the `put` method.
-- Optionally, a disk name. When not defined, the default disk is used.
+- O local do arquivo (sem o nome do arquivo).
+- As opções de metadados. O mesmo que o método `put`.
+- Opcionalmente, um nome de disco. Quando não definido, o disco padrão é usado.
 
-```ts
+```ts {7-11}
 import Drive from '@ioc:Adonis/Core/Drive'
 import Route from '@ioc:Adonis/Core/Route'
 
 Route.post('posts', async ({ request }) => {
   const coverImage = request.file('cover_image')
 
-  // highlight-start
-  // Written to the "images" directory
+  // Escrito no diretório "images"
   await coverImage.moveToDisk('images')
 
-  // Written to the "root" directory
+  // Escrito no diretório "root"
   await coverImage.moveToDisk('./')
-  // highlight-end
 })
 ```
 
-The `moveToDisk` method renames the user's uploaded file to a unique/random file name. However, you can also define the filename manually.
+O método `moveToDisk` renomeia o arquivo enviado pelo usuário para um nome de arquivo único/aleatório. No entanto, você também pode definir o nome do arquivo manualmente.
 
 ```ts
 await coverImage.moveToDisk('images', {
@@ -291,17 +276,17 @@ await coverImage.moveToDisk('images', {
 })
 ```
 
-Finally, you can also define a custom disk name as the third argument.
+Finalmente, você também pode definir um nome de disco personalizado como o terceiro argumento.
 
 ```ts
 await coverImage.moveToDisk('images', {}, 's3')
 ```
 
-## Reading files
-You can read files using the `Drive.get` or the `Drive.getStream` methods. Both the methods will raise an exception when the file is missing.
+## Lendo arquivos
+Você pode ler arquivos usando os métodos `Drive.get` ou `Drive.getStream`. Ambos os métodos gerarão uma exceção quando o arquivo estiver faltando.
 
-### get
-The `get` method returns the file contents as a buffer. You can convert it to a string by calling the `toString` method.
+### `get`
+O método `get` retorna o conteúdo do arquivo como um buffer. Você pode convertê-lo em uma string chamando o método `toString`.
 
 ```ts
 import Drive from '@ioc:Adonis/Core/Drive'
@@ -309,63 +294,57 @@ import Drive from '@ioc:Adonis/Core/Drive'
 const contents = await Drive.get('filePath')
 contents.toString()
 
-// Custom encoding
+// Codificação personalizada
 contents.toString('ascii')
 ```
 
----
-
-### getStream
-The `getStream` method returns an instance of the [readable stream](https://nodejs.org/dist/latest-v16.x/docs/api/stream.html#stream_class_stream_readable).
+### `getStream`
+O método `getStream` retorna uma instância do [fluxo legível](https://nodejs.org/dist/latest-v16.x/docs/api/stream.html#stream_class_stream_readable).
 
 ```ts
 const readableStream = await Drive.getStream('filePath')
 response.stream(readableStream)
 ```
 
-## Generating URLs
-You can generate a URL to a file path using the `Drive.getUrl` or the `Drive.getSignedUrl` methods.
+## Gerando URLs
+Você pode gerar uma URL para um caminho de arquivo usando os métodos `Drive.getUrl` ou `Drive.getSignedUrl`.
 
-In the case of cloud storage providers, the generated URL points to the cloud service. Whereas, in the case of the `local` driver, the URL points to your AdonisJS application.
+No caso de provedores de armazenamento em nuvem, a URL gerada aponta para o serviço de nuvem. Enquanto isso, no caso do driver `local`, a URL aponta para seu aplicativo AdonisJS.
 
-The `local` driver registers a route implicitly when the `serveFiles` option is set to true inside the config file. Also, a `basePath` is required and must be unique across the registered disks.
+O driver `local` registra uma rota implicitamente quando a opção `serveFiles` é definida como true dentro do arquivo de configuração. Além disso, um `basePath` é necessário e deve ser exclusivo nos discos registrados.
 
-```ts
+```ts {4,5}
 {
   local: {
     driver: 'local',
-    // highlight-start
     serveFiles: true,
     basePath: '/uploads'
-    // highlight-end
   }
 }
 ```
 
-### getUrl
-Returns a URL to download a given file. An exception is raised if the file is missing. Only the `public` files can be viewed using the URL returned by the `getUrl` method.
+### `getUrl`
+Retorna uma URL para baixar um arquivo fornecido. Uma exceção é gerada se o arquivo estiver ausente. Apenas os arquivos `públicos` podem ser visualizados usando a URL retornada pelo método `getUrl`.
 
 ```ts
 const url = await Drive.getUrl('filePath')
 ```
 
----
+### `getSignedUrl`
+O método `getSignedUrl` retorna uma URL para baixar um arquivo fornecido com sua assinatura. Você só pode baixar o arquivo enquanto a assinatura for válida.
 
-### getSignedUrl
-The `getSignedUrl` method returns a URL to download a given file with its signature. You can only download the file as long as the signature is valid.
-
-You can also define the duration after which the signature expires, and the URL becomes invalid.
+Você também pode definir a duração após a qual a assinatura expira e a URL se torna inválida.
 
 ```ts
 const url = await Drive.getSignedUrl('filePath')
 
-// With expiry
+// Com expiração
 const url = await Drive.getSignedUrl('filePath', {
   expiresIn: '30mins'
 })
 ```
 
-Finally, you can also define the following response content headers as the second argument.
+Finalmente, você também pode definir os seguintes cabeçalhos de conteúdo de resposta como o segundo argumento.
 
 ```ts
 const url = await Drive.getSignedUrl('filePath', {
@@ -374,20 +353,20 @@ const url = await Drive.getSignedUrl('filePath', {
 })
 ```
 
-Following is the list of available options.
+A seguir está a lista de opções disponíveis.
 
-| Option | Description        |
-|--------|--------------------|
-| `contentType` | Value for the **content-type** response header. | 
-| `contentLanguage` | Value for the **content-language** response header. Ignored by the GCS driver | 
-| `contentEncoding` | Value for the **content-encoding** response header. Ignored by the GCS driver | 
-| `contentDisposition` | Value for the **content-disposition** response header |
-| `cacheControl` | Value for the **cache-control** response header. Ignored by the GCS driver. |
+| Opção                 | Descrição           |
+|-----------------------|---------------------|
+| `contentType`         | Valor para o cabeçalho de resposta **content-type**.  | 
+| `contentLanguage`     | Valor para o cabeçalho de resposta **content-language**. Ignorado pelo driver GCS | 
+| `contentEncoding`     | Valor para o cabeçalho de resposta **content-encoding**. Ignorado pelo driver GCS | 
+| `contentDisposition`  | Valor para o cabeçalho de resposta **content-disposition**   |
+| `cacheControl`        | Valor para o cabeçalho de resposta **cache-control**. Ignorado pelo driver GCS.  |
 
-## Downloading files
-The recommended approach to download files is to use the file URL generated using the `Drive.getUrl` method. However, you can also download files manually from a custom route. 
+## Baixando arquivos
+A abordagem recomendada para baixar arquivos é usar a URL do arquivo gerada usando o método `Drive.getUrl`. No entanto, você também pode baixar arquivos manualmente de uma rota personalizada.
 
-Following is a simplified example of streaming files. [Here's](https://github.com/adonisjs/drive/blob/develop/src/LocalFileServer/index.ts#L62-L187) a more robust implementation.
+A seguir, um exemplo simplificado de streaming de arquivos. [Aqui está](https://github.com/adonisjs/drive/blob/develop/src/LocalFileServer/index.ts#L62-L187) uma implementação mais robusta.
 
 ```ts
 import { extname } from 'path'
@@ -405,53 +384,49 @@ Route.get('/uploads/*', async ({ request, response }) => {
   return response.stream(await Drive.getStream(location))
 })
 ```
- 
-## Deleting files
-You can delete the file using the `Drive.delete` method. NO exception is raised when the file is missing.
+
+## Excluindo arquivos
+Você pode excluir o arquivo usando o método `Drive.delete`. NENHUMA exceção é gerada quando o arquivo está ausente.
 
 ```ts
 await Drive.delete('avatar.jpg')
 ```
 
-## Copying & moving files
-You can copy and move files using the following methods. The metadata options are the same as the `put` method.
+## Copiando e movendo arquivos
+Você pode copiar e mover arquivos usando os seguintes métodos. As opções de metadados são as mesmas do método `put`.
 
-For cloud services, the operations are performed within the same bucket. So, for example, if you want to copy a file from the local disk, then you must use the [put](#put) or the [putStream](#put-stream) methods.
+Para serviços de nuvem, as operações são executadas no mesmo bucket. Então, por exemplo, se você quiser copiar um arquivo do disco local, então você deve usar os métodos [put](#put) ou [putStream](#put-stream).
 
 ```ts
 await Drive.copy(source, destination, metadataOptions)
 await Drive.move(source, destination, metadataOptions)
 ```
 
-## Switching between disks
-You can switch between disks using the `Drive.use` method.
+## Alternando entre discos
+Você pode alternar entre discos usando o método `Drive.use`.
 
 ```ts
-// Reference to the S3 disk
+// Referência ao disco S3
 const s3 = Drive.use('s3')
 
 await s3.put(filePath, stringOrBuffer)
 ```
 
-## Switching bucket at runtime
-When using the `s3` and the `gcs` drivers, you can switch the bucket at runtime using the bucket method.
+## Alternando bucket em tempo de execução
+Ao usar os drivers `s3` e `gcs`, você pode alternar o bucket em tempo de execução usando o método bucket.
 
-```ts
+```ts {3}
 Drive
   .use('s3')
-  // highlight-start
   .bucket('bucketName')
-  // highlight-end
   .put(filePath, stringOrBuffer)
 ```
 
-## Adding a custom driver
-The Drive exposes the API to add your custom drivers. Every driver must adhere to the [DriverContract](https://github.com/adonisjs/drive/blob/develop/adonis-typings/drive.ts#L53-L134).
+## Adicionando um driver personalizado
+O Drive expõe a API para adicionar seus drivers personalizados. Cada driver deve aderir ao [DriverContract](https://github.com/adonisjs/drive/blob/develop/adonis-typings/drive.ts#L53-L134).
 
-:::note
-
-You can also use the official [S3](https://github.com/adonisjs/drive-s3) or [GCS](https://github.com/adonisjs/drive-gcs) drivers as a reference for creating your own driver.
-
+::: info NOTA
+Você também pode usar os drivers oficiais [S3](https://github.com/adonisjs/drive-s3) ou [GCS](https://github.com/adonisjs/drive-gcs) como referência para criar seu próprio driver.
 :::
 
 ```ts
@@ -505,28 +480,20 @@ interface DriverContract {
 }
 ```
 
-#### exists
-Return a boolean to indicate if the file exists or not. The driver should not raise an exception when the file is missing and instead return false.
+#### `exists`
+Retorna um booleano para indicar se o arquivo existe ou não. O driver não deve gerar uma exceção quando o arquivo estiver ausente e, em vez disso, retorna falso.
 
----
+#### `get`
+Retorna o conteúdo do arquivo como um buffer. O driver deve gerar uma exceção quando o arquivo estiver ausente.
 
-#### get
-Return the file contents as a buffer. The driver should raise an exception when the file is missing.
+#### `getStream`
+Retorna o conteúdo do arquivo como um fluxo legível. O driver deve gerar uma exceção quando o arquivo estiver ausente.
 
----
+#### `getVisibility`
+Retorna a visibilidade do arquivo. Se o driver não suportar visibilidade em nível de arquivo, ele deve retornar a visibilidade do disco da configuração.
 
-#### getStream
-Return the file contents as a readable stream. The driver should raise an exception when the file is missing.
-
----
-
-#### getVisibility
-Return the file visibility. If the driver doesn't support file-level visibility, it should return the disk visibility from the config.
-
----
-
-#### getStats
-Return the file metadata. The response object must include the following properties.
+#### `getStats`
+Retorna os metadados do arquivo. O objeto de resposta deve incluir as seguintes propriedades.
 
 ```ts
 {
@@ -537,59 +504,41 @@ Return the file metadata. The response object must include the following propert
 }
 ```
 
----
+#### `getSignedUrl`
+Retorna uma URL assinada para baixar o arquivo. Se possível, a URL assinada pode aceitar os cabeçalhos de conteúdo de resposta ao gerar a URL.
 
-#### getSignedUrl
-Return a signed URL to download the file. If possible, the signed URL can accept the response content headers when generating the URL.
+#### `getUrl`
+Retorna uma URL estática para o arquivo. Não há necessidade de verificar se o arquivo existe ou não. Em vez disso, retorna 404 no momento de servir o arquivo.
 
----
+#### `put`
+Cria/atualiza um arquivo a partir de conteúdo bruto (string ou buffer). Você também deve criar os diretórios necessários.
 
-#### getUrl
-Return a static URL to the file. No need to check if the file exists or not. Instead, return 404 at the time of serving the file.
+#### `putStream`
+Cria/atualiza um arquivo a partir de um fluxo legível. Você também deve criar os diretórios necessários.
 
----
+#### `setVisibility`
+Atualize a visibilidade do arquivo. Se o driver não suportar visibilidade em nível de arquivo, ele deve simplesmente ignorar a solicitação.
 
-#### put
-Create/update a file from raw contents (string or buffer). You must create the required directories as well.
+#### `delete`
+Exclua o arquivo. O driver não deve gerar uma exceção quando o arquivo estiver ausente.
 
----
+#### `copy`
+Copie o arquivo de um local para outro. A operação de cópia deve copiar os metadados do arquivo também. Por exemplo: no S3, é necessária uma solicitação adicional para copiar a ACL do arquivo.
 
-#### putStream
-Create/update a file from a readable stream. You must create the required directories as well.
+#### `move`
+Mova o arquivo de um local para outro. A operação de movimentação deve copiar os metadados do arquivo também.
 
----
+### Estendendo de fora para dentro
+Sempre que você estiver estendendo o núcleo do framework. É melhor assumir que você não tem acesso ao código do aplicativo e suas dependências. Em outras palavras, escreva suas extensões como se estivesse escrevendo um pacote de terceiros e use injeção de dependência para depender de outras dependências.
 
-#### setVisibility
-Update the file visibility. If the driver doesn't support file-level visibility, then it should just ignore the request.
-
----
-
-#### delete
-Delete the file. The driver should not raise an exception when the file is missing.
-
----
-
-#### copy
-Copy the file from one location to another. The copy operation should copy the metadata of the file as well. For example: In S3, it requires an additional request to copy the file ACL.
-
----
-
-#### move
-Move the file from one location to another. The move operation should copy the metadata of the file as well.
-
----
-
-### Extending from outside in
-Anytime you are extending the core of the framework. It is better to assume that you do not have access to the application code and its dependencies. In other words, write your extensions as if you are writing a third-party package and use dependency injection to rely on other dependencies.
-
-For demonstration purposes, let's create a dummy driver with no implementation.
+Para fins de demonstração, vamos criar um driver fictício sem implementação.
 
 ```sh
 mkdir providers/DummyDriver
 touch providers/DummyDriver/index.ts
 ```
 
-Open the `DummyDriver/index.ts` file and paste the following contents inside it.
+Abra o arquivo `DummyDriver/index.ts` e cole o seguinte conteúdo dentro dele.
 
 ```ts
 import type {
@@ -601,20 +550,20 @@ import type {
 } from '@ioc:Adonis/Core/Drive'
 
 export interface DummyDriverContract extends DriverContract {
-  name: 'dummy' // Driver name
+  name: 'dummy' // Nome do driver
 }
 
 export type DummyDriverConfig = {
-  driver: 'dummy' // Driver name
-  // .. other config options
+  driver: 'dummy' // Nome do driver
+  // .. outras opções de configuração
 }
 
 export class DummyDriver implements DummyDriverContract {
-  // implementation goes here
+  // a implementação vai aqui
 }
 ```
 
-Next, you must register the driver with the Drive module. You must do it inside the boot method of a service provider. Open the pre-existing `providers/AppProvider.ts` file and paste the following code inside it.
+Em seguida, você deve registrar o driver com o módulo Drive. Você deve fazer isso dentro do método de inicialização de um provedor de serviços. Abra o arquivo `providers/AppProvider.ts` pré-existente e cole o seguinte código dentro dele.
 
 ```ts
 import { ApplicationContract } from '@ioc:Adonis/Core/Application'
@@ -633,10 +582,10 @@ export default class AppProvider {
 }
 ```
 
-###  Informing TypeScript about the new driver
-Before someone can reference this driver within the `config/drive.ts` file. You will have to inform TypeScript static compiler about its existence. 
+### Informando o TypeScript sobre o novo driver
+Antes que alguém possa referenciar este driver dentro do arquivo `config/drive.ts`. Você terá que informar o compilador estático do TypeScript sobre sua existência.
 
-If you are creating a package, then you can write the following code inside your package main file, otherwise you can write it inside the `contracts/drive.ts` file.
+Se você estiver criando um pacote, então você pode escrever o seguinte código dentro do arquivo principal do seu pacote, caso contrário você pode escrevê-lo dentro do arquivo `contracts/drive.ts`.
 
 ```ts
 import {
@@ -654,21 +603,21 @@ declare module '@ioc:Adonis/Core/Drive' {
 }
 ```
 
-## Using the driver
-Alright, we are now ready to use the driver. Let's start by defining the config for a new disk inside the `config/drive.ts` file.
+## Usando o driver
+Tudo bem, agora estamos prontos para usar o driver. Vamos começar definindo a configuração para um novo disco dentro do arquivo `config/drive.ts`.
 
 ```ts
 {
   disks: {
     myDummyDisk: {
       driver: 'dummy',
-      // ... rest of the config
+      // ... resto da configuração
     }
   }
 }
 ```
 
-And use it as follows.
+E use-o da seguinte forma.
 
 ```ts
 import Drive from '@ioc:Adonis/Core/Drive'

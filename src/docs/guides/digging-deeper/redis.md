@@ -1,20 +1,16 @@
 # Redis
 
-AdonisJS has its own first party package for working with Redis databases. It internally uses [ioredis](https://github.com/luin/ioredis) but improves the **pub/sub layer** and provides first class support for **connections management** and **health checks**.
+O AdonisJS tem seu próprio pacote first party para trabalhar com bancos de dados Redis. Ele usa internamente [ioredis](https://github.com/luin/ioredis), mas melhora a **camada pub/sub** e fornece suporte de primeira classe para **gerenciamento de conexões** e **verificações de integridade**.
 
-The first step is  to install and configure the package using the following instructions.
+O primeiro passo é instalar e configurar o pacote usando as seguintes instruções.
 
-:::div{class="setup"}
+::: code-group
 
-:::codegroup
-
-```sh
-// title: 1. Install
+```sh [Instale]
 npm i @adonisjs/redis@7.3.4
 ```
 
-```sh
-// title: 2. Configure
+```sh [Configure]
 node ace configure @adonisjs/redis
 
 # CREATE: config/redis.ts
@@ -24,14 +20,13 @@ node ace configure @adonisjs/redis
 # UPDATE: .adonisrc.json { providers += "@adonisjs/redis" }
 ```
 
-```ts
-// title: 3. Validate environment variables  
+```ts [Validar variáveis ​​de ambiente]
 /**
- * Make sure to add the following validation rules to the
- * `env.ts` file to validate the environment variables.
+ * Certifique-se de adicionar as seguintes regras de validação ao arquivo
+ * `env.ts` para validar as variáveis ​​de ambiente.
  */
 export default Env.rules({
-  // ...existing rules
+  // ...regras existentes
   REDIS_CONNECTION: Env.schema.enum(['local'] as const),
   REDIS_HOST: Env.schema.string({ format: 'host' }),
   REDIS_PORT: Env.schema.number(),
@@ -41,23 +36,17 @@ export default Env.rules({
 
 :::
 
-
-:::div{class="features"}
-
-- Improved pub/sub support
-- Boilerplate free multiple connections management
-- Inbuilt health checks
+- Suporte melhorado para pub/sub
+- Gerenciamento de múltiplas conexões sem padrão
+- Verificações de integridade integradas
 
 &nbsp;
 
-- [View on npm](https://npm.im/@adonisjs/redis)
-- [View on GitHub](https://github.com/adonisjs/redis)
+* [Visualizar no npm](https://npm.im/@adonisjs/redis)
+* [Visualizar no GitHub](https://github.com/adonisjs/redis)
 
-:::
-
-
-## Configuration
-The configuration for redis is stored inside `config/redis.ts` file. You can define one or more named connections inside this file and their lifecycle will be managed automatically for you.
+## Configuração
+A configuração do redis é armazenada dentro do arquivo `config/redis.ts`. Você pode definir uma ou mais conexões nomeadas dentro deste arquivo e seu ciclo de vida será gerenciado automaticamente para você.
 
 ```ts
 import { redisConfig } from '@adonisjs/redis/build/config'
@@ -77,16 +66,14 @@ export default redisConfig({
 })
 ```
 
-#### connection
-Default connection to use for making all redis queries. The connection value is inferred from the `REDIS_CONNECTION` environment variable.
+#### `connection`
+Conexão padrão a ser usada para fazer todas as consultas do redis. O valor da conexão é inferido da variável de ambiente `REDIS_CONNECTION`.
 
----
+#### `connections`
+Uma lista de conexões disponíveis que você planeja usar em seu aplicativo. Sinta-se à vontade para adicionar/remover conexões deste objeto.
 
-#### connections
-A list of available connections that you are planning to use in your application. Feel free to add/remove connections from this object.
-
-## Usage
-Once the setup has been done, you can import the module and execute redis commands. All the methods from [ioredis](https://github.com/luin/ioredis) are supported as it is by the AdonisJS redis module.
+## Uso
+Depois que a configuração for concluída, você pode importar o módulo e executar comandos redis. Todos os métodos de [ioredis](https://github.com/luin/ioredis) são suportados como estão pelo módulo redis do AdonisJS.
 
 ```ts
 import Redis from '@ioc:Adonis/Addons/Redis'
@@ -95,22 +82,22 @@ await Redis.set('foo', 'bar')
 const value = await Redis.get('foo')
 ```
 
-You can switch between connections using the `Redis.connection` method. We create/manage singleton instances for every connection and use it throughout the lifecycle of the application.
+Você pode alternar entre conexões usando o método `Redis.connection`. Criamos/gerenciamos instâncias singleton para cada conexão e as usamos durante todo o ciclo de vida do aplicativo.
 
 ```ts
 import Redis from '@ioc:Adonis/Addons/Redis'
 
 await Redis
-  .connection('session') // 👈 Switching connection
+  .connection('session') // 👈 Troca de conexão
   .set('foo', 'bar')
 ```
 
 ## Pub/Sub
-Redis forces you to maintain two separate connections when using `pub/sub`, where the subscriber uses a dedicated connection just listening for new messages.
+O Redis força você a manter duas conexões separadas ao usar `pub/sub`, onde o assinante usa uma conexão dedicada apenas ouvindo novas mensagens.
 
-In AdonisJS,  we have improved the API of pub/sub and manage the subscriber connection internally for you, so that you don't have to create and manage it manually.
+No AdonisJS, melhoramos a API do pub/sub e gerenciamos a conexão do assinante internamente para você, para que você não precise criá-la e gerenciá-la manualmente.
 
-For demonstration, lets create a pub/sub channel for tracking user signups. Begin by creating a new preload file by executing the following Ace command.
+Para demonstração, vamos criar um canal pub/sub para rastrear inscrições de usuários. Comece criando um novo arquivo de pré-carregamento executando o seguinte comando Ace.
 
 ```sh
 node ace make:prldfile redis
@@ -118,10 +105,11 @@ node ace make:prldfile redis
 # ✔  create    start/redis.ts
 ```
 
-Open the newly created file and paste the following code snippet inside it.
+Abra o arquivo recém-criado e cole o seguinte trecho de código dentro dele.
 
 ```ts
-// title: start/redis.ts
+// start/redis.ts
+
 import Redis from '@ioc:Adonis/Addons/Redis'
 
 Redis.subscribe('user:signup', (user: string) => {
@@ -129,10 +117,11 @@ Redis.subscribe('user:signup', (user: string) => {
 })
 ```
 
-Next, create a dummy route to publish to the `user:signup` channel on every new HTTP request.
+Em seguida, crie uma rota fictícia para publicar no canal `user:signup` em cada nova solicitação HTTP.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import Route from '@ioc:Adonis/Core/Route'
 import Redis from '@ioc:Adonis/Addons/Redis'
 
@@ -143,13 +132,12 @@ Route.get('/signup', async () => {
 })
 ```
 
-- The `Redis.subscribe` method listens for messages on a given channel. 
-- The `Redis.publish` method is used to publish events to a given channel.
-- The messages are passed as string, since Redis doesn't support other data types during Pub/sub.
+- O método `Redis.subscribe` escuta mensagens em um determinado canal.
+- O método `Redis.publish` é usado para publicar eventos em um determinado canal.
+- As mensagens são passadas como string, já que o Redis não suporta outros tipos de dados durante o Pub/sub.
 
-
-### Pattern pub/sub
-Redis also supports pub/sub using patterns. Instead of `subscribe`, you have to use the `psubscribe` method.
+### Padrão pub/sub
+O Redis também suporta pub/sub usando padrões. Em vez de `subscribe`, você tem que usar o método `psubscribe`.
 
 ```ts
 Redis.psubscribe('user:*', (event: string, user: string) => {
@@ -157,11 +145,12 @@ Redis.psubscribe('user:*', (event: string, user: string) => {
 })
 ```
 
-## Health checks
-The Redis module uses the AdonisJS [health check](./health-check.md) module to report the connections health. All you need to do is enable it inside the config file.
+## Verificações de integridade
+O módulo Redis usa o módulo AdonisJS [health check](./health-check.md) para relatar a integridade das conexões. Tudo o que você precisa fazer é habilitá-lo dentro do arquivo de configuração.
 
 ```ts
-// title: config/redis.ts
+// config/redis.ts
+
 {
   local: {
     host: Env.get('REDIS_HOST', '127.0.0.1') as string,
@@ -169,12 +158,12 @@ The Redis module uses the AdonisJS [health check](./health-check.md) module to r
     password: Env.get('REDIS_PASSWORD', '') as string,
     db: 0,
     keyPrefix: '',
-    healthCheck: true, // 👈 health check
+    healthCheck: true, // 👈 verificação de saúde
   },
 }
 ```
 
-Now, you can use the health check module to view the status of your redis connections.
+Agora, você pode usar o módulo health check para visualizar o status das suas conexões redis.
 
 ```ts
 import Route from '@ioc:Adonis/Core/Route'
@@ -189,42 +178,36 @@ Route.get('health', async ({ response }) => {
 })
 ```
 
-!["Unhealthy connection report"](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1618204027/v5/redis-connection-health-check.png)
+!["Relatório de conexão não íntegra"](/docs/assets/redis-connection-health-check.webp)
 
-## Closing connections
-You can close the redis connections using one of the following methods.
+## Fechando conexões
+Você pode fechar as conexões redis usando um dos seguintes métodos.
 
-### quit
-The `quit` method closes the redis connection gracefully. This method will wait for all queued commands to finish.
+### `quit`
+O método `quit` fecha a conexão redis normalmente. Este método aguardará que todos os comandos enfileirados terminem.
 
 ```ts
 await Redis.quit()
 await Redis.connection('name').quit()
 ```
 
----
-
-### disconnect
-The `disconnect` method doesn't wait for existing commands to finish and will disrupt the connection immediately.
+### `disconnect`
+O método `disconnect` não aguarda que os comandos existentes terminem e interromperá a conexão imediatamente.
 
 ```ts
 await Redis.disconnect()
 await Redis.connection('name').disconnect()
 ```
 
----
-
-### quitAll
-Similar to `quit`, but quits all the connections
+### `quitAll`
+Semelhante a `quit`, mas encerra todas as conexões
 
 ```ts
 await Redis.quitAll()
 ```
 
----
-
-### disconnectAll
-Similar to `disconnect`, but disconnects all the connections.
+### `disconnectAll`
+Semelhante a `disconnect`, mas desconecta todas as conexões.
 
 ```ts
 await Redis.disconnectAll()

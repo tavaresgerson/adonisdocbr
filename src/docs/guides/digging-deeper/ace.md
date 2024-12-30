@@ -1,34 +1,34 @@
 # Ace
 
-Ace is a command-line framework embedded into the core of AdonisJS. Commands like `node ace serve` or `node ace make:controller` is powered by the Ace CLI.
+Ace é uma estrutura de linha de comando incorporada ao núcleo do AdonisJS. Comandos como `node ace serve` ou `node ace make:controller` são alimentados pelo Ace CLI.
 
-Ace also allows you to create custom commands by storing them locally within your project codebase.
+O Ace também permite que você crie comandos personalizados armazenando-os localmente na base de código do seu projeto.
 
-## Why we use Ace instead of npm scripts?
+## Por que usamos Ace em vez de scripts npm?
 
-The majority of the Node.js projects extensively make use of the [npm scripts](https://docs.npmjs.com/cli/v7/using-npm/scripts). Npm scripts are great, as they allow you to define scripts on a per-project basis vs. defining them globally somewhere on your computer.
+A maioria dos projetos Node.js faz uso extensivo dos [scripts npm](https://docs.npmjs.com/cli/v7/using-npm/scripts). Os scripts Npm são ótimos, pois permitem que você defina scripts por projeto em vez de defini-los globalmente em algum lugar do seu computador.
 
-However, npm scripts don't give you any tooling to create the CLI commands. You still have to manually parse the CLI arguments/flags and also manage the command lifecycle.
+No entanto, os scripts npm não fornecem nenhuma ferramenta para criar os comandos CLI. Você ainda precisa analisar manualmente os argumentos/sinalizadores CLI e também gerenciar o ciclo de vida do comando.
 
-On the other hand, Ace is a proper framework for creating CLI interfaces.
+Por outro lado, o Ace é uma estrutura adequada para criar interfaces CLI.
 
-## Usage
+## Uso
 
-Ace comes pre-configured with every new AdonisJS application, and you can run it using the `ace` file stored at the root of your project.
+O Ace vem pré-configurado com cada novo aplicativo AdonisJS, e você pode executá-lo usando o arquivo `ace` armazenado na raiz do seu projeto.
 
 ```sh
 node ace
 ```
 
-![Help screen](https://res.cloudinary.com/adonis-js/image/upload/v1617207298/v5/ace-help.png)
+![Tela de ajuda](/docs/assets/ace-help.png)
 
-The `ace` file is an extension-less JavaScript file that you can execute like any other Node.js program. Running this file will boot the command line framework and execute the mentioned command.
+O arquivo `ace` é um arquivo JavaScript sem extensão que você pode executar como qualquer outro programa Node.js. Executar este arquivo inicializará a estrutura da linha de comando e executará o comando mencionado.
 
-You can list all the commands by running `node ace --help`, and view help for a particular command using `node ace <command-name> --help`.
+Você pode listar todos os comandos executando `node ace --help` e visualizar a ajuda para um comando específico usando `node ace <command-name> --help`.
 
-## Where are the commands defined?
+## Onde os comandos são definidos?
 
-Ace allows you and the packages you install to contribute commands. They are defined inside the `.adonisrc.json` file under the `commands` array.
+O Ace permite que você e os pacotes que você instala contribuam com comandos. Eles são definidos dentro do arquivo `.adonisrc.json` sob o array `commands`.
 
 ```json
 {
@@ -40,13 +40,13 @@ Ace allows you and the packages you install to contribute commands. They are def
 }
 ```
 
-Every entry inside the array must point to a file that [exports an Ace command](https://github.com/adonisjs/core/blob/develop/commands/GenerateKey.ts). Or it can export an [additional array of commands](https://github.com/adonisjs/core/blob/develop/commands/index.ts).
+Cada entrada dentro do array deve apontar para um arquivo que [exporta um comando Ace](https://github.com/adonisjs/core/blob/develop/commands/GenerateKey.ts). Ou pode exportar um [matriz adicional de comandos](https://github.com/adonisjs/core/blob/develop/commands/index.ts).
 
-The first entry, `./commands` is a reference to the commands directory of your project. Files inside this directory are scanned and registered as commands.
+A primeira entrada, `./commands` é uma referência ao diretório de comandos do seu projeto. Os arquivos dentro deste diretório são escaneados e registrados como comandos.
 
-## Creating a new command
+## Criando um novo comando
 
-You can create a new command by running the following Ace command.
+Você pode criar um novo comando executando o seguinte comando Ace.
 
 ```sh
 node ace make:command Greet
@@ -54,13 +54,13 @@ node ace make:command Greet
 # CREATE: commands/Greet.ts
 ```
 
-Before you can run the newly created command, you will have to get it indexed by running the following command. [Learn why indexing is required](#generating-the-ace-manifest-file)
+Antes de executar o comando recém-criado, você terá que indexá-lo executando o seguinte comando. [Saiba por que a indexação é necessária](#generating-the-ace-manifest-file)
 
 ```sh
 node ace generate:manifest
 ```
 
-Finally, you can run the command as follows:
+Finalmente, você pode executar o comando da seguinte forma:
 
 ```sh
 node ace greet
@@ -68,9 +68,9 @@ node ace greet
 # [ info ]  Hello world!
 ```
 
-## Commands structure
+## Estrutura de comandos
 
-Ace commands are represented as classes and extend the `BaseCommand` class. You define the command name and description as static properties on the class itself.
+Os comandos Ace são representados como classes e estendem a classe `BaseCommand`. Você define o nome e a descrição do comando como propriedades estáticas na própria classe.
 
 ```ts
 import { BaseCommand } from '@adonisjs/core/build/standalone'
@@ -91,68 +91,50 @@ export default class Greet extends BaseCommand {
 }
 ```
 
-#### commandName
+#### `commandName`
+O nome do comando que deve ser digitado para executar o comando. Deve ser sempre uma string.
 
-The name of the command one should type to run the command. It should always be a string.
+#### `description`
+A descrição do comando é mostrada na saída de ajuda. Use esta propriedade para explicar brevemente o que o comando faz.
 
----
+#### `settings`
+A propriedade settings controla o comportamento do tempo de execução do comando.
 
-#### description
-
-The command description is shown in the help output. Use this property to explain what the command does briefly.
-
----
-
-#### settings
-
-The settings property controls the runtime behavior of the command.
-
-| Option | Description |
-|---------|---------------|
-| **loadApp** | Instructs Ace to boot the application before running the method. By default, commands do NOT load the application and are executed as independent scripts. |
-| **stayAlive** | Instructs Ace to NOT kill the process after running the command. However, do make sure to manually kill the process using `await this.exit()` |
+| Opção         | Descrição     |
+|---------------|---------------|
+| **loadApp**   | Instrui o Ace a inicializar o aplicativo antes de executar o método. Por padrão, os comandos NÃO carregam o aplicativo e são executados como scripts independentes. |
+| **stayAlive** | Instrui o Ace a NÃO matar o processo após executar o comando. No entanto, certifique-se de matar manualmente o processo usando `await this.exit()` |
 
 #### aliases
+Você também pode definir uma matriz de aliases para o nome do comando. Isso permite que outros executem o comando usando os aliases também.
 
-You can also define an array of aliases for the command name. This allows others to execute the command using the aliases as well.
-
-```ts
+```ts {3}
 export default class Greet extends BaseCommand {
   public static commandName = 'greet'
-  // highlight-start
   public static aliases = ['welcome', 'hi']
-  // highlight-end
 }
 ```
 
----
-
 #### run
+Cada comando deve implementar o método `run` e escrever a lógica para manipular o comando dentro dele.
 
-Every command must implement the `run` method and write the logic to handle the command inside it.
+### Inicializando o aplicativo dentro do comando
+Os comandos Ace não inicializam seu aplicativo antes de executar o comando. Se seu comando depende do código do aplicativo, você deve instruir o comando a carregar o aplicativo primeiro e então executar o método `run`.
 
----
-
-### Booting the app within the command
-Ace commands do not boot your application before running the command. If your command relies on the application code, you must instruct the command to load the application first and then execute the `run` method.
-
-```ts
+```ts {4-6}
 export default class Greet extends BaseCommand {
   public static commandName = 'greet'
-  // highlight-start
+
   public static settings = {
     loadApp: true
   }
-  // highlight-end
 }
 ```
 
----
+### Importações de nível superior não são permitidas
+Importações de nível superior que dependem do contêiner IoC ou da base de código do aplicativo não são permitidas, e você deve movê-las para dentro do método `run`. Por exemplo:
 
-### Top-level imports are not allowed
-Top-level imports relying on the IoC container or the application codebase are not allowed, and you must move them inside the `run` method. For example:
-
-#### ❌ Does not work
+#### ❌ Não funciona
 ```ts
 import User from 'App/Models/User'
 
@@ -168,7 +150,7 @@ export default class CreateUser extends BaseCommand {
 }
 ```
 
-#### ✅ Works, after the import is moved inside the `run` method
+#### ✅ Funciona, depois que a importação é movida para dentro do método `run`
 ```ts
 export default class CreateUser extends BaseCommand {
   public static commandName = 'create:user'
@@ -183,22 +165,20 @@ export default class CreateUser extends BaseCommand {
 }
 ```
 
-#### 🤷‍♂️ Reasoning
+#### 🤷‍♂️ Raciocínio
+Vamos tentar visualizar o ciclo de vida do comando para entender por que importações de nível superior não são permitidas.
 
-Let's try to visualize the command lifecycle to understand why top-level imports are not allowed.
+- A importação do modelo `User` importa internamente o Lucid ORM do contêiner IoC.
+- Como o aplicativo ainda não foi inicializado, o Lucid ORM não está disponível.
+- Para carregar o aplicativo, o Ace primeiro terá que acessar a propriedade `settings.loadApp` definida no construtor do comando.
+- No entanto, não pode porque a importação de nível superior resulta em um erro.
 
-- The `User` model import internally imports the Lucid ORM from the IoC container.
-- Since the application is not booted yet, the Lucid ORM is not available.
-- To load the application, Ace will first have to reach the `settings.loadApp` property defined on the command constructor.
-- However, it cannot because the top-level import results in an error.
+Existem outras maneiras de projetar esse fluxo de trabalho, mas achamos que mover as importações dentro do método `run` vale o incômodo de manter todas as configurações de comando e metadados dentro de um único arquivo.
 
-There are other ways to design this workflow, but we think moving the imports inside the `run` method is worth the hassle of keeping all the command settings and metadata inside a single file.
+## Argumentos CLI
+Você registra os argumentos e sinalizadores que seu comando aceita como propriedades na classe. Por exemplo:
 
-## CLI arguments
-
-You register the arguments and flags your command accepts as properties on the class. For example:
-
-```ts
+```ts {10-14}
 import {
   BaseCommand,
   args,
@@ -208,35 +188,32 @@ import {
 export default class Greet extends BaseCommand {
   public static commandName = 'greet'
 
-  // highlight-start
   @args.string({ description: 'Name of the person to greet' })
   public name: string
 
   @flags.boolean({ alias: 'i', description: 'Enable interactive mode' })
   public interactive: boolean
-  // highlight-end
 
   public async run() {}
 }
 ```
 
-Make sure to generate the Ace manifest file by running the following command.
+Certifique-se de gerar o arquivo de manifesto Ace executando o seguinte comando.
 
 ```sh
 node ace generate:manifest
 ```
 
-And then view the help for the `greet` command.
+E então visualize a ajuda para o comando `greet`.
 
 ```sh
 node ace greet --help
 ```
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1617325150/v5/command-args-flags.png)
+![](/docs/assets/command-args-flags.webp)
 
-### Arguments
-
-Command arguments are positional, and they are accepted in the same order as you define them in your class. For example:
+### Argumentos
+Os argumentos de comando são posicionais e são aceitos na mesma ordem em que você os define em sua classe. Por exemplo:
 
 ```ts
 export default class Greet extends BaseCommand {
@@ -255,10 +232,8 @@ export default class Greet extends BaseCommand {
 node ace greet <name> <age> <height>
 ```
 
-
-#### args.string
-
-Marks the property as a command-line argument. Note: The command arguments are always represented as a string. You will have to perform typecasting yourself if expecting a non-string value.
+#### `args.string`
+Marca a propriedade como um argumento de linha de comando. Nota: Os argumentos de comando são sempre representados como uma string. Você terá que executar o typecasting se esperar um valor que não seja string.
 
 ```ts
 @args.string({
@@ -268,20 +243,17 @@ Marks the property as a command-line argument. Note: The command arguments are a
 public name: string
 ```
 
-#### args.spread
+#### `args.spread`
+O método `@args.spread` permite que você defina um argumento catch-all. É como os [parâmetros rest ](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters) em JavaScript e deve ser sempre o último argumento.
 
-The `@args.spread` method allows you to define a catch-all argument. It is like the [rest parameters ](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters) in JavaScript and must always be the last argument.
-
-```ts
+```ts {6-7}
 import { BaseCommand, args } from '@adonisjs/core/build/standalone'
 
 export default class FileReader extends BaseCommand {
   public static commandName = 'read'
 
-  // highlight-start
   @args.spread()
   public files: string[]
-    // highlight-end
 
   public async run () {
     console.log(this.files)
@@ -293,50 +265,47 @@ export default class FileReader extends BaseCommand {
 node ace read foo.txt bar.txt baz.txt
 ```
 
-Output will be
+A saída será:
 
 ```ts
 [ 'foo.txt', 'bar.txt', 'baz.txt' ]
 ```
 
-#### Options
+#### Opções
 
-All of the `@args` methods accept the following options.
+Todos os métodos `@args` aceitam as seguintes opções.
 
-| Option | Description |
-|--------|-------------|
-| **description** | The help description for the argument |
-| **name** | Define a public name for the argument (the one that appears in the help output). |
+| Opção           | Descrição   |
+|-----------------|-------------|
+| **description** | A descrição da ajuda para o argumento |
+| **name**        | Defina um nome público para o argumento (aquele que aparece na saída da ajuda). |
 
 ## Flags
+Você define os flags usando o decorador `@flags`. Um flag pode aceitar valores `boolean`, `string/string[]` ou `number/number[]`.
 
-You define the flags using the `@flags` decorator. A flag can accept `boolean`, `string/string[]`, or `number/number[]` values.
-
-#### flags.boolean
-
-Accept a boolean flag.
+#### `flags.boolean`
+Aceita um flag boolean.
 
 ```ts
 @flags.boolean()
 public interactive: boolean
 ```
 
-The value for the boolean flag defaults to `false`, unless the flag has been specified. However, you can also define the default value yourself.
+O valor do flag boolean é definido como `false`, a menos que o flag tenha sido especificado. No entanto, você também pode definir o valor padrão.
 
 ```ts
 @flags.boolean()
 public interactive: boolean = true
 ```
 
-To disable the flag at runtime, you must negate it with the `--no` keyword.
+Para desabilitar o flag em tempo de execução, você deve negá-lo com a palavra-chave `--no`.
 
 ```sh
 node ace greet virk --no-interactive
 ```
 
-#### flags.string
-
-Define a flag that accepts a string value.
+#### `flags.string`
+Defina um flag que aceite um valor de string.
 
 ```ts
 @flags.string()
@@ -346,9 +315,8 @@ public email: string
 public password: string
 ```
 
-#### flags.array
-
-Define a flag that can be repeated multiple times. The value is an array of strings.
+#### `flags.array`
+Defina um sinalizador que pode ser repetido várias vezes. O valor é uma matriz de strings.
 
 ```ts
 @flags.array()
@@ -358,7 +326,7 @@ public files: string[]
 ```sh
 node ace read --files=foo.txt --files=bar.txt
 
-## Or separate them with comma
+## Ou separe-os com vírgula
 node ace read --files=foo.txt,bar.txt
 ```
 
@@ -368,39 +336,39 @@ console.log(this.files)
 // ['foo.txt', 'bar.txt']
 ```
 
-#### flags.number
+#### `flags.number`
 
-Define a flag that accepts a number value.
+Defina um sinalizador que aceita um valor numérico.
 
 ```ts
 @flags.number({ alias: 'i' })
 public iterations: number
 ```
 
-#### flags.numArray
+#### `flags.numArray`
 
-Same as [@flags.array](#flagsarray), but instead accepts an array of numbers.
+O mesmo que [@flags.array](#flagsarray), mas aceita uma matriz de números.
 
 ```ts
 @flags.numArray()
 public counters: number[]
 ```
 
-#### Options
+#### Opções
 
-All of the `@flags` decorators accept the following options.
+Todos os decoradores `@flags` aceitam as seguintes opções.
 
-| Option | Description |
-|--------|-------------|
-| **alias** | The shorthand name for the flag. The shorthand names are always defined using a single dash `-` |
-| **description** | The help description for the flag |
-| **name** | Public name for the flag (the one that appears in the help output). |
+| Opção             | Descrição   |
+|-------------------|-------------|
+| **alias**         | O nome abreviado para o sinalizador. Os nomes abreviados são sempre definidos usando um único traço `-` |
+| **description**   | A descrição de ajuda para o sinalizador |
+| **name**          | Nome público para o sinalizador (aquele que aparece na saída de ajuda). |
 
 ## Prompts
 
-Ace has inbuilt support for creating interactive prompts on the terminal. You can access the `prompts` module using the `this.prompt` property.
+O Ace tem suporte integrado para criar prompts interativos no terminal. Você pode acessar o módulo `prompts` usando a propriedade `this.prompt`.
 
-Following is an example of using multiple prompts together.
+A seguir, um exemplo de uso de vários prompts juntos.
 
 ```ts
 import { BaseCommand } from '@adonisjs/core/build/standalone'
@@ -437,11 +405,10 @@ export default class CreateUser extends BaseCommand {
 }
 ```
 
-::video{url="https://res.cloudinary.com/adonis-js/video/upload/q_auto/v1617259966/v5/command-prompts.mp4" controls}
+<video src="/docs/assets/command-prompts.mp4" controls />
 
-#### prompt.ask
-
-Displays the prompt to enter a value. Optionally accepts [options](#all-prompts-options) as the second argument.
+#### `prompt.ask`
+Exibe o prompt para inserir um valor. Opcionalmente, aceita [options](#all-prompts-options) como o segundo argumento.
 
 ```ts
 await this.prompt.ask('Choose account username', {
@@ -455,9 +422,8 @@ await this.prompt.ask('Choose account username', {
 })
 ```
 
-#### prompt.secure
-
-Uses the `password` prompt type. Optionally accepts [options](#all-prompts-options) as the second argument.
+#### `prompt.secure`
+Usa o tipo de prompt `password`. Opcionalmente, aceita [options](#all-prompts-options) como o segundo argumento.
 
 ```ts
 await this.prompt.secure('Enter account password', {
@@ -471,32 +437,29 @@ await this.prompt.secure('Enter account password', {
 })
 ```
 
-#### prompt.confirm
-
-Display the prompt to select between `Yes` and `No`. Optionally you can pass the configuration [options](#all-prompts-options) as the second argument.
+#### `prompt.confirm`
+Exibe o prompt para selecionar entre `Sim` e `Não`. Opcionalmente, você pode passar a configuração [opções](#all-prompts-options) como o segundo argumento.
 
 ```ts
 await this.prompt.confirm('Want to delete files?')
 ```
 
-#### prompt.toggle
-
-Similar to the `confirm` prompt. However, it allows custom `Yes` and `No` display values. Optionally you can pass the configuration [options](#all-prompts-options) as the second argument.
+#### `prompt.toggle`
+Semelhante ao prompt `confirm`. No entanto, ele permite valores de exibição personalizados `Sim` e `Não`. Opcionalmente, você pode passar a configuração [opções](#all-prompts-options) como o segundo argumento.
 
 ```ts
 await this.prompt.toggle('Want to delete files?', ['Yep', 'Nope'])
 ```
 
+#### `prompt.choice`
 
-#### prompt.choice
-
-Display a list of options with the possibility to choose only one. Optionally you can pass the configuration [options](#all-prompts-options) as the third argument.
+Exibe uma lista de opções com a possibilidade de escolher apenas uma. Opcionalmente, você pode passar a configuração [opções](#all-prompts-options) como o terceiro argumento.
 
 ```ts
 await this.prompt.choice('Select installation client', ['npm', 'yarn'])
 ```
 
-Or pass the choices as an array of objects.
+Ou passe as escolhas como uma matriz de objetos.
 
 ```ts
 await this.prompt.choice('Select toppings', [
@@ -511,9 +474,8 @@ await this.prompt.choice('Select toppings', [
 ])
 ```
 
-#### prompt.multiple
-
-Display a list of choices and allows selecting multiple options. Optionally you can pass the configuration [options](#all-prompts-options) as the third argument.
+#### `prompt.multiple`
+Exibe uma lista de escolhas e permite selecionar várias opções. Opcionalmente, você pode passar a configuração [options](#all-prompts-options) como o terceiro argumento.
 
 ```ts
 await this.prompt.multiple('Select base dependencies', [
@@ -521,7 +483,7 @@ await this.prompt.multiple('Select base dependencies', [
 ])
 ```
 
-Or pass the choice as an object.
+Ou passe a escolha como um objeto.
 
 ```ts
 await this.prompt.multiple('Select base dependencies', [
@@ -536,9 +498,8 @@ await this.prompt.multiple('Select base dependencies', [
 ])
 ```
 
-#### prompt.autocomplete
-
-Display a list of options to make one or more selections, with the ability to filter the list items. Optionally you can pass the configuration [options](#all-prompts-options) as the third argument.
+#### `prompt.autocomplete`
+Exibe uma lista de opções para fazer uma ou mais seleções, com a capacidade de filtrar os itens da lista. Opcionalmente, você pode passar a configuração [options](#all-prompts-options) como o terceiro argumento.
 
 ```ts
 await this.prompt.autocomplete(
@@ -547,7 +508,7 @@ await this.prompt.autocomplete(
 )
 ```
 
-For multi-select, you can set `options.multiple = true`.
+Para seleção múltipla, você pode definir `options.multiple = true`.
 
 ```ts
 await this.prompt.autocomplete(
@@ -557,9 +518,8 @@ await this.prompt.autocomplete(
 )
 ```
 
-#### prompt.enum
-
-Similar to the `ask` prompt, but allows comma (,) separated values. Optionally accepts [options](#all-prompts-options) as the second argument.
+#### `prompt.enum`
+Semelhante ao prompt `ask`, mas permite valores separados por vírgula (,). Aceita opcionalmente [options](#all-prompts-options) como o segundo argumento.
 
 ```ts
 await this.prompt.enum('Define tags', {
@@ -567,20 +527,10 @@ await this.prompt.enum('Define tags', {
 })
 ```
 
-#### All prompts options
+### Todas as opções de prompts
 
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>default</strong></td>
-<td>
-<p>The default value to use, when no input has been provided</p>
+#### `default`
+O valor padrão a ser usado quando nenhuma entrada foi fornecida
 
 ```ts
 {
@@ -588,12 +538,8 @@ await this.prompt.enum('Define tags', {
 }
 ```
 
-</td>
-</tr>
-<tr>
-<td><strong>hint</strong></td>
-<td>
-<p>Display hint to help fill the input</p>
+#### `hint`
+Exibe dica para ajudar a preencher a entrada
 
 ```ts
 {
@@ -601,13 +547,8 @@ await this.prompt.enum('Define tags', {
 }
 ```
 
-</td>
-</tr>
-<tr>
-<td><strong>result</strong></td>
-<td>
-<p>Modify the result. The method is invoked just before resolving the prompt promise</p>
-<p> <strong> Note </strong> The value will differ based upon the input type. For example: The value for <code>prompt.multiple</code> will be an array or selections.
+#### `result`
+Modifica o resultado. O método é invocado logo antes de resolver a promessa do prompt **Observação**: O valor será diferente com base no tipo de entrada. Por exemplo: O valor para `prompt.multiple` será uma matriz ou seleções.
 
 ```ts
 {
@@ -617,13 +558,8 @@ await this.prompt.enum('Define tags', {
 }
 ```
 
-</td>
-</tr>
-<tr>
-<td><strong>format</strong></td>
-<td>
-<p>Format the user input in real time (as they type).</p>
-<p> <strong> Note </strong> The value will differ based upon the input type. For example: The value for <code>prompt.multiple</code> will be an array or selections.
+#### `format`
+Formate a entrada do usuário em tempo real (conforme ele digita). **Observação**: O valor será diferente com base no tipo de entrada. Por exemplo: O valor para `prompt.multiple` será uma matriz ou seleções.
 
 ```ts
 {
@@ -633,13 +569,8 @@ await this.prompt.enum('Define tags', {
 }
 ```
 
-</td>
-</tr>
-<tr>
-<td><strong>validate</strong></td>
-<td>
-<p>Validate the user input. Return <code>true</code> to pass the validation or <code>false/error message</code></p>
-<p> <strong> Note </strong> The value will differ based upon the input type. For example: The value for <code>prompt.multiple</code> will be an array or selections.
+#### `validate`
+Valida a entrada do usuário. Retorna `true` para passar a validação ou `false/mensagem de erro`. **Observação**: O valor será diferente com base no tipo de entrada. Por exemplo: O valor para `prompt.multiple` será uma matriz ou seleções.
 
 ```ts
 {
@@ -653,13 +584,8 @@ await this.prompt.enum('Define tags', {
 }
 ```
 
-</td>
-</tr>
-</tbody>
-</table>
-
 ## Logger
-You can make use of the inbuilt logger to log messages to the console. We automatically strip out the colors and icons if the terminal does not support colors.
+Você pode usar o logger integrado para registrar mensagens no console. Nós removemos automaticamente as cores e os ícones se o terminal não suportar cores.
 
 ```ts
 export default class Greet extends BaseCommand {
@@ -681,28 +607,26 @@ export default class Greet extends BaseCommand {
       'npm install --production'
     )
 
-    // perform some task
+    // executar alguma tarefa
     spinner.stop()
   }
 }
 ```
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1617272056/v5/ace-logger-output.png)
+![](/docs/assets/ace-logger-output.webp)
 
-All logger methods also receive an optional value for the log message `prefix` and `suffix`.
+Todos os métodos do logger também recebem um valor opcional para a mensagem de log `prefix` e `suffix`.
 
 ```ts
 this.logger.info('hello world', 'prefix', 'suffix')
 ```
 
-### Actions
-Along with the standard log messages, you can also display log messages for a specific action. For example, An action to create the file can use the following code to show its status.
+### Ações
+Junto com as mensagens de log padrão, você também pode exibir mensagens de log para uma ação específica. Por exemplo, uma ação para criar o arquivo pode usar o seguinte código para mostrar seu status.
 
-:::note
-
-The logger actions are used only to display the UI. You still have to perform the action
-yourself.
-
+::: info NOTA
+As ações do logger são usadas apenas para exibir a IU. Você ainda precisa executar a ação
+você mesmo.
 :::
 
 ```ts
@@ -713,14 +637,14 @@ this.logger.action('create').skipped(filePath, 'File already exists')
 this.logger.action('create').failed(filePath, 'Something went wrong')
 ```
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1617281150/v5/logger-actions.png)
+![](/docs/assets/logger-actions.webp)
 
-### Update existing log line
-The logger also allows you to log messages by updating the existing logline. Using this method, you can draw textual and ASCII progress bars.
+### Atualizar linha de log existente
+O logger também permite que você registre mensagens atualizando a linha de log existente. Usando este método, você pode desenhar barras de progresso textuais e ASCII.
 
-Every time you run the `logUpdate` method, it will update the existing logline with the new message. You can persist and move to the new line using the `logUpdatePersist` method.
+Toda vez que você executar o método `logUpdate`, ele atualizará a linha de log existente com a nova mensagem. Você pode persistir e mover para a nova linha usando o método `logUpdatePersist`.
 
-Following is a complete working example of displaying a progress bar.
+A seguir está um exemplo completo de funcionamento da exibição de uma barra de progresso.
 
 ```ts
 import { BaseCommand } from '@adonisjs/core/build/standalone'
@@ -730,8 +654,8 @@ export default class Greet extends BaseCommand {
 
   private getProgressBar(currentPercentage: number) {
     /**
-     * Draw one cell for almost every 3%. This is to ensure the
-     * progress bar renders fine on smaller terminal width
+     * Desenhe uma célula para quase cada 3%. Isso é para garantir que a
+     * barra de progresso renderize bem em terminais de largura menor
      */
     const completed = Math.ceil(currentPercentage / 3)
     const incomplete = Math.ceil((100 - currentPercentage) / 3)
@@ -749,39 +673,39 @@ export default class Greet extends BaseCommand {
 }
 ```
 
-::video{url="https://res.cloudinary.com/adonis-js/video/upload/q_auto/v1617273444/v5/progress-bar-ace.mov" controls}
+<video src="/docs/assets/progress-bar-ace.mov" controls />
 
 ## CLI UI
-The CLI UI exposes the API to **draw tables**, **render instructions inside a box**, and **animate progress for tasks**.
+A CLI UI expõe a API para **desenhar tabelas**, **renderizar instruções dentro de uma caixa** e **animar o progresso das tarefas**.
 
-### Tables
-You can draw tables using the `this.ui.table` property. Following is an example of the same.
+### Tabelas
+Você pode desenhar tabelas usando a propriedade `this.ui.table`. A seguir está um exemplo do mesmo.
 
 ```ts
 const table = this.ui.table()
 table.head(['Name', 'Email', 'Score'])
 
-// Optionally define column widths
+// Defina opcionalmente as larguras das colunas
 table.columnWidths([15, 30, 10])
 
-// Add new rows
+// Adicione novas linhas
 table.row(['Virk', 'virk@adonisjs.com', '67'])
 table.row(['Romain', 'romain@adonisjs.com', '82'])
 table.row(['Nikk', 'nikk@adonisjs.com', '41'])
 
-// Render the table
+// Renderize a tabela
 table.render()
 ```
 
-- You create a new table instance using the `this.ui.table()` method.
-- Create the table head using the `.head()` method and pass an array of columns to create.
-- Add new rows using the `.row()` method.
-- And finally, render the table using the `.render()` method.
+- Você cria uma nova instância de tabela usando o método `this.ui.table()`.
+- Crie o cabeçalho da tabela usando o método `.head()` e passe um array de colunas para criar.
+- Adicione novas linhas usando o método `.row()`.
+- E finalmente, renderize a tabela usando o método `.render()`.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1617281322/v5/ui-table.png)
+![](/docs/assets/ui-table.webp)
 
-### Display instructions
-You can display instructions for a given action by drawing them inside a bounded box. For example:
+### Exibir instruções
+Você pode exibir instruções para uma determinada ação desenhando-as dentro de uma caixa delimitada. Por exemplo:
 
 ```ts
 this.ui
@@ -791,14 +715,14 @@ this.ui
   .render()
 ```
 
-- Calling the `this.ui.instructions()` method begins a new instructions block.
-- Next, you can add new lines by using the `.add()` method.
-- Finally, call the `.render()` method to render it on the console.
+- Chamar o método `this.ui.instructions()` inicia um novo bloco de instruções.
+- Em seguida, você pode adicionar novas linhas usando o método `.add()`.
+- Finalmente, chame o método `.render()` para renderizá-lo no console.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1617281756/v5/logger-instructions.png)
+![](/docs/assets/logger-instructions.webp)
 
-### Sticker
-A sticker is similar to the `instructions` block. However, it does not prefix the lines with a pointer `>`. Rest is all the same.
+### Adesivo
+Um adesivo é semelhante ao bloco `instructions`. No entanto, ele não prefixa as linhas com um ponteiro `>`. O resto é tudo igual.
 
 ```ts
 this.ui
@@ -810,26 +734,26 @@ this.ui
   .render()
 ```
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1617282627/v5/logger-sticker.png)
+![](/docs/assets/logger-sticker.webp)
 
-### Tasks renderer
-You can make use of the task renderer to display the output of multiple actions. AdonisJS itself uses it to show the UI when scaffolding a new app.
+### Renderizador de tarefas
+Você pode usar o renderizador de tarefas para exibir a saída de várias ações. O próprio AdonisJS o usa para mostrar a IU ao criar um novo aplicativo.
 
-The task renderer has two output modes, i.e.,` minimal` and `verbose`. We automatically switch to `verbose` mode when the shell is [not interactive](https://github.com/poppinss/cliui/blob/develop/api.ts#L28-L30).
+O renderizador de tarefas tem dois modos de saída, ou seja, `minimal` e `verbose`. Mudamos automaticamente para o modo `verbose` quando o shell não é [interativo](https://github.com/poppinss/cliui/blob/develop/api.ts#L28-L30).
 
 ```ts
 const tasksManager = this.ui.tasks()
 
-// Manually switch to verbose renderer
+// Alternar manualmente para renderizador detalhado
 const tasksManager = this.ui.tasks.verbose()
 ```
 
-After creating the task renderer, you add a new task by calling the `.add` method and perform the actual task work inside it. Once done performing the task, you must call `task.complete` or `task.fail` to move to the next task in the queue.
+Após criar o renderizador de tarefas, você adiciona uma nova tarefa chamando o método `.add` e executa o trabalho real da tarefa dentro dele. Após concluir a execução da tarefa, você deve chamar `task.complete` ou `task.fail` para passar para a próxima tarefa na fila.
 
 ```ts
 tasksManager
   .add('clone repo', async (logger, task) => {
-    // use the logger to log about the progress
+    // use o logger para registrar o progresso
     await task.complete()
   })
   .add('install package', async (logger, task) => {
@@ -837,16 +761,16 @@ tasksManager
   })
 ```
 
-Call the `run` method after defining all the tasks.
+Chame o método `run` após definir todas as tarefas.
 
 ```ts
 await tasksManager.run()
 ```
 
-## Templates generator
-Ace has an inbuilt lightweight template generator. You can use it to generate files from pre-existing stubs. For example:
+## Gerador de modelos
+O Ace tem um gerador de modelos leve embutido. Você pode usá-lo para gerar arquivos a partir de stubs pré-existentes. Por exemplo:
 
-```ts
+```ts {8-18}
 import { join } from 'path'
 import { BaseCommand } from '@adonisjs/core/build/standalone'
 
@@ -854,7 +778,6 @@ export default class Greet extends BaseCommand {
   public static commandName = 'greet'
 
   public async run() {
-    // highlight-start
     const name = 'UsersController'
 
     this.generator
@@ -866,73 +789,72 @@ export default class Greet extends BaseCommand {
       .apply({ name })
 
     await this.generator.run()
-    // highlight-end
   }
 }
 ```
 
-- The `generator.addFile` method initiates the process to create a new file.
-- Using its fluent API, you can define the file destination, its stub, and data to pass to the stub
-- Finally execute the `this.generator.run` to create all the files added using `.addFile` method.
+- O método `generator.addFile` inicia o processo para criar um novo arquivo.
+- Usando sua API fluente, você pode definir o destino do arquivo, seu stub e dados para passar para o stub
+- Finalmente execute `this.generator.run` para criar todos os arquivos adicionados usando o método `.addFile`.
 
-#### addFile
-The method creates a new instance of the [GeneratorFile](https://github.com/adonisjs/ace/blob/develop/src/Generator/File.ts) class. It accepts two arguments; first, the file name (with or without the extension), and second is an object of options.
+#### `addFile`
+O método cria uma nova instância da classe [GeneratorFile](https://github.com/adonisjs/ace/blob/develop/src/Generator/File.ts). Ele aceita dois argumentos; primeiro, o nome do arquivo (com ou sem a extensão) e o segundo é um objeto de opções.
 
 ```ts
 this.generator.addFile(
   'UserController',
   {
-    // force filename to be plural
+    // forçar nome de arquivo a ser plural
     form: 'plural',
 
-    // define ".ts" extension when not already defined
+    // definir extensão ".ts" quando ainda não estiver definida
     extname: '.ts',
 
-    // re-format the name to "camelCase"
+    // reformatar o nome para "camelCase"
     pattern: 'camelcase',
 
-    // add "Controller" suffix, when not already defined
+    // adicionar sufixo "Controller", quando ainda não estiver definido
     suffix: 'Controller',
 
-    // Do not pluralize when controller name matches one of the following
+    // Não pluralizar quando o nome do controlador corresponder a um dos seguintes
     formIgnoreList: ['Home', 'Auth', 'Login']
   }
 )
 ```
 
-#### destinationDir
-Define the destination directory in which you want to create the file. You can also pull the directory name from the `.adonisrc.json` file as follows:
+#### `destinationDir`
+Defina o diretório de destino no qual você deseja criar o arquivo. Você também pode extrair o nome do diretório do arquivo `.adonisrc.json` da seguinte forma:
 
 ```ts
-// Get path to the config directory
+// Obter caminho para o diretório de configuração
 file.destinationDir(
   this.application.directoriesMap.get('config')!
 )
 
-// Get path to the controllers namespace
+// Obter caminho para o namespace dos controladores
 file.destinationDir(
   this.application.resolveNamespaceDirectory('httpControllers')!
 )
 ```
 
-#### appRoot
-Define the root of the application. This is prefixed to the `destinationDir` to create an absolute path.
+#### `appRoot`
+Defina a raiz do aplicativo. Isso é prefixado ao `destinationDir` para criar um caminho absoluto.
 
 ```ts
 file.appRoot(this.application.appRoot)
 ```
 
-#### stub
-Define an absolute path to the stub template. You can write templates using ES6 template literals or use [mustache](https://mustache.github.io/) by first calling the `useMustache` method.
+#### `stub`
+Defina um caminho absoluto para o modelo stub. Você pode escrever modelos usando literais de modelo ES6 ou usar [mustache](https://mustache.github.io/) chamando primeiro o método `useMustache`.
 
 ```ts
 file
-  .useMustache() // use mustache as the template engine
+  .useMustache() // use o mustache como mecanismo de modelo
   .stub(join(__dirname, 'templates/controller.txt'))
 ```
 
-#### apply
-Share data with the mustache template. The current filename (after applying all the transformations) is shared with the template as the `filename` property.
+#### `apply`
+Compartilhe dados com o modelo mustache. O nome do arquivo atual (após aplicar todas as transformações) é compartilhado com o modelo como a propriedade `filename`.
 
 ```ts
 file.apply({
@@ -940,18 +862,18 @@ file.apply({
 })
 ```
 
-#### run
-The `generator.run` method begins creating the files defined using the `.addFile` method. The generator skips the file if the destination path already exists.
+#### `run`
+O método `generator.run` começa a criar os arquivos definidos usando o método `.addFile`. O gerador ignora o arquivo se o caminho de destino já existir.
 
 ```ts
 await this.generator.run()
 ```
 
-## Lifecycle hooks
-Commands can define the following lifecycle hooks.
+## Ganchos do ciclo de vida
+Os comandos podem definir os seguintes ganchos do ciclo de vida.
 
-The `prepare` method is executed before running the run method.
-And the `completed` method is executed after the run method.
+O método `prepare` é executado antes de executar o método run.
+E o método `completed` é executado após o método run.
 
 ```ts
 export default class Greet extends BaseCommand {
@@ -969,66 +891,60 @@ export default class Greet extends BaseCommand {
 }
 ```
 
-You can access the error using the `this.error` property inside the `completed` method in case of errors.
+Você pode acessar o erro usando a propriedade `this.error` dentro do método `completed` em caso de erros.
 
-## Executing commands programmatically
-Executing other commands in the same process is not a good practice. Commands are NOT meant to be consumed by the different parts of the code as **they export a user interface** and **not a coding interface**. For example:
+## Executando comandos programaticamente
+Executar outros comandos no mesmo processo não é uma boa prática. Os comandos NÃO devem ser consumidos pelas diferentes partes do código, pois **eles exportam uma interface de usuário** e **não uma interface de codificação**. Por exemplo:
 
-- You find the status of a command from the process exit code and NOT some return value.
-- Commands dump their state to the terminal directly and don't store it inside some property to be accessed programmatically.
+- Você encontra o status de um comando a partir do código de saída do processo e NÃO de algum valor de retorno.
+- Os comandos despejam seu estado diretamente no terminal e não o armazenam dentro de alguma propriedade para ser acessada programaticamente.
 
-With all this said, there are a couple of ways to execute commands programmatically.
+Com tudo isso dito, há algumas maneiras de executar comandos programaticamente.
 
-### Execute command as a child process
-The recommended approach is to execute the command in a separate child process. You can make use of the Node.js `child_process` module or use the [execa](https://npm.im/execa) npm module.
+### Executar comando como um processo filho
+A abordagem recomendada é executar o comando em um processo filho separado. Você pode usar o módulo `child_process` do Node.js ou usar o módulo npm [execa](https://npm.im/execa).
 
-```ts
-// highlight-start
+```ts {1,8-10}
 import execa from 'execa'
-// highlight-end
 import { BaseCommand } from '@adonisjs/core/build/standalone'
 
 export default class Greet extends BaseCommand {
   public static commandName = 'greet'
 
   public async run() {
-    // highlight-start
     const { exitCode } = await execa.node('ace', ['make:controller', 'User'], {
       stdio: 'inherit',
     })
-    // highlight-end
   }
 }
 ```
 
-### Execute command within the same process
-Another option is to make use of the Ace kernel to execute the command within the same process. In the following example, there is no way to know the exit code for the command.
+### Executar comando dentro do mesmo processo
+Outra opção é usar o kernel Ace para executar o comando dentro do mesmo processo. No exemplo a seguir, não há como saber o código de saída do comando.
 
-```ts
+```ts {7}
 import { BaseCommand } from '@adonisjs/core/build/standalone'
 
 export default class Greet extends BaseCommand {
   public static commandName = 'greet'
 
   public async run() {
-    // highlight-start
     await this.kernel.exec('make:controller', ['User'])
-    // highlight-end
   }
 }
 ```
 
-## Generating the Ace manifest file
-Ace manifest is a JSON index of all the registered commands. It allows Ace to look up the command, the argument/flags it accepts without loading all the command files.
+## Gerando o arquivo de manifesto Ace
+O manifesto Ace é um índice JSON de todos os comandos registrados. Ele permite que o Ace procure o comando, o argumento/sinalizadores que ele aceita sem carregar todos os arquivos de comando.
 
-Generating an index is essential for performance. Otherwise, importing all the commands, compiling them using the in-memory TypeScript compiler will take a lot of time, even to print the help screen.
+Gerar um índice é essencial para o desempenho. Caso contrário, importar todos os comandos, compilá-los usando o compilador TypeScript na memória levará muito tempo, até mesmo para imprimir a tela de ajuda.
 
-AdonisJS automatically updates the `ace-manifest.json` file during the following events.
+O AdonisJS atualiza automaticamente o arquivo `ace-manifest.json` durante os seguintes eventos.
 
-- Every time you install and configure a package using the `node ace configure` command.
-- When the file watcher runs, and you change a command file stored inside the `commands` directory.
+- Toda vez que você instala e configura um pacote usando o comando `node ace configure`.
+- Quando o observador de arquivos é executado e você altera um arquivo de comando armazenado dentro do diretório `commands`.
 
-These two events alone cover the majority of use cases. However, you can also manually update the manifest file by running the following command.
+Esses dois eventos sozinhos cobrem a maioria dos casos de uso. No entanto, você também pode atualizar manualmente o arquivo de manifesto executando o seguinte comando.
 
 ```sh
 node ace generate:manifest

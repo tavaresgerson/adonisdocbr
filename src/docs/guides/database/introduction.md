@@ -42,6 +42,8 @@ export default Env.rules({
 - Sistema de migrações
 - Fábricas de modelos e seeders de banco de dados
 
+&nbsp;
+
 * [Visualizar no npm](https://npm.im/@adonisjs/lucid)
 * [Visualizar no GitHub](https://github.com/adonisjs/lucid)
 

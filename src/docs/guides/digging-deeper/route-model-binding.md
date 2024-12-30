@@ -1,31 +1,26 @@
 # Route Model Binding
 
-AdonisJS provides a powerful route model binding feature, which allows you to bind the route parameters with Lucid models and automatically query the database.
+O AdonisJS fornece um recurso poderoso de route model binding, que permite que você vincule os parâmetros de rota com modelos Lucid e consulte automaticamente o banco de dados.
 
-The package must be installed and configured separately. You can install it by running the following command.
+O pacote deve ser instalado e configurado separadamente. Você pode instalá-lo executando o seguinte comando.
 
-:::div{class="setup"}
+:::code-group
 
-:::codegroup
-
-```sh
-// title: 1. Install
+```sh [Instale]
 npm i @adonisjs/route-model-binding@1.0.1
 ```
 
-```sh
-// title: 2. Configure
+```sh [Configure]
 node ace configure @adonisjs/route-model-binding
 
 # UPDATE: tsconfig.json { types += "@adonisjs/route-model-binding/build/adonis-typings" }
 # UPDATE: .adonisrc.json { providers += "@adonisjs/route-model-binding/build/providers/RmbProvider" }
 ```
 
-```ts
-// title: 3. Register middleware
+```ts [Registre o middleware]
 /**
- * Make sure to add the following global middleware inside
- * the start/kernel.ts file
+ * Certifique-se de adicionar o seguinte middleware global dentro
+ * do arquivo start/kernel.ts
  */
 Server.middleware.register([
   // ...other middleware
@@ -35,39 +30,36 @@ Server.middleware.register([
  
 :::
 
-
-:::div{class="features"}
-
-- Works with all Database drivers
-- Customizable lookup logic
+- Funciona com todos os drivers de banco de dados
+- Lógica de pesquisa personalizável
 
 &nbsp;
 
-- [View on npm](https://www.npmjs.com/package/@adonisjs/route-model-binding)
-- [View on GitHub](https://github.com/adonisjs/route-model-binding)
+- [Ver no npm](https://www.npmjs.com/package/@adonisjs/route-model-binding)
+- [Ver no GitHub](https://github.com/adonisjs/route-model-binding)
 
-:::
+## Exemplo
 
-## Example
+A vinculação do modelo de rota é uma maneira bacana de remover consultas Lucid de uma linha da sua base de código e usar convenções para consultar o banco de dados durante solicitações HTTP.
 
-Route model binding is a neat way to remove one-liner Lucid queries from your codebase and use conventions to query the database during HTTP requests.
+No exemplo a seguir, conectamos os parâmetros de rota `:post` e `:comments` com os argumentos aceitos pelo método `show`.
 
-In the following example, we connect the route params `:post` and `:comments` with the arguments accepted by the `show` method.
+- O valor do primeiro parâmetro da URL será usado para consultar o primeiro modelo tipado no método `show` (por exemplo, Post).
+- Da mesma forma, o valor do segundo parâmetro será usado para consultar o segundo modelo tipado (por exemplo, Comment).
 
-- The value of the first param from the URL will be used to query the first typed hinted model on the `show` method (i.e., Post).
-- Similarly, the value of the second param will be used to query the second typed hinted model (i.e., Comment).
-
-:::note
-The params and models are connected using the order they appear and not the name. This is because TypeScript decorators cannot know the names of the arguments accepted by a method.
+::: info NOTA
+Os parâmetros e modelos são conectados usando a ordem em que aparecem e não o nome. Isso ocorre porque os decoradores TypeScript não podem saber os nomes dos argumentos aceitos por um método.
 :::
 
 ```ts
-// Routes file
+// Arquivo de rotas
+
 Route.get('posts/:post/comments/:comment', 'PostsController.show')
 ```
 
 ```ts
-// Controller
+// Controlador
+
 import { bind } from '@adonisjs/route-model-binding'
 import Post from 'App/Models/Post'
 import Comment from 'App/Models/Comment'
@@ -80,16 +72,14 @@ export default class PostsController {
 }
 ```
 
-
-:::note
-**Are you a visual learner**? Checkout [these screencasts](https://learn.adonisjs.com/series/route-model-binding/introduction) to learn about Route model binding, its setup, and usage.
+::: info NOTA
+**Você é um aprendiz visual**? Confira [estes screencasts](https://learn.adonisjs.com/series/route-model-binding/introduction) para aprender sobre a vinculação do modelo de rota, sua configuração e uso.
 :::
 
+## Uso básico
+Comece com o exemplo mais básico e ajuste o nível de complexidade para atender a diferentes casos de uso.
 
-## Basic usage
-Start with the most basic example and tune the complexity level to serve different use cases.
-
-In the following example, we will bind the `Post` model with the first parameter in the `posts/:id` route.
+No exemplo a seguir, vincularemos o modelo `Post` ao primeiro parâmetro na rota `posts/:id`.
 
 ```ts
 Route.get('/posts/:id', 'PostsController.show')
@@ -107,21 +97,21 @@ export default class PostsController {
 }
 ```
 
-:::warning
-Ensure you always import your model with an `import` and not an `import type`. Otherwise, the `bind` decorator will not be able to retrieve the class of your model, and it will not work.
+::: aviso NOTA
+Certifique-se de sempre importar seu modelo com um `import` e não um `import type`. Caso contrário, o decorador `bind` não conseguirá recuperar a classe do seu modelo e não funcionará.
 
-**ESLint user?** - Take a look [here](#compatibility-with-eslint)
+**Usuário ESLint?** - Dê uma olhada [aqui](#compatibility-with-eslint)
 :::
 
-The params and models are matched in the order they are defined. So the first param in the URL matches the first type-hinted model in the controller method.
+Os parâmetros e modelos são correspondidos na ordem em que são definidos. Portanto, o primeiro parâmetro na URL corresponde ao primeiro modelo com sugestão de tipo no método do controlador.
 
-The match is not performed using the name of the controller method argument because TypeScript decorators cannot read them (so the technical limitation leaves us with the order-based matching only).
+A correspondência não é realizada usando o nome do argumento do método do controlador porque os decoradores TypeScript não podem lê-los (então a limitação técnica nos deixa apenas com a correspondência baseada na ordem).
 
-## Changing the lookup key
-By default, the model's primary key is used to find a matching row in the database. You can change that globally or for just one specific route.
+## Alterando a chave de pesquisa
+Por padrão, a chave primária do modelo é usada para encontrar uma linha correspondente no banco de dados. Você pode alterá-la globalmente ou para apenas uma rota específica.
 
-### Change lookup key globally via model
-After the following change, the post will be queried using the `slug` property, not the primary key. In a nutshell, the `Post.findByOrFail('slug', value)` query is executed.
+### Alterar chave de pesquisa globalmente via modelo
+Após a alteração a seguir, a postagem será consultada usando a propriedade `slug`, não a chave primária. Em poucas palavras, a consulta `Post.findByOrFail('slug', value)` é executada.
 
 ```ts
 class Post extends BaseModel {
@@ -129,35 +119,35 @@ class Post extends BaseModel {
 }
 ```
 
-### Change the lookup key for a single route.
-The following example defines the lookup key directly on the route enclosed with parenthesis.
+### Alterar a chave de pesquisa para uma única rota.
+O exemplo a seguir define a chave de pesquisa diretamente na rota entre parênteses.
 
 ```ts
 Route.get('/posts/:id(slug)', 'PostsController.show')
 ```
 
-**Did you notice that our route now reads a bit funny?**\
-The param is written as `:id(slug)`, which does not translate well. Therefore, with Route model binding, we recommend using the model name as the route param because we are no longer dealing with the `id`. Instead, we are fetching model instances from the database.
+**Você notou que nossa rota agora parece um pouco estranha?**\
+O parâmetro é escrito como `:id(slug)`, o que não traduz bem. Portanto, com a vinculação do modelo de rota, recomendamos usar o nome do modelo como o parâmetro de rota porque não estamos mais lidando com o `id`. Em vez disso, estamos buscando instâncias de modelo do banco de dados.
 
-Following is the better way to write the same route.
+A seguir está a melhor maneira de escrever a mesma rota.
 
 ```ts
 Route.get('/posts/:post(slug)', 'PostsController.show')
 ```
 
-## Change lookup logic
-You can change the lookup logic by defining a static `findForRequest` method on the model itself. The method receives the following parameters.
+## Alterar lógica de pesquisa
+Você pode alterar a lógica de pesquisa definindo um método estático `findForRequest` no próprio modelo. O método recebe os seguintes parâmetros.
 
-- `ctx` - The HTTP context for the current request
-- `param` - The parsed parameter. The parameter has the following properties.
-    - `param.name` - The normalized name of the parameter.
-    - `param.param` - The original name of the parameter defined on the route.
-    - `param.scoped` - If `true`, the parameter must be scoped to its parent model.
-    - `param.lookupKey` - The lookup key defined on the route or the model.
-    - `param.parent` - The name of the parent param.
-- `value` - The value of the param during the current request.
+- `ctx` - O contexto HTTP para a solicitação atual
+- `param` - O parâmetro analisado. O parâmetro tem as seguintes propriedades.
+- `param.name` - O nome normalizado do parâmetro.
+- `param.param` - O nome original do parâmetro definido na rota.
+- `param.scoped` - Se `true`, o parâmetro deve ter como escopo seu modelo pai.
+- `param.lookupKey` - A chave de pesquisa definida na rota ou no modelo.
+- `param.parent` - O nome do parâmetro pai.
+- `value` - O valor do parâmetro durante a solicitação atual.
 
-In the following example, we query only published posts. Also, ensure that this method either returns an instance of the model or raises an exception.
+No exemplo a seguir, consultamos apenas postagens publicadas. Além disso, garanta que esse método retorne uma instância do modelo ou gere uma exceção.
 
 ```ts
 class Post extends BaseModel {
@@ -173,14 +163,14 @@ class Post extends BaseModel {
 }
 ```
 
-## Scoped params
-When working with nested route resources, you might want to scope the second param as a relationship with the first param.
+## Parâmetros com escopo
+Ao trabalhar com recursos de rota aninhados, você pode querer definir o escopo do segundo parâmetro como um relacionamento com o primeiro parâmetro.
 
-A great example is finding a post comment by id and ensuring that it is a child of the post mentioned within the same URL.
+Um ótimo exemplo é encontrar um comentário de postagem por id e garantir que ele seja um filho da postagem mencionada dentro do mesmo URL.
 
-The `posts/1/comments/2` should return 404 if the post id of the comment is not `1`.
+O `posts/1/comments/2` deve retornar 404 se o id da postagem do comentário não for `1`.
 
-You can define scoped params using the `>` greater than a sign or famously known as the [breadcrumb sign](https://www.smashingmagazine.com/2009/03/breadcrumbs-in-web-design-examples-and-best-practices/#:~:text=You%20also%20see%20them%20in,the%20page%20links%20beside%20it.)
+Você pode definir parâmetros de escopo usando o `>` maior que um sinal ou conhecido como o [sinal de breadcrumb](https://www.smashingmagazine.com/2009/03/breadcrumbs-in-web-design-examples-and-best-practices/#:~:text=You%20also%20see%20them%20in,the%20page%20links%20beside%20it.)
 
 ```ts
 Route.get('/posts/:post/comments/:>comment', 'PostsController.show')
@@ -199,7 +189,7 @@ export default class PostsController {
 }
 ```
 
-For the above example to work, you must define the `comments` as a relationship on the `Post` model. The type of relationship does not matter.
+Para que o exemplo acima funcione, você deve definir os `comentários` como um relacionamento no modelo `Post`. O tipo de relacionamento não importa.
 
 ```ts
 class Post extends BaseModel {
@@ -208,10 +198,10 @@ class Post extends BaseModel {
 }
 ```
 
-The name of the relationship is looked up, converting the param name to `camelCase`. We will use both plural and singular forms to find the relationship.
+O nome do relacionamento é pesquisado, convertendo o nome do parâmetro para `camelCase`. Usaremos as formas plural e singular para encontrar o relacionamento.
 
-### Customizing relationship lookup
-By default, the relationship is fetched using the lookup key of the bound child model. Effectively the following query is executed.
+### Personalizando a pesquisa de relacionamento
+Por padrão, o relacionamento é buscado usando a chave de pesquisa do modelo filho vinculado. Efetivamente, a consulta a seguir é executada.
 
 ```ts
 await parent
@@ -221,13 +211,13 @@ await parent
   .firstOrFail()
 ```
 
-However, you can customize the lookup by defining the `findRelatedForRequest` method on the model (note, this is not a static method).
+No entanto, você pode personalizar a pesquisa definindo o método `findRelatedForRequest` no modelo (observe que este não é um método estático).
 
 ```ts
 class Post extends BaseModel {
   public findRelatedForRequest(ctx, param, value) {
     /**
-     * Have to do this weird dance because of
+     * Tenho que fazer essa dança estranha por causa disso:
      * https://github.com/microsoft/TypeScript/issues/37778
      */
     const self = this as unknown as Post
@@ -244,8 +234,8 @@ class Post extends BaseModel {
 }
 ```
 
-## Unbound params
-You will often have parameters that are raw values and cannot be tied to a model. In the following example, the `version` is a regular string value and not backed using the database.
+## Parâmetros não vinculados
+Você frequentemente terá parâmetros que são valores brutos e não podem ser vinculados a um modelo. No exemplo a seguir, `version` é um valor de string regular e não é respaldado usando o banco de dados.
 
 ```ts
 Route.get(
@@ -254,7 +244,7 @@ Route.get(
 )
 ```
 
-You can represent the `version` as a string on the controller method, and we will perform no database lookup. For example:
+Você pode representar `version` como uma string no método do controlador, e não realizaremos nenhuma pesquisa no banco de dados. Por exemplo:
 
 ```ts
 import { bind } from '@adonisjs/route-model-binding'
@@ -266,12 +256,11 @@ class PostsController {
 }
 ```
 
-Since the route params and the controller method arguments are matched in the same order they are defined, you will always have to type-hint all the parameters.
+Como os parâmetros de rota e os argumentos do método do controlador são correspondidos na mesma ordem em que são definidos, você sempre terá que dar type-hint em todos os parâmetros.
 
-## Compatibility with ESLint
+## Compatibilidade com ESLint
+Se você usar a regra `@typescript-eslint/consistent-type-imports`, você notará que ela substituirá automaticamente seu `import` por `import type`. Infelizmente, isso acabará quebrando a vinculação do modelo de rota, pois os tipos serão removidos em tempo de execução, então o decorador `bind` não pode recuperar a classe do seu modelo.
 
-If you use the rule `@typescript-eslint/consistent-type-imports`, you will notice that it will automatically replace your `import` with `import type`. Unfortunately, this will ultimately break the route model binding, as the types will be removed at runtime, so the `bind` decorator cannot retrieve the class from your model.
-
-You will need to enable type-aware linting. You can follow this document:
+Você precisará habilitar o linting com reconhecimento de tipo. Você pode seguir este documento:
 
 https://typescript-eslint.io/docs/linting/typed-linting/

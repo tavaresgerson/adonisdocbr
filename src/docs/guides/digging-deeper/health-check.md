@@ -1,20 +1,20 @@
-# Health check
+# Verificação de saúde
 
-The health check module of AdonisJS allows you and the installed packages to report the health of your application. 
+O módulo de verificação de saúde do AdonisJS permite que você e os pacotes instalados relatem a saúde do seu aplicativo.
 
-Health checks are usually helpful when performing rolling deployments, as you can check the health of the newly deployed code before sending any traffic to it. All major platforms, including: [DigitalOcean Apps](https://docs.digitalocean.com/products/app-platform/concepts/health-check/), [Kubernetes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) and [Amazon ECS](https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_HealthCheck.html) has support for performing health checks.
+As verificações de saúde geralmente são úteis ao executar implantações contínuas, pois você pode verificar a saúde do código recém-implantado antes de enviar qualquer tráfego para ele. Todas as principais plataformas, incluindo: [DigitalOcean Apps](https://docs.digitalocean.com/products/app-platform/concepts/health-check/), [Kubernetes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) e [Amazon ECS](https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_HealthCheck.html) têm suporte para executar verificações de saúde.
 
-## How do health checks work?
-The health checks' main goals are to perform operations and ensure that your application will work fine in production. It covers operations like:
+## Como funcionam as verificações de saúde?
+Os principais objetivos das verificações de saúde são executar operações e garantir que seu aplicativo funcionará bem na produção. Ele abrange operações como:
 
-- Checking database connectivity
-- Making sure all the environment variables are in place to run the app
-- The database does not have any pending migrations and so on.
+- Verificar a conectividade do banco de dados
+- Certificar-se de que todas as variáveis ​​de ambiente estejam no lugar para executar o aplicativo
+- O banco de dados não tem nenhuma migração pendente e assim por diante.
 
-The health checks system **CANNOT** check if your application will cause an error during some specific flow, as that is more of a logical or runtime exception and not something that we can detect beforehand.
+O sistema de verificações de integridade **NÃO PODE** verificar se seu aplicativo causará um erro durante algum fluxo específico, pois isso é mais uma exceção lógica ou de tempo de execução e não algo que podemos detectar de antemão.
 
-## Exposing health checks endpoint
-A common practice is to expose an HTTP endpoint that the deployment systems can ping to check the health of your application. You can expose this endpoint by registering a route.
+## Expondo o ponto de extremidade das verificações de integridade
+Uma prática comum é expor um ponto de extremidade HTTP que os sistemas de implantação podem executar ping para verificar a integridade do seu aplicativo. Você pode expor esse ponto de extremidade registrando uma rota.
 
 ```ts
 import Route from '@ioc:Adonis/Core/Route'
@@ -29,7 +29,7 @@ Route.get('health', async ({ response }) => {
 })
 ```
 
-The `getReport` method returns a JSON object with the report of all the registered health checkers. The object is formatted as follows:
+O método `getReport` retorna um objeto JSON com o relatório de todos os verificadores de integridade registrados. O objeto é formatado da seguinte forma:
 
 ```ts
 {
@@ -45,23 +45,17 @@ The `getReport` method returns a JSON object with the report of all the register
 }
 ```
 
-#### healthy
-The top-level `healthy` property tells if all the checks have passed or not. 
+#### `healthy`
+A propriedade de nível superior `healthy` informa se todas as verificações foram aprovadas ou não.
 
----
+#### `report`
+A propriedade `report` inclui um par chave-valor de todas as verificações de integridade registradas e seus respectivos estados.
 
-#### report
-The `report` property includes a key-value pair of all the registered health checks and their respective state.
+#### `displayName`
+A subpropriedade `displayName` geralmente é útil quando você visualiza o relatório em um painel e quer um nome legível.
 
----
-
-#### displayName
-The `displayName` sub-property is usually helpful when you visualize the report on a dashboard and want a readable name.
-
----
-
-#### health
-The `health` sub-property includes the health status and an error message (if the report is unhealthy).
+#### `health`
+A subpropriedade `health` inclui o status de integridade e uma mensagem de erro (se o relatório não estiver íntegro).
 
 ```ts
 {
@@ -80,46 +74,40 @@ The `health` sub-property includes the health status and an error message (if th
 }
 ```
 
----
+#### `meta`
+Os verificadores de integridade também podem anexar metadados personalizados aos seus respectivos nós, e o formato dos metadados pode variar dependendo do verificador.
 
-#### meta
-The health checkers can also attach custom metadata to their respective nodes, and the shape of metadata may vary depending upon the checker.
+## Verificadores de integridade existentes
+A seguir está a lista de verificadores de integridade existentes.
 
-## Existing health checkers
-Following is the list of existing health checkers.
+### Verificador de chave de aplicativo
+O verificador é configurado implicitamente e não pode ser desabilitado. Ele verifica a existência da variável de ambiente `APP_KEY` e garante um comprimento mínimo de **32 caracteres**.
 
-### App key checker
-The checker is configured implicitly and cannot be disabled. It checks for the existence of the `APP_KEY` environment variable and ensures a minimum length of **32 characters**.
+Você pode gerar a chave do aplicativo usando o comando `node ace generate:key` e então usar a saída como o valor para a variável de ambiente `APP_KEY`.
 
-You can generate the app key using the `node ace generate:key` command and then use the output as the value for the `APP_KEY` environment variable.
+### Verificador de ambiente do nó
+Verifica a existência da variável de ambiente `NODE_ENV` e falha se ela não tiver sido definida explicitamente. Você nunca deve executar seu aplicativo em *ambiente desconhecido*.
 
----
+### Verificador Lucid
+O pacote `@adonisjs/lucid` permite habilitar opcionalmente verificações de integridade para uma determinada ou todas as conexões registradas. Ele então tentará [estabelecer uma conexão](https://github.com/adonisjs/lucid/blob/develop/src/Connection/index.ts#L272) com o banco de dados e relatará seu status.
 
-### Node env checker
-Checks the existence of the `NODE_ENV` environment variable and fails if it has not been defined explicitly. You should never run your application in *unknown environment*.
-
----
-
-### Lucid checker
-The `@adonisjs/lucid` package allows to optionally enable health checks for a given or all the registered connections. It will then try to [establish a connection](https://github.com/adonisjs/lucid/blob/develop/src/Connection/index.ts#L272) with the database and reports its status.
-
-Make sure to enable health checks for a given connection by modifying the `config/database.ts` file.
+Certifique-se de habilitar verificações de integridade para uma determinada conexão modificando o arquivo `config/database.ts`.
 
 ```ts
 {
   pg: {
     client: 'pg',
     connection: {
-      // ... connection details
+      // ... detalhes da conexão
     },
     healthCheck: true, // 👈 enabled
   }
 }
 ```
 
-The top-level `lucid` node contains an aggregated status of all the registered connections, and the `meta` array includes the individual status of all the connections.
+O nó `lucid` de nível superior contém um status agregado de todas as conexões registradas, e a matriz `meta` inclui o status individual de todas as conexões.
 
-```ts
+```ts {8-14}
 {
   lucid: {
     displayName: 'Database',
@@ -127,7 +115,6 @@ The top-level `lucid` node contains an aggregated status of all the registered c
       healthy: true,
       message: 'All connections are healthy'
     },
-    // highlight-start
     meta: [
       {
         connection: 'pg',
@@ -135,17 +122,14 @@ The top-level `lucid` node contains an aggregated status of all the registered c
         error: null
       }
     ]
-    // highlight-end
   }
 }
 ```
 
-In case of an error, the `meta[index].error` property will contain the error stack.
+Em caso de erro, a propriedade `meta[index].error` conterá a pilha de erros.
 
----
-
-### Redis checker
-You can also optionally enabled health checks for the `@adonisjs/redis` module by modifying the `config/redis.ts` file.
+### Verificador Redis
+Você também pode habilitar opcionalmente verificações de integridade para o módulo `@adonisjs/redis` modificando o arquivo `config/redis.ts`.
 
 ```ts
 {
@@ -153,21 +137,20 @@ You can also optionally enabled health checks for the `@adonisjs/redis` module b
     host: '127.0.0.1',
     port: 6379,
     password: '',
-    healthCheck: true // 👈 enabled
+    healthCheck: true // 👈 habilitado
   }
 }
 ```
 
-The top-level `redis` node contains an aggregated status of all the registered connections, and the `meta` array includes the individual status of all the connections.
+O nó `redis` de nível superior contém um status agregado de todas as conexões registradas, e a matriz `meta` inclui o status individual de todas as conexões.
 
-```ts
+```ts {7-14}
 {
   displayName: 'Redis',
   health: {
     healthy: true,
     message: 'All connections are healthy',
   },
-  // highlight-start
   meta: [
     {
       connection: 'local',
@@ -176,18 +159,17 @@ The top-level `redis` node contains an aggregated status of all the registered c
       error: null
     }
   ]
-  // highlight-end
 }
 ```
 
-In case of an error, the `meta[index].error` property will contain the error stack, and the `used_memory` property will be set to `null`.
+Em caso de erro, a propriedade `meta[index].error` conterá a pilha de erros, e a propriedade `used_memory` será definida como `null`.
 
-## Adding a custom health checker
-You can also register your custom health checkers within your application codebase or provide them as a package. You can register it inside the `boot` method of a service provider. 
+## Adicionando um verificador de integridade personalizado
+Você também pode registrar seus verificadores de integridade personalizados dentro da base de código do seu aplicativo ou fornecê-los como um pacote. Você pode registrá-los dentro do método `boot` de um provedor de serviços.
 
-The `addChecker` method takes a unique name for the checker and a callback function that performs the health check and returns the report.
+O método `addChecker` pega um nome exclusivo para o verificador e uma função de retorno de chamada que executa a verificação de integridade e retorna o relatório.
 
-```ts
+```ts {8-19}
 
 import { ApplicationContract } from '@ioc:Adonis/Core/Application'
 
@@ -195,7 +177,6 @@ export default class AppProvider {
   constructor(protected app: ApplicationContract) {}
 
   public async boot() {
-    // highlight-start
     const HealthCheck = this.app.container.use('Adonis/Core/HealthCheck')
 
     HealthCheck.addChecker('my-checker', async () => {
@@ -208,7 +189,6 @@ export default class AppProvider {
         meta: {},
       }
     })
-    // highlight-end
   }
 }
 ```

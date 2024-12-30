@@ -31,6 +31,8 @@ node ace configure @adonisjs/auth
 - Vários guardas para autenticação. **Sessões**, **tokens de API** e **autenticação básica**
 - API extensível para adicionar proteções personalizadas e provedores de usuário
 
+&nbsp;
+
 * [Ver no npm](https://npm.im/@adonisjs/auth)
 * [Ver no GitHub](https://github.com/adonisjs/auth)
 

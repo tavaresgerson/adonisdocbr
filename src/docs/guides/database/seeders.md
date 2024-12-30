@@ -19,6 +19,7 @@ O exemplo a seguir usa um modelo Lucid para criar vários usuários. No entanto,
 
 ```ts
 // database/seeders/User.ts
+
 import BaseSeeder from '@ioc:Adonis/Lucid/Seeder'
 import User from 'App/Models/User'
 

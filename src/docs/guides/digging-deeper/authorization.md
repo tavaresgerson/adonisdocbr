@@ -1,30 +1,24 @@
-# Authorization
+# Autorização
 
-:::tip
-**Visual learner?** - Checkout the [AdonisJS Bouncer](https://adocasts.com/series/adonisjs-bouncer) free screencasts series from our friends at Adocasts.
+::: tip DICA
+**Aprendiz visual?** - Confira a série de screencasts gratuitos [AdonisJS Bouncer](https://adocasts.com/series/adonisjs-bouncer) dos nossos amigos da Adocasts.
 :::
 
-AdonisJS ships with an authorization framework to help you authorize user actions against a given resource. For example, checking if a logged-in user is allowed to edit a given post or not.
+O AdonisJS vem com uma estrutura de autorização para ajudar você a autorizar ações do usuário em um determinado recurso. Por exemplo, verificar se um usuário logado tem permissão para editar uma determinada postagem ou não.
 
-The support for authorization is added by the `@adonisjs/bouncer` package, and you must install it separately.
+O suporte para autorização é adicionado pelo pacote `@adonisjs/bouncer`, e você deve instalá-lo separadamente.
 
-:::note
-
-The `@adonisjs/bouncer` package needs the `@adonisjs/auth` package to look up the currently logged-in user. Make sure to configure the auth package first.
-
+::: info NOTA
+O pacote `@adonisjs/bouncer` precisa do pacote `@adonisjs/auth` para procurar o usuário logado no momento. Certifique-se de configurar o pacote auth primeiro.
 :::
 
-:::div{class="setup"}
+:::code-group
 
-:::codegroup
-
-```sh
-// title: 1. Install
+```sh [Instale]
 npm i @adonisjs/bouncer@2.3.0
 ```
 
-```sh
-// title: 2. Configure
+```sh [Configure]
 node ace configure @adonisjs/bouncer
 
 # CREATE: start/bouncer.ts
@@ -38,10 +32,10 @@ node ace configure @adonisjs/bouncer
 
 :::
 
-## Basic example
-The main goal of the Bouncer package is to help you extract the authorization logic to actions or policies instead of writing it everywhere in your codebase.
+## Exemplo básico
+O objetivo principal do pacote Bouncer é ajudar você a extrair a lógica de autorização para ações ou políticas em vez de escrevê-la em todos os lugares da sua base de código.
 
-You can define a Bouncer action inside the `start/bouncer.ts` file. The `Bouncer.define` method accepts the name of the action and closure to write the authorization logic.
+Você pode definir uma ação Bouncer dentro do arquivo `start/bouncer.ts`. O método `Bouncer.define` aceita o nome da ação e o fechamento para escrever a lógica de autorização.
 
 ```ts
 import Post from 'App/Models/Post'
@@ -53,7 +47,7 @@ export const { actions } = Bouncer
   })
 ```
 
-You can define multiple actions by chaining the `.define` method for multiple times. For example:
+Você pode definir várias ações encadeando o método `.define` várias vezes. Por exemplo:
 
 ```ts
 export const { actions } = Bouncer
@@ -68,25 +62,23 @@ export const { actions } = Bouncer
   })
 ```
 
-Once you have defined the action, you can access it inside your route handlers using the `ctx.bouncer` object. 
+Depois de definir a ação, você pode acessá-la dentro dos seus manipuladores de rota usando o objeto `ctx.bouncer`.
 
-The `bouncer.authorize` method accepts the action name and the arguments it receives. The `user` is **inferred from the currently logged-in user**. Hence there is no need to pass the user explicitly.
+O método `bouncer.authorize` aceita o nome da ação e os argumentos que recebe. O `user` é **inferido do usuário atualmente conectado**. Portanto, não há necessidade de passar o usuário explicitamente.
 
-```ts
+```ts {7}
 import Route from '@ioc:Adonis/Core/Route'
 import Post from 'App/Models/Post'
 
 Route.get('posts/:id', async ({ bouncer, request }) => {
   const post = await Post.findOrFail(request.param('id'))
 
-  // highlight-start
   await bouncer.authorize('viewPost', post)
-  // highlight-end
 })
 ```
 
-## Defining actions
-You can define an inline action using the `Bouncer.define` method. Since permissions are usually checked against a user, your action must accept the user as the first argument, followed by any other data it needs to express the authorization logic.
+## Definindo ações
+Você pode definir uma ação inline usando o método `Bouncer.define`. Como as permissões geralmente são verificadas em relação a um usuário, sua ação deve aceitar o usuário como o primeiro argumento, seguido por quaisquer outros dados necessários para expressar a lógica de autorização.
 
 ```ts
 import Post from 'App/Models/Post'
@@ -94,28 +86,25 @@ import User from 'App/Models/User'
 
 export const { actions } = Bouncer
   .define('viewPost', (
-    user: User, // User should always be the first argument
+    user: User, // O usuário deve ser sempre o primeiro argumento
     post: Post
   ) => {
     return post.userId === user.id
   })
 ```
 
-### Using different User models
+### Usando diferentes modelos de usuário
+Você não está limitado apenas a usar o modelo `User`. Você também pode definir ações que precisam de um modelo de usuário diferente, e o Bouncer usará a inferência de tipos TypeScript para filtrar as ações aplicáveis ​​a um determinado tipo de usuário.
 
-You are not only limited to use the `User` model. You can also define actions that need a different user model, and Bouncer will use the TypeScript types inference to filter down the actions applicable for a given user type.
+Confira o vídeo a seguir como um exemplo do mesmo.
 
-Check out the following video as an example of the same.
+### Usuário convidado
+Às vezes, você pode querer escrever ações que também podem funcionar sem um usuário. Por exemplo, você quer permitir que um visitante convidado visualize todas as postagens publicadas. No entanto, uma postagem não publicada deve ser visível apenas para o autor da postagem.
 
-### Guest user
-At times you may want to write actions that can work without a user as well. For example, You want to allow a guest visitor to view all the published posts. However, an unpublished post should only be visible to the post author.
+Neste cenário, você deve definir a propriedade `options.allowGuest` como `true`.
 
-In this scenario, you must set the `options.allowGuest` property to `true`.
-
-:::note
-
-If `allowGuest !== true` and there is no logged-in user, then Bouncer will not even call the action and deny the request implicitly.
-
+::: info NOTA
+Se `allowGuest !== true` e não houver nenhum usuário conectado, o Bouncer nem mesmo chamará a ação e negará a solicitação implicitamente.
 :::
 
 ```ts
@@ -135,10 +124,10 @@ export const { actions } = Bouncer
   })
 ```
 
-### Deny access
-An action can deny the access by returning a ** non-true** value from the action closure, and Bouncer will convert that to a `403` status code.
+### Negar acesso
+Uma ação pode negar o acesso retornando um valor ** não verdadeiro** do fechamento da ação, e o Bouncer converterá isso em um código de status `403`.
 
-However, you can also return a custom message and status code from the action itself using the `Bouncer.deny` method.
+No entanto, você também pode retornar uma mensagem personalizada e um código de status da própria ação usando o método `Bouncer.deny`.
 
 ```ts
 export const { actions } = Bouncer
@@ -151,57 +140,58 @@ export const { actions } = Bouncer
   })
 ```
 
-## Authorizing actions
-You can authorize a user against a set of pre-defined actions using the `bouncer.authorize` method. It accepts the name of the action to authorize, along with the arguments it accepts (excluding the first argument reserved for the user).
+## Autorizando ações
+Você pode autorizar um usuário contra um conjunto de ações predefinidas usando o método `bouncer.authorize`. Ele aceita o nome da ação para autorizar, junto com os argumentos que aceita (excluindo o primeiro argumento reservado para o usuário).
 
-The `authorize` method raises an [AuthorizationException](https://github.com/adonisjs/bouncer/blob/9c230c5f5e52779462c907fb46448f1f53f31fd3/src/Exceptions/AuthorizationException.ts), when the action denies the access.
+O método `authorize` gera uma [AuthorizationException](https://github.com/adonisjs/bouncer/blob/9c230c5f5e52779462c907fb46448f1f53f31fd3/src/Exceptions/AuthorizationException.ts), quando a ação nega o acesso.
 
 ```ts
 Route.get('posts/:id', async ({ bouncer, request }) => {
   const post = await Post.findOrFail(request.param('id'))
 
-  // Authorize user access for a given post
+  // Autorizar acesso do usuário para uma determinada postagem
   await bouncer.authorize('viewPost', post)
 })
 ```
 
-By default, the `ctx.bouncer` object authorizes the actions against the currently logged-in user. However, you can define a user explicitly using the `forUser` method.
+Por padrão, o objeto `ctx.bouncer` autoriza as ações contra o usuário atualmente conectado. No entanto, você pode definir um usuário explicitamente usando o método `forUser`.
 
 ```ts
 const admin = await Admin.findOrFail(1)
 
-// Get a child instance for admin model
+// Obter uma instância filho para o modelo de administração
 const adminAuthorizer = bouncer.forUser(admin)
 
 await adminAuthorizer.authorize('viewPost', post)
 ```
 
-### bouncer.allows
-The `bouncer.allows` method accepts the same set of arguments as the `bouncer.authorize` method. However, instead of throwing an exception, it returns a boolean value indicating if an action is allowed or not.
+### `bouncer.allows`
+O método `bouncer.allows` aceita o mesmo conjunto de argumentos que o método `bouncer.authorize`. No entanto, em vez de lançar uma exceção, ele retorna um valor booleano indicando se uma ação é permitida ou não.
 
 ```ts
 if (await bouncer.allows('viewPost', post)) {
-  // do something
+  // faça alguma coisa
 }
 ```
 
-### bouncer.denies
-The opposite of `bouncer.allows` is the `bouncer.denies` method.
+### `bouncer.denies`
+O oposto de `bouncer.allows` é o método `bouncer.denies`.
 
 ```ts
 if (await bouncer.denies('editPost', post)) {
-  // do something
+  // faça alguma coisa
 }
 ```
 
-## Bouncer hooks
-Bouncer hooks allow you to define `before` and `after` lifecycle hooks. You can use these lifecycle hooks to grant special privileges to an admin or a superuser.
+## Ganchos do Bouncer
+Os ganchos do Bouncer permitem que você defina ganchos do ciclo de vida `before` e `after`. Você pode usar esses ganchos do ciclo de vida para conceder privilégios especiais a um administrador ou superusuário.
 
-### Before hook
-In the following example, a superuser is granted all the access within the `before` lifecycle hook.
+### Antes do gancho
+No exemplo a seguir, um superusuário recebe todo o acesso dentro do gancho do ciclo de vida `before`.
 
 ```ts
-// title: start/bouncer.ts
+// start/bouncer.ts
+
 Bouncer.before((user: User | null) => {
   if (user && user.isSuperUser) {
     return true
@@ -209,13 +199,13 @@ Bouncer.before((user: User | null) => {
 })
 ```
 
-- The actual action callback is never executed when a before hook returns a `true` or a `false` value. 
-- Make sure to return `undefined` if you want Bouncer to execute the next hook or the action callback.
-- The `before` hook is always executed, even when there is no logged-in user. Make sure to handle the use case of a missing user inside the hook callback.
-- The `before` hook receives the **action name** as the second argument.
+- O retorno de chamada de ação real nunca é executado quando um gancho before retorna um valor `true` ou `false`.
+- Certifique-se de retornar `undefined` se quiser que o Bouncer execute o próximo gancho ou o retorno de chamada de ação.
+- O gancho `before` é sempre executado, mesmo quando não há um usuário conectado. Certifique-se de lidar com o caso de uso de um usuário ausente dentro do retorno de chamada do gancho.
+- O gancho `before` recebe o **nome da ação** como o segundo argumento.
 
-### After hook
-The `after` hooks are executed after executing the action callback. If an `after` hook returns a `true` or a `false` value, it will be considered the final response, and we will discard the response of the action.
+### Gancho After
+Os ganchos `after` são executados após a execução do retorno de chamada de ação. Se um gancho `after` retornar um valor `true` ou `false`, ele será considerado a resposta final e descartaremos a resposta da ação.
 
 ```ts
 Bouncer.after((user: User | null, action, actionResult) => {
@@ -227,14 +217,13 @@ Bouncer.after((user: User | null, action, actionResult) => {
 })
 ```
 
-## Using policies
-Expressing all the application permissions as actions inside a single file is not practical, and hence bouncer allows you to extract the permissions to dedicated policy files.
+## Usando políticas
+Expressar todas as permissões do aplicativo como ações dentro de um único arquivo não é prático e, portanto, o bouncer permite que você extraia as permissões para arquivos de política dedicados.
 
-Usually, you will create one policy for a given resource. For example, a policy for managing the **Post resource** permissions, another policy to manage the **Comment resource** permissions, and so on.
+Normalmente, você criará uma política para um determinado recurso. Por exemplo, uma política para gerenciar as permissões do **recurso Post**, outra política para gerenciar as permissões do **recurso Comment** e assim por diante.
 
-### Creating a policy file
-
-You can create a policy by running the following Ace command. The policies are stored inside the `app/Policies` directory. However, you can customize the location by updating the `namespaces.policies` property inside the [.adonisrc.json file](../fundamentals/adonisrc-file.md#namespaces).
+### Criando um arquivo de política
+Você pode criar uma política executando o seguinte comando Ace. As políticas são armazenadas dentro do diretório `app/Policies`. No entanto, você pode personalizar o local atualizando a propriedade `namespaces.policies` dentro do [arquivo .adonisrc.json](../fundamentals/adonisrc-file.md#namespaces).
 
 ```sh
 node ace make:policy Post
@@ -242,9 +231,9 @@ node ace make:policy Post
 # CREATE: app/Policies/PostPolicy.ts
 ```
 
-Every policy class extends the `BasePolicy`, and the **class public methods are treated as the policy actions**.
+Cada classe de política estende a `BasePolicy`, e os **métodos públicos da classe são tratados como ações de política**.
 
-The policy actions work similarly to the standalone bouncer actions. The first parameter is reserved for the user, and the action can accept any number of additional parameters.
+As ações de política funcionam de forma semelhante às ações autônomas do bouncer. O primeiro parâmetro é reservado para o usuário, e a ação pode aceitar qualquer número de parâmetros adicionais.
 
 ```ts
 import User from 'App/Models/User'
@@ -258,9 +247,8 @@ export default class PostPolicy extends BasePolicy {
 }
 ```
 
-### Registering the policy with Bouncer
-
-Also, make sure to register the newly created policy inside the `start/bouncer.ts` file. The `registerPolicies` method accepts a key-value pair. The key is the policy name, and value is a function to import the Policy file lazily.
+### Registrando a política com o Bouncer
+Além disso, certifique-se de registrar a política recém-criada dentro do arquivo `start/bouncer.ts`. O método `registerPolicies` aceita um par chave-valor. A chave é o nome da política, e o valor é uma função para importar o arquivo de política lentamente.
 
 ```ts
 export const { policies } = Bouncer.registerPolicies({
@@ -268,25 +256,24 @@ export const { policies } = Bouncer.registerPolicies({
 })
 ```
 
-### Using policy
-Once the policy has been registered, you can access it using the `bouncer.with` method.
+### Usando a política
+Depois que a política for registrada, você pode acessá-la usando o método `bouncer.with`.
 
-```ts
+```ts {7-9}
 import Route from '@ioc:Adonis/Core/Route'
 import Post from 'App/Models/Post'
 
 Route.get('posts/:id', async ({ bouncer }) => {
   const post = await Post.findOrFail(1)
-  // highlight-start
+
   await bouncer
     .with('PostPolicy')
     .authorize('view', post)
-  // highlight-end
 })
 ```
 
-### Policy hooks
-Policies can also define hooks by implementing the `before` and the `after` methods. Again, hooks follow the same lifecycle as the [standalone bouncer hooks](#bouncer-hooks).
+### Ganchos de política
+As políticas também podem definir ganchos implementando os métodos `before` e `after`. Novamente, os ganchos seguem o mesmo ciclo de vida dos [ganchos de bouncer autônomos](#bouncer-hooks).
 
 ```ts
 import User from 'App/Models/User'
@@ -306,8 +293,8 @@ export default class PostPolicy extends BasePolicy {
 }
 ```
 
-### Guest user
-To authorize requests for the guest users, you will have to mark the policy actions with the `@action` decorator and set the `options.allowGuests = true`.
+### Usuário convidado
+Para autorizar solicitações para usuários convidados, você terá que marcar as ações de política com o decorador `@action` e definir `options.allowGuests = true`.
 
 ```ts
 export default class PostPolicy extends BasePolicy {
@@ -327,8 +314,8 @@ export default class PostPolicy extends BasePolicy {
 }
 ```
 
-## Usage inside the Edge templates
-You can use the `@can` and the `@cannot` tags to display the specific portion of your markup conditionally. For example: Hiding the links to delete and edit the post when the user cannot perform those actions.
+## Uso dentro dos modelos do Edge
+Você pode usar as tags `@can` e `@cannot` para exibir a parte específica da sua marcação condicionalmente. Por exemplo: ocultar os links para excluir e editar a postagem quando o usuário não puder executar essas ações.
 
 ```edge
 @can('editPost', post)
@@ -340,12 +327,10 @@ You can use the `@can` and the `@cannot` tags to display the specific portion of
 @end
 ```
 
-You can also reference the actions of a policy using the dot notation. The first segment is the policy name, and the second section is the policy action.
+Você também pode referenciar as ações de uma política usando a notação de ponto. O primeiro segmento é o nome da política e a segunda seção é a ação da política.
 
-:::note
-
-The policy names are inside the `start/bouncer.ts` file. The key of the `registerPolicies` object is the policy name.
-
+::: info NOTA
+Os nomes das políticas estão dentro do arquivo `start/bouncer.ts`. A chave do objeto `registerPolicies` é o nome da política.
 :::
 
 ```edge
@@ -354,19 +339,19 @@ The policy names are inside the `start/bouncer.ts` file. The key of the `registe
 @end
 ```
 
-Also, you can write the inverse conditional using the `@cannot` tag.
+Além disso, você pode escrever o condicional inverso usando a tag `@cannot`.
 
 ```edge
 @cannot('PostPolicy.edit')
-  <!-- Markup -->
+  <!-- Marcação -->
 @end
 ```
 
-The `@can` and the `@cannot` tags authorize the actions against the currently logged-in user. If the underlying bouncer/policy action needs a different user, you will have to pass an explicit authorizer instance.
+As tags `@can` e `@cannot` autorizam as ações contra o usuário atualmente conectado. Se a ação de bouncer/política subjacente precisar de um usuário diferente, você terá que passar uma instância de autorizador explícita.
 
 ```edge
 @can('PostPolicy.edit', bouncer.forUser(admin), post)
 @end
 ```
 
-In the above example, the second argument, `bouncer.forUser(admin)`, is a child instance of bouncer for a specific user, followed by the action arguments.
+No exemplo acima, o segundo argumento, `bouncer.forUser(admin)`, é uma instância filha de bouncer para um usuário específico, seguido pelos argumentos de ação.
