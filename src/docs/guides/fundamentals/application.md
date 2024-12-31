@@ -1,51 +1,37 @@
-# Application
+# Aplicação
 
-The application module of AdonisJS is responsible for booting the app in different known environments.
+O módulo de aplicação do AdonisJS é responsável por inicializar o aplicativo em diferentes ambientes conhecidos.
 
-When you start the HTTP server from the `server.ts` file or run the `node ace serve` command, the application is booted for the **web** environment.
+Quando você inicia o servidor HTTP a partir do arquivo `server.ts` ou executa o comando `node ace serve`, o aplicativo é inicializado para o ambiente **web**.
 
-Whereas running the `node ace repl` command boots the application in the **repl** environment. All other commands boot the application in the **console** environment.
+Enquanto a execução do comando `node ace repl` inicializa o aplicativo no ambiente **repl**. Todos os outros comandos inicializam o aplicativo no ambiente **console**.
 
-The environment of the application plays an essential role in deciding which actions to perform. For example, The **web** environment does not register or boot the Ace providers.
+O ambiente do aplicativo desempenha um papel essencial na decisão de quais ações executar. Por exemplo, o ambiente **web** não registra ou inicializa os provedores Ace.
 
-You can access the current environment of the application using the `environment` property. Following is the list of known application environments.
+Você pode acessar o ambiente atual do aplicativo usando a propriedade `environment`. A seguir está a lista de ambientes de aplicativos conhecidos.
 
-- `web` environment refers to the process started for the HTTP server.
-- `console` environment refers to the Ace commands except for the REPL command.
-- `repl` environment refers to the process started using `node ace repl` command.
-- `test` environment refers to the process started using the `node ace test` command.
+- O ambiente `web` se refere ao processo iniciado para o servidor HTTP.
+- O ambiente `console` se refere aos comandos Ace, exceto o comando REPL.
+- O ambiente `repl` se refere ao processo iniciado usando o comando `node ace repl`.
+- O ambiente `test` se refere ao processo iniciado usando o comando `node ace test`.
 
 ```ts
 import Application from '@ioc:Adonis/Core/Application'
 console.log(Application.environment)
 ```
 
-## Boot lifecycle
+## Ciclo de vida de inicialização
 
-Following is the boot lifecycle of the application. 
+A seguir está o ciclo de vida de inicialização do aplicativo.
 
-::img[]{src="https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1617132548/v5/application-boot-lifecycle.png" width="300px"}
+![imagem](/docs/assets/application-boot-lifecycle.webp)
 
-<!--
+Você pode acessar as ligações do contêiner IoC quando o estado do aplicativo for definido como `booted` ou `ready`. Uma tentativa de acessar as ligações do contêiner antes do estado inicializado resulta em uma exceção.
 
-graph TD
-A[state:unknown] - ->|Begin boot process| B(state:initiated)
-B - ->|Load and validate env variables<br />Load config<br />Configure logger and profiler | C(state:setup)
-C - ->|Register providers| D(state:registered)
-D - ->|Boot providers <br />Import preload files| E(state:booted)
-E - ->|Execute providers ready method| F(state:ready)
-F - -> G[[Run main code]]
-G - -> H[/Shutdown method invoked/]
-H - ->|Execute providers shutdown method| I(state:shutdown)
+Por exemplo, se você tiver um provedor de serviços que deseja resolver as ligações do contêiner, você deve escrever as instruções de importação dentro dos métodos `boot` ou `ready`.
 
--->
-
-You can access the IoC container bindings once the application state is set to `booted` or `ready`. An attempt to access the container bindings before the booted state results in an exception.
-
-For example, if you have a service provider who wants to resolve the container's bindings, you should write the import statements inside the `boot` or the `ready` methods.
-
-:::caption{for="error"}
-Top-level import will not work
+::: danger ERROR
+A importação de nível superior não funcionará
 :::
 
 ```ts
@@ -61,8 +47,8 @@ export default class AppProvider {
 }
 ```
 
-:::caption{for="success"}
-Move import inside the boot method
+::: tip SUCESSO
+Mova a importação para dentro do método de inicialização
 :::
 
 ```ts
@@ -78,11 +64,11 @@ export default class AppProvider {
 }
 ```
 
-## Version
+## Versão
 
-You can access the application and the framework version using the `version` and `adonisVersion` properties.
+Você pode acessar o aplicativo e a versão do framework usando as propriedades `version` e `adonisVersion`.
 
-The `version` property refers to the version inside the `package.json` file of your app. The `adonisVersion` property refers to the installed version of the `@adonisjs/core` package.
+A propriedade `version` se refere à versão dentro do arquivo `package.json` do seu aplicativo. A propriedade `adonisVersion` se refere à versão instalada do pacote `@adonisjs/core`.
 
 ```ts
 import Application from '@ioc:Adonis/Core/Application'
@@ -91,7 +77,7 @@ console.log(Application.version!.toString())
 console.log(Application.adonisVersion!.toString())
 ```
 
-Both the version properties are represented as an object with the `major`, `minor`, and the `patch` sub-properties.
+Ambas as propriedades de versão são representadas como um objeto com as subpropriedades `major`, `minor` e `patch`.
 
 ```ts
 console.log(Application.version!.major)
@@ -99,9 +85,8 @@ console.log(Application.version!.minor)
 console.log(Application.version!.patch)
 ```
 
-## Node environment
-
-You can access the node environment using the `nodeEnvironment` property. The value is a reference to the `NODE_ENV` environment variable. However, the value is further normalized to be consistent.
+## Ambiente do node
+Você pode acessar o ambiente do nó usando a propriedade `nodeEnvironment`. O valor é uma referência à variável de ambiente `NODE_ENV`. No entanto, o valor é ainda mais normalizado para ser consistente.
 
 ```ts
 import Application from '@ioc:Adonis/Core/Application'
@@ -109,191 +94,154 @@ import Application from '@ioc:Adonis/Core/Application'
 console.log(Application.nodeEnvironment)
 ```
 
-| NODE_ENV | Normalized to | 
-|------------|----------------|
-| dev | development |
-| develop | development |
-| stage | staging |
-| prod | production |
-| testing | test |
+| NODE_ENV  | Normalizado para | 
+|-----------|---------------|
+| dev       | development   |
+| develop   | development   |
+| stage     | staging       |
+| prod      | production    |
+| testing   | test          |
 
-Also, you can make use of the following properties as a shorthand to know the current environment.
+Além disso, você pode usar as seguintes propriedades como uma forma abreviada de conhecer o ambiente atual.
 
-### inProduction
+### `inProduction`
 ```ts
 Application.inProduction
 
-// Same as
+// O mesmo que
 Application.nodeEnvironment === 'production'
 ```
 
----
-
-### inDev
+### `inDev`
 ```ts
 Application.inDev
 
-// Same as
+// O mesmo que
 Application.nodeEnvironment === 'development'
 ```
 
----
-
-### inTest
+### `inTest`
 ```ts
 Application.inTest
 
-// Same as
+// O mesmo que
 Application.nodeEnvironment === 'test'
 ```
 
-## Make paths to project directories
+## Crie caminhos para diretórios de projetos
 
-You can make use of the Application module to make an absolute path to known project directories.
+Você pode usar o módulo Application para criar um caminho absoluto para diretórios de projetos conhecidos.
 
-### configPath
-Make an absolute path to a file inside the `config` directory.
+### `configPath`
+Crie um caminho absoluto para um arquivo dentro do diretório `config`.
 
 ```ts
 Application.configPath('shield.ts')
 ```
 
----
-
-### publicPath
-Make an absolute path to a file inside the `public` directory.
+### `publicPath`
+Crie um caminho absoluto para um arquivo dentro do diretório `public`.
 
 ```ts
 Application.publicPath('style.css')
 ```
 
----
-
-### databasePath
-Make an absolute path to a file inside the `database` directory.
+### `databasePath`
+Crie um caminho absoluto para um arquivo dentro do diretório `database`.
 
 ```ts
 Application.databasePath('seeders/Database.ts')
 ```
 
----
-
-### migrationsPath
-Make an absolute path to a file inside the `migrations` directory.
+### `migrationsPath`
+Crie um caminho absoluto para um arquivo dentro do diretório `migrations`.
 
 ```ts
 Application.migrationsPath('users.ts')
 ```
 
----
-
-### seedsPath
-Make an absolute path to a file inside the `seeds` directory.
+### `seedsPath`
+Crie um caminho absoluto para um arquivo dentro do diretório `seeds`.
 
 ```ts
 Application.seedsPath('Database.ts')
 ```
 
----
-
-### resourcesPath
-Make an absolute path to a file inside the `resources` directory.
+### `resourcesPath`
+Crie um caminho absoluto para um arquivo dentro do diretório `resources`.
 
 ```ts
 Application.resourcesPath('scripts/app.js')
 ```
 
----
-
-### viewsPath
-Make an absolute path to a file inside the `views` directory.
+### `viewsPath`
+Crie um caminho absoluto para um arquivo dentro do diretório `views`.
 
 ```ts
 Application.viewsPath('welcome.edge')
 ```
 
----
-
-### startPath
-Make an absolute path to a file inside the `start` directory.
+### `startPath`
+Crie um caminho absoluto para um arquivo dentro do diretório `start`.
 
 ```ts
 Application.startPath('routes.ts')
 ```
 
----
-
-### tmpPath
-Make an absolute path to a file inside the application `tmp` directory.
+### `tmpPath`
+Crie um caminho absoluto para um arquivo dentro do diretório `tmp` do aplicativo.
 
 ```ts
 Application.tmpPath('uploads/avatar.png')
 ```
 
----
-
-### makePath
-
-Make an absolute path from the root of the application.
+### `makePath`
+Crie um caminho absoluto a partir da raiz do aplicativo.
 
 ```ts
 Application.makePath('app/Middleware/Auth.ts')
 ```
 
-## Other properties
+## Outras propriedades
+A seguir está a lista de propriedades no módulo do aplicativo.
 
-Following is the list of properties on the application module.
-
-### appName
-
-Name of the application. It refers to the `name` property inside the `package.json` file of your application.
+### `appName`
+Nome do aplicativo. Refere-se à propriedade `name` dentro do arquivo `package.json` do seu aplicativo.
 
 ```ts
 Application.appName
 ```
 
----
-
-### appRoot
-
-Absolute path to the application root directory.
+### `appRoot`
+Caminho absoluto para o diretório raiz do aplicativo.
 
 ```ts
 Application.appRoot
 ```
 
----
-
-### rcFile
-
-Reference to the parsed [AdonisRc file](./adonisrc-file.md).
+### `rcFile`
+Referência ao [arquivo AdonisRc](./adonisrc-file.md) analisado.
 
 ```ts
 Application.rcFile.providers
 Application.rcFile.raw
 ```
 
----
-
-### container
-
-Reference to the IoC container instance.
+### `container`
+Referência à instância do contêiner IoC.
 
 ```ts
 Application.container
 ```
 
----
-
-### helpers
-
-Reference to the helper's module.
+### `helpers`
+Referência ao módulo do helper.
 
 ```ts
 Application.helpers.string.snakeCase('helloWorld')
 ```
 
-You can also access the helpers module directly.
+Você também pode acessar o módulo helpers diretamente.
 
 ```ts
 import { string } from '@ioc:Adonis/Core/Helpers'
@@ -301,17 +249,14 @@ import { string } from '@ioc:Adonis/Core/Helpers'
 string.snakeCase('helloWorld')
 ```
 
----
-
-### logger
-
-Reference to the application logger. 
+### `logger`
+Referência ao logger do aplicativo.
 
 ```ts
 Application.logger.info('hello world')
 ```
 
-You can also access the logger module directly.
+Você também pode acessar o módulo logger diretamente.
 
 ```ts
 import Logger from '@ioc:Adonis/Core/Logger'
@@ -319,17 +264,14 @@ import Logger from '@ioc:Adonis/Core/Logger'
 Logger.info('hello world')
 ```
 
----
-
-### config
-
-Reference to the config module. 
+### `config`
+Referência ao módulo config.
 
 ```ts
 Application.config.get('app.secret')
 ```
 
-You can also access the config module directly.
+Você também pode acessar o módulo config diretamente.
 
 ```ts
 import Config from '@ioc:Adonis/Core/Config'
@@ -337,17 +279,14 @@ import Config from '@ioc:Adonis/Core/Config'
 Config.get('app.secret')
 ```
 
----
-
-### env
-
-Reference to the env module. 
+### `env`
+Referência ao módulo env. 
 
 ```ts
 Application.env.get('APP_KEY')
 ```
 
-You can also access the env module directly.
+Você também pode acessar o módulo env diretamente.
 
 ```ts
 import Env from '@ioc:Adonis/Core/Env'
@@ -355,21 +294,15 @@ import Env from '@ioc:Adonis/Core/Env'
 Env.get('APP_KEY')
 ```
 
----
-
-### isReady
-
-Find if the application is in the ready state. It is used internally to stop accepting new HTTP requests when `isReady` is false.
+### `isReady`
+Descubra se o aplicativo está no estado pronto. Ele é usado internamente para parar de aceitar novas solicitações HTTP quando `isReady` é falso.
 
 ```ts
 Application.isReady
 ```
 
----
-
-### isShuttingDown
-
-Find if the application is in the shutdown process. 
+### `isShuttingDown`
+Descubra se o aplicativo está no processo de desligamento.
 
 ```ts
 Application.isShuttingDown

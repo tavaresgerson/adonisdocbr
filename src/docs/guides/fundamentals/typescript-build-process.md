@@ -1,97 +1,89 @@
-# TypeScript build process
+# Processo de construção do TypeScript
 
-One of the framework's goals is to provide first-class support for TypeScript. This goes beyond the static types and IntelliSense you can enjoy while writing the code.
+Um dos objetivos do framework é fornecer suporte de primeira classe para o TypeScript. Isso vai além dos tipos estáticos e do IntelliSense que você pode aproveitar ao escrever o código.
 
-**We also ensure that you never have to install any additional build tools to compile your code during development or for production.**
+**Também garantimos que você nunca precise instalar nenhuma ferramenta de construção adicional para compilar seu código durante o desenvolvimento ou para produção.**
 
-:::note
-This guide assumes that you have some knowledge about TypeScript and the build tools ecosystem.
+::: info NOTA
+Este guia pressupõe que você tenha algum conhecimento sobre o TypeScript e o ecossistema de ferramentas de construção.
 :::
 
-## Common bundling approaches
-Following are some of the common approaches for developing a Node.js application written in TypeScript.
+## Abordagens comuns de agrupamento
+A seguir estão algumas das abordagens comuns para desenvolver um aplicativo Node.js escrito em TypeScript.
 
-### Using tsc
-The simplest way to compile your TypeScript code to JavaScript is using the official `tsc` command line.
+### Usando tsc
+A maneira mais simples de compilar seu código TypeScript para JavaScript é usando a linha de comando oficial `tsc`.
 
-- During development, you can compile your code in the watch mode using the `tsc --watch` command.
-- Next, you may grab `nodemon` to watch the compiled output (JavaScript code) and restart the HTTP server on every change. By this time, you have two watchers running.
-- Also, you may have to write [custom scripts to copy static files](https://github.com/microsoft/TypeScript/issues/30835) like **templates** to the build folder so that your runtime JavaScript code can find and reference it.
+- Durante o desenvolvimento, você pode compilar seu código no modo de observação usando o comando `tsc --watch`.
+- Em seguida, você pode pegar `nodemon` para observar a saída compilada (código JavaScript) e reiniciar o servidor HTTP em cada alteração. Neste momento, você tem dois observadores em execução.
+[scripts personalizados para copiar arquivos estáticos](https://github.com/microsoft/TypeScript/issues/30835) como **templates** para a pasta de compilação para que seu código JavaScript de tempo de execução possa encontrá-lo e referenciá-lo.
 
----
+### Usando ts-node
+ts-node melhora a experiência de desenvolvimento, pois compila o código na memória e não o envia para o disco. Assim, você pode combinar `ts-node` e `nodemon` e executar seu código TypeScript como um cidadão de primeira classe.
 
-### Using ts-node
-ts-node does improve the development experience, as it compiles code in memory and does not output it on the disk. Thus, you can combine `ts-node` and `nodemon` and run your TypeScript code as a first-class citizen.
+No entanto, para aplicativos maiores, `ts-node` pode ficar lento, pois precisa recompilar o projeto inteiro em cada alteração de arquivo. Em contraste, `tsc` estava reconstruindo apenas o arquivo alterado.
 
-However, for larger applications, `ts-node` may get slow as it has to recompile the entire project on every file change. In contrast, `tsc` was re-building only the changed file.
+Observe que `ts-node` é uma ferramenta somente para desenvolvimento. Portanto, você ainda precisa compilar seu código para JavaScript usando `tsc` e escrever scripts personalizados para copiar arquivos estáticos para produção.
 
-Do note, `ts-node` is a development-only tool. So you still have to compile your code to JavaScript using `tsc` and write custom scripts to copy static files for production.
+### Usando Webpack
+Depois de tentar as abordagens acima, você pode decidir experimentar o Webpack. O Webpack é uma ferramenta de construção e tem muito a oferecer. Mas, ele vem com seu próprio conjunto de desvantagens.
 
----
+- Primeiro, usar o Webpack para agrupar o código de backend é um exagero. Você pode nem precisar de 90% dos recursos do Webpack criados para atender ao ecossistema de frontend.
+- Você pode ter que repetir algumas das configurações no arquivo `webpack.config.js` config e `tsconfig.json` principalmente, quais arquivos observar e ignorar.
+[Webpack NÃO agrupar](https://stackoverflow.com/questions/40096470/get-webpack-not-to-bundle-files) todo o backend em um único arquivo.
 
-### Using Webpack
-After trying the above approaches, you may decide to give Webpack a try. Webpack is a build tool and has a lot to offer. But, it comes with its own set of downsides.
+## Abordagem AdonisJS
+Não somos grandes fãs de ferramentas de construção muito complicadas e compiladores de ponta. Ter uma experiência de desenvolvimento tranquila é muito mais valioso do que expor a configuração para ajustar cada botão.
 
-- Very first, using Webpack to bundle the backend code is an overkill. You may not even need 90% of the Webpack features created to serve the frontend ecosystem.
-- You may have to repeat some of the configurations in the `webpack.config.js` config and `tsconfig.json` file mainly, which files to watch and ignore.
-- Also, we are not even sure if you can instruct [Webpack NOT TO bundle](https://stackoverflow.com/questions/40096470/get-webpack-not-to-bundle-files) the entire backend into a single file.
+Começamos com o seguinte conjunto de objetivos.
 
-## AdonisJS approach
-We are not a big fan of over-complicated build tools and bleeding-edge compilers. Having a calm development experience is way more valuable than exposing config to tune every single knob.
+- Use o compilador oficial do TypeScript e não use nenhuma outra ferramenta como `esbuild` ou `swc`. Elas são ótimas alternativas, mas não suportam alguns dos recursos do TypeScript (ex. [a API Transformers](https://levelup.gitconnected.com/writing-typescript-custom-ast-transformer-part-1-7585d6916819)).
+- O arquivo `tsconfig.json` existente deve gerenciar todas as configurações.
+- Se o código roda em desenvolvimento, ele também deve rodar em produção. Ou seja, não use duas ferramentas de desenvolvimento e produção completamente diferentes e depois ensine as pessoas a ajustarem seus códigos.
+- Adicione suporte leve para copiar arquivos estáticos para a pasta de build final. Normalmente, esses serão os modelos do Edge.
+- **Certifique-se de que o REPL também pode executar o código TypeScript como um cidadão de primeira classe. Todas as abordagens acima, exceto `ts-node`, não podem compilar e avaliar o código TypeScript diretamente.**
 
-We started with the following set of goals.
+## Compilador de desenvolvimento na memória
+Semelhante ao ts-node, criamos o módulo [@adonisjs/require-ts](https://github.com/adonisjs/require-ts). Ele usa a API do compilador TypeScript, o que significa que todos os recursos do TypeScript funcionam, e seu arquivo `tsconfig.json` é a única fonte da verdade.
 
-- Stick to the official compiler of TypeScript and do not use any other tools like `esbuild` or `swc`. They are great alternatives, but they don't support some of the TypeScript features (ex. [the Transformers API](https://levelup.gitconnected.com/writing-typescript-custom-ast-transformer-part-1-7585d6916819)).
-- The existing `tsconfig.json` file should manage all the configurations.
-- If the code runs in development, then it should run in production too. Meaning, do not use two completely different development and production tools and then teach people how to adjust their code.
-- Add lightweight support for copying static files to the final build folder. Usually, these will be the Edge templates.
-- **Make sure the REPL can also run the TypeScript code as a first-class citizen. All of the above approaches, except `ts-node`, cannot compile and evaluate the TypeScript code directly.**
+No entanto, `@adonisjs/require-ts` é ligeiramente diferente de `ts-node` nas seguintes maneiras.
 
-## In-memory development compiler
-Similar to ts-node, we created the [@adonisjs/require-ts](https://github.com/adonisjs/require-ts) module. It uses the TypeScript compiler API, meaning all the TypeScript features work, and your `tsconfig.json` file is the single source of truth.
+- Não realizamos nenhuma verificação de tipo durante o desenvolvimento e esperamos que você confie no seu editor de código para o mesmo.
+- Armazenamos a [saída compilada](https://github.com/adonisjs/require-ts/blob/develop/src/Compiler/index.ts#L185-L223) em uma pasta de cache. Então, na próxima vez que seu servidor reiniciar, não recompilaremos os arquivos inalterados. Isso melhora a velocidade drasticamente.
+- Os arquivos em cache precisam ser excluídos em algum momento. O módulo `@adonisjs/require-ts` expõe os [métodos auxiliares](https://github.com/adonisjs/require-ts/blob/develop/index.ts#L43-L57) que o observador de arquivos do AdonisJS usa para limpar o cache do arquivo alterado recentemente.
+- Limpar o cache é essencial apenas para reivindicar o espaço em disco. Não afeta o comportamento do programa.
 
-However, `@adonisjs/require-ts` is slightly different from `ts-node` in the following ways.
+Toda vez que você executa `node ace serve --watch`, iniciamos o servidor HTTP junto com o compilador na memória e observamos o sistema de arquivos para alterações de arquivo.
 
-- We do not perform any type-checking during development and expect you to rely on your code editor for the same.
-- We store the [compiled output](https://github.com/adonisjs/require-ts/blob/develop/src/Compiler/index.ts#L185-L223) in a cache folder. So the next time when your server restarts, we do not recompile the unchanged files. This does improve the speed dramatically.
-- The cached files have to be deleted at some point. The `@adonisjs/require-ts` module exposes the [helper methods](https://github.com/adonisjs/require-ts/blob/develop/index.ts#L43-L57) that AdonisJS file watcher uses to clear the cache for the recently changed file.
-- Clearing cache is only essential for claiming the disk space. It does not impact the behavior of the program.
+## Builds de produção autônomos
+Você cria seu código para produção executando o comando `node ace build --production`. Ele executa as seguintes operações.
 
-Every time you run `node ace serve --watch`, we start the HTTP server along with the in-memory compiler and watch the filesystem for file changes.
+- Limpe o diretório `build` existente (se houver).
+- Crie seus ativos de frontend usando o Webpack Encore (somente se estiver instalado).
+- Use a API do compilador TypeScript para compilar o código TypeScript para JavaScript e escrevê-lo dentro da pasta `build`. **Desta vez, realizamos a verificação de tipo e relatamos os erros do TypeScript**.
+- Copie todos os arquivos estáticos para a pasta `build`. Os arquivos estáticos são registrados dentro do arquivo `.adonisrc.json` sob o array `metaFiles`.
+- Copie `package.json` e `package-lock.json`/`yarn.lock` para a pasta `build`.
+- Gere o arquivo `ace-manifest.json`. Ele contém um índice de todos os comandos que seu projeto está usando.
+- Isso é tudo.
 
-## Standalone production builds
-You build your code for production by running the `node ace build --production` command. It performs the following operations.
+#### Por que chamamos isso de build autônomo?
+Depois de executar o comando `build`, a pasta de saída tem tudo o que você precisa para implantar seu aplicativo em produção.
 
-- Clean the existing `build` directory (if any).
-- Build your frontend assets using Webpack Encore (only if it is installed).
-- Use the TypeScript compiler API to compile the TypeScript code to JavaScript and write it inside the `build` folder. **This time, we do perform type checking and report the TypeScript errors**.
-- Copy all the static files to the `build` folder. The static files are registered inside the `.adonisrc.json` file under the `metaFiles` array.
-- Copy the `package.json` and `package-lock.json`/`yarn.lock` to the `build` folder.
-- Generate the `ace-manifest.json` file. It contains an index of all the commands your project is using.
-- That is all.
+Você pode copiar a pasta `build` sem seu código-fonte TypeScript, e seu aplicativo funcionará perfeitamente.
 
----
+Criar uma pasta `build` autônoma ajuda a reduzir o tamanho do código que você implanta em seu servidor de produção. Isso geralmente é útil quando você empacota seu aplicativo como uma imagem Docker. No entanto, não há necessidade de ter a saída de origem e build em sua imagem Docker e mantê-la leve.
 
-#### Why do we call it a standalone build?
-After running the `build` command, the output folder has everything you need to deploy your application in production.
+#### Pontos a serem lembrados
 
-You can copy the `build` folder without your TypeScript source code, and your application will work just fine.
-
-Creating a standalone `build` folder does help in reducing the size of code that you deploy on your production server. This is usually helpful when you package your app as a Docker image. However, there is no need to have both the source and build output in your Docker image and keep it lightweight.
-
----
-
-#### Points to keep in mind
-
-- Post-build, the output folder becomes the root of your JavaScript application.
-- You must always `cd` into the `build` folder and then run your app.
+- Após a compilação, a pasta de saída se torna a raiz do seu aplicativo JavaScript.
+- Você deve sempre `cd` na pasta `build` e então executar seu aplicativo.
   ```sh
   cd build
   node server.js
   ```
-- You must install production-only dependencies inside the `build` folder.
+- Você deve instalar dependências somente de produção dentro da pasta `build`.
   ```sh
   cd build
   npm ci --production
   ```
-- We do not copy the `.env` file to the output folder. Because the environment variables are not transferable, you must define environment variables for production separately.
+- Não copiamos o arquivo `.env` para a pasta de saída. Como as variáveis ​​de ambiente não são transferíveis, você deve definir variáveis ​​de ambiente para produção separadamente.

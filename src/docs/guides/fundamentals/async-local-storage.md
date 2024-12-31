@@ -1,14 +1,14 @@
-# Async local storage
+# Armazenamento local assíncrono
 
-As per the [Node.js official documentation](https://nodejs.org/docs/latest-v14.x/api/async_hooks.html): "AsyncLocalStorage is used to create asynchronous state within callbacks and promise chains. **It allows storing data throughout the lifetime of a web request or any other asynchronous duration. It is similar to thread-local storage in other languages**."
+De acordo com a [documentação oficial do Node.js](https://nodejs.org/docs/latest-v14.x/api/async_hooks.html): "AsyncLocalStorage é usado para criar estado assíncrono dentro de callbacks e cadeias de promessas. **Ele permite armazenar dados durante todo o tempo de vida de uma solicitação da web ou qualquer outra duração assíncrona. É semelhante ao armazenamento local de thread em outras linguagens**."
 
-To simplify the explanation further, AsyncLocalStorage allows you to store a state when executing an async function and then make it available to all the code paths within that function. For example:
+Para simplificar ainda mais a explicação, AsyncLocalStorage permite que você armazene um estado ao executar uma função assíncrona e, em seguida, disponibilize-o para todos os caminhos de código dentro dessa função. Por exemplo:
 
-:::note
-The following is an imaginary example. However, you can still follow along by creating an empty Node.js project.
+::: info NOTA
+O seguinte é um exemplo imaginário. No entanto, você ainda pode seguir em frente criando um projeto Node.js vazio.
 :::
 
-Let's create an instance of `AsyncLocalStorage` and export it from its module. This will allow multiple modules to access the same storage instance.
+Vamos criar uma instância de `AsyncLocalStorage` e exportá-la de seu módulo. Isso permitirá que vários módulos acessem a mesma instância de armazenamento.
 
 ```ts
 // title: storage.ts
@@ -16,10 +16,11 @@ import { AsyncLocalStorage } from 'async_hooks'
 export const storage = new AsyncLocalStorage()
 ```
 
-Create the main file. It will use the `storage.run` method to execute an async function with the initial state.
+Crie o arquivo principal. Ele usará o método `storage.run` para executar uma função assíncrona com o estado inicial.
 
 ```ts
-// title: main.ts
+// main.ts
+
 // highlight-start
 import { storage } from './storage'
 // highlight-end
@@ -40,10 +41,11 @@ run(2)
 run(3)
 ```
 
-Finally, `ModuleA` can access the state using the `storage.getStore()` method.
+Finalmente, `ModuleA` pode acessar o estado usando o método `storage.getStore()`.
 
 ```ts
-// title: ModuleA.ts
+// ModuleA.ts
+
 // highlight-start
 import { storage } from './storage'
 // highlight-end
@@ -59,20 +61,20 @@ export default class ModuleA {
 }
 ```
 
-Like `ModuleA`, `ModuleB` can also access the same state using the `storage.getStore` method. 
+Assim como `ModuleA`, `ModuleB` também pode acessar o mesmo estado usando o método `storage.getStore`.
 
-In other words, the entire chain of operations has access to the same state initially set inside the `main.js` file during the `storage.run` method call.
+Em outras palavras, toda a cadeia de operações tem acesso ao mesmo estado inicialmente definido dentro do arquivo `main.js` durante a chamada do método `storage.run`.
 
-## What is the need for Async Local Storage?
-Unlike other languages like PHP, Node.js is not a threaded language.
+## Qual é a necessidade do Async Local Storage?
+Ao contrário de outras linguagens como PHP, Node.js não é uma linguagem encadeada.
 
-In PHP, every HTTP request creates a new thread, and each thread has its memory. This allows you to store the state into the global memory and access it anywhere inside your codebase.
+No PHP, cada solicitação HTTP cria uma nova thread, e cada thread tem sua memória. Isso permite que você armazene o estado na memória global e acesse-o em qualquer lugar dentro da sua base de código.
 
-In Node.js, you cannot save data to a global object and keep it isolated between HTTP requests. This is impossible because Node.js runs in a single thread and shares the memory across all the HTTP requests.
+No Node.js, você não pode salvar dados em um objeto global e mantê-los isolados entre solicitações HTTP. Isso é impossível porque o Node.js é executado em um único thread e compartilha a memória entre todas as solicitações HTTP.
 
-This is where Node.js gains a lot of performance, as it does not have to boot the application for every single HTTP request.
+É aqui que o Node.js ganha muito desempenho, pois não precisa inicializar o aplicativo para cada solicitação HTTP.
 
-However, it also means that you have to pass the state around as function arguments or class arguments, since you cannot write it to the global object. Something like the following:
+No entanto, isso também significa que você precisa passar o estado como argumentos de função ou argumentos de classe, pois não pode gravá-lo no objeto global. Algo como o seguinte:
 
 ```ts
 http.createServer((req, res) => {
@@ -88,11 +90,12 @@ class ModuleA {
 }
 ```
 
-> Async Local storage addresses this use case, as it allows isolated state between multiple async operations.
+::: info INFO
+O armazenamento local assíncrono aborda esse caso de uso, pois permite estado isolado entre várias operações assíncronas.
+:::
 
-## How does AdonisJS uses ALS?
-
-ALS stands for **AsyncLocalStorage**. AdonisJS uses the async local storage during the HTTP requests and set the [HTTP context](../http/context.md) as the state. The code flow looks similar to the following.
+## Como o AdonisJS usa o ALS?
+ALS significa **AsyncLocalStorage**. O AdonisJS usa o armazenamento local assíncrono durante as solicitações HTTP e define o [contexto HTTP](../http/context.md) como o estado. O fluxo do código é semelhante ao seguinte.
 
 ```ts
 storage.run(ctx, () => {
@@ -102,7 +105,7 @@ storage.run(ctx, () => {
 })
 ```
 
-The middleware and the route handler usually run other operations as well. For example, using a model to fetch the users.
+O middleware e o manipulador de rotas geralmente executam outras operações também. Por exemplo, usar um modelo para buscar os usuários.
 
 ```ts
 export default class UsersController {
@@ -112,7 +115,7 @@ export default class UsersController {
 }
 ```
 
-The `User` model instances now have access to the context since they are created within the code path of the `storage.run` method.
+As instâncias do modelo `User` agora têm acesso ao contexto, pois são criadas dentro do caminho do código do método `storage.run`.
 
 ```ts
 // highlight-start
@@ -129,10 +132,10 @@ export default class User extends BaseModel {
 }
 ```
 
-The model static properties (not methods) cannot access the HTTP context as they are evaluated when importing the model. So you must understand the code execution path and [use ALS carefully](#things-to-be-aware-of-when-using-als).
+As propriedades estáticas do modelo (não métodos) não podem acessar o contexto HTTP, pois são avaliadas ao importar o modelo. Portanto, você deve entender o caminho de execução do código e [usar o ALS com cuidado](#coisas-a-se-ter-em-conta-ao-usar-als).
 
-## Usage
-To use ALS within your apps, you must enable it first inside the `config/app.ts` file. Feel free to create the property manually if it doesn't exist.
+## Uso
+Para usar o ALS em seus aplicativos, você deve habilitá-lo primeiro dentro do arquivo `config/app.ts`. Sinta-se à vontade para criar a propriedade manualmente se ela não existir.
 
 ```ts
 // title: config/app.ts
@@ -141,10 +144,10 @@ export const http: ServerConfig = {
 }
 ```
 
-Once enabled, you can access the current HTTP context anywhere inside your codebase using the `HttpContext` module.
+Uma vez habilitado, você pode acessar o contexto HTTP atual em qualquer lugar dentro da sua base de código usando o módulo `HttpContext`.
 
-:::note
-Ensure the code path is called during the HTTP request for the `ctx` to be available. Otherwise, it will be `null`.
+::: info NOTA
+Certifique-se de que o caminho do código seja chamado durante a solicitação HTTP para que o `ctx` esteja disponível. Caso contrário, ele será `null`.
 :::
 
 ```ts
@@ -157,30 +160,30 @@ class SomeService {
 }
 ```
 
-## How should it be used?
-At this point, you can consider Async Local Storage as a request-specific global state. [Global state or variables are generally considered bad](https://wiki.c2.com/?GlobalVariablesAreBad) as they make testing and debugging a lot harder.
+## Como deve ser usado?
+Neste ponto, você pode considerar o Async Local Storage como um estado global específico da solicitação. [Estado global ou variáveis ​​são geralmente considerados ruins](https://wiki.c2.com/?GlobalVariablesAreBad) pois eles tornam os testes e a depuração muito mais difíceis.
 
-Node.js Async Local Storage can get even trickier if you are not careful enough to access the local storage within the HTTP request.
+O Node.js Async Local Storage pode ficar ainda mais complicado se você não for cuidadoso o suficiente para acessar o armazenamento local dentro da solicitação HTTP.
 
-We recommend you still write your code as you were writing earlier (passing `ctx` by reference), even if you have access to the Async Local Storage. Passing data by reference conveys a clear execution path and makes it easier to test your code in isolation.
+Recomendamos que você ainda escreva seu código como estava escrevendo antes (passando `ctx` por referência), mesmo se tiver acesso ao Async Local Storage. Passar dados por referência transmite um caminho de execução claro e facilita o teste do seu código isoladamente.
 
-### Then why have you introduced Async Local Storage?
-Async Local Storage shines with APM tools, which collect performance metrics from your app to help you debug and pinpoint problems.
+### Então por que você introduziu o Async Local Storage?
+O Async Local Storage brilha com ferramentas APM, que coletam métricas de desempenho do seu aplicativo para ajudar a depurar e identificar problemas.
 
-Before ALS, there was no simple way for APM tools to relate different resources with a given HTTP request. For example, It could show you how much time was taken to execute a given SQL query but could not tell you which HTTP request executed that query.
+Antes do ALS, não havia uma maneira simples para as ferramentas APM relacionarem diferentes recursos com uma determinada solicitação HTTP. Por exemplo, ele podia mostrar quanto tempo era necessário para executar uma determinada consulta SQL, mas não podia dizer qual solicitação HTTP executou essa consulta.
 
-After ALS, now all this is possible without you have to touch a single line of code. **AdonisJS is going to use ALS to collect metrics using its application-level profiler**.
+Depois do ALS, agora tudo isso é possível sem que você precise tocar em uma única linha de código. **O AdonisJS usará o ALS para coletar métricas usando seu profiler de nível de aplicativo**.
 
-## Things to be aware of when using ALS
-You are free to use ALS if you think it makes your code more straightforward and you prefer global access instead of passing everything by reference.
+## Coisas a serem observadas ao usar o ALS
+Você está livre para usar o ALS se achar que ele torna seu código mais direto e preferir acesso global em vez de passar tudo por referência.
 
-However, be aware of the following situations that can easily lead to memory leaks or unstable behavior of the program.
+No entanto, esteja ciente das seguintes situações que podem facilmente levar a vazamentos de memória ou comportamento instável do programa.
 
-### Top-level access
-Never access the Async Local Storage at the top level of any module. For example:
+### Acesso de nível superior
+Nunca acesse o Async Local Storage no nível superior de nenhum módulo. Por exemplo:
 
-#### ❌ Does not work
-In Node.js, the modules are cached. So `HttpContext.get()` method will be executed only once during the first HTTP request and holds its `ctx` forever during the lifecycle of your process.
+#### ❌ Não funciona
+No Node.js, os módulos são armazenados em cache. Portanto, o método `HttpContext.get()` será executado apenas uma vez durante a primeira solicitação HTTP e manterá seu `ctx` para sempre durante o ciclo de vida do seu processo.
 
 ```ts
 import HttpContext from '@ioc:Adonis/Core/HttpContext'
@@ -193,9 +196,9 @@ export default class UsersController {
 }
 ```
 
-#### ✅ Works
+#### ✅ Funciona
 
-Instead, you should move the `.get` call to within the `index` method.
+Em vez disso, você deve mover a chamada `.get` para dentro do método `index`.
 
 ```ts
 export default class UsersController {
@@ -205,12 +208,12 @@ export default class UsersController {
 }
 ```
 
-### Inside static properties
-The static properties (not methods) of any class are evaluated as soon that module is imported, and hence you should not access the `ctx` within the static properties.
+### Dentro de propriedades estáticas
+As propriedades estáticas (não métodos) de qualquer classe são avaliadas assim que o módulo é importado e, portanto, você não deve acessar o `ctx` dentro das propriedades estáticas.
 
-#### ❌ Does not work
+#### ❌ Não funciona
 
-In the following example, when you import the `User` model inside a controller, the `HttpContext.get()` code will be executed and cached forever. So either you will receive `null`, or you end up caching the tenant connection from the first request.
+No exemplo a seguir, quando você importa o modelo `User` dentro de um controlador, o código `HttpContext.get()` será executado e armazenado em cache para sempre. Então, ou você receberá `null` ou acabará armazenando em cache a conexão do locatário da primeira solicitação.
 
 ```ts
 import HttpContext from '@ioc:Adonis/Core/HttpContext'
@@ -220,8 +223,8 @@ export default class User extends BaseModel {
 }
 ```
 
-#### ✅ Works
-Instead, you should move the `HttpContext.get` call to inside the `query` method.
+#### ✅ Funciona
+Em vez disso, você deve mover a chamada `HttpContext.get` para dentro do método `query`.
 
 ```ts
 import HttpContext from '@ioc:Adonis/Core/HttpContext'
@@ -234,8 +237,8 @@ export default class User extends BaseModel {
 }
 ```
 
-### Event handlers
-The handler of an event emitted during an HTTP request can get access to the request context using `HttpContext.get()` method. For example:
+### Manipuladores de eventos
+O manipulador de um evento emitido durante uma solicitação HTTP pode obter acesso ao contexto da solicitação usando o método `HttpContext.get()`. Por exemplo:
 
 ```ts
 export default class UsersController {
@@ -247,7 +250,8 @@ export default class UsersController {
 ```
 
 ```ts
-// title: Event handler
+// Event handler
+
 import HttpContext from '@ioc:Adonis/Core/HttpContext'
 
 Event.on('new:user', () => {
@@ -255,7 +259,7 @@ Event.on('new:user', () => {
 })
 ```
 
-However, you should be aware of a couple of things when accessing the context from an event handler.
+No entanto, você deve estar ciente de algumas coisas ao acessar o contexto de um manipulador de eventos.
 
-- The event must never try to send a response using `ctx.response.send()` because this is not what events are meant to do.
-- Accessing `ctx` inside an event handler makes it rely on HTTP requests. In other words, the event is not generic anymore and should always be emitted during an HTTP request to make it work.
+- O evento nunca deve tentar enviar uma resposta usando `ctx.response.send()` porque não é isso que os eventos devem fazer.
+- Acessar `ctx` dentro de um manipulador de eventos faz com que ele dependa de solicitações HTTP. Em outras palavras, o evento não é mais genérico e deve sempre ser emitido durante uma solicitação HTTP para que funcione.

@@ -1,30 +1,30 @@
-# Deployment
+# Implantação
 
-Deploying an AdonisJS application is no different than deploying any other Node.js application. First, you'll need a server/platform that can install and run the latest release of `Node.js v14`.
+A implantação de um aplicativo AdonisJS não é diferente da implantação de qualquer outro aplicativo Node.js. Primeiro, você precisará de um servidor/plataforma que possa instalar e executar a versão mais recente do `Node.js v14`.
 
-:::note
-For a frictionless deployment experience, you can try Cleavr. It is a server provisioning service and has first-class support for [deploying AdonisJS apps](https://cleavr.io/adonis).
+::: info NOTA
+Para uma experiência de implantação sem atrito, você pode experimentar o Cleavr. É um serviço de provisionamento de servidor e tem suporte de primeira classe para [implantar aplicativos AdonisJS](https://cleavr.io/adonis).
 
-**Disclaimer: Cleavr is also a sponsor of AdonisJS.**
+**Aviso: Cleavr também é um patrocinador do AdonisJS.**
 :::
 
-## Compiling TypeScript to JavaScript
+## Compilando TypeScript para JavaScript
 
-AdonisJS applications are written in TypeScript and must be compiled to JavaScript during deployment. You can compile your application directly on the production server or perform the build step in a CI/CD pipeline.
+Os aplicativos AdonisJS são escritos em TypeScript e devem ser compilados para JavaScript durante a implantação. Você pode compilar seu aplicativo diretamente no servidor de produção ou executar a etapa de construção em um pipeline de CI/CD.
 
-You can build your [code for production](./typescript-build-process.md#standalone-production-builds) by running the following Ace command. The compiled JavaScript output is written inside the `build` directory.
+Você pode construir seu [código para produção](./typescript-build-process.md#standalone-production-builds) executando o seguinte comando Ace. A saída JavaScript compilada é escrita dentro do diretório `build`.
 
 ```sh
 node ace build --production
 ```
 
-If you have performed the build step inside a CI/CD pipeline, then you can move just the `build` folder to your production server and install the production dependencies directly on the server.
+Se você executou a etapa de build dentro de um pipeline de CI/CD, então você pode mover apenas a pasta `build` para seu servidor de produção e instalar as dependências de produção diretamente no servidor.
 
-## Starting the production server
+## Iniciando o servidor de produção
 
-You can start the production server by running the `server.js` file.
+Você pode iniciar o servidor de produção executando o arquivo `server.js`.
 
-If you have performed the build step on your production server, make sure to first `cd` into the `build` directory and then start the server.
+Se você executou a etapa de build em seu servidor de produção, certifique-se de primeiro `cd` no diretório `build` e então inicie o servidor.
 
 ```sh
 cd build
@@ -34,7 +34,7 @@ npm ci --production
 node server.js
 ```
 
-If the build step was performed in a CI/CD pipeline and **you have copied only the `build` folder to your production server**, the `build` directory becomes the root of your application.
+Se a etapa de build foi executada em um pipeline de CI/CD e **você copiou apenas a pasta `build` para seu servidor de produção**, o diretório `build` se torna a raiz do seu aplicativo.
 
 ```sh
 npm ci --production
@@ -43,13 +43,13 @@ npm ci --production
 node server.js
 ```
 
-### Using a process manager
+### Usando um gerenciador de processos
 
-It is recommended to use a process manager when managing a Node.js application on a basic server.
+É recomendado usar um gerenciador de processos ao gerenciar um aplicativo Node.js em um servidor básico.
 
-A process manager ensures to restart the application if it crashes during runtime. In addition, some process managers like [PM2](https://pm2.keymetrics.io/docs/usage/quick-start/) can also perform graceful restarts when re-deploying the application.
+Um gerenciador de processos garante reiniciar o aplicativo se ele travar durante o tempo de execução. Além disso, alguns gerenciadores de processos como [PM2](https://pm2.keymetrics.io/docs/usage/quick-start/) também podem executar reinicializações graciosas ao reimplantar o aplicativo.
 
-Following is an example [ecosystem file](https://pm2.keymetrics.io/docs/usage/application-declaration/) for PM2.
+A seguir está um exemplo de [arquivo de ecossistema](https://pm2.keymetrics.io/docs/usage/application-declaration/) para PM2.
 
 ```ts
 module.exports = {
@@ -65,14 +65,14 @@ module.exports = {
 }
 ```
 
-## NGINX reverse proxy
-When running the AdonisJS application on a basic server, you must put it behind NGINX (or a similar web server) for [many different reasons](https://medium.com/intrinsic/why-should-i-use-a-reverse-proxy-if-node-js-is-production-ready-5a079408b2ca), with the SSL termination being one of the most important.
+## Proxy reverso NGINX
+Ao executar o aplicativo AdonisJS em um servidor básico, você deve colocá-lo atrás do NGINX (ou um servidor web similar) por [vários motivos diferentes](https://medium.com/intrinsic/why-should-i-use-a-reverse-proxy-if-node-js-is-production-ready-5a079408b2ca), com a terminação SSL sendo um dos mais importantes.
 
-:::note
-Make sure to read the [trusted proxies guide](../http/request.md#trusted-proxy) to ensure you can access the visitor's correct IP address when running the AdonisJS application behind a proxy server.
+::: info NOTA
+Certifique-se de ler o [guia de proxies confiáveis](../http/request.md#trusted-proxy) para garantir que você possa acessar o endereço IP correto do visitante ao executar o aplicativo AdonisJS atrás de um servidor proxy.
 :::
 
-Following is an example of NGINX config to proxy requests to your AdonisJS application. **Make sure to replace the values inside the angle brackets `<>`**.
+A seguir está um exemplo de configuração NGINX para solicitações de proxy para seu aplicativo AdonisJS. **Certifique-se de substituir os valores dentro dos colchetes angulares `<>`**.
 
 ```nginx
 server {
@@ -94,19 +94,19 @@ server {
 }
 ```
 
-## Migrating database
-Using the `node ace migration:run --force` command, you can migrate your production database. The `--force` flag is required when running migrations in the production environment.
+## Migrando banco de dados
+Usando o comando `node ace migration:run --force`, você pode migrar seu banco de dados de produção. O sinalizador `--force` é necessário ao executar migrações no ambiente de produção.
 
-### When to migrate
+### Quando migrar
 
-Also, it would be best if you always run the migrations before restarting the server. Then, if the migration fails, do not restart the server.
+Além disso, seria melhor se você sempre executasse as migrações antes de reiniciar o servidor. Então, se a migração falhar, não reinicie o servidor.
 
-Using a managed service like Cleavr or Heroku, they can automatically handle this use case. Otherwise, you will have to run the migration script inside a CI/CD pipeline or run it manually through SSH.
+Usando um serviço gerenciado como Cleavr ou Heroku, eles podem lidar automaticamente com esse caso de uso. Caso contrário, você terá que executar o script de migração dentro de um pipeline de CI/CD ou executá-lo manualmente por meio de SSH.
 
-### Do not rollback in production
-The `down` method in your migration files usually contains destructive actions like **drop the table**, or **remove a column**, and so on. It is recommended to turn off rollbacks in production inside the `config/database.ts` file.
+### Não faça rollback na produção
+O método `down` em seus arquivos de migração geralmente contém ações destrutivas como **descartar a tabela** ou **remover uma coluna** e assim por diante. É recomendável desativar rollbacks na produção dentro do arquivo `config/database.ts`.
 
-Disabling rollbacks in production will ensure that the `node ace migration:rollback` command results in an error.
+Desabilitar rollbacks na produção garantirá que o comando `node ace migration:rollback` resulte em um erro.
 
 ```ts
 {
@@ -121,28 +121,28 @@ Disabling rollbacks in production will ensure that the `node ace migration:rollb
 }
 ```
 
-### Avoid concurrent migration tasks
-When deploying your AdonisJS application on multiple servers, make sure to run the migrations from only one server and not all of them.
+### Evite tarefas de migração simultâneas
+Ao implantar seu aplicativo AdonisJS em vários servidores, certifique-se de executar as migrações de apenas um servidor e não de todos eles.
 
-For MySQL and PostgreSQL, Lucid will obtain [advisory locks](https://www.postgresql.org/docs/9.4/explicit-locking.html#ADVISORY-LOCKS) to ensure that concurrent migration is not allowed. However, it is better to avoid running migrations from multiple servers in the first place.
+Para MySQL e PostgreSQL, o Lucid obterá [bloqueios consultivos](https://www.postgresql.org/docs/9.4/explicit-locking.html#ADVISORY-LOCKS) para garantir que a migração simultânea não seja permitida. No entanto, é melhor evitar executar migrações de vários servidores em primeiro lugar.
 
-## Persistent storage for file uploads
-Modern-day deployment platforms like Amazon ECS, Heroku, or DigitalOcean apps run your application code inside an [ephemeral filesystem](https://devcenter.heroku.com/articles/dynos#ephemeral-filesystem), which means that each deployment will nuke the existing filesystem and creates a fresh one.
+## Armazenamento persistente para uploads de arquivos
+Plataformas de implantação modernas como Amazon ECS, Heroku ou aplicativos DigitalOcean executam o código do seu aplicativo dentro de um [sistema de arquivos efêmero](https://devcenter.heroku.com/articles/dynos#ephemeral-filesystem), o que significa que cada implantação destruirá o sistema de arquivos existente e criará um novo.
 
-You will lose the user uploaded files if stored within the same storage as your application code. Hence, you must consider using [Drive](../digging-deeper/drive.md) to keep the user uploaded files on a cloud storage service like Amazon S3 or Google Cloud Storage.
+Você perderá os arquivos enviados pelo usuário se armazenados no mesmo armazenamento que o código do seu aplicativo. Portanto, você deve considerar usar o [Drive](../digging-deeper/drive.md) para manter os arquivos enviados pelo usuário em um serviço de armazenamento em nuvem como Amazon S3 ou Google Cloud Storage.
 
 ## Logging
-The [AdonisJS Logger](../digging-deeper/logger.md) writes logs to `stdout` and `stderr` in JSON format. You can either set up an external logging service to read the logs from stdout/stderr, or forward them to a local file on the same server.
+O [AdonisJS Logger](../digging-deeper/logger.md) grava logs em `stdout` e `stderr` no formato JSON. Você pode configurar um serviço de log externo para ler os logs de stdout/stderr ou encaminhá-los para um arquivo local no mesmo servidor.
 
-The framework core and ecosystem packages write logs at the `trace` level. Therefore, you must set the logging level to `trace` when debugging the framework internals.
+Os pacotes do núcleo e do ecossistema do framework gravam logs no nível `trace`. Portanto, você deve definir o nível de log como `trace` ao depurar os internos do framework.
 
-## Debugging database queries
-The Lucid ORM emits the `db:query` event when database debugging is turned on. You can listen to this event and debug the SQL queries using the Logger.
+## Depurando consultas de banco de dados
+O Lucid ORM emite o evento `db:query` quando a depuração de banco de dados é ativada. Você pode ouvir esse evento e depurar as consultas SQL usando o Logger.
 
-Following is an example of pretty-printing the database queries in development and using the Logger in production.
+A seguir, um exemplo de impressão bonita das consultas de banco de dados em desenvolvimento e usando o Logger em produção.
 
 ```ts
-// title: start/event.ts
+// start/event.ts
 import Event from '@ioc:Adonis/Core/Event'
 import Logger from '@ioc:Adonis/Core/Logger'
 import Database from '@ioc:Adonis/Lucid/Database'
@@ -157,10 +157,10 @@ Event.on('db:query', (query) => {
 })
 ```
 
-## Environment variables
-You must keep your production environment variables secure and do not keep them alongside your application code. If you are using a deployment platform like Cleavr, Heroku, and so on, you must manage environment variables from their web dashboard.
+## Variáveis ​​de ambiente
+Você deve manter suas variáveis ​​de ambiente de produção seguras e não mantê-las junto com o código do seu aplicativo. Se você estiver usando uma plataforma de implantação como Cleavr, Heroku e assim por diante, você deve gerenciar variáveis ​​de ambiente a partir do painel da web deles.
 
-When deploying your code on a basic server, you can keep your environment variables inside the `.env` file. The file can also live outside the application codebase. Make sure to inform AdonisJS about its location using the `ENV_PATH` environment variable.
+Ao implantar seu código em um servidor básico, você pode manter suas variáveis ​​de ambiente dentro do arquivo `.env`. O arquivo também pode ficar fora da base de código do aplicativo. Certifique-se de informar o AdonisJS sobre sua localização usando a variável de ambiente `ENV_PATH`.
 
 ```sh
 cd build
@@ -168,25 +168,25 @@ cd build
 ENV_PATH=/etc/myapp/.env node server.js
 ```
 
-## Caching views
-You must cache the Edge templates in production using the `CACHE_VIEWS` environment variable. The templates are cached in memory at runtime, and no precompiling is required.
+## Cache de visualizações
+Você deve armazenar em cache os modelos do Edge em produção usando a variável de ambiente `CACHE_VIEWS`. Os modelos são armazenados em cache na memória em tempo de execução e nenhuma pré-compilação é necessária.
 
 ```dotenv
 CACHE_VIEWS=true
 ```
 
-## Serving static assets
-Serving static assets effectively is essential for the performance of your application. Regardless of how fast your AdonisJS applications are, the delivery of static assets plays a massive role to a better user experience.
+## Servindo ativos estáticos
+Servir ativos estáticos de forma eficaz é essencial para o desempenho do seu aplicativo. Independentemente da rapidez dos seus aplicativos AdonisJS, a entrega de ativos estáticos desempenha um papel importante para uma melhor experiência do usuário.
 
-### Using a CDN service
-The best approach is to use a CDN for delivering the static assets from your AdonisJS application.
+### Usando um serviço CDN
+A melhor abordagem é usar um CDN para entregar os ativos estáticos do seu aplicativo AdonisJS.
 
-The front-end assets compiled using [Webpack Encore](../http/assets-manager.md) are fingerprinted, and this allows your CDN server to cache them aggressively.
+Os ativos front-end compilados usando [Webpack Encore](../http/assets-manager.md) são marcados com impressão digital, e isso permite que seu servidor CDN os armazene em cache agressivamente.
 
-Depending upon the CDN service you are using and your deployment technique, you may have to add a step to your deployment process to move the static files to the CDN server. This is how it should work in a nutshell.
+Dependendo do serviço CDN que você está usando e da sua técnica de implantação, pode ser necessário adicionar uma etapa ao seu processo de implantação para mover os arquivos estáticos para o servidor CDN. É assim que deve funcionar em poucas palavras.
 
-- Update `webpack.config.js` to use the CDN URL when creating the production build.
-  ```js
+- Atualize `webpack.config.js` para usar a URL do CDN ao criar a compilação de produção.
+```js
   if (Encore.isProduction()) {
     Encore.setPublicPath('https://your-cdn-server-url/assets')
     Encore.setManifestKeyPrefix('assets/')
@@ -194,15 +194,13 @@ Depending upon the CDN service you are using and your deployment technique, you 
     Encore.setPublicPath('/assets')
   }
   ```
-- Build your AdonisJS application as usual.
-- Copy the output of `public/assets` to your CDN server. For example, [here is a command](https://github.com/adonisjs-community/polls-app/blob/main/commands/PublishAssets.ts) we use to publish the assets to an Amazon S3 bucket.
+- Crie seu aplicativo AdonisJS normalmente.
+[aqui está um comando](https://github.com/adonisjs-community/polls-app/blob/main/commands/PublishAssets.ts) que usamos para publicar os ativos em um bucket do Amazon S3.
 
----
+### Usando o NGINX para entregar arquivos estáticos
+Outra opção é descarregar a tarefa de servir ativos para o NGINX. Se você usar o Webpack Encore para compilar os ativos do front-end, você deve armazenar em cache agressivamente todos os arquivos estáticos, pois eles são marcados com impressão digital.
 
-### Using NGINX to deliver static files
-Another option is to offload the task of serving assets to NGINX. If you use Webpack Encore to compile the front-end assets, you must aggressively cache all the static files since they are fingerprinted.
-
-Add the following block to your NGINX config file. **Make sure to replace the values inside the angle brackets `<>`**.
+Adicione o seguinte bloco ao seu arquivo de configuração do NGINX. **Certifique-se de substituir os valores dentro dos colchetes angulares `<>`**.
 
 ```nginx
 location ~ \.(jpg|png|css|js|gif|ico|woff|woff2) {
@@ -214,15 +212,13 @@ location ~ \.(jpg|png|css|js|gif|ico|woff|woff2) {
 }
 ```
 
----
+### Usando o servidor de arquivo estático AdonisJS
+Você também pode contar com o servidor de arquivo estático integrado do AdonisJS para servir os ativos estáticos do diretório `public` para manter as coisas simples.
 
-### Using AdonisJS static file server
-You can also rely on the AdonisJS inbuilt static file server to serve the static assets from the `public` directory to keep things simple.
-
-No additional configuration is required. Just deploy your AdonisJS application as usual, and the request for static assets will be served automatically. However, if you use Webpack Encore to compile your front-end assets, you must update the `config/static.ts` file with the following options.
+Nenhuma configuração adicional é necessária. Basta implantar seu aplicativo AdonisJS como de costume, e a solicitação de ativos estáticos será atendida automaticamente. No entanto, se você usar o Webpack Encore para compilar seus ativos front-end, você deve atualizar o arquivo `config/static.ts` com as seguintes opções.
 
 ```ts
-// title: config/static.ts
+// config/static.ts
 {
   // ... rest of the config
   maxAge: '365d',
