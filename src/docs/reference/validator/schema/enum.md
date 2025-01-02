@@ -12,7 +12,7 @@ import { schema } from '@ioc:Adonis/Core/Validator'
 }
 ```
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1618248238/v5/literal-union-enum.jpg)
+![](/docs/assets/literal-union-enum.jpg)
 
 You can also make use of TypeScript enums.
 

@@ -34,7 +34,7 @@ test('register user', async ({ assert, client }) => {
 })
 ```
 
-### Mail.fake
+### `Mail.fake`
 
 Calling `Mail.fake` creates a fake only for the default mailer. However, you can explicitly pass the name(s) of the mailers to fake.
 
@@ -46,7 +46,7 @@ Mail.fake()
 Mail.fake(['smtp', 's3'])
 ```
 
-### Mail.restore
+### `Mail.restore`
 Once done with testing, you can restore the fakes for selected or all mailers.
 
 ```ts
@@ -90,7 +90,7 @@ Event.fake()
 Event.fake(['new:user', 'update:email'])
 ```
 
-### Event.restore
+### `Event.restore`
 You can restore events using the `Event.restore` method.
 
 ```ts
@@ -135,7 +135,7 @@ Drive.fake()
 Drive.fake(['s3', 'local'])
 ```
 
-### Drive.restore
+### `Drive.restore`
 You can restore fakes by calling the `Drive.restore` method. Optionally, you can pass the disk names to restore, otherwise the default disk is restored. Or, use the `Drive.restoreAll` method to restore all the disk.
 
 ```ts

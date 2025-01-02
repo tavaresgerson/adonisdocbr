@@ -23,7 +23,7 @@ class User extends BaseModel {
 ## Methods/Properties
 Following is the list of methods/properties that every adapter must have.
 
-### modelConstructorClient
+### `modelConstructorClient`
 Returns the query client for a given model constructor. 
 
 ```ts
@@ -37,9 +37,7 @@ class MyAdapter implements AdapterContract {
 }
 ```
 
----
-
-### modelClient
+### `modelClient`
 Returns the query client for a given model instance. The default implementation resolves the client as follows
 
 - Return the transaction client if the model has `$trx` property defined
@@ -55,9 +53,7 @@ class MyAdapter implements AdapterContract {
 }
 ```
 
----
-
-### query
+### `query`
 Return the query builder instance for a given Model constructor. The `Model.query` method internals calls the `query` method on the adapter.
 
 ```ts
@@ -70,9 +66,7 @@ class MyAdapter implements AdapterContract {
 }
 ```
 
----
-
-### insert
+### `insert`
 Perform the insert operation for a given model instance. The method receives the model instance and an object of attributes to insert.
 
 ```ts
@@ -84,9 +78,7 @@ class MyAdapter implements AdapterContract {
 }
 ```
 
----
-
-### update
+### `update`
 Perform the update operation for a given model instance. The method receives the model instance and an object of attributes to update.
 
 ```ts
@@ -98,9 +90,7 @@ class MyAdapter implements AdapterContract {
 }
 ```
 
----
-
-### delete
+### `delete`
 Perform the delete operation for a given model instance. The method receives only the model instance.
 
 ```ts
@@ -112,9 +102,8 @@ class MyAdapter implements AdapterContract {
 }
 ```
 
---- 
 
-### refresh
+### `refresh`
 Refresh the model instance by performing a select query and hydrating its attributes. The method receives only the model instance.
 
 ```ts

@@ -10,8 +10,8 @@ Route.post('posts', async ({ request }) => {
   /**
    * Schema definition
    */
-  const newPostSchema = schema.create({
-    title: schema.string(),
+  // const newPostSchema = schema.create({schema.string(),
+  
     body: schema.string(),
     categories: schema.array().members(schema.number()),
   })
@@ -25,7 +25,7 @@ Route.post('posts', async ({ request }) => {
 
 The validator also **extracts the static types** from the schema definition. You get the runtime validations and the static type safety from a single schema definition.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1611685370/v5/validator-static-types.jpg)
+![](/docs/assets/validator-static-types.webp)
 
 ## Schema composition
 The schema definition is divided into three main parts.
@@ -34,7 +34,7 @@ The schema definition is divided into three main parts.
 - The `schema.string`, `schema.number`, and other similar methods define the data type for an individual field.
 - Finally, you use the `rules` object to apply additional validation constraints on a given field. For example: Validating a string to be a valid email is unique inside the database.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1617601990/v5/schema-101.png)
+![](/docs/assets/schema-101.png)
 
 :::note
 The `rules` object is imported from `@ioc:Adonis/Core/Validator`
@@ -197,7 +197,8 @@ Requests negotiating using `Accept=application/vnd.api+json` header, receives th
       source: {
         pointer: 'title',
       },
-      title: 'required validation failed'
+// 'required validation failed'
+
     }
   ]
 }
@@ -236,7 +237,8 @@ node ace make:validator CreateUser
 All the validation related properties, including the `schema`, `messages` are defined as properties on the class.
 
 ```ts
-// title: app/Validators/CreateUserValidator.ts
+// app/Validators/CreateUserValidator.ts
+
 import { schema, CustomMessages } from '@ioc:Adonis/Core/Validator'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 

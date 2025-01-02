@@ -112,71 +112,51 @@ The route handler writes the response body using the `response.send` method in t
 Since the response body is lazily evaluated, AdonisJS will always set the **content-length** and the **content-type** headers by inspecting the most recent response body.
 
 ## Response status and headers
-
 Following are the methods to work with the response headers and the response status.
 
-### header
-
+### `header`
 The `response.header` method defines the HTTP response header. Using this method overwrites the existing header (if any).
 
 ```ts
 response.header('Content-type', 'text/html')
 ```
 
----
-
-### append
-
+### `append`
 The `response.append` method is similar to the `header` method. However, it appends to the existing header value (if any).
 
 ```ts
 response.append('Set-cookie', 'cookie-value')
 ```
 
----
-
-### removeHeader
-
+### `removeHeader`
 The `response.removeHeader` allows removing an existing response header.
 
 ```ts
 response.removeHeader('Content-type')
 ```
 
----
-
-### getHeader
-
+### `getHeader`
 The `response.getHeader` method returns the value of an existing header.
 
 ```ts
 const cookie = response.getHeader('Set-cookie')
 ```
 
----
-
-### safeHeader
-
+### `safeHeader`
 The `response.safeHeader` method is similar to the `header` method. However, it only defines the header if it is not defined already.
 
 ```ts
 response.safeHeader('Content-type', 'application/json')
 ```
 
----
-
-### status
-
+### `status`
 The `response.status` method defines the status for the HTTP response. You can also use the [descriptive methods](#descriptive-response-methods) to set the status and the response body together.
 
 ```ts
 response.status(401)
 ```
 
----
-
-### safeStatus
-
+### `safeStatus`
 Like the `status` method, the `response.status` only defines the status if it is not defined already.
 
 ```ts
@@ -187,8 +167,7 @@ response.safeStatus(401)
 
 AdonisJS has first-class support for piping streams and file downloads. Also, we make sure to clean up streams in case of errors properly.
 
-### stream
-
+### `stream`
 The `response.stream` method allows piping the stream to the response. This method does not set the **content-type** and the **content-length** headers, and you will have to set them manually.
 
 ```ts
@@ -204,10 +183,7 @@ response.stream(image, (error) => {
 })
 ```
 
----
-
-### download
-
+### `download`
 The `download` method streams the file to the client by reading it from the disk. However, unlike the stream method, the `download` method does set the **content-type** and the **content-length** headers.
 
 ```ts
@@ -236,10 +212,7 @@ response.download(filePath, true, (error) => {
 })
 ```
 
----
-
-### attachment
-
+### `attachment`
 The `response.attachment` is similar to the `download` method. However, it allows customizing the downloaded file name and defines the [Content-Disposition](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition) header.
 
 ```ts
@@ -254,7 +227,6 @@ response.attachment(filePath, 'foo.jpg', 'inline')
 ```
 
 ## Redirects
-
 The response class exposes a rich API to work with redirects, including redirecting users to a route, redirecting back to the previous page, and forwarding the existing query string.
 
 You can get an instance of the [Redirect class](https://github.com/adonisjs/http-server/blob/develop/src/Redirect/index.ts) using the `response.redirect()` method.
@@ -268,7 +240,6 @@ response.redirect().toPath('/some/url')
 ```
 
 ### Custom status code
-
 By default, a `302` status code is used. However, you can override it using the `.status` method.
 
 ```ts
@@ -276,7 +247,6 @@ response.redirect().status(301).toPath('/some/url')
 ```
 
 ### Redirect to a route
-
 You can also redirect the request to a named route using the `.toRoute` method.
 
 ```ts
@@ -284,7 +254,6 @@ response.redirect().toRoute('PostsController.show', { id: 1 })
 ```
 
 ### Define/forward query string
-
 The `.withQs` allows you to forward the existing query string or define a custom query string during redirect.
 
 ```ts
@@ -299,8 +268,7 @@ response
   .back()
 ```
 
-### withQs with params
-
+### `withQs` with params
 Calling the `.withQs` method with custom object multiple times merges the objects together. However, you can combine it with `.clearQs` method to clear the existing objects. For example:
 
 ```ts
@@ -314,8 +282,7 @@ response
 // URL: /users?filters[name]=virk
 ```
 
-### withQs without params
-
+### `withQs` without params
 Calling the `withQs` method without any parameters will forward the existing query string to the redirected URL. If you redirect the user back to the old page, we will use the query string from the `referrer` header URL.
 
 ```ts
@@ -327,11 +294,9 @@ response.redirect().withQs().toPath('/users') // 👈 current URL qs is used
 ```
 
 ## Abort and respond
-
 The response class allows you to abort the current HTTP request using the `response.abort` or `response.abortIf` methods.
 
-### abort
-
+### `abort`
 The `response.abort` method aborts the current request by raising an [AbortException](https://github.com/adonisjs/http-server/blob/develop/src/Response/index.ts#L44)
 
 The method accepts a total of two arguments: i.e., the response body and an optional status.
@@ -345,20 +310,14 @@ if (!auth.user) {
 }
 ```
 
----
-
-### abortIf
-
+### `abortIf`
 The `response.abortIf` method accepts a condition and aborts the request when the condition is true.
 
 ```ts
 response.abortIf(!auth.user, 'Not authenticated', 401)
 ```
 
----
-
-### abortUnless
-
+### `abortUnless`
 The `response.abortUnless` method is the opposite of the abortIf method.
 
 ```ts
@@ -366,11 +325,9 @@ response.abortUnless(auth.user, 'Not authenticated', 401)
 ```
 
 ## Other methods and properties
-
 Following is the list of other methods and properties available in the response class.
 
-### finished
-
+### `finished`
 Find if the response has been written to the outgoing stream.
 
 ```ts
@@ -379,16 +336,10 @@ if (!response.finished) {
 }
 ```
 
----
-
-### headersSent
-
+### `headersSent`
 An alias for the Node.js [res.headersSent](https://nodejs.org/dist/latest-v15.x/docs/api/http.html#http_response_headerssent) property.
 
----
-
-### isPending
-
+### `isPending`
 The property is the opposite of the `response.finished` property.
 
 ```ts
@@ -397,10 +348,7 @@ if (response.isPending) {
 }
 ```
 
----
-
-### vary
-
+### `vary`
 A shortcut to define the [HTTP vary header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Vary). Calling the `vary` method multiple times will append to the list of existing headers.
 
 ```ts
@@ -410,20 +358,14 @@ response.vary('Origin')
 response.vary('Accept, User-Agent')
 ```
 
----
-
-### location
-
+### `location`
 A shortcut to set the [HTTP location header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Location).
 
 ```ts
 response.location('/dashboard')
 ```
 
----
-
-### type
-
+### `type`
 A shortcut to set the [HTTP content-type header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type).
 
 ```ts
@@ -438,7 +380,6 @@ response.type('html') // defines content-type=text/html
 ```
 
 ## Descriptive response methods
-
 The response class has a bunch of descriptive methods (one of each HTTP status) to send the response body and set the status at the same time. For example:
 
 ```ts
@@ -450,7 +391,6 @@ response.created({ data: user })
 [Here's](https://github.com/adonisjs/http-server/blob/ea55c2a65fd388373d0b4e35ae45bee9cb096d02/src/Response/index.ts#L937-L1145) the list of all the available methods.
 
 ## Extending Response class
-
 You can extend the Response class using macros or getters. The best place to extend the response is inside a custom service provider.
 
 Open the pre-existing `providers/AppProvider.ts` file and write the following code inside the `boot` method.
@@ -486,7 +426,6 @@ Route.post('users', ({ response }) => {
 ```
 
 ### Informing TypeScript about the method
-
 The `flash` property is added at the runtime, and hence TypeScript does not know about it. To inform the TypeScript, we will use [declaration merging](https://www.typescriptlang.org/docs/handbook/declaration-merging.html#merging-interfaces) and add the property to the `ResponseContract` interface.
 
 Create a new file at path `contracts/response.ts` (the filename is not important) and paste the following contents inside it.
@@ -501,7 +440,6 @@ declare module '@ioc:Adonis/Core/Response' {
 ```
 
 ## Additional reading
-
 Following are some of the additional guides to learn more about the topics not covered in this document.
 
 - [Cookies](./cookies.md)

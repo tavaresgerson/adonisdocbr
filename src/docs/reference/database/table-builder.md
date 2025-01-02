@@ -23,9 +23,7 @@ class UserSchema extends BaseSchema {
 ## Methods/Properties
 Following is the list of methods/properties available on the table builder class.
 
----
-
-### dropColumn
+### `dropColumn`
 Drop a column by its name.
 
 ```ts
@@ -34,9 +32,7 @@ this.schema.table('users', (table) => {
 })
 ```
 
----
-
-### dropColumns
+### `dropColumns`
 Drop more than one column by providing multiple arguments.
 
 ```ts
@@ -45,9 +41,7 @@ this.schema.table('users', (table) => {
 })
 ```
 
----
-
-### renameColumn
+### `renameColumn`
 Rename a column. The method accepts the existing column name as the first argument and the new name as the second argument.
 
 ```ts
@@ -56,9 +50,7 @@ this.schema.table('users', (table) => {
 })
 ```
 
----
-
-### increments
+### `increments`
 
 Adds an auto-incrementing column. The column is also marked as the primary key unless disabled explicitly.
 
@@ -79,9 +71,7 @@ this.schema.createTable('users', (table) => {
 })
 ```
 
----
-
-### integer
+### `integer`
 
 Add an integer column.
 
@@ -91,9 +81,7 @@ this.schema.createTable('users', (table) => {
 })
 ```
 
----
-
-### bigInteger
+### `bigInteger`
 Adds a `bigint` column in MYSQL and PostgreSQL. For all other database drivers, it defaults to a normal integer.
 
 :::note
@@ -106,9 +94,7 @@ this.schema.createTable('users', (table) => {
 })
 ```
 
----
-
-### text
+### `text`
 
 Adds a text column to the database. You can optionally define the text datatype to be `mediumtext` or `longtext`. The data type is ignored if the underlying driver is not MySQL.
 
@@ -118,9 +104,7 @@ this.schema.createTable('posts', (table) => {
 })
 ```
 
----
-
-### string
+### `string`
 
 Add a string column with an optional length. The length defaults to `255`, if not specified.
 
@@ -133,9 +117,7 @@ this.schema.createTable('posts', (table) => {
 })
 ```
 
----
-
-### float
+### `float`
 
 Adds a float column, with **optional precision (defaults to 8)** and **scale (defaults to 2)**.
 
@@ -150,9 +132,7 @@ this.schema.createTable('products', (table) => {
 })
 ```
 
----
-
-### decimal
+### `decimal`
 
 Adds a decimal column, with **optional precision (defaults to 8)** and **scale (defaults to 2)**.
 
@@ -169,9 +149,7 @@ this.schema.createTable('products', (table) => {
 })
 ```
 
----
-
-### boolean
+### `boolean`
 
 Adds a boolean column. Many databases represent `true` and `false` as `1` and `0` and return the same value during SQL queries.
 
@@ -181,9 +159,7 @@ this.schema.createTable('posts', (table) => {
 })
 ```
 
----
-
-### date
+### `date`
 Adds a date column to the database table.
 
 ```ts
@@ -192,9 +168,7 @@ this.schema.createTable('users', (table) => {
 })
 ```
 
----
-
-### dateTime
+### `dateTime`
 Adds a DateTime column to the database table. The method accepts the column name as the first argument, alongside the options object to configure the `precision` and use the `timestampz` data type.
 
 - You can enable/disable the `timestampz` data type for PostgreSQL. It is enabled by default.
@@ -213,9 +187,7 @@ this.schema.createTable('users', (table) => {
 })
 ```
 
----
-
-### time
+### `time`
 Adds a time column with optional precision for MySQL. It is not supported on Amazon Redshift.
 
 ```ts
@@ -224,9 +196,7 @@ this.schema.createTable('users', (table) => {
 })
 ```
 
----
-
-### timestamp
+### `timestamp`
 Adds a timestamp column to the database table. The method accepts the column name as the first argument, alongside the options object to configure the `precision` and use the `timestampz` data type.
 
 - You can enable/disable the `timestampz` data type for PostgreSQL. It is enabled by default.
@@ -245,9 +215,7 @@ this.schema.createTable('users', (table) => {
 })
 ```
 
----
-
-### timestamps
+### `timestamps`
 Adds `created_at` and `updated_at` columns to the database table.
 
 :::warning
@@ -289,9 +257,7 @@ this.schema.createTable('users', (table) => {
 })
 ```
 
----
-
-### binary
+### `binary`
 Adds a binary column. The method accepts the column name as the first argument, with an optional length as the second argument (applicable for MySQL only).
 
 ```ts
@@ -300,9 +266,7 @@ this.schema.createTable('users', (table) => {
 })
 ```
 
----
-
-### enum / enu
+### `enum` / `enu`
 
 Adds an enum column to the database. The method accepts the column name as the first argument, an array of enum options as the second argument, and an optional object of options as the third argument.
 
@@ -338,9 +302,7 @@ this.schema.raw('DROP TYPE IF EXISTS "user_account_status"')
 this.schema.dropTable('users')
 ```
 
----
-
-### json
+### `json`
 Adds a JSON column, using the built-in JSON type in **PostgreSQL**, **MySQL** and **SQLite**, defaulting to a text column in older versions or in unsupported databases.
 
 ```ts
@@ -349,9 +311,7 @@ this.schema.createTable('projects', (table) => {
 })
 ```
 
----
-
-### jsonb
+### `jsonb`
 Same as the `json` method but uses the native `jsonb` data type (if possible).
 
 ```ts
@@ -360,9 +320,7 @@ this.schema.createTable('projects', (table) => {
 })
 ```
 
----
-
-### uuid
+### `uuid`
 Adds a UUID column. The method accepts the column name as the only argument.
 
 - Uses the built-in UUID type in PostgreSQL
@@ -390,9 +348,7 @@ export default class SetupExtensions extends BaseSchema {
 }
 ```
 
----
-
-### comment
+### `comment`
 Sets the comment for the table. Accepts the comment value as the only argument.
 
 ```ts
@@ -401,9 +357,7 @@ this.schema.createTable('users', (table) => {
 })
 ```
 
----
-
-### engine
+### `engine`
 
 Sets the engine for the database table. The method accepts the engine name as the only argument.
 
@@ -416,9 +370,7 @@ this.schema.createTable('users', (table) => {
 })
 ```
 
----
-
-### charset
+### `charset`
 
 Sets the charset for the database table. The method accepts the charset value as the only argument.
 
@@ -431,9 +383,7 @@ this.schema.createTable('users', (table) => {
 })
 ```
 
----
-
-### collate
+### `collate`
 
 Sets the collation for the database table. The method accepts the collation value as the only argument.
 
@@ -446,9 +396,7 @@ this.schema.createTable('users', (table) => {
 })
 ```
 
----
-
-### inherits
+### `inherits`
 Set the parent table for inheritance. The method accepts the parent table name as the only argument.
 
 - The method is only available within a `createTable` call.
@@ -460,9 +408,7 @@ this.schema.createTable('capitals', (table) => {
 })
 ```
 
----
-
-### specificType
+### `specificType`
 Create a column by defining its type as a raw string. The method allows you to create a database column, which is not covered by the standard table builder API.
 
 The first argument is the column name, and the second argument is column type.
@@ -473,9 +419,7 @@ this.schema.createTable('users', (table) => {
 })
 ```
 
----
-
-### index
+### `index`
 Adds an index to a table over the given columns. You must create the table before defining the index.
 
 - The method accepts an array of columns as the first argument.
@@ -488,9 +432,7 @@ this.schema.alterTable('users', (table) => {
 })
 ```
 
----
-
-### dropIndex
+### `dropIndex`
 
 Drop an existing index from the table columns. The method accepts columns as the first argument and an optional index name as the second argument.
 
@@ -500,9 +442,7 @@ this.schema.alterTable('users', (table) => {
 })
 ```
 
----
-
-### unique
+### `unique`
 
 Adds a unique index to a table over the given columns. A default index name using the columns is used unless `indexName` is specified.
 
@@ -512,9 +452,7 @@ this.schema.alterTable('posts', (table) => {
 })
 ```
 
----
-
-### foreign
+### `foreign`
 
 Adds a foreign key constraint to a table for existing columns. Make sure the table already exists when using the `foreign` method.
 
@@ -536,9 +474,7 @@ table
   .onDelete('CASCADE')
 ```
 
----
-
-### dropForeign
+### `dropForeign`
 Drop a pre-existing foreign key constraint. The method accepts one or more columns as the first argument and an optional foreign key name as the second argument.
 
 ```ts
@@ -547,9 +483,7 @@ this.schema.alterTable('posts', (table) => {
 })
 ```
 
----
-
-### dropUnique
+### `dropUnique`
 Drop a pre-existing unique index. The method accepts an array of string(s) representing column names as the first argument and an optional index name as the second argument.
 
 ```ts
@@ -558,9 +492,7 @@ this.schema.alterTable('posts', (table) => {
 })
 ```
 
----
-
-### dropPrimary
+### `dropPrimary`
 Drop a pre-existing primary key constraint. The method accepts an optional constraint name (defaults to `tablename_pkey`).
 
 ```ts
@@ -569,9 +501,7 @@ this.schema.alterTable('posts', (table) => {
 })
 ```
 
----
-
-### setNullable
+### `setNullable`
 Set the column to be nullable.
 
 ```ts
@@ -580,9 +510,7 @@ this.schema.alterTable('posts', (table) => {
 })
 ```
 
----
-
-### dropNullable
+### `dropNullable`
 Drop the nullable constraint from the column.
 
 :::warning
@@ -599,7 +527,7 @@ this.schema.alterTable('posts', (table) => {
 
 Following is the list of methods you can chain on the schema building methods as modifiers to the column. 
 
-### alter
+### `alter`
 
 Marks the column as an alters/modify instead of the default add. The method is not supported by SQLite or Amazon Redshift drivers.
 
@@ -616,9 +544,7 @@ this.schema.alterTable('posts', (table) => {
 })
 ```
 
----
-
-### index
+### `index`
 
 Define an index for the current column. The method accepts the following two optional arguments.
 
@@ -631,9 +557,7 @@ this.schema.table('posts', (table) => {
 })
 ```
 
----
-
-### primary
+### `primary`
 
 Mark the current column as the primary key. Optionally, you can define the constraint name as the first argument.
 
@@ -653,9 +577,7 @@ this.schema.table('posts', (table) => {
 })
 ```
 
----
-
-### unique
+### `unique`
 Mark the current column as unique. On Amazon Redshift, this constraint is not enforced, but the query planner uses it.
 
 ```ts
@@ -664,9 +586,7 @@ this.schema.table('users', (table) => {
 })
 ```
 
----
-
-### references
+### `references`
 Define the column that the current column references as a foreign key. 
 
 ```ts
@@ -683,9 +603,7 @@ this.schema.table('posts', (table) => {
 })
 ```
 
----
-
-### inTable
+### `inTable`
 Define the table for the foreign key referenced column.
 
 ```ts
@@ -694,9 +612,7 @@ this.schema.table('posts', (table) => {
 })
 ```
 
----
-
-### onDelete
+### `onDelete`
 Define the `onDelete` command for the foreign key. The command is expressed as a string value.
 
 ```ts
@@ -709,9 +625,7 @@ this.schema.table('posts', (table) => {
 })
 ```
 
----
-
-### onUpdate
+### `onUpdate`
 Define the `onUpdate` command for the foreign key. The command is expressed as a string value.
 
 ```ts
@@ -724,9 +638,7 @@ this.schema.table('posts', (table) => {
 })
 ```
 
----
-
-### defaultTo
+### `defaultTo`
 Define the default value for the column to be used during the insert. 
 
 In MSSQL a constraintName option may be passed to ensure a specific constraint name:
@@ -742,9 +654,7 @@ this.schema.table('posts', (table) => {
 })
 ```
 
----
-
-### unsigned
+### `unsigned`
 Mark the current column as unsigned. 
 
 ```ts
@@ -757,9 +667,7 @@ this.schema.table('posts', (table) => {
 })
 ```
 
----
-
-### notNullable
+### `notNullable`
 Mark the current column as NOT nullable.
 
 :::note
@@ -772,9 +680,7 @@ this.schema.table('users', (table) => {
 })
 ```
 
----
-
-### nullable
+### `nullable`
 Mark the current column as nullable.
 
 :::note
@@ -787,9 +693,7 @@ this.schema.table('users', (table) => {
 })
 ```
 
----
-
-### first
+### `first`
 Sets the column to be inserted on the first position, only used in MySQL alter tables.
 
 ```ts
@@ -798,9 +702,7 @@ this.schema.alterTable('users', (table) => {
 })
 ```
 
----
-
-### after
+### `after`
 Sets the column to be inserted after another, only used in MySQL alter tables.
 
 ```ts
@@ -809,9 +711,7 @@ this.schema.alterTable('users', (table) => {
 })
 ```
 
----
-
-### comment
+### `comment`
 Sets the comment for a column
 
 ```ts
@@ -820,9 +720,7 @@ this.schema.alterTable('users', (table) => {
 })
 ```
 
----
-
-### collate
+### `collate`
 Sets the collation for a column (only works in MySQL).
 
 ```ts

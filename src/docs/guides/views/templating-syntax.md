@@ -162,7 +162,7 @@ The concept of seekable tags is introduced to optimize the Edge compiler. For no
 
 ## Comments
 
-The comments are written by wrapping the text inside the `{{-- --}}` expression.
+The comments are written by wrapping the text inside the <span v-pre>`{{-- --}}`</span> expression.
 
 ```edge
 {{-- This is a comment --}}

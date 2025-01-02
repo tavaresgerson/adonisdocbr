@@ -23,7 +23,7 @@ User.$getRelation('posts').relatedModel()
 ## Methods/Properties
 Following is the list of methods and properties available on the `HasMany` relationship.
 
-### type
+### `type`
 The type of the relationship. The value is always set to `hasMany`.
 
 ```ts
@@ -35,9 +35,7 @@ class User extends BaseModel {
 User.$getRelation('posts').type // 'hasMany'
 ```
 
----
-
-### relationName
+### `relationName`
 The relationship name. It is a property name defined on the parent model.
 
 ```ts
@@ -49,9 +47,7 @@ class User extends BaseModel {
 User.$getRelation('posts').relationName // 'posts'
 ```
 
----
-
-### serializeAs
+### `serializeAs`
 The name to be used for serializing the relationship. You can define it using the decorator options.
 
 ```ts
@@ -63,19 +59,13 @@ class User extends BaseModel {
 }
 ```
 
----
-
-### booted
+### `booted`
 Find if the relationship has been booted. If not, call the `boot` method.
 
----
-
-### boot
+### `boot`
 Boot the relationship. Lucid models public APIs call this method internally, and you never have to boot the relationship manually.
 
----
-
-### model
+### `model`
 Reference to the parent model (the one that defines the relationship).
 
 ```ts
@@ -87,9 +77,7 @@ class User extends BaseModel {
 User.$getRelation('posts').model // User
 ```
 
----
-
-### relatedModel
+### `relatedModel`
 Reference to the relationship model. The property value is a function that returns the related model.
 
 ```ts
@@ -101,9 +89,7 @@ class User extends BaseModel {
 User.$getRelation('posts').relatedModel() // Post
 ```
 
----
-
-### localKey
+### `localKey`
 The `localKey` for the relationship. You must read the [NamingStrategy](../naming-strategy.md#relationlocalkey) doc to learn more about how the key name is computed.
 
 You can also define the `localKey` explicitly. Do make sure you mention the model property name and NOT the database column name.
@@ -120,9 +106,7 @@ class User extends BaseModel {
 }
 ```
 
----
-
-### foreignKey
+### `foreignKey`
 The `foreignKey` for the relationship. You must read the [NamingStrategy](../naming-strategy.md#relationlocalkey) doc to learn more about how the key name is computed.
 
 You can also define the `foreignKey` explicitly. Do make sure you mention the model property name and NOT the database column name.
@@ -139,9 +123,7 @@ class User extends BaseModel {
 }
 ```
 
----
-
-### onQuery
+### `onQuery`
 The `onQuery` method is an optional hook to modify the relationship queries. You can define it at the time of declaring the relation.
 
 ```ts
@@ -178,9 +160,7 @@ class User extends BaseModel {
 }
 ```
 
----
-
-### setRelated
+### `setRelated`
 Set a relationship on the parent model instance. The methods accept the parent model as the first argument and the related model instance as the second argument.
 
 You must ensure that both the model instances are related to each other before calling this method.
@@ -192,9 +172,7 @@ const post = new Post()
 User.$getRelation('posts').setRelated(user, [post])
 ```
 
----
-
-### pushRelated
+### `pushRelated`
 The `pushRelated` method pushes the relationship to the existing relationship value array.
 
 ```ts
@@ -207,9 +185,7 @@ User.$getRelation('posts').pushRelated(user, new Post())
 user.posts.length // 3
 ```
 
----
-
-### setRelatedForMany
+### `setRelatedForMany`
 Set the relationships on more than one parent model. The method accepts an array of the parent models as the first argument and an array of related models as the second argument.
 
 Lucid internally calls this with the results of the preloader.
@@ -249,14 +225,10 @@ const posts = [
 User.$getRelation('posts').setRelatedForMany(users, posts)
 ```
 
----
-
-### client
+### `client`
 Returns the reference to the [HasManyQueryClient](#query-client). The query client exposes the API to persist/fetch related rows from the database.
 
----
-
-### hydrateForPersistance
+### `hydrateForPersistance`
 Hydrates the values for persistence by defining the foreignKey value. The method accepts the parent model as the first argument and an object or the related model instance as the second argument.
 
 ```ts
@@ -269,14 +241,10 @@ User.$getRelation('posts').hydrateForPersistance(user, post)
 console.log(post.userId === user.id) // true
 ```
 
----
-
-### eagerQuery
+### `eagerQuery`
 Returns an instance of the [HasManyQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/HasMany/QueryBuilder.ts). The query builder has the same API as the [Model query builder](../query-builder.md)
 
----
-
-### subQuery
+### `subQuery`
 Returns an instance of the [HasManySubQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/HasMany/SubQueryBuilder.ts). The sub queries are not meant to be executed and mainly used by the [withCount](../query-builder.md#withcount) and [whereHas](../query-builder.md#wherehas) methods.
 
 ## Query client
@@ -288,7 +256,7 @@ const user = await User.find(1)
 user.related('posts') // HasManyClientContract
 ```
 
-### create
+### `create`
 Please create a new relationship model instance and persist it to the database right away.
 
 ```ts
@@ -314,9 +282,7 @@ await user.related('posts').create()
 await trx.commit()
 ```
 
----
-
-### createMany
+### `createMany`
 Create multiple instances of a relationship model and persist them to the database. The method accepts an array of objects to persist.
 
 - One insert query is issued for each model instance to ensure that we execute the lifecycle hooks for every individual instance.
@@ -333,9 +299,7 @@ await user.related('posts').createMany([
 ])
 ```
 
----
-
-### save
+### `save`
 The save method persists an existing instance of the relationship.
 
 Like the `create` method, the `save` method also uses the transaction client/connection name from the parent model.
@@ -349,9 +313,7 @@ const post = await user
   .save(post)
 ```
 
----
-
-### saveMany
+### `saveMany`
 The `saveMany` method persists an array of related model instances to the database.
 
 - One insert query is issued for each model instance to ensure that we execute the lifecycle hooks for every individual instance.
@@ -372,9 +334,7 @@ const post = await user
   .saveMany([post, post1, post2])
 ```
 
----
-
-### firstOrCreate
+### `firstOrCreate`
 The `firstOrCreate` method works similar to the [static firstOrCreate](../base-model.md#static-firstorcreate) method on the base model. However, we **implicitly adds the foreignKey and its value** to the search payload.
 
 ```ts
@@ -385,9 +345,7 @@ await user
   })
 ```
 
----
-
-### updateOrCreate
+### `updateOrCreate`
 The `updateOrCreate` method works similar to the [static updateOrCreate](../base-model.md#static-updateorcreate) method on the base model. However, we **implicitly adds the foreignKey and its value** to the search payload.
 
 ```ts
@@ -398,9 +356,7 @@ await user
   })
 ```
 
----
-
-### fetchOrCreateMany
+### `fetchOrCreateMany`
 The `fetchOrCreateMany` method works similar to the [static fetchOrCreateMany](../base-model.md#static-fetchorcreatemany) method on the base model. However, we **implicitly add the foreignKey as the lookup key** for finding unique rows.
 
 In the following example, only the posts with a **unique slug** for **a given user** will be created.
@@ -422,9 +378,7 @@ await user
   .fetchOrCreateMany(posts, 'slug')
 ```
 
----
-
-### updateOrCreateMany
+### `updateOrCreateMany`
 The `updateOrCreateMany` method works similar to the [static updateOrCreateMany](../base-model.md#static-updateorcreatemany) method on the base model. However, we **implicitly add the foreignKey as the lookup key** for finding unique rows.
 
 In the following example, only the posts with a **unique slug** for **a given user** will be created.
@@ -446,9 +400,7 @@ await user
   .updateOrCreateMany(posts, 'slug')
 ```
 
----
-
-### query
+### `query`
 Returns an instance of the [HasManyQueryBuilder](#query-builder).
 
 ## Query Builder
@@ -462,7 +414,7 @@ const user = await User.find(1)
 user.related('posts').query() // HasManyQueryBuilder
 ```
 
-### groupLimit
+### `groupLimit`
 The `groupLimit` method uses [SQL window functions](https://www.sqlservertutorial.net/sql-server-window-functions/sql-server-row_number-function/) to add a limit to each group during relationship preloading. Please read the [preloading guide](../../guides) to learn why and when you need the `groupLimit` method.
 
 ```ts
@@ -471,7 +423,7 @@ await User.query().preload('posts', (query) => {
 })
 ```
 
-### groupOrderBy
+### `groupOrderBy`
 Add an order by clause to the group limit query. The method has the same API as the `orderBy` method on the standard query builder.
 
 :::note

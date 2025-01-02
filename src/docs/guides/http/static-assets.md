@@ -29,13 +29,11 @@ const staticConfig: AssetsConfig = {
 export default staticConfig
 ```
 
-#### enabled
+#### `enabled`
 
 A toggle switch to enable/disable the static file server.
 
----
-
-#### dotFiles
+#### `dotFiles`
 
 The treatment for the dotfiles. The value can be one of the following:
 
@@ -43,15 +41,11 @@ The treatment for the dotfiles. The value can be one of the following:
 - `'deny'`: Deny the request with a 403 status code.
 - `'ignore'`: Pretend like the dotfile does not exist.
 
----
-
-#### etag
+#### `etag`
 
 Whether or not to generate the ETag for the files.
 
----
-
-#### lastModified
+#### `lastModified`
 
 Enable or disable the `Last-Modified` HTTP header. The value for the header relies on the file's last modified value.
 
@@ -60,7 +54,8 @@ Enable or disable the `Last-Modified` HTTP header. The value for the header reli
 Conventionally, we serve the files from the `./public` directory. However, you can choose a different directory by configuring it inside the `.adonisrc.json` file.
 
 ```json
-// title: .adonisrc.json
+// .adonisrc.json
+
 {
   "directories": {
     "public": "assets"
@@ -77,7 +72,8 @@ The `@adonisjs/assembler` package compiles your production application and write
 During this process, it also copies the files from the `public` directory, and hence, you must notify it about the change within the `.adonisrc.json` file.
 
 ```json
-// title: .adonisrc.json
+// .adonisrc.json
+
 {
   "metaFiles": [
     // delete-start

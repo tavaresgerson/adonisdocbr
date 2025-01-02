@@ -23,7 +23,8 @@ Globals are available to all the templates, including the components. You will u
 You can register a global using the `View.global` method. For example, you can write the following code inside a [preloaded file](../fundamentals/adonisrc-file.md#preloads) or a service provider boot method.
 
 ```ts
-// title: start/view.ts
+// start/view.ts
+
 import View from '@ioc:Adonis/Core/View'
 
 View.global('nl2br', function (text) {

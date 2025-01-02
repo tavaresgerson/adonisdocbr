@@ -31,7 +31,7 @@ BaseModel.namingStrategy = new CamelCaseNamingStrategy()
 
 Following is the list of methods/properties you must define in the naming strategy class.
 
-### tableName
+### `tableName`
 
 Return the default table name for the model. The default naming strategy converts the model name to `snake_case` and `pluralizes` it.
 
@@ -46,9 +46,7 @@ class CamelCaseNamingStrategy extends SnakeCaseNamingStrategy {
 }
 ```
 
----
-
-### columnName
+### `columnName`
 
 Return the database column name for a given model property. The default naming strategy converts the model property to `snake_case`.
 
@@ -63,9 +61,7 @@ class CamelCaseNamingStrategy extends SnakeCaseNamingStrategy {
 }
 ```
 
----
-
-### serializedName
+### `serializedName`
 
 Return name to be used when serializing the model properties to JSON. The default naming strategy converts the model property to `snake_case`.
 
@@ -80,9 +76,7 @@ class CamelCaseNamingStrategy extends SnakeCaseNamingStrategy {
 }
 ```
 
----
-
-### relationLocalKey
+### `relationLocalKey`
 
 Return the local key for a given relationship. The default behavior is to use the `primaryKey` as the local key for all the relationships except `belongsTo`.
 
@@ -105,9 +99,7 @@ class CamelCaseNamingStrategy extends SnakeCaseNamingStrategy {
 }
 ```
 
----
-
-### relationForeignKey
+### `relationForeignKey`
 Return the foreign key for a given relationship. The default naming strategy combines the `modelName` and the `primaryKey` column name and converts them to camelCase.
 
 :::note
@@ -135,9 +127,7 @@ class CamelCaseNamingStrategy extends SnakeCaseNamingStrategy {
 }
 ```
 
----
-
-### relationPivotTable
+### `relationPivotTable`
 Return the pivot table name for the `manyToMany` relationship. The default naming strategy concatenates the model names together and sorts them alphabetically.
 
 ```ts
@@ -159,9 +149,7 @@ class CamelCaseNamingStrategy extends SnakeCaseNamingStrategy {
 }
 ```
 
----
-
-### relationPivotForeignKey
+### `relationPivotForeignKey`
 Return the foreign key name inside the pivot table. The method is invoked for both the models involved in a `manyToMany` relationship.
 
 ```ts
@@ -178,9 +166,7 @@ class CamelCaseNamingStrategy extends SnakeCaseNamingStrategy {
 }
 ```
 
----
-
-### paginationMetaKeys
+### `paginationMetaKeys`
 Return the keys to generate the metadata for the paginator. The default naming strategy uses `snake_case` names.
 
 ```ts

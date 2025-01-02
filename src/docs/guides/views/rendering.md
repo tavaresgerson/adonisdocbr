@@ -32,7 +32,7 @@ In the following example:
 
 - The `user.edge` file is read synchronously from the disk.
 - Any internal references to load partials or components will be synchronous too.
-- The template cannot use the `await` keyword. For example: `{{ await getUser() }}` will NOT work.
+- The template cannot use the `await` keyword. For example: <span v-pre>`{{ await getUser() }}`</span> will NOT work.
 
 ```ts
 view.renderSync('user', {
@@ -57,7 +57,7 @@ We mount the `./resources/views` directory as the default disk for you implicitl
 You can write the following code inside a [preload file](link-to-preloading-files).
 
 ```ts
-// title: start/views.ts
+// start/views.ts
 
 import View from '@ioc:Adonis/Core/View'
 import Application from '@ioc:Adonis/Core/Application'

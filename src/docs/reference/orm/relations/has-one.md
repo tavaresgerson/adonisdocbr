@@ -23,7 +23,7 @@ User.$getRelation('profile').relatedModel()
 ## Methods/Properties
 Following is the list of methods and properties available on the `HasOne` relationship.
 
-### type
+### `type`
 The type of the relationship. The value is always set to `hasOne`.
 
 ```ts
@@ -35,9 +35,7 @@ class User extends BaseModel {
 User.$getRelation('profile').type // 'hasOne'
 ```
 
----
-
-### relationName
+### `relationName`
 The relationship name. It is a property name defined on the parent model.
 
 ```ts
@@ -49,9 +47,7 @@ class User extends BaseModel {
 User.$getRelation('profile').relationName // 'profile'
 ```
 
----
-
-### serializeAs
+### `serializeAs`
 The name to be used for serializing the relationship. You can define it using the decorator options.
 
 ```ts
@@ -63,19 +59,13 @@ class User extends BaseModel {
 }
 ```
 
----
-
-### booted
+### `booted`
 Find if the relationship has been booted. If not, call the `boot` method.
 
----
-
-### boot
+### `boot`
 Boot the relationship. Lucid models public APIs call this method internally, and you never have to boot the relationship manually.
 
----
-
-### model
+### `model`
 Reference to the parent model (the one that defines the relationship).
 
 ```ts
@@ -87,9 +77,7 @@ class User extends BaseModel {
 User.$getRelation('profile').model // User
 ```
 
----
-
-### relatedModel
+### `relatedModel`
 Reference to the relationship model. The property value is a function that returns the related model.
 
 ```ts
@@ -101,9 +89,7 @@ class User extends BaseModel {
 User.$getRelation('profile').relatedModel() // Profile
 ```
 
----
-
-### localKey
+### `localKey`
 The `localKey` for the relationship. You must read the [NamingStrategy](../naming-strategy.md#relationlocalkey) doc to learn more about how the key name is computed.
 
 You can also define the `localKey` explicitly. Do make sure you mention the model property name and NOT the database column name.
@@ -120,9 +106,7 @@ class User extends BaseModel {
 }
 ```
 
----
-
-### foreignKey
+### `foreignKey`
 The `foreignKey` for the relationship. You must read the [NamingStrategy](../naming-strategy.md#relationlocalkey) doc to learn more about how the key name is computed.
 
 You can also define the `foreignKey` explicitly. Do make sure you mention the model property name and NOT the database column name.
@@ -136,9 +120,7 @@ class User extends BaseModel {
 }
 ```
 
----
-
-### onQuery
+### `onQuery`
 The `onQuery` method is an optional hook to modify the relationship queries. You can define it at the time of declaring the relation.
 
 ```ts
@@ -175,9 +157,7 @@ class User extends BaseModel {
 }
 ```
 
----
-
-### setRelated
+### `setRelated`
 Set a relationship on the parent model instance. The methods accept the parent model as the first argument and the related model instance as the second argument.
 
 You must ensure that both the model instances are related to each other before calling this method.
@@ -189,14 +169,10 @@ const profile = new Profile()
 User.$getRelation('profile').setRelated(user, profile)
 ```
 
----
-
-### pushRelated
+### `pushRelated`
 The `pushRelated` method pushes the relationship to the existing relationship value array. However, for `hasOne`, the method works similar to `setRelated`.
 
----
-
-### setRelatedForMany
+### `setRelatedForMany`
 Set the relationships on more than one parent model. The method accepts an array of the parent models as the first argument and an array of related models as the second argument.
 
 Lucid internally calls this with the results of the preloader.
@@ -229,14 +205,10 @@ const profiles = [
 User.$getRelation('profile').setRelatedForMany(users, profiles)
 ```
 
----
-
-### client
+### `client`
 Returns the reference to the [HasOneQueryClient](#query-client). The query client exposes the API to persist/fetch related rows from the database.
 
----
-
-### hydrateForPersistance
+### `hydrateForPersistance`
 Hydrates the values for persistence by defining the foreignKey value. The method accepts the parent model as the first argument and an object or the related model instance as the second argument.
 
 ```ts
@@ -249,14 +221,10 @@ User.$getRelation('profile').hydrateForPersistance(user, profile)
 console.log(profile.userId === user.id) // true
 ```
 
----
-
-### eagerQuery
+### `eagerQuery`
 Returns an instance of the [HasOneQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/HasOne/QueryBuilder.ts). The query builder has the same API as the [Model query builder](../query-builder.md)
 
----
-
-### subQuery
+### `subQuery`
 Returns an instance of the [HasOneSubQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/HasOne/SubQueryBuilder.ts). The sub queries are not meant to be executed and mainly used by the [withCount](../query-builder.md#withcount) and [whereHas](../query-builder.md#wherehas) methods.
 
 ## Query client
@@ -268,7 +236,7 @@ const user = await User.find(1)
 user.related('profile') // HasOneClientContract
 ```
 
-### create
+### `create`
 Please create a new relationship model instance and persist it to the database right away.
 
 ```ts
@@ -295,9 +263,7 @@ await user.related('profile').create()
 await trx.commit()
 ```
 
----
-
-### save
+### `save`
 The save method persists an existing instance of the relationship.
 
 Like the `create` method, the `save` method also uses the transaction client/connection name from the parent model.
@@ -312,9 +278,7 @@ const profile = await user
   .save(profile)
 ```
 
----
-
-### firstOrCreate
+### `firstOrCreate`
 The `firstOrCreate` method works similar to the [static firstOrCreate](../base-model.md#static-firstorcreate) method on the model. However, we **implicitly adds the foreignKey and its value** to the search payload.
 
 :::tip
@@ -332,9 +296,7 @@ await user
   })
 ```
 
----
-
-### updateOrCreate
+### `updateOrCreate`
 The `updateOrCreate` method works similar to the [static updateOrCreate](../base-model.md#static-updateorcreate) method on the model. However, we **implicitly adds the foreignKey and its value** to the search payload.
 
 ```ts
@@ -346,7 +308,5 @@ await user
   })
 ```
 
----
-
-### query
+### `query`
 Returns an instance of the [HasOneQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/HasOne/QueryBuilder.ts). The query builder has the same API as the [Model query builder](../query-builder.md).

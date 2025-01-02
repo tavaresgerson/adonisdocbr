@@ -22,17 +22,20 @@ Let's create a standard webpage with a header, sidebar, main, and footer using p
 #### 2. Write the following content inside the respective partials
 
 ```edge
-// title: partials/header.edge
+<!-- partials/header.edge -->
+
 <header class="header"></header>
 ```
 
 ```edge
-// title: partials/sidebar.edge
+<!-- partials/sidebar.edge -->
+
 <div class="sidebar"></div>
 ```
 
 ```edge
-// title: partials/footer.edge
+<!-- partials/footer.edge -->
+
 <footer class="footer"></footer>
 ```
 
@@ -68,7 +71,7 @@ Let's create a standard webpage with a header, sidebar, main, and footer using p
 
 #### 4. Result
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1617089390/v5/edge-partials-layout.png)
+![](/docs/assets/edge-partials-layout.webp)
 
 ## The `@include` tag
 

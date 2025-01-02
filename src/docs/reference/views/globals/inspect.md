@@ -27,7 +27,7 @@ The global helper to inspect a value or the entire state of the template. The he
 
 Output
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1617090065/v5/edge-inspect.png)
+![](/docs/assets/edge-inspect.webp)
 
 You can inspect the state of the entire view using the state variable.
 

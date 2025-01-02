@@ -20,7 +20,8 @@ You can use the `make:factory` command to create a new factory. The command acce
 Unlike seeders or models, the factories are declarative in nature as shown in the following example:
 
 ```ts
-// title: database/factories/index.ts
+// database/factories/index.ts
+
 import User from 'App/Models/User'
 import Factory from '@ioc:Adonis/Lucid/Factory'
 
@@ -311,7 +312,7 @@ await Factory.query({ connection: 'tenant-1' }).create()
 ## Customizations
 Finally, you can optionally customize the behavior of certain operations performed under the hood.
 
-### newUp
+### `newUp`
 By defining the `newUp` handler, you can customize the process of instantiating a model instance for a given factory.
 
 ```ts
@@ -328,9 +329,7 @@ Factory
   .build()
 ```
 
----
-
-### merge
+### `merge`
 By defining the `merge` handler, you can customize the merge behavior.
 
 ```ts

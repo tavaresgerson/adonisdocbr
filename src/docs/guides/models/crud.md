@@ -33,9 +33,7 @@ await user
 console.log(user.$isPersisted) // true
 ```
 
----
-
-### create
+### `create`
 The `static create` method creates the model instance and persists it to the database in one go.
 
 ```ts
@@ -49,9 +47,7 @@ const user = await User.create({
 console.log(user.$isPersisted) // true
 ```
 
----
-
-### createMany
+### `createMany`
 Create multiple instances of a model and persist them to the database. The `createMany` method accepts the same options as the `create` method.
 
 :::note
@@ -74,7 +70,7 @@ const user = await User.createMany([
 ## Read
 You can query the database table using one of the following static methods.
 
-### all
+### `all`
 Fetch all the users from the database. The method returns an array of model instances.
 
 ```ts
@@ -82,9 +78,7 @@ const user = await User.all()
 // SQL: SELECT * from "users" ORDER BY "id" DESC;
 ```
 
----
-
-### find
+### `find`
 Find a record using the primary key. The method returns a model instance or null (when no records are found).
 
 ```ts
@@ -92,9 +86,7 @@ const user = await User.find(1)
 // SQL: SELECT * from "users" WHERE "id" = 1 LIMIT 1;
 ```
 
----
-
-### findBy
+### `findBy`
 Find a record by a column name and its value. Similar to the `find` method, this method also returns a model instance or `null`.
 
 ```ts
@@ -102,9 +94,7 @@ const user = await User.findBy('email', 'virk@adonisjs.com')
 // SQL: SELECT * from "users" WHERE "email" = 'virk@adonisjs.com' LIMIT 1;
 ```
 
----
-
-### first
+### `first`
 Fetch the first record from the database. Returns `null` when there are no records.
 
 ```ts
@@ -112,9 +102,7 @@ const user = await User.first()
 // SQL: SELECT * from "users" LIMIT 1;
 ```
 
----
-
-### orFail variation
+### `orFail` variation
 You can also use the `orFail` variation for the find methods. It raises an exception when no row is found.
 
 ```ts
@@ -124,8 +112,6 @@ const user = await User.findByOrFail('email', 'virk@adonisjs.com')
 ```
 
 The `orFail` variation will raise an `E_ROW_NOT_FOUND` exception with `404` statusCode. You can [manually handle](../http/exception-handling.md#http-exception-handler) this exception to convert it to a desired response.
-
----
 
 ### Using the query builder
 The above-mentioned static methods cover the common use cases for querying the database. However, you are not only limited to these methods and can also leverage the query builder API for making advanced SQL queries.
@@ -206,7 +192,7 @@ await User.query().where('isVerified', false).delete()
 ## Idempotent methods
 Models come with many helpful methods to simplify the record creation by first finding them inside the database and running the create/update queries only when the record doesn't exist.
 
-### firstOrCreate
+### `firstOrCreate`
 Search for a record inside the database or create a new one (only when the lookup fails).
 
 In the following example, we attempt to search a user with an email but persist both the `email` and the `password`, when the initial lookup fails. In other words, the `searchPayload` and the `savePayload` are merged during the create call.
@@ -220,9 +206,7 @@ const savePayload = { password: 'secret' }
 await User.firstOrCreate(searchPayload, savePayload)
 ```
 
----
-
-### fetchOrCreateMany
+### `fetchOrCreateMany`
 
 The `fetchOrCreateMany` is similar to the `firstOrCreate` method, but instead, you can create more than one row. The method needs a unique key for finding the duplicate rows and an array of objects to persist (if missing inside the database).
 
@@ -244,9 +228,7 @@ const usersToCreate = [
 await User.fetchOrCreateMany('email', usersToCreate)
 ```
 
----
-
-### updateOrCreate
+### `updateOrCreate`
 The `updateOrCreate` either creates a new record or updates the existing record. Like the `firstOrCreate` method, you need to define a search payload and the attributes to insert/update.
 
 ```ts
@@ -258,9 +240,7 @@ const persistancePayload = { password: 'secret' }
 await User.updateOrCreate(searchPayload, persistancePayload)
 ```
 
----
-
-### updateOrCreateMany
+### `updateOrCreateMany`
 The `updateOrCreateMany` method allows syncing rows by avoiding duplicate entries. The method needs a unique key for finding the duplicate rows and an array of objects to persist/update.
 
 ```ts

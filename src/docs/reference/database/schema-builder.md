@@ -17,9 +17,7 @@ class UserSchema extends BaseSchema {
 ## Methods/Properties
 Following is the list of methods/properties available on the schema builder class.
 
----
-
-### createTable
+### `createTable`
 Creates a new database table. The method accepts the table name and a callback that receives the [table builder](./table-builder.md) instance to create table columns.
 
 ```ts
@@ -37,9 +35,7 @@ class UserSchema extends BaseSchema {
 }
 ```
 
----
-
-### createSchema
+### `createSchema`
 Create the PostgreSQL schema. It accepts the schema name.
 
 ```ts
@@ -52,9 +48,7 @@ class FoundationSchema extends BaseSchema {
 }
 ```
 
----
-
-### table/alterTable
+### `table` / `alterTable`
 Select a SQL table to alter its columns. The method accepts the table name and a callback that receives the [table builder](./table-builder.md) instance to modify the table columns.
 
 ```ts
@@ -78,9 +72,7 @@ class UserSchema extends BaseSchema {
 }
 ```
 
----
-
-### renameTable
+### `renameTable`
 Rename a table. The method accepts the existing table name as the first argument and the new name as the second argument.
 
 ```ts
@@ -93,9 +85,7 @@ class UserSchema extends BaseSchema {
 }
 ```
 
----
-
-### dropTable
+### `dropTable`
 Drop an existing SQL table. The method accepts the table name as the only argument.
 
 ```ts
@@ -108,9 +98,7 @@ class UserSchema extends BaseSchema {
 }
 ```
 
----
-
-### dropTableIfExists
+### `dropTableIfExists`
 Similar to the `dropTable` method, but conditionally drop the table if it exists.
 
 ```ts
@@ -123,9 +111,7 @@ class UserSchema extends BaseSchema {
 }
 ```
 
----
-
-### dropSchema
+### `dropSchema`
 Drop an existing PostgreSQL schema. The method accepts the schema name as the only argument.
 
 ```ts
@@ -138,9 +124,7 @@ class FoundationSchema extends BaseSchema {
 }
 ```
 
----
-
-### dropSchemaIfExists
+### `dropSchemaIfExists`
 Similar to the `dropSchema` method, but conditionally drop the schema if it exists.
 
 ```ts
@@ -153,9 +137,7 @@ class FoundationSchema extends BaseSchema {
 }
 ```
 
----
-
-### raw
+### `raw`
 Run a SQL query from the raw string. Unlike the [raw query builder](./raw-query-builder.md), the `schema.raw` method does not accept bindings separately.
 
 ```ts
@@ -174,9 +156,7 @@ class UserSchema extends BaseSchema {
 }
 ```
 
----
-
-### withSchema
+### `withSchema`
 Specify the schema to select when running the SQL DDL statements. The method accepts the schema name as the only argument.
 
 ```ts

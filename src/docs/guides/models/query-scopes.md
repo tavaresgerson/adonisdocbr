@@ -5,7 +5,8 @@ Query scopes are the reusable function to apply to a query builder instance to m
 The methods are defined as static properties on the model class and receive the current query as the first argument. For example:
 
 ```ts
-// title: app/Models/Post.ts
+// app/Models/Post.ts
+
 import { DateTime } from 'luxon'
 
 import {

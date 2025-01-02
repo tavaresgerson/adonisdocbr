@@ -3,7 +3,7 @@
 The insert query builder allows you to insert new rows into the database. You must use the [standard query builder](./query-builder.md) for **selecting**, **deleting** or **updating** rows.
 
 You can get access to the insert query builder as shown in the following example:
-
+``
 ```ts
 import Database from '@ioc:Adonis/Lucid/Database'
 
@@ -16,7 +16,7 @@ Database.table('users')
 ## Methods/Properties
 Following is the list of methods and properties available on the Insert query builder class.
 
-### insert
+### `insert`
 The `insert` method accepts an object of key-value pair to insert.
 
 The return value of the insert query is highly dependent on the underlying driver.
@@ -36,9 +36,7 @@ Database
   })
 ```
 
----
-
-### multiInsert
+### `multiInsert`
 The `multiInsert` method accepts an array of objects and inserts multiple rows at once.
 
 ```ts
@@ -66,9 +64,7 @@ values
 */
 ```
 
----
-
-### returning
+### `returning`
 You can use the `returning` method with PostgreSQL, MSSQL, and Oracle databases to retrieve one or more columns' values.
 
 ```ts
@@ -84,9 +80,7 @@ const rows = Database
 console.log(rows[0].id, rows[0].username)
 ```
 
----
-
-### debug
+### `debug`
 The `debug` method allows enabling or disabling debugging at an individual query level. Here's a [complete guide](../../guides/database/debugging.md) on debugging queries.
 
 ```ts
@@ -100,9 +94,7 @@ const rows = Database
   })
 ```
 
----
-
-### timeout
+### `timeout`
 Define the `timeout` for the query. An exception is raised after the timeout has been exceeded.
 
 The value of timeout is always in milliseconds.
@@ -131,9 +123,7 @@ Database
   })
 ```
 
----
-
-### toSQL
+### `toSQL`
 The `toSQL` method returns the query SQL and bindings as an object.
 
 ```ts
@@ -165,9 +155,7 @@ const output = Database
 console.log(output)
 ```
 
----
-
-### toQuery
+### `toQuery`
 Returns the SQL query as a string with bindings applied to the placeholders.
 
 ```ts
@@ -189,9 +177,7 @@ values
 */
 ```
 
----
-
-### useTransaction
+### `useTransaction`
 The `useTransaction` method instructs the query builder to wrap the query inside a transaction. The guide on [database transactions](../../guides/database/transactions.md) covers different ways to create and use transactions in your application.
 
 ```ts
@@ -212,7 +198,7 @@ await trx.commit()
 ## Helpful properties and methods
 Following is the list of properties and methods you may occasionally need when building something on top of the query builder.
 
-### client
+### `client`
 Reference to the instance of the underlying [database query client](./query-client.md).
 
 ```ts
@@ -220,9 +206,7 @@ const query = Database.insertQuery()
 console.log(query.client)
 ```
 
----
-
-### knexQuery
+### `knexQuery`
 Reference to the instance of the underlying KnexJS query.
 
 ```ts
@@ -230,9 +214,7 @@ const query = Database.insertQuery()
 console.log(query.knexQuery)
 ```
 
----
-
-### reporterData
+### `reporterData`
 The query builder emits the `db:query` event and reports the query's execution time with the framework profiler.
 
 Using the `reporterData` method, you can pass additional details to the event and the profiler.

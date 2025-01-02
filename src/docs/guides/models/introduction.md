@@ -103,7 +103,7 @@ You will have to define your database columns as properties on the class and dec
 
 Since AdonisJS uses TypeScript, there is no way to get around WITHOUT defining the columns explicitly on the class. Otherwise, the TypeScript compiler will complain about the following error.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1618899190/v5/models-property-error.png)
+![](/docs/assets/models-property-error.webp)
 
 #### Points to note
 - The `@column` decorator is used to distinguish between the standard class properties and the database columns.
@@ -111,8 +111,6 @@ Since AdonisJS uses TypeScript, there is no way to get around WITHOUT defining t
 - Any option you define inside the models does not change/impact the database. You must use migrations for that.
 
 To summarize the above points - **Lucid maintains a clear separation between migrations and the models**. Migrations are meant to create/alter the tables, and models are intended to query the database or insert new records.
-
----
 
 ### Defining columns
 Now that you are aware of the existence of columns on the model class. Following is an example of defining the user table columns as properties on the `User` model.
@@ -151,8 +149,6 @@ The `@column` decorator additionally accepts options to configure the property b
 - The `serializeAs: null` option removes the property when you serialize the model to JSON.
 - [View all available options](../../reference/orm/decorators.md#column) accepted by the `@column` decorator.
 
----
-
 ### Date columns
 Lucid further enhances the date and the date-time properties and converts the database driver values to an instance of [luxon.DateTime](https://moment.github.io/luxon/).
 
@@ -170,8 +166,6 @@ public updatedAt: DateTime
 ```
 
 Optionally, you can pass the `autoCreate` and `autoUpdate` options to always define the timestamps during the creation and the update operations. **Do note, setting these options doesn't modify the database table or its triggers.**
-
----
 
 ### Column names
 Lucid assumes that your database columns names are defined as `snake_case` and automatically converts the model properties to snake case during database queries. For example:
@@ -215,8 +209,6 @@ class User extends Basemodel {
 }
 ```
 
----
-
 ### table
 Define a custom database table name. [Defaults](../../reference/orm/naming-strategy.md#tablename) to the plural and snake case version of the model name.
 
@@ -225,8 +217,6 @@ export default class User extends BaseModel {
   public static table = 'app_users'
 }
 ```
-
----
 
 ### selfAssignPrimaryKey
 Set this option to `true` if you don't rely on the database to generate the primary keys. For example, You want to self-assign `uuid` to the new rows.
@@ -247,8 +237,6 @@ export default class User extends BaseModel {
   }
 }
 ```
-
----
 
 ### connection
 Instruct model to use a custom database connection defined inside the `config/database` file.

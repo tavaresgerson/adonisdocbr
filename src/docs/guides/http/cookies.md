@@ -44,37 +44,27 @@ http: {
 }
 ```
 
-#### domain
+#### `domain`
 
 Specifies the value for the domain attribute. By default, no domain is set, and most clients will consider the cookie to apply to only the current domain.
 
----
-
-#### path
+#### `path`
 
 Specifies the value for the path attribute. By default, the path is considered the "default path".
 
----
-
-#### maxAge
+#### `maxAge`
 
 Specifies the value for the max-age attribute. The given value will be converted to an integer.
 
----
-
-#### httpOnly
+#### `httpOnly`
 
 Specifies the `boolean` value for the httponly attribute. When truthy, the HttpOnly attribute is set. Otherwise, it is not.
 
----
-
-#### secure
+#### `secure`
 
 Specifies the `boolean` value for the secure attribute. When truthy, the Secure attribute is set. Otherwise, it is not. By default, the Secure attribute is not set.
 
----
-
-#### sameSite
+#### `sameSite`
 
 Specifies the boolean or string to be the value for the samesite attribute.
 

@@ -152,7 +152,7 @@ Let's open the newly created file and paste the following code snippet inside it
 
 Make sure to start the development server by running `node ace serve --watch` and visit http://localhost:3333 to view the contents of the template file.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1617093908/v5/view-usage.png)
+![](/docs/assets/view-usage.webp)
 
 ## Views directory
 

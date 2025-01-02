@@ -109,29 +109,23 @@ export const configureSuite: Config['configureSuite'] = (suite) => {
 }
 ```
 
-#### plugins
+#### `plugins`
 The `plugins` property accepts an array of Japa plugins. By default, we register the following plugins.
 
 - [`assert`](https://v2.japa.dev/docs/plugins/assert) - Assert module to make assertions.
 - [`runFailedTests`](https://v2.japa.dev/docs/plugins/run-failed-tests) - A plugin to run only failed tests (if any).
 - [`apiClient`](https://v2.japa.dev/docs/plugins/api-client) - An API client for testing HTTP endpoints.
 
----
-
-#### reporters
+#### `reporters`
 The `reporters` property accepts an array of Japa reporters. We register the [`spec-reporter`](https://v2.japa.dev/docs/plugins/spec-reporter) to display the progress of tests on the terminal.
 
----
-
-#### runnerHooks
+#### `runnerHooks`
 You can use the `runnerHooks` property to run actions before or after the tests (across all the suites).
 
 - The `setup` hooks are executed before all the tests.
 - The `teardown` hooks are executed after all the tests.
 
----
-
-#### configureSuite
+#### `configureSuite`
 The `configureSuite` method is executed with an instance of the [Japa suite](https://v2.japa.dev/docs/core/suite) class. You can use the suite instance to configure it.
 
 ## Environment variables

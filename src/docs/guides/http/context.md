@@ -72,7 +72,7 @@ class SomeService {
 
 Following is the list of properties available on the HTTP context. As you will install new packages, they may also add more properties to this object.
 
-![Output of ctx.inspect({ depth: 0 })](https://res.cloudinary.com/adonis-js/image/upload/f_auto,q_auto/v1609928565/v5/context-inspect.png)
+![](/docs/assets/context-inspect.webp)
 
 ### request
 
@@ -82,8 +82,6 @@ Reference to the [HTTP request](./request.md)
 Route.get('/', async ({ request }) => {})
 ```
 
----
-
 ### response
 
 Reference to the [HTTP response](./response.md)
@@ -92,8 +90,6 @@ Reference to the [HTTP response](./response.md)
 Route.get('/', async ({ response }) => {})
 ```
 
----
-
 ### logger
 
 Reference to the logger instance. A [child logger](../digging-deeper/logger.md#child_logger) instance with a unique [request ID](./request.md#request-id) is created for every HTTP request.
@@ -101,8 +97,6 @@ Reference to the logger instance. A [child logger](../digging-deeper/logger.md#c
 ```ts
 Route.get('/', async ({ logger }) => {})
 ```
-
----
 
 ### route
 
@@ -117,8 +111,6 @@ Reference to the matched route for the current HTTP request. The route object ha
 Route.get('/', async ({ route }) => {})
 ```
 
----
-
 ### params
 
 An object of route params.
@@ -128,8 +120,6 @@ Route.get('users/:id', async ({ params }) => {
   console.log(params.id)
 })
 ```
-
----
 
 ### subdomains
 
@@ -143,8 +133,6 @@ Route.group(() => {
 }).domain(':tenant.adonisjs.com')
 ```
 
----
-
 ### session
 
 Reference to the [Session object](./session.md). Available only when `@adonisjs/session` package is installed.
@@ -154,8 +142,6 @@ Route.get('/', async ({ session }) => {
   session.get('cart_value')
 })
 ```
-
----
 
 ### auth
 
@@ -167,8 +153,6 @@ Route.get('/', async ({ auth }) => {
 })
 ```
 
----
-
 ### view
 
 Reference to the [View object](../views/introduction.md). Available only when `@adonisjs/view` package is installed.
@@ -178,8 +162,6 @@ Route.get('/', async ({ view }) => {
   return view.render('welcome')
 })
 ```
-
----
 
 ### ally
 
@@ -191,8 +173,6 @@ Route.get('/', async ({ ally }) => {
 })
 ```
 
----
-
 ### bouncer
 
 Reference to the [Bouncer object](../digging-deeper/authorization.md). Available only when `@adonisjs/bouncer` package is installed.
@@ -202,8 +182,6 @@ Route.get('/', async ({ bouncer }) => {
   await bouncer.authorize('viewPost', post)
 })
 ```
-
----
 
 ### i18n
 Reference to the [I18n object](../digging-deeper/i18n.md#usage-during-http-requests). Available only when `@adonisjs/i18n` package is installed.
@@ -243,7 +221,7 @@ The `location` property is added at the runtime; hence TypeScript does not know 
 Create a new file at path `contracts/context.ts` (the file name is not important) and paste the following contents inside it:
 
 ```ts
-// title: contracts/context.ts
+// contracts/context.ts
 declare module '@ioc:Adonis/Core/HttpContext' {
   import { Lookup } from 'geoip-lite'
 
@@ -254,8 +232,6 @@ declare module '@ioc:Adonis/Core/HttpContext' {
 ```
 
 That's all! Now, TypeScript will not complain about the missing property on the `ctx` object.
-
----
 
 ### Using getters and macros
 
@@ -300,8 +276,6 @@ HttpContext.getter(
   true // 👈 register as singleton
 )
 ```
-
----
 
 ### Macros
 

@@ -13,7 +13,8 @@ node ace make:test functional users/list
 ```
 
 ```ts
-// title: tests/functional/users/list.spec.ts
+// tests/functional/users/list.spec.ts
+
 import { test } from '@japa/runner'
 
 test.group('List users', () => {
@@ -35,7 +36,8 @@ The API client allows you to write assertions against your OpenAPI spec.
 Keep the spec YAML or JSON file inside the project root and register it within the `tests/boostrap.ts` file.
 
 ```ts
-// title: tests/bootstrap.ts
+// tests/bootstrap.ts
+
 export const plugins: Config['plugins'] = [
   // highlight-start
   assert({
@@ -69,7 +71,8 @@ response.assertAgainstApiSpec()
 
 // Assert for expected values
 response.assertBodyContains({
-  data: [{ title: 'Adonis 101' }, { title: 'Lucid 101' }]
+  data: [{ 'Adonis 101' }, { 'Lucid 101' }]
+
 })
 ```
 
@@ -119,7 +122,8 @@ The `@adonisjs/session` package extends the API client by providing additional m
 Sessions must use the `memory` driver during tests. Therefore, make sure to update the `SESSION_DRIVER` within the `.env.test` file.
 
 ```dotenv
-// title: .env.test
+// .env.test
+
 SESSION_DRIVER=memory
 ```
 
@@ -136,7 +140,8 @@ Also, you can set the flash messages using the `flashMessages` method.
 ```ts
 await client.get('/').flashMessages({
   errors: {
-    title: ['Post title is required']
+    ['Post title is required']
+
   }
 })
 ```
@@ -258,7 +263,7 @@ You can validate the server response using the assertions available on the `resp
 
 AdonisJS provides the following additional methods on top of the existing [Japa assertions](https://v2.japa.dev/docs/plugins/api-client#assertions-api).
 
-### assertSession
+### `assertSession`
 Assert the given session exists. Optionally, you can also assert the session value.
 
 ```ts
@@ -271,14 +276,14 @@ response.assertSession('foo')
 response.assertSession('foo', 'bar')
 ```
 
-### assertSessionMissing
+### `assertSessionMissing`
 Assert the session does not exist in the response.
 
 ```ts
 response.assertSessionMissing('foo')
 ```
 
-### assertFlashMessage
+### `assertFlashMessage`
 Assert the given flash message exists. Optionally, you can also assert for a specific value.
 
 ```ts
@@ -290,12 +295,13 @@ response.assertFlashMessage('errors')
  */
 response.assertFlashMessage('errors', [
   {
-    title: ['Post title is required']
+    ['Post title is required']
+
   }
 ])
 ```
 
-### assertFlashMissing
+### `assertFlashMissing`
 Assert the flash message does not exist in the response.
 
 ```ts

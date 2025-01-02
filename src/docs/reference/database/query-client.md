@@ -17,7 +17,7 @@ const pgClient = Database.connection('pg')
 ## Methods/Properties
 Following is the list of methods and properties available on the query client class.
 
-### query
+### `query`
 Returns an instance of the [query builder](./query-builder.md) for a pre-selected database connection.
 
 ```ts
@@ -30,9 +30,7 @@ You can also use the `from` alias to instantiate a new query instance and select
 client.from('users')
 ```
 
----
-
-### insertQuery
+### `insertQuery`
 Returns an instance of the [insert query builder](./insert-query-builder.md) for a pre-selected database connection.
 
 ```ts
@@ -45,9 +43,7 @@ You can also use the `table` alias to instantiate a new query instance and selec
 client.table('users')
 ```
 
----
-
-### modelQuery
+### `modelQuery`
 Returns an instance of the [model query builder](../orm/query-builder.md) for a given Lucid model.
 
 ```ts
@@ -59,9 +55,7 @@ const user = await query.first()
 console.log(user instanceof User) // true
 ```
 
----
-
-### rawQuery
+### `rawQuery`
 Returns an instance of the [raw query builder](./raw-query-builder.md) for a pre-selected database connection.
 
 ```ts
@@ -69,18 +63,14 @@ await client
   .rawQuery('select * from users where id = ?', [1])
 ```
 
----
-
-### knexQuery
+### `knexQuery`
 Returns an instance of the [Knex.js query builder](https://knexjs.org/#Builder) for a pre-selected database connection.
 
 ```ts
 client.knexQuery().select('*')
 ```
 
----
-
-### knexRawQuery
+### `knexRawQuery`
 Returns an instance of the [Knex.js raw query builder](https://knexjs.org/#Raw) for a pre-selected database connection.
 
 ```ts
@@ -88,9 +78,7 @@ client
   .knexRawQuery('select * from users where id = ?', [1])
 ```
 
----
-
-### transaction
+### `transaction`
 Creates a new [transaction client](./transaction-client.md) instance. Transaction client **reserves a dedicated database** connection right away and hence it is very important to commit or rollback the transactions properly.
 
 ```ts
@@ -100,9 +88,7 @@ await trx.insertQuery().table('users').insert()
 await trx.commit()
 ```
 
----
-
-### getAllTables
+### `getAllTables`
 Returns an array of all the database tables.
 
 ```ts
@@ -110,9 +96,7 @@ const tables = await client.getAllTables()
 console.log(tables)
 ```
 
----
-
-### getAllViews
+### `getAllViews`
 Returns an array of all the database views.
 
 ```ts
@@ -120,9 +104,7 @@ const views = await client.getAllViews()
 console.log(views)
 ```
 
----
-
-### getAllTypes
+### `getAllTypes`
 Returns an array of all the database custom types. The method works only with **Postgres and Redshift**.
 
 ```ts
@@ -130,9 +112,7 @@ const types = await client.getAllTypes()
 console.log(types)
 ```
 
----
-
-### columnsInfo
+### `columnsInfo`
 Returns a key-value pair of columns in a given database table.
 
 ```ts
@@ -140,9 +120,7 @@ const columns = await client.columnsInfo('users')
 console.log(columns)
 ```
 
----
-
-### dropAllTables
+### `dropAllTables`
 Drop all tables inside the database.
 
 ```ts
@@ -152,9 +130,7 @@ await client.dropAllTables()
 await client.dropAllTables(['public'])
 ```
 
----
-
-### dropAllViews
+### `dropAllViews`
 Drop all views inside the database.
 
 ```ts
@@ -164,18 +140,14 @@ await client.dropAllViews()
 await client.dropAllViews(['public'])
 ```
 
----
-
-### dropAllTypes
+### `dropAllTypes`
 Drop all custom types inside the database. The method works only with **Postgres and Redshift**.
 
 ```ts
 await client.dropAllTypes()
 ```
 
----
-
-### truncate
+### `truncate`
 Truncate a database table. Optionally you can also cascade foreign key references.
 
 ```ts
@@ -185,27 +157,21 @@ await client.truncate('users')
 await client.truncate('users', true)
 ```
 
----
-
-### getReadClient
+### `getReadClient`
 Returns Knex.js instance for the read replica. The write client is returned when not using read/write replicas.
 
 ```ts
 const knex = client.getReadClient()
 ```
 
----
-
-### getWriteClient
+### `getWriteClient`
 Returns Knex.js instance for the write replica. An exception is raised when client is instantiated in the read mode.
 
 ```ts
 const knex = client.getWriteClient()
 ```
 
----
-
-### getAdvisoryLock
+### `getAdvisoryLock`
 Calling `getAdvisoryLock` obtains an advisory lock in **PostgreSQL**, and **MySQL** databases.
 
 :::note
@@ -219,18 +185,14 @@ await client.getAdvisoryLock('key_name')
 await client.getAdvisoryLock('key_name', 2000)
 ```
 
----
-
-### releaseAdvisoryLock
+### `releaseAdvisoryLock`
 Release the previously acquired advisory lock
 
 ```ts
 await client.releaseAdvisoryLock('key_name')
 ```
 
----
-
-### raw
+### `raw`
 Create a raw reference query instance. The queries generated using the `raw` method can only be used as a reference in other queries and cannot be executed standalone.
 
 ```ts
@@ -239,9 +201,7 @@ await client.from(
 )
 ```
 
----
-
-### mode
+### `mode`
 A readonly property to know the mode in which client instance was created. It is always one of the following
 
 - `dual`: Both read/write queries are supported and will be directed to the correct replica.
@@ -252,36 +212,28 @@ A readonly property to know the mode in which client instance was created. It is
 console.log(client.mode)
 ```
 
----
-
-### dialect
+### `dialect`
 Reference to the underlying [database dialect](https://github.com/adonisjs/lucid/tree/master/src/Dialects). Each supported database driver has its own dialect.
 
 ```ts
 console.log(client.dialect.name)
 ```
 
----
-
-### isTransaction
+### `isTransaction`
 Find if the client is a transaction client. The value is always `false` for the query client.
 
 ```ts
 client.isTransaction
 ```
 
----
-
-### connectionName
+### `connectionName`
 The connection name for which the query client was instantiated
 
 ```ts
 client.connectionName
 ```
 
----
-
-### debug
+### `debug`
 Set the value to `true` to enable debugging for queries executed by the query client.
 
 ```ts
@@ -290,9 +242,7 @@ client.debug = true
 await client.from('users').select('*')
 ```
 
----
-
-### schema
+### `schema`
 Returns reference to the [schema builder](./schema-builder.md). The `client.schema` is a getter that returns a new instance every time you access the property
 
 ```ts

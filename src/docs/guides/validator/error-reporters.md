@@ -80,25 +80,20 @@ The `report` method is called by the validator when validation fails. It receive
 #### toError
 The `toError` method must return an instance of the error class, and the validator will throw this exception.
 
----
-
 #### toJSON
 The `toJSON` method must return the collection of errors reported by the validator so far.
-
----
 
 #### hasErrors
 A boolean to know if the error reporter has received any errors so far.
 
 Create a new file `app/Validators/Reporters/MyReporter.ts` and paste the following contents inside it.
 
----
-
 ### Dummy implementation
 Following is a dummy implementation of a custom error reporter. Feel free to tweak it further to match your needs.
 
 ```ts
-// title: app/Validators/Reporters/MyReporter.ts
+// app/Validators/Reporters/MyReporter.ts
+
 import {
   ValidationException,
   MessagesBagContract,

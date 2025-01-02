@@ -131,8 +131,6 @@ Reference to the input file name.
 file.fieldName
 ```
 
----
-
 ### clientName
 
 The uploaded file name. It is usually the name of the file on the user's computer.
@@ -140,8 +138,6 @@ The uploaded file name. It is usually the name of the file on the user's compute
 ```ts
 file.clientName
 ```
-
----
 
 ### size
 
@@ -151,8 +147,6 @@ The file size is in bytes. The file size is only available when the file stream 
 file.size
 ```
 
----
-
 ### headers
 
 The HTTP headers associated with the file
@@ -160,8 +154,6 @@ The HTTP headers associated with the file
 ```ts
 file.headers
 ```
-
----
 
 ### tmpPath
 
@@ -171,8 +163,6 @@ The path of the file inside the computer `/tmp` directory. It is available only 
 file.tmpPath
 ```
 
----
-
 ### filePath
 
 The file's absolute path. Available after the `move` operation.
@@ -180,8 +170,6 @@ The file's absolute path. Available after the `move` operation.
 ```ts
 file.filePath
 ```
-
----
 
 ### fileName
 
@@ -191,8 +179,6 @@ The file's relative name. Available after the `move` operation.
 file.fileName
 ```
 
----
-
 ### type
 
 The file [mime type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types). Available after the file stream has been consumed
@@ -200,8 +186,6 @@ The file [mime type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of
 ```ts
 file.type
 ```
-
----
 
 ### subtype
 
@@ -211,8 +195,6 @@ The subtype from the file mime type. Available after the file stream has been co
 file.subtype
 ```
 
----
-
 ### extname
 
 The file extension. Available after the file stream has been consumed.
@@ -220,8 +202,6 @@ The file extension. Available after the file stream has been consumed.
 ```ts
 file.extname
 ```
-
----
 
 ### state
 
@@ -238,8 +218,6 @@ if (file.state === 'consumed') {
 }
 ```
 
----
-
 ### isValid
 
 Find if the file has passed the validation or not.
@@ -249,8 +227,6 @@ if (!file.isValid) {
   return file.errors
 }
 ```
-
----
 
 ### hasErrors
 
@@ -262,8 +238,6 @@ if (file.hasErrors) {
 }
 ```
 
----
-
 ### validated
 
 Find if the file has been validated or not. Call `file.validate()` to valid it.
@@ -273,8 +247,6 @@ if (!file.validated) {
   file.validate()
 }
 ```
-
----
 
 ### errors
 
@@ -286,25 +258,17 @@ if (file.hasErrors) {
 }
 ```
 
----
-
 ### sizeLimit
 
 Reference to the `size` validation option.
-
----
 
 ### allowedExtensions
 
 Reference to the `extnames` validation option.
 
----
-
 ### validate
 
 Validate the file against the pre-defined validation options. AdonisJS implicitly calls this method when you access the file using the `request.file(s)` method.
-
----
 
 ### move
 Move the file to a given location on the filesystem. The method accepts an absolute to the destination directory and options object to rename the file.
@@ -315,8 +279,6 @@ await file.move(Application.tmpPath('uploads'), {
   overwrite: true, // overwrite in case of conflict
 })
 ```
-
----
 
 ### moveToDisk
 Move file using Drive. The methods accept the following arguments:
@@ -331,8 +293,6 @@ await file.moveToDisk('./', {
   contentType: 'image/jpg'
 }, 's3')
 ```
-
----
 
 ### toJSON
 

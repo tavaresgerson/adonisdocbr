@@ -28,23 +28,17 @@ The following actions are performed to set up Webpack Encore:
 
 Once Encore has been configured, the pre-existing commands of AdonisJS will detect it and process your frontend assets as part of the following commands.
 
----
-
 #### node ace serve --watch
 
 The `node ace serve --watch` command will also run the [Webpack dev server](https://github.com/webpack/webpack-dev-server) within the same process to compile and serve the frontend assets.
 
-![Log lines prefixed with "encore" are from the webpack-dev-server](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1617015453/v5/encore-dev-server.png)
-
----
+![](/docs/assets/encore-dev-server.webp)
 
 #### node ace build --production
 
 Similarly, the `node ace build --production` command will also run the `encore production` command to bundle the frontend assets alongside your AdonisJS build.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1617030130/v5/node-ace-build-encore.png)
-
----
+![](/docs/assets/node-ace-build-encore.webp)
 
 ### Customizing output directory
 
@@ -55,10 +49,10 @@ However, you can customize and define any output directory by updating the `webp
 The `setOutputPath` method accepts a path relative to the project root. Also, make sure to update the public URL prefix using the `setPublicPath` method.
 
 ```ts
-// Write file to this directory
+// Grave o arquivo neste diretório
 Encore.setOutputPath('./public/assets')
 
-// Prefix the following to the output URL
+// Prefixe o seguinte para a URL de saída
 Encore.setPublicPath('/assets')
 ```
 
@@ -86,7 +80,7 @@ Depending upon your Webpack config, the output files may not have the same name 
 
 Hence, it is recommended to never hardcode the file names in your templates and always use the `asset` helper.
 
-:::caption{for="error"}
+::: caption{for="error"}
 Do not reference files by name
 :::
 
@@ -201,7 +195,7 @@ And finally, enable the PostCSS loader inside the `webpack.config.js` file.
 ```ts
 Encore.enablePostCssLoader()
 
-// Pass options
+// Opções de passagem
 Encore.enablePostCssLoader((options) => {
   options.postcssOptions = {
     config: path.resolve(__dirname, 'custom.config.js')
@@ -214,26 +208,26 @@ Encore.enablePostCssLoader((options) => {
 To configure the CSS pre-processors, you must uncomment the following lines of code inside the `webpack.config.js`
 
 ```ts
-// Enables SASS
+// Habilita SASS
 Encore.enableSassLoader()
 
-// Enables Less
+// Habilita Less
 Encore.enableLessLoader()
 
-// Enables Stylus
+// Habilita Stylus
 Encore.enableStylusLoader()
 ```
 
 Also, make sure to install the appropriate loaders for them.
 
 ```sh
-# For SASS
+# Para SASS
 npm i -D sass-loader sass
 
-# For Less
+# Para Less
 npm i -D less-loader less
 
-# For Stylus
+# Para Stylus
 npm i -D stylus-loader stylus
 ```
 
@@ -375,12 +369,8 @@ Encore.enableVueLoader(() => {}, {
 #### version
 The VueJS version to use. You can opt between `2` and `3`.
 
----
-
 #### runtimeCompilerBuild
 You must disable runtime compiler build when using single-file components and do not want to use the string-based templates.
-
----
 
 #### useJsx
 Enable/disable the support for JSX inside your Vue templates. 

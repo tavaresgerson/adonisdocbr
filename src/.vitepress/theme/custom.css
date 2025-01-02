@@ -2,3 +2,7 @@
     /* --vp-font-family-base: 'Ubuntu'; */
     /** --vp-font-family-mono: code font */
 }
+
+p > img {
+  border-radius: 0.35rem;
+}

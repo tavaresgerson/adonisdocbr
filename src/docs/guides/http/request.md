@@ -69,8 +69,6 @@ Also, you can use the `request.all` method. It returns a merged copy of the requ
 request.all()
 ```
 
----
-
 #### request.input
 
 You can use the `request.input` method to read value for a single input field. The method also supports reading nested values using a dot notation.
@@ -89,8 +87,6 @@ You can also define a default value to be returned when the actual value is `nul
 request.input('title', 'Hello world')
 ```
 
----
-
 #### request.only/request.except
 You can use the `request.only` and `request.except` methods to cherry-pick/filter specific keys from the request body.
 
@@ -106,7 +102,8 @@ const body = request.except(['submit', 'csrf_token'])
 The request body is parsed using the pre-configured bodyparser middleware. It is registered as a global middleware inside the `start/kernel.ts` file.
 
 ```ts
-// title: start/kernel.ts
+// start/kernel.ts
+
 Server.middleware.register([
   () => import('@ioc:Adonis/Core/BodyParser')
 ])
@@ -122,7 +119,8 @@ The option is available only for `multipart` and `urlencoded` form submissions.
 :::
 
 ```ts
-// title: config/bodyparser.ts
+// config/bodyparser.ts
+
 {
   form: {
     // ... rest of the config
@@ -151,19 +149,13 @@ The JSON parser processes request sending the JSON string with one of the follow
 
 You can add more content types to the `json.types` array inside the `config/bodyparser.ts` file, and the JSON parser will also process them.
 
----
-
 #### URL encoded
 
 Request sending a URL encoded string with `content-type='application/x-www-form-urlencoded'` is parsed using the URL encoding parser.
 
----
-
 #### Multipart
 
 The multipart requests with `content-type='multipart/form-data'` are parsed using the multipart parser. Make sure to read the guide on [file uploads](./file-uploads.md) to view all available configuration options.
-
----
 
 #### Raw
 
@@ -174,7 +166,7 @@ You can use the raw parser to process custom/unsupported content types. For exam
 #### Register the custom content type
 
 ```ts
-// title: config/bodyparser.ts
+// config/bodyparser.ts
 {
   raw: {
     // ...
@@ -269,7 +261,7 @@ request.completeUrl(true)
 
 ## Request method
 
-### method
+### `method`
 
 Returns the HTTP method for the given request. The spoofed method is returned when [form method spoofing](#form-method-spoofing) is enabled.
 
@@ -277,7 +269,7 @@ Returns the HTTP method for the given request. The spoofed method is returned wh
 request.method()
 ```
 
-### intended
+### `intended`
 
 The `intended` method returns the actual HTTP method and not the spoofed one.
 
@@ -298,7 +290,7 @@ Open the `config/app.ts` and set the value of `http.generateRequestId` to true.
 Also, the request-id is only generated when the `X-Request-Id` header is not set. This allows you to generate the request ids at your proxy server level and then reference them inside your AdonisJS application.
 
 ```ts
-// title: config/app.ts
+// config/app.ts
 {
   http: {
     generateRequestId: true
@@ -402,7 +394,7 @@ Form method spoofing only works:
 
 The client making the request can negotiate for the **resource representation**, **charset**, **language**, and **encoding** using different `Accept` headers, and you can handle them as follows.
 
-### accepts
+### `accepts`
 
 The `request.accepts` method takes an array of content types (including shorthands) and returns the most appropriate content type by inspecting the `Accept` header. You can find the list of supported content types [here](https://github.com/jshttp/mime-db/blob/master/db.json).
 
@@ -425,19 +417,14 @@ Route.get('posts', async ({ request, view }) => {
 })
 ```
 
----
-
-### types
+### `types`
 The `request.types` method returns an array of content types by inspecting the `Accept` header. The array is ordered by the client's preference (most preferred first).
 
 ```ts
 const types = request.types()
 ```
 
----
-
-### language
-
+### `language`
 Negotiate for the requested language based upon the `Accept-language` header.
 
 ```ts
@@ -450,20 +437,14 @@ if (language) {
 return view.render('posts/en/index')
 ```
 
----
-
-### languages
-
+### `languages`
 The `languages` method returns an array of accepted languages by inspecting the `Accept-language` header. The array is ordered by the client's preference (most preferred first).
 
 ```ts
 const languages = request.languages()
 ```
 
----
-
-### encoding
-
+### `encoding`
 Find the best encoding using the `Accept-encoding` header.
 
 ```ts
@@ -477,19 +458,14 @@ switch (request.encoding(['gzip', 'br'])) {
 }
 ```
 
----
-
-### encodings
+### `encodings`
 The `encodings` method returns an array of accepted encoding by inspecting the `Accept-encoding` header. The array is ordered by the client's preference (most preferred first).
 
 ```ts
 const encodings = request.encodings()
 ```
 
----
-
-### charset
-
+### `charset`
 Find the best charset using the `Accept-charset` header.
 
 ```ts
@@ -497,9 +473,7 @@ const charset = request.charset(['utf-8', 'hex', 'ascii'])
 return Buffer.from('hello-world').toString(charset || 'utf-8')
 ```
 
----
-
-### charsets
+### `charsets`
 The `charsets` method returns an array of accepted charsets by inspecting the `Accept-charset` header. The array is ordered by the client's preference (most preferred first).
 
 ```ts
@@ -507,7 +481,6 @@ const charsets = request.charsets()
 ```
 
 ## Trusted proxy
-
 The majority of Node.js applications are deployed behind a proxy server like Nginx or Caddy. Hence, the value of [remoteAddress](https://nodejs.org/api/net.html#net_socket_remoteaddress) is the IP address of the proxy server and not the client.
 
 However, all the proxy servers set the [`X-Forwaded`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers#proxies) headers to reflect the request's original values, and you must inform AdonisJS to trust the proxy server headers.
@@ -515,7 +488,8 @@ However, all the proxy servers set the [`X-Forwaded`](https://developer.mozilla.
 You can control which proxies to trust by modifying the `http.trustProxy` value inside the `config/app.ts`.
 
 ```ts
-// title: config/app.ts
+// config/app.ts
+
 {
   http: {
     trustProxy: proxyAddr.compile(valueComesHere)
@@ -565,11 +539,10 @@ The following methods from the request class rely on a trusted proxy to return t
 - **ip/ips**: The value of `request.ips()` and `request.ip()` is derived from the `X-Forwaded-For` header. However, the `http.getIp` configuration method takes precedence when defined. [Learn more](#custom-ip-reterval-method)
 
 ## CORS
-
 AdonisJS has in-built support for responding to the [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) `OPTIONS` requests. Just enable it inside the `config/cors.ts` file.
 
 ```ts
-// title: config/cors.ts
+// config/cors.ts
 {
   enabled: true,
   // ...rest of the config
@@ -582,16 +555,14 @@ The config file is extensively documented. Make sure to go through all the optio
 
 Following is the list of other available methods and properties on the Request class.
 
-### hostname
+### `hostname`
 Returns the request hostname. If [proxy headers](#trusted-proxy) are trusted, then `X-Forwarded-Host` is given priority over the `Host` header.
 
 ```ts
 request.hostname()
 ```
 
----
-
-### ajax
+### `ajax`
 Find if the request header `X-Requested-With` is set to `'xmlhttprequest'`.
 
 ```ts
@@ -600,9 +571,7 @@ if (request.ajax()) {
 }
 ```
 
----
-
-### matchesRoute
+### `matchesRoute`
 Find if the current request is for a given route. The method accepts the route identifier as the only argument. The identifier can be the **route pattern**, **controller.method name** or the **route name**.
 
 ```ts
@@ -617,9 +586,7 @@ if (request.matchesRoute(['posts.show', 'posts.edit'])) {
 }
 ```
 
----
-
-### is
+### `is`
 Returns the best matching content type of the request by matching against the given types.
 
 The content type is picked from the `Content-Type` header, and the request must have a body.
@@ -636,42 +603,35 @@ if (contentType === 'xml') {
 }
 ```
 
----
-
-### updateBody
-
+### `updateBody`
 Allows you to update the request body with a custom payload. It would be best to do it unless creating a package that purposefully mutates the request body.
 
 ```ts
 request.updateBody(myCustomPayload)
 ```
 
-### updateRawBody
-
+### `updateRawBody`
 The `updateRawBody` allows updating the raw request body. The raw body is always a string.
 
 ```ts
 request.updateRawBody(JSON.stringify(myCustomPayload))
 ```
 
-### updateQs
-
+### `updateQs`
 The `updateQs` allows updating the value of parsed query string.
 
 ```ts
 request.updateQs(someCustomParser(request.parsedUrl.query))
 ```
 
-### original
-
+### `original`
 Returns the request's original body parsed by the bodyparser. Calling the `updateBody` method does not change the original payload.
 
 ```ts
 request.original()
 ```
 
-### hasBody
-
+### `hasBody`
 Find if the request has a body. The bodyparser uses this method to know if the request has a body before parsing it.
 
 ```ts
@@ -681,7 +641,6 @@ if (request.hasBody()) {
 ```
 
 ## Extending Request class
-
 You can extend the Request class using **macros** or **getters**. The best place to extend the request is inside a custom service provider.
 
 Open the pre-existing `providers/AppProvider.ts` file and write the following code inside the `boot` method.
@@ -721,13 +680,13 @@ Route.get('/', ({ request }) => {
 ```
 
 ### Informing TypeScript about the method
-
 The `wantsJSON` property is added at the runtime, and hence TypeScript does not know about it. To inform the TypeScript, we will use [declaration merging](https://www.typescriptlang.org/docs/handbook/declaration-merging.html#merging-interfaces) and add the property to the `RequestContract` interface.
 
 Create a new file at path `contracts/request.ts` (the filename is not essential) and paste the following contents inside it.
 
 ```ts
-// title: contracts/request.ts
+// contracts/request.ts
+
 declare module '@ioc:Adonis/Core/Request' {
   interface RequestContract {
     wantsJSON(): boolean

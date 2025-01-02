@@ -33,7 +33,8 @@ Let's explore some different ways to structure and load routes from other files.
 One approach is to define your routes in different files as per your application structure and then import all those files inside the `start/routes.ts` file.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import 'App/Modules/User/routes'
 import 'App/Modules/Cart/routes'
 import 'App/Modules/Product/routes'
@@ -44,7 +45,8 @@ import 'App/Modules/Product/routes'
 Another approach is to get rid of the routes file altogether and use a custom file path to register the routes. In this scenario, do make sure to register the path inside the `.adonisrc.json` file under the `preloads` array.
 
 ```json
-// title: .adonisrc.json
+// .adonisrc.json
+
 {
   "preloads": [
     // delete-start
@@ -581,7 +583,7 @@ export default class AppProvider {
 }
 ```
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1611994181/v5/routes-to-json.png)
+![](/docs/assets/routes-to-json.png)
 
 ## Extending Router
 

@@ -19,7 +19,7 @@ Route
   // highlight-end
 ```
 
-::video{url="https://res.cloudinary.com/adonis-js/video/upload/f_auto,q_auto/v1610089298/v5/route-middleware.mp4" controls}
+<video src="/docs/assets/route-middleware.webm" controls />
 
 ## Middleware classes
 
@@ -40,7 +40,8 @@ Middleware classes are stored (but not limited to) inside the `app/Middleware` d
 Every middleware class must implement the `handle` method to handle the HTTP request and call the `next` method to forward the request to the next middleware or the route handler.
 
 ```ts
-// title: app/Middleware/LogRequest.ts
+// app/Middleware/LogRequest.ts
+
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class LogRequest {
@@ -91,7 +92,8 @@ Global middleware are executed for all the HTTP requests in the same sequence as
 You register them as an array inside the `start/kernel.ts` file, as shown below:
 
 ```ts
-// title: start/kernel.ts
+// start/kernel.ts
+
 Server.middleware.register([
   () => import('@ioc:Adonis/Core/BodyParser'),
   // highlight-start
@@ -105,7 +107,8 @@ Server.middleware.register([
 Named middleware allows you to selectively apply middleware on your routes/group of routes. You begin by registering them with a unique name and later reference it on the route by that name.
 
 ```ts
-// title: start/kernel.ts
+// start/kernel.ts
+
 Server.middleware.registerNamed({
   auth: () => import('App/Middleware/Auth')
 })

@@ -16,7 +16,7 @@ Database.from('users')
 ## Methods/properties
 Following is the list of available methods/properties available on the Query builder instance.
 
-### select
+### `select`
 The `select` method allows selecting columns from the database table. You can either pass an array of columns or pass them as multiple arguments.
 
 ```ts
@@ -79,9 +79,7 @@ Database
   )
 ```
 
----
-
-### from
+### `from`
 The `from` method is used to define the database table for the query.
 
 ```ts
@@ -100,9 +98,7 @@ Database.from((subquery) => {
 }).avg('total_marks.total')
 ```
 
----
-
-### where
+### `where`
 The `where` method is used to define the where clause in your SQL queries. The query builder accepts a wide range of arguments types to let you leverage the complete power of SQL.
 
 The following example accepts the column name as the first argument and its value as the second argument.
@@ -194,9 +190,7 @@ Database
   )
 ```
 
----
-
-### where method variants
+### `where` method variants
 Following is the list of the `where` method variations and shares the same API.
 
 | Method | Description |
@@ -207,7 +201,7 @@ Following is the list of the `where` method variations and shares the same API.
 | `orWhereNot` | Adds an **or where not** clause |
 | `andWhereNot` | Alias for `whereNot` |
 
-### whereColumn
+### `whereColumn`
 The `whereColumn` method allows you to define a column as the value for the where clause. The method is usually helpful with queries and joins. For example:
 
 ```ts
@@ -230,7 +224,7 @@ Database
   )
 ```
 
-### whereColumn method variants
+### `whereColumn` method variants
 Following is the list of the `whereColumn` method variations and shares the same API.
 
 
@@ -242,7 +236,7 @@ Following is the list of the `whereColumn` method variations and shares the same
 | `orWhereNotColumn` | Adds an **or where not** clause |
 | `andWhereNotColumn` | Alias for `whereNotColumn` |
 
-### whereLike
+### `whereLike`
 Adds a where clause with case-sensitive substring comparison on a given column with a given value.
 
 ```ts
@@ -251,7 +245,7 @@ Database
   .whereLike('title', '%Adonis 101%')
 ```
 
-### whereILike
+### `whereILike`
 Adds a where clause with case-insensitive substring comparison on a given column with a given value. The method generates a slightly different for each dialect to achieve the case insensitive comparison.
 
 ```ts
@@ -260,7 +254,7 @@ Database
   .whereILike('title', '%Adonis 101%')
 ```
 
-### whereIn
+### `whereIn`
 The `whereIn` method is used to define the **wherein** SQL clause. The method accepts the column name as the first argument and an array of values as the second argument.
 
 ```ts
@@ -320,9 +314,7 @@ Database
   )
 ```
 
----
-
-### whereIn method variants
+### `whereIn` method variants
 Following is the list of the `whereIn` method variations and shares the same API.
 
 | Method | Description |
@@ -333,7 +325,7 @@ Following is the list of the `whereIn` method variations and shares the same API
 | `orWhereNotIn` | Adds an **or where not in** clause |
 | `andWhereNotIn` | Alias for `whereNotIn` |
 
-### whereNull
+### `whereNull`
 The `whereNull` method adds a where null clause to the query.
 
 ```ts
@@ -342,7 +334,7 @@ Database
   .whereNull('deleted_at')
 ```
 
-### whereNull method variants
+### `whereNull` method variants
 Following is the list of the `whereNull` method variations and shares the same API.
 
 | Method | Description |
@@ -353,7 +345,7 @@ Following is the list of the `whereNull` method variations and shares the same A
 | `orWhereNotNull` | Adds an **or where not null** clause |
 | `andWhereNotNull` | Alias for `whereNotNull` |
 
-### whereExists
+### `whereExists`
 The `whereExists` method allows adding where constraints by checking for the existence of results on a subquery. For example: Select all users who have at least logged in once.
 
 ```ts
@@ -390,9 +382,7 @@ Database
   )
 ```
 
----
-
-### whereExists method variants
+### `whereExists` method variants
 
 Following is the list of the `whereExists` method variations and shares the same API.
 
@@ -404,7 +394,7 @@ Following is the list of the `whereExists` method variations and shares the same
 | `orWhereNotExists` |  Adds an **or where not exists** clause | 
 | `andWhereNotExists` |  Alias for the `whereNotExists` method | 
 
-### whereBetween
+### `whereBetween`
 The `whereBetween` method adds the **where between** clause. It accepts the column name as the first argument and an array of values as the second argument.
 
 ```ts
@@ -439,7 +429,7 @@ Database
   ])
 ```
 
-### whereBetween method variants
+### `whereBetween` method variants
 Following is the list of the `whereBetween` method variations and shares the same API.
 
 | Method | Description |
@@ -450,7 +440,7 @@ Following is the list of the `whereBetween` method variations and shares the sam
 | `orWhereNotBetween` | Adds an **or where not between** clause |
 | `andWhereNotBetween` | Alias for the `whereNotBetween` method |
 
-### whereRaw
+### `whereRaw`
 You can use the `whereRaw` method to express conditions not covered by the existing query builder methods.
 
 :::warning
@@ -482,7 +472,7 @@ Database
   .whereRaw('?? = ?', ['users.username', username])
 ```
 
-### whereRaw method variants
+### `whereRaw` method variants
 Following is the list of the `whereRaw` method variations and shares the same API.
 
 | Method | Description |
@@ -490,7 +480,7 @@ Following is the list of the `whereRaw` method variations and shares the same AP
 | `andWhereRaw` | Alias for the `whereRaw` method |
 | `orWhereRaw` | Adds an **or where raw** clause |
 
-### whereJson
+### `whereJson`
 Add a where clause with an object to match the value of a JSON column inside the database.
 
 ```ts
@@ -513,7 +503,7 @@ Database
   )
 ```
 
-### whereJson method variants
+### `whereJson` method variants
 Following is the list of the `whereJson` method variations and shares the same API.
 
 | Method | Description |
@@ -524,7 +514,7 @@ Following is the list of the `whereJson` method variations and shares the same A
 | `orWhereNotJson` | Add a **or where not** clause against a JSON column |
 | `andWhereNotJson` | Alias for `whereNotJson` |
 
-### whereJsonSuperset
+### `whereJsonSuperset`
 Add a clause where the value of the JSON column is the superset of the defined object. In the following example, the user address is stored as JSON and we find by the user by their pincode.
 
 ```ts
@@ -533,7 +523,7 @@ Database
   .whereJsonSuperset('address', { pincode: '110001' })
 ```
 
-### whereJsonSuperset method variants
+### `whereJsonSuperset` method variants
 Following is the list of the `whereJsonSuperset` method variations and shares the same API.
 
 | Method | Description |
@@ -544,7 +534,7 @@ Following is the list of the `whereJsonSuperset` method variations and shares th
 | `orWhereNotJsonSuperset` | Add a **or where not** clause against a JSON column |
 | `andWhereNotJsonSuperset` | Alias for `whereNotJsonSuperset` |
 
-### whereJsonSubset
+### `whereJsonSubset`
 Add a clause where the value of the JSON column is the subset of the defined object. In the following example, the user address is stored as JSON and we find by the user by their pincode or the city name.
 
 ```ts
@@ -553,7 +543,7 @@ Database
   .whereJsonSubset('address', { pincode: '110001', city: 'XYZ' })
 ```
 
-### whereJsonSubset method variants
+### `whereJsonSubset` method variants
 Following is the list of the `whereJsonSubset` method variations and shares the same API.
 
 | Method | Description |
@@ -564,7 +554,7 @@ Following is the list of the `whereJsonSubset` method variations and shares the 
 | `orWhereNotJsonSubset` | Add a **or where not** clause against a JSON column |
 | `andWhereNotJsonSubset` | Alias for `whereNotJsonSubset` |
 
-### join
+### `join`
 The `join` method allows specifying SQL joins between two tables. For example: Select the `ip_address` and the `country` columns by joining the `user_logins` table.
 
 ```ts
@@ -643,9 +633,7 @@ The `join` method uses the **inner join** by default, and you can use a differen
 - `fullOuterJoin`
 - `crossJoin`
 
----
-
-### joinRaw
+### `joinRaw`
 You can use the `joinRaw` method to express conditions not covered by the query builder standard API.
 
 ```ts
@@ -654,12 +642,10 @@ Database
   .joinRaw('natural full join user_logins')
 ```
 
----
-
 ### On methods
 Following is the list of available `on` methods you can use with a **join query**.
 
-#### onIn
+#### `onIn`
 
 ```ts
 Database
@@ -669,7 +655,7 @@ Database
   })
 ```
 
-#### onNotIn
+#### `onNotIn`
 
 ```ts
 Database
@@ -679,7 +665,7 @@ Database
   })
 ```
 
-#### onNull
+#### `onNull`
 
 ```ts
 Database
@@ -689,7 +675,7 @@ Database
   })
 ```
 
-#### onNotNull
+#### `onNotNull`
 
 ```ts
 Database
@@ -699,7 +685,7 @@ Database
   })
 ```
 
-#### onExists
+#### `onExists`
 
 ```ts
 Database
@@ -714,7 +700,7 @@ Database
   })
 ```
 
-#### onNotExists
+#### `onNotExists`
 
 ```ts
 Database
@@ -729,7 +715,7 @@ Database
   })
 ```
 
-#### onBetween
+#### `onBetween`
 
 ```ts
 Database
@@ -739,7 +725,7 @@ Database
   })
 ```
 
-#### onNotBetween
+#### `onNotBetween`
 
 ```ts
 Database
@@ -749,9 +735,7 @@ Database
   })
 ```
 
----
-
-### having
+### `having`
 
 The `having` method adds the **having** clause. It accepts the column name as the first argument, followed by the optional operator and the value.
 
@@ -763,7 +747,7 @@ Database
   .having('score', '>', 80)
 ```
 
-### havingRaw
+### `havingRaw`
 Most of the time, you will find yourself using the `havingRaw` method, as you can define the aggregates for the having clause.
 
 ```ts
@@ -774,9 +758,7 @@ Database
   .havingRaw('SUM(score) > ?', [200])
 ```
 
----
-
-### having method variants 
+### `having` method variants 
 
 Following is the list of all the available **having methods**.
 
@@ -791,7 +773,7 @@ Following is the list of all the available **having methods**.
 | `havingBetween` | Adds a having between clause to the query. It accepts an array of values. |
 | `havingNotBetween` | Adds a having not between clause to the query. It accepts an array of values |
 
-### distinct
+### `distinct`
 The `distinct` method applies the **distinct** clause to the select statement. You can define one or more column names as multiple arguments.
 
 ```ts
@@ -819,9 +801,7 @@ Database
   .orderBy('created_at', 'DESC')
 ```
 
----
-
-### groupBy
+### `groupBy`
 The `groupBy` method applies the **group by** clause to the query.
 
 ```ts
@@ -831,9 +811,7 @@ Database
   .groupBy('url')
 ```
 
----
-
-### groupByRaw
+### `groupByRaw`
 The `groupByRaw` method allows writing a SQL query to define the group by statement.
 
 ```ts
@@ -843,9 +821,7 @@ Database
   .groupByRaw('year WITH ROLLUP')
 ```
 
----
-
-### orderBy
+### `orderBy`
 The `orderBy` method applies the **order by** clause to the query.
 
 ```ts
@@ -895,9 +871,7 @@ Database
   .orderBy(commentsCountQuery, 'desc')
 ```
 
----
-
-### orderByRaw
+### `orderByRaw`
 Use the `orderByRaw` method to define the sort order from a SQL string.
 
 ```ts
@@ -912,27 +886,21 @@ Database
   .orderBy(commentsCountQuery, 'desc')
 ```
 
----
-
-### offset
+### `offset`
 Apply offset to the SQL query
 
 ```ts
 Database.from('posts').offset(11)
 ```
 
----
-
-### limit
+### `limit`
 Apply a limit to the SQL query
 
 ```ts
 Database.from('posts').limit(20)
 ```
 
----
-
-### forPage
+### `forPage`
 The `forPage` is a convenient method to apply `offset` and `limit` using the page number. It accepts a total of two arguments.
 
 - The first argument is the page number **(not the offset)**.
@@ -944,7 +912,7 @@ Database
   .forPage(request.input('page', 1), 20)
 ```
 
-### count
+### `count`
 The `count` method allows you to use the **count aggregate** in your SQL queries.
 
 :::note
@@ -990,8 +958,6 @@ console.log(users[0].total)
 console.log(users[0].active)
 ```
 
----
-
 ### Other aggregate methods
 The API for all the following aggregate methods is identical to the `count` method.
 
@@ -1005,7 +971,7 @@ The API for all the following aggregate methods is identical to the `count` meth
 | `avg` | Aggregate values using the **avg function** |
 | `avgDistinct` | Aggregate values for only distinct rows using the **avg function** |
 
-### union
+### `union`
 The `union` method allows to you build up a union query by using multiple instances of the query builder. For example:
 
 ```ts
@@ -1088,9 +1054,7 @@ The following methods have the same API as the `union` method.
 - `unionAll`
 - `intersect`
 
----
-
-### with
+### `with`
 The `with` method allows you to use CTE (Common table expression) in **PostgreSQL**, **Oracle**, **SQLite3** and the **MSSQL** databases.
 
 ```ts
@@ -1129,9 +1093,7 @@ SELECT * FROM "aliased_table"
 */
 ```
 
----
-
-### withMaterialized/withNotMaterialized
+### `withMaterialized` / `withNotMaterialized`
 The `withMaterialized` and the `withNotMaterialized` methods allows you to use CTE (Common table expression) as materialized views in **PostgreSQL** and **SQLite3** database.
 
 ```ts
@@ -1151,9 +1113,7 @@ SELECT * FROM "aliased_table"
 */
 ```
 
----
-
-### withRecursive
+### `withRecursive`
 The `withRecursive` method creates a recursive CTE (Common table expression) in **PostgreSQL**, **Oracle**, **SQLite3** and the **MSSQL** databases.
 
 In the following example, we calculate the sum of all children accounts of a parent account. Also, we assume the following table structure.
@@ -1212,9 +1172,7 @@ Database
 
 Here's a great article explaining the [PostgreSQL Recursive Query](https://www.postgresqltutorial.com/postgresql-recursive-query/)
 
----
-
-### update
+### `update`
 The `update` method allows updating one or more database rows. You can make use of the query builder to add additional constraints when performing the update.
 
 ```ts
@@ -1239,9 +1197,7 @@ console.log(rows[0].id)
 console.log(rows[0].email)
 ```
 
----
-
-### increment
+### `increment`
 The `increment` method allows incrementing the value for one or more columns.
 
 ```ts
@@ -1280,9 +1236,7 @@ WHERE
 */
 ```
 
----
-
-### decrement
+### `decrement`
 The `decrement` method is the opposite of the `increment` method. However, the API is the same.
 
 ```ts
@@ -1292,9 +1246,7 @@ Database
   .decrement('balance', 10)
 ```
 
----
-
-### delete
+### `delete`
 The `delete` method issues a **delete** SQL query. You can make use of the query builder to add additional constraints when performing the delete.
 
 ```ts
@@ -1306,9 +1258,7 @@ Database
 
 The `delete` method also has an alias called `del`.
 
----
-
-### useTransaction
+### `useTransaction`
 The `useTransaction` method instructs the query builder to wrap the query inside a transaction. The guide on [database transactions](../../guides/database/transactions.md) covers different ways to create and use transactions in your application.
 
 ```ts
@@ -1323,9 +1273,7 @@ Database
 await trx.commit()
 ```
 
----
-
-### forUpdate
+### `forUpdate`
 The `forUpdate` method acquires an update lock on the selected rows in PostgreSQL and MySQL.
 
 :::note
@@ -1341,9 +1289,7 @@ const user = Database
   .first()
 ```
 
----
-
-### forShare
+### `forShare`
 The `forShare` adds a **FOR SHARE in PostgreSQL** and a **LOCK IN SHARE MODE for MySQL** during a select statement.
 
 ```ts
@@ -1355,9 +1301,7 @@ const user = Database
   .first()
 ```
 
----
-
-### skipLocked
+### `skipLocked`
 The `skipLocked` method skips the rows locked by another transaction. The method is only supported by MySQL 8.0+ and PostgreSQL 9.5+.
 
 ```ts
@@ -1375,9 +1319,7 @@ FOR UPDATE SKIP LOCKED
 */
 ```
 
----
-
-### noWait
+### `noWait`
 The `noWait` method fails if any of the selected rows are locked by another transaction. The method is only supported by MySQL 8.0+ and PostgreSQL 9.5+.
 
 ```ts
@@ -1395,9 +1337,7 @@ FOR UPDATE NOWAIT
 */
 ```
 
----
-
-### clone
+### `clone`
 The `clone` method returns a new query builder object with all constraints applied from the original query.
 
 ```ts
@@ -1408,9 +1348,7 @@ await query // select "id", "email" from "users"
 await clonedQuery // select * from "users"
 ```
 
----
-
-### debug
+### `debug`
 The `debug` method allows enabling or disabling debugging at an individual query level. Here's a [complete guide](../../guides/database/debugging.md) on debugging queries.
 
 ```ts
@@ -1419,9 +1357,7 @@ Database
   .debug(true)
 ```
 
----
-
-### timeout
+### `timeout`
 Define the `timeout` for the query. An exception is raised after the timeout has been exceeded.
 
 The value of timeout is always in milliseconds.
@@ -1440,9 +1376,7 @@ Database
   .timeout(2000, { cancel: true })
 ```
 
----
-
-### toSQL
+### `toSQL`
 The `toSQL` method returns the query SQL and bindings as an object.
 
 ```ts
@@ -1466,9 +1400,7 @@ const output = Database
 console.log(output)
 ```
 
----
-
-### toQuery
+### `toQuery`
 Returns the SQL query after applying the bind params.
 
 ```ts
@@ -1505,9 +1437,7 @@ Also, you can execute a query by explicitly calling the `exec` method.
 const users = await Database.from('users').exec()
 ```
 
----
-
-### first
+### `first`
 The select queries always return an array of objects, even when the query is intended to fetch a single row. However, using the `first` method will give you the first row or null (when there are no rows).
 
 :::note
@@ -1527,9 +1457,7 @@ if (user) {
 }
 ```
 
----
-
-### firstOrFail
+### `firstOrFail`
 The `firstOrFail` method is similar to the `first` method except, it raises an exception when no rows are found.
 
 ```ts
@@ -1553,52 +1481,42 @@ const results = await Database
 
 The `paginate` method returns an instance of the [SimplePaginator](https://github.com/adonisjs/lucid/blob/efed38908680cca3b288d9b2a123586fab155b1d/src/Database/Paginator/SimplePaginator.ts#L20) class. The class has the following properties and methods.
 
-### firstPage
+### `firstPage`
 Returns the number for the first page. It is always `1`.
 
 ```ts
 results.firstPage
 ```
 
----
-
-### perPage
+### `perPage`
 Returns the value for the limit passed to the `paginate` method.
 
 ```ts
 results.perPage
 ```
 
----
-
-### currentPage
+### `currentPage`
 Returns the value of the current page.
 
 ```ts
 results.currentPage
 ```
 
----
-
-### lastPage
+### `lastPage`
 Returns the value for the last page by taking the total of rows into account.
 
 ```ts
 results.lastPage
 ```
 
----
-
-### total
+### `total`
 Holds the value for the total number of rows in the database.
 
 ```ts
 results.total
 ```
 
----
-
-### hasPages
+### `hasPages`
 A boolean to know if there are pages for pagination. You can rely on this value to decide when or when not to show the pagination links.
 
 Following is an example of the Edge view.
@@ -1611,36 +1529,28 @@ Following is an example of the Edge view.
 @endif
 ```
 
----
-
-### hasMorePages
+### `hasMorePages`
 A boolean to know if there are more pages to go after the current page.
 
 ```ts
 results.hasMorePages
 ```
 
----
-
-### all()
+### `all()`
 Returns an array of rows returned by the SQL queries.
 
 ```ts
 results.all()
 ```
 
----
-
-### getUrl
+### `getUrl`
 Returns the URL for a given page number.
 
 ```ts
 result.getUrl(1) // /?page=1
 ```
 
----
-
-### getNextPageUrl
+### `getNextPageUrl`
 Returns the URL for the next page
 
 ```ts
@@ -1649,9 +1559,7 @@ Returns the URL for the next page
 result.getNextPageUrl() // /?page=3
 ```
 
----
-
-### getPreviousPageUrl
+### `getPreviousPageUrl`
 Returns the URL for the previous page
 
 ```ts
@@ -1660,9 +1568,7 @@ Returns the URL for the previous page
 result.getPreviousPageUrl() // /?page=1
 ```
 
----
-
-### getUrlsForRange
+### `getUrlsForRange`
 Returns URLs for a given range. Helpful when you want to render links for a given range.
 
 Following is an example of using `getUrlsForRange` inside an Edge template.
@@ -1680,9 +1586,7 @@ Following is an example of using `getUrlsForRange` inside an Edge template.
 @endeach
 ```
 
----
-
-### toJSON
+### `toJSON`
 The `toJSON` method returns an object with `meta` and `data` properties. The output of the method is suitable for JSON API responses.
 
 ```ts
@@ -1706,9 +1610,7 @@ results.toJSON()
 */
 ```
 
----
-
-### baseUrl
+### `baseUrl`
 All of the URLs generated by the paginator class use the `/` (root) URL. However, you can change this by defining a custom base URL.
 
 ```ts
@@ -1717,9 +1619,7 @@ results.baseUrl('/posts')
 results.getUrl(2) // /posts?page=2
 ```
 
----
-
-### queryString
+### `queryString`
 Define query string to be appended to the URLs generated by the paginator class.
 
 
@@ -1732,7 +1632,7 @@ results.getUrl(2) // /?page=2&limit=20&sort=top
 ## Helpful properties and methods
 Following is the list of properties and methods you may occasionally need when building something on top of the query builder.
 
-### client
+### `client`
 Reference to the instance of the underlying [database query client](./query-client.md).
 
 ```ts
@@ -1740,9 +1640,7 @@ const query = Database.query()
 console.log(query.client)
 ```
 
----
-
-### knexQuery
+### `knexQuery`
 Reference to the instance of the underlying KnexJS query.
 
 ```ts
@@ -1750,9 +1648,7 @@ const query = Database.query()
 console.log(query.knexQuery)
 ```
 
----
-
-### hasAggregates
+### `hasAggregates`
 A boolean to know if the query is using any of the aggregate methods.
 
 ```ts
@@ -1760,9 +1656,7 @@ const query = Database.from('posts').count('* as total')
 console.log(query.hasAggregates) // true
 ```
 
----
-
-### hasGroupBy
+### `hasGroupBy`
 A boolean to know if the query is using a group by clause.
 
 ```ts
@@ -1770,9 +1664,7 @@ const query = Database.from('posts').groupBy('tenant_id')
 console.log(query.hasGroupBy) // true
 ```
 
----
-
-### hasUnion
+### `hasUnion`
 A boolean to know if the query is using a union.
 
 ```ts
@@ -1786,9 +1678,7 @@ const query = Database
 console.log(query.hasUnion) // true
 ```
 
----
-
-### clearSelect
+### `clearSelect`
 Call this method to clear selected columns.
 
 ```ts
@@ -1796,9 +1686,7 @@ const query = Database.query().select('id', 'title')
 query.clone().clearSelect()
 ```
 
----
-
-### clearWhere
+### `clearWhere`
 Call this method to clear where clauses.
 
 ```ts
@@ -1806,9 +1694,7 @@ const query = Database.query().where('id', 1)
 query.clone().clearWhere()
 ```
 
----
-
-### clearOrder
+### `clearOrder`
 Call this method to clear the order by constraint.
 
 ```ts
@@ -1816,9 +1702,7 @@ const query = Database.query().orderBy('id', 'desc')
 query.clone().clearOrder()
 ```
 
----
-
-### clearHaving
+### `clearHaving`
 Call this method to clear the having clause.
 
 ```ts
@@ -1826,9 +1710,7 @@ const query = Database.query().having('total', '>', 100)
 query.clone().clearHaving()
 ```
 
----
-
-### clearLimit
+### `clearLimit`
 Call this method to clear the applied limit.
 
 ```ts
@@ -1836,9 +1718,7 @@ const query = Database.query().limit(20)
 query.clone().clearLimit()
 ```
 
----
-
-### clearOffset
+### `clearOffset`
 Call this method to clear the applied offset.
 
 ```ts
@@ -1846,9 +1726,7 @@ const query = Database.query().offset(20)
 query.clone().clearOffset()
 ```
 
----
-
-### reporterData
+### `reporterData`
 The query builder emits the `db:query` event and reports the query's execution time with the framework profiler.
 
 Using the `reporterData` method, you can pass additional details to the event and the profiler.
@@ -1869,9 +1747,7 @@ Event.on('db:query', (query) => {
 })
 ```
 
----
-
-### withSchema
+### `withSchema`
 Specify the PostgreSQL schema to use when executing the query.
 
 ```ts
@@ -1881,9 +1757,7 @@ Database
   .select('*')
 ```
 
----
-
-### as
+### `as`
 Specify the alias for a given query. Usually helpful when passing the query builder instance as a subquery. For example:
 
 ```ts
@@ -1900,9 +1774,7 @@ Database
   )
 ```
 
----
-
-### if
+### `if`
 
 The `if` helper allows you to conditionally add constraints to the query builder. For example:
 
@@ -1927,9 +1799,7 @@ Database
   )
 ```
 
----
-
-### unless
+### `unless`
 The `unless` method is opposite of the `if` helper.
 
 ```ts
@@ -1956,9 +1826,7 @@ Database
   )
 ```
 
----
-
-### match
+### `match`
 The `match` helper allows you define an array of conditional blocks to match from and execute the corresponding callback.
 
 In the following example, the query builder will go through all the conditional blocks and executes the first matching one and discards the other. **Think of it as a `switch` statement in JavaScript**.
@@ -1980,9 +1848,7 @@ Database
   )
 ```
 
----
-
-### ifDialect
+### `ifDialect`
 The `ifDialect` helper allows you to conditionally add constraints to the query builder when dialect matches one of the mentioned dialects.
 
 ```ts
@@ -2005,9 +1871,7 @@ Database
   )
 ```
 
----
-
-### unlessDialect
+### `unlessDialect`
 The `unlessDialect` method is opposite of the `ifDialect` helper.
 
 ```ts
@@ -2020,6 +1884,7 @@ Database
 ```
 
 You can pass another callback which gets executed when the `unlessDialect` statement isn't true.
+
 ```ts
 Database
   .from('users')

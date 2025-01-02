@@ -114,7 +114,8 @@ All the content outside the `@slot('trigger')` is part of the main slot in the f
 Named slots allow the component to accept markup for multiple outlets. For example, a modal component can accept markup for the modal header, body, and actions.
 
 ```edge
-// title: components/modal.edge
+<!-- components/modal.edge -->
+
 <div>
   <header>
     {{{ await $slots.header() }}}
@@ -133,7 +134,8 @@ Named slots allow the component to accept markup for multiple outlets. For examp
 You can verify a slot existence and give a fallback value using an `if` statement.
 
 ```edge
-// title: components/modal.edge
+<!-- components/modal.edge -->
+
 <div>
   <!-- ... -->
   <footer>
@@ -171,7 +173,7 @@ The parent template can define them as follows.
 
 #### Output
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1617097757/v5/edge-modal-component.png)
+![](/docs/assets/edge-modal-component.webp)
 
 ### Slots scope
 
@@ -180,7 +182,8 @@ The slots have access to the state of the template in which they are defined (ak
 Following is the markup for the button component
 
 ```edge
-// title: components/button.edge
+<!-- components/button.edge -->
+
 @set('title', 'I am a button')
 
 <button>
@@ -191,14 +194,16 @@ Following is the markup for the button component
 The parent template is attempting to access the `title` property defined inside the `component`.
 
 ```edge
-// title: home.edge
+<!-- home.edge -->
+
 @component('components/button')
   <span>{{ title }}</span>
 @end
 ```
 
 ```html
-// title: Output
+<!-- Output -->
+ 
 <button>
   <span>undefined</span>
 </button>
@@ -207,7 +212,8 @@ The parent template is attempting to access the `title` property defined inside 
 You can pass the data from the component to the parent as arguments to the `slot` method.
 
 ```edge
-// title: components/button.edge
+<!-- components/button.edge -->
+
 @set('title', 'I am a button')
 
 <button>
@@ -218,7 +224,8 @@ You can pass the data from the component to the parent as arguments to the `slot
 ```
 
 ```edge
-// title: home.edge
+<!-- home.edge -->
+
 @component('components/button')
   // highlight-start
   @slot('main', scope)
@@ -244,7 +251,8 @@ The goal is to simplify the communication between the components inside a tree. 
 Let's start with the most basic example to see the injection API in action. You can make use of the `@inject` tag to share an object with the component tree.
 
 ```edge
-// title: Component file
+<!-- Component file -->
+
 {{-- Declare a local variable --}}
 @set('counter', { value: 0 })
 
@@ -275,7 +283,8 @@ Edge allows you to reference the components stored inside the `./resources/views
 Create the following template inside the `resources/views/components/button.edge` file.
 
 ```edge
-// title: resources/views/components/button.edge
+<!-- resources/views/components/button.edge -->
+
 <button type="{{ type }}">
   {{ text }}
 </button>

@@ -29,7 +29,7 @@ The `inspect` helper pretty prints the value in the same output. You can think o
 
 #### Output
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1617090065/v5/edge-inspect.png)
+![](/docs/assets/edge-inspect.webp)
 
 ## The `@debugger` tag
 
@@ -48,4 +48,4 @@ Run the Node server with the `--inspect` flag and use Chrome to debug.
 node ace serve --watch --node-args="--inspect"
 ```
 
-::video{url="https://res.cloudinary.com/adonis-js/video/upload/q_auto/v1618594355/v5/edge-debugger.mp4" controls}
+<video src="/docs/assets/edge-debugger.mp4" controls />

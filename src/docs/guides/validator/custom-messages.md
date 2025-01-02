@@ -68,7 +68,7 @@ The callback will be invoked for all the fields in the following example, except
 ## Options passed to the message string
 Following is the list of options passed by the different validation methods to the message string.
 
-### date
+### `date`
 The `date` validation rule will pass the `options.format`.
 
 ```ts
@@ -77,9 +77,7 @@ The `date` validation rule will pass the `options.format`.
 }
 ```
 
----
-
-### distinct
+### `distinct`
 The `distinct` validation rule will pass the `field` on which the distinct rule is applied, along with the `index` at which the duplicate value was found.
 
 ```ts
@@ -88,9 +86,7 @@ The `distinct` validation rule will pass the `field` on which the distinct rule 
 }
 ```
 
----
-
-### enum / enumSet
+### `enum` / `enumSet`
 The `enum` and `enumSet` validation rules will pass an array of `options.choices`.
 
 ```ts
@@ -100,9 +96,7 @@ The `enum` and `enumSet` validation rules will pass an array of `options.choices
 }
 ```
 
----
-
-### file
+### `file`
 The file validation allows defining custom messages for the sub-rules. For example:
 
 ```ts
@@ -112,9 +106,7 @@ The file validation allows defining custom messages for the sub-rules. For examp
 }
 ```
 
----
-
-### minLength / maxLength
+### `minLength` / `maxLength`
 The `minLength` and `maxLength` validation rules will pass the following options to custom messages.
 
 ```ts
@@ -124,9 +116,7 @@ The `minLength` and `maxLength` validation rules will pass the following options
 }
 ```
 
----
-
-### range
+### ` `
 The `range` validation rule passes the `start` and the `stop` options to custom messages.
 
 ```ts
@@ -135,9 +125,7 @@ The `range` validation rule passes the `start` and the `stop` options to custom 
 }
 ```
 
----
-
-### requiredIfExists / requiredIfNotExists
+### `requiredIfExists` / `requiredIfNotExists`
 The `requiredIfExists` and `requiredIfNotExists` validation rules will pass the `options.otherField` as a string.
 
 ```ts
@@ -145,8 +133,6 @@ The `requiredIfExists` and `requiredIfNotExists` validation rules will pass the 
   'requiredIfExists': '{{ options.otherField }} requires {{ field }}',
 }
 ```
-
----
 
 ### Conditional required rules
 The following `requiredIf*` rules will pass the `options.otherFields` as an array of strings.
@@ -162,9 +148,7 @@ The following `requiredIf*` rules will pass the `options.otherFields` as an arra
 }
 ```
 
----
-
-### requiredWhen
+### `requiredWhen`
 The `requiredWhen` validation rule will pass the following options.
 
 - `options.otherField`

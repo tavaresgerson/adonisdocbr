@@ -14,7 +14,7 @@ The encryption is based on the `aes-256-cbc` algorithm, and uses the `appKey` sa
 
 The encryption module also generates a unique [iv](https://en.wikipedia.org/wiki/Initialization_vector) for every encryption call. Hence encrypting the same value twice will result in a different visual output.
 
-#### encrypt
+#### `encrypt`
 
 The `Encryption.encrypt` method encrypts a given value.
 
@@ -44,7 +44,7 @@ During decryption, you can check if the post id matches or not as follows.
 Encryption.decrypt(key, String(params.id))
 ```
 
-#### decrypt
+#### `decrypt`
 
 The `Encryption.decrypt` method decrypts the encrypted value. Returns `null` when unable to decrypt the value.
 

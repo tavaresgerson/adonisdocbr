@@ -33,25 +33,21 @@ Following is the list of available isolation levels.
 ## Methods/Properties
 Following is the list of methods and properties available on the transaction client class.
 
-### commit
+### `commit`
 Commit the transaction
 
 ```ts
 await trx.commit()
 ```
 
----
-
-### rollback
+### `rollback`
 Rollback the transaction
 
 ```ts
 await trx.rollback()
 ```
 
----
-
-### isCompleted
+### `isCompleted`
 Find if the transaction has been completed or not.
 
 ```ts

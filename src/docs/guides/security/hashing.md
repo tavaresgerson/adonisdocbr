@@ -54,8 +54,6 @@ export default hashConfig({
 
 The `default` property configures the hasher to use by default for hashing values. It must be one of the available hashers from the list object.
 
----
-
 #### Available hashers
 The `list` object contains one or more hashers available to be used for hashing values. A hasher must use one of the available drivers.
 
@@ -71,7 +69,7 @@ The `list` object contains one or more hashers available to be used for hashing 
 
 ## Hashing values
 
-### make
+### `make`
 
 The `Hash.make` method accepts a string value to a hash.
 
@@ -104,9 +102,7 @@ export default class User extends BaseModel {
 }
 ```
 
----
-
-### verify
+### `verify`
 
 You cannot convert hashed values back to a plain string, and you can only verify that a given plain-text string corresponds to a given hash.
 
@@ -116,9 +112,7 @@ if (await Hash.verify(hashedValue, plainTextValue)) {
 }
 ```
 
----
-
-### needsReHash
+### `needsReHash`
 
 Find if a previously hashed value needs a rehash. This method returns true if the work factor used by the hasher has changed since the password was hashed.
 
@@ -164,29 +158,21 @@ interface HashDriverContract {
 }
 ```
 
-#### make
+#### `make`
 
 The `make` method is responsible for hashing the plain string value.
 
----
-
-#### verify
+#### `verify`
 
 The `verify` method is responsible for verifying the plain string against a pre-existing hash.
 
----
-
-#### needsReHash
+#### `needsReHash`
 
 The `needsReHash` is optional. However, it must be implemented if your hashing algorithm has support for it.
 
----
-
-#### params/ids
+#### `params`/`ids`
 
 The `params` and the `ids` properties are something you need when using the PHC string format. Just check the existing driver's implementation and read about the PHC string format to learn more about it.
-
----
 
 ### Extending from outside in
 
@@ -210,7 +196,8 @@ providers
 Open the `HashDriver/index.ts` file and paste the following contents inside it.
 
 ```ts
-// title: providers/HashDriver/index.ts
+// providers/HashDriver/index.ts
+
 import { HashDriverContract } from '@ioc:Adonis/Core/Hash'
 
 export class PlainTextDriver implements HashDriverContract {
@@ -272,7 +259,8 @@ declare module '@ioc:Adonis/Core/Hash' {
 In order to use the driver, you will have to define a mapping within the config file setting the `driver=plainText`.
 
 ```ts
-// title: config/hash.ts
+// config/hash.ts
+
 
 list: {
   myHashDriver: {

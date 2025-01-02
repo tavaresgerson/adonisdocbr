@@ -6,8 +6,6 @@ It is recommended to use this package when creating a server-rendered app using 
 
 If you are using AdonisJS to create an API server, then you must rely on your frontend framework's security layer.
 
-:::div{class="setup"}
-
 :::codegroup
 
 ```sh
@@ -33,7 +31,6 @@ Server.middleware.register([
 ```
 
 :::
-
 
 ## CSRF protection
 [CSRF (Cross-Site Request Forgery)](https://owasp.org/www-community/attacks/csrf) is an attack that tricks the user of your web apps to perform form submissions without their explicit consent.
@@ -82,12 +79,10 @@ export const csrf: ShieldConfig['csrf'] = {
 }
 ```
 
-#### enabled
+#### `enabled`
 Enable/disable the CSRF protection all together. You may find yourself disabling it during tests when hitting the form endpoints directly.
 
----
-
-#### exceptRoutes
+#### `exceptRoutes`
 Ignore certain routes from being validated for the CSRF token. You may find it useful, when creating a hybrid app with API endpoints and the server rendered forms by exempting API endpoints from CSRF token validation.
 
 ```ts
@@ -111,9 +106,7 @@ For more advanced use cases, you can register a function and dynamically filter 
 }
 ```
 
----
-
-#### methods
+#### `methods`
 HTTP methods to validate for the availability of the CSRF token. You must add all the HTTP verbs you are using to handle form submissions.
 
 ```ts
@@ -122,17 +115,11 @@ HTTP methods to validate for the availability of the CSRF token. You must add al
 }
 ```
 
----
-
-#### enableXsrfCookie
+#### `enableXsrfCookie`
 Setting the value to `true` instructs the shield middleware to read the CSRF token from the `X-XSRF-TOKEN` header. Read the [Ajax form submissions](#ajax-form-submissions) section to learn more.
 
----
-
-#### cookieOptions
+#### `cookieOptions`
 An object of cookie options. Read the [Cookie](../http/cookies.md) section to learn more.
-
----
 
 ### CSRF token for SPA
 The Single page applications render forms on the frontend and hence they do not have access to the `csrfField` view global. However, you can read the token value from the `XSRF-TOKEN` cookie and send it to the server via `X-XSRF-TOKEN` header.
@@ -158,12 +145,10 @@ export const csp: ShieldConfig['csp'] = {
 }
 ```
 
-#### enabled
+#### `enabled`
 Enable/disable CSP protection all together.
 
----
-
-#### directives
+#### `directives`
 Configure the CSP header directives. We recommend reading about them on [https://content-security-policy.com](https://content-security-policy.com/#directive). The `dash-case` directive names are defined as `camelCase` inside the shield config file.
 
 
@@ -176,12 +161,8 @@ directives: {
 }
 ```
 
----
-
-#### reportOnly
+#### `reportOnly`
 Set the value to true, if you want the CSP violations to result in a warning rather than an error. [Learn more](https://content-security-policy.com/report-only/).
-
----
 
 ### CSP nonce
 To define [nonce-based](https://content-security-policy.com/nonce/) inline script and style tags, you have to make use of the `@nonce` keyword.
@@ -219,12 +200,10 @@ export const dnsPrefetch: ShieldConfig['dnsPrefetch'] = {
 }
 ```
 
-#### enabled
+#### `enabled`
 Enable/disable the header all together.
 
----
-
-#### allow
+#### `allow`
 Setting the value to true will define the `X-DNS-Prefetch-Control` header with the value `'on'`, otherwise `'off'` value is defined.
 
 ## Frame guard
@@ -237,12 +216,10 @@ export const xFrame: ShieldConfig['xFrame'] = {
 }
 ```
 
-#### enabled
+#### `enabled`
 Enable/disable the header all together.
 
----
-
-#### action
+#### `action`
 Define the header value. It must be one from `DENY`, `SAMEORIGIN` or `ALLOW-FROM`. The `ALLOW-FROM` action also needs the domain name to allow.
 
 ```ts
@@ -267,22 +244,16 @@ export const hsts: ShieldConfig['hsts'] = {
 }
 ```
 
-#### enabled
+#### `enabled`
 Enable/disable the `Strict-Transport-Security` all together.
 
----
-
-#### maxAge
+#### `maxAge`
 Define how long the browser should remember the header value.
 
----
-
-#### includeSubDomains
+#### `includeSubDomains`
 When set to `true`, the rule will be applied to site's subdomains as well.
 
----
-
-#### preload
+#### `preload`
 Whether or not to preload the header value from the HSTS preload service. [Learn more](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security#preloading_strict_transport_security)
 
 ## No sniffing

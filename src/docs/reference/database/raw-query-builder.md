@@ -112,7 +112,7 @@ await Database.select(
 ## Methods/Properties
 Following is the list of methods and properties available on the raw query builder.
 
-### wrap
+### `wrap`
 Wrap the raw query with a prefix and a suffix. Usually helpful when passing the raw query as a reference.
 
 ```ts
@@ -124,7 +124,7 @@ await Database.select(
 )
 ```
 
-### debug
+### `debug`
 The `debug` method allows enabling or disabling debugging at an individual query level. Here's a [complete guide](../../guides/database/debugging.md) on debugging queries.
 
 ```ts
@@ -133,9 +133,7 @@ await Database
   .debug(true)
 ```
 
----
-
-### timeout
+### `timeout`
 Define the `timeout` for the query. An exception is raised after the timeout has been exceeded.
 
 The value of timeout is always in milliseconds.
@@ -154,9 +152,7 @@ await Database
   .timeout(2000, { cancel: true })
 ```
 
----
-
-### client
+### `client`
 Reference to the instance of the underlying [database query client](./query-client.md).
 
 ```ts
@@ -164,9 +160,7 @@ const query = Database.rawQuery(sql, bindings)
 console.log(query.client)
 ```
 
----
-
-### knexQuery
+### `knexQuery`
 Reference to the instance of the underlying KnexJS query.
 
 ```ts
@@ -174,9 +168,7 @@ const query = Database.rawQuery(sql, bindings)
 console.log(query.knexQuery)
 ```
 
----
-
-### reporterData
+### `reporterData`
 The query builder emits the `db:query` event and also reports the queries execution time with the framework profiler.
 
 Using the `reporterData` method, you can pass additional details to the event and the profiler.

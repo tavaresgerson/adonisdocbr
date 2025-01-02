@@ -22,7 +22,7 @@ User.query()
 ## Methods/Properties
 Following is the list of the methods/properties available on the model query builder
 
-### preload
+### `preload`
 Pre-load/Eager-load relationships for the model.
 
 ```ts
@@ -57,9 +57,7 @@ const users = await User
   })
 ```
 
----
-
-### withCount
+### `withCount`
 The `withCount` method performs a sub query to count the total number of rows for a relationship.
 
 ```ts
@@ -94,9 +92,7 @@ const user = await User
 console.log(user.$extras.totalPosts)
 ```
 
----
-
-### withAggregate
+### `withAggregate`
 The `withAggregate` method allows you define a custom aggregate function. For example: `sum` the account balance.
 
 ```ts
@@ -110,9 +106,7 @@ const user = await User
 console.log(user.$extras.accountsBalance)
 ```
 
----
-
-### has
+### `has`
 The `has` method allows you to limit the parent model rows by checking for the existence of a given relationship.
 
 For example: Get a list of users who have one or more posts.
@@ -137,9 +131,7 @@ The `has` method has following variants.
 | `orDoesntHave` | Opposite of the `orHas` method. | 
 | `andDoesntHave` | Alias for the `doesntHave` method. | 
 
----
-
-### whereHas
+### `whereHas`
 Similar to the `has` method. However, the `whereHas` method allows defining additional constraints by passing a callback as the 2nd argument.
 
 For example: Get a list of users who have one or more posts **published** posts.
@@ -160,7 +152,7 @@ The `whereHas` method has following variants
 | `orWhereDoesntHave`  | Opposite of the `orWhereHas` method. |
 | `andWhereDoesntHave`  | Alias for the `whereDoesntHave` method. |
 
-### sideload
+### `sideload`
 The `sideload` method works as a pipeline for passing an arbitrary object to the model instance(s) created after executing the query.
 
 For example: Passing the currently logged in user.
@@ -175,9 +167,7 @@ users.forEach((user) => {
 
 The `sideloaded` value is passed down to the preloaded relationships as well.
 
----
-
-### withScopes
+### `withScopes`
 The `withScopes` method allows you to leverage the query scopes defined on the model.
 
 Begin by defining a query scope.
@@ -209,9 +199,7 @@ Team
   .withScopes((scopes) => scopes.forUser(auth.user))
 ```
 
----
-
-### apply
+### `apply`
 
 Alias for the [`withScopes`](./query-builder.md#withscopes) method.
 
@@ -221,9 +209,7 @@ Team
   .apply((scopes) => scopes.forUser(auth.user))
 ```
 
----
-
-### pojo
+### `pojo`
 The `pojo` method returns the model results as an **array of plain JavaScript objects** and not an array of model instances.
 
 Also, no lifecycle hooks are executed when using the `pojo` method, since hooks needs model instances to work.
@@ -234,9 +220,7 @@ const posts = await Post.query().pojo()
 console.log(posts[0] instanceof Post) // false
 ```
 
----
-
-### paginate
+### `paginate`
 The `paginate` method on the ORM query builder returns an instancer of the [ModelPaginator](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Paginator/index.ts). The Model paginator class has an additional `.serialize` method to serialize the models.
 
 ```ts
@@ -246,9 +230,7 @@ const paginationJSON = posts.serialize({
 })
 ```
 
----
-
-### model
+### `model`
 Reference to the `model` from which the query instance was created.
 
 ```ts

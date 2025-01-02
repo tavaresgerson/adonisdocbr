@@ -19,7 +19,8 @@ Let's create a standard webpage using layouts.
 #### 2. Paste the following markup to the layout file.
 
 ```edge
-// title: resources/views/layouts/main.edge
+<!-- resources/views/layouts/main.edge -->
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -43,7 +44,8 @@ Let's create a standard webpage using layouts.
 #### 3. Paste the following markup to the `resources/views/home.edge` file.
 
 ```edge
-// title: resources/views/home.edge
+<!-- resources/views/home.edge -->
+
 @layout('layouts/main')
 @set('title', 'Home page')
 
@@ -63,7 +65,7 @@ Let's create a standard webpage using layouts.
 
 #### 4. Render the view, and you will end up with the following result
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1617089516/v5/edge-layout.png)
+![](/docs/assets/edge-layout.webp)
 
 ## The `layout` tag
 

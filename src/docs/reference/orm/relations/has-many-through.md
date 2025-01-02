@@ -29,7 +29,7 @@ Country.$getRelation('posts').relatedModel()
 ## Methods/Properties
 Following is the list of methods and properties available on the `HasManyThrough` relationship.
 
-### type
+### `type`
 The type of the relationship. The value is always set to `hasManyThrough`.
 
 ```ts
@@ -41,9 +41,7 @@ class Country extends BaseModel {
 Country.$getRelation('posts').type // 'hasManyThrough'
 ```
 
----
-
-### relationName
+### `relationName`
 The relationship name. It is a property name defined on the parent model.
 
 ```ts
@@ -55,9 +53,7 @@ class Country extends BaseModel {
 Country.$getRelation('posts').relationName // 'posts'
 ```
 
----
-
-### serializeAs
+### `serializeAs`
 The name to be used for serializing the relationship. You can define it using the decorator options.
 
 ```ts
@@ -69,19 +65,13 @@ class Country extends BaseModel {
 }
 ```
 
----
-
-### booted
+### `booted`
 Find if the relationship has been booted. If not, call the `boot` method.
 
----
-
-### boot
+### `boot`
 Boot the relationship. Lucid models public APIs call this method internally, and you never have to boot the relationship manually.
 
----
-
-### model
+### `model`
 Reference to the parent model (the one that defines the relationship).
 
 ```ts
@@ -93,9 +83,7 @@ class Country extends BaseModel {
 Country.$getRelation('posts').model // Country
 ```
 
----
-
-### relatedModel
+### `relatedModel`
 Reference to the relationship model. The property value is a function that returns the related model.
 
 ```ts
@@ -107,9 +95,7 @@ class Country extends BaseModel {
 Country.$getRelation('posts').relatedModel() // Post
 ```
 
----
-
-### throughModel
+### `throughModel`
 Reference to the `throughModel`. The property value is a function that returns the throughModel.
 
 ```ts
@@ -121,9 +107,7 @@ class Country extends BaseModel {
 Country.$getRelation('posts').throughModel() // User
 ```
 
----
-
-### localKey
+### `localKey`
 The `localKey` for the relationship. You must read the [NamingStrategy](../naming-strategy.md#relationlocalkey) doc to learn more about how the key name is computed.
 
 You can also define the `localKey` explicitly. Do make sure you mention the model property name and NOT the database column name.
@@ -140,9 +124,7 @@ class Country extends BaseModel {
 }
 ```
 
----
-
-### foreignKey
+### `foreignKey`
 The `foreignKey` for the relationship. **The foreign key is the reference on the through model and not the related model**.
 
 You can also define the `foreignKey` explicitly. Do make sure you mention the model property name and NOT the database column name.
@@ -156,9 +138,7 @@ class Country extends BaseModel {
 }
 ```
 
----
-
-### throughLocalKey
+### `throughLocalKey`
 The `throughLocalKey` for the relationship. It is usually the primary key on the through model.
 
 You can also define the `throughLocalKey` explicitly. Do make sure you mention the model property name and NOT the database column name.
@@ -172,9 +152,7 @@ class Country extends BaseModel {
 }
 ```
 
----
-
-### throughForeignKey
+### `throughForeignKey`
 The `throughForeignKey` for the relationship. It is the foreign key between the through and the related model.
 
 You can also define the `throughForeignKey` explicitly. Do make sure you mention the model property name and NOT the database column name.
@@ -188,9 +166,7 @@ class Country extends BaseModel {
 }
 ```
 
----
-
-### onQuery
+### `onQuery`
 The `onQuery` method is an optional hook to modify the relationship queries. You can define it at the time of declaring the relation.
 
 ```ts
@@ -221,9 +197,7 @@ class Country extends BaseModel {
 }
 ```
 
----
-
-### setRelated
+### `setRelated`
 Set a relationship on the parent model instance. The methods accept the parent model as the first argument and the related model instance as the second argument.
 
 You must ensure that both the model instances are related to each other before calling this method.
@@ -235,9 +209,7 @@ const post = new Post()
 Country.$getRelation('posts').setRelated(country, [post])
 ```
 
----
-
-### pushRelated
+### `pushRelated`
 The `pushRelated` method pushes the relationship to the existing relationship value array.
 
 ```ts
@@ -250,9 +222,7 @@ Country.$getRelation('posts').pushRelated(country, new Post())
 country.posts.length // 3
 ```
 
----
-
-### setRelatedForMany
+### `setRelatedForMany`
 Set the relationships on more than one parent model. The method accepts an array of the parent models as the first argument and an array of related models as the second argument.
 
 Lucid internally calls this with the results of the preloader.
@@ -300,19 +270,13 @@ const posts = [
 Country.$getRelation('posts').setRelatedForMany(countries, posts)
 ```
 
----
-
-### client
+### `client`
 Returns the reference to the [HasManyThroughQueryClient](#query-client). The query client exposes the API to fetch related rows from the database.
 
----
-
-### eagerQuery
+### `eagerQuery`
 Returns an instance of the [HasManyThroughQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/HasManyThrough/QueryBuilder.ts). The query builder has the same API as the [Model query builder](../query-builder.md)
 
----
-
-### subQuery
+### `subQuery`
 Returns an instance of the [HasManyThroughSubQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/HasManyThrough/SubQueryBuilder.ts). The sub queries are not meant to be executed and mainly used by the [withCount](../query-builder.md#withcount) and [whereHas](../query-builder.md#wherehas) methods.
 
 ## Query client
@@ -341,7 +305,7 @@ const country = await Country.find(1)
 country.related('posts').query() // HasManyThroughQueryBuilder
 ```
 
-### groupLimit
+### `groupLimit`
 The `groupLimit` method uses [SQL window functions](https://www.sqlservertutorial.net/sql-server-window-functions/sql-server-row_number-function/) to add a limit to each group during relationship preloading. Please read the [preloading guide](../../../guides/models/relationships.md#preload-relationship) to learn why and when you need the `groupLimit` method.
 
 ```ts
@@ -350,7 +314,7 @@ await Country.query().preload('posts', (query) => {
 })
 ```
 
-### groupOrderBy
+### `groupOrderBy`
 Add an order by clause to the group limit query. The method has the same API as the `orderBy` method on the standard query builder.
 
 :::note

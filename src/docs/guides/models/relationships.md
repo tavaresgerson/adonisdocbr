@@ -8,14 +8,15 @@ HasOne creates a `one-to-one` relationship between two models. For example, **A 
 
 Following is an example table structure for the has one relationship. The `profiles.user_id` is the foreign key and forms the relationship with the `users.id` column.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1619882378/v5/has-one.png)
+![](/docs/assets/has-one.webp)
 
 Following are the example migrations for the `users` and the `profiles` tables.
 
 :::codegroup
 
 ```ts
-// title: users
+// users
+
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class Users extends BaseSchema {
@@ -34,7 +35,8 @@ export default class Users extends BaseSchema {
 ```
 
 ```ts
-// title: profiles
+// profiles
+
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class Profiles extends BaseSchema {
@@ -113,14 +115,15 @@ HasMany creates a `one-to-many` relationship between two models. For example, **
 
 Following is an example table structure for the hasMany relationship. The `posts.user_id` is the foreign key and forms the relationship with the `users.id` column.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1619885223/v5/has-many.png)
+![](/docs/assets/has-many.webp)
 
 Following are the example migrations for the `users` and the `posts` tables.
 
 :::codegroup
 
 ```ts
-// title: users
+// users
+
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class Users extends BaseSchema {
@@ -139,7 +142,8 @@ export default class Users extends BaseSchema {
 ```
 
 ```ts
-// title: posts
+// posts
+
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class Posts extends BaseSchema {
@@ -250,14 +254,15 @@ You need a third table (usually known as a pivot table) for this relationship to
 
 In the following example, the `skill_user` table has the foreign keys for both the `users` and the `skills` table, allowing each user to have many skills and vice versa.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1619890917/v5/many-to-many.png)
+![](/docs/assets/many-to-many.webp)
 
 Following are the example migrations for the `users`, `skills`, and the `skill_user` tables.
 
 :::codegroup
 
 ```ts
-// title: users
+// users
+
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class Users extends BaseSchema {
@@ -276,7 +281,8 @@ export default class Users extends BaseSchema {
 ```
 
 ```ts
-// title: skills
+// skills
+
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class Skills extends BaseSchema {
@@ -295,7 +301,8 @@ export default class Skills extends BaseSchema {
 ```
 
 ```ts
-// title: skill_user
+// skill_user
+
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class SkillUsers extends BaseSchema {
@@ -438,14 +445,15 @@ The HasManyThrough relationship is similar to the `HasMany` relationship but cre
 - This relationship needs the through model (i.e., User) to have a foreign key reference with the current model (i.e., Country).
 The related model (i.e., Post) has a foreign key reference with the through model (i.e., User).
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1619899020/v5/has-many-through.png)
+![](/docs/assets/has-many-through.png)
 
 Following are the example migrations for the `countries`, `users`, and the `posts` tables.
 
 :::codegroup
 
 ```ts
-// title: countries
+// countries
+
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class Countries extends BaseSchema {
@@ -464,7 +472,8 @@ export default class Countries extends BaseSchema {
 ```
 
 ```ts
-// title: users
+// users
+
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class Users extends BaseSchema {
@@ -487,7 +496,8 @@ export default class Users extends BaseSchema {
 ```
 
 ```ts
-// title: posts
+// posts
+
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class Posts extends BaseSchema {
@@ -742,7 +752,7 @@ Following is the list of `has` and `whereHas` variations.
 ## Relationship aggregates
 The relationships API of Lucid also allows you to load the aggregates for relationships. For example, You can fetch a list of **posts with a count of comments for each post**.
 
-#### withAggregate
+#### `withAggregate`
 
 The `withAggregate` method accepts the relationship as the first argument and a mandatory callback to define the value's aggregate function and property name.
 
@@ -762,9 +772,7 @@ posts.forEach((post) => {
 })
 ```
 
----
-
-#### withCount
+#### `withCount`
 Since counting relationship rows is a very common requirement, you can instead use the `withCount` method.
 
 ```ts
@@ -856,7 +864,7 @@ export default class User extends BaseModel {
 ## Create relationships
 You can create relationships between two models using the relationships persistence API. Make sure to also check out the [API docs](../../reference/orm/relations/has-one.md#query-client) to view all the available methods.
 
-### create
+### `create`
 
 In the following example, we create a new comment and link it to the post at the same time. The `create` method accepts a plain JavaScript object to persist. The foreign key value is defined automatically.
 
@@ -869,7 +877,7 @@ const comment = await post.related('comments').create({
 console.log(comment.postId === post.id) // true
 ```
 
-### save
+### `save`
 
 Following is an example using the `save` method. The `save` method needs an instance of the related model. The foreign key value is defined automatically.
 
@@ -884,7 +892,7 @@ await post.related('comments').save(comment)
 console.log(comment.postId === post.id) // true
 ```
 
-### createMany
+### `createMany`
 You can also create multiple relationships using the `createMany` method. The method is only available for `hasMany` and `manyToMany` relationships.
 
 The `createMany` method returns an array of persisted model instances.
@@ -902,7 +910,7 @@ const comments = await Post
   ])
 ```
 
-### saveMany
+### `saveMany`
 Similar to the `save` method. The `saveMany` method allows persisting multiple relationships together.
 
 ```ts
@@ -917,7 +925,7 @@ await Post
   .saveMany([comment1, comment2])
 ```
 
-### associate
+### `associate`
 The `associate` method is exclusive to the `belongsTo` relationship. It let you associate two models with each other.
 
 ```ts
@@ -928,7 +936,7 @@ profile.avatarUrl = 'foo.jpg'
 await profile.related('user').associate(user)
 ```
 
-### dissociate
+### `dissociate`
 The `dissociate` removes the relationship by setting the foreign key to `null`. Thus, the method is exclusive to the `belongsTo` relationship.
 
 ```ts
@@ -936,7 +944,7 @@ await profile = await Profile.findOrFail(1)
 await profile.related('user').dissociate()
 ```
 
-### attach
+### `attach`
 The `attach` method is exclusive to a `manyToMany` relationship. It allows you to create a relationship between two persisted models inside the pivot table.
 
 The `attach` method just needs the `id` of the related model to form the relationship inside the pivot table.
@@ -959,7 +967,7 @@ await user.related('skills').attach({
 })
 ```
 
-### detach
+### `detach`
 The `detach` method is the opposite of the `attach` method and allows you to remove the relationship **from the pivot table**.
 
 It optionally accepts an array of `ids` to remove. Calling the method without any arguments will remove all the relationships from the pivot table.
@@ -974,7 +982,7 @@ await user.related('skills').detach([skill.id])
 await user.related('skills').detach()
 ```
 
-### sync
+### `sync`
 The `sync` method allows you to sync the pivot rows. The payload provided to the `sync` method is considered the source of truth, and we compute a diff internally to execute the following SQL queries.
 
 - Insert the rows missing in the pivot table but present in the sync payload.

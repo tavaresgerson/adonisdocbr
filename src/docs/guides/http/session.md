@@ -319,9 +319,9 @@ Route.get('/see-message', async ({ session }) => {
 })
 ```
 
-::video{url="https://res.cloudinary.com/adonis-js/video/upload/v1612414110/v5/flash-message.mp4" controls="true"}
+<video src="/docs/assets/flash-message.mp4" controls />
 
-### flash
+### `flash`
 
 The `session.flash` method adds a key-value pair to the flash messages.
 
@@ -343,7 +343,7 @@ session.flash({
 })
 ```
 
-### flashAll
+### `flashAll`
 
 The `flashAll` method adds the request body to the flash messages. This allows you to get the form data inside your templates and pre-fill the user input after validation failure redirect.
 
@@ -351,7 +351,7 @@ The `flashAll` method adds the request body to the flash messages. This allows y
 session.flashAll()
 ```
 
-### flashOnly
+### `flashOnly`
 
 The `session.flashOnly` method is similar to the `flashAll` method. But instead, it allows cherry-picking the fields.
 
@@ -359,7 +359,7 @@ The `session.flashOnly` method is similar to the `flashAll` method. But instead,
 session.flashOnly(['title', 'description'])
 ```
 
-### flashExcept
+### `flashExcept`
 
 The `session.flashExcept` method is the opposite of the `flashOnly` method and allows ignoring the fields.
 
@@ -367,21 +367,21 @@ The `session.flashExcept` method is the opposite of the `flashOnly` method and a
 session.flashExcept(['_csrf', 'submit'])
 ```
 
-### reflash
+### `reflash`
 The `session.reflash` method flashes the data from the previous request.
 
 ```ts
 session.reflash()
 ```
 
-### reflashOnly
+### `reflashOnly`
 The `session.reflashOnly` method reflashes only the selected keys.
 
 ```ts
 session.reflashOnly(['errors'])
 ```
 
-### reflashExcept
+### `reflashExcept`
 The `session.reflashExcept` method reflashes all the data except the mentioned keys.
 
 ```ts
@@ -393,7 +393,8 @@ session.reflashExcept(['success', 'username', 'password'])
 You can access the flash messages set by the previous request using the `session.flashMessages` property or the `flashMessages` helper inside the Edge templates.
 
 ```edge
-// title: Inside templates
+// Inside templates
+
 {{-- Get value for a given key --}}
 {{ flashMessages.get('errors.title') }}
 
@@ -433,7 +434,7 @@ Route.get('/', async ({ session }) => {
 
 Following is the list of other available methods and properties on the Session class.
 
-### initiate
+### `initiate`
 
 The `session.initiate` method initiates the session store for the current HTTP request. Optionally, You can initiate the store in `readonly` mode.
 
@@ -450,7 +451,7 @@ await session.initiate(false)
 await session.initiate(true)
 ```
 
-### fresh
+### `fresh`
 
 Find if the session id has been generated during the current HTTP request. The value is **true** when the session id has been generated for the first time or the `session.regenerate` method is called.
 
@@ -460,7 +461,7 @@ if (!session.fresh) {
 }
 ```
 
-### readonly
+### `readonly`
 
 Find if the store has been initiated in `readonly` mode or not.
 
@@ -476,7 +477,7 @@ if (!session.readonly) {
 }
 ```
 
-### commit
+### `commit`
 
 The `commit` method persists the session driver's changes and updates the `maxAge` of the session id cookie. The `commit` method is [called](https://github.com/adonisjs/session/blob/6fcea7bb144de18028b1ea693bc7e837cd799fdf/providers/SessionProvider.ts#L59-L61) automatically by AdonisJS, and you don't have to worry about calling it.
 
@@ -502,29 +503,21 @@ interface SessionDriverContract {
 }
 ```
 
-#### read
+#### `read`
 
 The `read` method receives the `sessionId` and must return the session data or `null`. The return value should be an object, similar to what was passed to the `write` method.
 
----
-
-#### write
+#### `write`
 
 The `write` method receives the `sessionId` and the `values` object to store. You are free to transform the values object to any other data type you want. For example, The `redis` driver [converts](https://github.com/adonisjs/session/blob/6fcea7bb144de18028b1ea693bc7e837cd799fdf/src/Drivers/Redis.ts#L55) the object to a string using the [message builder](https://github.com/poppinss/utils#message-builder).
 
----
-
-#### destroy
+#### `destroy`
 
 The `destroy` method should remove the session id and its associated data from the storage.
 
----
-
-#### touch
+#### `touch`
 
 The `touch` method's job is to reset the expiry. This method is only relevant for drivers with in-built expiry. For example, The redis driver updates the `ttl` property of the redis key.
-
----
 
 ### Extending from outside in
 
@@ -548,7 +541,8 @@ providers
 Open the `SessionDriver/index.ts` file and paste the following contents inside it.
 
 ```ts
-// title: providers/SessionDriver/index.ts
+// providers/SessionDriver/index.ts
+
 import { SessionDriverContract } from '@ioc:Adonis/Addons/Session'
 
 const SESSIONS: Map<string, Record<string, any>> = new Map()

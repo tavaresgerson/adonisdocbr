@@ -37,7 +37,7 @@ Converting every conditional to an exception is also not the right approach. Ins
 The exceptions raised during an HTTP request are forwarded to the global exception handler stored inside the `app/Exceptions/Handler.ts` file.
 
 ```ts
-// title: app/Exceptions/Handler.ts
+// app/Exceptions/Handler.ts
 import Logger from '@ioc:Adonis/Core/Logger'
 import HttpExceptionHandler from '@ioc:Adonis/Core/HttpExceptionHandler'
 

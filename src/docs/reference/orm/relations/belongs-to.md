@@ -23,7 +23,7 @@ Post.$getRelation('author').relatedModel()
 ## Methods/Properties
 Following is the list of methods and properties available on the `BelongsTo` relationship.
 
-### type
+### `type`
 The type of the relationship. The value is always set to `belongsTo`.
 
 ```ts
@@ -35,9 +35,7 @@ class Post extends BaseModel {
 Post.$getRelation('author').type // 'belongsTo'
 ```
 
----
-
-### relationName
+### `relationName`
 The relationship name. It is a property name defined on the parent model.
 
 ```ts
@@ -49,9 +47,7 @@ class Post extends BaseModel {
 Post.$getRelation('author').relationName // 'author'
 ```
 
----
-
-### serializeAs
+### `serializeAs`
 The name to use for serializing the relationship. You can define it using the decorator options.
 
 ```ts
@@ -63,19 +59,13 @@ class Post extends BaseModel {
 }
 ```
 
----
-
-### booted
+### `booted`
 Find if the relationship has been booted. If not, call the `boot` method.
 
----
-
-### boot
+### `boot`
 Boot the relationship. Lucid models public APIs call this method internally, and you never have to boot the relationship manually.
 
----
-
-### model
+### `model`
 Reference to the parent model (the one that defines the relationship).
 
 ```ts
@@ -87,9 +77,7 @@ class Post extends BaseModel {
 Post.$getRelation('author').model // Post
 ```
 
----
-
-### relatedModel
+### `relatedModel`
 Reference to the relationship model. The property value is a function that returns the related model.
 
 ```ts
@@ -101,9 +89,7 @@ class Post extends BaseModel {
 Post.$getRelation('author').relatedModel() // User
 ```
 
----
-
-### localKey
+### `localKey`
 The `localKey` for the relationship. You must read the [NamingStrategy](../naming-strategy.md#relationlocalkey) doc to learn more about how the key name is computed.
 
 You can also define the `localKey` explicitly. Do make sure you mention the model property name and NOT the database column name.
@@ -117,9 +103,7 @@ class Post extends BaseModel {
 }
 ```
 
----
-
-### foreignKey
+### `foreignKey`
 The `foreignKey` for the relationship. You must read the [NamingStrategy](../naming-strategy.md#relationlocalkey) doc to learn more about how the key name is computed.
 
 You can also define the `foreignKey` explicitly. Do make sure you mention the model property name and NOT the database column name.
@@ -136,9 +120,7 @@ class Post extends BaseModel {
 }
 ```
 
----
-
-### onQuery
+### `onQuery`
 The `onQuery` method is an optional hook to modify the relationship queries. You can define it at the time of declaring the relation.
 
 ```ts
@@ -175,9 +157,7 @@ class Post extends BaseModel {
 }
 ```
 
----
-
-### setRelated
+### `setRelated`
 Set a relationship on the parent model instance. The methods accept the parent model as the first argument and the related model instance as the second argument.
 
 You must ensure that both the model instances are related to each other before calling this method.
@@ -189,14 +169,10 @@ const post = new Post()
 Post.$getRelation('author').setRelated(user, post)
 ```
 
----
-
-### pushRelated
+### `pushRelated`
 The `pushRelated` method pushes the relationship to the existing relationship value array. However, for the `belongsTo` relationship, the method works similar to `setRelated`.
 
----
-
-### setRelatedForMany
+### `setRelatedForMany`
 Set the relationships on more than one parent model. The method accepts an array of the parent models as the first argument and an array of related models as the second argument.
 
 Lucid internally calls this with the results of the preloader.
@@ -236,14 +212,10 @@ const posts = [
 Post.$getRelation('author').setRelatedForMany(posts, users)
 ```
 
----
-
-### client
+### `client`
 Returns the reference to the [BelongsToQueryClient](#query-client). The query client exposes the API to persist/fetch related rows from the database.
 
----
-
-### hydrateForPersistance
+### `hydrateForPersistance`
 Hydrates the values for persistence by defining the `foreignKey` value. The method accepts the parent model as the first argument and an object or the related model instance as the second argument.
 
 ```ts
@@ -258,14 +230,10 @@ Post.$getRelation('author').hydrateForPersistance(post, user)
 console.log(post.userId === user.id) // true
 ```
 
----
-
-### eagerQuery
+### `eagerQuery`
 Returns an instance of the [BelongsToQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/BelongsTo/QueryBuilder.ts). The query builder has the same API as the [Model query builder](../query-builder.md)
 
----
-
-### subQuery
+### `subQuery`
 Returns an instance of the [BelongsToSubQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/BelongsTo/SubQueryBuilder.ts). The sub queries are not meant to be executed and mainly used by the [withCount](../query-builder.md#withcount) and [whereHas](../query-builder.md#wherehas) methods.
 
 ## Query client
@@ -277,7 +245,7 @@ const post = await Post.find(1)
 post.related('author') // BelongsToClientContract
 ```
 
-### associate
+### `associate`
 Associate the related model with the parent model. For example, associate the user with the post.
 
 ```ts
@@ -305,9 +273,7 @@ await post.related('author').associate(user)
 await trx.commit()
 ```
 
----
-
-### dissociate
+### `dissociate`
 The `dissociate` method removes the relationship by setting the foreign key value to `null`.
 
 ```ts
@@ -317,7 +283,5 @@ await post.dissociate()
 post.userId // null
 ```
 
----
-
-### query
+### `query`
 Returns an instance of the [BelongsToQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/BelongsTo/QueryBuilder.ts). The query builder has the same API as the [Model query builder](../query-builder.md).

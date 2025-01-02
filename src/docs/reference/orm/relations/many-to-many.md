@@ -23,7 +23,7 @@ User.$getRelation('projects').relatedModel()
 ## Methods/Properties
 Following is the list of methods and properties available on the `ManyToMany` relationship.
 
-### type
+### `type`
 The type of the relationship. The value is always set to `manyToMany`.
 
 ```ts
@@ -35,9 +35,7 @@ class User extends BaseModel {
 User.$getRelation('projects').type // 'manyToMany'
 ```
 
----
-
-### relationName
+### `relationName`
 The relationship name. It is a property name defined on the parent model.
 
 ```ts
@@ -49,9 +47,7 @@ class User extends BaseModel {
 User.$getRelation('projects').relationName // 'projects'
 ```
 
----
-
-### serializeAs
+### `serializeAs`
 The name to be used for serializing the relationship. You can define it using the decorator options.
 
 ```ts
@@ -63,19 +59,13 @@ class User extends BaseModel {
 }
 ```
 
----
-
-### booted
+### `booted`
 Find if the relationship has been booted. If not, call the `boot` method.
 
----
-
-### boot
+### `boot`
 Boot the relationship. Lucid models public APIs call this method internally, and you never have to boot the relationship manually.
 
----
-
-### model
+### `model`
 Reference to the parent model (the one that defines the relationship).
 
 ```ts
@@ -89,9 +79,7 @@ class User extends BaseModel {
 User.$getRelation('projects').model // User
 ```
 
----
-
-### relatedModel
+### `relatedModel`
 Reference to the relationship model. The property value is a function that returns the related model.
 
 ```ts
@@ -105,9 +93,7 @@ class User extends BaseModel {
 User.$getRelation('projects').relatedModel() // Project
 ```
 
----
-
-### localKey
+### `localKey`
 The `localKey` for the relationship. You must read the [NamingStrategy](../naming-strategy.md#relationlocalkey) doc to learn more about how the key name is computed.
 
 You can also define the `localKey` explicitly. Do make sure you mention the model property name and NOT the database column name.
@@ -124,9 +110,7 @@ class User extends BaseModel {
 }
 ```
 
----
-
-### relatedKey
+### `relatedKey`
 The `relatedKey` for the relationship. This is usually the primary key on the related model. For example, The `id` column on the Project model.
 
 You can also define the `relatedKey` explicitly. Do make sure you mention the model property name and NOT the database column name.
@@ -140,9 +124,7 @@ class User extends BaseModel {
 }
 ```
 
----
-
-### pivotForeignKey
+### `pivotForeignKey`
 The `pivotForeignKey` is the name of the column inside the pivot table for the parent model. For 
 example: The `user_id` column inside the pivot table is the `pivotForeignKey`.
 
@@ -157,9 +139,7 @@ class User extends BaseModel {
 }
 ```
 
----
-
-### pivotRelatedForeignKey
+### `pivotRelatedForeignKey`
 The `pivotRelatedForeignKey` is the name of the column inside the pivot table for the related model. For 
 example: The `project_id` column inside the pivot table is the `pivotRelatedForeignKey`.
 
@@ -174,9 +154,7 @@ class User extends BaseModel {
 }
 ```
 
----
-
-### pivotTable
+### `pivotTable`
 The `pivotTable` property defines the pivot table to query for persisting/fetching related rows. Make sure to read the [naming strategy](../naming-strategy.md#relationpivottable) guide to learn more about how the table name is computed.
 
 You can also define the `pivotTable` name explicitly.
@@ -190,9 +168,7 @@ class User extends BaseModel {
 }
 ```
 
----
-
-### pivotColumns
+### `pivotColumns`
 Define the columns you want Lucid to select when fetching many to many relationships. By default, it only selects the `pivotRelatedForeignKey` and the `pivotForeignKey` columns.
 
 ```ts
@@ -204,9 +180,7 @@ class User extends BaseModel {
 }
 ```
 
----
-
-### onQuery
+### `onQuery`
 The `onQuery` method is an optional hook to modify the relationship queries. It receives an instance of the [ManyToManyQueryBuilder](#query-builder).
 
 You can define the hook at the time of declaring the relation.
@@ -239,9 +213,7 @@ class User extends BaseModel {
 }
 ```
 
----
-
-### setRelated
+### `setRelated`
 Set a relationship on the parent model instance. The methods accept the parent model as the first argument and the related model instance as the second argument.
 
 You must ensure that both the model instances are related to each other before calling this method.
@@ -253,9 +225,7 @@ const project = new Project()
 User.$getRelation('projects').setRelated(user, [project])
 ```
 
----
-
-### pushRelated
+### `pushRelated`
 The `pushRelated` method pushes the relationship to the existing relationship value array.
 
 ```ts
@@ -268,9 +238,7 @@ User.$getRelation('projects').pushRelated(user, new Project())
 user.projects.length // 3
 ```
 
----
-
-### setRelatedForMany
+### `setRelatedForMany`
 Set the relationships on more than one parent model. The method accepts an array of the parent models as the first argument and an array of related models as the second argument.
 
 Lucid internally calls this with the results of the preloader.
@@ -318,14 +286,10 @@ const projects = [
 User.$getRelation('projects').setRelatedForMany(users, projects)
 ```
 
----
-
-### client
+### `client`
 Returns the reference to the [ManyToManyQueryClient](#query-client). The query client exposes the API to persist/fetch related rows from the database.
 
----
-
-### getPivotPair
+### `getPivotPair`
 Returns a tuple with the `pivotForeignKey` and its value from the parent model. The method accepts the parent model as the only argument.
 
 ```ts
@@ -336,9 +300,7 @@ User.$getRelation('projects').getPivotPair(user)
 // Return value: ['user_id', 1]
 ```
 
----
-
-### getPivotRelatedPair
+### `getPivotRelatedPair`
 Returns a tuple with the `pivotRelatedForeignKey` and its value from the related model. The method accepts the related model as the only argument.
 
 ```ts
@@ -349,14 +311,10 @@ User.$getRelation('projects').getPivotRelatedPair(project)
 // Return value: ['project_id', 1]
 ```
 
----
-
-### eagerQuery
+### `eagerQuery`
 Returns an instance of the [ManyToManyQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/ManyToMany/QueryBuilder.ts). The query builder has the same API as the [Model query builder](../query-builder.md)
 
----
-
-### subQuery
+### `subQuery`
 Returns an instance of the [ManytoManySubQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/ManytoMany/SubQueryBuilder.ts). The sub queries are not meant to be executed and mainly used by the [withCount](../query-builder.md#withcount) and [whereHas](../query-builder.md#wherehas) methods.
 
 ## Query client
@@ -368,7 +326,7 @@ const user = await User.find(1)
 user.related('projects') // ManytoManyClientContract
 ```
 
-### create
+### `create`
 Please create a new relationship model instance and persist it to the database right away. The method also inserts a new row into the pivot table.
 
 ```ts
@@ -406,9 +364,7 @@ await user.related('projects').create()
 await trx.commit()
 ```
 
----
-
-### createMany
+### `createMany`
 Create multiple instances of a relationship model and persist them to the database. The method accepts an array of objects to persist.
 
 - One insert query is issued for each model instance to ensure that we execute the lifecycle hooks for every individual instance.
@@ -443,9 +399,7 @@ await user.related('projects').createMany([
 ])
 ```
 
----
-
-### save
+### `save`
 The save method persists an existing instance of the relationship. Like the `create` method, the `save` method also accepts an optional pivot attribute object as the second argument.
 
 ```ts
@@ -475,9 +429,7 @@ await user
   )
 ```
 
----
-
-### saveMany
+### `saveMany`
 The `saveMany` method persists an array of related model instances to the database.
 
 - One insert query is issued for each model instance to ensure that we execute the lifecycle hooks for every individual instance.
@@ -495,9 +447,7 @@ await user
   .saveMany([project, project1])
 ```
 
----
-
-### attach
+### `attach`
 The attach method allows you to set up relationships inside the pivot table by just using the ids. For example:
 
 ```ts
@@ -517,9 +467,7 @@ await user.related('projects').attach({
 })
 ```
 
----
-
-### detach
+### `detach`
 The `detach` method removes the relationship from the pivot table. Either you can pass an array of related models ids or call the `detach` method without any arguments to remove all related rows.
 
 ```ts
@@ -532,9 +480,7 @@ await user.related('projects').detach([1, 2, 3])
 await user.related('projects').detach()
 ```
 
----
-
-### sync
+### `sync`
 The `sync` method allows you to sync an array of related model ids in the pivot table. The sync operation is performed by considering the input as the real source of truth.
 
 ```ts
@@ -575,9 +521,7 @@ await user
 
 The `sync` method will compute the diff between the existing pivot rows and the input data and performs `insert`, `update`, and `delete` queries as per the diff.
 
----
-
-### query
+### `query`
 Returns an instance of the [ManyToManyQueryBuilder](#query-builder).
 
 ## Query Builder
@@ -591,7 +535,7 @@ const user = await User.find(1)
 user.related('projects').query() // ManytoManyQueryBuilder
 ```
 
-### pivotColumns
+### `pivotColumns`
 Select columns from the pivot table. This method will prefix the pivot table name to the column behind the scenes and aliases it to `pivot_[column_name]`.
 
 ```ts
@@ -601,9 +545,7 @@ user
   .pivotColumns(['role']) // select project_user.role as pivot_role
 ```
 
----
-
-### wherePivot
+### `wherePivot`
 Write a `where` conditional for the pivot table. The method has the same API as the [where](../../database/query-builder.md#where) method on a standard query builder. It will prefix the pivot table name to the column name.
 
 ```ts
@@ -623,7 +565,7 @@ Following is the list of the `wherePivot` method variations and shares the same 
 | `orWhereNotPivot` | Adds an **or where not** clause |
 | `andWhereNotPivot` | Alias for `whereNotPivot` |
 
-### whereInPivot
+### `whereInPivot`
 Same as the [whereIn](../../database/query-builder.md#wherein) method on a standard query builder. However, it prefixes the pivot table name in front of the column name.
 
 ```ts
@@ -643,7 +585,7 @@ Following is the list of the `whereInPivot` method variations and shares the sam
 | `orWhereNotInPivot` | Adds an **or where not in** clause |
 | `andWhereNotInPivot` | Alias for `whereNotInPivot` |
 
-### whereNullPivot
+### `whereNullPivot`
 Same as the [whereNull](../../database/query-builder.md#wherenull) method on a standard query builder. However, it prefixes the pivot table name in front of the column name.
 
 ```ts
@@ -663,7 +605,7 @@ Following is the list of the `whereNullPivot` method variations and shares the s
 | `orWhereNotNullPivot` | Adds an **or where not null** clause |
 | `andWhereNotNullPivot` | Alias for `whereNotNullPivot` |
 
-### groupLimit
+### `groupLimit`
 The `groupLimit` method uses [SQL window functions](https://www.sqlservertutorial.net/sql-server-window-functions/sql-server-row_number-function/) to add a limit to each group during relationship preloading. Please read the [preloading guide](../../../guides/models/relationships.md#preload-relationship) to learn why and when you need the `groupLimit` method.
 
 ```ts
@@ -672,7 +614,7 @@ await User.query().preload('projects', (query) => {
 })
 ```
 
-### groupOrderBy
+### `groupOrderBy`
 Add an order by clause to the group limit query. The method has the same API as the `orderBy` method on the standard query builder.
 
 :::note

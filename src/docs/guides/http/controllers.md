@@ -9,7 +9,8 @@ Do you want to extract a complex controller method to its own file?
 Use a [Single Action Controller](https://docs.adonisjs.com/guides/controllers#single-action-controllers)!
 
 ```ts
-// title: app/Controllers/Http/PostsController.ts
+// app/Controllers/Http/PostsController.ts
+
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class PostsController {
@@ -84,7 +85,7 @@ If you notice, in the above command, we mentioned the word `Post` as singular, w
 
 AdonisJS applies these transformations to ensure that the filenames are consistent throughout your project. However, you can instruct the CLI not to apply these transformations using the `--exact` flag.
 
-![Output of "node ace make:controller --help"](https://res.cloudinary.com/adonis-js/image/upload/f_auto,q_auto/v1611555570/v5/controller-help-exact-flag.png)
+![](/docs/assets/controller-help-exact-flag.webp)
 
 ## Controller routes reference
 
@@ -213,7 +214,7 @@ Route.resource('posts', 'PostsController')
 
 Following is the list of registered routes.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1611651446/v5/routes-list.png)
+![](/docs/assets/routes-list.png)
 
 ### Naming routes
 
@@ -323,7 +324,7 @@ You can also register nested resources by separating each resource with a `dot n
 Route.resource('posts.comments', 'CommentsController')
 ```
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1611673295/v5/nested-resource.png)
+![](/docs/assets/nested-resource.webp)
 
 As you can notice, the parent resource id is prefixed with the resource name. ie `post_id`.
 
@@ -342,7 +343,7 @@ To keep the URL structure flat (wherever possible), you can use shallow resource
 Route.shallowResource('posts.comments', 'CommentsController')
 ```
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1612004976/v5/shallow-resource.png)
+![](/docs/assets/shallow-resource.webp)
 
 ## Re-using controllers
 

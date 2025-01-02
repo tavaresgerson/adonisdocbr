@@ -8,12 +8,13 @@ Throughout this guide, we will keep them inside the `start/validator.ts` file. Y
 node ace make:prldfile validator
 ```
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1632118234/v5/validator-prldfile_wipxtd.png)
+![](/docs/assets/validator-prldfile_wipxtd.webp)
 
 Open the newly created file and paste the following code inside it.
 
 ```ts
-// title: start/validator.ts
+// start/validator.ts
+
 import { string } from '@ioc:Adonis/Core/Helpers'
 import { validator } from '@ioc:Adonis/Core/Validator'
 
@@ -46,7 +47,8 @@ To inform TypeScript, we will use [declaration merging](https://www.typescriptla
 Create a new file at path `contracts/validator.ts` (the filename is not important) and paste the following contents inside it.
 
 ```ts
-// title: contracts/validator.ts
+// contracts/validator.ts
+
 declare module '@ioc:Adonis/Core/Validator' {
   interface Rules {
     camelCase(): Rule
@@ -79,7 +81,8 @@ Rules can also accept options, and they will be available to the validation call
 This time let's start from the TypeScript interface and define the options we expect from the rule consumer.
 
 ```ts
-// title: contracts/validator.ts
+// contracts/validator.ts
+
 declare module '@ioc:Adonis/Core/Validator' {
   interface Rules {
     camelCase(maxLength?: number): Rule
