@@ -3,6 +3,6 @@
     /** --vp-font-family-mono: code font */
 }
 
-p > img {
+p > img, video {
   border-radius: 0.35rem;
 }

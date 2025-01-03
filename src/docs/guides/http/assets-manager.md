@@ -1,52 +1,50 @@
-# Assets manager
+# Gerenciador de ativos
 
-AdonisJS makes use of [Webpack Encore](https://www.npmjs.com/package/@symfony/webpack-encore) to compile and serve the frontend assets. Webpack Encore is a wrapper on top of [Webpack](https://webpack.js.org/) to make it easier to work with the Webpack config.
+O AdonisJS faz uso do [Webpack Encore](https://www.npmjs.com/package/@symfony/webpack-encore) para compilar e servir os ativos do front-end. O Webpack Encore é um wrapper sobre o [Webpack](https://webpack.js.org/) para facilitar o trabalho com a configuração do Webpack.
 
-:::note
+::: info NOTA
+O AdonisJS é um framework de back-end e não se preocupa diretamente com as ferramentas de construção do front-end.
 
-AdonisJS is a backend framework and does not concern itself directly with the frontend build tools.
-
-You are free NOT to use Webpack Encore and set up the frontend build tools yourself, and everything will still work.
-
+Você é livre para NÃO usar o Webpack Encore e configurar as ferramentas de construção do front-end você mesmo, e tudo continuará funcionando.
 :::
 
-## Getting started
+## Começando
 
-Creating a new AdonisJS application also prompts you to configure Webpack Encore. However, setting it up afterward is also relatively simple. Just run the following Ace command.
+A criação de um novo aplicativo AdonisJS também solicita que você configure o Webpack Encore. No entanto, configurá-lo depois também é relativamente simples. Basta executar o seguinte comando Ace.
 
 ```sh
 node ace configure encore
 ```
 
-The following actions are performed to set up Webpack Encore:
+As seguintes ações são executadas para configurar o Webpack Encore:
 
-- Install `‌@symfony/webpack-encore` npm package.
-- Create a default `webpack.config.js` file.
-- Create `resources/js/app.js` and `resources/css/app.css` files as the first entry point to your frontend application.
+- Instale o pacote npm `‌@symfony/webpack-encore`.
+- Crie um arquivo `webpack.config.js` padrão.
+- Crie os arquivos `resources/js/app.js` e `resources/css/app.css` como o primeiro ponto de entrada para seu aplicativo frontend.
 
-## Compiling frontend assets
+## Compilando ativos frontend
 
-Once Encore has been configured, the pre-existing commands of AdonisJS will detect it and process your frontend assets as part of the following commands.
+Depois que o Encore for configurado, os comandos pré-existentes do AdonisJS o detectarão e processarão seus ativos frontend como parte dos seguintes comandos.
 
 #### node ace serve --watch
 
-The `node ace serve --watch` command will also run the [Webpack dev server](https://github.com/webpack/webpack-dev-server) within the same process to compile and serve the frontend assets.
+O comando `node ace serve --watch` também executará o [servidor de desenvolvimento Webpack](https://github.com/webpack/webpack-dev-server) dentro do mesmo processo para compilar e servir os ativos frontend.
 
 ![](/docs/assets/encore-dev-server.webp)
 
 #### node ace build --production
 
-Similarly, the `node ace build --production` command will also run the `encore production` command to bundle the frontend assets alongside your AdonisJS build.
+Da mesma forma, o comando `node ace build --production` também executará o comando `encore production` para agrupar os ativos de frontend junto com sua compilação do AdonisJS.
 
 ![](/docs/assets/node-ace-build-encore.webp)
 
-### Customizing output directory
+### Personalizando o diretório de saída
 
-By default, the compiled assets are written to the `./public/assets` directory so that AdonisJS static file server can serve them.
+Por padrão, os ativos compilados são gravados no diretório `./public/assets` para que o servidor de arquivos estáticos do AdonisJS possa servi-los.
 
-However, you can customize and define any output directory by updating the `webpack.config.js` file.
+No entanto, você pode personalizar e definir qualquer diretório de saída atualizando o arquivo `webpack.config.js`.
 
-The `setOutputPath` method accepts a path relative to the project root. Also, make sure to update the public URL prefix using the `setPublicPath` method.
+O método `setOutputPath` aceita um caminho relativo à raiz do projeto. Além disso, certifique-se de atualizar o prefixo de URL pública usando o método `setPublicPath`.
 
 ```ts
 // Grave o arquivo neste diretório
@@ -56,32 +54,32 @@ Encore.setOutputPath('./public/assets')
 Encore.setPublicPath('/assets')
 ```
 
-### Disable assets compilation
+### Desabilitar compilação de ativos
 
-You can disable Webpack assets compilation by defining the `--no-assets` flag to the `serve` and the `build` commands.
+Você pode desabilitar a compilação de ativos do Webpack definindo o sinalizador `--no-assets` para os comandos `serve` e `build`.
 
 ```sh
 node ace serve --watch --no-assets
 node ace build --productions --no-assets
 ```
 
-## Customize dev server port and host
-Webpack dev server runs on `localhost:8080` by default. If the port is in use, AdonisJS will find a random port to start the Webpack dev server. However, you can also define a custom port using the `--encore-args` flag.
+## Personalizar porta e host do servidor de desenvolvimento
+O servidor de desenvolvimento do Webpack é executado em `localhost:8080` por padrão. Se a porta estiver em uso, o AdonisJS encontrará uma porta aleatória para iniciar o servidor de desenvolvimento do Webpack. No entanto, você também pode definir uma porta personalizada usando o sinalizador `--encore-args`.
 
 ```sh
 node ace serve --watch --encore-args="--port 5000"
 ```
 
-As of now, you cannot define the port for the Webpack dev server inside the `webpack.config.js` file. This is the limitation enforced by the [Symfony Encore package](https://github.com/symfony/webpack-encore/issues/941#issuecomment-787568811).
+A partir de agora, você não pode definir a porta para o servidor de desenvolvimento do Webpack dentro do arquivo `webpack.config.js`. Esta é a limitação imposta pelo [pacote Symfony Encore](https://github.com/symfony/webpack-encore/issues/941#issuecomment-787568811).
 
-## Assets view helpers
+## Auxiliares de visualização de ativos
 
-Depending upon your Webpack config, the output files may not have the same name as the input file. For example, The `Encore.enableVersioning()` method appends the file hash to the output file name.
+Dependendo da configuração do seu Webpack, os arquivos de saída podem não ter o mesmo nome do arquivo de entrada. Por exemplo, o método `Encore.enableVersioning()` anexa o hash do arquivo ao nome do arquivo de saída.
 
-Hence, it is recommended to never hardcode the file names in your templates and always use the `asset` helper.
+Portanto, é recomendável nunca codificar os nomes dos arquivos em seus modelos e sempre usar o auxiliar `asset`.
 
-::: caption{for="error"}
-Do not reference files by name
+::: danger ERRO
+Não faça referência a arquivos pelo nome
 :::
 
 ```edge
@@ -98,8 +96,8 @@ Do not reference files by name
 </html>
 ```
 
-:::caption{for="success"}
-Use the `asset` helper
+::: tip SUCESSO
+Use o auxiliar `asset`
 :::
 
 ```edge
@@ -116,11 +114,11 @@ Use the `asset` helper
 </html>
 ```
 
-The `asset` helper relies on the `manifest.json` file generated by the Encore to resolve the actual URL. You can use it for all the assets, including JavaScript, CSS, fonts, images, and so on.
+O auxiliar `asset` depende do arquivo `manifest.json` gerado pelo Encore para resolver a URL real. Você pode usá-lo para todos os ativos, incluindo JavaScript, CSS, fontes, imagens e assim por diante.
 
-## Manifest file
+## Arquivo manifesto
 
-Encore generates the `manifest.json` file inside the `public/assets` directory. This file contains a key-value pair of the file identifier and its URL.
+O Encore gera o arquivo `manifest.json` dentro do diretório `public/assets`. Este arquivo contém um par chave-valor do identificador do arquivo e sua URL.
 
 ```json
 {
@@ -129,13 +127,13 @@ Encore generates the `manifest.json` file inside the `public/assets` directory. 
 }
 ```
 
-The `asset` view helper resolves the URL from this file itself.
+O auxiliar de visualização `asset` resolve a URL deste arquivo em si.
 
-## Entrypoints
+## Pontos de entrada
 
-Every Webpack bundle always has one or more [entrypoints](https://webpack.js.org/guides/code-splitting/#entry-points). Any other imports inside the entry point file are part of the same bundle. 
+Cada pacote Webpack sempre tem um ou mais [pontos de entrada](https://webpack.js.org/guides/code-splitting/#entry-points). Quaisquer outras importações dentro do arquivo de ponto de entrada são parte do mesmo pacote.
 
-For example, if you have registered the `./resources/js/app.js` file as an entry point with the following contents, all the internal imports will be bundled together to form a single output.
+Por exemplo, se você registrou o arquivo `./resources/js/app.js` como um ponto de entrada com o seguinte conteúdo, todas as importações internas serão agrupadas para formar uma única saída.
 
 ```ts
 import '../css/app.css'
@@ -143,23 +141,23 @@ import 'normalize.css'
 import 'alpinejs'
 ```
 
-You can define these entry points inside the `webpack.config.js` file using the `Encore.addEntry` method. The first argument is the entry point name, and 2nd is the path to the entry point file.
+Você pode definir esses pontos de entrada dentro do arquivo `webpack.config.js` usando o método `Encore.addEntry`. O primeiro argumento é o nome do ponto de entrada e o segundo é o caminho para o arquivo do ponto de entrada.
 
 ```ts
 Encore.addEntry('app', './resources/js/app.js')
 ```
 
-### Multiple entry points
+### Vários pontos de entrada
 
-Most applications need a single entry point unless you are building multiple interfaces in a single codebase. For example: Creating a public website + an admin panel may require different entry points as they will usually have different frontend dependencies and styling altogether.
+A maioria dos aplicativos precisa de um único ponto de entrada, a menos que você esteja construindo várias interfaces em uma única base de código. Por exemplo: criar um site público + um painel de administração pode exigir diferentes pontos de entrada, pois eles geralmente terão diferentes dependências de frontend e estilo.
 
-You can define multiple entry points by calling the `Encore.addEntry` method multiple times.
+Você pode definir vários pontos de entrada chamando o método `Encore.addEntry` várias vezes.
 
-### Reference entry points inside the template files
+### Pontos de entrada de referência dentro dos arquivos de modelo
 
-You can make use of the `@entryPointStyles` and the `@entryPointScripts` tags to render the script and the style tags for a given entry point.
+Você pode usar as tags `@entryPointStyles` e `@entryPointScripts` para renderizar o script e as tags de estilo para um determinado ponto de entrada.
 
-The tags will output the HTML with the correct `href` and `src` attributes. The `./public/assets/entrypoints.json` file is used to look up the URLs for a given entry point.
+As tags produzirão o HTML com os atributos `href` e `src` corretos. O arquivo `./public/assets/entrypoints.json` é usado para procurar as URLs para um determinado ponto de entrada.
 
 ```edge
 <!DOCTYPE html>
@@ -173,24 +171,25 @@ The tags will output the HTML with the correct `href` and `src` attributes. The 
 </html>
 ```
 
-## Setup PostCSS
+## Configurar PostCSS
 
-The first step is to install the [postcss-loader](https://github.com/postcss/postcss-loader) from the npm registry as follows:
+O primeiro passo é instalar o [postcss-loader](https://github.com/postcss/postcss-loader) do registro npm da seguinte forma:
 
 ```sh
 npm i -D postcss-loader
 ```
 
-Next, create the `postcss.config.js` file to configure PostCSS.
+Em seguida, crie o arquivo `postcss.config.js` para configurar o PostCSS.
 
 ```ts
-// title: postcss.config.js
+// postcss.config.js
+
 module.exports = {
   plugins: {}
 }
 ```
 
-And finally, enable the PostCSS loader inside the `webpack.config.js` file.
+E, finalmente, habilite o carregador PostCSS dentro do arquivo `webpack.config.js`.
 
 ```ts
 Encore.enablePostCssLoader()
@@ -203,9 +202,9 @@ Encore.enablePostCssLoader((options) => {
 })
 ```
 
-## Setup SASS, Less, and Stylus
+## Configurar SASS, Less e Stylus
 
-To configure the CSS pre-processors, you must uncomment the following lines of code inside the `webpack.config.js`
+Para configurar os pré-processadores CSS, você deve descomentar as seguintes linhas de código dentro de `webpack.config.js`
 
 ```ts
 // Habilita SASS
@@ -218,7 +217,7 @@ Encore.enableLessLoader()
 Encore.enableStylusLoader()
 ```
 
-Also, make sure to install the appropriate loaders for them.
+Além disso, certifique-se de instalar os carregadores apropriados para eles.
 
 ```sh
 # Para SASS
@@ -231,10 +230,10 @@ npm i -D less-loader less
 npm i -D stylus-loader stylus
 ```
 
-## Copying & referencing images
-Webpack cannot automatically scan/process the images referenced inside an Edge template. Hence, you have to tell the Webpack in advance to copy the images from a specific directory.
+## Copiando e referenciando imagens
+O Webpack não pode escanear/processar automaticamente as imagens referenciadas dentro de um modelo Edge. Portanto, você precisa informar ao Webpack com antecedência para copiar as imagens de um diretório específico.
 
-You can use the `copyFiles` method to copy the images to the build output.
+Você pode usar o método `copyFiles` para copiar as imagens para a saída da compilação.
 
 ```ts
 Encore.copyFiles({
@@ -243,20 +242,21 @@ Encore.copyFiles({
 })
 ```
 
-Also, make sure to use the `asset` helper to reference the image inside an `img` tag.
+Além disso, certifique-se de usar o auxiliar `asset` para referenciar a imagem dentro de uma tag `img`.
 
 ```edge
 <img src="{{ asset('assets/images/logo.png') }}" />
 ```
 
-## Configuring Babel
+## Configurando o Babel
 
-Babel is pre-configured for all files with `.js` and `.jsx` extensions using [babel-loader](https://github.com/babel/babel-loader).
+O Babel é pré-configurado para todos os arquivos com extensões `.js` e `.jsx` usando [babel-loader](https://github.com/babel/babel-loader).
 
-You can further configure Babel using the `Encore.configureBabel` method.
+Você pode configurar ainda mais o Babel usando o método `Encore.configureBabel`.
 
 ```ts
-// title: webpack.config.js
+// webpack.config.js
+
 Encore.configureBabel((babelConfig) => {
   babelConfig.plugins.push('styled-jsx/babel')
   babelConfig.presets.push('@babel/preset-flow')
@@ -265,9 +265,9 @@ Encore.configureBabel((babelConfig) => {
 })
 ```
 
-### Configuring browser targets
+### Configurando alvos do navegador
 
-You can configure the browser targets for [@babel/preset-env](https://babeljs.io/docs/en/babel-preset-env) inside the `package.json`.
+Você pode configurar os alvos do navegador para [@babel/preset-env](https://babeljs.io/docs/en/babel-preset-env) dentro do `package.json`.
 
 ```json
 {
@@ -280,45 +280,41 @@ You can configure the browser targets for [@babel/preset-env](https://babeljs.io
 }
 ```
 
-### Using the `.babelrc` file
+### Usando o arquivo `.babelrc`
 
-Instead of calling `configureBabel()`, you can also use the standard `.babelrc` file. However, this approach has a downside: as soon as a `.babelrc` file is present, Encore can longer configure babel for you, and the `.babelrc` file becomes the single source of truth.
+Em vez de chamar `configureBabel()`, você também pode usar o arquivo padrão `.babelrc`. No entanto, essa abordagem tem uma desvantagem: assim que um arquivo `.babelrc` estiver presente, o Encore não poderá mais configurar o Babel para você, e o arquivo `.babelrc` se tornará a única fonte de verdade.
 
+## Configurando o React
 
-## Configuring React
-
-You can configure React by installing React preset for Babel from the npm registry.
+Você pode configurar o React instalando a predefinição do React para o Babel a partir do registro npm.
 
 ```sh
 npm i -D @babel/preset-react
 ```
 
-Next, enable the React preset inside the `webpack.config.js` file.
+Em seguida, habilite a predefinição do React dentro do arquivo `webpack.config.js`.
 
 ```ts
 Encore.enableReactPreset()
 ```
 
-:::warning
-
-If you are using the `.babelrc` file, you must enable the React preset inside it, as Encore can no longer configure Babel.
+::: warning ATENÇÃO
+Se estiver usando o arquivo `.babelrc`, você deve habilitar a predefinição do React dentro dele, pois o Encore não pode mais configurar o Babel.
 
 :::
 
-## Configuring Vue
-You can configure Vue by first enabling the Vue loader inside the `webpack.config.js` file. 
+## Configurando o Vue
+Você pode configurar o Vue primeiro habilitando o carregador do Vue dentro do arquivo `webpack.config.js`.
 
-:::codegroup
+::: code-group
 
-```ts
-// title: Vue 2
+```ts [Vue 2]
 Encore.enableVueLoader(() => {}, {
   version: 2
 })
 ```
 
-```ts
-// title: Vue 3
+```ts [Vue 3]
 Encore.enableVueLoader(() => {}, {
   version: 3
 })
@@ -326,23 +322,21 @@ Encore.enableVueLoader(() => {}, {
 
 :::
 
-Next, install the following required dependencies for Vue 2 or Vue 3.
+Em seguida, instale as seguintes dependências necessárias para Vue 2 ou Vue 3.
 
-:::codegroup
+::: code-group
 
-```sh
-// title: Vue 2
+```sh [Vue 2]
 npm i vue vue-loader @vue/compiler-sfc
 ```
 
-```sh
-// title: Vue 3
+```sh [Vue 3]
 npm i vue@next vue-loader@next @vue/compiler-sfc
 ```
 
 :::
 
-You can define the [vue-loader options](https://vue-loader.vuejs.org/options.html) by passing a callback to the `enableVueLoader` method.
+Você pode definir as [opções do vue-loader](https://vue-loader.vuejs.org/options.html) passando um retorno de chamada para o método `enableVueLoader`.
 
 ```ts
 Encore.enableVueLoader((options) => {
@@ -356,7 +350,7 @@ Encore.enableVueLoader((options) => {
 })
 ```
 
-The Encore-specific options can be defined as the third argument.
+As opções específicas do Encore podem ser definidas como o terceiro argumento.
 
 ```ts
 Encore.enableVueLoader(() => {}, {
@@ -366,20 +360,20 @@ Encore.enableVueLoader(() => {}, {
 })
 ```
 
-#### version
-The VueJS version to use. You can opt between `2` and `3`.
+#### `version`
+A versão do VueJS a ser usada. Você pode optar entre `2` e `3`.
 
-#### runtimeCompilerBuild
-You must disable runtime compiler build when using single-file components and do not want to use the string-based templates.
+#### `runtimeCompilerBuild`
+Você deve desabilitar a construção do compilador de tempo de execução ao usar componentes de arquivo único e não quiser usar os modelos baseados em string.
 
-#### useJsx
-Enable/disable the support for JSX inside your Vue templates. 
+#### `useJsx`
+Habilite/desabilite o suporte para JSX dentro dos seus modelos Vue.
 
-- You cannot enable the option with Vue3.
-- Also, you need to install `@vue/babel-preset-jsx` and `@vue/babel-helper-vue-jsx-merge-props` dependencies when using JSX.
+- Você não pode habilitar a opção com Vue3.
+- Além disso, você precisa instalar as dependências `@vue/babel-preset-jsx` e `@vue/babel-helper-vue-jsx-merge-props` ao usar JSX.
 
-## Adding custom Webpack loaders
-Encore does a pretty good job in encapsulating the setup for the most common use cases. It also allows you to set up custom loaders using the `addLoader` method.
+## Adicionando carregadores Webpack personalizados
+O Encore faz um bom trabalho ao encapsular a configuração para os casos de uso mais comuns. Ele também permite que você configure carregadores personalizados usando o método `addLoader`.
 
 ```ts
 Encore
@@ -389,7 +383,7 @@ Encore
   })
 ```
 
-Similarly, you can also add plugins using the `addPlugin` method.
+Da mesma forma, você também pode adicionar plugins usando o método `addPlugin`.
 
 ```ts
 const NpmInstallPlugin = require('npm-install-webpack-plugin')

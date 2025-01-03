@@ -11,29 +11,26 @@ O seguinte é um exemplo imaginário. No entanto, você ainda pode seguir em fre
 Vamos criar uma instância de `AsyncLocalStorage` e exportá-la de seu módulo. Isso permitirá que vários módulos acessem a mesma instância de armazenamento.
 
 ```ts
-// title: storage.ts
+// storage.ts
+
 import { AsyncLocalStorage } from 'async_hooks'
 export const storage = new AsyncLocalStorage()
 ```
 
 Crie o arquivo principal. Ele usará o método `storage.run` para executar uma função assíncrona com o estado inicial.
 
-```ts
+```ts {3,7-11}
 // main.ts
 
-// highlight-start
 import { storage } from './storage'
-// highlight-end
 import ModuleA from './ModuleA'
 
 async function run(id) {
-  // highlight-start
   const state = { id }
 
   return storage.run(state, async () => {
     await (new ModuleA()).run()
   })
-  // highlight-end
 }
 
 run(1)
@@ -43,20 +40,16 @@ run(3)
 
 Finalmente, `ModuleA` pode acessar o estado usando o método `storage.getStore()`.
 
-```ts
+```ts {3,8-9}
 // ModuleA.ts
 
-// highlight-start
 import { storage } from './storage'
-// highlight-end
 import ModuleB from './ModuleB'
 
 export default class ModuleA {
   public async run() {
-    // highlight-start
     console.log(storage.getStore())
     await (new ModuleB()).run()
-    // highlight-end
   }
 }
 ```
@@ -90,7 +83,7 @@ class ModuleA {
 }
 ```
 
-::: info INFO
+::: info NOTa
 O armazenamento local assíncrono aborda esse caso de uso, pois permite estado isolado entre várias operações assíncronas.
 :::
 
@@ -117,17 +110,13 @@ export default class UsersController {
 
 As instâncias do modelo `User` agora têm acesso ao contexto, pois são criadas dentro do caminho do código do método `storage.run`.
 
-```ts
-// highlight-start
+```ts {1,5-6}
 import HttpContext from '@ioc:Adonis/Core/HttpContext'
-// highlight-end
 
 export default class User extends BaseModel {
   public get isFollowing() {
-    // highlight-start
     const ctx = HttpContext.get()!
     return this.id === ctx.auth.user.id
-    // highlight-end
   }
 }
 ```
@@ -138,7 +127,8 @@ As propriedades estáticas do modelo (não métodos) não podem acessar o contex
 Para usar o ALS em seus aplicativos, você deve habilitá-lo primeiro dentro do arquivo `config/app.ts`. Sinta-se à vontade para criar a propriedade manualmente se ela não existir.
 
 ```ts
-// title: config/app.ts
+// config/app.ts
+
 export const http: ServerConfig = {
   useAsyncLocalStorage: true,
 }
@@ -250,7 +240,7 @@ export default class UsersController {
 ```
 
 ```ts
-// Event handler
+// Manipulador de eventos
 
 import HttpContext from '@ioc:Adonis/Core/HttpContext'
 

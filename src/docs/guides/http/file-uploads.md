@@ -1,15 +1,15 @@
-# File uploads
+# Uploads de arquivo
 
-AdonisJS provides you a robust and performant API for dealing with file uploads. Not only can you process and store uploaded files locally, but you can also **stream them directly to the cloud services like S3, Cloudinary, or Google cloud storage**.
+O AdonisJS fornece uma API robusta e de alto desempenho para lidar com uploads de arquivo. Você não só pode processar e armazenar arquivos enviados localmente, mas também pode **transmiti-los diretamente para serviços de nuvem como S3, Cloudinary ou armazenamento em nuvem do Google**.
 
-:::tip
-Checkout [Attachment Lite](https://github.com/adonisjs/attachment-lite). An opinionated package to convert any column on your Lucid model to an attachment data type. Making file upload clean and easy.
+::: tip DICA
+Confira [Attachment Lite](https://github.com/adonisjs/attachment-lite). Um pacote opinativo para converter qualquer coluna em seu modelo Lucid em um tipo de dados de anexo. Tornando o upload de arquivo limpo e fácil.
 :::
 
-## Accessing uploaded files
-The bodyparser middleware registered inside the `start/kernel.ts` file automatically processes all the files for `multipart/form-data` requests.
+## Acessando arquivos enviados
+O middleware bodyparser registrado dentro do arquivo `start/kernel.ts` processa automaticamente todos os arquivos para solicitações `multipart/form-data`.
 
-You can access the files using the `request.file` method. The method accepts the field name and returns an instance of the [File](https://github.com/adonisjs/bodyparser/blob/develop/src/Multipart/File.ts) class, or `null` if no file was uploaded.
+Você pode acessar os arquivos usando o método `request.file`. O método aceita o nome do campo e retorna uma instância da classe [File](https://github.com/adonisjs/bodyparser/blob/develop/src/Multipart/File.ts), ou `null` se nenhum arquivo foi carregado.
 
 ```ts
 import Route from '@ioc:Adonis/Core/Route'
@@ -24,7 +24,7 @@ Route.post('posts', async ({ request }) => {
 })
 ```
 
-When accepting multiple files from the same input, you can use the `request.files` method (the plural form) to return an array of the file instances.
+Ao aceitar vários arquivos da mesma entrada, você pode usar o método `request.files` (a forma plural) para retornar uma matriz das instâncias do arquivo.
 
 ```ts
 import Route from '@ioc:Adonis/Core/Route'
@@ -39,14 +39,12 @@ Route.post('gallery', async ({ request }) => {
 })
 ```
 
-## Validating files
+## Validando arquivos
 
-You can also validate the file by specifying the rules for the file extension and the file size, and AdonisJS will perform the validations implicitly.
+Você também pode validar o arquivo especificando as regras para a extensão do arquivo e o tamanho do arquivo, e o AdonisJS executará as validações implicitamente.
 
-:::note
-
-We attempt to detect the file extension using the file [magic number](<https://en.wikipedia.org/wiki/Magic_number_(programming)#Magic_numbers_in_files>) and fallback to the filename extension when unable to detect it using the magic number.
-
+::: info NOTA
+Tentamos detectar a extensão do arquivo usando o arquivo [número mágico](<https://en.wikipedia.org/wiki/Magic_number_(programming)#Magic_numbers_in_files>) e retornar à extensão do nome do arquivo quando não for possível detectá-lo usando o número mágico.
 :::
 
 ```ts
@@ -66,13 +64,13 @@ if (!coverImage.isValid) {
 await coverImage.move(Application.tmpPath('uploads'))
 ```
 
-## Validating files using the validator
+## Validando arquivos usando o validador
 
-You can also use the [validator](../validator/introduction.md) to validate the user uploaded files alongside the rest of the form.
+Você também pode usar o [validator](../validator/introduction.md) para validar os arquivos enviados pelo usuário junto com o restante do formulário.
 
-The `schema.file` method validates the input to be a valid file, along with any custom validation rules provided for the file size and the extension.
+O método `schema.file` valida a entrada para ser um arquivo válido, junto com quaisquer regras de validação personalizadas fornecidas para o tamanho do arquivo e a extensão.
 
-If the file validation fails, you can access the error message alongside the form errors. Otherwise, you can access the file instance and move it to the desired location.
+Se a validação do arquivo falhar, você pode acessar a mensagem de erro junto com os erros do formulário. Caso contrário, você pode acessar a instância do arquivo e movê-la para o local desejado.
 
 ```ts
 import Route from '@ioc:Adonis/Core/Route'
@@ -93,124 +91,122 @@ Route.post('posts', async ({ request }) => {
 })
 ```
 
-## Saving files
-You can save user-uploaded files using the `moveToDisk` method. It uses AdonisJS [Drive](../digging-deeper/drive.md) under the hood to save files.
+## Salvando arquivos
+Você pode salvar arquivos enviados pelo usuário usando o método `moveToDisk`. Ele usa AdonisJS [Drive](../digging-deeper/drive.md) por baixo dos panos para salvar arquivos.
 
-```ts
+```ts {6-9}
 const coverImage = request.file('cover_image', {
   size: '2mb',
   extnames: ['jpg', 'png', 'gif'],
 })!
 
-// highlight-start
 await coverImage.moveToDisk('./')
 
-// Get the name of the saved file; to store it in your database, for example.
+// Obtenha o nome do arquivo salvo; para armazená-lo em seu banco de dados, por exemplo.
 const fileName = coverImage.fileName;
-// highlight-end
 ```
 
-The `moveToDisk` method accepts the following arguments.
+O método `moveToDisk` aceita os seguintes argumentos.
 
-- `storagePath`: A relative path to the disk root.
-- `options`: An object of options accepted by the [Drive.put](../digging-deeper/drive.md#put) method. Additionally, you can pass the file name property.
-- `disk`: Define the disk name to use for saving the file. If not defined, we will use the default disk.
+- `storagePath`: Um caminho relativo para a raiz do disco.
+Método [Drive.put](../digging-deeper/drive.md#put). Além disso, você pode passar a propriedade do nome do arquivo.
+- `disk`: Defina o nome do disco a ser usado para salvar o arquivo. Se não for definido, usaremos o disco padrão.
 
-## Serving uploaded files
-We recommend using Drive to save user uploaded files and then use the [Drive.getUrl](../digging-deeper/drive.md#geturl) to serve public files and [Drive.getSignedUrl](../digging-deeper/drive.md#getsignedurl) to serve private files.
+## Servindo arquivos enviados
+Recomendamos usar o Drive para salvar arquivos enviados pelo usuário e, em seguida, usar [Drive.getUrl](../digging-deeper/drive.md#geturl) para servir arquivos públicos e [Drive.getSignedUrl](../digging-deeper/drive.md#getsignedurl) para servir arquivos privados.
 
-## File properties/methods
+## Propriedades/métodos do arquivo
 
-Following is the list of properties on the [File](https://github.com/adonisjs/bodyparser/blob/develop/src/Multipart/File.ts) class.
+A seguir está a lista de propriedades na classe [File](https://github.com/adonisjs/bodyparser/blob/develop/src/Multipart/File.ts).
 
-### fieldName
+### `fieldName`
 
-Reference to the input file name.
+Referência ao nome do arquivo de entrada.
 
 ```ts
 file.fieldName
 ```
 
-### clientName
+### `clientName`
 
-The uploaded file name. It is usually the name of the file on the user's computer.
+O nome do arquivo carregado. Geralmente é o nome do arquivo no computador do usuário.
 
 ```ts
 file.clientName
 ```
 
-### size
+### `size`
 
-The file size is in bytes. The file size is only available when the file stream has been consumed.
+O tamanho do arquivo está em bytes. O tamanho do arquivo só está disponível quando o fluxo de arquivo foi consumido.
 
 ```ts
 file.size
 ```
 
-### headers
+### `headers`
 
-The HTTP headers associated with the file
+Os cabeçalhos HTTP associados ao arquivo
 
 ```ts
 file.headers
 ```
 
-### tmpPath
+### `tmpPath`
 
-The path of the file inside the computer `/tmp` directory. It is available only when the files are processed by the bodyparser middleware and not during direct uploads.
+O caminho do arquivo dentro do diretório `/tmp` do computador. Ele está disponível apenas quando os arquivos são processados ​​pelo middleware bodyparser e não durante uploads diretos.
 
 ```ts
 file.tmpPath
 ```
 
-### filePath
+### `filePath`
 
-The file's absolute path. Available after the `move` operation.
+O caminho absoluto do arquivo. Disponível após a operação `move`.
 
 ```ts
 file.filePath
 ```
 
-### fileName
+### `fileName`
 
-The file's relative name. Available after the `move` operation.
+O nome relativo do arquivo. Disponível após a operação `move`.
 
 ```ts
 file.fileName
 ```
 
-### type
+### `type`
 
-The file [mime type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types). Available after the file stream has been consumed
+O arquivo [tipo MIME](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types). Disponível após o fluxo de arquivo ter sido consumido
 
 ```ts
 file.type
 ```
 
-### subtype
+### `subtype`
 
-The subtype from the file mime type. Available after the file stream has been consumed.
+O subtipo do tipo MIME do arquivo. Disponível após o fluxo de arquivo ter sido consumido.
 
 ```ts
 file.subtype
 ```
 
-### extname
+### `extname`
 
-The file extension. Available after the file stream has been consumed.
+A extensão do arquivo. Disponível após o fluxo de arquivo ter sido consumido.
 
 ```ts
 file.extname
 ```
 
-### state
+### `state`
 
-The file processing state. It is one of the following.
+O estado de processamento do arquivo. É um dos seguintes.
 
-- `idle`: The file stream is idle and is not flowing.
-- `streaming`: The file is streaming the contents.
-- `consumed`: The file stream has been consumed.
-- `moved`: The file has been moved using the `file.move` method.
+- `idle`: O fluxo de arquivo está ocioso e não está fluindo.
+- `streaming`: O arquivo está transmitindo o conteúdo.
+- `consumed`: O fluxo de arquivo foi consumido.
+- `moved`: O arquivo foi movido usando o método `file.move`.
 
 ```ts
 if (file.state === 'consumed') {
@@ -218,9 +214,9 @@ if (file.state === 'consumed') {
 }
 ```
 
-### isValid
+### `isValid`
 
-Find if the file has passed the validation or not.
+Descubra se o arquivo passou na validação ou não.
 
 ```ts
 if (!file.isValid) {
@@ -228,9 +224,9 @@ if (!file.isValid) {
 }
 ```
 
-### hasErrors
+### `hasErrors`
 
-The `hasErrors` property is the opposite of the `isValid` property.
+A propriedade `hasErrors` é o oposto da propriedade `isValid`.
 
 ```ts
 if (file.hasErrors) {
@@ -238,9 +234,9 @@ if (file.hasErrors) {
 }
 ```
 
-### validated
+### `validated`
 
-Find if the file has been validated or not. Call `file.validate()` to valid it.
+Descubra se o arquivo foi validado ou não. Chame `file.validate()` para validá-lo.
 
 ```ts
 if (!file.validated) {
@@ -248,9 +244,9 @@ if (!file.validated) {
 }
 ```
 
-### errors
+### `errors`
 
-An array of validation errors
+Uma matriz de erros de validação
 
 ```ts
 if (file.hasErrors) {
@@ -258,34 +254,34 @@ if (file.hasErrors) {
 }
 ```
 
-### sizeLimit
+### `sizeLimit`
 
-Reference to the `size` validation option.
+Referência à opção de validação `size`.
 
-### allowedExtensions
+### `allowedExtensions`
 
-Reference to the `extnames` validation option.
+Referência à opção de validação `extnames`.
 
-### validate
+### `validate`
 
-Validate the file against the pre-defined validation options. AdonisJS implicitly calls this method when you access the file using the `request.file(s)` method.
+Valide o arquivo em relação às opções de validação predefinidas. O AdonisJS chama implicitamente esse método quando você acessa o arquivo usando o método `request.file(s)`.
 
-### move
-Move the file to a given location on the filesystem. The method accepts an absolute to the destination directory and options object to rename the file.
+### `move`
+Mova o arquivo para um determinado local no sistema de arquivos. O método aceita um absoluto para o diretório de destino e o objeto options para renomear o arquivo.
 
 ```ts
 await file.move(Application.tmpPath('uploads'), {
   name: 'renamed-file-name.jpg',
-  overwrite: true, // overwrite in case of conflict
+  overwrite: true, // sobrescrever em caso de conflito
 })
 ```
 
-### moveToDisk
-Move file using Drive. The methods accept the following arguments:
+### `moveToDisk`
+Mover arquivo usando Drive. Os métodos aceitam os seguintes argumentos:
 
-- `storagePath`: A relative path to the disk root.
-- `options`: An object of options accepted by the [Drive.put](../digging-deeper/drive.md#put) method. Additionally, you have to pass the file name property
-- `disk`: Define the disk name to use for saving the file. If not defined, we will use the default disk.
+- `storagePath`: Um caminho relativo para a raiz do disco.
+Método [Drive.put](../digging-deeper/drive.md#put). Além disso, você tem que passar a propriedade do nome do arquivo
+- `disk`: Defina o nome do disco a ser usado para salvar o arquivo. Se não for definido, usaremos o disco padrão.
 
 ```ts
 await file.moveToDisk('./', {
@@ -294,15 +290,15 @@ await file.moveToDisk('./', {
 }, 's3')
 ```
 
-### toJSON
+### `toJSON`
 
-Get the JSON object representation of the file instance.
+Obtenha a representação do objeto JSON da instância do arquivo.
 
 ```ts
 const json = file.toJSON()
 ```
 
-## Additional reading
+## Leitura adicional
 
-- Step by step tutorial on file uploads
-- Direct file uploads
+- Tutorial passo a passo sobre uploads de arquivos
+- Uploads diretos de arquivos

@@ -30,7 +30,7 @@ Você pode acessar as ligações do contêiner IoC quando o estado do aplicativo
 
 Por exemplo, se você tiver um provedor de serviços que deseja resolver as ligações do contêiner, você deve escrever as instruções de importação dentro dos métodos `boot` ou `ready`.
 
-::: danger ERROR
+::: danger ERRO
 A importação de nível superior não funcionará
 :::
 

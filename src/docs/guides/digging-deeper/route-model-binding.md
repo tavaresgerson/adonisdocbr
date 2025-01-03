@@ -4,7 +4,7 @@ O AdonisJS fornece um recurso poderoso de route model binding, que permite que v
 
 O pacote deve ser instalado e configurado separadamente. Você pode instalá-lo executando o seguinte comando.
 
-:::code-group
+::: code-group
 
 ```sh [Instale]
 npm i @adonisjs/route-model-binding@1.0.1

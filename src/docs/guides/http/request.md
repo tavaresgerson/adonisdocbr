@@ -1,8 +1,8 @@
-# Request
+# Solicitação
 
-The instance of the [request class](https://github.com/adonisjs/http-server/blob/develop/src/Request/index.ts) holds data for the current HTTP request including the **request body**, **uploaded files**, **cookies** and much more.
+A instância da [classe de solicitação](https://github.com/adonisjs/http-server/blob/develop/src/Request/index.ts) contém dados para a solicitação HTTP atual, incluindo o **corpo da solicitação**, **arquivos enviados**, **cookies** e muito mais.
 
-You can access the `request` object from the HTTP context passed to the route handler, middleware, and exception handler.
+Você pode acessar o objeto `request` do contexto HTTP passado para o manipulador de rota, middleware e manipulador de exceção.
 
 ```ts
 Route.get('/', (ctx) => {
@@ -10,7 +10,7 @@ Route.get('/', (ctx) => {
 })
 ```
 
-With destructuring
+Com desestruturação
 
 ```ts
 Route.get('/', async ({ request }) => {
@@ -18,8 +18,8 @@ Route.get('/', async ({ request }) => {
 })
 ```
 
-## Query string and route params
-The parsed query string can be accessed using the `request.qs()` method.
+## String de consulta e parâmetros de rota
+A string de consulta analisada pode ser acessada usando o método `request.qs()`.
 
 ```ts
 Route.get('/', async ({ request }) => {
@@ -31,7 +31,7 @@ Route.get('/', async ({ request }) => {
 })
 ```
 
-The `request.params()` method returns the route parameters.
+O método `request.params()` retorna os parâmetros de rota.
 
 ```ts
 Route.get('/posts/:id/:slug', async ({ request }) => {
@@ -43,17 +43,17 @@ Route.get('/posts/:id/:slug', async ({ request }) => {
 })
 ```
 
-You can also access a single parameter using the `request.param` method.
+Você também pode acessar um único parâmetro usando o método `request.param`.
 
 ```ts
 request.param('id')
 
-// Default value for optional params
+// Valor padrão para parâmetros opcionais
 request.param('id', 1)
 ```
 
-## Request body
-You can access the request body using the `request.body` method.
+## Corpo da solicitação
+Você pode acessar o corpo da solicitação usando o método `request.body`.
 
 ```ts
 Route.post('/', async ({ request }) => {
@@ -61,45 +61,45 @@ Route.post('/', async ({ request }) => {
 })
 ```
 
-#### request.all
+#### `request.all`
 
-Also, you can use the `request.all` method. It returns a merged copy of the request body and the request query string.
+Além disso, você pode usar o método `request.all`. Ele retorna uma cópia mesclada do corpo da solicitação e da string de consulta da solicitação.
 
 ```ts
 request.all()
 ```
 
-#### request.input
+#### `request.input`
 
-You can use the `request.input` method to read value for a single input field. The method also supports reading nested values using a dot notation.
+Você pode usar o método `request.input` para ler o valor de um único campo de entrada. O método também suporta a leitura de valores aninhados usando uma notação de ponto.
 
 ```ts
 request.input('title')
 
-// Read nested value.
+// Ler valor aninhado.
 request.input('user.profile.username')
 ```
 
-You can also define a default value to be returned when the actual value is `null` or `undefined`.
+Você também pode definir um valor padrão a ser retornado quando o valor real for `null` ou `undefined`.
 
 ```ts
-// Returns "Hello world" if title is missing
+// Retorna "Hello world" se o título estiver faltando
 request.input('title', 'Hello world')
 ```
 
 #### request.only/request.except
-You can use the `request.only` and `request.except` methods to cherry-pick/filter specific keys from the request body.
+Você pode usar os métodos `request.only` e `request.except` para selecionar/filtrar chaves específicas do corpo da solicitação.
 
 ```ts
 // Cherry pick
 const body = request.only(['title', 'description'])
 
-// Omit
+// Omitir
 const body = request.except(['submit', 'csrf_token'])
 ```
 
-## Bodyparser & supported content types
-The request body is parsed using the pre-configured bodyparser middleware. It is registered as a global middleware inside the `start/kernel.ts` file.
+## Bodyparser e tipos de conteúdo suportados
+O corpo da solicitação é analisado usando o middleware bodyparser pré-configurado. Ele é registrado como um middleware global dentro do arquivo `start/kernel.ts`.
 
 ```ts
 // start/kernel.ts
@@ -109,13 +109,13 @@ Server.middleware.register([
 ])
 ```
 
-The configuration for bodyparser is stored inside the `config/bodyparser.ts` file. The config file is self-documented, so feel free to get familiar with all the options available to you.
+A configuração do bodyparser é armazenada dentro do arquivo `config/bodyparser.ts`. O arquivo de configuração é autodocumentado, então sinta-se à vontade para se familiarizar com todas as opções disponíveis para você.
 
-### Convert empty strings to null
-HTML forms submit an empty string for input fields with no value. You can normalize all **empty string values to null** by enabling the `convertEmptyStringsToNull` flag.
+### Converter strings vazias em nulas
+Formulários HTML enviam uma string vazia para campos de entrada sem valor. Você pode normalizar todos os **valores de string vazia para nulos** habilitando o sinalizador `convertEmptyStringsToNull`.
 
-:::note
-The option is available only for `multipart` and `urlencoded` form submissions.
+::: info NOTA
+A opção está disponível apenas para envios de formulários `multipart` e `urlencoded`.
 :::
 
 ```ts
@@ -123,47 +123,47 @@ The option is available only for `multipart` and `urlencoded` form submissions.
 
 {
   form: {
-    // ... rest of the config
+    // ... resto da configuração
     convertEmptyStringsToNull: true
   },
 
   multipart: {
-    // ... rest of the config
+    // ... resto da configuração
     convertEmptyStringsToNull: true
   }
 }
 ```
 
-### Supported content types
+### Tipos de conteúdo suportados
 
-The bodyparser is capable of parsing the following content types.
+O bodyparser é capaz de analisar os seguintes tipos de conteúdo.
 
 #### JSON
 
-The JSON parser processes request sending the JSON string with one of the following content types.
+O analisador JSON processa a solicitação que envia a string JSON com um dos seguintes tipos de conteúdo.
 
 - application/json
 - application/json-patch+json
 - application/vnd.api+json
 - application/csp-report
 
-You can add more content types to the `json.types` array inside the `config/bodyparser.ts` file, and the JSON parser will also process them.
+Você pode adicionar mais tipos de conteúdo ao array `json.types` dentro do arquivo `config/bodyparser.ts`, e o analisador JSON também os processará.
 
-#### URL encoded
+#### Codificado em URL
 
-Request sending a URL encoded string with `content-type='application/x-www-form-urlencoded'` is parsed using the URL encoding parser.
+A solicitação que envia uma string codificada em URL com `content-type='application/x-www-form-urlencoded'` é analisada usando o analisador de codificação de URL.
 
 #### Multipart
 
-The multipart requests with `content-type='multipart/form-data'` are parsed using the multipart parser. Make sure to read the guide on [file uploads](./file-uploads.md) to view all available configuration options.
+As solicitações multipart com `content-type='multipart/form-data'` são analisadas usando o analisador multipart. Certifique-se de ler o guia em [uploads de arquivo](./file-uploads.md) para visualizar todas as opções de configuração disponíveis.
 
 #### Raw
 
-All requests with `content-type='text/*'` are read using the raw parser. You can further process the raw string inside a middleware or the route handler.
+Todas as solicitações com `content-type='text/*'` são lidas usando o analisador raw. Você pode processar ainda mais a string raw dentro de um middleware ou do manipulador de rota.
 
-You can use the raw parser to process custom/unsupported content types. For example
+Você pode usar o analisador raw para processar tipos de conteúdo personalizados/sem suporte. Por exemplo
 
-#### Register the custom content type
+#### Registre o tipo de conteúdo personalizado
 
 ```ts
 // config/bodyparser.ts
@@ -175,14 +175,13 @@ You can use the raw parser to process custom/unsupported content types. For exam
 }
 ```
 
-#### Create a middleware to parse the content type further
+#### Crie um middleware para analisar o tipo de conteúdo mais detalhadamente
 
-```ts
+```ts {5-15}
 Route
   .get('/', ({ request }) => {
     console.log(request.all())
   })
-  // highlight-start
   .middleware(async ({ request }, next) => {
     const contentType = request.header('content-type')
 
@@ -194,76 +193,75 @@ Route
 
     await next()
   })
-  // highlight-end
 ```
 
-## Request route
+## Rota de solicitação
 
-The `request` class holds the current matching route for the HTTP request, and you can access it as follows:
+A classe `request` contém a rota correspondente atual para a solicitação HTTP, e você pode acessá-la da seguinte forma:
 
 ```ts
 Route.get('/', ({ request }) => {
   /**
-   * The route pattern
+   * O padrão de rota
    */
   console.log(request.route.pattern)
 
   /**
-   * The handler that handles the route request
+   * O manipulador que manipula a solicitação de rota
    */
   console.log(request.route.handler)
 
   /**
-   * Middleware attached to the route
+   * Middleware anexado à rota
    */
   console.log(request.route.middleware)
 
   /**
-   * Route name (exists if the route is named)
+   * Nome da rota (existe se a rota for nomeada)
    */
   console.log(request.route.name)
 })
 ```
 
-You can also check if the current request URL matches a given route or not.
+Você também pode verificar se a URL da solicitação atual corresponde a uma determinada rota ou não.
 
 ```ts
 if (request.matchesRoute('/posts/:id')) {
 }
 ```
 
-Or pass an array to check for more than one route. The method returns true if any of the routes match the current request URL.
+Ou passe uma matriz para verificar mais de uma rota. O método retorna verdadeiro se qualquer uma das rotas corresponder à URL da solicitação atual.
 
 ```ts
 if (request.matchesRoute(['/posts/:id', '/posts/:id/comments'])) {
 }
 ```
 
-## Request URL
+## URL da solicitação
 
-You can access the request URL using the `request.url()` method. It returns the pathname without the domain name or the port.
+Você pode acessar a URL da solicitação usando o método `request.url()`. Ele retorna o nome do caminho sem o nome do domínio ou a porta.
 
 ```ts
 request.url()
 
-// Include query string
+// Incluir sequência de consulta
 request.url(true)
 ```
 
-The `request.completeUrl()` method returns the complete URL, including the domain and the port (if any).
+O método `request.completeUrl()` retorna a URL completa, incluindo o domínio e a porta (se houver).
 
 ```ts
 request.completeUrl()
 
-// Include query string
+// Incluir sequência de consulta
 request.completeUrl(true)
 ```
 
-## Request method
+## Método de solicitação
 
 ### `method`
 
-Returns the HTTP method for the given request. The spoofed method is returned when [form method spoofing](#form-method-spoofing) is enabled.
+Retorna o método HTTP para a solicitação fornecida. O método falsificado é retornado quando [form method spoofing](#form-method-spoofing) está habilitado.
 
 ```ts
 request.method()
@@ -271,26 +269,27 @@ request.method()
 
 ### `intended`
 
-The `intended` method returns the actual HTTP method and not the spoofed one.
+O método `intended` retorna o método HTTP real e não o falsificado.
 
 ```ts
 request.intended()
 ```
 
-## Request id
+## ID da solicitação
 
-Request ids [help you debug and trace logs](https://blog.heroku.com/http_request_id_s_improve_visibility_across_the_application_stack) for a given HTTP request by associating a unique id to every log entry.
+IDs de solicitação [ajudam você a depurar e rastrear logs](https://blog.heroku.com/http_request_id_s_improve_visibility_across_the_application_stack) para uma solicitação HTTP fornecida, associando um ID exclusivo a cada entrada de log.
 
-AdonisJS follows the industry standard and has first-class support for working with the `X-Request-Id` header.
+O AdonisJS segue o padrão da indústria e tem suporte de primeira classe para trabalhar com o cabeçalho `X-Request-Id`.
 
-### Generating request ids
+### Gerando IDs de solicitação
 
-Open the `config/app.ts` and set the value of `http.generateRequestId` to true.
+Abra o `config/app.ts` e defina o valor de `http.generateRequestId` como true.
 
-Also, the request-id is only generated when the `X-Request-Id` header is not set. This allows you to generate the request ids at your proxy server level and then reference them inside your AdonisJS application.
+Além disso, o request-id é gerado somente quando o cabeçalho `X-Request-Id` não está definido. Isso permite que você gere os IDs de solicitação no nível do seu servidor proxy e, em seguida, referencie-os dentro do seu aplicativo AdonisJS.
 
 ```ts
 // config/app.ts
+
 {
   http: {
     generateRequestId: true
@@ -298,21 +297,21 @@ Also, the request-id is only generated when the `X-Request-Id` header is not set
 }
 ```
 
-### Access request id
+### Acessar ID de solicitação
 
-The `request.id()` method returns the request-id by reading the `X-Request-Id` header. The flow looks as follows:
+O método `request.id()` retorna o request-id lendo o cabeçalho `X-Request-Id`. O fluxo se parece com o seguinte:
 
-- Read the value of the `X-Request-Id` header. Return the value if it is present.
-- Generate and set the header manually if the `generateRequestId` flag is enabled in the config.
-- Return `null` when the header is missing, and `generateRequestId` is disabled.
+- Leia o valor do cabeçalho `X-Request-Id`. Retorne o valor se estiver presente.
+- Gere e defina o cabeçalho manualmente se o sinalizador `generateRequestId` estiver habilitado na configuração.
+- Retorne `null` quando o cabeçalho estiver ausente e `generateRequestId` estiver desabilitado.
 
 ```ts
 request.id()
 ```
 
-### Request id inside logs
+### ID da solicitação dentro dos logs
 
-The logger instance attached to the HTTP context automatically sets the `request_id` property on every log statement.
+A instância do logger anexada ao contexto HTTP define automaticamente a propriedade `request_id` em cada instrução de log.
 
 ```ts
 Route.get('/', ({ logger }) => {
@@ -321,43 +320,43 @@ Route.get('/', ({ logger }) => {
 })
 ```
 
-## Request headers
+## Cabeçalhos da solicitação
 
-The `request.headers()` and the `request.header()` method allow access to the request headers.
+Os métodos `request.headers()` e `request.header()` permitem acesso aos cabeçalhos da solicitação.
 
 ```ts
-// all headers
+// todos os cabeçalhos
 console.log(request.headers())
 ```
 
-The `header` method returns the value for a single header field. The header name is **not case sensitive**.
+O método `header` retorna o valor para um único campo de cabeçalho. O nome do cabeçalho **não diferencia maiúsculas de minúsculas**.
 
 ```ts
 request.header('X-CUSTOM-KEY') === request.header('x-custom-key')
 
-// With default value
+// Com valor padrão
 request.header('x-header-name', 'default value')
 ```
 
-## Request IP address
+## Endereço IP da solicitação
 
-The `request.ip()` method returns the most trusted IP address for the HTTP request. Make sure to read the [trusted proxy](#trusted-proxy) section to understand how you can get the correct IP address when your application is behind a proxy server.
+O método `request.ip()` retorna o endereço IP mais confiável para a solicitação HTTP. Certifique-se de ler a seção [trusted proxy](#trusted-proxy) para entender como você pode obter o endereço IP correto quando seu aplicativo estiver atrás de um servidor proxy.
 
 ```ts
 request.ip()
 ```
 
-The `request.ips()` method returns an array of IP addresses starting from the most trusted to the least trusted IP address.
+O método `request.ips()` retorna uma matriz de endereços IP começando do mais confiável para o menos confiável.
 
 ```ts
 request.ips()
 ```
 
-### Custom IP retrieval method
+### Método de recuperação de IP personalizado
 
-If the trusted proxy settings are insufficient to determine the correct IP address, you can implement your own custom `getIp` method.
+Se as configurações de proxy confiáveis ​​forem insuficientes para determinar o endereço IP correto, você pode implementar seu próprio método `getIp` personalizado.
 
-Open the `config/app.ts` file and define the `getIp` method as follows:
+Abra o arquivo `config/app.ts` e defina o método `getIp` da seguinte forma:
 
 ```ts
 http: {
@@ -372,31 +371,30 @@ http: {
 }
 ```
 
-## Form method spoofing
+## Falsificação de método de formulário
 
-Standard HTML forms cannot use all the HTTP verbs beyond `GET` and `POST`. So, for example, it means you cannot create a form with the method `PUT`.
+Formulários HTML padrão não podem usar todos os verbos HTTP além de `GET` e `POST`. Então, por exemplo, significa que você não pode criar um formulário com o método `PUT`.
 
-However, AdonisJS allows you to spoof the HTTP method using the `_method` query string. In the following example, the request will be routed to the route listening for the `PUT` request.
+No entanto, o AdonisJS permite que você falsifique o método HTTP usando a string de consulta `_method`. No exemplo a seguir, a solicitação será roteada para a rota que escuta a solicitação `PUT`.
 
 ```html
 <form method="POST" action="/posts/1?_method=PUT"></form>
 ```
 
-Form method spoofing only works:
+A falsificação do método de formulário só funciona:
 
-- When the value of `http.allowMethodSpoofing` is set to true inside the `config/app.ts` file.
-- And the original request method is `POST`.
+- Quando o valor de `http.allowMethodSpoofing` é definido como true dentro do arquivo `config/app.ts`.
+- E o método de solicitação original é `POST`.
 
+## Negociação de conteúdo
 
-## Content negotiation
+[Negociação de conteúdo](https://developer.mozilla.org/en-US/docs/Web/HTTP/Content_negotiation) é um mecanismo usado para servir diferentes representações de um recurso da mesma URL.
 
-[Content negotiation](https://developer.mozilla.org/en-US/docs/Web/HTTP/Content_negotiation) is a mechanism used to serve different representations of a resource from the same URL.
-
-The client making the request can negotiate for the **resource representation**, **charset**, **language**, and **encoding** using different `Accept` headers, and you can handle them as follows.
+O cliente que faz a solicitação pode negociar a **representação do recurso**, **charset**, **idioma** e **codificação** usando diferentes cabeçalhos `Accept`, e você pode lidar com eles da seguinte forma.
 
 ### `accepts`
 
-The `request.accepts` method takes an array of content types (including shorthands) and returns the most appropriate content type by inspecting the `Accept` header. You can find the list of supported content types [here](https://github.com/jshttp/mime-db/blob/master/db.json).
+O método `request.accepts` pega uma matriz de tipos de conteúdo (incluindo abreviações) e retorna o tipo de conteúdo mais apropriado inspecionando o cabeçalho `Accept`. Você pode encontrar a lista de tipos de conteúdo suportados [aqui](https://github.com/jshttp/mime-db/blob/master/db.json).
 
 ```ts
 Route.get('posts', async ({ request, view }) => {
@@ -418,14 +416,14 @@ Route.get('posts', async ({ request, view }) => {
 ```
 
 ### `types`
-The `request.types` method returns an array of content types by inspecting the `Accept` header. The array is ordered by the client's preference (most preferred first).
+O método `request.types` retorna uma matriz de tipos de conteúdo inspecionando o cabeçalho `Accept`. A matriz é ordenada pela preferência do cliente (mais preferido primeiro).
 
 ```ts
 const types = request.types()
 ```
 
 ### `language`
-Negotiate for the requested language based upon the `Accept-language` header.
+Negocie o idioma solicitado com base no cabeçalho `Accept-language`.
 
 ```ts
 const language = request.language(['fr', 'de'])
@@ -438,14 +436,14 @@ return view.render('posts/en/index')
 ```
 
 ### `languages`
-The `languages` method returns an array of accepted languages by inspecting the `Accept-language` header. The array is ordered by the client's preference (most preferred first).
+O método `languages` retorna uma matriz de idiomas aceitos inspecionando o cabeçalho `Accept-language`. A matriz é ordenada pela preferência do cliente (mais preferido primeiro).
 
 ```ts
 const languages = request.languages()
 ```
 
 ### `encoding`
-Find the best encoding using the `Accept-encoding` header.
+Encontre a melhor codificação usando o cabeçalho `Accept-encoding`.
 
 ```ts
 switch (request.encoding(['gzip', 'br'])) {
@@ -459,14 +457,14 @@ switch (request.encoding(['gzip', 'br'])) {
 ```
 
 ### `encodings`
-The `encodings` method returns an array of accepted encoding by inspecting the `Accept-encoding` header. The array is ordered by the client's preference (most preferred first).
+O método `encodings` retorna uma matriz de codificações aceitas inspecionando o cabeçalho `Accept-encoding`. A matriz é ordenada pela preferência do cliente (mais preferido primeiro).
 
 ```ts
 const encodings = request.encodings()
 ```
 
 ### `charset`
-Find the best charset using the `Accept-charset` header.
+Encontre o melhor charset usando o cabeçalho `Accept-charset`.
 
 ```ts
 const charset = request.charset(['utf-8', 'hex', 'ascii'])
@@ -474,18 +472,18 @@ return Buffer.from('hello-world').toString(charset || 'utf-8')
 ```
 
 ### `charsets`
-The `charsets` method returns an array of accepted charsets by inspecting the `Accept-charset` header. The array is ordered by the client's preference (most preferred first).
+O método `charsets` retorna uma matriz de charsets aceitos inspecionando o cabeçalho `Accept-charset`. A matriz é ordenada pela preferência do cliente (mais preferido primeiro).
 
 ```ts
 const charsets = request.charsets()
 ```
 
-## Trusted proxy
-The majority of Node.js applications are deployed behind a proxy server like Nginx or Caddy. Hence, the value of [remoteAddress](https://nodejs.org/api/net.html#net_socket_remoteaddress) is the IP address of the proxy server and not the client.
+## Proxy confiável
+A maioria dos aplicativos Node.js são implantados atrás de um servidor proxy como Nginx ou Caddy. Portanto, o valor de [remoteAddress](https://nodejs.org/api/net.html#net_socket_remoteaddress) é o endereço IP do servidor proxy e não do cliente.
 
-However, all the proxy servers set the [`X-Forwaded`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers#proxies) headers to reflect the request's original values, and you must inform AdonisJS to trust the proxy server headers.
+No entanto, todos os servidores proxy definem os cabeçalhos [`X-Forwaded`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers#proxies) para refletir os valores originais da solicitação, e você deve informar o AdonisJS para confiar nos cabeçalhos do servidor proxy.
 
-You can control which proxies to trust by modifying the `http.trustProxy` value inside the `config/app.ts`.
+Você pode controlar em quais proxies confiar modificando o valor `http.trustProxy` dentro do `config/app.ts`.
 
 ```ts
 // config/app.ts
@@ -497,30 +495,30 @@ You can control which proxies to trust by modifying the `http.trustProxy` value 
 }
 ```
 
-### Ip addresses
+### Endereços IP
 
-You can also define a single or an array of proxy server IP addresses to trust.
+Você também pode definir um único ou uma matriz de endereços IP do servidor proxy para confiar.
 
 ```ts
 {
   trustProxy: proxyAddr.compile('127.0.0.0/8')
 }
 
-// or
+// ou
 {
   trustProxy: proxyAddr.compile(['127.0.0.0/8', 'fc00:ac:1ab5:fff::1/64'])
 }
 ```
 
-You can also use the following shorthand keywords in place of IP addresses.
+Você também pode usar as seguintes palavras-chave abreviadas no lugar de endereços IP.
 
-- `loopback`: IPv4 and IPv6 loopback addresses (like `::1` and `127.0.0.1`).
-- `linklocal`: IPv4 and IPv6 link-local addresses (like `fe80::1:1:1:1` and `169.254.0.1`).
-- `uniquelocal`: IPv4 private addresses and IPv6 unique-local addresses (like `fc00:ac:1ab5:fff::1` and `192.168.0.1`).
+- `loopback`: endereços de loopback IPv4 e IPv6 (como `::1` e `127.0.0.1`).
+- `linklocal`: endereços de link local IPv4 e IPv6 (como `fe80::1:1:1:1` e `169.254.0.1`).
+- `uniquelocal`: endereços privados IPv4 e endereços locais exclusivos IPv6 (como `fc00:ac:1ab5:fff::1` e `192.168.0.1`).
 
-### Custom function
+### Função personalizada
 
-You can also define a custom function that returns a boolean on a per request basis.
+Você também pode definir uma função personalizada que retorna um booleano por solicitação.
 
 ```ts
 {
@@ -530,56 +528,57 @@ You can also define a custom function that returns a boolean on a per request ba
 }
 ```
 
-### Proxy headers in use
+### Cabeçalhos de proxy em uso
 
-The following methods from the request class rely on a trusted proxy to return the correct value.
+Os métodos a seguir da classe de solicitação dependem de um proxy confiável para retornar o valor correto.
 
-- **hostname**: The value of `request.hostname()` is derived from the `X-Forwarded-Host` header.
-- **protocol**: The value of `request.protocol()` is derived from the `X-Forwarded-Proto` header.
-- **ip/ips**: The value of `request.ips()` and `request.ip()` is derived from the `X-Forwaded-For` header. However, the `http.getIp` configuration method takes precedence when defined. [Learn more](#custom-ip-reterval-method)
+- **hostname**: O valor de `request.hostname()` é derivado do cabeçalho `X-Forwarded-Host`.
+- **protocol**: O valor de `request.protocol()` é derivado do cabeçalho `X-Forwarded-Proto`.
+[Saiba mais](#custom-ip-reterval-method)
 
 ## CORS
-AdonisJS has in-built support for responding to the [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) `OPTIONS` requests. Just enable it inside the `config/cors.ts` file.
+O AdonisJS tem suporte integrado para responder às solicitações [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) `OPTIONS`. Basta habilitá-lo dentro do arquivo `config/cors.ts`.
 
 ```ts
 // config/cors.ts
+
 {
   enabled: true,
-  // ...rest of the config
+  // ...resto da configuração
 }
 ```
 
-The config file is extensively documented. Make sure to go through all the options and read the associated comments to understand their usage.
+O arquivo de configuração é amplamente documentado. Certifique-se de passar por todas as opções e ler os comentários associados para entender seu uso.
 
-## Other methods and properties
+## Outros métodos e propriedades
 
-Following is the list of other available methods and properties on the Request class.
+A seguir está a lista de outros métodos e propriedades disponíveis na classe Request.
 
 ### `hostname`
-Returns the request hostname. If [proxy headers](#trusted-proxy) are trusted, then `X-Forwarded-Host` is given priority over the `Host` header.
+Retorna o nome do host da solicitação. Se [cabeçalhos de proxy](#trusted-proxy) forem confiáveis, então `X-Forwarded-Host` terá prioridade sobre o cabeçalho `Host`.
 
 ```ts
 request.hostname()
 ```
 
 ### `ajax`
-Find if the request header `X-Requested-With` is set to `'xmlhttprequest'`.
+Descubra se o cabeçalho da solicitação `X-Requested-With` está definido como `'xmlhttprequest'`.
 
 ```ts
 if (request.ajax()) {
-  // return response for ajax request
+  // retornar resposta para solicitação ajax
 }
 ```
 
 ### `matchesRoute`
-Find if the current request is for a given route. The method accepts the route identifier as the only argument. The identifier can be the **route pattern**, **controller.method name** or the **route name**.
+Descubra se a solicitação atual é para uma determinada rota. O método aceita o identificador de rota como o único argumento. O identificador pode ser o **padrão de rota**, **nome do método do controlador** ou o **nome da rota**.
 
 ```ts
 if (request.matchesRoute('posts.show')) {
 }
 ```
 
-You can also match against the multiple routes. The method returns `true` if the returns URL matches any of the defined identifiers.
+Você também pode corresponder a várias rotas. O método retorna `true` se a URL de retorno corresponder a qualquer um dos identificadores definidos.
 
 ```ts
 if (request.matchesRoute(['posts.show', 'posts.edit'])) {
@@ -587,72 +586,71 @@ if (request.matchesRoute(['posts.show', 'posts.edit'])) {
 ```
 
 ### `is`
-Returns the best matching content type of the request by matching against the given types.
+Retorna o melhor tipo de conteúdo correspondente da solicitação, comparando com os tipos fornecidos.
 
-The content type is picked from the `Content-Type` header, and the request must have a body.
+O tipo de conteúdo é escolhido do cabeçalho `Content-Type`, e a solicitação deve ter um corpo.
 
 ```ts
 const contentType = request.is(['json', 'xml'])
 
 if (contentType === 'json') {
-  // process body as JSON
+  // corpo do processo como JSON
 }
 
 if (contentType === 'xml') {
-  // process body as XML
+  // corpo do processo como XML
 }
 ```
 
 ### `updateBody`
-Allows you to update the request body with a custom payload. It would be best to do it unless creating a package that purposefully mutates the request body.
+Permite que você atualize o corpo da solicitação com uma carga útil personalizada. Seria melhor fazer isso, a menos que esteja criando um pacote que propositalmente altere o corpo da solicitação.
 
 ```ts
 request.updateBody(myCustomPayload)
 ```
 
 ### `updateRawBody`
-The `updateRawBody` allows updating the raw request body. The raw body is always a string.
+O `updateRawBody` permite atualizar o corpo bruto da solicitação. O corpo bruto é sempre uma string.
 
 ```ts
 request.updateRawBody(JSON.stringify(myCustomPayload))
 ```
 
 ### `updateQs`
-The `updateQs` allows updating the value of parsed query string.
+O `updateQs` permite atualizar o valor da string de consulta analisada.
 
 ```ts
 request.updateQs(someCustomParser(request.parsedUrl.query))
 ```
 
 ### `original`
-Returns the request's original body parsed by the bodyparser. Calling the `updateBody` method does not change the original payload.
+Retorna o corpo original da solicitação analisado pelo bodyparser. Chamar o método `updateBody` não altera o payload original.
 
 ```ts
 request.original()
 ```
 
 ### `hasBody`
-Find if the request has a body. The bodyparser uses this method to know if the request has a body before parsing it.
+Descubra se a solicitação tem um corpo. O bodyparser usa esse método para saber se a solicitação tem um corpo antes de analisá-lo.
 
 ```ts
 if (request.hasBody()) {
-  // parse request body
+  // analisar corpo da solicitação
 }
 ```
 
-## Extending Request class
-You can extend the Request class using **macros** or **getters**. The best place to extend the request is inside a custom service provider.
+## Estendendo a classe Request
+Você pode estender a classe Request usando **macros** ou **getters**. O melhor lugar para estender a solicitação é dentro de um provedor de serviços personalizado.
 
-Open the pre-existing `providers/AppProvider.ts` file and write the following code inside the `boot` method.
+Abra o arquivo `providers/AppProvider.ts` preexistente e escreva o seguinte código dentro do método `boot`.
 
-```ts
+```ts {7-16}
 import { ApplicationContract } from '@ioc:Adonis/Core/Application'
 
 export default class AppProvider {
   public static needsApplication = true
   constructor(protected app: ApplicationContract) {}
 
-  // highlight-start
   public async boot() {
     const Request = this.app.container.use('Adonis/Core/Request')
 
@@ -663,13 +661,12 @@ export default class AppProvider {
       )
     })
   }
-  // highlight-end
 }
 ```
 
-In the above example, we have added the `wantsJSON` method to the request class. It reads the `Accept` header's value and returns true if the first value negotiates for JSON.
+No exemplo acima, adicionamos o método `wantsJSON` à classe request. Ele lê o valor do cabeçalho `Accept` e retorna true se o primeiro valor negociar para JSON.
 
-You can use the newly added method as follows.
+Você pode usar o método recém-adicionado da seguinte forma.
 
 ```ts
 Route.get('/', ({ request }) => {
@@ -679,10 +676,10 @@ Route.get('/', ({ request }) => {
 })
 ```
 
-### Informing TypeScript about the method
-The `wantsJSON` property is added at the runtime, and hence TypeScript does not know about it. To inform the TypeScript, we will use [declaration merging](https://www.typescriptlang.org/docs/handbook/declaration-merging.html#merging-interfaces) and add the property to the `RequestContract` interface.
+### Informando o TypeScript sobre o método
+A propriedade `wantsJSON` é adicionada no tempo de execução e, portanto, o TypeScript não sabe sobre ela. Para informar o TypeScript, usaremos [declaration merging](https://www.typescriptlang.org/docs/handbook/declaration-merging.html#merging-interfaces) e adicionaremos a propriedade à interface `RequestContract`.
 
-Create a new file at path `contracts/request.ts` (the filename is not essential) and paste the following contents inside it.
+Crie um novo arquivo no caminho `contracts/request.ts` (o nome do arquivo não é essencial) e cole o seguinte conteúdo dentro dele.
 
 ```ts
 // contracts/request.ts
@@ -694,11 +691,11 @@ declare module '@ioc:Adonis/Core/Request' {
 }
 ```
 
-## Additional reading
+## Leitura adicional
 
-Following are some of the additional guides to learn more about the topics not covered in this document.
+A seguir estão alguns dos guias adicionais para aprender mais sobre os tópicos não abordados neste documento.
 
 - [Cookies](./cookies.md)
-- [Signed URLs](../security/signed-urls.md)
-- [File uploads](./file-uploads.md)
-- [Validations](../validator/introduction.md)
+- [URLs assinadas](../security/signed-urls.md)
+- [Uploads de arquivo](./file-uploads.md)
+- [Validações](../validator/introduction.md)

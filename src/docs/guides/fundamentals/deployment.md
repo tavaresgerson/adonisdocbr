@@ -30,7 +30,7 @@ Se você executou a etapa de build em seu servidor de produção, certifique-se 
 cd build
 npm ci --production
 
-# Start server
+# Iniciar o servidor
 node server.js
 ```
 
@@ -39,7 +39,7 @@ Se a etapa de build foi executada em um pipeline de CI/CD e **você copiou apena
 ```sh
 npm ci --production
 
-# Start server
+# Iniciar o servidor
 node server.js
 ```
 
@@ -108,14 +108,12 @@ O método `down` em seus arquivos de migração geralmente contém ações destr
 
 Desabilitar rollbacks na produção garantirá que o comando `node ace migration:rollback` resulte em um erro.
 
-```ts
+```ts {5}
 {
   pg: {
     client: 'pg',
     migrations: {
-      // highlight-start
       disableRollbacksInProduction: true,
-      // highlight-end
     }
   }
 }
@@ -143,6 +141,7 @@ A seguir, um exemplo de impressão bonita das consultas de banco de dados em des
 
 ```ts
 // start/event.ts
+
 import Event from '@ioc:Adonis/Core/Event'
 import Logger from '@ioc:Adonis/Core/Logger'
 import Database from '@ioc:Adonis/Lucid/Database'
@@ -219,8 +218,9 @@ Nenhuma configuração adicional é necessária. Basta implantar seu aplicativo 
 
 ```ts
 // config/static.ts
+
 {
-  // ... rest of the config
+  // ... resto da configuração
   maxAge: '365d',
   immutable: true,
 }

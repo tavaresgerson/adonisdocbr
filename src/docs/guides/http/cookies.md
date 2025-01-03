@@ -1,18 +1,18 @@
 # Cookies
 
-You work with cookies using the [request](./request.md) and the [response](./response.md) classes. The request class exposes the API for reading the existing cookies, and the response class allows creating, updating and deleting cookies.
+Você trabalha com cookies usando as classes [request](./request.md) e [response](./response.md). A classe request expõe a API para ler os cookies existentes, e a classe response permite criar, atualizar e excluir cookies.
 
 ```ts
 import Route from '@ioc:Adonis/Core/Route'
 
 Route.post('add-to-cart', async ({ request, response }) => {
   /**
-   * Read cookie by name
+   * Ler cookie por nome
    */
   const existingItems = request.cookie('cart-items', [])
 
   /**
-   * Set/update cookie
+   * Definir/atualizar cookie
    */
   const newItems = existingItems.concat([{ id: 10 }])
   response.cookie('cart-items', newItems)
@@ -20,18 +20,19 @@ Route.post('add-to-cart', async ({ request, response }) => {
 
 Route.delete('clear-cart', async ({ response }) => {
   /**
-   * Clear cookie
+   * Limpar cookie
    */
   response.clearCookie('cart-items')
 })
 ```
 
-## Cookies configuration
+## Configuração de cookies
 
-You can tweak the configuration for cookies by modifying the `http.cookie` object inside the `config/app.ts` file.
+Você pode ajustar a configuração para cookies modificando o objeto `http.cookie` dentro do arquivo `config/app.ts`.
 
 ```ts
-// title: config/app.ts
+// config/app.ts
+
 http: {
   cookie: {
     domain: '',
@@ -46,35 +47,35 @@ http: {
 
 #### `domain`
 
-Specifies the value for the domain attribute. By default, no domain is set, and most clients will consider the cookie to apply to only the current domain.
+Especifica o valor para o atributo de domínio. Por padrão, nenhum domínio é definido, e a maioria dos clientes considerará o cookie para aplicar somente ao domínio atual.
 
 #### `path`
 
-Specifies the value for the path attribute. By default, the path is considered the "default path".
+Especifica o valor para o atributo de caminho. Por padrão, o caminho é considerado o "caminho padrão".
 
 #### `maxAge`
 
-Specifies the value for the max-age attribute. The given value will be converted to an integer.
+Especifica o valor para o atributo max-age. O valor fornecido será convertido em um inteiro.
 
 #### `httpOnly`
 
-Specifies the `boolean` value for the httponly attribute. When truthy, the HttpOnly attribute is set. Otherwise, it is not.
+Especifica o valor `booleano` para o atributo httponly. Quando verdadeiro, o atributo HttpOnly é definido. Caso contrário, não é.
 
 #### `secure`
 
-Specifies the `boolean` value for the secure attribute. When truthy, the Secure attribute is set. Otherwise, it is not. By default, the Secure attribute is not set.
+Especifica o valor `booleano` para o atributo seguro. Quando verdadeiro, o atributo Seguro é definido. Caso contrário, não é. Por padrão, o atributo Seguro não é definido.
 
 #### `sameSite`
 
-Specifies the boolean or string to be the value for the samesite attribute.
+Especifica o booleano ou string para ser o valor do atributo samesite.
 
-  - `true` will set the SameSite attribute to Strict for strict same site enforcement.
-  - `false` will not set the SameSite attribute.
-  - `'lax'` will set the SameSite attribute to Lax for lax same site enforcement.
-  - `'none'` will set the SameSite attribute to None for an explicit cross-site cookie.
-  - `'strict'` will set the SameSite attribute to Strict for strict same site enforcement.
+- `true` definirá o atributo SameSite como Strict para aplicação estrita do mesmo site.
+- `false` não definirá o atributo SameSite.
+- `'lax'` definirá o atributo SameSite como Lax para aplicação lax do mesmo site.
+- `'none'` definirá o atributo SameSite como None para um cookie cross-site explícito.
+- `'strict'` definirá o atributo SameSite como Strict para aplicação estrita do mesmo site.
 
-The same set of options can also be defined at runtime when setting the cookie. We will merge the inline values with the default config.
+O mesmo conjunto de opções também pode ser definido em tempo de execução ao definir o cookie. Mesclaremos os valores inline com a configuração padrão.
 
 ```ts
 response.cookie('user_id', 1, {
@@ -82,9 +83,9 @@ response.cookie('user_id', 1, {
 })
 ```
 
-## Supported data types
+## Tipos de dados suportados
 
-Along with the string values, the following data types are also supported as cookies values.
+Junto com os valores de string, os seguintes tipos de dados também são suportados como valores de cookies.
 
 ```ts
 // Object
@@ -102,36 +103,36 @@ response.cookie('is_logged_in', true)
 // Number
 response.cookie('visits', 10)
 
-// Data objects are converted to ISO string
+// Objetos de date são convertidos em string ISO
 response.cookie('visits', new Date())
 ```
 
-## Signed cookies
+## Cookies assinados
 
-By default, all the cookies set by the `response.cookie` method are signed. Signed cookies contain a signature alongside the cookie value to prevent cookie tampering.
+Por padrão, todos os cookies definidos pelo método `response.cookie` são assinados. Os cookies assinados contêm uma assinatura junto com o valor do cookie para evitar adulteração do cookie.
 
-- The signature is computed from the cookie value, and in case of tampering, the signature will mismatch, and AdonisJS will ignore the cookie.
-- The signature is generated using the `appKey` stored inside the `config/app.ts` file.
-- The signed cookies are still readable by Base64 decoding them. You can use encrypted cookies if you want the value to be unreadable.
+- A assinatura é computada a partir do valor do cookie e, em caso de adulteração, a assinatura não corresponderá e o AdonisJS ignorará o cookie.
+- A assinatura é gerada usando a `appKey` armazenada dentro do arquivo `config/app.ts`.
+- Os cookies assinados ainda são legíveis pela decodificação Base64. Você pode usar cookies criptografados se quiser que o valor seja ilegível.
 
 ```ts
 Route.get('/', async ({ request, response }) => {
-  // set signed cookie
+  // definir cookie assinado
   response.cookie('user_id', 1)
 
-  // read signed cookie
+  // ler cookie assinado
   request.cookie('user_id')
 })
 ```
 
-## Encrypted cookies
+## Cookies criptografados
 
-Unlike signed cookies, the encrypted cookie value cannot be decoded to plain text. You can use encrypted cookies for values that contain sensitive information and should not be readable by anyone.
+Ao contrário dos cookies assinados, o valor do cookie criptografado não pode ser decodificado para texto simples. Você pode usar cookies criptografados para valores que contêm informações confidenciais e não devem ser legíveis por ninguém.
 
-- The cookie value is encrypted using the [Encryption](./../security/encryption.md) module.
-- It uses the `appKey` stored inside the `config/app.ts` file as the encryption secret.
+Módulo [Criptografia](./../security/encryption.md).
+- Ele usa o `appKey` armazenado dentro do arquivo `config/app.ts` como o segredo de criptografia.
 
-The encrypted cookies are defined using the `response.encryptedCookie` method. For example:
+Os cookies criptografados são definidos usando o método `response.encryptedCookie`. Por exemplo:
 
 ```ts
 Route.get('/', async ({ response }) => {
@@ -139,7 +140,7 @@ Route.get('/', async ({ response }) => {
 })
 ```
 
-Similarly, to read the cookie value, you will have to use the `request.encryptedCookie` method.
+Da mesma forma, para ler o valor do cookie, você terá que usar o método `request.encryptedCookie`.
 
 ```ts
 Route.get('/', async ({ request }) => {
@@ -147,11 +148,11 @@ Route.get('/', async ({ request }) => {
 })
 ```
 
-## Plain cookies
+## Cookies simples
 
-Plain cookies hold Base64 encoded values with no signature or encryption in place. They are usually helpful when you want to access the cookie on frontend JavaScript and read/write its value.
+Os cookies simples mantêm valores codificados em Base64 sem assinatura ou criptografia em vigor. Eles geralmente são úteis quando você deseja acessar o cookie no JavaScript frontend e ler/escrever seu valor.
 
-You can define a plain cookie using the `plainCookie` method. For example:
+Você pode definir um cookie simples usando o método `plainCookie`. Por exemplo:
 
 ```ts
 Route.get('/', async ({ response }) => {
@@ -159,7 +160,7 @@ Route.get('/', async ({ response }) => {
 })
 ```
 
-If you want to access this cookie inside frontend JavaScript, do make sure to disable the `httpOnly` flag.
+Se você quiser acessar este cookie dentro do JavaScript frontend, certifique-se de desabilitar o sinalizador ``httpOnly`.
 
 ```ts
 response.plainCookie('user_id', 1, {
@@ -167,25 +168,25 @@ response.plainCookie('user_id', 1, {
 })
 ```
 
-You can read the cookie value inside JavaScript using the `document.cookie` property. Make sure to Base64 decode and JSON parse the value.
+Você pode ler o valor do cookie dentro do JavaScript usando a propriedade ``document.cookie`. Certifique-se de decodificar em Base64 e analisar o valor em JSON.
 
-:::note
-The following example is a naive implementation for reading the cookie value for demonstration only.
+::: info NOTA
+O exemplo a seguir é uma implementação ingênua para ler o valor do cookie apenas para demonstração.
 :::
 
 ```js
 /**
- * Reading the cookie value
+ * Lendo o valor do cookie
  */
 const userIdValue = document.cookie.split('user_id=')[1].split(';')[0]
 
 /**
- * Base 64 decoding the value
+ * Decodificação do valor em base 64
  */
 const base64Decoded = atob(userIdValue)
 
 /**
- * Converting the JSON string to an object
+ * Convertendo a string JSON em um objeto
  */
 const jsonParsed = JSON.parse(base64Decoded)
 console.log(jsonParsed)

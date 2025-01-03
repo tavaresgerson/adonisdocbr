@@ -1,8 +1,8 @@
-# Exception handling
+# Tratamento de exceções
 
-AdonisJS uses exceptions for flow control. Meaning, instead of writing too many conditionals, we prefer raising exceptions and then handle them to return an appropriate response. For example:
+O AdonisJS usa exceções para controle de fluxo. Ou seja, em vez de escrever muitas condicionais, preferimos levantar exceções e então tratá-las para retornar uma resposta apropriada. Por exemplo:
 
-#### Instead of writing the following code
+#### Em vez de escrever o seguinte código
 
 ```ts
 Route.get('dashboard', async ({ auth, response }) => {
@@ -10,34 +10,33 @@ Route.get('dashboard', async ({ auth, response }) => {
     return response.status(401).send('Unauthenticated')
   }
 
-  // business logic
+  // lógica de negócios
 })
 ```
 
-#### We prefer writing
+#### Preferimos escrever
 
-In the following example, the `auth.authenticate` method will raise an exception if the user is not logged in. The exception can handle itself and return an appropriate response.
+No exemplo a seguir, o método `auth.authenticate` levantará uma exceção se o usuário não estiver logado. A exceção pode se automanipular e retornar uma resposta apropriada.
 
 ```ts
 Route.get('dashboard', async ({ auth, response }) => {
   await auth.authenticate()
 
-  // business logic
+  // lógica de negócios
 })
 ```
 
-:::tip
-
-Converting every conditional to an exception is also not the right approach. Instead, you can start by converting conditionals that always result in aborting the request.
-
+::: tip DICA
+Converter cada condicional em uma exceção também não é a abordagem correta. Em vez disso, você pode começar convertendo condicionais que sempre resultam no aborto da solicitação.
 :::
 
-## Handling exceptions globally
+## Manipulando exceções globalmente
 
-The exceptions raised during an HTTP request are forwarded to the global exception handler stored inside the `app/Exceptions/Handler.ts` file.
+As exceções levantadas durante uma solicitação HTTP são encaminhadas para o manipulador de exceções global armazenado dentro do arquivo `app/Exceptions/Handler.ts`.
 
 ```ts
 // app/Exceptions/Handler.ts
+
 import Logger from '@ioc:Adonis/Core/Logger'
 import HttpExceptionHandler from '@ioc:Adonis/Core/HttpExceptionHandler'
 
@@ -53,9 +52,9 @@ export default class ExceptionHandler extends HttpExceptionHandler {
 }
 ```
 
-The `handle` method is responsible for handling the exceptions and converting them to a response. So either you can let the parent class ([HttpExceptionHandler](https://github.com/adonisjs/core/blob/develop/src/HttpExceptionHandler/index.ts)) handle the errors for you, or you can define the `handle` method to self handle them.
+O método `handle` é responsável por manipular as exceções e convertê-las em uma resposta. Então, você pode deixar a classe pai ([HttpExceptionHandler](https://github.com/adonisjs/core/blob/develop/src/HttpExceptionHandler/index.ts)) manipular os erros para você, ou você pode definir o método `handle` para automanipulá-los.
 
-```ts
+```ts {15-27}
 import Logger from '@ioc:Adonis/Core/Logger'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import HttpExceptionHandler from '@ioc:Adonis/Core/HttpExceptionHandler'
@@ -70,41 +69,39 @@ export default class ExceptionHandler extends HttpExceptionHandler {
     super(Logger)
   }
 
-  // highlight-start
   public async handle(error: any, ctx: HttpContextContract) {
     /**
-     * Self handle the validation exception
+     * Auto manipula a exceção de validação
      */
     if (error.code === 'E_VALIDATION_FAILURE') {
       return ctx.response.status(422).send(error.messages)
     }
 
     /**
-     * Forward rest of the exceptions to the parent class
+     * Encaminha o restante das exceções para a classe pai
      */
     return super.handle(error, ctx)
   }
-  // highlight-end
 }
 ```
 
-## Error reporting
+## Relatório de erros
 
-Alongside the handle method, you can also implement the `report` method to report the exception to logging or an error monitoring service.
+Juntamente com o método handle, você também pode implementar o método `report` para relatar a exceção ao registro ou a um serviço de monitoramento de erros.
 
-The default implementation of the `report` method uses the [logger](../digging-deeper/logger.md) to report exceptions.
+A implementação padrão do método `report` usa o [logger](../digging-deeper/logger.md) para relatar exceções.
 
-- Exceptions with error code `>= 500` are logged using `logger.error` method.
-- Exceptions with error code `>= 400` are logged using `logger.warn` method.
-- All other exceptions are logged using the `logger.info` method.
+- Exceções com código de erro `>= 500` são registradas usando o método `logger.error`.
+- Exceções com código de erro `>= 400` são registradas usando o método `logger.warn`.
+- Todas as outras exceções são registradas usando o método `logger.info`.
 
-:::note
-The HTTP response does not wait for the report method to finish. In other words, the report method is executed in the background.
+::: info NOTA
+A resposta HTTP não espera o método report terminar. Em outras palavras, o método report é executado em segundo plano.
 :::
 
-If required, you can overwrite the `report` method, as shown in the following example.
+Se necessário, você pode sobrescrever o método `report`, conforme mostrado no exemplo a seguir.
 
-```ts
+```ts {15-26}
 import Logger from '@ioc:Adonis/Core/Logger'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import HttpExceptionHandler from '@ioc:Adonis/Core/HttpExceptionHandler'
@@ -119,7 +116,6 @@ export default class ExceptionHandler extends HttpExceptionHandler {
     super(Logger)
   }
 
-  // highlight-start
   public async report(error: any, ctx: HttpContextContract) {
     if (!this.shouldReport(error)) {
       return
@@ -132,12 +128,11 @@ export default class ExceptionHandler extends HttpExceptionHandler {
 
     someReportingService.report(error.message)
   }
-  // highlight-end
 }
 ```
 
-### Reporting context
-You can implement the `context` method to provide additional data when reporting errors. By default, the context includes the current request-id.
+### Contexto de relatórios
+Você pode implementar o método `context` para fornecer dados adicionais ao relatar erros. Por padrão, o contexto inclui o request-id atual.
 
 ```ts
 import Logger from '@ioc:Adonis/Core/Logger'
@@ -153,27 +148,25 @@ export default class ExceptionHandler extends HttpExceptionHandler {
 }
 ```
 
-## HTTP exception handler
+## Manipulador de exceção HTTP
 
-The following features are only available when the global exception handler extends the [HttpExceptionHandler](https://github.com/adonisjs/core/blob/develop/src/HttpExceptionHandler/index.ts) class. If you decide not to extend from this class, then the following features will not work.
+Os seguintes recursos estão disponíveis somente quando o manipulador de exceção global estende a classe [HttpExceptionHandler](https://github.com/adonisjs/core/blob/develop/src/HttpExceptionHandler/index.ts). Se você decidir não estender a partir desta classe, os seguintes recursos não funcionarão.
 
-### Status pages
+### Páginas de status
 
-The `statusPages` page property on the exception handler allows you to associate Edge templates to a range of error status codes.
+A propriedade de página `statusPages` no manipulador de exceção permite que você associe modelos Edge a um intervalo de códigos de status de erro.
 
-In the following example, all 404 errors will render the `errors/not-found.edge` template and the errors between the range of _500 - 599_ will render the `errors/server-error.edge` template.
+No exemplo a seguir, todos os erros 404 renderizarão o modelo `errors/not-found.edge` e os erros entre o intervalo de _500 - 599_ renderizarão o modelo `errors/server-error.edge`.
 
-```ts
+```ts {5-8}
 import Logger from '@ioc:Adonis/Core/Logger'
 import HttpExceptionHandler from '@ioc:Adonis/Core/HttpExceptionHandler'
 
 export default class ExceptionHandler extends HttpExceptionHandler {
-  // highlight-start
   protected statusPages = {
     '404': 'errors/not-found',
     '500..599': 'errors/server-error',
   }
-  // highlight-end
 
   constructor() {
     super(Logger)
@@ -181,29 +174,25 @@ export default class ExceptionHandler extends HttpExceptionHandler {
 }
 ```
 
-- The status pages are only rendered when the HTTP request `Accept` header is not set to `application/json`.
+- As páginas de status são renderizadas somente quando o cabeçalho `Accept` da solicitação HTTP não está definido como `application/json`.
 
-- The status pages are disabled during development. However, you can enable them using the `disableStatusPagesInDevelopment` flag.
-  ```ts
+- As páginas de status são desabilitadas durante o desenvolvimento. No entanto, você pode habilitá-las usando o sinalizador `disableStatusPagesInDevelopment`.
+```ts
   export default class ExceptionHandler extends HttpExceptionHandler {
     protected disableStatusPagesInDevelopment = false
   }
   ```
 
----
+### Desabilitar relatórios para certas exceções
+Você pode ignorar certas exceções de serem reportadas adicionando-as dentro das propriedades `ignoreCodes` ou `ignoreStatuses`.
 
-### Disable reporting for certain exceptions
-You can ignore certain exceptions from being reported by adding them inside the `ignoreCodes` or `ignoreStatuses` properties.
-
-```ts
+```ts {5-6}
 import Logger from '@ioc:Adonis/Core/Logger'
 import HttpExceptionHandler from '@ioc:Adonis/Core/HttpExceptionHandler'
 
 export default class ExceptionHandler extends HttpExceptionHandler {
-  // highlight-start
   protected ignoreCodes = ['E_ROUTE_NOT_FOUND']
   protected ignoreStatuses = [404, 422, 403, 401]
-  // highlight-end
 
   constructor() {
     super(Logger)
@@ -211,16 +200,16 @@ export default class ExceptionHandler extends HttpExceptionHandler {
 }
 ```
 
-## Custom exceptions
+## Exceções personalizadas
 
-You can create custom exceptions by executing the following Ace command.
+Você pode criar exceções personalizadas executando o seguinte comando Ace.
 
 ```sh
 node ace make:exception UnAuthorized
 # CREATE: app/Exceptions/UnAuthorizedException.ts
 ```
 
-Next, import and raise the exception as follows.
+Em seguida, importe e levante a exceção da seguinte forma.
 
 ```ts
 import UnAuthorized from 'App/Exceptions/UnAuthorizedException'
@@ -232,34 +221,32 @@ const errorCode = 'E_UNAUTHORIZED'
 throw new UnAuthorized(message, status, errorCode)
 ```
 
-You can self-handle this exception by implementing the `handle` method on the exception class.
+Você pode automanipular essa exceção implementando o método `handle` na classe de exceção.
 
-```ts
-// title: app/Exceptions/UnAuthorizedException.ts
+```ts {7-9}
+// app/Exceptions/UnAuthorizedException.ts
+
 import { Exception } from '@adonisjs/core/build/standalone'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class UnAuthorizedException extends Exception {
-  // highlight-start
   public async handle(error: this, ctx: HttpContextContract) {
     ctx.response.status(error.status).send(error.message)
   }
-  // highlight-end
 }
 ```
 
-Optionally, implement the `report` method to report the exception to a logging or error reporting service.
+Opcionalmente, implemente o método `report` para relatar a exceção a um serviço de registro ou relatório de erros.
 
-```ts
-// title: app/Exceptions/UnAuthorizedException.ts
+```ts {7-9}
+// app/Exceptions/UnAuthorizedException.ts
+
 import { Exception } from '@adonisjs/core/build/standalone'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class UnAuthorizedException extends Exception {
-  // highlight-start
   public report(error: this, ctx: HttpContextContract) {
     reportingService.report(error.message)
   }
-  // highlight-end
 }
 ```

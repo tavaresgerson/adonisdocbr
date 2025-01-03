@@ -1,8 +1,8 @@
-# Static assets
+# Ativos estáticos
 
-AdonisJS ships with a static file server to serve the files from a given directory. It is as simple as dropping a file inside the `./public` directory and then accessing it by its filename. For example:
+O AdonisJS vem com um servidor de arquivos estático para servir os arquivos de um diretório específico. É tão simples quanto soltar um arquivo dentro do diretório `./public` e acessá-lo pelo nome do arquivo. Por exemplo:
 
-Create a file named `public/style.css` with the following contents.
+Crie um arquivo chamado `public/style.css` com o seguinte conteúdo.
 
 ```css
 body {
@@ -10,11 +10,11 @@ body {
 }
 ```
 
-And then access it by visiting the [http://localhost:3333/style.css](http://localhost:3333/style.css). You don't have to type the directory name (/public), and the files are accessible directly by their filename.
+E então acesse-o visitando o [http://localhost:3333/style.css](http://localhost:3333/style.css). Você não precisa digitar o nome do diretório (/public), e os arquivos são acessíveis diretamente pelo nome do arquivo.
 
-## Configuration
+## Configuração
 
-The config for the static server is stored inside the `config/static.ts` file.
+A configuração para o servidor estático é armazenada dentro do arquivo `config/static.ts`.
 
 ```ts
 import { AssetsConfig } from '@ioc:Adonis/Core/Static'
@@ -31,27 +31,27 @@ export default staticConfig
 
 #### `enabled`
 
-A toggle switch to enable/disable the static file server.
+Um botão de alternância para habilitar/desabilitar o servidor de arquivos estático.
 
 #### `dotFiles`
 
-The treatment for the dotfiles. The value can be one of the following:
+O tratamento para os dotfiles. O valor pode ser um dos seguintes:
 
-- `'allow'`: No special treatment for dotfiles. Just serve them like any other file.
-- `'deny'`: Deny the request with a 403 status code.
-- `'ignore'`: Pretend like the dotfile does not exist.
+- `'allow'`: Nenhum tratamento especial para dotfiles. Apenas os sirva como qualquer outro arquivo.
+- `'deny'`: Negue a solicitação com um código de status 403.
+- `'ignore'`: Finja que o dotfile não existe.
 
 #### `etag`
 
-Whether or not to generate the ETag for the files.
+Se deve ou não gerar o ETag para os arquivos.
 
 #### `lastModified`
 
-Enable or disable the `Last-Modified` HTTP header. The value for the header relies on the file's last modified value.
+Habilite ou desabilite o cabeçalho HTTP `Last-Modified`. O valor do cabeçalho depende do último valor modificado do arquivo.
 
-## The default directory
+## O diretório padrão
 
-Conventionally, we serve the files from the `./public` directory. However, you can choose a different directory by configuring it inside the `.adonisrc.json` file.
+Convencionalmente, servimos os arquivos do diretório `./public`. No entanto, você pode escolher um diretório diferente configurando-o dentro do arquivo `.adonisrc.json`.
 
 ```json
 // .adonisrc.json
@@ -63,41 +63,37 @@ Conventionally, we serve the files from the `./public` directory. However, you c
 }
 ```
 
-After the above change, The static server will serve the files from the `./assets` directory.
+Após a alteração acima, o servidor estático servirá os arquivos do diretório `./assets`.
 
-### Notifying assembler about the change
+### Notificando o assembler sobre a alteração
 
-The `@adonisjs/assembler` package compiles your production application and writes the output to the `./build` directory.
+O pacote `@adonisjs/assembler` compila seu aplicativo de produção e grava a saída no diretório `./build`.
 
-During this process, it also copies the files from the `public` directory, and hence, you must notify it about the change within the `.adonisrc.json` file.
+Durante esse processo, ele também copia os arquivos do diretório `public` e, portanto, você deve notificá-lo sobre a alteração no arquivo `.adonisrc.json`.
 
 ```json
 // .adonisrc.json
 
 {
   "metaFiles": [
-    // delete-start
-    {
-      "pattern": "public/**",
-      "reloadServer": false
-    },
-    // delete-end
-    // insert-start
-    {
-      "pattern": "assets/**",
-      "reloadServer": false
-    }
-    // insert-end
+    { // [!code --]
+      "pattern": "public/**", // [!code --]
+      "reloadServer": false // [!code --]
+    }, // [!code --]
+    { // [!code ++]
+      "pattern": "assets/**", // [!code ++]
+      "reloadServer": false // [!code ++]
+    } // [!code ++]
   ]
 }
 ```
 
-## URL conflicts
+## Conflitos de URL
 
-In case your static file names conflict with a registered route, AdonisJS will give preference to the static file and the route handler will never be called. 
+Caso seus nomes de arquivo estático entrem em conflito com uma rota registrada, o AdonisJS dará preferência ao arquivo estático e o manipulador de rota nunca será chamado.
 
-In this scenario, we recommend you to rename the static file or move it inside a sub-folder to avoid the conflict at the first place.
+Nesse cenário, recomendamos que você renomeie o arquivo estático ou mova-o para dentro de uma subpasta para evitar o conflito em primeiro lugar.
 
-## Additional reading
+## Leitura adicional
 
-- [Assets manager](./assets-manager.md)
+[Gerente de ativos](./assets-manager.md)

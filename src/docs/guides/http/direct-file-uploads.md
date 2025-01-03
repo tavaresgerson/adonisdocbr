@@ -1,22 +1,22 @@
-# Direct file uploads
+# Uploads diretos de arquivo
 
-Direct file uploads allow you to stream the incoming multipart streams to a cloud service like Amazon S3 or Cloudinary without processing them on your server. The flow looks as follows:
+Os uploads diretos de arquivo permitem que você transmita os fluxos multipartes recebidos para um serviço de nuvem como Amazon S3 ou Cloudinary sem processá-los em seu servidor. O fluxo é o seguinte:
 
-- The user uploads the file.
-- The request comes to your server.
-- Instead of parsing the request and reading data from it, you pipe the stream to an external cloud service.
+- O usuário carrega o arquivo.
+- A solicitação chega ao seu servidor.
+- Em vez de analisar a solicitação e ler dados dela, você canaliza o fluxo para um serviço de nuvem externo.
 
-Since you pipe the stream directly, your AdonisJS application does not have to allocate any additional memory or CPU computation to parse and persist the data on a disk.
+Como você canaliza o fluxo diretamente, seu aplicativo AdonisJS não precisa alocar nenhuma memória adicional ou computação de CPU para analisar e persistir os dados em um disco.
 
-## When not to use direct file uploads?
-As you will notice later in this guide, direct file uploads are complex as you deal with the streams directly.
+## Quando não usar uploads diretos de arquivo?
+Como você notará mais adiante neste guia, os uploads diretos de arquivo são complexos, pois você lida com os fluxos diretamente.
 
-We recommend sticking to [standard file uploads](./file-uploads.md) if your application does not deal with big file uploads. Do remember, sometimes writing the simpler code wins over small performance gains.
+Recomendamos manter os [uploads de arquivo padrão](./file-uploads.md) se seu aplicativo não lida com uploads de arquivos grandes. Lembre-se, às vezes escrever o código mais simples vence pequenos ganhos de desempenho.
 
-## Usage
-The first step is to **disable the autoprocessing** of files inside the `config/bodyparser.ts` file. Once autoprocessing is disabled, the bodyparser middleware will forward the multipart stream to your controller so that you can process it manually.
+## Uso
+O primeiro passo é **desabilitar o autoprocessamento** de arquivos dentro do arquivo `config/bodyparser.ts`. Uma vez desabilitado o autoprocessamento, o middleware bodyparser encaminhará o fluxo multipartes para seu controlador para que você possa processá-lo manualmente.
 
-You can disable the autoprocessing for the entire application by setting the `autoProcess` property to `false`.
+Você pode desabilitar o autoprocessamento para todo o aplicativo definindo a propriedade `autoProcess` como `false`.
 
 ```ts
 multipart: {
@@ -24,37 +24,35 @@ multipart: {
 }
 ```
 
-Or, you can disable it for selected routes by adding their route pattern to the `processManually` array.
+Ou você pode desabilitá-lo para rotas selecionadas adicionando seu padrão de rota ao array `processManually`.
 
 ```ts
 processManually: ['/drive']
 ```
 
-### Handling the multipart stream
-You can handle the multipart stream inside your controller as follows:
+### Manipulando o fluxo multipartes
+Você pode manipular o fluxo multipartes dentro do seu controlador da seguinte forma:
 
-```ts
+```ts {5-9}
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class DriveController {
   public async store({ request }: HttpContextContract) {
-    // highlight-start
     request.multipart.onFile('input_field_name', {}, (part) => {
       someSdk.uploadStream(part)
     })
 
     await request.multipart.process()
-    // highlight-end
   }
 }
 ```
 
-- The `request.multipart.process()` starts processing the multipart stream.
-- The `request.multipart.onFile` method allows you to process the stream for a given file input by defining a callback.
-- The callback method receives the stream instance (`part`) as the first argument. You can write this stream to any destination you want.
+- O `request.multipart.process()` inicia o processamento do fluxo multipartes.
+- O método `request.multipart.onFile` permite que você processe o fluxo para uma determinada entrada de arquivo definindo um retorno de chamada.
+- O método de retorno de chamada recebe a instância do fluxo (`part`) como o primeiro argumento. Você pode escrever esse fluxo em qualquer destino que desejar.
 
-### Access the processed stream file
-Once the stream for a given file has been processed **(successfully or with errors)**, you can access it using the `request.file` method. For example:
+### Acesse o arquivo de fluxo processado
+Depois que o fluxo de um determinado arquivo for processado **(com sucesso ou com erros)**, você pode acessá-lo usando o método `request.file`. Por exemplo:
 
 ```ts
 request.multipart.onFile('input_field_name', {}, (part) => {
@@ -69,37 +67,34 @@ if (file.hasErrors) {
 }
 ```
 
-### Validating the stream
-You can also validate the stream as it is written to a destination by reporting every chunk to a helper function passed as the second argument to the `onFile` callback.
+### Validando o fluxo
+Você também pode validar o fluxo conforme ele é gravado em um destino, relatando cada pedaço para uma função auxiliar passada como o segundo argumento para o retorno de chamada `onFile`.
 
-```ts
+```ts {3-6,8-9}
 request.multipart.onFile(
   'input_field_name',
-  // highlight-start
   {
     extnames: ['pdf', 'jpg', 'png', 'doc', 'xls'],
     size: '200mb',  
   },
-  // highlight-end
   (part, reportChunk) => {
-    // highlight-start
     part.pause()
     part.on('data', reportChunk)
-    // highlight-end
+
     someSdk.uploadStream(part)
   })
 ```
 
-- First, you have to define the validation rules for the `extname` and the `size`.
-- Next, use the `reportChunk` method and report every chunk to an internal helper function. 
-- The `reportChunk` method will monitor the stream as it flows and emits an error if any validation rules are unmet.
-- As soon as an error is emitted by the `reportChunk` method on the readable stream, the writable stream (your SDK) will/should abort the upload process.
+- Primeiro, você precisa definir as regras de validação para `extname` e `size`.
+- Em seguida, use o método `reportChunk` e relate cada pedaço para uma função auxiliar interna.
+- O método `reportChunk` monitorará o fluxo conforme ele flui e emitirá um erro se alguma regra de validação não for atendida.
+- Assim que um erro for emitido pelo método `reportChunk` no fluxo legível, o fluxo gravável (seu SDK) irá/deve abortar o processo de upload.
 
-#### Have you noticed the `part.pause` statement?
-You have to [pause the stream](https://nodejs.org/api/stream.html#stream_event_data) before defining the `part.on('data')` event listener. Otherwise, the stream will start flowing data before your SDK is ready to consume it. 
+#### Você notou a declaração `part.pause`?
+Você tem que [pausar o fluxo](https://nodejs.org/api/stream.html#stream_event_data) antes de definir o ouvinte de evento `part.on('data')`. Caso contrário, o fluxo começará a fluir dados antes que seu SDK esteja pronto para consumi-los.
 
-### Error handling
-Any errors that occurred within the `onFile` callback are added to the file instance, and you can access them as follows.
+### Tratamento de erros
+Quaisquer erros que ocorreram dentro do retorno de chamada `onFile` são adicionados à instância do arquivo, e você pode acessá-los da seguinte forma.
 
 ```ts
 request.multipart.onFile('input_field_name', {}, (part) => {
@@ -109,86 +104,78 @@ request.multipart.onFile('input_field_name', {}, (part) => {
 await request.multipart.process()
 
 const file = request.input('input_field_name')
-console.log(file.errors) // will contain the "blow up the stream"
+console.log(file.errors) // conterá o "explodir o fluxo"
 ```
 
-### Attach meta-data to the processed stream
-You can attach meta-data to the processed stream file returning an object from the `onFile` callback. For example, it can be an object holding the URL of the file uploaded to a cloud service.
+### Anexar metadados ao fluxo processado
+Você pode anexar metadados ao arquivo de fluxo processado retornando um objeto do retorno de chamada `onFile`. Por exemplo, pode ser um objeto que contém a URL do arquivo carregado para um serviço de nuvem.
 
-```ts
+```ts {5-6}
 request.multipart.onFile('input_field_name', {}, (part, reportChunk) => {
   part.pause()
   part.on('data', reportChunk)
 
-  // highlight-start
   const url = await someSdk.uploadStream(part)
   return { url }
-  // highlight-end
 })
 ```
 
-The `url` will be available on the `file.meta` property.
+O `url` estará disponível na propriedade `file.meta`.
 
-```ts
+```ts {4}
 await request.multipart.process()
 
 const file = request.input('input_field_name')
-// highlight-start
 console.log(file.meta) // { url: '...' }
-// highlight-end
 ```
 
-## Caveats
-When working with the stream directly, you cannot access the form input fields before processing the entire stream. This is because the form fields and files are both parts of a single stream, and hence they are available only when the stream is processed.
+## Advertências
+Ao trabalhar com o fluxo diretamente, você não pode acessar os campos de entrada do formulário antes de processar o fluxo inteiro. Isso ocorre porque os campos e arquivos do formulário são partes de um único fluxo e, portanto, estão disponíveis apenas quando o fluxo é processado.
 
-:::caption{for="error"}
-Form field may not be available during stream processing
+::: danger ERRO
+O campo do formulário pode não estar disponível durante o processamento do fluxo
 :::
 
-```ts
+```ts {2-4}
 request.multipart.onFile('input_field_name', {}, (part) => {
-  // highlight-start
-  // May or may not be available, based upon the position of field
-  // in the stream
+  // Pode ou não estar disponível, com base na posição do campo
+  // no fluxo
   request.input('some_field')
-  // highlight-end
 })
 
 await request.multipart.process()
 ```
 
-:::caption{for="success"}
-Access the form field after the stream has been processed
+::: tip SUCESSO
+Acesse o campo do formulário após o fluxo ter sido processado
 :::
 
-```ts
+```ts {6-7}
 request.multipart.onFile('input_field_name', {}, (part) => {
 })
 
 await request.multipart.process()
 
-// highlight-start
-// Access after the process method
+// Acesso após o método do processo
 request.input('some_field')
-// highlight-end
 ```
 
-## How is it different from AWS direct uploads?
-AWS [allows direct file uploads](https://aws.amazon.com/blogs/compute/uploading-to-amazon-s3-directly-from-a-web-or-mobile-application/) directly from the browser, without even hitting your server.
+## Qual é a diferença dos uploads diretos da AWS?
+AWS [permite uploads diretos de arquivos](https://aws.amazon.com/blogs/compute/uploading-to-amazon-s3-directly-from-a-web-or-mobile-application/) diretamente do navegador, sem nem mesmo atingir seu servidor.
 
-AdonisJS direct uploads are an alternative to AWS direct uploads, but both approaches have their upsides and downsides, as listed below.
+Uploads diretos do AdonisJS são uma alternativa aos uploads diretos da AWS, mas ambas as abordagens têm suas vantagens e desvantagens, conforme listado abaixo.
 
-### AWS direct uploads
+### Uploads diretos da AWS
 
-- Processed directly from the browser.
-- Requires an additional HTTP request to generate an authentication signature.
-- Uses the client [file.type](https://developer.mozilla.org/en-US/docs/Web/API/File/type) property to detect the file content type. This can be easily spoofed.
-- Needs a bucket policy to validate the file type and size.
-- File uploads are generally faster and require zero computation on your server.
+- Processado diretamente do navegador.
+- Requer uma solicitação HTTP adicional para gerar uma assinatura de autenticação.
+Propriedade [file.type](https://developer.mozilla.org/en-US/docs/Web/API/File/type) para detectar o tipo de conteúdo do arquivo. Isso pode ser facilmente falsificado.
+- Precisa de uma política de bucket para validar o tipo e o tamanho do arquivo.
+- Os uploads de arquivos são geralmente mais rápidos e não exigem computação nenhuma em seu servidor.
 
-### AdonisJS direct uploads
+### Uploads diretos do AdonisJS
 
-- Processed from the server.
-- Uses the file [magic number](<https://en.wikipedia.org/wiki/Magic_number_(programming)#Magic_numbers_in_files>) to detect the content type of the file on the server.
-- Use the standard server-side validations.
-- Even though the files are directly streamed, your server still has to fulfill the request.
+- Processado do servidor.
+- Usa o arquivo [número mágico](<https://en.wikipedia.org/wiki/Magic_number_(programming)#Magic_numbers_in_files>) para detectar o tipo de conteúdo do arquivo no servidor.
+- Usa as validações padrão do lado do servidor.
+- Mesmo que os arquivos sejam transmitidos diretamente, seu servidor ainda precisa atender à solicitação.

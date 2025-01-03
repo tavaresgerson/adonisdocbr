@@ -1,18 +1,14 @@
-# Session
+# Sessão
 
-The support for sessions is provided by the `@adonisjs/session` package. The package comes pre-configured with the `web` starter template. However, installing and configuring it is also relatively straightforward.
+O suporte para sessões é fornecido pelo pacote `@adonisjs/session`. O pacote vem pré-configurado com o modelo inicial `web`. No entanto, instalá-lo e configurá-lo também é relativamente simples.
 
-:::div{class="setup"}
+::: code-group
 
-:::codegroup
-
-```sh
-// title: Install
+```sh [Instale]
 npm i @adonisjs/session@6.4.0
 ```
 
-```sh
-// title: Configure
+```sh [Configure]
 node ace configure @adonisjs/session
 
 # CREATE:  config/session.ts
@@ -20,40 +16,35 @@ node ace configure @adonisjs/session
 # UPDATE: .adonisrc.json { providers += "@adonisjs/session" }
 ```
 
-```ts
-// title: Validate environment variables
+```ts [Valide as variáveis ​​de ambiente]
 /**
- * Make sure to add the following validation rules to the
- * `env.ts` file to validate the environment variables.
+ * Certifique-se de adicionar as seguintes regras de validação ao arquivo
+ * `env.ts` para validar as variáveis ​​de ambiente.
  */
 export default Env.rules({
-  // ...existing rules
+  // ...regras existentes
   SESSION_DRIVER: Env.schema.string(),
 })
 ```
 
 :::
 
-
-:::div{class="features"}
-
-- Support for multiple drivers. **Cookies**, **File** and **Redis**
-- Allows instantiating session store in read only mode (helpful during websocket requests).
-- Support for session flash messages
+- Suporte para vários drivers. **Cookies**, **File** e **Redis**
+- Permite instanciar o armazenamento de sessão no modo somente leitura (útil durante solicitações de websocket).
+- Suporte para mensagens flash de sessão
 
 &nbsp;
 
-- [View on npm](https://npm.im/@adonisjs/session)
-- [View on GitHub](https://github.com/adonisjs/session)
+- [Visualizar no npm](https://npm.im/@adonisjs/session)
+- [Visualizar no GitHub](https://github.com/adonisjs/session)
 
-:::
+## Configuração da sessão
 
-## Session configuration
-
-You can configure the behavior of the session by tweaking the `config/session.ts` file. Following is the default config file.
+Você pode configurar o comportamento da sessão ajustando o arquivo `config/session.ts`. A seguir está o arquivo de configuração padrão.
 
 ```ts
-// title: config/session.ts
+// config/session.ts
+
 import { sessionConfig } from '@adonisjs/session/build/config'
 
 export default sessionConfig({
@@ -62,38 +53,39 @@ export default sessionConfig({
   cookieName: 'adonis-session',
   clearWithBrowser: false,
   age: '2h',
-  cookie: {}, // see the cookie driver
-  file: {}, // see the file driver
-  redisConnection: 'local', // see the redis driver
+  cookie: {}, // veja o driver do cookie
+  file: {}, // veja o driver do arquivo
+  redisConnection: 'local', // veja o driver do redis
 })
 ```
 
-- **enabled** works as a switch to turn on/off sessions for the entire app.
-- **driver** property defines the driver to use for storing the session data.
-- **cookieName** is the name of the cookie that holds the session id. Feel free to change the name to anything you like.
-- **clearWithBrowser** property with `true` value creates a temporary cookie. Temporary cookies are removed when you quit the browser.
-- **age** property controls the life of the session.
+- **enabled** funciona como um interruptor para ligar/desligar sessões para todo o aplicativo.
+- A propriedade **driver** define o driver a ser usado para armazenar os dados da sessão.
+- **cookieName** é o nome do cookie que contém o ID da sessão. Sinta-se à vontade para alterar o nome para o que quiser.
+- A propriedade **clearWithBrowser** com o valor `true` cria um cookie temporário. Os cookies temporários são removidos quando você sai do navegador.
+- A propriedade **age** controla a duração da sessão.
 
-## Session drivers
+## Drivers de sessão
 
-The session package allows you to choose between one of the available drivers to save the session data.
+O pacote de sessão permite que você escolha entre um dos drivers disponíveis para salvar os dados da sessão.
 
-You can configure the driver inside the `config/session.ts` file. The `driver` property, in turn, relies on the `SESSION_DRIVER` environment variable.
+Você pode configurar o driver dentro do arquivo `config/session.ts`. A propriedade `driver`, por sua vez, depende da variável de ambiente `SESSION_DRIVER`.
 
 ```ts
-// title: config/session.ts
+// config/session.ts
+
 {
   driver: Env.get('SESSION_DRIVER'),
 }
 ```
 
-### Cookie driver
+### Driver de cookie
 
-The cookie driver uses the HTTP cookies for storing the session data. The session data is encrypted inside the cookie, so you don't have to worry about leaking sensitive information.
+O driver de cookie usa os cookies HTTP para armazenar os dados da sessão. Os dados da sessão são criptografados dentro do cookie, então você não precisa se preocupar em vazar informações confidenciais.
 
-The cookie driver also works great even when your application is behind a load balancer since no information is stored on the server.
+O driver de cookie também funciona muito bem mesmo quando seu aplicativo está atrás de um balanceador de carga, já que nenhuma informação é armazenada no servidor.
 
-You can tweak the settings for the `cookie` driver inside the `config/session.ts` file.
+Você pode ajustar as configurações do driver `cookie` dentro do arquivo `config/session.ts`.
 
 ```ts
 {
@@ -114,12 +106,12 @@ You can tweak the settings for the `cookie` driver inside the `config/session.ts
 }
 ```
 
-### File driver
+### Driver de arquivo
 
-The `file` driver stores the session data on the server filesystem. You can configure the storage location by updating the value of the `file.location` property inside the `config/session.ts` file.
+O driver `file` armazena os dados da sessão no sistema de arquivos do servidor. Você pode configurar o local de armazenamento atualizando o valor da propriedade `file.location` dentro do arquivo `config/session.ts`.
 
-:::note
-Running an application behind a load balancer with the `file` driver requires you to enable sticky sessions on your load balancer.
+::: info NOTA
+Executar um aplicativo atrás de um balanceador de carga com o driver `file` requer que você habilite sessões persistentes no seu balanceador de carga.
 :::
 
 ```ts
@@ -132,70 +124,68 @@ Running an application behind a load balancer with the `file` driver requires yo
 
 ### Redis
 
-The `redis` driver is an ideal choice for keeping the session data on the server only and still run your application behind a load balancer.
+O driver `redis` é uma escolha ideal para manter os dados da sessão somente no servidor e ainda executar seu aplicativo atrás de um balanceador de carga.
 
-:::note
-The redis driver relies on the `@adonisjs/redis` package. Make sure to configure it first.
+::: info NOTA
+O driver redis depende do pacote `@adonisjs/redis`. Certifique-se de configurá-lo primeiro.
 :::
 
-The configuration for the redis driver references one of the pre-defined redis connections inside the `config/redis.ts` file.
+A configuração do driver redis faz referência a uma das conexões redis predefinidas dentro do arquivo `config/redis.ts`.
 
-```ts
-// title: config/session.ts
+```ts {5}
+// config/session.ts
+
 {
   driver: 'redis',
-  // highlight-start
   redisConnection: 'local',
-  // highlight-end
 }
 ```
 
-Next, define a connection named `local` inside the `config/redis.ts` file.
+Em seguida, defina uma conexão chamada `local` dentro do arquivo `config/redis.ts`.
 
-```ts
-// title: config/redis.ts
+```ts {5-10}
+// config/redis.ts
+
 {
   connections: {
-    // highlight-start
     local: {
       host: Env.get('REDIS_HOST'),
       port: Env.get('REDIS_PORT'),
       password: Env.get('REDIS_PASSWORD', ''),
       db: 0,
     }
-    // highlight-end
   }
 }
 ```
 
-## Read/Write session values
+## Ler/Escrever valores de sessão
 
-You can interact with sessions by using the `ctx.session` property.
+Você pode interagir com sessões usando a propriedade `ctx.session`.
 
 ```ts
 Route.get('/', async ({ session }) => {
-  // Read value
+  // Ler valor
   const cartTotal = session.get('cart_total')
 
-  // Write value
+  // Escrever valor
   session.put('cart_total', cartTotal + 10)
 })
 ```
 
-A read-only version of the session is also available inside the Edge templates. You can access it using the `session` global helper.
+Uma versão somente leitura da sessão também está disponível dentro dos modelos do Edge. Você pode acessá-la usando o auxiliar global `session`.
 
 ```edge
 <p> Cart total: {{ session.get('cart_total', 0) }} </p>
 ```
 
-Following is the list of available methods to work sessions.
+A seguir está a lista de métodos disponíveis para trabalhar com sessões.
 
-### get
+### `get`
 
-Read the value for a given key from the session store. Optionally, you can define a default value to return when the actual value is `undefined` or `null`.
+Lê o valor de uma determinada chave do armazenamento de sessão. Opcionalmente, você pode definir um valor padrão para retornar quando o valor real for `undefined` ou `null`.
 
-:::note
-The following method is available inside the templates as well.
+::: info NOTA
+O método a seguir também está disponível dentro dos modelos.
 :::
 
 ```ts
@@ -203,29 +193,29 @@ session.get('cart_total')
 session.get('cart_total', 0)
 ```
 
-### put
+### `put`
 
-Write a key-value pair to the session store. The value should be one of the [cookie supported data types](./cookies.md#supported-data-types).
+Grava um par de chave-valor no armazenamento de sessão. O valor deve ser um dos [tipos de dados suportados por cookies](./cookies.md#supported-data-types).
 
 ```ts
 session.put('cart_total', 1900)
 ```
 
-### all
+### `all`
 
-Read everything from the session store. Will always be an object of a key-value pair.
+Lê tudo do armazenamento de sessão. Sempre será um objeto de um par de chave-valor.
 
-:::note
-The following method is available inside the templates as well.
+::: info NOTA
+O método a seguir também está disponível dentro dos modelos.
 :::
 
 ```ts
 console.log(session.all())
 ```
 
-### forget
+### `forget`
 
-Remove value for a given key from the session store.
+Remove o valor de uma determinada chave do armazenamento de sessão.
 
 ```ts
 // Remove
@@ -234,47 +224,47 @@ session.forget('cart_total')
 session.get('cart_total') // undefined
 ```
 
-### increment
+### `increment`
 
-Increment the value for a given key. Make sure the original value is always a number. Calling `increment` on a non-numeric value will result in an exception.
+Aumenta o valor de uma determinada chave. Certifique-se de que o valor original seja sempre um número. Chamar `increment` em um valor não numérico resultará em uma exceção.
 
 ```ts
 session.increment('page_views')
 ```
 
-### decrement
+### `decrement`
 
-Decrement the value for a given key. Make sure the original value is always a number. Calling `decrement` on a non-numeric value will result in an exception.
+Decrementa o valor de uma determinada chave. Certifique-se de que o valor original seja sempre um número. Chamar `decrement` em um valor não numérico resultará em uma exceção.
 
 ```ts
 session.decrement('score')
 ```
 
-### clear
+### `clear`
 
-Clear the session store to an empty state.
+Limpa o armazenamento de sessão para um estado vazio.
 
 ```ts
 session.clear()
 ```
 
-## Session id lifecycle
+## Ciclo de vida do ID de sessão
 
-AdonisJS creates an empty session store and assigns it to a unique session id on the first HTTP request, even if the request/response lifecycle doesn't interact with sessions.
+O AdonisJS cria um armazenamento de sessão vazio e o atribui a um ID de sessão exclusivo na primeira solicitação HTTP, mesmo que o ciclo de vida da solicitação/resposta não interaja com as sessões.
 
-Every subsequent request will update the `maxAge` property of the session id cookie to ensure that it doesn't expire. Also, the session driver is notified about the changes (if any) to update and persist the changes.
+Cada solicitação subsequente atualizará a propriedade `maxAge` do cookie do ID de sessão para garantir que ele não expire. Além disso, o driver de sessão é notificado sobre as alterações (se houver) para atualizar e persistir as alterações.
 
-### sessionId
+### `sessionId`
 
-You can access the value of the session id using the `sessionId` property.
+Você pode acessar o valor do ID de sessão usando a propriedade `sessionId`.
 
 ```ts
 console.log(session.sessionId)
 ```
 
-### initiated
+### `initiated`
 
-Find if the session store has been initiated or not. During an HTTP request, this will always be `true`.
+Descubra se o armazenamento de sessão foi iniciado ou não. Durante uma solicitação HTTP, isso sempre será `true`.
 
 ```ts
 if (!session.initiated) {
@@ -282,9 +272,9 @@ if (!session.initiated) {
 }
 ```
 
-### fresh
+### `fresh`
 
-Find if the session id has been generated during the current HTTP request. The value is **true** when the session id has been generated for the first time or the `session.regenerate` method is called.
+Descubra se o ID da sessão foi gerado durante a solicitação HTTP atual. O valor é **true** quando o ID da sessão foi gerado pela primeira vez ou o método `session.regenerate` é chamado.
 
 ```ts
 if (!session.fresh) {
@@ -292,30 +282,26 @@ if (!session.fresh) {
 }
 ```
 
-### regenerate
+### `regenerate`
 
-Re-generate the session id and attach existing session data to it. The auth package uses this method to prevent [session hijacking attacks](https://www.netsparker.com/blog/web-security/session-hijacking/).
+Gere novamente o ID da sessão e anexe dados de sessão existentes a ele. O pacote auth usa esse método para evitar [ataques de sequestro de sessão](https://www.netsparker.com/blog/web-security/session-hijacking/).
 
 ```ts
 session.regenerate()
 ```
 
-## Session flash messages
+## Mensagens flash de sessão
 
-Flash messages are stored inside the session store and only available for the next HTTP request. You can use them for passing messages between HTTP requests. For example:
+As mensagens flash são armazenadas dentro do repositório de sessão e estão disponíveis apenas para a próxima solicitação HTTP. Você pode usá-las para passar mensagens entre solicitações HTTP. Por exemplo:
 
-```ts
+```ts {2,7}
 Route.get('/', async ({ session, response }) => {
-  // highlight-start
   session.flash('message', 'Hello world')
-  // highlight-end
   response.redirect('/see-message')
 })
 
 Route.get('/see-message', async ({ session }) => {
-  // highlight-start
   return session.flashMessages.get('message')
-  // highlight-end
 })
 ```
 
@@ -323,7 +309,7 @@ Route.get('/see-message', async ({ session }) => {
 
 ### `flash`
 
-The `session.flash` method adds a key-value pair to the flash messages.
+O método `session.flash` adiciona um par de chave-valor às mensagens flash.
 
 ```ts
 session.flash('errors', {
@@ -332,7 +318,7 @@ session.flash('errors', {
 })
 ```
 
-You can also pass the object directly to the `flash` method.
+Você também pode passar o objeto diretamente para o método `flash`.
 
 ```ts
 session.flash({
@@ -345,7 +331,7 @@ session.flash({
 
 ### `flashAll`
 
-The `flashAll` method adds the request body to the flash messages. This allows you to get the form data inside your templates and pre-fill the user input after validation failure redirect.
+O método `flashAll` adiciona o corpo da solicitação às mensagens flash. Isso permite que você obtenha os dados do formulário dentro dos seus modelos e preencha previamente a entrada do usuário após o redirecionamento da falha de validação.
 
 ```ts
 session.flashAll()
@@ -353,7 +339,7 @@ session.flashAll()
 
 ### `flashOnly`
 
-The `session.flashOnly` method is similar to the `flashAll` method. But instead, it allows cherry-picking the fields.
+O método `session.flashOnly` é semelhante ao método `flashAll`. Mas, em vez disso, ele permite selecionar os campos.
 
 ```ts
 session.flashOnly(['title', 'description'])
@@ -361,99 +347,97 @@ session.flashOnly(['title', 'description'])
 
 ### `flashExcept`
 
-The `session.flashExcept` method is the opposite of the `flashOnly` method and allows ignoring the fields.
+O método `session.flashExcept` é o oposto do método `flashOnly` e permite ignorar os campos.
 
 ```ts
 session.flashExcept(['_csrf', 'submit'])
 ```
 
 ### `reflash`
-The `session.reflash` method flashes the data from the previous request.
+O método `session.reflash` atualiza os dados da solicitação anterior.
 
 ```ts
 session.reflash()
 ```
 
 ### `reflashOnly`
-The `session.reflashOnly` method reflashes only the selected keys.
+O método `session.reflashOnly` atualiza apenas as chaves selecionadas.
 
 ```ts
 session.reflashOnly(['errors'])
 ```
 
 ### `reflashExcept`
-The `session.reflashExcept` method reflashes all the data except the mentioned keys.
+O método `session.reflashExcept` atualiza todos os dados, exceto as chaves mencionadas.
 
 ```ts
 session.reflashExcept(['success', 'username', 'password'])
 ```
 
-### Accessing flash messages
+### Acessando mensagens flash
 
-You can access the flash messages set by the previous request using the `session.flashMessages` property or the `flashMessages` helper inside the Edge templates.
+Você pode acessar as mensagens flash definidas pela solicitação anterior usando a propriedade `session.flashMessages` ou o auxiliar `flashMessages` dentro dos modelos Edge.
 
 ```edge
-// Inside templates
+<!-- Dentro do template -->
 
-{{-- Get value for a given key --}}
+{{-- Obter valor para uma chave fornecida --}}
 {{ flashMessages.get('errors.title') }}
 
-{{-- With optional default value --}}
+{{-- Com valor padrão opcional --}}
 {{ flashMessages.get('title', '') }}
 
-{{-- Find if a key exists --}}
+{{-- Descobrir se uma chave existe --}}
 {{ flashMessages.has('errors.title') }}
 
-{{-- Get all --}}
+{{-- Obter tudo --}}
 {{ flashMessages.all() }}
 
-{{-- Find if store is empty --}}
+{{-- Descobrir se o armazenamento está vazio --}}
 {{ flashMessages.isEmpty }}
 ```
 
 ```ts
 Route.get('/', async ({ session }) => {
-  // Get value for a given key
+  // Obter valor para uma chave fornecida
   session.flashMessages.get('errors.title')
 
-  // With optional default value
+  // Com valor padrão opcional
   session.flashMessages.get('title', '')
 
-  // Find if a key exists
+  // Descobrir se uma chave existe
   session.flashMessages.has('errors.title')
 
-  // Get all
+  // Obter tudo
   session.flashMessages.all()
 
-  // Find if store is empty
+  // Descobrir se o armazenamento está vazio
   session.flashMessages.isEmpty
 })
 ```
 
-## Other methods/properties
+## Outros métodos/propriedades
 
-Following is the list of other available methods and properties on the Session class.
+A seguir está a lista de outros métodos e propriedades disponíveis na classe Session.
 
 ### `initiate`
 
-The `session.initiate` method initiates the session store for the current HTTP request. Optionally, You can initiate the store in `readonly` mode.
+O método `session.initiate` inicia o armazenamento de sessão para a solicitação HTTP atual. Opcionalmente, você pode iniciar o armazenamento no modo `readonly`.
 
-:::note
-
-This method is [called](https://github.com/adonisjs/session/blob/6fcea7bb144de18028b1ea693bc7e837cd799fdf/providers/SessionProvider.ts#L52-L54) by AdonisJS automatically, and hence you won't have to call it manually yourself.
-
+::: info NOTA
+Este método é [chamado](https://github.com/adonisjs/session/blob/6fcea7bb144de18028b1ea693bc7e837cd799fdf/providers/SessionProvider.ts#L52-L54) pelo AdonisJS automaticamente, e, portanto, você não precisará chamá-lo manualmente.
 :::
 
 ```ts
 await session.initiate(false)
 
-// Readonly store
+// store somente para leitura
 await session.initiate(true)
 ```
 
 ### `fresh`
 
-Find if the session id has been generated during the current HTTP request. The value is **true** when the session id has been generated for the first time or the `session.regenerate` method is called.
+Descubra se o ID da sessão foi gerado durante a solicitação HTTP atual. O valor é **true** quando o ID da sessão foi gerado pela primeira vez ou o método `session.regenerate` é chamado.
 
 ```ts
 if (!session.fresh) {
@@ -463,12 +447,10 @@ if (!session.fresh) {
 
 ### `readonly`
 
-Find if the store has been initiated in `readonly` mode or not.
+Descubra se o armazenamento foi iniciado no modo `readonly` ou não.
 
-:::note
-
-During HTTP requests, the store is **NEVER** in read-only mode. This flag is reserved for the future to have a read-only session for WebSocket connections.
-
+::: warning NOTA
+Durante solicitações HTTP, o armazenamento **NUNCA** está no modo somente leitura. Este sinalizador é reservado para o futuro para ter uma sessão somente leitura para conexões WebSocket.
 :::
 
 ```ts
@@ -479,15 +461,15 @@ if (!session.readonly) {
 
 ### `commit`
 
-The `commit` method persists the session driver's changes and updates the `maxAge` of the session id cookie. The `commit` method is [called](https://github.com/adonisjs/session/blob/6fcea7bb144de18028b1ea693bc7e837cd799fdf/providers/SessionProvider.ts#L59-L61) automatically by AdonisJS, and you don't have to worry about calling it.
+O método `commit` persiste as alterações do driver de sessão e atualiza o `maxAge` do cookie de ID de sessão. O método `commit` é [chamado](https://github.com/adonisjs/session/blob/6fcea7bb144de18028b1ea693bc7e837cd799fdf/providers/SessionProvider.ts#L59-L61) automaticamente pelo AdonisJS, e você não precisa se preocupar em chamá-lo.
 
 ```ts
 await session.commit()
 ```
 
-## Creating a custom session driver
+## Criando um driver de sessão personalizado
 
-The session package exposes the API to add your custom session drivers. Every session driver must adhere to the [SessionDriverContract](https://github.com/adonisjs/session/blob/6fcea7bb144de18028b1ea693bc7e837cd799fdf/adonis-typings/session.ts#L58-L63).
+O pacote de sessão expõe a API para adicionar seus drivers de sessão personalizados. Cada driver de sessão deve aderir ao [SessionDriverContract](https://github.com/adonisjs/session/blob/6fcea7bb144de18028b1ea693bc7e837cd799fdf/adonis-typings/session.ts#L58-L63).
 
 ```ts
 interface SessionDriverContract {
@@ -505,32 +487,32 @@ interface SessionDriverContract {
 
 #### `read`
 
-The `read` method receives the `sessionId` and must return the session data or `null`. The return value should be an object, similar to what was passed to the `write` method.
+O método `read` recebe o `sessionId` e deve retornar os dados da sessão ou `null`. O valor de retorno deve ser um objeto, semelhante ao que foi passado para o método `write`.
 
 #### `write`
 
-The `write` method receives the `sessionId` and the `values` object to store. You are free to transform the values object to any other data type you want. For example, The `redis` driver [converts](https://github.com/adonisjs/session/blob/6fcea7bb144de18028b1ea693bc7e837cd799fdf/src/Drivers/Redis.ts#L55) the object to a string using the [message builder](https://github.com/poppinss/utils#message-builder).
+O método `write` recebe o `sessionId` e o objeto `values` para armazenar. Você é livre para transformar o objeto values ​​em qualquer outro tipo de dado que desejar. Por exemplo, o driver `redis` [converte](https://github.com/adonisjs/session/blob/6fcea7bb144de18028b1ea693bc7e837cd799fdf/src/Drivers/Redis.ts#L55) o objeto em uma string usando o [construtor de mensagens](https://github.com/poppinss/utils#message-builder).
 
 #### `destroy`
 
-The `destroy` method should remove the session id and its associated data from the storage.
+O método `destroy` deve remover o ID da sessão e seus dados associados do armazenamento.
 
 #### `touch`
 
-The `touch` method's job is to reset the expiry. This method is only relevant for drivers with in-built expiry. For example, The redis driver updates the `ttl` property of the redis key.
+O trabalho do método `touch` é redefinir a expiração. Este método é relevante apenas para drivers com expiração interna. Por exemplo, o driver redis atualiza a propriedade `ttl` da chave redis.
 
-### Extending from outside in
+### Estendendo de fora para dentro
 
-Anytime you are extending the core of the framework. It is better to assume that you do not have access to the application code and its dependencies. In other words, write your extensions as if you are writing a third-party package and use dependency injection to rely on other dependencies.
+Sempre que você estiver estendendo o núcleo da estrutura. É melhor assumir que você não tem acesso ao código do aplicativo e suas dependências. Em outras palavras, escreva suas extensões como se estivesse escrevendo um pacote de terceiros e use injeção de dependência para confiar em outras dependências.
 
-For demonstration purposes, let's create a session driver to store the session in-memory and begin by making some files & folders.
+Para fins de demonstração, vamos criar um driver de sessão para armazenar a sessão na memória e começar criando alguns arquivos e pastas.
 
 ```sh
 mkdir providers/SessionDriver
 touch providers/SessionDriver/index.ts
 ```
 
-The directory structure will look as follows.
+A estrutura do diretório será a seguinte.
 
 ```
 providers
@@ -538,7 +520,7 @@ providers
     └── index.ts
 ```
 
-Open the `SessionDriver/index.ts` file and paste the following contents inside it.
+Abra o arquivo ``SessionDriver/index.ts` e cole o seguinte conteúdo dentro dele.
 
 ```ts
 // providers/SessionDriver/index.ts
@@ -564,7 +546,7 @@ export class MemoryDriver implements SessionDriverContract {
 }
 ```
 
-Finally, open the `providers/AppProvider.ts` file and add the custom driver inside the `boot` method.
+Finalmente, abra o arquivo `providers/AppProvider.ts` e adicione o driver personalizado dentro do método `boot`.
 
 ```ts
 import { ApplicationContract } from '@ioc:Adonis/Core/Application'
@@ -585,32 +567,32 @@ export default class AppProvider {
 }
 ```
 
-Voila! The `memory` driver is ready now. Just update the `SESSION_DRIVER` property inside the `.env` file, and you are good to go.
+Voilá! O driver `memory` está pronto agora. Basta atualizar a propriedade `SESSION_DRIVER` dentro do arquivo `.env` e pronto.
 
-### Driver lifecycle
+### Ciclo de vida do driver
 
-A new instance of the driver is created for every HTTP request. You can access the HTTP context from the `Session.extend` method callback arguments. For example:
+Uma nova instância do driver é criada para cada solicitação HTTP. Você pode acessar o contexto HTTP a partir dos argumentos de retorno de chamada do método `Session.extend`. Por exemplo:
 
 ```ts
 Session.get('memory', (sessionManager, config, ctx) => {
-  // incase your driver needs the context
+  // caso seu drive precise de contexto
   return new Driver(ctx)
 })
 ```
 
-### Injecting dependencies
+### Injetando dependências
 
-As mentioned earlier, the extensions should not rely on the application dependencies directly and instead leverage the dependency injection.
+Conforme mencionado anteriormente, as extensões não devem depender diretamente das dependências do aplicativo e, em vez disso, aproveitar a injeção de dependência.
 
-For example, if your driver needs access to the Encryption module, it should accept it as a constructor argument vs. importing it directly.
+Por exemplo, se seu driver precisar de acesso ao módulo Encryption, ele deve aceitá-lo como um argumento do construtor em vez de importá-lo diretamente.
 
 ```ts
 /**
- * The following is type-only import and gets removed
- * once TypeScript is compiled to JavaScript.
+ * O seguinte é importação somente de tipo e é removido
+ * assim que o TypeScript é compilado para JavaScript.
  *
- * So ideally, you are not relying on any top level
- * imports, just using the interface for type hinting.
+ * Então, idealmente, você não está contando com nenhuma importação
+ * de nível superior, apenas usando a interface para dicas de tipo.
  */
 import type { EncryptionContract } from '@ioc:Adonis/Core/Encryption'
 
@@ -623,7 +605,7 @@ export class MemoryDriver {
 }
 ```
 
-Finally, you can inject the encryption module during the `Session.extend` call.
+Finalmente, você pode injetar o módulo de criptografia durante a chamada `Session.extend`.
 
 ```ts
 Session.extend('memory', ({ app }) => {
@@ -631,16 +613,17 @@ Session.extend('memory', ({ app }) => {
 })
 ```
 
-### Driver config
+### Configuração do driver
 
-You must also inject the configuration for the driver through the constructor. The `session.extend` method gives you the config saved inside the `config/session.ts` file.
+Você também deve injetar a configuração do driver por meio do construtor. O método `session.extend` fornece a configuração salva dentro do arquivo `config/session.ts`.
 
-The configuration for the driver is stored inside a property matching the driver's name. For example:
+A configuração do driver é armazenada dentro de uma propriedade que corresponde ao nome do driver. Por exemplo:
 
 ```ts
-// title: config/session.ts
+// config/session.ts
+
 {
-  // The following object is for the memory driver
+  // O objeto a seguir é para o driver de memória
   memory: {}
 }
 ```
@@ -648,7 +631,7 @@ The configuration for the driver is stored inside a property matching the driver
 ```ts
 Session.extend('memory', (app, config) => {
   /**
-   * The config is the value of the "memory" property
+   * A configuração é o valor da propriedade "memory"
    */
   return new MemoryDriver(config)
 })

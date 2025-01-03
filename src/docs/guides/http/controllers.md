@@ -1,12 +1,12 @@
-# Controllers
+# Controladores
 
-Controllers are the de facto way of handling HTTP requests in AdonisJS. They enable you to clean up the routes file by moving all the inline route handlers to their dedicated controller files.
+Controladores são a maneira de fato de lidar com solicitações HTTP no AdonisJS. Eles permitem que você limpe o arquivo de rotas movendo todos os manipuladores de rota em linha para seus arquivos de controlador dedicados.
 
-In AdonisJS, the controllers are stored inside (but not limited to) the `app/Controllers/Http` directory and each file represents a single controller. 
+No AdonisJS, os controladores são armazenados dentro (mas não limitados a) o diretório `app/Controllers/Http` e cada arquivo representa um único controlador.
 
-Do you want to extract a complex controller method to its own file? 
+Você quer extrair um método de controlador complexo para seu próprio arquivo?
 
-Use a [Single Action Controller](https://docs.adonisjs.com/guides/controllers#single-action-controllers)!
+Use um [Controlador de Ação Única](https://docs.adonisjs.com/guides/controllers#single-action-controllers)!
 
 ```ts
 // app/Controllers/Http/PostsController.ts
@@ -29,15 +29,15 @@ export default class PostsController {
 }
 ```
 
-You will have to reference it as a route handler inside the `start/routes.ts` file to use this controller.
+Você terá que referenciá-lo como um manipulador de rota dentro do arquivo `start/routes.ts` para usar este controlador.
 
 ```ts
 Route.get('posts', 'PostsController.index')
 ```
 
-## Controllers location
+## Localização dos controladores
 
-Conventionally, the controllers are stored inside the `app/Controllers/Http` directory, but it is not a hard rule, and you can modify their location inside the `.adonisrc.json` file.
+Convencionalmente, os controladores são armazenados dentro do diretório `app/Controllers/Http`, mas não é uma regra rígida, e você pode modificar a localização deles dentro do arquivo `.adonisrc.json`.
 
 ```json
 {
@@ -47,16 +47,16 @@ Conventionally, the controllers are stored inside the `app/Controllers/Http` dir
 }
 ```
 
-Now, AdonisJS will find the controllers inside the `App/Controllers` directory. Also, the `make:controller` command will create them inside the correct location.
+Agora, o AdonisJS encontrará os controladores dentro do diretório `App/Controllers`. Além disso, o comando `make:controller` os criará dentro do local correto.
 
-:::note
-Your controller does not need to be inside only one directory. You can freely move them around inside your application structure.
-Ensure to require them in your route declaration correctly.
+::: info NOTA
+Seu controlador não precisa estar dentro de apenas um diretório. Você pode movê-los livremente dentro da estrutura do seu aplicativo.
+Certifique-se de exigi-los corretamente na sua declaração de rota.
 :::
 
-### Route namespacing
+### Namespace de rota
 
-When having different locations for your controller, it may be convenient to define the namespace of your controllers using route groups.
+Ao ter diferentes locais para seu controlador, pode ser conveniente definir o namespace de seus controladores usando grupos de rota.
 
 ```ts
 Route.group(() => {
@@ -65,15 +65,15 @@ Route.group(() => {
 }).namespace('App/Modules/Checkout')
 ```
 
-The `CartController` will be imported from `App/Modules/Checkout` in this example.
+O `CartController` será importado de `App/Modules/Checkout` neste exemplo.
 
-:::note
-The namespace should be an absolute path from the root of your application.
+::: info NOTA
+O namespace deve ser um caminho absoluto da raiz do seu aplicativo.
 :::
 
-## Make controller command
+## Comando Make controller
 
-You can make use of the following `node ace` command to create a new controller.
+Você pode usar o seguinte comando `node ace` para criar um novo controlador.
 
 ```sh
 node ace make:controller Post
@@ -81,17 +81,17 @@ node ace make:controller Post
 # CREATE: app/Controllers/Http/PostsController.ts
 ```
 
-If you notice, in the above command, we mentioned the word `Post` as singular, whereas the generated file name is in the plural form and has a `Controller` suffix.
+Se você notar, no comando acima, mencionamos a palavra `Post` como singular, enquanto o nome do arquivo gerado está no plural e tem um sufixo `Controller`.
 
-AdonisJS applies these transformations to ensure that the filenames are consistent throughout your project. However, you can instruct the CLI not to apply these transformations using the `--exact` flag.
+O AdonisJS aplica essas transformações para garantir que os nomes dos arquivos sejam consistentes em todo o seu projeto. No entanto, você pode instruir a CLI a não aplicar essas transformações usando o sinalizador `--exact`.
 
 ![](/docs/assets/controller-help-exact-flag.webp)
 
-## Controller routes reference
+## Referência de rotas do controlador
 
-As you can notice, the controllers are referenced on routes as a string expression, i.e., `'Controller.method'`. We opted for this approach intentionally in favor of lazy loading controllers and less verbose syntax.
+Como você pode notar, os controladores são referenciados em rotas como uma expressão de string, ou seja, `'Controller.method'`. Optamos por essa abordagem intencionalmente em favor de controladores de carregamento lento e sintaxe menos detalhada.
 
-Let's see how the routes file may look if we decide **NOT TO use** the string expression.
+Vamos ver como o arquivo de rotas pode ficar se decidirmos **NÃO usar** a expressão de string.
 
 ```ts
 import Route from '@ioc:Adonis/Core/Route'
@@ -102,13 +102,13 @@ Route.get('/posts', async (ctx) => {
 })
 ```
 
-In the above example, we import the `PostsController` within the routes file. Then, create an instance and run the `index` method, passing the `ctx` object.
+No exemplo acima, importamos o `PostsController` dentro do arquivo de rotas. Em seguida, criamos uma instância e executamos o método `index`, passando o objeto `ctx`.
 
-Now imagine an application with 40-50 different controllers. Each controller has its set of imports, all getting pulled down inside a single routes file, making the routes file a choke point.
+Agora imagine um aplicativo com 40-50 controladores diferentes. Cada controlador tem seu conjunto de importações, todos sendo puxados para baixo dentro de um único arquivo de rotas, tornando o arquivo de rotas um ponto de estrangulamento.
 
-### Lazy loading
+### Carregamento lento
 
-Lazy loading the controllers is a perfect solution to the problem mentioned above. There is no need to import everything at the top level; instead, import the controllers as they are needed.
+O carregamento lento dos controladores é uma solução perfeita para o problema mencionado acima. Não há necessidade de importar tudo no nível superior; em vez disso, importe os controladores conforme necessário.
 
 ```ts
 import Route from '@ioc:Adonis/Core/Route'
@@ -121,23 +121,23 @@ Route.get('/posts', async (ctx) => {
 })
 ```
 
-Manually importing the controller, instantiating the class instance is still too much code, considering a decent-sized application can go over 100 routes.
+Importar manualmente o controlador, instanciar a instância da classe ainda é muito código, considerando que um aplicativo de tamanho decente pode passar de 100 rotas.
 
-### Betting on the TypeScript future
+### Apostando no futuro do TypeScript
 
-The string-based reference provides the best of both worlds. The controllers are lazy-loaded, and the syntax is concise.
+A referência baseada em string fornece o melhor dos dois mundos. Os controladores são carregados lentamente e a sintaxe é concisa.
 
-However, it comes with the downside of not being type-safe. IDE doesn't complain if the controller or the method is missing or has a typo.
+No entanto, isso tem a desvantagem de não ser seguro para o tipo. O IDE não reclama se o controlador ou o método estiver faltando ou tiver um erro de digitação.
 
-On the brighter side, making the string expression type-safe is not impossible. TypeScript is already making progress in that direction. We need two things to achieve type safety when referencing the `'Controller.method'` string expression.
+O lado bom é que tornar a expressão de string segura para o tipo não é impossível. O TypeScript já está progredindo nessa direção. Precisamos de duas coisas para atingir a segurança do tipo ao referenciar a expressão de string `'Controller.method'`.
 
-- The ability to tokenize the string expression and create a full path to the controller and its method. It is achievable with TypeScript 4.1 and onwards. For example, here is a [proof of concept](https://www.typescriptlang.org/play?ts=4.1.3#code/MYewdgzgLgBASiArlApjAvDA3gKBjAcxSgB4AJAQzABMAbFAJxhQA9UaIZoGBLMAgHwAKAA4UoqBmABcXKL34AaGAAsqdRrMo16DAJSyY2jU1btqnAAYASLHwBmjGAEEAvgDpbDpwCFXlmAB+bDx8GFAweRBaXVlLZxERAHoAYXAomMYIJLIJZNs3S0VQ-ABbYhUQalkfUNcYWUQwAGswEAB3MBxXHF6kpKMQADcnYacoFTQAIgYkVCmYIYpeCgAjehh1LhQ0CfEYdrRlo-XdkBgxBggjuQUCGD4oc6fmlEgcCOgYWeQ0TARfu4iFAhAByJKg5SgsggcppSKzTIMdx8aisUF6IA) for the same.
-- Next is the ability to have an Import type with support for generics. There is [an open issue](https://github.com/microsoft/TypeScript/issues/31090), and we are optimistic that it will make its way to the TypeScript in the future, as it adheres to the TypeScript design goals.
+- [Prova de conceito](https://www.typescriptlang.org/play?ts=4.1.3#code/MYewdgzgLgBASiArlApjAvDA3gKBjAcxSgB4AJAQzABMAbFAJxhQA9UaIZoGBLMAgHwAKAA4UoqBmABcXKL34AaGAAsqdRrMo16DAJSyY2jU1btqnAAYASLHwBmjGAEEAvgDpbDpwCFXlmAB+bDx8GFAweRBaXVlLZxERAHoAYXAomMYIJLIJZNs3S0VQ-ABbYhUQalkfUNcYWUQwAGswEAB3MBxXHF6kpKMQADcnYacoFTQAIgYkVCmYIYpeCgAjehh1LhQ0CfEYdrRlo-XdkBgxBggjuQUCGD4oc6fmlEgcCOgYWeQ0TARfu4iFAhAByJKg5SgsggcppSKzTIMdx8aisUF6IA) para o mesmo.
 
+- [Uma questão em aberto](https://github.com/microsoft/TypeScript/issues/31090) e estamos otimistas de que ela chegará ao TypeScript no futuro, pois adere aos objetivos de design do TypeScript.
 
-## Single action controllers
+## Controladores de ação única
 
-AdonisJS provides a way to define a single action controller. It's an effective way to wrap up functionality into clearly named classes. To accomplish this, you need to define a `handle` method inside the controller.
+O AdonisJS fornece uma maneira de definir um controlador de ação única. É uma maneira eficaz de encapsular a funcionalidade em classes claramente nomeadas. Para fazer isso, você precisa definir um método `handle` dentro do controlador.
 
 ```ts
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
@@ -149,17 +149,17 @@ export default class RegisterNewsletterSubscriptionController {
 }
 ```
 
-Then, you can reference the controller on the route as a string expression.
+Então, você pode referenciar o controlador na rota como uma expressão de string.
 
 ```ts
 Route.post('/newsletter', 'RegisterNewsletterSubscriptionController')
 ```
 
-## CRUD operations
+## Operações CRUD
 
-The principles of [REST](https://en.wikipedia.org/wiki/Representational_state_transfer) provides a great way to map CRUD operations with HTTP methods without making the URLs verbose.
+Os princípios de [REST](https://en.wikipedia.org/wiki/Representational_state_transfer) fornecem uma ótima maneira de mapear operações CRUD com métodos HTTP sem tornar as URLs detalhadas.
 
-For example, The URL `/posts` can be used to **view all the posts** and **create a new post**, just by using the correct HTTP method.
+Por exemplo, a URL `/posts` pode ser usada para **visualizar todas as postagens** e **criar uma nova postagem**, apenas usando o método HTTP correto.
 
 ```ts
 Route.get('/posts', () => {
@@ -172,7 +172,7 @@ Route.post('/posts', () => {
 })
 ```
 
-Here's the list of all the routes to perform CRUD operations.
+Aqui está a lista de todas as rotas para executar operações CRUD.
 
 ```ts
 Route.get('/posts', () => {
@@ -204,26 +204,26 @@ Route.delete('/posts/:id', () => {
 })
 ```
 
-## Resourceful routes and controllers
+## Rotas e controladores engenhosos
 
-Since the [above mentioned](#crud-operations) routes are using a pre-defined convention. AdonisJS provides a shortcut to register all the routes together using the `Route.resource` method.
+Como as rotas [acima mencionadas](#crud-operations) estão usando uma convenção predefinida. O AdonisJS fornece um atalho para registrar todas as rotas juntas usando o método `Route.resource`.
 
 ```ts
 Route.resource('posts', 'PostsController')
 ```
 
-Following is the list of registered routes.
+A seguir está a lista de rotas registradas.
 
 ![](/docs/assets/routes-list.png)
 
-### Naming routes
+### Nomeando rotas
 
-As you can notice, each route registered by the resource is given a name. The route name is created by combining the **resource name** and the **action** performed by the route. For example:
+Como você pode notar, cada rota registrada pelo recurso recebe um nome. O nome da rota é criado combinando o **nome do recurso** e a **ação** realizada pela rota. Por exemplo:
 
-- `posts.create` signifies a route to display the form to create a new post
-- `posts.store` represents a route to create a new post, and so on.
+- `posts.create` significa uma rota para exibir o formulário para criar uma nova postagem
+- `posts.store` representa uma rota para criar uma nova postagem e assim por diante.
 
-Using the `.as` method, you can change the prefix before the action name.
+Usando o método `.as`, você pode alterar o prefixo antes do nome da ação.
 
 ```ts
 Route.resource('posts', 'PostsController').as('articles')
@@ -239,9 +239,9 @@ articles.update
 articles.destroy
 ```
 
-### Filtering routes
+### Filtrando rotas
 
-In many situations, you would want to prevent some of the resourceful routes from getting registered. For example, You decide to restrict the users of your blog from **updating** or **deleting** their comments, and hence routes for the same are not required.
+Em muitas situações, você deseja evitar que algumas das rotas úteis sejam registradas. Por exemplo, você decide restringir os usuários do seu blog de **atualizar** ou **excluir** seus comentários e, portanto, as rotas para o mesmo não são necessárias.
 
 ```ts
 Route
@@ -249,7 +249,7 @@ Route
   .except(['update', 'destroy']) // 👈
 ```
 
-The opposite of the `except` method is the `only` method. It only registers the routes with the given action names.
+O oposto do método `except` é o método `only`. Ele registra apenas as rotas com os nomes de ação fornecidos.
 
 ```ts
 Route
@@ -257,17 +257,17 @@ Route
   .only(['index', 'show', 'store']) // 👈
 ```
 
-### API only routes
+### Rotas somente para API
 
-When creating an API server, the routes to display the forms are redundant, as you will be making those forms within your frontend or the mobile app. You can remove those routes by calling the `apiOnly` method.
+Ao criar um servidor de API, as rotas para exibir os formulários são redundantes, pois você criará esses formulários em seu frontend ou no aplicativo móvel. Você pode remover essas rotas chamando o método `apiOnly`.
 
 ```ts
 Route.resource('posts', 'PostsController').apiOnly() // 👈
 ```
 
-### Applying middleware
+### Aplicando middleware
 
-The `.middleware` method also applies middleware on all or selected sets of routes registered by a given resource.
+O método `.middleware` também aplica middleware em todos ou em conjuntos selecionados de rotas registradas por um determinado recurso.
 
 ```ts
 Route.resource('users', 'UsersController').middleware({
@@ -275,7 +275,7 @@ Route.resource('users', 'UsersController').middleware({
 })
 ```
 
-Or apply middleware to selected actions only. In the following example, the object key has to be the action name.
+Ou aplique middleware somente a ações selecionadas. No exemplo a seguir, a chave do objeto deve ser o nome da ação.
 
 ```ts
 Route.resource('users', 'UsersController').middleware({
@@ -285,21 +285,19 @@ Route.resource('users', 'UsersController').middleware({
 })
 ```
 
-### Renaming resource param name
-The param to view a single instance of a resource is named as `id`. However, you can rename it to something else using the `paramFor` method.
+### Renomeando nome do parâmetro de recurso
+O parâmetro para visualizar uma única instância de um recurso é nomeado como `id`. No entanto, você pode renomeá-lo para outra coisa usando o método `paramFor`.
 
-```ts
+```ts {3}
 Route
   .resource('users', 'UsersController')
-  // highlight-start
   .paramFor('users', 'user')
-  // highlight-end
 ```
 
-The above example will generate the following routes.
+O exemplo acima gerará as seguintes rotas.
 
 ```sh
-# Showing routes with params only
+# Exibindo rotas somente com parâmetros
 
 GET /users/:user
 GET /users/:user/edit
@@ -307,7 +305,7 @@ PUT,PATCH /users/:user
 DELETE /users/:user
 ```
 
-You can also rename nested and shallow resources. For example:
+Você também pode renomear recursos aninhados e superficiais. Por exemplo:
 
 ```ts
 Route
@@ -316,9 +314,9 @@ Route
   .paramFor('comments', 'comment')
 ```
 
-## Nested resources
+## Recursos aninhados
 
-You can also register nested resources by separating each resource with a `dot notation (.)`. For example:
+Você também pode registrar recursos aninhados separando cada recurso com uma `notação de ponto (.)`. Por exemplo:
 
 ```ts
 Route.resource('posts.comments', 'CommentsController')
@@ -326,18 +324,18 @@ Route.resource('posts.comments', 'CommentsController')
 
 ![](/docs/assets/nested-resource.webp)
 
-As you can notice, the parent resource id is prefixed with the resource name. ie `post_id`.
+Como você pode notar, o id do recurso pai é prefixado com o nome do recurso. ou seja, `post_id`.
 
-## Shallow resources
+## Recursos superficiais
 
-In nested resources, every child resource is prefixed with the parent resource name and its id. For example:
+Em recursos aninhados, cada recurso filho é prefixado com o nome do recurso pai e seu id. Por exemplo:
 
-- `/posts/:post_id/comments`: View all comments for the post
-- `/posts/:post_id/comments/:id`: View all comment by id.
+- `/posts/:post_id/comments`: Exibir todos os comentários para o post
+- `/posts/:post_id/comments/:id`: Exibir todos os comentários por id.
 
-The existence of `:post_id` in the second route is irrelevant, as you can look up the comment directly by its id.
+A existência de `:post_id` na segunda rota é irrelevante, pois você pode procurar o comentário diretamente por seu id.
 
-To keep the URL structure flat (wherever possible), you can use shallow resources.
+Para manter a estrutura de URL plana (sempre que possível), você pode usar recursos superficiais.
 
 ```ts
 Route.shallowResource('posts.comments', 'CommentsController')
@@ -345,10 +343,10 @@ Route.shallowResource('posts.comments', 'CommentsController')
 
 ![](/docs/assets/shallow-resource.webp)
 
-## Re-using controllers
+## Reutilizando controladores
 
-Many developers tend to make the mistake of attempting to re-use controllers by importing them inside other controllers.
+Muitos desenvolvedores tendem a cometer o erro de tentar reutilizar controladores importando-os dentro de outros controladores.
 
-If you want to re-use some logic within your application, you must extract that piece of code to its class or object, often known as service objects.
+Se você quiser reutilizar alguma lógica dentro do seu aplicativo, você deve extrair esse pedaço de código para sua classe ou objeto, geralmente conhecidos como objetos de serviço.
 
-We strongly recommend treating your controllers as **traffic hops**, whose job is to **accept the HTTP request**, **assign work** to the other parts of the application, and **return a response**. All of the reusable logic must live outside the controller.
+Recomendamos fortemente tratar seus controladores como **saltos de tráfego**, cujo trabalho é **aceitar a solicitação HTTP**, **atribuir trabalho** para as outras partes do aplicativo e **retornar uma resposta**. Toda a lógica reutilizável deve viver fora do controlador.

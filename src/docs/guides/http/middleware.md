@@ -1,31 +1,29 @@
 # Middleware
 
-Middleware are a series of functions that are executed during an HTTP request before it reaches the route handler. Every function in the chain has the ability to end the request or forward it to the `next` function.
+Middleware é uma série de funções que são executadas durante uma solicitação HTTP antes que ela chegue ao manipulador de rota. Cada função na cadeia tem a capacidade de encerrar a solicitação ou encaminhá-la para a função `next`.
 
-## Basic Example
+## Exemplo básico
 
-The simplest way to test a middleware is to attach it to the route using the `Route.middleware` method. For example:
+A maneira mais simples de testar um middleware é anexá-lo à rota usando o método `Route.middleware`. Por exemplo:
 
-```ts
+```ts {5-9}
 Route
   .get('/users/:id', async () => {
     return 'Show user'
   })
-  // highlight-start
   .middleware(async (ctx, next) => {
     console.log(`Inside middleware ${ctx.request.url()}`)
     await next()
   })
-  // highlight-end
 ```
 
 <video src="/docs/assets/route-middleware.webm" controls />
 
-## Middleware classes
+## Classes de middleware
 
-Writing middleware as inline functions is fine for some quick testing. However, we recommend extracting the middleware logic to its own file.
+Escrever middleware como funções inline é bom para alguns testes rápidos. No entanto, recomendamos extrair a lógica do middleware para seu próprio arquivo.
 
-You can create a new middleware by running the following Ace command.
+Você pode criar um novo middleware executando o seguinte comando Ace.
 
 ```sh
 node ace make:middleware LogRequest
@@ -33,11 +31,11 @@ node ace make:middleware LogRequest
 # CREATE: app/Middleware/LogRequest.ts
 ```
 
-### About middleware class
+### Sobre a classe middleware
 
-Middleware classes are stored (but not limited to) inside the `app/Middleware` directory and each file represents a single middleware.
+As classes middleware são armazenadas (mas não limitadas a) dentro do diretório `app/Middleware` e cada arquivo representa um único middleware.
 
-Every middleware class must implement the `handle` method to handle the HTTP request and call the `next` method to forward the request to the next middleware or the route handler.
+Toda classe middleware deve implementar o método `handle` para manipular a solicitação HTTP e chamar o método `next` para encaminhar a solicitação para o próximo middleware ou o manipulador de rota.
 
 ```ts
 // app/Middleware/LogRequest.ts
@@ -55,12 +53,10 @@ export default class LogRequest {
 }
 ```
 
-Also, you can terminate requests from the middleware by raising an exception or sending the response using the `response.send` method. 
+Além disso, você pode encerrar solicitações do middleware gerando uma exceção ou enviando a resposta usando o método `response.send`.
 
-:::note
-
-Make sure you do NOT call the `next` method when decided to end the request.
-
+::: info NOTA
+Certifique-se de NÃO chamar o método `next` quando decidir encerrar a solicitação.
 :::
 
 ```ts
@@ -81,30 +77,28 @@ export default class Auth {
 }
 ```
 
-## Registering middleware
+## Registrando middleware
 
-For the middleware to take effect, it must be registered as a **global middleware** or a **named middleware** inside the `start/kernel.ts` file.
+Para que o middleware entre em vigor, ele deve ser registrado como um **middleware global** ou um **middleware nomeado** dentro do arquivo `start/kernel.ts`.
 
-### Global middleware
+### Middleware global
 
-Global middleware are executed for all the HTTP requests in the same sequence as they are registered.
+Middleware global é executado para todas as solicitações HTTP na mesma sequência em que são registradas.
 
-You register them as an array inside the `start/kernel.ts` file, as shown below:
+Você os registra como uma matriz dentro do arquivo `start/kernel.ts`, conforme mostrado abaixo:
 
-```ts
+```ts {5}
 // start/kernel.ts
 
 Server.middleware.register([
   () => import('@ioc:Adonis/Core/BodyParser'),
-  // highlight-start
   () => import('App/Middleware/LogRequest')
-  // highlight-end
 ])
 ```
 
-### Named middleware
+### Middleware nomeado
 
-Named middleware allows you to selectively apply middleware on your routes/group of routes. You begin by registering them with a unique name and later reference it on the route by that name.
+O middleware nomeado permite que você aplique middleware seletivamente em suas rotas/grupo de rotas. Você começa registrando-os com um nome exclusivo e depois faz referência a ele na rota por esse nome.
 
 ```ts
 // start/kernel.ts
@@ -114,7 +108,7 @@ Server.middleware.registerNamed({
 })
 ```
 
-Now, you can attach the `auth` middleware to a route as shown in the following example.
+Agora, você pode anexar o middleware `auth` a uma rota, conforme mostrado no exemplo a seguir.
 
 ```ts
 Route
@@ -122,9 +116,9 @@ Route
   .middleware('auth') // 👈
 ```
 
-The middleware can be applied to one or multiple actions for resource routes. Learn more about [applying middleware to resourceful routes](./controllers.md#applying-middleware).
+O middleware pode ser aplicado a uma ou várias ações para rotas de recursos. Saiba mais sobre [aplicação de middleware a rotas com recursos](./controllers.md#applying-middleware).
 
-You can also define multiple middleware on a route by passing them as an array or calling the middleware method multiple times.
+Você também pode definir vários middlewares em uma rota passando-os como uma matriz ou chamando o método do middleware várias vezes.
 
 ```ts
 Route
@@ -140,26 +134,23 @@ Route
   .middleware('throttle')
 ```
 
+## Passando configuração para middleware nomeado
 
-## Passing config to named middleware
+O middleware nomeado também pode aceitar configuração de tempo de execução por meio do método `handle` como o terceiro argumento. Por exemplo:
 
-Named middleware can also accept runtime config through the `handle` method as the third argument. For example:
-
-```ts
+```ts {5}
 export default class Auth {
   public async handle(
     { request, response }: HttpContextContract,
     next: () => Promise<void>,
-    // highlight-start
     guards?: string[]
-    // highlight-end
   ) {
     await next()
   }
 }
 ```
 
-In the above example, the Auth middleware accepts an optional `guards` array. The user of the middleware can pass the guards as follows:
+No exemplo acima, o middleware Auth aceita uma matriz opcional `guards`. O usuário do middleware pode passar os guards da seguinte forma:
 
 ```ts
 Route
@@ -170,17 +161,17 @@ Route
 ## FAQs
 
 <details>
-<summary> How to disable middleware on a given HTTP request? </summary>
+<summary> Como desabilitar middleware em uma determinada solicitação HTTP? </summary>
   
-You cannot disable middleware for a given HTTP request. However, the middleware can accept the runtime config to ignore certain requests. 
+Você não pode desabilitar middleware para uma determinada solicitação HTTP. No entanto, o middleware pode aceitar a configuração de tempo de execução para ignorar certas solicitações. 
 
-A great example of this is the bodyparser middleware. It [ignores all the requests not matching the whitelisted](https://github.com/adonisjs/bodyparser/blob/develop/src/BodyParser/index.ts#L108-L111) methods inside the `config/bodyparser.ts` file.
+Um ótimo exemplo disso é o middleware bodyparser. Ele [ignora todas as solicitações que não correspondem aos métodos da lista de permissões](https://github.com/adonisjs/bodyparser/blob/develop/src/BodyParser/index.ts#L108-L111) dentro do arquivo `config/bodyparser.ts`.
 
 </details>
 
 <details>
-<summary> Are middleware executed on requests with no routes? </summary>
+<summary> O middleware é executado em solicitações sem rotas? </summary>
   
-AdonisJS does not execute the middleware chain, if there is no registered route for the current HTTP request.
+O AdonisJS não executa a cadeia de middleware se não houver uma rota registrada para a solicitação HTTP atual.
 
 </details>
