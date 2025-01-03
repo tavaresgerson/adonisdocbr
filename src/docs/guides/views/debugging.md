@@ -1,10 +1,10 @@
-# Debugging
+# Depuração
 
-Edge provides a couple of options to debug the templates. The simplest one is the `inspect` global helper. This method pretty prints any value you provide to it and the other one is the `@debugger` tag.
+O Edge fornece algumas opções para depurar os modelos. A mais simples é o auxiliar global `inspect`. Este método imprime qualquer valor que você fornecer a ele e o outro é a tag `@debugger`.
 
-## The `inspect` helper
+## O auxiliar `inspect`
 
-The `inspect` helper pretty prints the value in the same output. You can think of this method as Node.js `util.inspect`, but instead it output HTML vs writing the output to the console.
+O auxiliar `inspect` imprime o valor na mesma saída. Você pode pensar neste método como o `util.inspect` do Node.js, mas em vez disso ele emite HTML em vez de escrever a saída no console.
 
 ```edge
 {{ inspect({
@@ -27,22 +27,22 @@ The `inspect` helper pretty prints the value in the same output. You can think o
 }) }}
 ```
 
-#### Output
+#### Saída
 
 ![](/docs/assets/edge-inspect.webp)
 
-## The `@debugger` tag
+## A tag `@debugger`
 
-The `@debugger` tag drops a debugger break point inside the compiled JavaScript code and you can debug the output function using the standard [Node.js debugging methods](https://nodejs.org/api/debugger.html)
+A tag `@debugger` descarta um ponto de interrupção do depurador dentro do código JavaScript compilado e você pode depurar a função de saída usando os [métodos de depuração Node.js](https://nodejs.org/api/debugger.html) padrão
 
-Just drop the `@debugger` in the position where you want the debugger to pause.
+Basta soltar o `@debugger` na posição em que você deseja que o depurador pause.
 
 ```edge
 @debugger
 <p> Hello {{ user.username }} </p>
 ```
 
-Run the Node server with the `--inspect` flag and use Chrome to debug.
+Execute o servidor Node com o sinalizador `--inspect` e use o Chrome para depurar.
 
 ```sh
 node ace serve --watch --node-args="--inspect"

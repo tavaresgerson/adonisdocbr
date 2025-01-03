@@ -1,18 +1,18 @@
-# Introduction
+# Introdução
 
-The Views layer of AdonisJS is powered by a homegrown template engine called [Edge](https://github.com/edge-js/edge). Edge is a logical and batteries included template engine for Node.js. It can render any text-based format, whether is **HTML**, **Markdown** or **plain text** files.
+A camada Views do AdonisJS é alimentada por um mecanismo de modelo interno chamado [Edge](https://github.com/edge-js/edge). O Edge é um mecanismo de modelo lógico e com baterias incluídas para Node.js. Ele pode renderizar qualquer formato baseado em texto, seja **HTML**, **Markdown** ou arquivos de **texto simples**.
 
-We created Edge as an alternative to other existing template engines and address the pain points with them.
+Criamos o Edge como uma alternativa a outros mecanismos de modelo existentes e abordamos os pontos problemáticos com eles.
 
-:::tip
-Do you prefer to use a frontend framework like React, Vue or Svelte? You can use them with [InertiaJS](https://inertiajs.com/).
+::: tip DICA
+Você prefere usar um framework de frontend como React, Vue ou Svelte? Você pode usá-los com [InertiaJS](https://inertiajs.com/).
 
-Checkout the Adocasts series on [AdonisJS + InertiaJS](https://adocasts.com/series/adonisjs-inertiajs).
+Confira a série Adocasts sobre [AdonisJS + InertiaJS](https://adocasts.com/series/adonisjs-inertiajs).
 :::
 
 ## Edge vs. Pug
 
-Unlike Pug, we don't re-invent the way you write the HTML. Edge is not even tied to HTML in the first place, and it can render any text-based files.
+Ao contrário do Pug, não reinventamos a maneira como você escreve o HTML. O Edge nem mesmo está vinculado ao HTML em primeiro lugar, e pode renderizar qualquer arquivo baseado em texto.
 
 <div class="fancy-codeblock">
 
@@ -40,7 +40,7 @@ p This will be safe: #{theGreat}
 
 ## Edge vs. Nunjucks
 
-Unlike Nunjucks, Edge feels like writing JavaScript and not Python. As a result, the Edge has a small learning curve, is quicker to type, and supports all JavaScript expressions.
+Ao contrário do Nunjucks, o Edge parece escrever JavaScript e não Python. Como resultado, o Edge tem uma pequena curva de aprendizado, é mais rápido de digitar e suporta todas as expressões JavaScript.
 
 <div class="fancy-codeblock">
 
@@ -72,9 +72,9 @@ Unlike Nunjucks, Edge feels like writing JavaScript and not Python. As a result,
 
 ## Edge vs. Handlebars
 
-Unlike Handlebars, Edge is not restrictive. For example, you can use any JavaScript expression inside your templates, and we parse them using a spec-compliant JavaScript parser.
+Ao contrário do Handlebars, o Edge não é restritivo. Por exemplo, você pode usar qualquer expressão JavaScript dentro de seus modelos, e nós os analisamos usando um analisador JavaScript compatível com as especificações.
 
-Whereas in Handlebars, you have to define custom helpers for every little thing. The story gets even worse when using multiple helpers together.
+Enquanto no Handlebars, você tem que definir ajudantes personalizados para cada pequena coisa. A história fica ainda pior quando se usa vários ajudantes juntos.
 
 ```js
 Handlebars.registerHelper('upperCase', function (aString) {
@@ -92,7 +92,7 @@ Handlebars.registerHelper('upperCase', function (aString) {
 
 </div>
 
-In comparison to Handlebars, Edge doubles down on native JavaScript capabilities.
+Em comparação com o Handlebars, o Edge dobra os recursos nativos do JavaScript.
 
 <div class="fancy-codeblock">
 
@@ -104,17 +104,17 @@ In comparison to Handlebars, Edge doubles down on native JavaScript capabilities
 
 </div>
 
-## Setup
+## Configuração
 
-Edge comes pre-configured with the `web` starter template. However, installing and configuring it is also relatively straightforward.
+O Edge vem pré-configurado com o modelo inicial `web`. No entanto, instalá-lo e configurá-lo também é relativamente simples.
 
-Open the `.adonisrc.json` file and check if `@adonisjs/view` is mentioned inside the `providers` array list. **IF NOT, then continue with the following steps:**
+Abra o arquivo `.adonisrc.json` e verifique se `@adonisjs/view` é mencionado dentro da lista de array `providers`. **SE NÃO, continue com as seguintes etapas:**
 
 ```sh
 npm i @adonisjs/view
 ```
 
-Run the following `ace` command to configure the package.
+Execute o seguinte comando `ace` para configurar o pacote.
 
 ```sh
 node ace configure @adonisjs/view
@@ -124,18 +124,19 @@ node ace configure @adonisjs/view
 # UPDATE: .adonisrc.json { metaFiles += "resources/views/**/*.edge" }
 ```
 
-## Basic example
+## Exemplo básico
 
-Let's begin by creating a route that renders a given template file.
+Vamos começar criando uma rota que renderiza um arquivo de modelo fornecido.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 Route.get('/', async ({ view }) => {
   return view.render('home')
 })
 ```
 
-The next step is to create the `home.edge` template. You can manually create a file inside the views folder or use the following Ace command to create one.
+O próximo passo é criar o modelo `home.edge`. Você pode criar manualmente um arquivo dentro da pasta views ou usar o seguinte comando Ace para criar um.
 
 ```sh
 node ace make:view home
@@ -143,27 +144,26 @@ node ace make:view home
 # CREATE: resources/views/home.edge
 ```
 
-Let's open the newly created file and paste the following code snippet inside it.
+Vamos abrir o arquivo recém-criado e colar o seguinte trecho de código dentro dele.
 
 ```edge
-// title: resources/views/home.edge
+<!-- resources/views/home.edge -->
+
 <p> Hello world. You are viewing the {{ request.url() }} page </p>
 ```
 
-Make sure to start the development server by running `node ace serve --watch` and visit http://localhost:3333 to view the contents of the template file.
+Certifique-se de iniciar o servidor de desenvolvimento executando `node ace serve --watch` e visite http://localhost:3333 para visualizar o conteúdo do arquivo de modelo.
 
 ![](/docs/assets/view-usage.webp)
 
-## Views directory
+## Diretório Views
 
-AdonisJS registers the `resources/views` as the default directory for finding the Edge templates. However, you can register a custom path by modifying the `.adonisrc.json` file.
+O AdonisJS registra `resources/views` como o diretório padrão para encontrar os modelos Edge. No entanto, você pode registrar um caminho personalizado modificando o arquivo `.adonisrc.json`.
 
-After the following change, Edge will find templates inside the `./app/views` directory.
+Após a alteração a seguir, o Edge encontrará modelos dentro do diretório `./app/views`.
 
-:::note
-
-Read the [rendering](./rendering.md#disks) guide to learn more about registering multiple directories.
-
+::: info NOTA
+Leia o guia [rendering](./rendering.md#disks) para saber mais sobre como registrar vários diretórios.
 :::
 
 ```json
@@ -174,27 +174,23 @@ Read the [rendering](./rendering.md#disks) guide to learn more about registering
 }
 ```
 
-Also, make sure to update the `metaFiles` array in the same file to tell `@adonisjs/assembler` to copy the templates when creating the production build.
+Além disso, certifique-se de atualizar o array `metaFiles` no mesmo arquivo para informar `@adonisjs/assembler` para copiar os modelos ao criar a compilação de produção.
 
 ```json
 {
   "metaFiles": [
     {
-      // delete-start
-      "pattern": "resources/views/**/*.edge",
-      // delete-end
-      // insert-start
-      "pattern": "app/views/**/*.edge",
-      // insert-end
+      "pattern": "resources/views/**/*.edge", // [!code --]
+      "pattern": "app/views/**/*.edge", // [!code ++]
       "reloadServer": false
     }
   ],  
 }
 ```
 
-## Editor extensions
+## Extensões do editor
 
-The syntax highlighting extensions are available for the following editors.
+As extensões de realce de sintaxe estão disponíveis para os seguintes editores.
 
 - [VsCode](https://marketplace.visualstudio.com/items?itemName=luongnd.edge)
 - [Sublime Text](https://github.com/edge-js/edge-sublime)

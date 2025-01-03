@@ -1,15 +1,15 @@
-# Components
+# Componentes
 
-The Edge components system is highly inspired by the frontend frameworks like Vue or Svelte. It borrows the concept of **reusability**, **isolated state**, **props** and **slots** from them.
+O sistema de componentes do Edge é altamente inspirado em frameworks de frontend como Vue ou Svelte. Ele pega emprestado o conceito de **reusabilidade**, **estado isolado**, **props** e **slots** deles.
 
-Do note, Edge is a backend template engine, and we cannot replicate some of the frontend ecosystem principles with Edge. It includes.
+Observe que o Edge é um mecanismo de modelo de backend, e não podemos replicar alguns dos princípios do ecossistema de frontend com o Edge. Ele inclui.
 
-- **Reactivity**: There is no concept of reactivity on the backend. You generate the HTML and send it over the wire.
-- **Scoped CSS**: Edge is not compiled using frontend build tools like Webpack, and hence it does not bother itself with compiling and extract CSS from components. You must use existing frontend tooling for that.
+- **Reatividade**: Não há conceito de reatividade no backend. Você gera o HTML e o envia pela rede.
+- **CSS com escopo**: O Edge não é compilado usando ferramentas de construção de frontend como Webpack e, portanto, não se preocupa em compilar e extrair CSS de componentes. Você deve usar ferramentas de frontend existentes para isso.
 
-## Creating a component
+## Criando um componente
 
-Components are represented using the regular Edge template files. For example, You can create a file named `button.edge` with the following markup.
+Os componentes são representados usando os arquivos de modelo regulares do Edge. Por exemplo, você pode criar um arquivo chamado `button.edge` com a seguinte marcação.
 
 ```edge
 <button type="{{ type }}">
@@ -17,7 +17,7 @@ Components are represented using the regular Edge template files. For example, Y
 </button>
 ```
 
-And then use it as a component inside other templates.
+E então usá-lo como um componente dentro de outros modelos.
 
 ```edge
 @!component('button', {
@@ -26,16 +26,14 @@ And then use it as a component inside other templates.
 })
 ```
 
-The `@component` tag accepts a total of two arguments. First is the component path (relative to the views directory), and the second is the component state (props).
+A tag `@component` aceita um total de dois argumentos. O primeiro é o caminho do componente (relativo ao diretório de visualizações) e o segundo é o estado do componente (props).
 
-:::note
-
-Components do not have access to the state of the parent template. However, they can access templates [globals]() and [locals]().
-
+::: info NOTA
+Os componentes não têm acesso ao estado do modelo pai. No entanto, eles podem acessar os modelos [globals]() e [locals]().
 :::
 
 ## Props
-The props are passed to a component as the second argument as an object of key-value pairs. You can access the props directly within the component file by using the object property name. For example:
+Os props são passados ​​para um componente como o segundo argumento como um objeto de pares de chave-valor. Você pode acessar os props diretamente no arquivo do componente usando o nome da propriedade do objeto. Por exemplo:
 
 ```edge
 @!component('button', {
@@ -44,16 +42,16 @@ The props are passed to a component as the second argument as an object of key-v
 })
 ```
 
-Then `button` component can access the `text` and the `type` props as follows.
+Então o componente `button` pode acessar os props `text` e `type` da seguinte forma.
 
 ```edge
 <button type="{{ type }}">{{ text }}</button>
 ```
 
 ### $props
-Another way to access the props is to use the `$props` property. It is an instance of the [Props class](https://github.com/edge-js/edge/blob/develop/src/Component/Props.ts) and comes with a few extra capabilities to make components authoring easier.
+Outra maneira de acessar os props é usar a propriedade `$props`. É uma instância da [classe Props](https://github.com/edge-js/edge/blob/develop/src/Component/Props.ts) e vem com alguns recursos extras para facilitar a criação de componentes.
 
-In the following example, the `serializeExcept` method will convert all the props into HTML attributes, except the `text` prop.
+No exemplo a seguir, o método `serializeExcept` converterá todos os props em atributos HTML, exceto o prop `text`.
 
 ```edge
 <button {{ $props.serializeExcept(['text']) }}>{{ text }}</button>
@@ -67,13 +65,13 @@ In the following example, the `serializeExcept` method will convert all the prop
 })
 ```
 
-Similar to the `serializeExcept` method, you can use the `serializeOnly` method to serialize selected props only or use the `serialize` method to convert all props to HTML attributes.
+Semelhante ao método `serializeExcept`, você pode usar o método `serializeOnly` para serializar apenas os props selecionados ou usar o método `serialize` para converter todos os props em atributos HTML.
 
 ## Slots
 
-Along with the props, components can also accept `slots`. Slots are named outlets that the parent component can define markup for.
+Junto com os props, os componentes também podem aceitar `slots`. Slots são saídas nomeadas para as quais o componente pai pode definir marcação.
 
-For example, let's accept the text for our `button` component as a slot and not as a prop.
+Por exemplo, vamos aceitar o texto para nosso componente `button` como um slot e não como um prop.
 
 ```edge
 <button type="{{ type }}">
@@ -81,7 +79,7 @@ For example, let's accept the text for our `button` component as a slot and not 
 </button>
 ```
 
-The component caller can define the markup for the main slot as follows.
+O chamador do componente pode definir a marcação para o slot principal da seguinte forma.
 
 ```edge
 @component('button', {
@@ -92,11 +90,11 @@ The component caller can define the markup for the main slot as follows.
 @end
 ```
 
-### Main slot
+### Slot principal
 
-The contents between the `@component` opening and the closing tag are part of the main slot unless you move it inside a named slot.
+O conteúdo entre a tag de abertura e fechamento `@component` faz parte do slot principal, a menos que você o mova para dentro de um slot nomeado.
 
-All the content outside the `@slot('trigger')` is part of the main slot in the following example.
+Todo o conteúdo fora de `@slot('trigger')` faz parte do slot principal no exemplo a seguir.
 
 ```edge
 @component('modal')
@@ -109,9 +107,9 @@ All the content outside the `@slot('trigger')` is part of the main slot in the f
 @end
 ```
 
-### Named slots
+### Slots nomeados
 
-Named slots allow the component to accept markup for multiple outlets. For example, a modal component can accept markup for the modal header, body, and actions.
+Os slots nomeados permitem que o componente aceite marcação para várias saídas. Por exemplo, um componente modal pode aceitar marcação para o cabeçalho modal, corpo e ações.
 
 ```edge
 <!-- components/modal.edge -->
@@ -131,7 +129,7 @@ Named slots allow the component to accept markup for multiple outlets. For examp
 </div>
 ```
 
-You can verify a slot existence and give a fallback value using an `if` statement.
+Você pode verificar a existência de um slot e fornecer um valor de fallback usando uma instrução `if`.
 
 ```edge
 <!-- components/modal.edge -->
@@ -148,7 +146,7 @@ You can verify a slot existence and give a fallback value using an `if` statemen
 </div>
 ```
 
-The parent template can define them as follows.
+O modelo pai pode defini-los da seguinte forma.
 
 ```edge
 @component('components/modal')
@@ -171,15 +169,15 @@ The parent template can define them as follows.
 @end
 ```
 
-#### Output
+#### Saída
 
 ![](/docs/assets/edge-modal-component.webp)
 
-### Slots scope
+### Escopo de slots
 
-The slots have access to the state of the template in which they are defined (aka the parent template).
+Os slots têm acesso ao estado do modelo no qual são definidos (também conhecido como modelo pai).
 
-Following is the markup for the button component
+A seguir está a marcação para o componente de botão
 
 ```edge
 <!-- components/button.edge -->
@@ -191,7 +189,7 @@ Following is the markup for the button component
 </button>
 ```
 
-The parent template is attempting to access the `title` property defined inside the `component`.
+O modelo pai está tentando acessar a propriedade `title` definida dentro do `component`.
 
 ```edge
 <!-- home.edge -->
@@ -202,14 +200,14 @@ The parent template is attempting to access the `title` property defined inside 
 ```
 
 ```html
-<!-- Output -->
+<!-- Saída -->
  
 <button>
   <span>undefined</span>
 </button>
 ```
 
-You can pass the data from the component to the parent as arguments to the `slot` method.
+Você pode passar os dados do componente para o pai como argumentos para o método `slot`.
 
 ```edge
 <!-- components/button.edge -->
@@ -235,36 +233,36 @@ You can pass the data from the component to the parent as arguments to the `slot
 @end
 ```
 
-To summarize:
+Para resumir:
 
-- Parent template can pass data to the component using props or slots.
-- The component can pass data only to the slots as arguments.
+- O modelo pai pode passar dados para o componente usando props ou slots.
+- O componente pode passar dados apenas para os slots como argumentos.
 
-## Injecting data to the component tree
+## Injetando dados na árvore de componentes
 
-The data injection API of Edge is inspired by the [Svelte context API](https://svelte.dev/tutorial/context-api) and [Vue provide/inject API](https://v3.vuejs.org/guide/component-provide-inject.html#provide-inject).
+A API de injeção de dados do Edge é inspirada na [API de contexto Svelte](https://svelte.dev/tutorial/context-api) e [API de fornecimento/injeção Vue](https://v3.vuejs.org/guide/component-provide-inject.html#provide-inject).
 
-The goal is to simplify the communication between the components inside a tree. However, note that this is an advanced API and must only be used when you are self-authoring a group of components and want transparent communication between them.
+O objetivo é simplificar a comunicação entre os componentes dentro de uma árvore. No entanto, observe que esta é uma API avançada e deve ser usada somente quando você estiver criando um grupo de componentes e quiser uma comunicação transparente entre eles.
 
-### Basic example
+### Exemplo básico
 
-Let's start with the most basic example to see the injection API in action. You can make use of the `@inject` tag to share an object with the component tree.
+Vamos começar com o exemplo mais básico para ver a API de injeção em ação. Você pode usar a tag `@inject` para compartilhar um objeto com a árvore de componentes.
 
 ```edge
-<!-- Component file -->
+<!-- Arquivo de componente -->
 
-{{-- Declare a local variable --}}
+{{-- Declarar uma variável local --}}
 @set('counter', { value: 0 })
 
-{{-- Inject it to the components tree --}}
+{{-- Injetá-la na árvore de componentes --}}
 @inject({ counter })
 
 {{{ await $slots.main() }}}
 ```
 
-Since the `@inject` tag shares the object by reference, any part of the component tree can mutate its properties, as shown in the following snippet.
+Como a tag `@inject` compartilha o objeto por referência, qualquer parte da árvore de componentes pode alterar suas propriedades, conforme mostrado no snippet a seguir.
 
-The injected values are available on the `$context` variable.
+Os valores injetados estão disponíveis na variável `$context`.
 
 ```edge
 @component('components/parent')
@@ -277,10 +275,10 @@ The injected values are available on the `$context` variable.
 @end
 ```
 
-## Components as tags
-Edge allows you to reference the components stored inside the `./resources/views/components` directory as Edge tags.
+## Componentes como tags
+O Edge permite que você faça referência aos componentes armazenados dentro do diretório `./resources/views/components` como tags do Edge.
 
-Create the following template inside the `resources/views/components/button.edge` file.
+Crie o seguinte modelo dentro do arquivo `resources/views/components/button.edge`.
 
 ```edge
 <!-- resources/views/components/button.edge -->
@@ -290,7 +288,7 @@ Create the following template inside the `resources/views/components/button.edge
 </button>
 ```
 
-Now, instead of referencing the button component using the `@component` tag. You can also reference it as the `@button` tag.
+Agora, em vez de fazer referência ao componente do botão usando a tag `@component`. Você também pode fazer referência a ele como a tag `@button`.
 
 ```edge
 @!button({
@@ -299,7 +297,7 @@ Now, instead of referencing the button component using the `@component` tag. You
 })
 ```
 
-You can reference the components inside the nested directories with a dot notation. For example, the file stored inside the `./components/form/input.edge` is referenced as follows:
+Você pode fazer referência aos componentes dentro dos diretórios aninhados com uma notação de ponto. Por exemplo, o arquivo armazenado dentro de `./components/form/input.edge` é referenciado da seguinte forma:
 
 ```edge
 @!form.input({
@@ -308,10 +306,10 @@ You can reference the components inside the nested directories with a dot notati
 })
 ```
 
-Following is a reference table to understand the transformations applied to the component path to compute the tag name.
+A seguir está uma tabela de referência para entender as transformações aplicadas ao caminho do componente para calcular o nome da tag.
 
-| Template path | Tag name |
-|---------------|-----------|
-| form/input.edge | `@form.input` |
-| tool_tip.edge | `@toolTip` |
-| checkout_form/input.edge | `@checkoutForm.input` |
+| Caminho do template       | Nome da tag           |
+|---------------------------|-----------------------|
+| `form/input.edge`         | `@form.input`         |
+| `tool_tip.edge`           | `@toolTip`            |
+| `checkout_form/input.edge`| `@checkoutForm.input` |

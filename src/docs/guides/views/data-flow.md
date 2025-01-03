@@ -1,10 +1,10 @@
-# Data flow
+# Fluxo de dados
 
-Edge exposes different APIs for sharing the data with the templates. Each API changes the scope at which the data is available inside the templates.
+O Edge expõe diferentes APIs para compartilhar os dados com os modelos. Cada API altera o escopo no qual os dados estão disponíveis dentro dos modelos.
 
-## Template state
+## Estado do modelo
 
-Template state is represented as an object that you can pass while rendering the view. For example:
+O estado do modelo é representado como um objeto que você pode passar ao renderizar a visualização. Por exemplo:
 
 ```ts
 const state = {
@@ -14,13 +14,13 @@ const state = {
 await view.render('user', state)
 ```
 
-The template state is available to the rendered template, its partials, and the layout it uses. In other words, the template state is not shared with the components.
+O estado do modelo está disponível para o modelo renderizado, seus parciais e o layout que ele usa. Em outras palavras, o estado do modelo não é compartilhado com os componentes.
 
-## Globals
+## Globais
 
-Globals are available to all the templates, including the components. You will usually use them to share helpers or application-wide metadata.
+Os globais estão disponíveis para todos os modelos, incluindo os componentes. Você normalmente os usará para compartilhar auxiliares ou metadados em todo o aplicativo.
 
-You can register a global using the `View.global` method. For example, you can write the following code inside a [preloaded file](../fundamentals/adonisrc-file.md#preloads) or a service provider boot method.
+Você pode registrar um global usando o método `View.global`. Por exemplo, você pode escrever o seguinte código dentro de um [arquivo pré-carregado](../fundamentals/adonisrc-file.md#preloads) ou um método de inicialização do provedor de serviços.
 
 ```ts
 // start/view.ts
@@ -47,7 +47,7 @@ View.global('menu', [
 ])
 ```
 
-#### Usage
+#### Uso
 
 ```edge
 <p> {{{ nl2br(post.description) }}} </p>
@@ -57,11 +57,11 @@ View.global('menu', [
 @end
 ```
 
-## Locals
+## Locais
 
-Locals are like globals for a given instance of the [View renderer](./rendering.md#view-renderer). You can share locals by using the `view.share` method.
+Os locais são como globais para uma determinada instância do [View renderer](./rendering.md#view-renderer). Você pode compartilhar locais usando o método `view.share`.
 
-You will mostly find yourself using the `view.share` method within middleware to share the data with the template.
+Você geralmente usará o método `view.share` dentro do middleware para compartilhar os dados com o modelo.
 
 ```ts
 Route
@@ -77,9 +77,9 @@ Route
   })
 ```
 
-## Inline variables
+## Variáveis ​​inline
 
-Finally, you can also define inline variables within the template files using the `@set` tag.
+Finalmente, você também pode definir variáveis ​​inline dentro dos arquivos de modelo usando a tag `@set`.
 
 ```edge
 @set('title', 'Edge - A template engine for Node.js')
@@ -87,7 +87,7 @@ Finally, you can also define inline variables within the template files using th
 <title> {{ title }} </title>
 ```
 
-The inline variables have the same scope as you define a variable in JavaScript. For example: If the variable is defined inside the each block, you cannot access it outside the each block.
+As variáveis ​​inline têm o mesmo escopo que você define uma variável em JavaScript. Por exemplo: se a variável for definida dentro do bloco each, você não poderá acessá-la fora do bloco each.
 
 ```edge
 @each(item in cart)

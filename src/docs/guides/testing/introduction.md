@@ -1,15 +1,15 @@
-# Introduction
+# Introdução
 
-AdonisJS has out of the box support for testing, and there is no need to install any third-party packages for the same. Just run the `node ace test` and the magic will happen.
+O AdonisJS tem suporte pronto para uso para testes, e não há necessidade de instalar nenhum pacote de terceiros para o mesmo. Basta executar o `node ace test` e a mágica acontecerá.
 
-:::note
-If you are running an older version that dos not have testing support, ensure to follow our [activation guide](https://docs.adonisjs.com/releases/april-2022-release#first-class-support-for-testing).
+::: info NOTA
+Se você estiver executando uma versão mais antiga que não tem suporte para testes, certifique-se de seguir nosso [guia de ativação](https://docs.adonisjs.com/releases/april-2022-release#first-class-support-for-testing).
 :::
 
-Every fresh installation of AdonisJS ships with an example functional test written within the `tests/functional/hello-world.spec.ts` file. Let's open this file and learn how tests are written in AdonisJS.
+Cada nova instalação do AdonisJS vem com um teste funcional de exemplo escrito dentro do arquivo `tests/functional/hello-world.spec.ts`. Vamos abrir este arquivo e aprender como os testes são escritos no AdonisJS.
 
-:::tip
-AdonisJS uses [Japa](https://v2.japa.dev) (A homegrown testing framework) for writing and executing tests. **Therefore, we highly recommend you to read the Japa docs once**.
+::: tip DICA
+O AdonisJS usa [Japa](https://v2.japa.dev) (uma estrutura de teste desenvolvida internamente) para escrever e executar testes. **Portanto, recomendamos fortemente que você leia a documentação do Japa uma vez**.
 :::
 
 ```ts
@@ -23,11 +23,11 @@ test('display welcome page', async ({ client }) => {
 })
 ```
 
-- A test is registered using the `test` function exported by the `@japa/runner` package.
-- The `test` function accepts the title as the first argument and the implementation callback as the second argument.
-- The implementation callback receives the [Test context](https://v2.japa.dev/docs/test-context). Test context contains additional properties you can use to have a better testing experience.
+- Um teste é registrado usando a função `test` exportada pelo pacote `@japa/runner`.
+- A função `test` aceita o título como o primeiro argumento e o retorno de chamada de implementação como o segundo argumento.
+[Contexto de teste](https://v2.japa.dev/docs/test-context). O contexto de teste contém propriedades adicionais que você pode usar para ter uma melhor experiência de teste.
 
-Let's run the test by executing the following command.
+Vamos executar o teste executando o seguinte comando.
 
 ```sh
 node ace test
@@ -44,28 +44,29 @@ node ace test
 # duration     : 28ms
 ```
 
-Now let's re-run the test command, but this time with the `--watch` flag. The watcher will watch for file system changes and executes the tests after every file change.
+Agora vamos executar novamente o comando de teste, mas desta vez com o sinalizador `--watch`. O observador observará as alterações no sistema de arquivos e executará os testes após cada alteração de arquivo.
 
 ```sh
 node ace test --watch
 ```
 
-::video{url="https://res.cloudinary.com/adonis-js/video/upload/q_auto/v1648365429/v5/node-ace-test-watch-edited_wmfkeo.mp4" controls}
+<video src="/docs/assets/node-ace-test-watch-edited_wmfkeo.mp4" controls />
 
-## Test suites
-AdonisJS organizes tests into multiple suites. Tests for every suite live within its sub-directory. For example:
+## Conjuntos de testes
+O AdonisJS organiza os testes em vários conjuntos. Os testes para cada conjunto ficam dentro de seu subdiretório. Por exemplo:
 
-- Functional tests are stored inside `tests/functional/` directory.
-- Unit tests are stored inside the `tests/unit/` directory.
+- Os testes funcionais são armazenados dentro do diretório `tests/functional/`.
+- Os testes unitários são armazenados dentro do diretório `tests/unit/`.
 
-Suites are registered inside the `.adonisrc.json` file, and you can remove/add suites as per requirements. A suite combines a unique name and a glob pattern for the files.
+Os conjuntos são registrados dentro do arquivo `.adonisrc.json`, e você pode remover/adicionar conjuntos conforme os requisitos. Um conjunto combina um nome exclusivo e um padrão glob para os arquivos.
 
-:::note
-You can also use the `make:suite` command to create a new test suite and register it inside the `.adonisrc.json` file.
+::: info NOTA
+Você também pode usar o comando `make:suite` para criar um novo conjunto de testes e registrá-lo dentro do arquivo `.adonisrc.json`.
 :::
 
 ```json
-// title: .adonisrc.json
+// .adonisrc.json
+
 {
   "tests": {
     "suites": [
@@ -78,9 +79,9 @@ You can also use the `make:suite` command to create a new test suite and registe
 }
 ```
 
-You can also register lifecycle hooks for every test suite. The hooks are registered within the `tests/bootstrap.ts` file using the `configureSuite` method.
+Você também pode registrar ganchos de ciclo de vida para cada conjunto de testes. Os ganchos são registrados dentro do arquivo `tests/bootstrap.ts` usando o método `configureSuite`.
 
-In the following example, AdonisJS registers a setup hook to start the HTTP server for the `functional` test suite.
+No exemplo a seguir, o AdonisJS registra um gancho de configuração para iniciar o servidor HTTP para o conjunto de testes `functional`.
 
 ```ts
 export const configureSuite: Config['configureSuite'] = (suite) => {
@@ -90,15 +91,16 @@ export const configureSuite: Config['configureSuite'] = (suite) => {
 }
 ```
 
-## Configuring the tests runner
-AdonisJS configures the test runner within the `test.ts` file inside the root of your project. This file first boots the AdonisJS application and then runs tests using Japa.
+## Configurando o executor de testes
+O AdonisJS configura o executor de testes dentro do arquivo `test.ts` dentro da raiz do seu projeto. Este arquivo primeiro inicializa o aplicativo AdonisJS e então executa os testes usando o Japa.
 
-You will never touch the `test.ts` file for the most part. Instead, we recommend you to use the `tests/bootstrap.ts` file to configure the tests runner further or run custom logic before/after the tests.
+Você nunca tocará no arquivo `test.ts` na maior parte do tempo. Em vez disso, recomendamos que você use o arquivo `tests/bootstrap.ts` para configurar ainda mais o executor de testes ou executar lógica personalizada antes/depois dos testes.
 
-The bootstrap file exports the following properties, which are then given to Japa.
+O arquivo bootstrap exporta as seguintes propriedades, que são então fornecidas ao Japa.
 
 ```ts
-// title: tests/bootstrap.ts
+// tests/bootstrap.ts
+
 export const plugins: Config['plugins'] = []
 export const reporters: Config['reporters'] = []
 export const runnerHooks: Required<Pick<Config, 'setup' | 'teardown'>> = {
@@ -110,28 +112,28 @@ export const configureSuite: Config['configureSuite'] = (suite) => {
 ```
 
 #### `plugins`
-The `plugins` property accepts an array of Japa plugins. By default, we register the following plugins.
+A propriedade `plugins` aceita uma matriz de plugins Japa. Por padrão, registramos os seguintes plugins.
 
-- [`assert`](https://v2.japa.dev/docs/plugins/assert) - Assert module to make assertions.
-- [`runFailedTests`](https://v2.japa.dev/docs/plugins/run-failed-tests) - A plugin to run only failed tests (if any).
-- [`apiClient`](https://v2.japa.dev/docs/plugins/api-client) - An API client for testing HTTP endpoints.
+- [`assert`](https://v2.japa.dev/docs/plugins/assert) - Módulo Assert para fazer asserções.
+- [`runFailedTests`](https://v2.japa.dev/docs/plugins/run-failed-tests) - Um plugin para executar apenas testes com falha (se houver).
+- [`apiClient`](https://v2.japa.dev/docs/plugins/api-client) - Um cliente de API para testar endpoints HTTP.
 
 #### `reporters`
-The `reporters` property accepts an array of Japa reporters. We register the [`spec-reporter`](https://v2.japa.dev/docs/plugins/spec-reporter) to display the progress of tests on the terminal.
+A propriedade `reporters` aceita uma matriz de repórteres Japa. Registramos o [`spec-reporter`](https://v2.japa.dev/docs/plugins/spec-reporter) para exibir o progresso dos testes no terminal.
 
 #### `runnerHooks`
-You can use the `runnerHooks` property to run actions before or after the tests (across all the suites).
+Você pode usar a propriedade `runnerHooks` para executar ações antes ou depois dos testes (em todos os conjuntos).
 
-- The `setup` hooks are executed before all the tests.
-- The `teardown` hooks are executed after all the tests.
+- Os ganchos `setup` são executados antes de todos os testes.
+- Os ganchos `teardown` são executados após todos os testes.
 
 #### `configureSuite`
-The `configureSuite` method is executed with an instance of the [Japa suite](https://v2.japa.dev/docs/core/suite) class. You can use the suite instance to configure it.
+O método `configureSuite` é executado com uma instância da classe [Japa suite](https://v2.japa.dev/docs/core/suite). Você pode usar a instância do suite para configurá-lo.
 
-## Environment variables
-During tests, AdonisJS automatically sets the value of `NODE_ENV` to `test`.
+## Variáveis ​​de ambiente
+Durante os testes, o AdonisJS define automaticamente o valor de `NODE_ENV` para `test`.
 
-We also load the `.env.test` file and merge the values defined inside this file with existing environment variables. The following overrides are defined by default.
+Também carregamos o arquivo `.env.test` e mesclamos os valores definidos dentro deste arquivo com variáveis ​​de ambiente existentes. As seguintes substituições são definidas por padrão.
 
 ```dotenv
 NODE_ENV=test
@@ -139,11 +141,11 @@ ASSETS_DRIVER=fake
 SESSION_DRIVER=memory
 ```
 
-- `ASSETS_DRIVER` property switches the driver for serving [bundled assets](../http/assets-manager.md) to a fake implementation. Doing so allows you to run tests without compiling the frontend assets using Webpack.
-- `SESSION_DRIVER` is switched to persist session data within memory and access it during tests. Using any other driver will break the tests.
+[ativos agrupados](../http/assets-manager.md) para uma implementação falsa. Isso permite que você execute testes sem compilar os ativos do frontend usando o Webpack.
+- `SESSION_DRIVER` é alternado para persistir os dados da sessão na memória e acessá-los durante os testes. Usar qualquer outro driver interromperá os testes.
 
-## Creating tests
-You can create tests using the `node ace make:test` command. The command accepts the suite name as the first argument, followed by the test file name.
+## Criando testes
+Você pode criar testes usando o comando `node ace make:test`. O comando aceita o nome do conjunto como o primeiro argumento, seguido pelo nome do arquivo de teste.
 
 ```sh
 node ace make:test functional list_users
@@ -151,7 +153,7 @@ node ace make:test functional list_users
 # CREATE: tests/functional/list_users.spec.ts
 ```
 
-You can also create a nested file structure as follows.
+Você também pode criar uma estrutura de arquivo aninhada da seguinte forma.
 
 ```sh
 node ace make:test functional users/list
@@ -159,106 +161,101 @@ node ace make:test functional users/list
 # CREATE: tests/functional/users/list.spec.ts
 ```
 
-## Running tests
-You can run tests by executing the `node ace test` command. Also, you can run tests for a specific suite by passing the suite name.
+## Executando testes
+Você pode executar testes executando o comando `node ace test`. Além disso, você pode executar testes para um conjunto específico passando o nome do conjunto.
 
 ```sh
-# Runs all tests
+# Executa todos os testes
 node ace test
 
-# Only functional tests are executed
+# Apenas testes funcionais são executados
 node ace test functional
 
-# unit and functional tests are executed sequentially
+# testes unitários e funcionais são executados sequencialmente
 node ace test unit functional
 
-# Only tests with an "orders" or "upload" tag in the "unit" and "functional" suites
+# Apenas testes com uma tag "orders" ou "upload" nas suítes "unit" e "functional"
 node ace test --tags="orders,upload" unit functional
 ```
 
-The `test` command accepts the following flags.
+O comando `test` aceita os seguintes sinalizadores.
 
-- `--watch`: Run tests in the watch mode. The watcher will run only tests from the modified file if a test file is changed. Otherwise, all tests are executed.
-- `--tags`: Run tests that have one or more of the mentioned tags.
-- `--ignore-tags`: The inverse of the `--tags` flag. Only run tests that do not have all of the mentioned tags.
-- `--files`: Cherry pick and run tests from mentioned files.
-- `--timeout`: Define the global timeout for all the tests.
-- `--force-exit`: Force exit the test process if it does not ends gracefully.
-- `--tests`: Run specific tests by title.
+- `--watch`: Executa testes no modo de observação. O observador executará apenas testes do arquivo modificado se um arquivo de teste for alterado. Caso contrário, todos os testes serão executados.
+- `--tags`: Executa testes que tenham uma ou mais das tags mencionadas.
+- `--ignore-tags`: O inverso do sinalizador `--tags`. Executa apenas testes que não tenham todas as tags mencionadas.
+- `--files`: Seleciona e executa testes dos arquivos mencionados.
+- `--timeout`: Define o tempo limite global para todos os testes.
+- `--force-exit`: Força a saída do processo de teste se ele não terminar normalmente.
+- `--tests`: Executa testes específicos por título.
 
-## Database management
-This section covers database migrations, running seeders, and using global transactions to have a clean database state between tests.
+## Gerenciamento de banco de dados
+Esta seção abrange migrações de banco de dados, execução de seeders e uso de transações globais para ter um estado de banco de dados limpo entre os testes.
 
-:::note
-Make sure you have `@adonisjs/lucid` installed for the following examples to work.
+::: info NOTA
+Certifique-se de ter `@adonisjs/lucid` instalado para que os exemplos a seguir funcionem.
 :::
 
-### Migrating database
+### Migrando banco de dados
 
-#### Reset database after each run cycle
+#### Redefinir banco de dados após cada ciclo de execução
 
-You can migrate the database before running all the tests and roll it back after the tests. This can be done by registering the `TestUtils.db().migrate()` hook within the `tests/bootstrap.ts` file.
+Você pode migrar o banco de dados antes de executar todos os testes e revertê-lo após os testes. Isso pode ser feito registrando o gancho `TestUtils.db().migrate()` dentro do arquivo `tests/bootstrap.ts`.
 
-```ts
-// title: tests/bootstrap.ts
+```ts {6}
+// tests/bootstrap.ts
+
 export const runnerHooks: Required<Pick<Config, 'setup' | 'teardown'>> = {
   setup: [
     () => TestUtils.ace().loadCommands(),
-    // highlight-start
     () => TestUtils.db().migrate()
-    // highlight-end
   ],
   teardown: [],
 }
 ```
 
-#### Truncate database after each run cycle
+#### Truncar banco de dados após cada ciclo de execução
 
-An alternative to the above approach is to truncate all tables in the database after each run cycle instead of rolling it back. This can be done by registering the `TestUtils.db().truncate()` hook within the `tests/bootstrap.ts` file.
+Uma alternativa à abordagem acima é truncar todas as tabelas no banco de dados após cada ciclo de execução em vez de revertê-lo. Isso pode ser feito registrando o hook `TestUtils.db().truncate()` dentro do arquivo `tests/bootstrap.ts`.
 
-```ts
-// title: tests/bootstrap.ts
+```ts {6}
+// tests/bootstrap.ts
+
 export const runnerHooks: Required<Pick<Config, 'setup' | 'teardown'>> = {
   setup: [
     () => TestUtils.ace().loadCommands(),
-    // highlight-start
     () => TestUtils.db().truncate()
-    // highlight-end
   ],
   teardown: [],
 }
 ```
 
-Before running your tests, the hook will migrate the database if necessary. After the tests are run, all the tables in your database will be kept but truncated. 
+Antes de executar seus testes, o hook migrará o banco de dados, se necessário. Após a execução dos testes, todas as tabelas em seu banco de dados serão mantidas, mas truncadas.
 
-So next time you run your tests, your database will be empty but will not need to be migrated again. This may be a better approach and will save you some time if you have a lot of migrations.
+Então, da próxima vez que você executar seus testes, seu banco de dados estará vazio, mas não precisará ser migrado novamente. Esta pode ser uma abordagem melhor e economizará algum tempo se você tiver muitas migrações.
 
-:::tip
-Note that the hook internally calls the `node ace db:truncate` command that you can also run manually. Also, note that this command will truncate all tables **except** `adonis_schema` and `adonis_schema_versions` tables.
+::: tip DICA
+Observe que o hook chama internamente o comando `node ace db:truncate` que você também pode executar manualmente. Além disso, observe que este comando truncará todas as tabelas, **exceto** as tabelas `adonis_schema` e `adonis_schema_versions`.
 :::
 
+### Banco de dados de semeadura
+Você também pode executar semeadores de banco de dados chamando o método `TestUtils.db().seed()`.
 
-### Seeding database
-You can also run database seeders by calling the `TestUtils.db().seed()` method.
-
-```ts
+```ts {4}
 setup: [
   () => TestUtils.ace().loadCommands(),
   () => TestUtils.db().migrate(),
-  // highlight-start
   () => TestUtils.db().seed()
-  // highlight-end
 ],
 ```
 
-### Global transactions
+### Transações globais
 
-We recommend you to use the [Database global transactions](../../reference/database/database.md#beginglobaltransaction) to have a clean database state in-between tests.
+Recomendamos que você use as [Transações globais de banco de dados](../../reference/database/database.md#beginglobaltransaction) para ter um estado de banco de dados limpo entre os testes.
 
-In the following example, we start a global transaction before all the tests and roll back it after the tests.
+No exemplo a seguir, iniciamos uma transação global antes de todos os testes e a revertemos após os testes.
 
-:::tip
-The `group.each.setup` method runs before every test inside the group.
+::: tip DICA
+O método `group.each.setup` é executado antes de cada teste dentro do grupo.
 :::
 
 ```ts
@@ -272,7 +269,7 @@ test.group('Group name', (group) => {
 })
 ```
 
-If you are using multiple database connections, then you can define a hook for each connection. For example:
+Se você estiver usando várias conexões de banco de dados, poderá definir um gancho para cada conexão. Por exemplo:
 
 ```ts
 group.each.setup(async () => {

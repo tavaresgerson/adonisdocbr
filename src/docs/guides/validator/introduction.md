@@ -1,6 +1,6 @@
-# Introduction
+# Introdução
 
-AdonisJS has first-class support for **parsing** and **validating** the request body, and there is no need to install any 3rd party packages for the same. Just define the validation schema and validate the request body against it.
+O AdonisJS tem suporte de primeira classe para **analisar** e **validar** o corpo da solicitação, e não há necessidade de instalar nenhum pacote de terceiros para o mesmo. Basta definir o esquema de validação e validar o corpo da solicitação em relação a ele.
 
 ```ts
 import Route from '@ioc:Adonis/Core/Route'
@@ -8,7 +8,7 @@ import { schema } from '@ioc:Adonis/Core/Validator'
 
 Route.post('posts', async ({ request }) => {
   /**
-   * Schema definition
+   * Definição de esquema
    */
   // const newPostSchema = schema.create({schema.string(),
   
@@ -17,53 +17,53 @@ Route.post('posts', async ({ request }) => {
   })
 
   /**
-   * Validate request body against the schema
+   * Validar o corpo da solicitação em relação ao esquema
    */
   const payload = await request.validate({ schema: newPostSchema })
 })
 ```
 
-The validator also **extracts the static types** from the schema definition. You get the runtime validations and the static type safety from a single schema definition.
+O validador também **extrai os tipos estáticos** da definição do esquema. Você obtém as validações de tempo de execução e a segurança do tipo estático de uma única definição de esquema.
 
 ![](/docs/assets/validator-static-types.webp)
 
-## Schema composition
-The schema definition is divided into three main parts.
+## Composição do esquema
+A definição do esquema é dividida em três partes principais.
 
-- The `schema.create` method defines the shape of the data you expect.
-- The `schema.string`, `schema.number`, and other similar methods define the data type for an individual field.
-- Finally, you use the `rules` object to apply additional validation constraints on a given field. For example: Validating a string to be a valid email is unique inside the database.
+- O método `schema.create` define o formato dos dados que você espera.
+- Os métodos `schema.string`, `schema.number` e outros semelhantes definem o tipo de dados para um campo individual.
+- Finalmente, você usa o objeto `rules` para aplicar restrições de validação adicionais em um determinado campo. Por exemplo: Validar uma string para ser um e-mail válido é único dentro do banco de dados.
 
 ![](/docs/assets/schema-101.png)
 
-:::note
-The `rules` object is imported from `@ioc:Adonis/Core/Validator`
+::: info NOTA
+O objeto `rules` é importado de `@ioc:Adonis/Core/Validator`
 
 ```ts
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 ```
 :::
 
-If you look carefully, we have separated the **format validations** from **core data types**. So, for example, there is no data type called `schema.email`. Instead, we use the `rules.email` method to ensure a string is formatted as an email.
+Se você olhar com cuidado, separamos as **validações de formato** dos **tipos de dados principais**. Então, por exemplo, não há nenhum tipo de dado chamado `schema.email`. Em vez disso, usamos o método `rules.email` para garantir que uma string seja formatada como um e-mail.
 
-This separation helps extend the validator with custom rules without creating unnecessary schema types that have no meaning. For example, there is no thing called **email type**; it is just a string, formatted as an email.
+Essa separação ajuda a estender o validador com regras personalizadas sem criar tipos de esquema desnecessários que não têm significado. Por exemplo, não há nada chamado **tipo de e-mail**; é apenas uma string, formatada como um e-mail.
 
-## Working with optional and null values
-All the fields are **required** by default. However, you can make use of the `optional`, `nullable`, and `nullableAndOptional` modifiers to mark fields as optional.
+## Trabalhando com valores opcionais e nulos
+Todos os campos são **obrigatórios** por padrão. No entanto, você pode usar os modificadores `optional`, `nullable` e `nullableAndOptional` para marcar campos como opcionais.
 
-All of these modifiers serve different purposes. Let's take a closer look at them.
+Todos esses modificadores atendem a propósitos diferentes. Vamos dar uma olhada mais de perto neles.
 
-| Modifier | Validation behavior | Return payload |
-|------------|---------------------|---------------|
-| `optional` | Allows both `null` and `undefined` values to exist | Removes the key from the return payload is not is non-existing |
-| `nullable` | Allows `null` values to exists. However, the field must be defined in the validation data | Returns the field value including null. |
-| `nullableAndOptional` | Allows both `null` and `undefined` values to exist. (Same as modifier 1) | Only removes the key when the value is undefined, otherwise returns the field value |
+| Modificador           | Comportamento da validação                                                                        | Retorna payload |
+|-----------------------|---------------------------------------------------------------------------------------------------|-----------------|
+| `optional`            | Permite que valores `null` e `undefined` existam                                                  | Remove a chave do payload de retorno se não for inexistente |
+| `nullable`            | Permite que valores `null` existam. No entanto, o campo deve ser definido nos dados de validação  | Retorna o valor do campo, incluindo nulo. |
+| `nullableAndOptional` | Permite que valores `null` e `undefined` existam. (O mesmo que o modificador 1)                   | Remove a chave somente quando o valor é indefinido, caso contrário, retorna o valor do campo |
 
-### Use case for `nullable` modifier
+### Caso de uso para o modificador `nullable`
 
-You will often find yourself using the `nullable` modifier to allow optional fields within your application forms. 
+Você frequentemente se verá usando o modificador `nullable` para permitir campos opcionais dentro dos seus formulários de aplicação.
 
-In the following example, when the user submits an empty value for the `fullName` field, the server will receive `null,` and hence you can update their existing full name inside the database to null.
+No exemplo a seguir, quando o usuário envia um valor vazio para o campo `fullName`, o servidor receberá `null` e, portanto, você pode atualizar seu nome completo existente dentro do banco de dados para nulo.
 
 ```ts
 schema: schema.create({
@@ -71,11 +71,11 @@ schema: schema.create({
 })
 ```
 
-### Use case for `nullableAndOptional` modifier
+### Caso de uso para o modificador `nullableAndOptional`
 
-If you create an API server that accepts PATCH requests and allows the client to update a portion of a resource, you must use the `nullableAndOptional` modifier.
+Se você criar um servidor de API que aceita solicitações PATCH e permite que o cliente atualize uma parte de um recurso, você deve usar o modificador `nullableAndOptional`.
 
-In the following example, if the `fullName` is undefined, you can assume that the client does not want to update this property, and if it is `null`, they want to set the property value of `null`.
+No exemplo a seguir, se o `fullName` for indefinido, você pode assumir que o cliente não deseja atualizar esta propriedade e, se for `null`, ele deseja definir o valor da propriedade de `null`.
 
 ```ts
 const payload = await request.validate({
@@ -89,10 +89,10 @@ user.merge(payload)
 await user.save()
 ```
 
-### Use case for `optional` modifier
-The `optional` modifier is helpful if you want to update a portion of a resource without any optional fields.
+### Caso de uso para modificador `optional`
+O modificador `optional` é útil se você deseja atualizar uma parte de um recurso sem campos opcionais.
 
-The `email` property may or may not exist in the following example. But the user cannot set it `null`. If the property is not in the request, you will not update the email.
+A propriedade `email` pode ou não existir no exemplo a seguir. Mas o usuário não pode defini-la como `null`. Se a propriedade não estiver na solicitação, você não atualizará o e-mail.
 
 ```ts
 const payload = await request.validate({
@@ -106,8 +106,8 @@ user.merge(payload)
 await user.save()
 ```
 
-## Validating HTTP requests
-You can validate the request body, query-string, and route parameters for a given HTTP request using the `request.validate` method. In case of a failure, the `validate` method will raise an exception.
+## Validando solicitações HTTP
+Você pode validar o corpo da solicitação, a string de consulta e os parâmetros de rota para uma determinada solicitação HTTP usando o método `request.validate`. Em caso de falha, o método `validate` gerará uma exceção.
 
 ```ts
 import Route from '@ioc:Adonis/Core/Route'
@@ -115,7 +115,7 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
 
 Route.post('users', async ({ request, response }) => {
   /**
-   * Step 1 - Define schema
+   * Etapa 1 - Definir esquema
    */
   const newUserSchema = schema.create({
     username: schema.string(),
@@ -130,30 +130,30 @@ Route.post('users', async ({ request, response }) => {
 
   try {
     /**
-     * Step 2 - Validate request body against
-     *          the schema
+     * Etapa 2 - Validar o corpo da solicitação em relação
+     *           ao esquema
      */
     const payload = await request.validate({
       schema: newUserSchema
     })
   } catch (error) {
     /**
-     * Step 3 - Handle errors
+     * Etapa 3 - Lidar com erros
      */
     response.badRequest(error.messages)
   }
 })
 ```
 
-We recommend **NOT self-handling** the exception and let AdonisJS [convert the exception](https://github.com/adonisjs/validator/blob/develop/src/ValidationException/index.ts#L25-L49) to a response using content negotiation.
+Recomendamos **NÃO autotratar** a exceção e deixar o AdonisJS [converter a exceção](https://github.com/adonisjs/validator/blob/develop/src/ValidationException/index.ts#L25-L49) em uma resposta usando negociação de conteúdo.
 
-Following is an explanation of how content negotiation works.
+A seguir, uma explicação de como a negociação de conteúdo funciona.
 
-### Server rendered app
+### Aplicativo renderizado pelo servidor
 
-If you build a standard web application with server-side templating, we will redirect the client back to the form and pass the errors as session flash messages.
+Se você criar um aplicativo da web padrão com modelos do lado do servidor, redirecionaremos o cliente de volta ao formulário e passaremos os erros como mensagens flash da sessão.
 
-Following is the structure of error messages inside the session's flash store.
+A seguir, a estrutura das mensagens de erro dentro do armazenamento flash da sessão.
 
 ```ts
 {
@@ -163,7 +163,7 @@ Following is the structure of error messages inside the session's flash store.
 }
 ```
 
-You can access them using the `flashMessages` global helper.
+Você pode acessá-las usando o auxiliar global `flashMessages`.
 
 ```edge
 @if(flashMessages.has('errors.username'))
@@ -171,8 +171,8 @@ You can access them using the `flashMessages` global helper.
 @end
 ```
 
-### Requests with `Accept=application/json` header
-Requests negotiating for the JSON data type receive the error messages as an array of objects. Each error message contains the **field name**, the failed **validation rule**, and the **error message**.
+### Solicitações com cabeçalho `Accept=application/json`
+Solicitações negociando o tipo de dados JSON recebem as mensagens de erro como uma matriz de objetos. Cada mensagem de erro contém o **nome do campo**, a **regra de validação** com falha e a **mensagem de erro**.
 
 ```ts
 {
@@ -186,8 +186,8 @@ Requests negotiating for the JSON data type receive the error messages as an arr
 }
 ```
 
-### JSON API
-Requests negotiating using `Accept=application/vnd.api+json` header, receives the error messages as per the [JSON API spec](https://jsonapi.org/format/#errors).
+### API JSON
+Solicitações negociando usando o cabeçalho `Accept=application/vnd.api+json` recebem as mensagens de erro conforme a [especificação da API JSON](https://jsonapi.org/format/#errors).
 
 ```ts
 {
@@ -197,22 +197,22 @@ Requests negotiating using `Accept=application/vnd.api+json` header, receives th
       source: {
         pointer: 'title',
       },
-// 'required validation failed'
+    // 'required validation failed'
 
     }
   ]
 }
 ```
 
-## Standalone validator usage
-You can also use the validator outside of an HTTP request by importing the `validate` method from the Validator module. The functional API remains the same. However, you will have to manually provide the `data` to validate.
+## Uso do validador autônomo
+Você também pode usar o validador fora de uma solicitação HTTP importando o método `validate` do módulo Validator. A API funcional permanece a mesma. No entanto, você terá que fornecer manualmente os `data` para validar.
 
 ```ts
 import { validator, schema } from '@ioc:Adonis/Core/Validator'
 
 await validator.validate({
   schema: schema.create({
-    // ... define schema
+    // ... define o esquema
   }),
   data: {
     email: 'virk@adonisjs.com',
@@ -221,12 +221,12 @@ await validator.validate({
 })
 ```
 
-Also, since you perform the validation outside of an HTTP request, you will have to handle the exception and display the errors manually.
+Além disso, como você realiza a validação fora de uma solicitação HTTP, você terá que lidar com a exceção e exibir os erros manualmente.
 
-## Validator classes
-Validator classes allow you to extract the inline schema from your controllers and move them to a dedicated class.
+## Classes validadoras
+As classes validadoras permitem que você extraia o esquema inline de seus controladores e os mova para uma classe dedicada.
 
-You can create a new validator by executing the following Ace command.
+Você pode criar um novo validador executando o seguinte comando Ace.
 
 ```sh
 node ace make:validator CreateUser
@@ -234,7 +234,7 @@ node ace make:validator CreateUser
 # CREATE: app/Validators/CreateUserValidator.ts
 ```
 
-All the validation related properties, including the `schema`, `messages` are defined as properties on the class.
+Todas as propriedades relacionadas à validação, incluindo `schema`, `messages` são definidas como propriedades na classe.
 
 ```ts
 // app/Validators/CreateUserValidator.ts
@@ -253,26 +253,22 @@ export default class CreateUserValidator {
 }
 ```
 
-### Using validator
+### Usando o validador
 
-Instead of passing an object with the `schema` property, you can now pass the class constructor to the `request.validate` method.
+Em vez de passar um objeto com a propriedade `schema`, agora você pode passar o construtor de classe para o método `request.validate`.
 
-```ts
+```ts {2,5}
 import Route from '@ioc:Adonis/Core/Route'
-// highlight-start
 import CreateUser from 'App/Validators/CreateUserValidator'
-// highlight-end
 
 Route.post('users', async ({ request, response }) => {
-  // highlight-start
   const payload = await request.validate(CreateUser)
-  // highlight-end
 })
 ```
 
-During validation, a new instance of the validator class is created behind the scenes. Also, the `request.validate` method will pass the current HTTP context as a first constructor argument.
+Durante a validação, uma nova instância da classe validadora é criada nos bastidores. Além disso, o método `request.validate` passará o contexto HTTP atual como um primeiro argumento do construtor.
 
-You can also manually construct the class instance and pass any arguments you like. For example:
+Você também pode construir manualmente a instância da classe e passar quaisquer argumentos que desejar. Por exemplo:
 
 ```ts
 Route.post('users', async ({ request, response }) => {
@@ -285,7 +281,7 @@ Route.post('users', async ({ request, response }) => {
 })
 ```
 
-Following is an example of using the validator classes outside of the HTTP request.
+A seguir está um exemplo de uso das classes validadoras fora da solicitação HTTP.
 
 ```ts
 import { validator } from '@ioc:Adonis/Core/Validator'
@@ -299,10 +295,10 @@ await validator.validate(
 )
 ```
 
-## What's next?
+## O que vem a seguir?
 
-- Read the cookbook on [validating server rendered forms](../../cookbooks/validator/validating-server-rendered-forms.md)
-- Learn more about [custom messages](./custom-messages.md)
-- Learn more about [error reporters](./error-reporters.md)
-- View all the [available schema types](../../reference/validator/schema/string.md)
-- View all the [available validation rules](../../reference/validator/rules/alpha.md)
+- [Validando formulários renderizados pelo servidor](../../cookbooks/validator/validating-server-rendered-forms.md)
+- [Mensagens personalizadas](./custom-messages.md)
+- [Relatórios de erro](./error-reporters.md)
+- [Tipos de esquema disponíveis](../../reference/validator/schema/string.md)
+- [Regras de validação disponíveis](../../reference/validator/rules/alpha.md)

@@ -1,14 +1,14 @@
-# Partials
+# Parciais
 
-As the name suggests, partials are a way to extract a chunk of markup to its file and then re-use it across multiple templates.
+Como o nome sugere, parciais são uma maneira de extrair um pedaço de marcação para seu arquivo e então reutilizá-lo em vários modelos.
 
-Keeping the website **header**, **logo**, **footer**, and **sidebar** in its file are some common use cases for partials.
+Manter o **cabeçalho**, **logotipo**, **rodapé** e **barra lateral** do site em seu arquivo são alguns casos de uso comuns para parciais.
 
-## Basic example
+## Exemplo básico
 
-Let's create a standard webpage with a header, sidebar, main, and footer using partials.
+Vamos criar uma página da web padrão com um cabeçalho, barra lateral, principal e rodapé usando parciais.
 
-#### 1. Create the following file structure
+#### 1. Crie a seguinte estrutura de arquivo
 
 ```sh
 ├── views
@@ -19,7 +19,7 @@ Let's create a standard webpage with a header, sidebar, main, and footer using p
 │   └── home.edge
 ```
 
-#### 2. Write the following content inside the respective partials
+#### 2. Escreva o seguinte conteúdo dentro dos respectivos parciais
 
 ```edge
 <!-- partials/header.edge -->
@@ -39,7 +39,7 @@ Let's create a standard webpage with a header, sidebar, main, and footer using p
 <footer class="footer"></footer>
 ```
 
-#### 3. Write the following markup inside the `home.edge` file.
+#### 3. Escreva a seguinte marcação dentro do arquivo `home.edge`.
 
 ```edge
 <!DOCTYPE html>
@@ -69,19 +69,19 @@ Let's create a standard webpage with a header, sidebar, main, and footer using p
 </html>
 ```
 
-#### 4. Result
+#### 4. Resultado
 
 ![](/docs/assets/edge-partials-layout.webp)
 
-## The `@include` tag
+## A tag `@include`
 
-The `@include` tag is responsible for loading and inlining the partials.
+A tag `@include` é responsável por carregar e embutir os parciais.
 
-- It accepts only a single argument, that is, the partial path relative from the views directory
-- The path can also be dynamic. Meaning you can use variables to define the partial path
-- The partial have access to the parent template state
+- Ela aceita apenas um único argumento, ou seja, o caminho parcial relativo do diretório de visualizações
+- O caminho também pode ser dinâmico. O que significa que você pode usar variáveis ​​para definir o caminho parcial
+- O parcial tem acesso ao estado do modelo pai
 
-Also, there is an additional `@includeIf` tag to include the partial, only when a certain condition is `true`.
+Além disso, há uma tag adicional `@includeIf` para incluir o parcial, apenas quando uma determinada condição for `true`.
 
 ```edge
 @includeIf(post.comments, 'partials/comments')

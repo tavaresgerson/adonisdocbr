@@ -1,15 +1,15 @@
-# Templating syntax
+# Sintaxe de template
 
-With Edge, we ensure not to introduce too many new concepts and instead rely on the JavaScript language features.
+Com o Edge, garantimos que não introduziremos muitos conceitos novos e, em vez disso, confiamos nos recursos da linguagem JavaScript.
 
-The syntax of Edge revolves around the two main primitives.
+A sintaxe do Edge gira em torno dos dois primitivos principais.
 
-- **Curly braces** are used to evaluate an expression and display its output value.
-- **Edge tags** are used to add new features to the template engine. The tags API is used by the core of Edge and is also exposed to add custom tags.
+- **Colchetes** são usados ​​para avaliar uma expressão e exibir seu valor de saída.
+- **Etiquetas do Edge** são usadas para adicionar novos recursos ao mecanismo de template. A API de tags é usada pelo núcleo do Edge e também é exposta para adicionar tags personalizadas.
 
-## Curly braces
+## Colchetes
 
-Edge uses the popular approach of double curly braces (aka mustache) to evaluate the JavaScript expressions. You can use any valid [JavaScript expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators#expressions) inside the curly braces, and Edge will evaluate it for you.
+O Edge usa a abordagem popular de colchetes duplos (também conhecidos como bigode) para avaliar as expressões JavaScript. Você pode usar qualquer [expressão JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators#expressions) válida dentro das colchetes, e o Edge irá avaliá-la para você.
 
 ```edge
 {{ user.username }}
@@ -18,51 +18,51 @@ Edge uses the popular approach of double curly braces (aka mustache) to evaluate
 {{ (await getUser()).username }}
 ```
 
-The double curly braces escape the output of the expression to keep your template safe from the XSS attacks.
+As chaves duplas escapam da saída da expressão para manter seu modelo seguro contra ataques XSS.
 
-#### Given the following expression
+#### Dada a seguinte expressão
 
 ```edge
 {{ '<script> alert(`foo`) </script>' }}
 ```
 
-#### The output will be:
+#### A saída será:
 
 ```html
 &lt;script&gt; alert(&#x60;foo&#x60;) &lt;/script&gt;
 ```
 
-However, in situations where you trust the expression, you can **instruct Edge to not escape the value by using three curly braces.**
+No entanto, em situações em que você confia na expressão, você pode **instruir o Edge a não escapar do valor usando três chaves.**
 
 ```edge
 {{{ '<script> alert(`foo`) </script>' }}}
 ```
 
-#### Output
+#### Saída
 
 ```html
 <script> alert(`foo`) </script>
 ```
 
-## Ignoring curly braces
+## Ignorando chaves
 
-You can instruct Edge to ignore curly braces by prefixing the `@` symbol. This is usually helpful when you are using Edge to generate the markup for another template engine.
+Você pode instruir o Edge a ignorar chaves prefixando o símbolo `@`. Isso geralmente é útil quando você está usando o Edge para gerar a marcação para outro mecanismo de modelo.
 
 ```edge
 Hello @{{ username }}
 ```
 
-#### Output
+#### Saída
 
 ```html
 Hello {{ username }}
 ```
 
-## Edge tags
+## Tags de borda
 
-Tags are the expressions that start with the `@` symbol. Tags provide a unified API for adding features to the templating layer.
+Tags são as expressões que começam com o símbolo `@`. As tags fornecem uma API unificada para adicionar recursos à camada de modelagem.
 
-The core of Edge uses tags to implement features like conditionals, loops, partials, and components.
+O núcleo do Edge usa tags para implementar recursos como condicionais, loops, parciais e componentes.
 
 ```edge
 {{-- if tag --}}
@@ -73,62 +73,62 @@ The core of Edge uses tags to implement features like conditionals, loops, parti
 @include('partials/header')
 ```
 
-A tag must always appear in its line and cannot be mixed with other contents. Here is the [extensive syntax guide](https://github.com/edge-js/syntax).
+Uma tag deve sempre aparecer em sua linha e não pode ser misturada com outros conteúdos. Aqui está o [guia de sintaxe extensivo](https://github.com/edge-js/syntax).
 
 ```edge
-{{-- ✅ Valid --}}
+{{-- ✅ Válido --}}
 @if(user)
 @end
 
 
-{{-- ❌ Invalid --}}
+{{-- ❌ Inválido --}}
 Hello @if(user)
 @end
 ```
 
-We have further divided the tags into sub-groups to cater to different templating needs.
+Nós dividimos ainda mais as tags em subgrupos para atender a diferentes necessidades de modelagem.
 
-### Block-level tags
+### Tags de nível de bloco
 
-Block-level tags are the ones that optionally accept the content inside them. A block-level tag must always be closed using the `@end` statement. For example:
+Tags de nível de bloco são aquelas que aceitam opcionalmente o conteúdo dentro delas. Uma tag de nível de bloco deve sempre ser fechada usando a instrução `@end`. Por exemplo:
 
-#### `if` is a block level tag
+#### `if` é uma tag de nível de bloco
 
 ```edge
 @if(user)
 @end
 ```
 
-#### `section` is a block level tag
+#### `section` é uma tag de nível de bloco
 
 ```edge
 @section('body')
 @end
 ```
 
-### Inline tags
+### Tags em linha
 
-Inline tags do not accept any content inside them and are self-closed within the same statement. For example:
+As tags em linha não aceitam nenhum conteúdo dentro delas e são fechadas automaticamente dentro da mesma instrução. Por exemplo:
 
-#### `include` is an inline tag
+#### `include` é uma tag em linha
 
 ```edge
 @include('partials/header')
 ```
 
-#### `layout` is an inline tag
+#### `layout` é uma tag em linha
 
 ```edge
 @layout('layouts/master')
 ```
 
-### Self closed block-level tags
+### Tags em nível de bloco fechadas automaticamente
 
-Occasionally you will find yourself self-closing a block-level tag. A great example of this is a `component` tag.
+Ocasionalmente, você se verá fechando automaticamente uma tag de nível de bloco. Um ótimo exemplo disso é uma tag `component`.
 
-For example, A button component optionally accepts the markup for the button. However, in certain situations, you don't want to define the markup, and hence you can self-close the tag using the `@!` expression.
+Por exemplo, um componente de botão aceita opcionalmente a marcação para o botão. No entanto, em certas situações, você não quer definir a marcação e, portanto, pode fechar a tag usando a expressão `@!`.
 
-#### Button component with body
+#### Componente de botão com corpo
 
 ```edge
 @component('button')
@@ -136,33 +136,33 @@ For example, A button component optionally accepts the markup for the button. Ho
 @end
 ```
 
-#### Self closed button component
+#### Componente de botão fechado automaticamente
 
 ```edge
 @!component('button', { text: 'Login' })
 ```
 
-### Seekable tags
+### Tags pesquisáveis
 
-Seekable tags are the ones that accept one or more arguments. For example:
+Tags pesquisáveis ​​são aquelas que aceitam um ou mais argumentos. Por exemplo:
 
-#### `include` is a seekable tag as it requires the partial path
+#### `include` é uma tag pesquisável, pois requer o caminho parcial
 
 ```edge
 @include('partials/header')
 ```
 
-#### `super` is NOT a seekable tag
+#### `super` NÃO é uma tag pesquisável
 
 ```edge
 @super
 ```
 
-The concept of seekable tags is introduced to optimize the Edge compiler. For non seekable tags, the Edge compiler does not wait for the opening and closing parenthesis to appear and moves to the next line.
+O conceito de tags pesquisáveis ​​é introduzido para otimizar o compilador Edge. Para tags não pesquisáveis, o compilador Edge não espera que os parênteses de abertura e fechamento apareçam e passa para a próxima linha.
 
-## Comments
+## Comentários
 
-The comments are written by wrapping the text inside the <span v-pre>`{{-- --}}`</span> expression.
+Os comentários são escritos envolvendo o texto dentro da expressão <span v-pre>`{{-- --}}`</span>.
 
 ```edge
 {{-- This is a comment --}}
@@ -176,9 +176,9 @@ Hello {{ username }} {{-- inline comment --}}
 {{-- surrounded by --}} Hello {{-- comments --}}
 ```
 
-## Swallow new lines
+## Engolir novas linhas
 
-Since tags are always written in their line, they add an empty line to the final output. This empty line is not problematic with HTML markup since HTML is not whitespace sensitive. However, if you are working with a whitespace-sensitive language, you can remove the newline using the tilde `~` character.
+Como as tags são sempre escritas em sua linha, elas adicionam uma linha vazia à saída final. Essa linha vazia não é problemática com a marcação HTML, pois o HTML não é sensível a espaços em branco. No entanto, se você estiver trabalhando com uma linguagem sensível a espaços em branco, poderá remover a nova linha usando o caractere til `~`.
 
 ```edge
 <p>Hello
@@ -188,7 +188,7 @@ Since tags are always written in their line, they add an empty line to the final
 </p>
 ```
 
-#### Output
+#### Saída
 
 ```html
 <p>Hello virk</p>

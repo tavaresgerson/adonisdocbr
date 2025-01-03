@@ -1,12 +1,12 @@
 # Layouts
 
-Layouts in Edge allow you to define the main layout for your pages and then override specific sections as needed.
+Layouts no Edge permitem que você defina o layout principal para suas páginas e então substitua seções específicas conforme necessário.
 
-## Basic example
+## Exemplo básico
 
-Let's create a standard webpage using layouts.
+Vamos criar uma página da web padrão usando layouts.
 
-#### 1. Create the following file structure
+#### 1. Crie a seguinte estrutura de arquivo
 
 ```
 .
@@ -16,7 +16,7 @@ Let's create a standard webpage using layouts.
 │   └── home.edge
 ```
 
-#### 2. Paste the following markup to the layout file.
+#### 2. Cole a seguinte marcação no arquivo de layout.
 
 ```edge
 <!-- resources/views/layouts/main.edge -->
@@ -41,7 +41,7 @@ Let's create a standard webpage using layouts.
 </html>
 ```
 
-#### 3. Paste the following markup to the `resources/views/home.edge` file.
+#### 3. Cole a seguinte marcação no arquivo `resources/views/home.edge`.
 
 ```edge
 <!-- resources/views/home.edge -->
@@ -63,23 +63,23 @@ Let's create a standard webpage using layouts.
 @end
 ```
 
-#### 4. Render the view, and you will end up with the following result
+#### 4. Renderize a visualização, e você terminará com o seguinte resultado
 
 ![](/docs/assets/edge-layout.webp)
 
-## The `layout` tag
+## A tag `layout`
 
-The layout tag is used to define the layout for a given template.
+A tag layout é usada para definir o layout para um determinado modelo.
 
-- It must appear on the first line of the template. Otherwise, it will be ignored.
-- You can only use one layout per template
-- The layout name has to be static and cannot be defined using runtime variables.
+- Deve aparecer na primeira linha do modelo. Caso contrário, será ignorado.
+- Você só pode usar um layout por modelo
+- O nome do layout deve ser estático e não pode ser definido usando variáveis ​​de tempo de execução.
 
-## The `section` tag
+## A tag `section`
 
-The section tag is a placeholder exposed by a layout for injecting content. A layout can define as many sections as it wants, and the parent template can override them when necessary.
+A tag section é um espaço reservado exposto por um layout para injetar conteúdo. Um layout pode definir quantas seções quiser, e o modelo pai pode substituí-las quando necessário.
 
-In the following example, the layout renders the scripts tags inside the `scripts` section. This allows all the pages to use these scripts or override them completely by re-defining the same section with different script tags.
+No exemplo a seguir, o layout renderiza as tags scripts dentro da seção `scripts`. Isso permite que todas as páginas usem esses scripts ou os substituam completamente redefinindo a mesma seção com diferentes tags script.
 
 #### Layout
 
@@ -90,7 +90,7 @@ In the following example, the layout renders the scripts tags inside the `script
 @end
 ```
 
-#### Parent template overriding everything
+#### Modelo pai substituindo tudo
 
 ```edge
 @section('scripts')
@@ -99,7 +99,7 @@ In the following example, the layout renders the scripts tags inside the `script
 @end
 ```
 
-#### Parent template appending to existing scripts
+#### Modelo pai anexando a scripts existentes
 
 ```edge
 @section('scripts')
@@ -108,7 +108,7 @@ In the following example, the layout renders the scripts tags inside the `script
 @end
 ```
 
-- The name for all the section tags must be unique.
-- The section name has to be static and cannot be defined using runtime variables.
-- You cannot have nested sections.
-- All sections must be at the top level. This constraint is similar to ESM exports in JavaScript, where each `export` statement is at the **top level** and **unique**.
+- O nome de todas as tags section deve ser exclusivo.
+- O nome da seção deve ser estático e não pode ser definido usando variáveis ​​de tempo de execução.
+- Você não pode ter seções aninhadas.
+- Todas as seções devem estar no nível superior. Essa restrição é semelhante às exportações ESM em JavaScript, onde cada declaração `export` está no **nível superior** e é **única**.

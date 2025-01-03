@@ -1,25 +1,23 @@
-# Custom messages
+# Mensagens personalizadas
 
-The `validate` method accepts the custom messages alongside the validation schema object. You can define messages just for the validation rules, or you can specify them for individual fields as well.
+O método `validate` aceita as mensagens personalizadas junto com o objeto de esquema de validação. Você pode definir mensagens apenas para as regras de validação ou especificá-las para campos individuais também.
 
-```ts
+```ts {5-8}
 await request.validate({
   schema: schema.create({
     // ...
   }),
-  // highlight-start
   messages: {
     required: 'The {{ field }} is required to create a new account',
     'username.unique': 'Username not available'
   }
-  // highlight-end
 })
 ```
 
-- The custom message for the `required` rule will be used by all the fields that fail the required validation.
-- The `username.unique` combination applies only to the `username` field for the `unique` validation rule.
+- A mensagem personalizada para a regra `required` será usada por todos os campos que falharem na validação necessária.
+- A combinação `username.unique` se aplica apenas ao campo `username` para a regra de validação `unique`.
 
-Messages for nested objects and arrays can be defined using the dot separator.
+Mensagens para objetos aninhados e matrizes podem ser definidas usando o separador de ponto.
 
 ```ts
 {
@@ -31,8 +29,8 @@ Messages for nested objects and arrays can be defined using the dot separator.
 }
 ```
 
-## Dynamic placeholders
-You can make use of the following placeholders to reference runtime values inside your custom messages.
+## Espaços reservados dinâmicos
+Você pode usar os seguintes espaços reservados para referenciar valores de tempo de execução dentro de suas mensagens personalizadas.
 
 ```ts
 {
@@ -43,16 +41,16 @@ You can make use of the following placeholders to reference runtime values insid
 }
 ```
 
-| Placeholder | Description |
-|-------------|-------------|
-| `{{ field }}` | Name of the field under validation. Nested object paths are represented with a dot separator. For example: `user.profile.username` |
-| `{{ rule }}` | Name of the validation rule |
-| `{{ options }}` | The options passed by the validation methods. For example, The `enum` rule will pass an array of `choices`, and some rules may not pass any options at all |
+| Placeholder     | Descrição   |
+|-----------------|-------------|
+| <span v-pre>`{{ field }}`</span>   | Nome do campo sob validação. Caminhos de objetos aninhados são representados com um separador de ponto. Por exemplo: `user.profile.username` |
+| <span v-pre>`{{ rule }}`</span>    | Nome da regra de validação |
+| <span v-pre>`{{ options }}`</span> | As opções passadas pelos métodos de validação. Por exemplo, a regra `enum` passará uma matriz de `choices`, e algumas regras podem não passar nenhuma opção |
 
-## Wildcard callback
-You can also define a callback function to construct the message at runtime. The callback can only be defined as a fallback using the wildcard `*` expression.
+## Retorno de chamada curinga
+Você também pode definir uma função de retorno de chamada para construir a mensagem em tempo de execução. O retorno de chamada só pode ser definido como um fallback usando a expressão curinga `*`.
 
-The callback will be invoked for all the fields in the following example, except for the `username` field only when it fails the `required` validation.
+O retorno de chamada será invocado para todos os campos no exemplo a seguir, exceto para o campo `username` somente quando ele falhar na validação `required`.
 
 ```ts
 {
@@ -65,11 +63,11 @@ The callback will be invoked for all the fields in the following example, except
 }
 ```
 
-## Options passed to the message string
-Following is the list of options passed by the different validation methods to the message string.
+## Opções passadas para a string de mensagem
+A seguir está a lista de opções passadas pelos diferentes métodos de validação para a string de mensagem.
 
 ### `date`
-The `date` validation rule will pass the `options.format`.
+A regra de validação `date` passará o `options.format`.
 
 ```ts
 {
@@ -78,7 +76,7 @@ The `date` validation rule will pass the `options.format`.
 ```
 
 ### `distinct`
-The `distinct` validation rule will pass the `field` on which the distinct rule is applied, along with the `index` at which the duplicate value was found.
+A regra de validação `distinct` passará o `field` no qual a regra distinct é aplicada, junto com o `index` no qual o valor duplicado foi encontrado.
 
 ```ts
 {
@@ -87,7 +85,7 @@ The `distinct` validation rule will pass the `field` on which the distinct rule 
 ```
 
 ### `enum` / `enumSet`
-The `enum` and `enumSet` validation rules will pass an array of `options.choices`.
+As regras de validação `enum` e `enumSet` passarão uma matriz de `options.choices`.
 
 ```ts
 {
@@ -97,7 +95,7 @@ The `enum` and `enumSet` validation rules will pass an array of `options.choices
 ```
 
 ### `file`
-The file validation allows defining custom messages for the sub-rules. For example:
+A validação de arquivo permite definir mensagens personalizadas para as sub-regras. Por exemplo:
 
 ```ts
 {
@@ -107,7 +105,7 @@ The file validation allows defining custom messages for the sub-rules. For examp
 ```
 
 ### `minLength` / `maxLength`
-The `minLength` and `maxLength` validation rules will pass the following options to custom messages.
+As regras de validação `minLength` e `maxLength` passarão as seguintes opções para mensagens personalizadas.
 
 ```ts
 {
@@ -116,8 +114,8 @@ The `minLength` and `maxLength` validation rules will pass the following options
 }
 ```
 
-### ` `
-The `range` validation rule passes the `start` and the `stop` options to custom messages.
+### `range`
+A regra de validação `range` passa as opções `start` e `stop` para mensagens personalizadas.
 
 ```ts
 {
@@ -126,7 +124,7 @@ The `range` validation rule passes the `start` and the `stop` options to custom 
 ```
 
 ### `requiredIfExists` / `requiredIfNotExists`
-The `requiredIfExists` and `requiredIfNotExists` validation rules will pass the `options.otherField` as a string.
+As regras de validação `requiredIfExists` e `requiredIfNotExists` passarão `options.otherField` como uma string.
 
 ```ts
 {
@@ -134,13 +132,13 @@ The `requiredIfExists` and `requiredIfNotExists` validation rules will pass the 
 }
 ```
 
-### Conditional required rules
-The following `requiredIf*` rules will pass the `options.otherFields` as an array of strings.
+### Regras condicionais obrigatórias
+As seguintes regras `requiredIf*` passarão `options.otherFields` como uma matriz de strings.
 
-- requiredIfExistsAll
-- requiredIfExistsAny
-- requiredIfNotExistsAll
-- requiredIfNotExistsAny
+- `requiredIfExistsAll`
+- `requiredIfExistsAny`
+- `requiredIfNotExistsAll`
+- `requiredIfNotExistsAny`
 
 ```ts
 {
@@ -149,12 +147,11 @@ The following `requiredIf*` rules will pass the `options.otherFields` as an arra
 ```
 
 ### `requiredWhen`
-The `requiredWhen` validation rule will pass the following options.
+A regra de validação `requiredWhen` passará as seguintes opções.
 
 - `options.otherField`
 - `options.operator`
 - `options.values`
-
 
 ```ts
 {

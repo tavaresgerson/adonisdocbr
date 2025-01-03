@@ -1,46 +1,46 @@
-# Mutations
+# Mutações
 
-Edge allows you to define local variables or mutate the value of an existing property using the `@set` tag.
+O Edge permite que você defina variáveis ​​locais ou altere o valor de uma propriedade existente usando a tag `@set`.
 
-Ideally, it is best to avoid too many inline local variables and pre process your data before passing it to the template.
+O ideal é evitar muitas variáveis ​​locais inline e pré-processar seus dados antes de passá-los para o modelo.
 
-## Declare the value
+## Declare o valor
 
-The first time you use `@set` tag, we will declare a `let` variable.
+A primeira vez que você usar a tag `@set`, declararemos uma variável `let`.
 
 ```edge
 @set('username', 'virk')
 ```
 
-#### Compiled output
+#### Saída compilada
 
 ```js
 let username = 'virk'
 ```
 
-Redeclaring the same variable again will just update the existing value.
+Redeclarar a mesma variável novamente apenas atualizará o valor existente.
 
 ```edge
 @set('username', 'virk')
 @set('username', 'romain')
 ```
 
-#### Compiled output
+#### Saída compilada
 
 ```js
 let username = 'virk'
 username = 'romain'
 ```
 
-## Mutate properties
+## Mutar propriedades
 
-The `@set` tag can also be used to mutate the properties of an existing object. For example.
+A tag `@set` também pode ser usada para alterar as propriedades de um objeto existente. Por exemplo.
 
 ```edge
 @set(post, 'title', 'This is the new title')
 ```
 
-In the above scenario, the value of `post.title` will be updated. You can also update nested values.
+No cenário acima, o valor de `post.title` será atualizado. Você também pode atualizar valores aninhados.
 
 ```edge
 @set(

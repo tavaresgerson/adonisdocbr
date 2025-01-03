@@ -1,6 +1,6 @@
 # Loops
 
-You can loop over `objects` and `arrays` using the `@each` tag. It works similar to the `for of` loop in JavaScript.
+Você pode fazer um loop sobre `objetos` e `matrizes` usando a tag `@each`. Ela funciona de forma semelhante ao loop `for of` em JavaScript.
 
 ```ts
 view.render('users', {
@@ -24,7 +24,7 @@ view.render('users', {
 @end
 ```
 
-You can access the loop index as shown in the following example
+Você pode acessar o índice do loop conforme mostrado no exemplo a seguir
 
 ```edge
 @each((user, index) in users)
@@ -32,7 +32,7 @@ You can access the loop index as shown in the following example
 @end
 ```
 
-Similarly you can also loop over an object and access its key and value.
+Da mesma forma, você também pode fazer um loop sobre um objeto e acessar sua chave e valor.
 
 ```ts
 view.render('recipes', {
@@ -50,7 +50,7 @@ view.render('recipes', {
 @end
 ```
 
-The `@each` tag works just fine with async code inside it. Here's an example of the same.
+A tag `@each` funciona muito bem com código assíncrono dentro dela. Aqui está um exemplo do mesmo.
 
 ```ts
 view.render('users', {

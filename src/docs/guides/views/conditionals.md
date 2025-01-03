@@ -1,6 +1,6 @@
-# Conditionals
+# Condicionais
 
-You can write conditionals using the `@if`, `@elseif` and the `@else` tags. All three tags works similar to the JavaScript if/else statements.
+Você pode escrever condicionais usando as tags `@if`, `@elseif` e `@else`. Todas as três tags funcionam de forma semelhante às instruções if/else do JavaScript.
 
 ```edge
 @if(user)
@@ -18,7 +18,7 @@ You can write conditionals using the `@if`, `@elseif` and the `@else` tags. All 
 @end
 ```
 
-The inverse of the `@if` tag is the `@unless` tag. You might find it expressive to write the NOT IF statements.
+O inverso da tag `@if` é a tag `@unless`. Você pode achar expressivo escrever as instruções NOT IF.
 
 ```edge
 @unless(account.isActive)

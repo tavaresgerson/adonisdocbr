@@ -1,9 +1,9 @@
-# Mocking and Fakes
+# Mocking e Fakes
 
-AdonisJS ships with fake implementations for most of its first-party packages. You can use fakes to have a better testing experience without manually mocking parts of your codebase.
+O AdonisJS vem com implementações falsas para a maioria de seus pacotes primários. Você pode usar fakes para ter uma melhor experiência de teste sem simular manualmente partes da sua base de código.
 
 ## Mail
-You can fake the outgoing emails by calling the `Mail.fake` method. Once you call this method, all other parts of your application interacting with the `Mail` object will not send real emails. Instead, they will be collected within memory for assertions.
+Você pode falsificar os e-mails de saída chamando o método `Mail.fake`. Depois de chamar esse método, todas as outras partes do seu aplicativo que interagem com o objeto `Mail` não enviarão e-mails reais. Em vez disso, eles serão coletados na memória para asserções.
 
 ```ts
 import { test } from '@japa/runner'
@@ -36,7 +36,7 @@ test('register user', async ({ assert, client }) => {
 
 ### `Mail.fake`
 
-Calling `Mail.fake` creates a fake only for the default mailer. However, you can explicitly pass the name(s) of the mailers to fake.
+Chamar `Mail.fake` cria um fake apenas para o mailer padrão. No entanto, você pode passar explicitamente o(s) nome(s) dos mailers para o fake.
 
 ```ts
 // Fake the default mailer
@@ -47,7 +47,7 @@ Mail.fake(['smtp', 's3'])
 ```
 
 ### `Mail.restore`
-Once done with testing, you can restore the fakes for selected or all mailers.
+Depois de terminar o teste, você pode restaurar os fakes para mailers selecionados ou todos.
 
 ```ts
 // Restore the default mailer
@@ -60,8 +60,8 @@ Mail.restore(['smtp', 's3'])
 Mail.restoreAll()
 ```
 
-### Finding messages
-You can check for the sent messages using `exists`, `find`, or the `filter` methods. All the methods accepts a subset of message properties or a callback.
+### Encontrando mensagens
+Você pode verificar as mensagens enviadas usando os métodos `exists`, `find` ou `filter`. Todos os métodos aceitam um subconjunto de propriedades de mensagem ou um retorno de chamada.
 
 ```ts
 assert.isTrue(mailer.exists({ subject: 'Welcome to AdonisJS' }))
@@ -77,8 +77,8 @@ const message = mailer.find((mail) => {
 console.log(message)
 ```
 
-## Events
-You can fake events by calling the `Event.fake` method. The method accepts an optional array of events to fake. Otherwise, all upcoming events are faked.
+## Eventos
+Você pode falsificar eventos chamando o método `Event.fake`. O método aceita uma matriz opcional de eventos para falsificar. Caso contrário, todos os próximos eventos serão falsificados.
 
 ```ts
 import Event from '@ioc:Adonis/Core/Event'
@@ -91,15 +91,15 @@ Event.fake(['new:user', 'update:email'])
 ```
 
 ### `Event.restore`
-You can restore events using the `Event.restore` method.
+Você pode restaurar eventos usando o método `Event.restore`.
 
 ```ts
 Event.restore()
 ```
 
-### Finding events
+### Encontrando eventos
 
-The `Event.fake` method returns a fake emitter you can use to later fetch or find events.
+O método `Event.fake` retorna um emissor falso que você pode usar para buscar ou encontrar eventos posteriormente.
 
 ```ts
 const emitter = Event.fake()
@@ -110,7 +110,7 @@ assert.isTrue(emitter.exists((event) => {
 }))
 ```
 
-You can use the `find` and `filter` methods to find specific events.
+Você pode usar os métodos `find` e `filter` para encontrar eventos específicos.
 
 ```ts
 const emitter = Event.fake()
@@ -123,7 +123,7 @@ emitter.filter((event) => event.name.startsWith('invite:'))
 ```
 
 ## Drive
-You can fake the Drive implementation by calling the `Drive.fake` method. By default, only the default disk is faked. However, you can define disk names explicitly as well.
+Você pode falsificar a implementação do Drive chamando o método `Drive.fake`. Por padrão, apenas o disco padrão é falsificado. No entanto, você também pode definir nomes de disco explicitamente.
 
 ```ts
 import Drive from '@ioc:Adonis/Core/Drive'
@@ -136,7 +136,7 @@ Drive.fake(['s3', 'local'])
 ```
 
 ### `Drive.restore`
-You can restore fakes by calling the `Drive.restore` method. Optionally, you can pass the disk names to restore, otherwise the default disk is restored. Or, use the `Drive.restoreAll` method to restore all the disk.
+Você pode restaurar falsificações chamando o método `Drive.restore`. Opcionalmente, você pode passar os nomes dos discos para restaurar, caso contrário, o disco padrão será restaurado. Ou use o método `Drive.restoreAll` para restaurar todo o disco.
 
 ```ts
 // Restore default disk
@@ -149,9 +149,9 @@ Drive.restore(['s3', 'local'])
 Drive.restoreAll()
 ```
 
-### Finding files
+### Encontrando arquivos
 
-The `Drive.fake` method returns the fake drive object you can use to later fetch or find files.
+O método `Drive.fake` retorna o objeto de unidade falsa que você pode usar para buscar ou encontrar arquivos posteriormente.
 
 ```ts
 const drive = Drive.fake()
@@ -167,7 +167,7 @@ assert.equal(await drive.get('package.json'), JSON.stringify({}))
 ```
 
 ## Hashing
-You can fake the Hash module by calling the `Hash.fake` method. No password hashing is performed during the fake, and the `hash.make` method returns the same value.
+Você pode falsificar o módulo Hash chamando o método `Hash.fake`. Nenhum hash de senha é executado durante a falsificação, e o método `hash.make` retorna o mesmo valor.
 
 ```ts
 import Hash from '@ioc:Adonis/Core/Hash'
@@ -182,10 +182,10 @@ await Hash.verify(hashed, 'secret') // returns "true"
 Hash.restore()
 ```
 
-## Mocking objects
-AdonisJS does not ship with any mocking library out of the box. You are free to use any mocking library from the Node ecosystem.
+## Objetos de simulação
+O AdonisJS não é fornecido com nenhuma biblioteca de simulação pronta para uso. Você pode usar qualquer biblioteca de simulação do ecossistema Node.
 
-Following is a small example demonstrating the usage of [SinonJS](https://sinonjs.org/) to mock ES6 classes.
+A seguir, um pequeno exemplo demonstrando o uso do [SinonJS](https://sinonjs.org/) para simular classes ES6.
 
 ```ts
 export default class ExchangeService {
@@ -196,7 +196,7 @@ export default class ExchangeService {
 }
 ```
 
-During tests, you can import the `ExchangeService` and mock the `getRate` method as follows.
+Durante os testes, você pode importar o `ExchangeService` e simular o método `getRate` da seguinte forma.
 
 ```ts
 import { test } from '@japa/runner'
@@ -227,10 +227,10 @@ test('transfer payment', async ({ client }) => {
 })
 ```
 
-## Mocking network requests
-You can use [nock](https://github.com/nock/nock) to mock the outgoing network requests. Since nock works by overriding the Node.js `http.request`, it works with almost every HTTP client, including `axios` and `got`.
+## Solicitações de rede simuladas
+Você pode usar [nock](https://github.com/nock/nock) para simular as solicitações de rede de saída. Como o nock funciona substituindo o `http.request` do Node.js, ele funciona com quase todos os clientes HTTP, incluindo `axios` e `got`.
 
-Following is an example to mock the `charges` API of Stripe.
+A seguir, um exemplo para simular a API `charges` do Stripe.
 
 ```ts
 // title: test_helpers/mocks.ts
@@ -249,7 +249,7 @@ export function mockStripeCharge() {
 }
 ```
 
-Now, you can use the `mockStripeCharge` helper as follows.
+Agora, você pode usar o auxiliar `mockStripeCharge` da seguinte forma.
 
 ```ts
 import { mockStripeCharge } from 'TestHelpers/mocks'

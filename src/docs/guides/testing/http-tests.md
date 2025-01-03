@@ -1,10 +1,10 @@
-# HTTP tests
+# Testes HTTP
 
-AdonisJS ships with the Japa [API client](https://v2.japa.dev/docs/plugins/api-client) plugin. You can use it to test your application HTTP endpoints.
+O AdonisJS é fornecido com o plugin Japa [cliente de API](https://v2.japa.dev/docs/plugins/api-client). Você pode usá-lo para testar os endpoints HTTP do seu aplicativo.
 
-The primary use case for the API client is to test JSON responses. However, there are no technical limitations around other response types like HTML, or even plain text.
+O principal caso de uso do cliente de API é testar respostas JSON. No entanto, não há limitações técnicas em torno de outros tipos de resposta, como HTML ou mesmo texto simples.
 
-Tests using the API client to perform outside-in testing should be part of the `functional` test suite.
+Os testes que usam o cliente de API para executar testes de fora para dentro devem fazer parte do conjunto de testes `funcionais`.
 
 ```sh
 node ace make:test functional users/list
@@ -26,32 +26,30 @@ test.group('List users', () => {
 })
 ```
 
-:::note
-Please read the [Japa documentation](https://v2.japa.dev/plugins/api-client#making-api-calls) to view all the available methods and assertions. This guide only documents the additional methods added by AdonisJS
+::: info NOTA
+Leia a [documentação do Japa](https://v2.japa.dev/plugins/api-client#making-api-calls) para visualizar todos os métodos e asserções disponíveis. Este guia documenta apenas os métodos adicionais adicionados pelo AdonisJS
 :::
 
-## Open API testing
-The API client allows you to write assertions against your OpenAPI spec. 
+## Teste de API aberta
+O cliente da API permite que você escreva asserções em relação à sua especificação OpenAPI.
 
-Keep the spec YAML or JSON file inside the project root and register it within the `tests/boostrap.ts` file.
+Mantenha o arquivo YAML ou JSON da especificação dentro da raiz do projeto e registre-o no arquivo `tests/boostrap.ts`.
 
-```ts
+```ts {4-8}
 // tests/bootstrap.ts
 
 export const plugins: Config['plugins'] = [
-  // highlight-start
   assert({
     openApi: {
       schemas: [Application.makePath('api-spec.yml')],
     },
   }),
-  // highlight-end
   runFailedTests(),
   apiClient(),
 ]
 ```
 
-Once the schema is registered, you can make use of the `response.assertAgainstApiSpec` method to assert against the API spec.
+Depois que o esquema for registrado, você pode usar o método `response.assertAgainstApiSpec` para fazer a asserção em relação à especificação da API.
 
 ```ts
 test('get a paginated list of existing posts', async ({ client }) => {
@@ -60,16 +58,16 @@ test('get a paginated list of existing posts', async ({ client }) => {
 })
 ```
 
-- The assertion will use the **request method**, the **endpoint** and **response status code** to find the expected response schema.
-- The actual response body is validated against the matching schema. 
+- A asserção usará o **método de solicitação**, o **endpoint** e o **código de status de resposta** para encontrar o esquema de resposta esperado.
+- O corpo da resposta real é validado em relação ao esquema correspondente.
 
-Do note, only the shape of the response is tested and not the actual values. Therefore, you may have to write additional assertions. For example:
+Observe que apenas o formato da resposta é testado e não os valores reais. Portanto, pode ser necessário escrever asserções adicionais. Por exemplo:
 
 ```ts
-// Assert that response is as per the schema
+// Afirme que a resposta é conforme o esquema
 response.assertAgainstApiSpec()
 
-// Assert for expected values
+// Afirme para valores esperados
 response.assertBodyContains({
   data: [{ 'Adonis 101' }, { 'Lucid 101' }]
 
@@ -77,9 +75,9 @@ response.assertBodyContains({
 ```
 
 ## Cookies
-You can read/write cookies during the request. The cookies are automatically signed during the request and converted to plain text in the response.
+Você pode ler/escrever cookies durante a solicitação. Os cookies são assinados automaticamente durante a solicitação e convertidos em texto simples na resposta.
 
-In the following example, a `user_preferences` cookie is sent to the server.
+No exemplo a seguir, um cookie `user_preferences` é enviado ao servidor.
 
 ```ts
 await client
@@ -87,7 +85,7 @@ await client
   .cookie('user_preferences', { limit: 10 })
 ```
 
-You can also read the cookies set by the server using the `response.cookies()` method.
+Você também pode ler os cookies definidos pelo servidor usando o método `response.cookies()`.
 
 ```ts
 const response = await client.get('/users')
@@ -98,8 +96,8 @@ console.log(response.cookie('user_preferences'))
 response.assertCookie('user_preferences')
 ```
 
-### Encrypted cookies
-By default the cookies are signed and unsigned during a request. You can make use of the `encryptedCookie` method to send encrypted cookies to the server.
+### Cookies criptografados
+Por padrão, os cookies são assinados e não assinados durante uma solicitação. Você pode usar o método `encryptedCookie` para enviar cookies criptografados ao servidor.
 
 ```ts
 await client
@@ -107,8 +105,8 @@ await client
   .encryptedCookie('user_preferences', { limit: 10 })
 ```
 
-### Plain cookies
-You can also send plain cookies (base64 encoded) to the server using the `plainCookie` method.
+### Cookies simples
+Você também pode enviar cookies simples (codificados em base64) para o servidor usando o método `plainCookie`.
 
 ```ts
 await client
@@ -116,10 +114,10 @@ await client
   .plainCookie('user_preferences', { limit: 10 })
 ```
 
-## Session
-The `@adonisjs/session` package extends the API client by providing additional methods to read/write session data during the request.
+## Sessão
+O pacote `@adonisjs/session` estende o cliente da API fornecendo métodos adicionais para ler/escrever dados da sessão durante a solicitação.
 
-Sessions must use the `memory` driver during tests. Therefore, make sure to update the `SESSION_DRIVER` within the `.env.test` file.
+As sessões devem usar o driver `memory` durante os testes. Portanto, certifique-se de atualizar o `SESSION_DRIVER` dentro do arquivo `.env.test`.
 
 ```dotenv
 // .env.test
@@ -127,15 +125,15 @@ Sessions must use the `memory` driver during tests. Therefore, make sure to upda
 SESSION_DRIVER=memory
 ```
 
-### Writing session values
+### Escrevendo valores de sessão
 
-You can set the session data during the request using the `session` method. The session values will accessible by the server.
+Você pode definir os dados da sessão durante a solicitação usando o método `session`. Os valores da sessão serão acessíveis pelo servidor.
 
 ```ts
 await client.get('/').session({ user_id: 1 })
 ```
 
-Also, you can set the flash messages using the `flashMessages` method.
+Além disso, você pode definir as mensagens flash usando o método `flashMessages`.
 
 ```ts
 await client.get('/').flashMessages({
@@ -146,52 +144,52 @@ await client.get('/').flashMessages({
 })
 ```
 
-### Reading session values
-You can read the session data set by the server using the `session` method on the response object.
+### Lendo valores de sessão
+Você pode ler os dados da sessão definidos pelo servidor usando o método `session` no objeto de resposta.
 
 ```ts
 const response = await client.get('/')
 console.log(response.session())
 ```
 
-The flash messages can be accessed using the `flashMessages` method.
+As mensagens flash podem ser acessadas usando o método `flashMessages`.
 
 ```ts
 const response = await client.get('/')
 console.log(response.flashMessages())
 ```
 
-You can dump the session data to the console using the `dumpSession` method.
+Você pode despejar os dados da sessão no console usando o método `dumpSession`.
 
 ```ts
 const response = await client.get('/')
 
-// writes to the console
+// escreve no console
 response.dumpSession()
 ```
 
-## CSRF token
-You can pass a CSRF token to the HTTP request by calling the `withCsrfToken` method on the request object. The method will set the CSRF secret session and passes the token inside the `x-csrf-token` header.
+## Token CSRF
+Você pode passar um token CSRF para a solicitação HTTP chamando o método `withCsrfToken` no objeto de solicitação. O método definirá a sessão secreta CSRF e passará o token dentro do cabeçalho `x-csrf-token`.
 
-:::note
-Ensure you have the `@adonisjs/session` package installed as CSRF secrets rely on the session storage. Also, the `SESSION_DRIVER` should be set to `memory` during testing.
+::: info NOTA
+Certifique-se de ter o pacote `@adonisjs/session` instalado, pois os segredos CSRF dependem do armazenamento da sessão. Além disso, o `SESSION_DRIVER` deve ser definido como `memory` durante o teste.
 :::
 
 ```ts
 await client.post('/comments').withCsrfToken()
 ```
 
-## Authentication
-The `@adonisjs/auth` package extends the API client and adds the `loginAs` method you can use to login as a certain user when making the request.
+## Autenticação
+O pacote `@adonisjs/auth` estende o cliente da API e adiciona o método `loginAs` que você pode usar para fazer login como um determinado usuário ao fazer a solicitação.
 
-The method accepts an instance of the user object to login with.
+O método aceita uma instância do objeto do usuário para fazer login.
 
 ```ts
 const user = await User.find(1)
 await client.get('/posts').loginAs(user)
 ```
 
-You can also specify the Auth guard to use when authenticating the user. The web guard will create the session, whereas the API tokens guard will generate a token and set it as the header.
+Você também pode especificar o Auth guard para usar ao autenticar o usuário. O web guard criará a sessão, enquanto o API tokens guard gerará um token e o definirá como o cabeçalho.
 
 ```ts
 const user = await User.find(1)
@@ -201,97 +199,89 @@ await client.get('/posts')
   .loginAs(user)
 ```
 
-For basic authentication, you can use the `basicAuth` method. It accepts the user login credentials as arguments. Make sure you pass the plain password (not hashed) to the `basicAuth` method.
+Para autenticação básica, você pode usar o método `basicAuth`. Ele aceita as credenciais de login do usuário como argumentos. Certifique-se de passar a senha simples (sem hash) para o método `basicAuth`.
 
 ```ts
 await client.get('/posts').basicAuth('email', 'password')
 ```
 
-## File uploads
-AdonisJS offers a great testing experience when dealing with file uploads. You can generate in-memory dummy files and fake the Drive implementation to not persist any files during tests.
+## Uploads de arquivo
+O AdonisJS oferece uma ótima experiência de teste ao lidar com uploads de arquivo. Você pode gerar arquivos fictícios na memória e falsificar a implementação do Drive para não persistir nenhum arquivo durante os testes.
 
-Lets assume you want to test that a user can update their avatar with a valid image file under a certain size. Now, instead of keeping images of different sizes inside your project, you can use the AdonisJS `file` helpers to generate an in-memory image.
+Vamos supor que você queira testar se um usuário pode atualizar seu avatar com um arquivo de imagem válido em um determinado tamanho. Agora, em vez de manter imagens de tamanhos diferentes dentro do seu projeto, você pode usar os auxiliares `file` do AdonisJS para gerar uma imagem na memória.
 
-Similarly, instead of storing the user uploaded files on the disk or s3. You can call `Drive.fake()` method to collect user uploaded files within memory and write assertions against them.
+Da mesma forma, em vez de armazenar os arquivos enviados pelo usuário no disco ou s3. Você pode chamar o método `Drive.fake()` para coletar arquivos enviados pelo usuário na memória e escrever asserções contra eles.
 
-Let's see how all this works in practice.
+Vamos ver como tudo isso funciona na prática.
 
-```ts
+```ts {2-3,6-15,20,22-30}
 import { test } from '@japa/runner'
-// highlight-start
 import Drive from '@ioc:Adonis/Core/Drive'
 import { file } from '@ioc:Adonis/Core/Helpers'
-// highlight-end
 
 test('a user can update avatar', async ({ client, assert }) => {
-  // highlight-start
   /**
-   * After this the server code using Drive
-   * will not write any files on the disk
+   * Depois disso, o código do servidor usando Drive
+   * não gravará nenhum arquivo no disco
    */
   const fakeDrive = Drive.fake()
 
   /**
-   * Creating a fake file to upload
+   * Criando um arquivo falso para carregar
    */
   const fakeAvatar = await file.generatePng('1mb')
-  // highlight-end
 
   await client
     .put(`/me`)
     .loginAs(user)
-    // highlight-start
     .file('avatar', fakeAvatar.contents, { filename: fakeAvatar.name })
-    // highlight-end
 
-  // highlight-start
   /**
-   * Assert the file was uploaded successfully
+   * Afirme que o arquivo foi carregado com sucesso
    */
   assert.isTrue(await fakeDrive.exists(fakeAvatar.name))
 
   /**
-   * Restore the Drive fake
+   * Restaure o Drive falso
    */
   Drive.restore()
-  // highlight-end
 })
 ```
 
-## Additional assertions
-You can validate the server response using the assertions available on the `response` object.
+## Asserções adicionais
+Você pode validar a resposta do servidor usando as asserções disponíveis no objeto `response`.
 
-AdonisJS provides the following additional methods on top of the existing [Japa assertions](https://v2.japa.dev/docs/plugins/api-client#assertions-api).
+O AdonisJS fornece os seguintes métodos adicionais além das [asserções Japa](https://v2.japa.dev/docs/plugins/api-client#assertions-api) existentes.
 
 ### `assertSession`
-Assert the given session exists. Optionally, you can also assert the session value.
+Declara que a sessão fornecida existe. Opcionalmente, você também pode declarar o valor da sessão.
 
 ```ts
 response.assertSession('foo')
 
 /**
- * Two assertions are executed under the hood
- * when the value is provided
+ * Duas asserções são executadas sob o capô
+ * quando o valor é fornecido
  */
 response.assertSession('foo', 'bar')
 ```
 
 ### `assertSessionMissing`
-Assert the session does not exist in the response.
+Declara que a sessão não existe na resposta.
 
 ```ts
 response.assertSessionMissing('foo')
 ```
 
 ### `assertFlashMessage`
-Assert the given flash message exists. Optionally, you can also assert for a specific value.
+Declara que a mensagem flash fornecida existe. Opcionalmente, você também pode declarar para um valor específico.
 
 ```ts
 response.assertFlashMessage('errors')
 
 /**
- * Two assertions are executed under the hood
- * when the value is provided
+ * Duas asserções são executadas sob o capô
+ * quando o valor é fornecido
  */
 response.assertFlashMessage('errors', [
   {
@@ -302,7 +292,7 @@ response.assertFlashMessage('errors', [
 ```
 
 ### `assertFlashMissing`
-Assert the flash message does not exist in the response.
+Declara que a mensagem flash não existe na resposta.
 
 ```ts
 response.assertFlashMissing('success')

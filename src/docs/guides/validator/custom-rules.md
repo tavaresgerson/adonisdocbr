@@ -1,8 +1,8 @@
-# Custom validation rules
+# Regras de validação personalizadas
 
-You can add custom rules to the validator using the `validator.rule` method. Rules should be registered only once. Hence we recommend you register them inside a service provider or a [preload file](../fundamentals/adonisrc-file.md#preloads).
+Você pode adicionar regras personalizadas ao validador usando o método `validator.rule`. As regras devem ser registradas apenas uma vez. Portanto, recomendamos que você as registre dentro de um provedor de serviços ou um [arquivo de pré-carregamento](../fundamentals/adonisrc-file.md#preloads).
 
-Throughout this guide, we will keep them inside the `start/validator.ts` file. You can create this file by running the following Ace command and select the environment as **"During HTTP server"**.
+Ao longo deste guia, nós as manteremos dentro do arquivo `start/validator.ts`. Você pode criar este arquivo executando o seguinte comando Ace e selecionando o ambiente como **"Durante o servidor HTTP"**.
 
 ```sh
 node ace make:prldfile validator
@@ -10,7 +10,7 @@ node ace make:prldfile validator
 
 ![](/docs/assets/validator-prldfile_wipxtd.webp)
 
-Open the newly created file and paste the following code inside it.
+Abra o arquivo recém-criado e cole o seguinte código dentro dele.
 
 ```ts
 // start/validator.ts
@@ -34,17 +34,17 @@ validator.rule('camelCase', (value, _, options) => {
 })
 ```
 
-- The `validator.rule` method accepts the rule name as the first argument.
-- The second argument is the rule implementation. The function receives the field's value under validation, the rule options, and an object representing the schema tree.
+- O método `validator.rule` aceita o nome da regra como o primeiro argumento.
+- O segundo argumento é a implementação da regra. A função recebe o valor do campo em validação, as opções de regra e um objeto que representa a árvore de esquema.
 
-In the above example, we create a `camelCase` rule that checks if the field value is the same as its camelCase version or not. If not, we will report an error using the [errorReporter](https://github.com/adonisjs/validator/blob/develop/src/ErrorReporter/Vanilla.ts#L39) class instance.
+No exemplo acima, criamos uma regra `camelCase` que verifica se o valor do campo é o mesmo que sua versão camelCase ou não. Caso contrário, reportaremos um erro usando a instância de classe [errorReporter](https://github.com/adonisjs/validator/blob/develop/src/ErrorReporter/Vanilla.ts#L39).
 
-## Using the rule
-Before using your custom rules, you will have to inform the TypeScript compiler about the same. Otherwise, it will complain that the rule does not exist.
+## Usando a regra
+Antes de usar suas regras personalizadas, você terá que informar o compilador TypeScript sobre o mesmo. Caso contrário, ele reclamará que a regra não existe.
 
-To inform TypeScript, we will use [declaration merging](https://www.typescriptlang.org/docs/handbook/declaration-merging.html#merging-interfaces) and add the property to the `Rules` interface.
+Para informar o TypeScript, usaremos [declaration merging](https://www.typescriptlang.org/docs/handbook/declaration-merging.html#merging-interfaces) e adicionaremos a propriedade à interface `Rules`.
 
-Create a new file at path `contracts/validator.ts` (the filename is not important) and paste the following contents inside it.
+Crie um novo arquivo no caminho `contracts/validator.ts` (o nome do arquivo não é importante) e cole o seguinte conteúdo dentro dele.
 
 ```ts
 // contracts/validator.ts
@@ -56,29 +56,25 @@ declare module '@ioc:Adonis/Core/Validator' {
 }
 ```
 
-Once done, you can access the `camelCase` rule from the `rules` object.
+Uma vez feito isso, você pode acessar a regra `camelCase` do objeto `rules`.
 
-```ts
-// highlight-start
+```ts {1,6}
 import { rules, schema, validator } from '@ioc:Adonis/Core/Validator'
-// highlight-end
 
 await validator.validate({
   schema: schema.create({
     fileName: schema.string([
-      // highlight-start
       rules.camelCase()
-      // highlight-end
     ]),
   }),
   data: {},
 })
 ```
 
-## Passing options to the rule
-Rules can also accept options, and they will be available to the validation callback as the second argument.
+## Passando opções para a regra
+As regras também podem aceitar opções, e elas estarão disponíveis para o retorno de chamada de validação como o segundo argumento.
 
-This time let's start from the TypeScript interface and define the options we expect from the rule consumer.
+Desta vez, vamos começar pela interface TypeScript e definir as opções que esperamos do consumidor da regra.
 
 ```ts
 // contracts/validator.ts
@@ -90,23 +86,19 @@ declare module '@ioc:Adonis/Core/Validator' {
 }
 ```
 
-All the arguments passed to the rule function are available as an array to the rule implementation. So, for example, You can access the `maxLength` option as follows.
+Todos os argumentos passados ​​para a função de regra estão disponíveis como uma matriz para a implementação da regra. Então, por exemplo, você pode acessar a opção `maxLength` da seguinte forma.
 
-```ts
+```ts {3,10}
 validator.rule('camelCase', (
   value,
-  // highlight-start
   [maxLength],
-  // highlight-end
   options
 ) => {
   // Rest of the validation
   if (maxLength && value.length > maxLength) {
     options.errorReporter.report(
       options.pointer,
-       // highlight-start
-      'camelCase.maxLength', // 👈 Keep an eye on this
-       // highlight-end
+      'camelCase.maxLength', // 👈 Fique de olho nisso
       'camelCase.maxLength validation failed',
       options.arrayExpressionPointer,
       { maxLength }
@@ -115,7 +107,7 @@ validator.rule('camelCase', (
 })
 ```
 
-Finally, if you notice, we are passing the rule name as `camelCase.maxLength` to the error reporter. This will allow the users to define a custom validation message just for the `maxLength`.
+Finalmente, se você notar, estamos passando o nome da regra como `camelCase.maxLength` para o relator de erros. Isso permitirá que os usuários definam uma mensagem de validação personalizada apenas para o `maxLength`.
 
 ```ts
 messages: {
@@ -123,37 +115,17 @@ messages: {
 }
 ```
 
-### Normalizing options
-Many times you would want to normalize the options passed to a validation rule. For example: Using a default `maxLength` when not provided by the user. 
+### Normalizando opções
+Muitas vezes você deseja normalizar as opções passadas para uma regra de validação. Por exemplo: usando um `maxLength` padrão quando não fornecido pelo usuário.
 
-Instead of normalizing the options inside the validation callback, we recommend you normalize them only once during the compile phase.
+Em vez de normalizar as opções dentro do retorno de chamada de validação, recomendamos que você as normalize apenas uma vez durante a fase de compilação.
 
-The `validator.rule` method accepts a callback function as the third argument and runs it during the compile phase.
+O método `validator.rule` aceita uma função de retorno de chamada como o terceiro argumento e a executa durante a fase de compilação.
 
-```ts
+```ts {4-10}
 validator.rule(
-  'camelCase', // rule name
-  () => {}, // validation callback
-  // highlight-start
-  ([maxLength]) => {
-    return {
-      compiledOptions: {
-        maxLength: maxLength || 10,
-      },
-    }
-  }
-  // highlight-end
-)
-```
-
-The `compiledOptions` value is then passed to the validation callback as the second argument. As per the above example, the validation callback will receive the `maxLength` as an object.
-
-```ts
-validator.rule(
-  'camelCase', // rule name
-  // highlight-start
-  (value, { maxLength }) => {}, // validation callback
-  // highlight-end
+  'camelCase', // nome da regra
+  () => {}, // retorno de chamada de validação
   ([maxLength]) => {
     return {
       compiledOptions: {
@@ -164,35 +136,47 @@ validator.rule(
 )
 ```
 
-## Async rules
-To optimize the validation process, you will have to explicitly inform the validator that your validation rule is async in nature. Just return `async: true` from the compile callback, and then you will be able to use `async/await` inside the validation callback.
+O valor `compiledOptions` é então passado para o retorno de chamada de validação como o segundo argumento. Conforme o exemplo acima, o retorno de chamada de validação receberá o `maxLength` como um objeto.
 
-```ts
+```ts {3}
 validator.rule(
-  'camelCase', // rule name
-  // highlight-start
-  async () => {}, // validation callback
-  // highlight-end
+  'camelCase', // nome da regra
+  (value, { maxLength }) => {}, // retorno de chamada de validação
+  ([maxLength]) => {
+    return {
+      compiledOptions: {
+        maxLength: maxLength || 10,
+      },
+    }
+  }
+)
+```
+
+## Regras assíncronas
+Para otimizar o processo de validação, você terá que informar explicitamente ao validador que sua regra de validação é assíncrona por natureza. Basta retornar `async: true` do retorno de chamada de compilação e então você poderá usar `async/await` dentro do retorno de chamada de validação.
+
+```ts {3,6}
+validator.rule(
+  'camelCase', // nome da regra
+  async () => {}, // retorno de chamada de validação
   () => {
     return {
-      // highlight-start
       async: true,
-      // highlight-end
       compiledOptions: {},
     }
   }
 )
 ```
 
-## Restrict rules to work on a specific data type
-Within the compile callback, you can access the **schema type/subtype** of the field on which the validation rule is applied and then conditionally allow it to be used on specific types only.
+## Restringir regras para trabalhar em um tipo de dado específico
+Dentro do retorno de chamada de compilação, você pode acessar o **tipo/subtipo de esquema** do campo no qual a regra de validação é aplicada e então permitir condicionalmente que ele seja usado somente em tipos específicos.
 
-Following is an example of restricting the `camelCase` rule to a string schema type only.
+A seguir está um exemplo de restrição da regra `camelCase` somente a um tipo de esquema de string.
 
 ```ts
 validator.rule(
-  'camelCase', // rule name
-  async () => {}, // validation callback
+  'camelCase', // nome da regra
+  async () => {}, // retorno de chamada de validação
   (options, type, subtype) => {
     if (subtype !== 'string') {
       throw new Error('"camelCase" rule can only be used with a string schema type')
@@ -205,12 +189,12 @@ validator.rule(
 )
 ```
 
-An exception will be raised if someone attempts to use the `camelCase` rule on a non-string field.
+Uma exceção será gerada se alguém tentar usar a regra `camelCase` em um campo não string.
 
 ```ts
 schema: schema.create({
   fileName: schema.number([
-    rules.camelCase() // will result in an error at runtime
+    rules.camelCase() // resultará em um erro em tempo de execução
   ]),
 }),
 ```
