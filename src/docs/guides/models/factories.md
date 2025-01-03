@@ -1,23 +1,23 @@
-# Model factories
+# Fábricas de modelos
 
-Have you ever written tests, in which the first **15-20 lines** of each test are dedicated to just setting up the database state by using multiple models? With model factories, you can extract all this set up to a dedicated file and then write the bare minimum code to set up the database state.
+Você já escreveu testes, nos quais as primeiras **15-20 linhas** de cada teste são dedicadas apenas a configurar o estado do banco de dados usando vários modelos? Com ​​as fábricas de modelos, você pode extrair toda essa configuração para um arquivo dedicado e, em seguida, escrever o código mínimo para configurar o estado do banco de dados.
 
-By the end of this guide, you will know:
+Ao final deste guia, você saberá:
 
-- How to create and use factories
-- How to define factory states
-- Working with model relationships
-- Using the faker API to generate and use random data
+- Como criar e usar fábricas
+- Como definir estados de fábrica
+- Trabalhando com relacionamentos de modelo
+- Usando a API faker para gerar e usar dados aleatórios
 
-## Creating factories
+## Criando fábricas
 
-Model factories are stored inside `databases/factories` directory. You can define all factories within a single file or create dedicated files for each model, the choice is yours.
+As fábricas de modelos são armazenadas dentro do diretório `databases/factories`. Você pode definir todas as fábricas em um único arquivo ou criar arquivos dedicados para cada modelo, a escolha é sua.
 
-:::note
-You can use the `make:factory` command to create a new factory. The command accepts the model name for which you want to create the factory.
+::: info NOTA
+Você pode usar o comando `make:factory` para criar uma nova fábrica. O comando aceita o nome do modelo para o qual você deseja criar a fábrica.
 :::
 
-Unlike seeders or models, the factories are declarative in nature as shown in the following example:
+Ao contrário de seeders ou modelos, as fábricas são declarativas por natureza, como mostrado no exemplo a seguir:
 
 ```ts
 // database/factories/index.ts
@@ -36,13 +36,13 @@ export const UserFactory = Factory
   .build()
 ```
 
-- The `Factory.define` method accepts a total of two arguments.
-- The first argument is reference to the Lucid model.
-- The second argument is a callback that returns an object of properties to be used when persisting the model instance. Make sure that you return an object with all the required properties, otherwise the database will raise `not null` exceptions.
-- Finally, make sure to call the `build` method.
+- O método `Factory.define` aceita um total de dois argumentos.
+- O primeiro argumento é uma referência ao modelo Lucid.
+- O segundo argumento é um retorno de chamada que retorna um objeto de propriedades a serem usadas ao persistir a instância do modelo. Certifique-se de retornar um objeto com todas as propriedades necessárias, caso contrário, o banco de dados levantará exceções `not null`.
+- Por fim, certifique-se de chamar o método `build`.
 
-## Using factories
-Using factories is quite simple. Just `import` the file and use the exported factories.
+## Usando fábricas
+Usar fábricas é bem simples. Basta `importar` o arquivo e usar as fábricas exportadas.
 
 ```ts
 import { UserFactory } from 'Database/factories'
@@ -50,14 +50,14 @@ import { UserFactory } from 'Database/factories'
 const user = await UserFactory.create()
 ```
 
-In order to create multiple instances, you can make use of the `createMany` method.
+Para criar várias instâncias, você pode usar o método `createMany`.
 
 ```ts
 const users = await UserFactory.createMany(10)
 ```
 
-## Merging attributes
-You can override the default set of attributes using the `.merge` method. For example:
+## Mesclando atributos
+Você pode substituir o conjunto padrão de atributos usando o método `.merge`. Por exemplo:
 
 ```ts
 await UserFactory
@@ -65,7 +65,7 @@ await UserFactory
   .create()
 ```
 
-When creating multiple instances, you can define an array of attributes and they will merge based upon their indices. For example:
+Ao criar várias instâncias, você pode definir uma matriz de atributos e eles serão mesclados com base em seus índices. Por exemplo:
 
 ```ts
 await UserFactory
@@ -76,14 +76,14 @@ await UserFactory
   .createMany(3)
 ```
 
-In the above example
+No exemplo acima
 
-- The first user will have the email of `foo@example.com`.
-- The second user will have the email of `bar@example.com`.
-- And, the third user will use the default email address, since the merge array has a length of 2.
+- O primeiro usuário terá o e-mail `foo@example.com`.
+- O segundo usuário terá o e-mail `bar@example.com`.
+- E o terceiro usuário usará o endereço de e-mail padrão, já que a matriz de mesclagem tem um comprimento de 2.
 
-## Factory states
-Factory states allow you to define variations of your factories as states. For example: On a `Post` factory, you can have different states to **represent published and draft posts**.
+## Estados de fábrica
+Os estados de fábrica permitem que você defina variações de suas fábricas como estados. Por exemplo: Em uma fábrica `Post`, você pode ter estados diferentes para **representar postagens publicadas e rascunhos**.
 
 ```ts
 import Factory from '@ioc:Adonis/Lucid/Factory'
@@ -101,15 +101,15 @@ export const PostFactory = Factory
   .build()
 ```
 
-By default, all posts will be created with `DRAFT` status. However, you can explicitly apply the `published` state to create posts with `PUBLISHED` status.
+Por padrão, todas as postagens serão criadas com o status `DRAFT`. No entanto, você pode aplicar explicitamente o estado `published` para criar postagens com o status `PUBLISHED`.
 
 ```ts
 await PostFactory.apply('published').createMany(3)
 await PostFactory.createMany(3)
 ```
 
-## Relationships
-Model factories makes it super simple to work with relationships. Consider the following example:
+## Relacionamentos
+As fábricas de modelos tornam super simples trabalhar com relacionamentos. Considere o seguinte exemplo:
 
 ```ts
 export const PostFactory = Factory
@@ -134,20 +134,20 @@ export const UserFactory = Factory
   .build()
 ```
 
-Now, you can create a `user` and its `posts` all together in one call.
+Agora, você pode criar um `user` e seus `posts` todos juntos em uma chamada.
 
 ```ts
 const user = await UserFactory.with('posts', 3).create()
 user.posts.length // 3
 ```
 
-### Points to note
-- The factory will find the type of relationship by inspecting the Lucid model. For example: If your model defines a `hasMany` relationship on `posts`, then factory will infer the same.
-- A relationship first needs to be defined on the model and then only it can be defined on the Factory.
-- Lucid will internally wrap all the database operations inside a transaction. So if a relationship persistence fails, the parent model persistence will be rolled back too.
+### Pontos a serem observados
+- A fábrica encontrará o tipo de relacionamento inspecionando o modelo Lucid. Por exemplo: se seu modelo define um relacionamento `hasMany` em `posts`, então a fábrica inferirá o mesmo.
+- Um relacionamento primeiro precisa ser definido no modelo e então somente ele pode ser definido na Fábrica.
+- O Lucid encapsulará internamente todas as operações do banco de dados dentro de uma transação. Então, se uma persistência de relacionamento falhar, a persistência do modelo pai também será revertida.
 
-### Applying relationship states
-You can also apply states on a relationship by passing a callback to the `with` method.
+### Aplicando estados de relacionamento
+Você também pode aplicar estados em um relacionamento passando um retorno de chamada para o método `with`.
 
 ```ts
 const user = await UserFactory
@@ -155,7 +155,7 @@ const user = await UserFactory
   .create()
 ```
 
-Similarly, if you want, you can create few posts with the `published` state and few without it.
+Da mesma forma, se quiser, você pode criar algumas postagens com o estado `published` e algumas sem ele.
 
 ```ts
 const user = await UserFactory
@@ -166,7 +166,7 @@ const user = await UserFactory
 user.posts.length // 5
 ```
 
-Finally, you can also create nested relationships. For example: Create a user with **two posts** and **five comments for each post**.
+Finalmente, você também pode criar relacionamentos aninhados. Por exemplo: Crie um usuário com **duas postagens** e **cinco comentários para cada postagem**.
 
 ```ts
 const user = await UserFactory
@@ -174,10 +174,10 @@ const user = await UserFactory
   .create()
 ```
 
-### Pivot attributes
-When creating a [many to many](relationships.md#manytomany) relationship, you can define the attributes for the pivot table using the `pivotAttributes` method.
+### Atributos de pivô
+Ao criar um relacionamento [muitos para muitos](relationships.md#manytomany), você pode definir os atributos para a tabela dinâmica usando o método `pivotAttributes`.
 
-In the following example, the `User` model has a many to many relationship with the `Team` model and we define the user role within a given team.
+No exemplo a seguir, o modelo `Usuário` tem um relacionamento muitos para muitos com o modelo `Equipe` e definimos a função do usuário dentro de uma determinada equipe.
 
 ```ts
 await UserFactory
@@ -187,10 +187,10 @@ await UserFactory
   .create()
 ```
 
-You can pass an array of objects to the `pivotAttributes` method when creating multiple instances of the relationship.
+Você pode passar uma matriz de objetos para o método `pivotAttributes` ao criar várias instâncias do relacionamento.
 
-:::note
-The size of array should match the count of relationship rows you are about to create.
+::: info NOTA
+O tamanho da matriz deve corresponder à contagem de linhas de relacionamento que você está prestes a criar.
 :::
 
 ```ts
@@ -204,8 +204,8 @@ await UserFactory
   .create()
 ```
 
-## Stubbing database calls
-In some cases, you may prefer to stub out the database calls and just want to create in-memory model instances. This is can achieved using the `makeStubbed` and `makeStubbedMany` methods.
+## Chamadas de banco de dados de stub
+Em alguns casos, você pode preferir stub out das chamadas de banco de dados e apenas querer criar instâncias de modelo na memória. Isso pode ser alcançado usando os métodos `makeStubbed` e `makeStubbedMany`.
 
 ```ts
 const user = await UserFactory
@@ -216,19 +216,17 @@ console.log(user.id) // <some-id>
 console.log(user.$isPersisted) // false
 ```
 
-The stubbed calls will never hit the database and will assign an in-memory numeric `id` to the model instances.
+As chamadas stubbed nunca atingirão o banco de dados e atribuirão um `id` numérico na memória às instâncias do modelo.
 
-### Customizing stub id
+### Personalizando o stub id
 
-:::note
-
-When we say `id`. We mean the primary key of a model and not a fixed named attribute `id`.
-
+::: info NOTA
+Quando dizemos `id`. Queremos dizer a chave primária de um modelo e não um atributo fixo nomeado `id`.
 :::
 
-The stub id is just an in-memory counter, that keeps on increasing with every call. If required, you can define a custom method to generate stub ids in a different manner.
+O stub id é apenas um contador na memória, que continua aumentando a cada chamada. Se necessário, você pode definir um método personalizado para gerar stub ids de uma maneira diferente.
 
-For example: Generating ids as a `BigInt` when using PostgreSQL `bigInteger` data type.
+Por exemplo: Gerando ids como um `BigInt` ao usar o tipo de dados `bigInteger` do PostgreSQL.
 
 ```ts
 import Factory from '@ioc:Adonis/Lucid/Factory'
@@ -238,7 +236,8 @@ Factory.stubId((counter, model) => {
 })
 ```
 
-You can make use of the `makeStubbed` hook to customize the id generation behavior for an individual factory.
+Você pode usar o hook `makeStubbed` para personalizar o comportamento de geração de id para uma fábrica individual.
+
 ```ts
 Factory
   .define(Post, () => {
@@ -249,15 +248,15 @@ Factory
   })
 ```
 
-## Runtime context
-Every time you create a model instance from a factory, a runtime context is also created at the same time. The context is then passed to all the hooks, the `define` method callback and also the relationships.
+## Contexto de tempo de execução
+Toda vez que você cria uma instância de modelo de uma fábrica, um contexto de tempo de execução também é criado ao mesmo tempo. O contexto é então passado para todos os hooks, o retorno de chamada do método `define` e também os relacionamentos.
 
-Most of the time, you just want to access the `faker` object from the context. However, following are the available properties.
+Na maioria das vezes, você só quer acessar o objeto `faker` do contexto. No entanto, a seguir estão as propriedades disponíveis.
 
-- **isStubbed**: A boolean to know, if the factory was instantiated in stub mode.
-- **$trx**: A transaction object, under which all the database operations are wrapped. If you are running any database queries inside the factory hooks, then make sure to also wrap them inside the transaction.
+- **isStubbed**: Um booleano para saber se a fábrica foi instanciada no modo stub.
+- **$trx**: Um objeto de transação, sob o qual todas as operações de banco de dados são encapsuladas. Se você estiver executando consultas de banco de dados dentro dos hooks de fábrica, certifique-se de encapsulá-las também dentro da transação.
 
-Following is an example showcasing the callbacks that receives the runtime context `(ctx)`.
+A seguir está um exemplo mostrando os retornos de chamada que recebem o contexto de tempo de execução `(ctx)`.
 
 ```ts
 Factory
@@ -272,8 +271,8 @@ Factory
   .build()
 ```
 
-## Hooks
-The factory exposes the following hooks to perform actions `before` or `after` certain events. You can also define multiple hooks for a single event.
+## Ganchos
+A fábrica expõe os seguintes ganchos para executar ações `antes` ou `depois` de certos eventos. Você também pode definir vários ganchos para um único evento.
 
 ```ts
 Factory
@@ -282,38 +281,38 @@ Factory
   .after('create', () => {})
 ```
 
-| Lifecycle | Event | Description |
-|-----------|-------|-------------|
-| `before` | `create` | Invoked **before the insert** query. |
-| `after` | `create` | Invoked **after the insert** query. |
-| `before` | `makeStubbed` | Invoked **before the stubbed** call. |
-| `after` | `makeStubbed` | Invoked **after the stubbed** call. |
-| `after` | `make` | Invoked only **after** the model instance has been created. This hook is also invoked before the **before create** and **before makeStubbed** hooks. |
+| Ciclo de vida | Evento        | Descrição   |
+|---------------|---------------|-------------|
+| `before`      | `create`      | Invocado **antes da consulta insert**. |
+| `after`       | `create`      | Invocado **depois da consulta insert**. |
+| `before`      | `makeStubbed` | Invocado **antes da chamada stubbed**. |
+| `after`       | `makeStubbed` | Invocado **depois da chamada stubbed**. |
+| `after`       | `make`        | Invocado somente **depois** que a instância do modelo foi criada. Este gancho também é invocado antes dos ganchos **before create** e **before makeStubbed**. |
 
-## Custom connections
-Factories allows you to define a custom connection or query client at the time using them. For example:
+## Conexões personalizadas
+Factories permite que você defina uma conexão personalizada ou um cliente de consulta no momento em que os usa. Por exemplo:
 
 ```ts
 await Factory.connection('tenant-1').create()
 ```
 
-Also, you can pass a custom query client instance.
+Além disso, você pode passar uma instância de cliente de consulta personalizada.
 ```ts
 const queryClient = Database.connection('tenant-1')
 await Factory.client(queryClient).create()
 ```
 
-For the sake of API uniformity among the factories and the Lucid models, you can also define the `connection` or the `client` using the `query` method.
+Para fins de uniformidade da API entre as factories e os modelos Lucid, você também pode definir a `connection` ou o `client` usando o método `query`.
 
 ```ts
 await Factory.query({ connection: 'tenant-1' }).create()
 ```
 
-## Customizations
-Finally, you can optionally customize the behavior of certain operations performed under the hood.
+## Personalizações
+Finalmente, você pode personalizar opcionalmente o comportamento de certas operações realizadas nos bastidores.
 
 ### `newUp`
-By defining the `newUp` handler, you can customize the process of instantiating a model instance for a given factory.
+Ao definir o manipulador `newUp`, você pode personalizar o processo de instanciação de uma instância de modelo para uma factory específica.
 
 ```ts
 Factory
@@ -330,7 +329,7 @@ Factory
 ```
 
 ### `merge`
-By defining the `merge` handler, you can customize the merge behavior.
+Ao definir o manipulador `merge`, você pode personalizar o comportamento de mesclagem.
 
 ```ts
 Factory

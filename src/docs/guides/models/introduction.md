@@ -1,26 +1,24 @@
-# Introduction
+# Introdução
 
-Along with the Database query builder, Lucid also has data models built on top of the [active record pattern](https://en.wikipedia.org/wiki/Active_record_pattern).
+Junto com o construtor de consultas do banco de dados, o Lucid também tem modelos de dados criados sobre o [padrão de registro ativo](https://en.wikipedia.org/wiki/Active_record_pattern).
 
-The data models layer of Lucid makes it super easy to **perform CRUD operations**, **manage relationships between models**, and **define lifecycle hooks**. 
+A camada de modelos de dados do Lucid torna super fácil **executar operações CRUD**, **gerenciar relacionamentos entre modelos** e **definir ganchos de ciclo de vida**.
 
-We recommend using models extensively and reach for the standard query builder for particular use cases.
+Recomendamos usar modelos extensivamente e recorrer ao construtor de consultas padrão para casos de uso específicos.
 
-## What is the active record pattern?
+## O que é o padrão de registro ativo?
 
-Active Record is also the name of the ORM used by Ruby on Rails. However, the active record pattern is a broader concept that any programming language or framework can implement.
+O registro ativo também é o nome do ORM usado pelo Ruby on Rails. No entanto, o padrão de registro ativo é um conceito mais amplo que qualquer linguagem de programação ou estrutura pode implementar.
 
-:::note
-
-Whenever we say the term **active record**, we are talking about the pattern itself and not the implementation of Rails.
-
+::: info NOTA
+Sempre que dizemos o termo **registro ativo**, estamos falando sobre o padrão em si e não sobre a implementação do Rails.
 :::
 
-The active record pattern advocates encapsulating the database interactions to language-specific objects or classes. Each database table gets its model, and each instance of that class represents a table row.
+O padrão de registro ativo defende o encapsulamento das interações do banco de dados em objetos ou classes específicas da linguagem. Cada tabela do banco de dados obtém seu modelo, e cada instância dessa classe representa uma linha da tabela.
 
-The data models clean up many database interactions since you can encode most of the behavior inside your models vs. writing it everywhere inside your codebase. 
+Os modelos de dados limpam muitas interações do banco de dados, pois você pode codificar a maior parte do comportamento dentro de seus modelos em vez de escrevê-lo em todos os lugares dentro de sua base de código.
 
-For example, Your `users` table has a date field, and you want to format that before sending it back to the client. **This is how your code may look like without using data models**.
+Por exemplo, sua tabela `users` tem um campo de data e você deseja formatá-lo antes de enviá-lo de volta ao cliente. **É assim que seu código pode ficar sem usar modelos de dados**.
 
 ```ts
 import { DateTime } from 'luxon'
@@ -32,7 +30,7 @@ return users.map((user) => {
 })
 ```
 
-When using data models, you can encode the date formatting action within the model vs. writing it everywhere you fetch and return users.
+Ao usar modelos de dados, você pode codificar a ação de formatação de data dentro do modelo em vez de escrevê-la em todos os lugares que você busca e retorna usuários.
 
 ```ts
 import { DateTime } from 'luxon'
@@ -46,15 +44,15 @@ class User extends BaseModel {
 }
 ```
 
-And use it as follows:
+E use-o da seguinte forma:
 
 ```ts
 const users = await User.all()
 return users.map((user) => user.toJSON()) // date is formatted during `toJSON` call
 ```
 
-## Creating your first model
-Assuming you already have Lucid [set up](../database/introduction.md), run the following command to create your first data model.
+## Criando seu primeiro modelo
+Supondo que você já tenha o Lucid [configurado](../database/introduction.md), execute o seguinte comando para criar seu primeiro modelo de dados.
 
 ```sh
 node ace make:model User
@@ -62,7 +60,7 @@ node ace make:model User
 # CREATE: app/Models/User.ts
 ```
 
-You can also generate the migration alongside the model by defining the `-m` flag.
+Você também pode gerar a migração junto com o modelo definindo o sinalizador `-m`.
 
 ```sh
 node ace make:model User -m
@@ -71,7 +69,7 @@ node ace make:model User -m
 # CREATE: app/Models/User.ts
 ```
 
-Finally, you can also create the factory for the model using the `-f` flag.
+Finalmente, você também pode criar a fábrica para o modelo usando o sinalizador `-f`.
 
 ```sh
 node ace make:model User -f
@@ -80,7 +78,7 @@ node ace make:model User -f
 # CREATE: database/factories/User.ts
 ```
 
-The `make:model` command creates a new model inside the `app/Models` directory. Every model must extend the `BaseModel` class to inherit additional functionality.
+O comando `make:model` cria um novo modelo dentro do diretório `app/Models`. Cada modelo deve estender a classe `BaseModel` para herdar funcionalidade adicional.
 
 ```ts
 import { DateTime } from 'luxon'
@@ -98,22 +96,22 @@ export default class User extends BaseModel {
 }
 ```
 
-## Columns
-You will have to define your database columns as properties on the class and decorate them using the `@column` decorator. 
+## Colunas
+Você terá que definir suas colunas de banco de dados como propriedades na classe e decorá-las usando o decorador `@column`.
 
-Since AdonisJS uses TypeScript, there is no way to get around WITHOUT defining the columns explicitly on the class. Otherwise, the TypeScript compiler will complain about the following error.
+Como o AdonisJS usa TypeScript, não há como contornar SEM definir as colunas explicitamente na classe. Caso contrário, o compilador TypeScript reclamará sobre o seguinte erro.
 
 ![](/docs/assets/models-property-error.webp)
 
-#### Points to note
-- The `@column` decorator is used to distinguish between the standard class properties and the database columns.
-- We keep the models lean and do not define database-specific **constraints**, **data types** and **triggers** inside models.
-- Any option you define inside the models does not change/impact the database. You must use migrations for that.
+#### Pontos a serem observados
+- O decorador `@column` é usado para distinguir entre as propriedades de classe padrão e as colunas do banco de dados.
+- Mantemos os modelos enxutos e não definimos **restrições**, **tipos de dados** e **gatilhos** específicos do banco de dados dentro dos modelos.
+- Qualquer opção que você definir dentro dos modelos não altera/impacta o banco de dados. Você deve usar migrações para isso.
 
-To summarize the above points - **Lucid maintains a clear separation between migrations and the models**. Migrations are meant to create/alter the tables, and models are intended to query the database or insert new records.
+Para resumir os pontos acima - **O Lucid mantém uma separação clara entre migrações e os modelos**. As migrações são destinadas a criar/alterar as tabelas, e os modelos são destinados a consultar o banco de dados ou inserir novos registros.
 
-### Defining columns
-Now that you are aware of the existence of columns on the model class. Following is an example of defining the user table columns as properties on the `User` model.
+### Definindo colunas
+Agora que você está ciente da existência de colunas na classe do modelo. A seguir está um exemplo de definição das colunas da tabela do usuário como propriedades no modelo `User`.
 
 ```ts
 import { DateTime } from 'luxon'
@@ -143,16 +141,16 @@ export default class User extends BaseModel {
 }
 ```
 
-The `@column` decorator additionally accepts options to configure the property behavior.
+O decorador `@column` também aceita opções para configurar o comportamento da propriedade.
 
-- The `isPrimary` option marks the property as the primary key for the given database table.
-- The `serializeAs: null` option removes the property when you serialize the model to JSON.
-- [View all available options](../../reference/orm/decorators.md#column) accepted by the `@column` decorator.
+- A opção `isPrimary` marca a propriedade como a chave primária para a tabela de banco de dados fornecida.
+- A opção `serializeAs: null` remove a propriedade quando você serializa o modelo para JSON.
+[Exibir todas as opções disponíveis](../../reference/orm/decorators.md#column) aceitas pelo decorador `@column`.
 
-### Date columns
-Lucid further enhances the date and the date-time properties and converts the database driver values to an instance of [luxon.DateTime](https://moment.github.io/luxon/).
+### Colunas de data
+O Lucid aprimora ainda mais as propriedades de data e data-hora e converte os valores do driver do banco de dados em uma instância de [luxon.DateTime](https://moment.github.io/luxon/).
 
-All you need to do is make use of the `@column.date` or `@column.dateTime` decorators, and Lucid will handle the rest for you.
+Tudo o que você precisa fazer é usar os decoradores `@column.date` ou `@column.dateTime`, e o Lucid cuidará do resto para você.
 
 ```ts
 @column.date()
@@ -165,10 +163,10 @@ public createdAt: DateTime
 public updatedAt: DateTime
 ```
 
-Optionally, you can pass the `autoCreate` and `autoUpdate` options to always define the timestamps during the creation and the update operations. **Do note, setting these options doesn't modify the database table or its triggers.**
+Opcionalmente, você pode passar as opções `autoCreate` e `autoUpdate` para sempre definir os timestamps durante as operações de criação e atualização. **Observe que definir essas opções não modifica a tabela do banco de dados ou seus gatilhos.**
 
-### Column names
-Lucid assumes that your database columns names are defined as `snake_case` and automatically converts the model properties to snake case during database queries. For example:
+### Nomes de colunas
+O Lucid assume que os nomes das colunas do seu banco de dados são definidos como `snake_case` e ​​converte automaticamente as propriedades do modelo para snake case durante as consultas ao banco de dados. Por exemplo:
 
 ```ts
 await User.create({ avatarUrl: 'foo.jpg' })
@@ -177,22 +175,22 @@ await User.create({ avatarUrl: 'foo.jpg' })
 // insert into "users" ("avatar_url") values (?)
 ```
 
-#### Overwrite column names globally
-If you are not using the `snake_case` convention in your database, then you can override the default behavior of Lucid by defining a custom [Naming Strategy](../../reference/orm/naming-strategy.md)
+#### Sobrescrever nomes de colunas globalmente
+Se você não estiver usando a convenção `snake_case` no seu banco de dados, poderá substituir o comportamento padrão do Lucid definindo uma [Estratégia de Nomenclatura](../../reference/orm/naming-strategy.md) personalizada
 
-#### Overwrite column names inline
-You can also define the database column names explicitly within the `@column` decorator. This is usually helpful for bypassing the convention in specific use cases.
+#### Sobrescrever nomes de colunas inline
+Você também pode definir os nomes das colunas do banco de dados explicitamente dentro do decorador `@column`. Isso geralmente é útil para contornar a convenção em casos de uso específicos.
 
 ```ts
 @column({ columnName: 'user_id', isPrimary: true })
 public id: number
 ```
 
-## Models config
-Following are the configuration options to overwrite the conventional defaults.
+## Modelos config
+A seguir estão as opções de configuração para substituir os padrões convencionais.
 
-### primaryKey
-Define a custom primary key (defaults to id). Setting the `primaryKey` on the model doesn't modify the database. Here, you are just telling Lucid to consider id as the unique value for each row.
+### `primaryKey`
+Defina uma chave primária personalizada (padrões para id). Definir `primaryKey` no modelo não modifica o banco de dados. Aqui, você está apenas dizendo ao Lucid para considerar id como o valor exclusivo para cada linha.
 
 ```ts
 class User extends Basemodel {
@@ -200,7 +198,7 @@ class User extends Basemodel {
 }
 ```
 
-Or use the `primaryKey` column option.
+Ou use a opção de coluna `primaryKey`.
 
 ```ts
 class User extends Basemodel {
@@ -209,8 +207,8 @@ class User extends Basemodel {
 }
 ```
 
-### table
-Define a custom database table name. [Defaults](../../reference/orm/naming-strategy.md#tablename) to the plural and snake case version of the model name.
+### `table`
+Defina um nome de tabela de banco de dados personalizado. [Padrões](../../reference/orm/naming-strategy.md#tablename) para a versão plural e snake case do nome do modelo.
 
 ```ts
 export default class User extends BaseModel {
@@ -218,8 +216,8 @@ export default class User extends BaseModel {
 }
 ```
 
-### selfAssignPrimaryKey
-Set this option to `true` if you don't rely on the database to generate the primary keys. For example, You want to self-assign `uuid` to the new rows.
+### `selfAssignPrimaryKey`
+Defina esta opção como `true` se você não depender do banco de dados para gerar as chaves primárias. Por exemplo, você quer autoatribuir `uuid` às novas linhas.
 
 ```ts
 import uuid from 'uuid/v4'
@@ -238,13 +236,11 @@ export default class User extends BaseModel {
 }
 ```
 
-### connection
-Instruct model to use a custom database connection defined inside the `config/database` file.
+### `connection`
+Instrua o modelo a usar uma conexão de banco de dados personalizada definida dentro do arquivo `config/database`.
 
-:::note
-
-DO NOT use this property to switch the connection at runtime. This property only defines a static connection name that remains the same throughout the application's lifecycle.
-
+::: danger ATENÇÃO
+NÃO use esta propriedade para alternar a conexão em tempo de execução. Esta propriedade define apenas um nome de conexão estático que permanece o mesmo durante todo o ciclo de vida do aplicativo.
 :::
 
 ```ts
@@ -256,31 +252,31 @@ export default class User extends BaseModel {
 ## FAQs
 
 <details>
-  <summary>Does models creates the database tables automatically?</summary>
-  
-No. We do not sync your models with the database. Creating/altering tables must be done using [migrations](../database/migrations.md). Here are some of the reasons for not using models to create the database schema.
+<summary>Os modelos criam as tabelas de banco de dados automaticamente?</summary>
 
-1. Generating database tables from models means defining all database-level constraints and config within the models. This adds unnecessary bloat to the models.
-2. Not every database change is as simple as renaming a column. There are scenarios in which you want to migrate data from one table to another during re-structuring, and this cannot/should not be expressed within models.
+Não. Não sincronizamos seus modelos com o banco de dados. A criação/alteração de tabelas deve ser feita usando [migrations](../database/migrations.md). Aqui estão alguns dos motivos para não usar modelos para criar o esquema de banco de dados.
 
-</details>
-
-<details>
-<summary>I am coming from TypeORM, how should I define column types?</summary>
-
-We do not express database types inside models. Instead, we follow the approach of **lean models** and keep database level config within migrations.
+1. Gerar tabelas de banco de dados a partir de modelos significa definir todas as restrições e configurações de nível de banco de dados dentro dos modelos. Isso adiciona inchaço desnecessário aos modelos.
+2. Nem toda alteração no banco de dados é tão simples quanto renomear uma coluna. Há cenários em que você deseja migrar dados de uma tabela para outra durante a reestruturação, e isso não pode/não deve ser expresso dentro dos modelos.
 
 </details>
 
 <details>
-<summary>Can I move my Models somewhere else?</summary>
+<summary>Estou vindo do TypeORM, como devo definir os tipos de coluna?</summary>
 
-Yes. You are free to put your model wherever you want! If your models are inside the `app/Something` folder, you will use `App/Something/ModelName` to load your model.
+Não expressamos tipos de banco de dados dentro dos modelos. Em vez disso, seguimos a abordagem de **modelos enxutos** e mantemos a configuração do nível do banco de dados dentro das migrações.
 
 </details>
 
-## Additional reading
+<details>
+<summary>Posso mover meus modelos para outro lugar?</summary>
 
-- Make sure to read the [models reference guide](../../reference/orm/base-model.md).
-- [CRUD operations](./crud.md) using models.
-- How to [serialize models](./serialization.md) to JSON.
+Sim. Você é livre para colocar seu modelo onde quiser! Se seus modelos estiverem dentro da pasta `app/Something`, você usará `App/Something/ModelName` para carregar seu modelo.
+
+</details>
+
+## Leitura adicional
+
+[Guia de referência de modelos](../../reference/orm/base-model.md).
+[Operações CRUD](./crud.md) usando modelos.
+[serializar modelos](./serialization.md) para JSON.

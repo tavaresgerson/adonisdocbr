@@ -1,15 +1,12 @@
-# Hooks
+# Ganchos
 
-Hooks are the **actions that you can perform against a model instance** during a pre-defined life cycle event. Using hooks, you can encapsulate specific actions within your models vs. writing them everywhere inside your codebase.
+Ganchos são as **ações que você pode executar em uma instância de modelo** durante um evento de ciclo de vida predefinido. Usando ganchos, você pode encapsular ações específicas dentro de seus modelos em vez de escrevê-las em todos os lugares dentro de sua base de código.
 
-A great example of hooks is password hashing. You can define a hook that runs before the `save` call and converts the plain text password to a hash. 
-
-```ts
+Um ótimo exemplo de ganchos é o hash de senha. Você pode definir um gancho que seja executado antes da chamada `save` e converta a senha de texto simples em um hash.1
+```ts {3,16-21}
 // app/Models/User.ts
 
-// highlight-start
 import Hash from '@ioc:Adonis/Core/Hash'
-// highlight-end
 import { column, beforeSave, BaseModel } from '@ioc:Adonis/Lucid/Orm'
 
 export default class User extends BaseModel {
@@ -22,53 +19,51 @@ export default class User extends BaseModel {
   @column()
   public password: string
 
-  // highlight-start
   @beforeSave()
   public static async hashPassword (user: User) {
     if (user.$dirty.password) {
       user.password = await Hash.make(user.password)
     }
   }
-  // highlight-end
 }
 ```
 
-- The `beforeSave` hook is invoked before the **INSERT** and the **UPDATE** queries.
-- Hooks can be async. So you can use the `await` keyword inside them.
-- Hooks are always defined as static functions and receive the model's instance as the first argument.
+- O gancho `beforeSave` é invocado antes das consultas **INSERT** e **UPDATE**.
+- Os ganchos podem ser assíncronos. Então você pode usar a palavra-chave `await` dentro deles.
+- Os ganchos são sempre definidos como funções estáticas e recebem a instância do modelo como o primeiro argumento.
 
-#### Understanding the `$dirty` property
+#### Entendendo a propriedade `$dirty`
 
-The `beforeSave` hook is called every time a new user is **created** or **updated** using the model instance. 
+O gancho `beforeSave` é chamado toda vez que um novo usuário é **criado** ou **atualizado** usando a instância do modelo.
 
-During the update, you may have updated other properties but NOT the user password. Hence there is no need to re-hash the existing hash, which is why using the `$dirty` object.
+Durante a atualização, você pode ter atualizado outras propriedades, mas NÃO a senha do usuário. Portanto, não há necessidade de refazer o hash do hash existente, e é por isso que usar o objeto `$dirty`.
 
-The `$dirty` object only contains the changed values. So, you can check if the password was changed and then hash the new value.
+O objeto `$dirty` contém apenas os valores alterados. Portanto, você pode verificar se a senha foi alterada e então fazer o hash do novo valor.
 
-## Available hooks
-Following is the list of all the available hooks. Make sure to read the [decorators API docs](../../reference/orm/decorators.md) as well.
+## Hooks disponíveis
+A seguir está a lista de todos os hooks disponíveis. Certifique-se de ler também os [documentos da API do decorador](../../reference/orm/decorators.md).
 
-| Hook | Description |
-|-------|------------|
-| `beforeSave` | Invoked **before the insert or the update** query. Receives the model instance as the only argument. |
-| `afterSave` | Invoked **after the insert or the update** query. Receives the model instance as the only argument.|
-| `beforeCreate` | Invoked only **before the insert** query. Receives the model instance as the only argument.|
-| `afterCreate` | Invoked only **after the insert** query. Receives the model instance as the only argument.|
-| `beforeUpdate` | Invoked only **before the update** query. Receives the model instance as the only argument.|
-| `afterUpdate` | Invoked only **after the update** query. Receives the model instance as the only argument.|
-| `beforeDelete` | Invoked **before the delete** query. Receives the model instance as the only argument.|
-| `afterDelete` | Invoked **after the delete** query. Receives the model instance as the only argument. |
-| `beforePaginate` | Invoked **before the paginate** query. Receives the query main builder instance alongside the count query builder instance. |
-| `afterPaginate` | Invoked **after the paginate** query. Receives an instance of the simple paginator class. |
-| `beforeFetch` | Invoked **before the fetch** query. Receives the query builder instance as the only argument. |
-| `afterFetch` | Invoked **after the fetch** query. Receives an array of model instances |
-| `beforeFind` | Invoked **before the find** query. Receives the query builder instance as the only argument. |
-| `afterFind` | Invoked **after the find** query. Receives the model instance as the only argument. |
+| Hook              | Descrição |
+|-------------------|------------|
+| `beforeSave`      | Chamado **antes da consulta insert ou update**. Recebe a instância do modelo como o único argumento. |
+| `afterSave`       | Chamado **após a consulta insert ou update**. Recebe a instância do modelo como o único argumento.|
+| `beforeCreate`    | Chamado **antes da consulta insert**. Recebe a instância do modelo como o único argumento.|
+| `afterCreate`     | Chamado **após a consulta insert**. Recebe a instância do modelo como o único argumento.|
+| `beforeUpdate`    | Chamado **antes da consulta update**. Recebe a instância do modelo como o único argumento.|
+| `afterUpdate`     | Chamado **após a consulta update**. Recebe a instância do modelo como o único argumento.|
+| `beforeDelete`    | Chamado **antes da consulta delete**. Recebe a instância do modelo como o único argumento.|
+| `afterDelete`     | Chamado **após a consulta delete**. Recebe a instância do modelo como o único argumento. |
+| `beforePaginate`  | Chamado **antes da consulta paginate**. Recebe a instância do construtor principal da consulta junto com a instância do construtor de consulta count. |
+| `afterPaginate`   | Chamado **após a consulta paginate**. Recebe uma instância da classe paginator simples. |
+| `beforeFetch`     | Chamado **antes da consulta fetch**. Recebe a instância do construtor de consultas como o único argumento. |
+| `afterFetch`      | Invocado **após a consulta fetch**. Recebe uma matriz de instâncias de modelo |
+| `beforeFind`      | Invocado **antes da consulta find**. Recebe a instância do construtor de consultas como o único argumento. |
+| `afterFind`       | Invocado **após a consulta find**. Recebe a instância de modelo como o único argumento. |
 
-**All hooks receive the model instance as the first argument, except the ones documented below.**
+**Todos os ganchos recebem a instância do modelo como o primeiro argumento, exceto os documentados abaixo.**
 
 ### `beforeFind`
-The `beforeFind` hook is invoked just before the query is executed to find a single row. This hook receives the query builder instance, and you can attach your constraints to it.
+O gancho `beforeFind` é invocado logo antes da execução da consulta para encontrar uma única linha. Este gancho recebe a instância do construtor de consultas, e você pode anexar suas restrições a ela.
 
 ```ts
 import {
@@ -86,7 +81,7 @@ export default class User extends BaseModel {
 ```
 
 ### `afterFind`
-The `afterFind` event receives the model instance.
+O evento `afterFind` recebe a instância do modelo.
 
 ```ts
 import {
@@ -102,7 +97,7 @@ export default class User extends BaseModel {
 ```
 
 ### `beforeFetch`
-Similar to `beforeFind`, the `beforeFetch` hook also receives the query builder instance. However, this hook is invoked whenever a query is executed without using the `first` method.
+Semelhante ao `beforeFind`, o gancho `beforeFetch` também recebe a instância do construtor de consultas. No entanto, este gancho é invocado sempre que uma consulta é executada sem usar o método `first`.
 
 ```ts
 import {
@@ -120,7 +115,7 @@ export default class User extends BaseModel {
 ```
 
 ### `afterFetch`
-The `afterFetch` hook receives an array of model instances.
+O gancho `afterFetch` recebe uma matriz de instâncias do modelo.
 
 ```ts
 import {
@@ -136,9 +131,9 @@ export default class User extends BaseModel {
 ```
 
 ### `beforePaginate`
-The `beforePaginate` query is executed when you make use of the `paginate` method. The paginate method fires both the `beforeFetch` and `beforePaginate` hooks.
+A consulta `beforePaginate` é executada quando você faz uso do método `paginate`. O método paginate dispara os ganchos `beforeFetch` e `beforePaginate`.
 
-The hook function receives an array of query builders. The first instance is for the count's query, and the second is for the main query.
+A função de gancho recebe uma matriz de construtores de consulta. A primeira instância é para a consulta da contagem e a segunda é para a consulta principal.
 
 ```ts
 import {
@@ -160,7 +155,7 @@ export default class User extends BaseModel {
 ```
 
 ### `afterPaginate`
-The `afterPaginate` hook receives an instance of the [SimplePaginator](../../reference/database/query-builder.md#pagination) class. The `paginate` method fires both the `afterFetch` and the `afterPaginate` hooks.
+O gancho `afterPaginate` recebe uma instância da classe [SimplePaginator](../../reference/database/query-builder.md#pagination). O método `paginate` dispara os ganchos `afterFetch` e `afterPaginate`.
 
 ```ts
 import {
