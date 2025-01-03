@@ -1,6 +1,6 @@
-# Connection manager
+# Gerenciador de conexões
 
-The [connections manager class](https://github.com/adonisjs/lucid/blob/efed38908680cca3b288d9b2a123586fab155b1d/src/Connection/Manager.ts#L32) is responsible for managing one or more [database connection](./connection.md) instances. You can access the `manager` from the Database module.
+A [classe do gerenciador de conexões](https://github.com/adonisjs/lucid/blob/efed38908680cca3b288d9b2a123586fab155b1d/src/Connection/Manager.ts#L32) é responsável por gerenciar uma ou mais instâncias de [conexão de banco de dados](./connection.md). Você pode acessar o `manager` a partir do módulo Database.
 
 ```ts
 import Database from '@ioc:Adonis/Lucid/Database'
@@ -8,11 +8,11 @@ import Database from '@ioc:Adonis/Lucid/Database'
 const manager = Database.manager
 ```
 
-## Methods/properties
-Following is the list of methods/properties available on the connection manager class. Usually, you don't have to interact with the manager directly, as the following methods are invoked internally.
+## Métodos/propriedades
+A seguir está a lista de métodos/propriedades disponíveis na classe do gerenciador de conexões. Normalmente, você não precisa interagir com o gerenciador diretamente, pois os métodos a seguir são invocados internamente.
 
 ### `add`
-Register a new connection to the manager by providing the connection `name` and it's configuration. The database module automatically registers all the connections defined inside the `config/database.ts` file.
+Registre uma nova conexão com o gerenciador fornecendo o `nome` da conexão e sua configuração. O módulo de banco de dados registra automaticamente todas as conexões definidas dentro do arquivo `config/database.ts`.
 
 ```ts
 const name = 'pg'
@@ -29,16 +29,16 @@ Database.manager.add(name, config)
 ```
 
 ### `connect`
-The `connect` method instantiates a pre-registered connection by its name. Under the hood, it calls the connect method on the [Connection class](https://github.com/adonisjs/lucid/blob/efed38908680cca3b288d9b2a123586fab155b1d/src/Connection/Manager.ts#L126).
+O método `connect` instancia uma conexão pré-registrada pelo seu nome. Por baixo dos panos, ele chama o método connect na [classe Connection](https://github.com/adonisjs/lucid/blob/efed38908680cca3b288d9b2a123586fab155b1d/src/Connection/Manager.ts#L126).
 
-Calling this method multiple times results is a no-op.
+Chamar esse método várias vezes resulta em uma operação inativa.
 
 ```ts
 Database.manager.connect('pg')
 ```
 
 ### `get`
-Returns the connection node for a pre-registered connection by its name.
+Retorna o nó de conexão para uma conexão pré-registrada pelo seu nome.
 
 ```ts
 const {
@@ -49,28 +49,28 @@ const {
 } = Database.manager.get('pg')
 ```
 
-Following is the list of available properties.
+A seguir está a lista de propriedades disponíveis.
 
 #### `name`
-The name of the connection, as defined at the time of adding it.
+O nome da conexão, conforme definido no momento da adição.
 
 #### `config`
-Reference to the registered config
+Referência à configuração registrada
 
 #### `connection`
-Reference to the underlying [connection class](./connection.md) instance. 
+Referência à instância subjacente [connection class](./connection.md).
 
 #### `state`
-The current state of the connection.
+O estado atual da conexão.
 
-- `registered`: The connection has been registered using the `add` method.
-- `open`: The connection is open to accept new requests.
-- `closing`: In the process of closing the connection. No new queries can be created or executed from this connection anymore.
-- `closed`: The connection has been closed and cannot accept any more request. You must call the `connect` method again.
-- `migrating`: The connection config has been patched and it is migrating to create a new connection instance with the new config.
+- `registered`: A conexão foi registrada usando o método `add`.
+- `open`: A conexão está aberta para aceitar novas solicitações.
+- `closing`: No processo de fechamento da conexão. Nenhuma nova consulta pode ser criada ou executada a partir desta conexão.
+- `closed`: A conexão foi fechada e não pode aceitar mais nenhuma solicitação. Você deve chamar o método `connect` novamente.
+- `migrating`: A configuração de conexão foi corrigida e está migrando para criar uma nova instância de conexão com a nova configuração.
 
 ### `has`
-Returns a boolean telling if the connection has been registered with the manager or not.
+Retorna um booleano informando se a conexão foi registrada com o gerenciador ou não.
 
 ```ts
 if (!Database.manager.has('pg')) {
@@ -79,7 +79,7 @@ if (!Database.manager.has('pg')) {
 ```
 
 ### `isConnected`
-Find if a connection is in `open` state or not.
+Descubra se uma conexão está no estado `aberto` ou não.
 
 ```ts
 if (!Database.manager.isConnected('pg')) {
@@ -88,11 +88,11 @@ if (!Database.manager.isConnected('pg')) {
 ```
 
 ### `patch`
-The `patch` method allows you to update the config for a given connection without closing the existing connection or aborting the ongoing queries.
+O método `patch` permite que você atualize a configuração para uma determinada conexão sem fechar a conexão existente ou abortar as consultas em andamento.
 
-After the connection has been patched, all new queries will use the newer config.
+Após a conexão ter sido corrigida, todas as novas consultas usarão a configuração mais recente.
 
-The `patch` method is really helpful when you have a multi-tenant app and you want to register connections on the fly for the tenants.
+O método `patch` é realmente útil quando você tem um aplicativo multilocatário e deseja registrar conexões em tempo real para os locatários.
 
 ```ts
 Database.manager.patch('pg', {
@@ -100,27 +100,27 @@ Database.manager.patch('pg', {
   connection: {},
 })
 
-// Uses new config
+// Usa nova configuração
 Database.manager.connect('pg')
 ```
 
 ### `close`
-Close a given connection. The connection manager will still keep the connection node until you release the connection explicitly by passing the second argument.
+Fechar uma determinada conexão. O gerenciador de conexões ainda manterá o nó de conexão até que você libere a conexão explicitamente passando o segundo argumento.
 
 ```ts
-// Close
+// Fechar
 await Database.manager.close('pg')
 Database.manager.has('pg') // true
 ```
 
 ```ts
-// Close + Release
+// Fechar + Liberar
 await Database.manager.close('pg', true)
 Database.manager.has('pg') // false
 ```
 
 ### `closeAll`
-Close all registered connections. A boolean parameter can be passed to also release the connection.
+Fecha todas as conexões registradas. Um parâmetro booleano pode ser passado para também liberar a conexão.
 
 ```ts
 await Database.manager.closeAll()
@@ -128,14 +128,14 @@ await Database.manager.closeAll(true)
 ```
 
 ### `release`
-Release a connection from the managed list of connections. The connection will be closed automatically (if not already closed).
+Libera uma conexão da lista gerenciada de conexões. A conexão será fechada automaticamente (se ainda não estiver fechada).
 
 ```ts
 await Database.manager.release(true)
 ```
 
 ### `report`
-Returns the health check report for all the registered connections.
+Retorna o relatório de verificação de integridade para todas as conexões registradas.
 
 ```ts
 const report = await Database.manager.report()
@@ -144,11 +144,11 @@ console.log(report.name)
 console.log(report.health.healthy)
 ```
 
-## Events
-Following is the list of events emitted by the connection manager class. 
+## Eventos
+A seguir está a lista de eventos emitidos pela classe do gerenciador de conexões.
 
 ### `db` \ `:connection` \ `:connect`
-Emitted when the `connect` method is called
+Emitido quando o método `connect` é chamado
 
 ```ts
 Database.manager.on('db:connection:connect', (connection) => {
@@ -157,7 +157,7 @@ Database.manager.on('db:connection:connect', (connection) => {
 ```
 
 ### `db` \ `:connection` \ `:error`
-Emitted when the unable to establish the connection
+Emitido quando não é possível estabelecer a conexão
 
 ```ts
 Database.manager.on('db:connection:error', (error, connection) => {
@@ -166,7 +166,7 @@ Database.manager.on('db:connection:error', (error, connection) => {
 ```
 
 ### `db` \ `:connection` \ `:disconnect`
-Emitted when the connection and Knex instance(s) have been destroyed.
+Emitido quando a conexão e as instâncias do Knex foram destruídas.
 
 ```ts
 Database.manager.on('db:connection:disconnect', (connection) => {

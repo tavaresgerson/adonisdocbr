@@ -1,6 +1,6 @@
-# Connection
+# Conexão
 
-The [connection class](https://github.com/adonisjs/lucid/blob/efed38908680cca3b288d9b2a123586fab155b1d/src/Connection/index.ts#L27) is responsible for managing the lifecycle of a given database connection. You can access the connection instance using the `Database.manager` property.
+A [classe de conexão](https://github.com/adonisjs/lucid/blob/efed38908680cca3b288d9b2a123586fab155b1d/src/Connection/index.ts#L27) é responsável por gerenciar o ciclo de vida de uma determinada conexão de banco de dados. Você pode acessar a instância de conexão usando a propriedade `Database.manager`.
 
 ```ts
 import Database from '@ioc:Adonis/Lucid/Database'
@@ -8,7 +8,7 @@ import Database from '@ioc:Adonis/Lucid/Database'
 const { connection } = Database.manager.get('primary')
 ```
 
-The connection name is derived from the `config/database.ts` file. In the following example, `primary` is the connection name.
+O nome da conexão é derivado do arquivo `config/database.ts`. No exemplo a seguir, `primary` é o nome da conexão.
 
 ```ts
 {
@@ -23,14 +23,14 @@ The connection name is derived from the `config/database.ts` file. In the follow
 }
 ```
 
-## Methods/properties
-Following is the list of the available methods and properties on the connection class. The user land code doesn't interact with the connection instance directly, as the following methods are invoked internally.
+## Métodos/propriedades
+A seguir está a lista dos métodos e propriedades disponíveis na classe de conexão. O código do usuário não interage com a instância de conexão diretamente, pois os métodos a seguir são invocados internamente.
 
 ### `connect`
-Invoking the `connect` method instantiates a new Knex.js instance. If you are using read/write replicas then two Knex.js instances are created, one for write and one for read.
+Invocar o método `connect` instancia uma nova instância do Knex.js. Se você estiver usando réplicas de leitura/gravação, duas instâncias do Knex.js serão criadas, uma para gravação e outra para leitura.
 
-:::note
-The `connect` method is called automatically when you run a new database query.
+::: info NOTA
+O método `connect` é chamado automaticamente quando você executa uma nova consulta ao banco de dados.
 :::
 
 ```ts
@@ -38,21 +38,21 @@ connection.connect()
 ```
 
 ### `disconnect`
-The `disconnect` method disconnects the underlying driver connection and destroys the Knex instance(s).
+O método `disconnect` desconecta a conexão do driver subjacente e destrói a(s) instância(s) do Knex.
 
 ```ts
 await connection.disconnect()
 ```
 
 ### `getReport`
-Returns the health check report for given connection.
+Retorna o relatório de verificação de integridade para a conexão fornecida.
 
 ```ts
 const report = await connection.getReport()
 ```
 
 ### `pool`/`readPool`
-Reference to the underlying [tarnjs pool object](https://github.com/vincit/tarn.js/). The property is available only after the `connect` method is called.
+Referência ao [objeto de pool tarnjs](https://github.com/vincit/tarn.js/) subjacente. A propriedade está disponível somente após o método `connect` ser chamado.
 
 ```ts
 connection.pool.numFree()
@@ -60,7 +60,7 @@ connection.readPool.numFree()
 ```
 
 ### `client`/`readClient`
-Reference to the underlying Knex instance. The property is available only after the `connect` method is called.
+Referência à instância subjacente do Knex. A propriedade está disponível somente após o método `connect` ser chamado.
 
 ```ts
 connection.client
@@ -68,14 +68,14 @@ connection.readClient
 ```
 
 ### `hasReadWriteReplicas`
-A boolean to know if the connection is using read-write replicas or not.
+Um booleano para saber se a conexão está usando réplicas de leitura e gravação ou não.
 
 ```ts
 connection.hasReadWriteReplicas
 ```
 
 ### `ready`
-A boolean to know if the connection is ready to make queries. If not, then you must call the `connect` method.
+Um booleano para saber se a conexão está pronta para fazer consultas. Se não, você deve chamar o método `connect`.
 
 ```ts
 if (!connection.ready) {
@@ -84,24 +84,24 @@ if (!connection.ready) {
 ```
 
 ### `config`
-Reference to the config object
+Referência ao objeto de configuração
 
 ```ts
 connection.config
 ```
 
 ### `name`
-The reference to the connection name
+A referência ao nome da conexão
 
 ```ts
 connection.name
 ```
 
-## Events
-Following is the list of events emitted by the connection class. 
+## Eventos
+A seguir está a lista de eventos emitidos pela classe de conexão.
 
 ### `connect`
-Emitted when the `connect` method is called
+Emitido quando o método `connect` é chamado
 
 ```ts
 connection.on('connect', (self) => {
@@ -110,7 +110,7 @@ connection.on('connect', (self) => {
 ```
 
 ### `error`
-Emitted when the unable to establish the connection
+Emitido quando não é possível estabelecer a conexão
 
 ```ts
 connection.on('error', (error, self) => {
@@ -119,7 +119,7 @@ connection.on('error', (error, self) => {
 ```
 
 ### `disconnect`
-Emitted when the connection and Knex instance(s) have been destroyed.
+Emitido quando a conexão e as instâncias do Knex foram destruídas.
 
 ```ts
 connection.on('disconnect', (self) => {
@@ -128,7 +128,7 @@ connection.on('disconnect', (self) => {
 ```
 
 ### `disconnect`\`:error`
-Emitted when the unable to disconnect or destroy Knex instance(s).
+Emitido quando não é possível desconectar ou destruir as instâncias do Knex.
 
 ```ts
 connection.on('disconnect:error', (error, self) => {

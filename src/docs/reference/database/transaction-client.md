@@ -1,20 +1,20 @@
-# Transaction client
+# Cliente de transação
 
-The [Transaction client](https://github.com/adonisjs/lucid/blob/master/src/TransactionClient/index.ts) extends the [Query client](./query-client.md) and has following extra properties on top of the standard query client.
+O [Cliente de transação](https://github.com/adonisjs/lucid/blob/master/src/TransactionClient/index.ts) estende o [Cliente de consulta](./query-client.md) e tem as seguintes propriedades extras sobre o cliente de consulta padrão.
 
-You can access the transaction query client as follows:
+Você pode acessar o cliente de consulta de transação da seguinte forma:
 
 ```ts
 import Database from '@ioc:Adonis/Lucid/Database'
 const trx = await Database.transaction()
 
-// for a given connection
+// para uma determinada conexão
 const trx = await Database
   .connection('pg')
   .transaction()
 ```
 
-You can also define the transaction isolation level as follows.
+Você também pode definir o nível de isolamento da transação da seguinte forma.
 
 ```ts
 await Database.transaction({
@@ -22,33 +22,33 @@ await Database.transaction({
 })
 ```
 
-Following is the list of available isolation levels.
+A seguir está a lista de níveis de isolamento disponíveis.
 
-- **"read uncommitted"**
-- **"read committed"**
+- **"read uncommitted"** (*leitura não confirmada*)
+- **"read committed"** (*leitura confirmada*)
 - **"snapshot"**
-- **"repeatable read"**
-- **"serializable"**
+- **"repeatable read"** (*leitura repetível*)
+- **"serializable"** (*serializável*)
 
-## Methods/Properties
-Following is the list of methods and properties available on the transaction client class.
+## Métodos/Propriedades
+A seguir está a lista de métodos e propriedades disponíveis na classe do cliente de transação.
 
 ### `commit`
-Commit the transaction
+Confirme a transação
 
 ```ts
 await trx.commit()
 ```
 
 ### `rollback`
-Rollback the transaction
+Reverta a transação
 
 ```ts
 await trx.rollback()
 ```
 
 ### `isCompleted`
-Find if the transaction has been completed or not.
+Descubra se a transação foi concluída ou não.
 
 ```ts
 if (!trx.isCompleted) {
@@ -56,8 +56,8 @@ if (!trx.isCompleted) {
 }
 ```
 
-## Events
-The transaction client also events the following events when the transaction is committed or rolled back.
+## Eventos
+O cliente da transação também registra os seguintes eventos quando a transação é confirmada ou revertida.
 
 ```ts
 trx.once('commit', (self) => {

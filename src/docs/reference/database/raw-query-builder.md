@@ -1,12 +1,12 @@
 # Raw query builder
 
-The raw query builder allows you execute queries from a SQL string. Even though you are directly executing raw SQL strings, you can still keep your queries safe from SQL injection by using placeholders for values.
+O raw query builder permite que você execute consultas de uma string SQL. Mesmo que você esteja executando diretamente strings SQL brutas, você ainda pode manter suas consultas seguras de injeção de SQL usando placeholders para valores.
 
-## Executing query
-Following is an example of executing query from a SQL string.
+## Executando consulta
+A seguir está um exemplo de execução de consulta de uma string SQL.
 
-:::note
-When executing raw queries, the results from the underlying driver are return as it is.
+::: info NOTA
+Ao executar consultas brutas, os resultados do driver subjacente são retornados como estão.
 :::
 
 ```ts
@@ -14,10 +14,10 @@ import Database from '@ioc:Adonis/Lucid/Database'
 await Database.rawQuery('select * from users')
 ```
 
-### Using bindings
-To prevent your queries from SQL injection. You should never hard code the user input into the queries directly and instead rely on placeholders and bindings. For example:
+### Usando ligações
+Para evitar que suas consultas sejam injetadas em SQL. Você nunca deve codificar a entrada do usuário diretamente nas consultas e, em vez disso, confiar em placeholders e ligações. Por exemplo:
 
-### Positional placeholders
+### Placeholders posicionais
 
 ```ts
 Database.rawQuery(
@@ -28,7 +28,7 @@ Database.rawQuery(
 // SELECT * FROM "users" WHERE "id" = 1
 ```
 
-You can also pass in a dynamic column name using bindings. The `??` is parsed as a column name and `?` is parsed as a value.
+Você também pode passar um nome de coluna dinâmico usando ligações. O `??` é analisado como um nome de coluna e `?` é analisado como um valor.
 
 ```ts
 Database.rawQuery(
@@ -39,9 +39,9 @@ Database.rawQuery(
 // SELECT * FROM "users" WHERE "users"."id" = 1
 ```
 
-### Named placeholders
+### Espaços reservados nomeados
 
-You can also name placeholders and then use objects for defining bindings. For example:
+Você também pode nomear espaços reservados e usar objetos para definir vinculações. Por exemplo:
 
 ```ts
 Database.rawQuery(
@@ -52,7 +52,7 @@ Database.rawQuery(
 )
 ```
 
-You need to use also append the colon `:` after the placeholder when using a dynamic column name.
+Você precisa usar também anexar os dois pontos `:` após o espaço reservado ao usar um nome de coluna dinâmico.
 
 ```ts
 Database.rawQuery(
@@ -64,7 +64,7 @@ Database.rawQuery(
 )
 ```
 
-Another example comparing two columns with each other.
+Outro exemplo comparando duas colunas entre si.
 
 ```ts
 Database.rawQuery(
@@ -85,22 +85,22 @@ ON
 */
 ```
 
-## Raw query vs raw
-There are two ways to create raw queries using the `Database` module.
+## Consulta bruta vs bruta
+Existem duas maneiras de criar consultas brutas usando o módulo `Database`.
 
 ```ts
 Database.rawQuery('select * from users')
 ```
 
-And
+E
 
 ```ts
 Database.raw('select * from users')
 ```
 
-The `rawQuery` can be executed by using the `await` keyword or chaining the `then/catch` methods.
+A `rawQuery` pode ser executada usando a palavra-chave `await` ou encadeando os métodos `then/catch`.
 
-However, the output of `raw` method is meant to be used within other queries. For example
+No entanto, a saída do método `raw` deve ser usada em outras consultas. Por exemplo
 
 ```ts
 await Database.select(
@@ -109,11 +109,11 @@ await Database.select(
 )
 ```
 
-## Methods/Properties
-Following is the list of methods and properties available on the raw query builder.
+## Métodos/Propriedades
+A seguir está a lista de métodos e propriedades disponíveis no construtor de consultas brutas.
 
 ### `wrap`
-Wrap the raw query with a prefix and a suffix. Usually helpful when passing the raw query as a reference.
+Envolva a consulta bruta com um prefixo e um sufixo. Geralmente útil ao passar a consulta bruta como referência.
 
 ```ts
 await Database.select(
@@ -125,7 +125,7 @@ await Database.select(
 ```
 
 ### `debug`
-The `debug` method allows enabling or disabling debugging at an individual query level. Here's a [complete guide](../../guides/database/debugging.md) on debugging queries.
+O método `debug` permite habilitar ou desabilitar a depuração em um nível de consulta individual. Aqui está um [guia completo](../../guides/database/debugging.md) sobre consultas de depuração.
 
 ```ts
 await Database
@@ -134,9 +134,9 @@ await Database
 ```
 
 ### `timeout`
-Define the `timeout` for the query. An exception is raised after the timeout has been exceeded.
+Defina o `timeout` para a consulta. Uma exceção é gerada após o timeout ter sido excedido.
 
-The value of timeout is always in milliseconds.
+O valor do timeout é sempre em milissegundos.
 
 ```ts
 await Database
@@ -144,7 +144,7 @@ await Database
   .timeout(2000)
 ```
 
-You can also cancel the query when using timeouts with MySQL and PostgreSQL.
+Você também pode cancelar a consulta ao usar timeouts com MySQL e PostgreSQL.
 
 ```ts
 await Database
@@ -153,7 +153,7 @@ await Database
 ```
 
 ### `client`
-Reference to the instance of the underlying [database query client](./query-client.md).
+Referência à instância do [cliente de consulta de banco de dados](./query-client.md) subjacente.
 
 ```ts
 const query = Database.rawQuery(sql, bindings)
@@ -161,7 +161,7 @@ console.log(query.client)
 ```
 
 ### `knexQuery`
-Reference to the instance of the underlying KnexJS query.
+Referência à instância da consulta KnexJS subjacente.
 
 ```ts
 const query = Database.rawQuery(sql, bindings)
@@ -169,9 +169,9 @@ console.log(query.knexQuery)
 ```
 
 ### `reporterData`
-The query builder emits the `db:query` event and also reports the queries execution time with the framework profiler.
+O construtor de consultas emite o evento `db:query` e também relata o tempo de execução das consultas com o profiler do framework.
 
-Using the `reporterData` method, you can pass additional details to the event and the profiler.
+Usando o método `reporterData`, você pode passar detalhes adicionais para o evento e o profiler.
 
 ```ts
 Database
@@ -179,7 +179,7 @@ Database
   .reporterData({ userId: auth.user.id })
 ```
 
-Now within the `db:query` event, you can access the value of `userId` as follows.
+Agora, dentro do evento `db:query`, você pode acessar o valor de `userId` da seguinte forma.
 
 ```ts
 Event.on('db:query', (query) => {

@@ -1,8 +1,8 @@
 # Schema
 
-Schema migration classes must extend the [Base Schema class](https://github.com/adonisjs/lucid/blob/master/src/Schema/index.ts) class to run SQL DDL operations as code.
+As classes de migração de esquema devem estender a classe [Base Schema class](https://github.com/adonisjs/lucid/blob/master/src/Schema/index.ts) para executar operações SQL DDL como código.
 
-You can create a new schema migration by running the `node ace make:migration` command.
+Você pode criar uma nova migração de esquema executando o comando `node ace make:migration`.
 
 ```ts
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
@@ -11,11 +11,11 @@ class UserSchema extends BaseSchema {
 }
 ```
 
-## Lifecycle methods
-Every schema class has the following lifecycle methods that get executed when you run or rollback the migrations.
+## Métodos de ciclo de vida
+Cada classe de esquema tem os seguintes métodos de ciclo de vida que são executados quando você executa ou reverte as migrações.
 
 ### `up`
-The `up` method is used to define the operations to be executed when running the `node ace migration:run` command. In this method, you always perform constructive operations like **create a table** or **alter a table**.
+O método `up` é usado para definir as operações a serem executadas ao executar o comando `node ace migration:run`. Neste método, você sempre executa operações construtivas como **criar uma tabela** ou **alterar uma tabela**.
 
 ```ts
 class UserSchema extends BaseSchema {
@@ -25,9 +25,9 @@ class UserSchema extends BaseSchema {
 ```
 
 ### `down`
-The `down` method is supposed to undo the actions executed by the `up` method. You need to use the equivalent API for running the undo actions manually.
+O método `down` deve desfazer as ações executadas pelo método `up`. Você precisa usar a API equivalente para executar as ações de desfazer manualmente.
 
-For example, If the `up` method creates a new table using the `createTable` method, then the `down` method can use the `dropTable` method.
+Por exemplo, se o método `up` cria uma nova tabela usando o método `createTable`, então o método `down` pode usar o método `dropTable`.
 
 ```ts
 class UserSchema extends BaseSchema {
@@ -42,48 +42,46 @@ class UserSchema extends BaseSchema {
 }
 ```
 
-## Methods/Properties
-Following is the list of methods and properties available on the schema class.
+## Métodos/Propriedades
+A seguir está a lista de métodos e propriedades disponíveis na classe de esquema.
 
 ### `now`
-The `now` method is a helper to set the default value to the `CURRENT_TIMESTAMP`.
+O método `now` é um auxiliar para definir o valor padrão para `CURRENT_TIMESTAMP`.
 
 ```ts
 table.timestamp('created_at').defaultTo(this.now())
 ```
 
 ### `raw`
-Creates a raw query to be used for running DDL statements.
+Cria uma consulta bruta a ser usada para executar instruções DDL.
 
-```ts
+```ts {3-5}
 class UserSchema extends BaseSchema {
   public up() {
-    // highlight-start
     this.defer(async () => {
       await this.raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"')
     })
-    // highlight-end
   }
 }
 ```
 
 ### `defer`
-The `defer` method allows you to wrap custom database operations inside a defer block. Deferring actions is required for the following reasons.
+O método `defer` permite que você envolva operações de banco de dados personalizadas dentro de um bloco defer. Ações de adiamento são necessárias pelos seguintes motivos.
 
-- Ensure that your custom actions are executed in the right sequence
-- Ensure your actions are not executed when migrations are running in dry-run mode.
+- Garanta que suas ações personalizadas sejam executadas na sequência correta
+- Garanta que suas ações não sejam executadas quando as migrações estiverem sendo executadas no modo de execução a seco.
 
 ```ts
 public async up() {
   this.defer(async () => {
-    // Only executed when not running in dry-run mode
+    // Executado somente quando não estiver em modo de execução a seco
     await this.db.from('users')
   })
 }
 ```
 
 ### `debug`
-A property to enable/disable queries debugging for the given schema class. By default, the debugging is inherited from the [query client](./query-client.md) used by the schema class.
+Uma propriedade para habilitar/desabilitar a depuração de consultas para a classe de esquema fornecida. Por padrão, a depuração é herdada do [cliente de consulta](./query-client.md) usado pela classe de esquema.
 
 ```ts
 class UserSchema extends BaseSchema {
@@ -92,7 +90,7 @@ class UserSchema extends BaseSchema {
 ```
 
 ### `disableTransactions`
-A property to enable/disable wrapping database queries inside a transaction.  The transactions are enabled by default. All the statements inside a given migration file are wrapped inside a single transaction.
+Uma propriedade para habilitar/desabilitar o encapsulamento de consultas de banco de dados dentro de uma transação. As transações são habilitadas por padrão. Todas as instruções dentro de um determinado arquivo de migração são encapsuladas dentro de uma única transação.
 
 ```ts
 class UserSchema extends BaseSchema {
@@ -101,19 +99,19 @@ class UserSchema extends BaseSchema {
 ```
 
 ### `schema`
-Returns a reference to the [schema builder](./schema-builder.md). The property is getter and returns a new instance of schema builder on every access.
+Retorna uma referência ao [construtor de esquema](./schema-builder.md). A propriedade é getter e retorna uma nova instância do construtor de esquema em cada acesso.
 
 ```ts
 class UserSchema extends BaseSchema {
   public up() {
-    // every access call returns a new instance
+    // cada chamada de acesso retorna uma nova instância
     console.log(this.schema !== this.schema)
   }
 }
 ```
 
 ### `execUp`
-The method is invoked internally during the migration process to execute the user-defined `up` method. **You should never call this method manually**.
+O método é invocado internamente durante o processo de migração para executar o método `up` definido pelo usuário. **Você nunca deve chamar este método manualmente**.
 
 ### `execDown`
-The method is invoked internally during the migration process to execute the user-defined `down` method. **You should never call this method manually**.
+O método é invocado internamente durante o processo de migração para executar o método `down` definido pelo usuário. **Você nunca deve chamar este método manualmente**.

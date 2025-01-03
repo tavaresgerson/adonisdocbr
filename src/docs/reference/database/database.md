@@ -1,51 +1,49 @@
-# Database
+# Banco de dados
 
-The database module exposes the APIs to interact with the SQL databases. You can import the module as follows:
+O módulo de banco de dados expõe as APIs para interagir com os bancos de dados SQL. Você pode importar o módulo da seguinte forma:
 
 ```ts
 import Database from '@ioc:Adonis/Lucid/Database'
 ```
 
-## Methods/Properties
-Following is the list of methods/properties available on the database module.
+## Métodos/Propriedades
+A seguir está a lista de métodos/propriedades disponíveis no módulo de banco de dados.
 
 ### `connection`
-Returns the query client for a given connection. Uses the default connection, when no explicit connection name is defined.
+Retorna o cliente de consulta para uma determinada conexão. Usa a conexão padrão, quando nenhum nome de conexão explícito é definido.
 
 ```ts
 Database.connection()
 
-// named connection
+// conexão nomeada
 Database.connection('pg')
 ```
 
-You can also get the query client instance for a specific mode.
+Você também pode obter a instância do cliente de consulta para um modo específico.
 
 ```ts
 Database.connection('pg', { mode: 'write' })
 
-// Write queries are not allowed in read mode
+// Consultas de gravação não são permitidas no modo de leitura
 Database.connection('pg', { mode: 'read' })
 ```
 
 ### `beginGlobalTransaction`
-Begin a global transaction. All queries after beginning the global transaction will be executed within the transaction.
+Inicie uma transação global. Todas as consultas após o início da transação global serão executadas dentro da transação.
 
-:::warning
-
-We recommend using this method only during the tests.
-
+::: warning ATENÇÃO
+Recomendamos usar este método apenas durante os testes.
 :::
 
 ```ts
 await Database.beginGlobalTransaction()
 
-// for a named connection
+// para uma conexão nomeada
 await Database.beginGlobalTransaction('pg')
 ```
 
 ### `commitGlobalTransaction`
-Commit a previously created global transaction
+Confirma uma transação global criada anteriormente
 
 ```ts
 await Database.commitGlobalTransaction()
@@ -53,7 +51,7 @@ await Database.commitGlobalTransaction('pg')
 ```
 
 ### `rollbackGlobalTransaction`
-Rollbacks a previously created global transaction
+Reverte uma transação global criada anteriormente
 
 ```ts
 await Database.rollbackGlobalTransaction()
@@ -61,7 +59,7 @@ await Database.rollbackGlobalTransaction('pg')
 ```
 
 ### `report`
-Returns the health check report for all the registered connections.
+Retorna o relatório de verificação de integridade para todas as conexões registradas.
 
 ```ts
 const report = await Database.report()
@@ -71,21 +69,21 @@ console.log(report.health.healthy)
 ```
 
 ### `query`
-Alias for the [client.query](./query-client.md#query) method.
+Alias ​​para o método [client.query](./query-client.md#query).
 
 ```ts
 Database.query()
 ```
 
 ### `insertQuery`
-Alias for the [client.insertQuery](./query-client.md#insert-query) method.
+Alias ​​para o método [client.insertQuery](./query-client.md#insert-query).
 
 ```ts
 Database.insertQuery()
 ```
 
 ### `modelQuery`
-Alias for the [client.modelQuery](./query-client.md#model-query) method.
+Alias ​​para o método [client.modelQuery](./query-client.md#model-query).
 
 ```ts
 import User from 'App/Models/User'
@@ -93,7 +91,7 @@ const query = Database.modelQuery(User)
 ```
 
 ### `rawQuery`
-Alias for the [client.rawQuery](./query-client.md#raw-query) method.
+Alias ​​para o método [client.rawQuery](./query-client.md#raw-query).
 
 ```ts
 await Database
@@ -101,14 +99,14 @@ await Database
 ```
 
 ### `knexQuery`
-Alias for the [client.knexQuery](./query-client.md#knex-query) method.
+Alias ​​para o método [client.knexQuery](./query-client.md#knex-query).
 
 ```ts
 Database.knexQuery()
 ```
 
 ### `knexRawQuery`
-Alias for the [client.knexRawQuery](./query-client.md#knex-raw-query) method.
+Alias ​​para o método [client.knexRawQuery](./query-client.md#knex-raw-query).
 
 ```ts
 Database
@@ -116,7 +114,7 @@ Database
 ```
 
 ### `ref`
-The `ref` method allows you to reference a database column name as a value. For example:
+O método `ref` permite que você faça referência a um nome de coluna do banco de dados como um valor. Por exemplo:
 
 ```ts
 Database
@@ -125,10 +123,10 @@ Database
 ```
 
 ### `raw`
-The `raw` method creates an instance of the [RawBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Database/StaticBuilder/Raw.ts). This query is meant to be used as a reference inside another query.
+O método `raw` cria uma instância do [RawBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Database/StaticBuilder/Raw.ts). Esta consulta deve ser usada como uma referência dentro de outra consulta.
 
-#### What is the difference between `rawQuery` and `raw`?
-You can execute the query created using `rawQuery` method. Whereas, the query created using `raw` method can only be passed as a reference.
+#### Qual é a diferença entre `rawQuery` e `raw`?
+Você pode executar a consulta criada usando o método `rawQuery`. Enquanto isso, a consulta criada usando o método `raw` só pode ser passada como uma referência.
 
 ```ts
 Database
@@ -142,32 +140,32 @@ Database
 ```
 
 ### `from`
-A shortcut method to get an instance of the [Query builder](./query-builder.md) for the primary connection.
+Um método de atalho para obter uma instância do [Query builder](./query-builder.md) para a conexão primária.
 
 ```ts
 Database.from('users')
-// Is same as
+// É o mesmo que
 Database.connection().from('users')
 ```
 
 ### `table`
-A shortcut method to get an instance of the [Insert Query builder](./insert-query-builder.md) for the primary connection.
+Um método de atalho para obter uma instância do [Insert Query builder](./insert-query-builder.md) para a conexão primária.
 
 ```ts
 Database.table('users')
-// Is same as
+// É o mesmo que
 Database.connection().table('users')
 ```
 
 ### `transaction`
-Alias for the [client.transaction](./query-client.md#transaction) method.
+Alias ​​para o método [client.transaction](./query-client.md#transaction).
 
 ```ts
 await Database.transaction()
 ```
 
 ### `prettyPrint`
-A helper method to pretty print the query log emitted as `db:query` event.
+Um método auxiliar para imprimir o log de consulta emitido como evento `db:query`.
 
 ```ts
 import Event from '@ioc:Adonis/Core/Event'
@@ -175,21 +173,21 @@ Event.on('db:query', Database.prettyPrint)
 ```
 
 ### `hasHealthChecksEnabled`
-A boolean to know if health checks is enabled for at least one connection or not.
+Um booleano para saber se as verificações de integridade estão habilitadas para pelo menos uma conexão ou não.
 
 ```ts
 console.log(Database.hasHealthChecksEnabled)
 ```
 
 ### `primaryConnectionName`
-Returns the name of the default/primary connection name defined inside the `config/database` file.
+Retorna o nome da conexão padrão/primária definida dentro do arquivo `config/database`.
 
 ```ts
 console.log(Database.primaryConnectionName)
 ```
 
 ### `manager`
-Returns reference to the [connections manager](./connection-manager.md)
+Retorna a referência ao [gerenciador de conexões](./connection-manager.md)
 
 ```ts
 console.log(Database.manager)

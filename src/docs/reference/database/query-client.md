@@ -1,50 +1,50 @@
-# Query client
+# Cliente de consulta
 
-The [Query client](https://github.com/adonisjs/lucid/blob/efed38908680cca3b288d9b2a123586fab155b1d/src/QueryClient/index.ts#L38) works a bridge between the [connection](./connection.md) and the [query builder](./query-builder.md) to execute the database queries. Also, it exposes the required APIs used by the query builder to direct read queries to the read replica and writes the write replica.
+O [cliente de consulta](https://github.com/adonisjs/lucid/blob/efed38908680cca3b288d9b2a123586fab155b1d/src/QueryClient/index.ts#L38) funciona como uma ponte entre a [conexão](./connection.md) e o [construtor de consultas](./query-builder.md) para executar as consultas do banco de dados. Além disso, ele expõe as APIs necessárias usadas pelo construtor de consultas para direcionar consultas de leitura para a réplica de leitura e grava a réplica de gravação.
 
-You can access the query client as follows:
+Você pode acessar o cliente de consulta da seguinte forma:
 
 ```ts
 import Database from '@ioc:Adonis/Lucid/Database'
 
-// returns client for the default connection
+// retorna o cliente para a conexão padrão
 const client = Database.connection()
 
-// returns client for a named connection
+// retorna o cliente para uma conexão nomeada
 const pgClient = Database.connection('pg')
 ```
 
-## Methods/Properties
-Following is the list of methods and properties available on the query client class.
+## Métodos/Propriedades
+A seguir está a lista de métodos e propriedades disponíveis na classe do cliente de consulta.
 
 ### `query`
-Returns an instance of the [query builder](./query-builder.md) for a pre-selected database connection.
+Retorna uma instância do [query builder](./query-builder.md) para uma conexão de banco de dados pré-selecionada.
 
 ```ts
 client.query()
 ```
 
-You can also use the `from` alias to instantiate a new query instance and select the table.
+Você também pode usar o alias `from` para instanciar uma nova instância de consulta e selecionar a tabela.
 
 ```ts
 client.from('users')
 ```
 
 ### `insertQuery`
-Returns an instance of the [insert query builder](./insert-query-builder.md) for a pre-selected database connection.
+Retorna uma instância do [insert query builder](./insert-query-builder.md) para uma conexão de banco de dados pré-selecionada.
 
 ```ts
 client.insertQuery()
 ```
 
-You can also use the `table` alias to instantiate a new query instance and select the table.
+Você também pode usar o alias `table` para instanciar uma nova instância de consulta e selecionar a tabela.
 
 ```ts
 client.table('users')
 ```
 
 ### `modelQuery`
-Returns an instance of the [model query builder](../orm/query-builder.md) for a given Lucid model.
+Retorna uma instância do [model query builder](../orm/query-builder.md) para um determinado modelo Lucid.
 
 ```ts
 import User from 'App/Models/User'
@@ -56,7 +56,7 @@ console.log(user instanceof User) // true
 ```
 
 ### `rawQuery`
-Returns an instance of the [raw query builder](./raw-query-builder.md) for a pre-selected database connection.
+Retorna uma instância do [raw query builder](./raw-query-builder.md) para uma conexão de banco de dados pré-selecionada.
 
 ```ts
 await client
@@ -64,14 +64,14 @@ await client
 ```
 
 ### `knexQuery`
-Returns an instance of the [Knex.js query builder](https://knexjs.org/#Builder) for a pre-selected database connection.
+Retorna uma instância do [Knex.js query builder](https://knexjs.org/#Builder) para uma conexão de banco de dados pré-selecionada.
 
 ```ts
 client.knexQuery().select('*')
 ```
 
 ### `knexRawQuery`
-Returns an instance of the [Knex.js raw query builder](https://knexjs.org/#Raw) for a pre-selected database connection.
+Retorna uma instância do [Knex.js raw query builder](https://knexjs.org/#Raw) para uma conexão de banco de dados pré-selecionada.
 
 ```ts
 client
@@ -79,7 +79,7 @@ client
 ```
 
 ### `transaction`
-Creates a new [transaction client](./transaction-client.md) instance. Transaction client **reserves a dedicated database** connection right away and hence it is very important to commit or rollback the transactions properly.
+Cria uma nova instância de [cliente de transação](./transaction-client.md). O cliente de transação **reserva uma conexão de banco de dados dedicada** imediatamente e, portanto, é muito importante confirmar ou reverter as transações corretamente.
 
 ```ts
 const trx = await client.transaction()
@@ -89,7 +89,7 @@ await trx.commit()
 ```
 
 ### `getAllTables`
-Returns an array of all the database tables.
+Retorna uma matriz de todas as tabelas do banco de dados.
 
 ```ts
 const tables = await client.getAllTables()
@@ -97,7 +97,7 @@ console.log(tables)
 ```
 
 ### `getAllViews`
-Returns an array of all the database views.
+Retorna uma matriz de todas as visualizações do banco de dados.
 
 ```ts
 const views = await client.getAllViews()
@@ -105,7 +105,7 @@ console.log(views)
 ```
 
 ### `getAllTypes`
-Returns an array of all the database custom types. The method works only with **Postgres and Redshift**.
+Retorna uma matriz de todos os tipos personalizados do banco de dados. O método funciona apenas com **Postgres e Redshift**.
 
 ```ts
 const types = await client.getAllTypes()
@@ -113,7 +113,7 @@ console.log(types)
 ```
 
 ### `columnsInfo`
-Returns a key-value pair of columns in a given database table.
+Retorna um par de colunas chave-valor em uma determinada tabela do banco de dados.
 
 ```ts
 const columns = await client.columnsInfo('users')
@@ -121,79 +121,79 @@ console.log(columns)
 ```
 
 ### `dropAllTables`
-Drop all tables inside the database.
+Remove todas as tabelas dentro do banco de dados.
 
 ```ts
 await client.dropAllTables()
 
-// specify schemas ( for Postgres and Redshift )
+// especifica esquemas (para Postgres e Redshift)
 await client.dropAllTables(['public'])
 ```
 
 ### `dropAllViews`
-Drop all views inside the database.
+Remove todas as visualizações dentro do banco de dados.
 
 ```ts
 await client.dropAllViews()
 
-// specify schemas ( for Postgres and Redshift )
+// especifica esquemas (para Postgres e Redshift)
 await client.dropAllViews(['public'])
 ```
 
 ### `dropAllTypes`
-Drop all custom types inside the database. The method works only with **Postgres and Redshift**.
+Remove todos os tipos personalizados dentro do banco de dados. O método funciona apenas com **Postgres e Redshift**.
 
 ```ts
 await client.dropAllTypes()
 ```
 
 ### `truncate`
-Truncate a database table. Optionally you can also cascade foreign key references.
+Trunca uma tabela de banco de dados. Opcionalmente, você também pode cascatear referências de chave estrangeira.
 
 ```ts
 await client.truncate('users')
 
-// cascade
+// cascata
 await client.truncate('users', true)
 ```
 
 ### `getReadClient`
-Returns Knex.js instance for the read replica. The write client is returned when not using read/write replicas.
+Retorna a instância Knex.js para a réplica de leitura. O cliente de gravação é retornado quando não se usa réplicas de leitura/gravação.
 
 ```ts
 const knex = client.getReadClient()
 ```
 
 ### `getWriteClient`
-Returns Knex.js instance for the write replica. An exception is raised when client is instantiated in the read mode.
+Retorna a instância Knex.js para a réplica de gravação. Uma exceção é gerada quando o cliente é instanciado no modo de leitura.
 
 ```ts
 const knex = client.getWriteClient()
 ```
 
 ### `getAdvisoryLock`
-Calling `getAdvisoryLock` obtains an advisory lock in **PostgreSQL**, and **MySQL** databases.
+Chamar `getAdvisoryLock` obtém um bloqueio consultivo em bancos de dados **PostgreSQL** e **MySQL**.
 
-:::note
-Advisory locks are used by database migrations to prevent multiple processes from migrating the database at the same time.
+::: info NOTA
+Bloqueios consultivos são usados ​​por migrações de banco de dados para evitar que vários processos migrem o banco de dados ao mesmo tempo.
 :::
 
 ```ts
 await client.getAdvisoryLock('key_name')
 
-// custom timeout
+// tempo limite personalizado
 await client.getAdvisoryLock('key_name', 2000)
 ```
 
 ### `releaseAdvisoryLock`
-Release the previously acquired advisory lock
+Libera o bloqueio consultivo adquirido anteriormente
 
 ```ts
 await client.releaseAdvisoryLock('key_name')
 ```
 
 ### `raw`
-Create a raw reference query instance. The queries generated using the `raw` method can only be used as a reference in other queries and cannot be executed standalone.
+Cria uma instância de consulta de referência bruta. As consultas geradas usando o método `raw` só podem ser usadas como referência em outras consultas e não podem ser executadas de forma independente.
 
 ```ts
 await client.from(
@@ -202,39 +202,39 @@ await client.from(
 ```
 
 ### `mode`
-A readonly property to know the mode in which client instance was created. It is always one of the following
+Uma propriedade somente leitura para saber o modo em que a instância do cliente foi criada. É sempre um dos seguintes
 
-- `dual`: Both read/write queries are supported and will be directed to the correct replica.
-- `write`: Read queries will also be sent to the `write` replica.
-- `read`: No write queries can be executed.
+- `dual`: Ambas as consultas de leitura/gravação são suportadas e serão direcionadas para a réplica correta.
+- `write`: As consultas de leitura também serão enviadas para a réplica `write`.
+- `read`: Nenhuma consulta de gravação pode ser executada.
 
 ```ts
 console.log(client.mode)
 ```
 
 ### `dialect`
-Reference to the underlying [database dialect](https://github.com/adonisjs/lucid/tree/master/src/Dialects). Each supported database driver has its own dialect.
+Referência ao [dialeto do banco de dados](https://github.com/adonisjs/lucid/tree/master/src/Dialects) subjacente. Cada driver de banco de dados suportado tem seu próprio dialeto.
 
 ```ts
 console.log(client.dialect.name)
 ```
 
 ### `isTransaction`
-Find if the client is a transaction client. The value is always `false` for the query client.
+Descubra se o cliente é um cliente de transação. O valor é sempre `false` para o cliente de consulta.
 
 ```ts
 client.isTransaction
 ```
 
 ### `connectionName`
-The connection name for which the query client was instantiated
+O nome da conexão para o qual o cliente de consulta foi instanciado
 
 ```ts
 client.connectionName
 ```
 
 ### `debug`
-Set the value to `true` to enable debugging for queries executed by the query client.
+Defina o valor como `true` para habilitar a depuração para consultas executadas pelo cliente de consulta.
 
 ```ts
 client.debug = true
@@ -243,7 +243,7 @@ await client.from('users').select('*')
 ```
 
 ### `schema`
-Returns reference to the [schema builder](./schema-builder.md). The `client.schema` is a getter that returns a new instance every time you access the property
+Retorna referência ao [construtor de esquema](./schema-builder.md). O `client.schema` é um getter que retorna uma nova instância toda vez que você acessa a propriedade
 
 ```ts
 await client.schema.createTable('users', (table) => {
