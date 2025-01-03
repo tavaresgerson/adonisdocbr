@@ -1,51 +1,44 @@
-# Web security
+# Segurança da Web
 
-You can protect your web applications from common web attacks like **CSRF**, **XSS**, **content sniffing** and more using the `@adonisjs/shield` package. 
+Você pode proteger seus aplicativos da Web de ataques comuns como **CSRF**, **XSS**, **content sniffing** e mais usando o pacote `@adonisjs/shield`.
 
-It is recommended to use this package when creating a server-rendered app using AdonisJS.
+É recomendado usar este pacote ao criar um aplicativo renderizado pelo servidor usando AdonisJS.
 
-If you are using AdonisJS to create an API server, then you must rely on your frontend framework's security layer.
+Se você estiver usando AdonisJS para criar um servidor de API, então você deve confiar na camada de segurança do seu framework frontend.
 
-:::codegroup
+::: code-group
 
-```sh
-// title: 1. Install
+```sh [Instale]
 npm i @adonisjs/shield@7.1.1
 ```
 
-```sh
-// title: 2. Configure
+```sh [Configure]
 node ace configure @adonisjs/shield
 ```
 
-```ts
-// title: 3. Register middleware
-// Add following to start/kernel.ts
+```ts {5} [Registre o middleware]
+// Adicione o seguinte ao start/kernel.ts
 
 Server.middleware.register([
   () => import('@ioc:Adonis/Core/BodyParser'),
-  // highlight-start
   () => import('@ioc:Adonis/Addons/Shield')
-  // highlight-end
 ])
 ```
 
 :::
 
-## CSRF protection
-[CSRF (Cross-Site Request Forgery)](https://owasp.org/www-community/attacks/csrf) is an attack that tricks the user of your web apps to perform form submissions without their explicit consent.
+## Proteção CSRF
+[CSRF (Cross-Site Request Forgery)](https://owasp.org/www-community/attacks/csrf) é um ataque que engana o usuário de seus aplicativos da Web para executar envios de formulários sem seu consentimento explícito.
 
-To protect against the CSRF attacks, your application should be able to distinguish between the form submissions triggered by your app vs. some other malicious website.
+Para se proteger contra ataques CSRF, seu aplicativo deve ser capaz de distinguir entre os envios de formulários acionados pelo seu aplicativo e algum outro site malicioso.
 
-AdonisJS generates a unique token (known as CSRF token) for every HTTP request and associates it with the user session for later verification. Since, the token is generated on the backend, the malicious website has no way of getting access to it.
+O AdonisJS gera um token exclusivo (conhecido como token CSRF) para cada solicitação HTTP e o associa à sessão do usuário para verificação posterior. Como o token é gerado no backend, o site malicioso não tem como obter acesso a ele.
 
-The token must be present alongside the other form fields in order for CSRF check to pass. You can access it using the `csrfField` inside your Edge templates.
+O token deve estar presente junto com os outros campos do formulário para que a verificação CSRF seja aprovada. Você pode acessá-lo usando o `csrfField` dentro dos seus modelos Edge.
 
-```edge
+```edge {2}
 <form action="{{ route('PostsController.store') }}" method="post">
-  // highlight-start
   {{ csrfField() }}
-  // highlight-end
 
   <div>
     <label for="title">Post title</label>
@@ -57,10 +50,10 @@ The token must be present alongside the other form fields in order for CSRF chec
 </form>
 ```
 
-That is all you need to do.
+Isso é tudo o que você precisa fazer.
 
-### Configuration
-The shield middleware relies on the config stored inside the `config/shield.ts` file. Feel free to tweak the configuration options as per your requirements.
+### Configuração
+O middleware shield depende da configuração armazenada dentro do arquivo `config/shield.ts`. Sinta-se à vontade para ajustar as opções de configuração conforme suas necessidades.
 
 ```ts
 export const csrf: ShieldConfig['csrf'] = {
@@ -80,10 +73,10 @@ export const csrf: ShieldConfig['csrf'] = {
 ```
 
 #### `enabled`
-Enable/disable the CSRF protection all together. You may find yourself disabling it during tests when hitting the form endpoints directly.
+Habilite/desabilite a proteção CSRF completamente. Você pode acabar desabilitando-o durante os testes ao atingir os endpoints do formulário diretamente.
 
 #### `exceptRoutes`
-Ignore certain routes from being validated for the CSRF token. You may find it useful, when creating a hybrid app with API endpoints and the server rendered forms by exempting API endpoints from CSRF token validation.
+Ignore certas rotas de serem validadas para o token CSRF. Você pode achar isso útil ao criar um aplicativo híbrido com endpoints de API e os formulários renderizados pelo servidor isentando endpoints de API da validação do token CSRF.
 
 ```ts
 {
@@ -95,19 +88,19 @@ Ignore certain routes from being validated for the CSRF token. You may find it u
 }
 ```
 
-For more advanced use cases, you can register a function and dynamically filter routes from being validated.
+Para casos de uso mais avançados, você pode registrar uma função e filtrar dinamicamente as rotas de serem validadas.
 
 ```ts
 {
   exceptRoutes: (ctx) => {
-    // ignore all routes starting with /api/
+    // ignorar todas as rotas que começam com /api/
     return ctx.request.url().includes('/api/')
   }
 }
 ```
 
 #### `methods`
-HTTP methods to validate for the availability of the CSRF token. You must add all the HTTP verbs you are using to handle form submissions.
+Métodos HTTP para validar a disponibilidade do token CSRF. Você deve adicionar todos os verbos HTTP que estiver usando para lidar com envios de formulário.
 
 ```ts
 {
@@ -116,28 +109,29 @@ HTTP methods to validate for the availability of the CSRF token. You must add al
 ```
 
 #### `enableXsrfCookie`
-Setting the value to `true` instructs the shield middleware to read the CSRF token from the `X-XSRF-TOKEN` header. Read the [Ajax form submissions](#ajax-form-submissions) section to learn more.
+Definir o valor como `true` instrui o middleware shield a ler o token CSRF do cabeçalho `X-XSRF-TOKEN`. Leia a seção [Ajax form submissions](#ajax-form-submissions) para saber mais.
 
 #### `cookieOptions`
-An object of cookie options. Read the [Cookie](../http/cookies.md) section to learn more.
+Um objeto de opções de cookie. Leia a seção [Cookie](../http/cookies.md) para saber mais.
 
-### CSRF token for SPA
-The Single page applications render forms on the frontend and hence they do not have access to the `csrfField` view global. However, you can read the token value from the `XSRF-TOKEN` cookie and send it to the server via `X-XSRF-TOKEN` header.
+### Token CSRF para SPA
+Os aplicativos de página única renderizam formulários no frontend e, portanto, não têm acesso à visualização global `csrfField`. No entanto, você pode ler o valor do token do cookie `XSRF-TOKEN` e enviá-lo ao servidor por meio do cabeçalho `X-XSRF-TOKEN`.
 
-The cookie technique is already widely supported by frameworks like [Angular](https://angular.io/api/common/http/HttpClientXsrfModule) and request libraries like axios.
+A técnica de cookie já é amplamente suportada por frameworks como [Angular](https://angular.io/api/common/http/HttpClientXsrfModule) e bibliotecas de solicitação como axios.
 
-However, do make sure to enable the cookie feature by setting the value of `enableXsrfCookie = true` inside the `config/shield.ts` file.
+No entanto, certifique-se de habilitar o recurso de cookie definindo o valor de `enableXsrfCookie = true` dentro do arquivo `config/shield.ts`.
 
-### CSRF token for RESTful APIs
-If you are creating RESTful API server, then you don't need CSRF protection, unless you are relying on cookies for user authentication. If you are relying on cookies for authentication, then simply follow the instructions of [CSRF token for SPA](#csrf-token-for-spa) section.
+### Token CSRF para APIs RESTful
+Se você estiver criando um servidor de API RESTful, não precisará de proteção CSRF, a menos que esteja contando com cookies para autenticação do usuário. Se estiver contando com cookies para autenticação, basta seguir as instruções da seção [token CSRF para SPA](#csrf-token-for-spa).
 
 ## CSP
-[CSP (Content security policy)](https://content-security-policy.com) helps you define the trusted sources for loading and executing **scripts**, **styles**, **fonts**, etc and reduce the risk of XSS attacks.
+[CSP (Content security policy)](https://content-security-policy.com) ajuda você a definir as fontes confiáveis ​​para carregar e executar **scripts**, **estilos**, **fontes**, etc. e reduzir o risco de ataques XSS.
 
-You can configure the CSP header by tweaking the configuration options inside the `config/shield.ts` file.
+Você pode configurar o cabeçalho CSP ajustando as opções de configuração dentro do arquivo `config/shield.ts`.
 
 ```ts
-// title: config/shield.ts
+// config/shield.ts
+
 export const csp: ShieldConfig['csp'] = {
   enabled: false,
   directives: {},
@@ -146,13 +140,12 @@ export const csp: ShieldConfig['csp'] = {
 ```
 
 #### `enabled`
-Enable/disable CSP protection all together.
+Habilitar/desabilitar a proteção CSP completamente.
 
 #### `directives`
-Configure the CSP header directives. We recommend reading about them on [https://content-security-policy.com](https://content-security-policy.com/#directive). The `dash-case` directive names are defined as `camelCase` inside the shield config file.
+Configure as diretivas do cabeçalho CSP. Recomendamos ler sobre elas em [https://content-security-policy.com](https://content-security-policy.com/#directive). Os nomes das diretivas `dash-case` são definidos como `camelCase` dentro do arquivo de configuração do shield.
 
-
-<!-- About the quotes around 'self': https://github.com/adonisjs/core/discussions/3233 -->
+<!-- Sobre as aspas em torno de 'self': https://github.com/adonisjs/core/discussions/3233 -->
 ```ts
 directives: {
   defaultSrc: ["'self'"],
@@ -162,10 +155,10 @@ directives: {
 ```
 
 #### `reportOnly`
-Set the value to true, if you want the CSP violations to result in a warning rather than an error. [Learn more](https://content-security-policy.com/report-only/).
+Defina o valor como true, se quiser que as violações de CSP resultem em um aviso em vez de um erro. [Saiba mais](https://content-security-policy.com/report-only/).
 
 ### CSP nonce
-To define [nonce-based](https://content-security-policy.com/nonce/) inline script and style tags, you have to make use of the `@nonce` keyword.
+Para definir scripts e tags de estilo inline [baseados em nonce](https://content-security-policy.com/nonce/), você precisa usar a palavra-chave `@nonce`.
 
 ```ts
 directives: {
@@ -173,14 +166,14 @@ directives: {
 }
 ```
 
-Next, make use of the `cspNonce` view helper to define the nonce attribute on the inline script and style tags.
+Em seguida, use o auxiliar de visualização `cspNonce` para definir o atributo nonce nas tags de estilo e script inline.
 
 ```edge
 <script nonce="{{ cspNonce }}">
 </script>
 ```
 
-You can also access the `nonce` attribute using the `response.nonce` property.
+Você também pode acessar o atributo `nonce` usando a propriedade `response.nonce`.
 
 ```ts
 Route.get('/', ({ response }) => {
@@ -191,7 +184,7 @@ Route.get('/', ({ response }) => {
 ```
 
 ## DNS prefetching
-Using the `dnsPrefetch` setting from the `config/shield.ts` file, you can control the behavior for the [X-DNS-Prefetch-Control](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-DNS-Prefetch-Control) header.
+Usando a configuração `dnsPrefetch` do arquivo `config/shield.ts`, você pode controlar o comportamento do cabeçalho [X-DNS-Prefetch-Control](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-DNS-Prefetch-Control).
 
 ```ts
 export const dnsPrefetch: ShieldConfig['dnsPrefetch'] = {
@@ -201,13 +194,13 @@ export const dnsPrefetch: ShieldConfig['dnsPrefetch'] = {
 ```
 
 #### `enabled`
-Enable/disable the header all together.
+Habilitar/desabilitar o cabeçalho completamente.
 
 #### `allow`
-Setting the value to true will define the `X-DNS-Prefetch-Control` header with the value `'on'`, otherwise `'off'` value is defined.
+Definir o valor como true definirá o cabeçalho `X-DNS-Prefetch-Control` com o valor `'on'`, caso contrário, o valor `'off'` será definido.
 
 ## Frame guard
-The `xFrame` config property manages the [X-Frame-Options](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options) header.
+A propriedade de configuração `xFrame` gerencia o cabeçalho [X-Frame-Options](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options).
 
 ```ts
 export const xFrame: ShieldConfig['xFrame'] = {
@@ -217,10 +210,10 @@ export const xFrame: ShieldConfig['xFrame'] = {
 ```
 
 #### `enabled`
-Enable/disable the header all together.
+Habilita/desabilita o cabeçalho completamente.
 
 #### `action`
-Define the header value. It must be one from `DENY`, `SAMEORIGIN` or `ALLOW-FROM`. The `ALLOW-FROM` action also needs the domain name to allow.
+Define o valor do cabeçalho. Ele deve ser um de `DENY`, `SAMEORIGIN` ou `ALLOW-FROM`. A ação `ALLOW-FROM` também precisa do nome de domínio para permitir.
 
 ```ts
 {
@@ -231,9 +224,9 @@ Define the header value. It must be one from `DENY`, `SAMEORIGIN` or `ALLOW-FROM
 ```
 
 ## HSTS
-Control whether or not the website should be accessible via HTTP  using the [Strict-Transport-Security](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security) header.
+Controle se o site deve ou não ser acessível via HTTP usando o cabeçalho [Strict-Transport-Security](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security).
 
-The configuration for HSTS is stored inside the `config/shield.ts` file.
+A configuração para HSTS é armazenada dentro do arquivo `config/shield.ts`.
 
 ```ts
 export const hsts: ShieldConfig['hsts'] = {
@@ -245,21 +238,21 @@ export const hsts: ShieldConfig['hsts'] = {
 ```
 
 #### `enabled`
-Enable/disable the `Strict-Transport-Security` all together.
+Habilite/desabilite o `Strict-Transport-Security` todos juntos.
 
 #### `maxAge`
-Define how long the browser should remember the header value.
+Defina por quanto tempo o navegador deve lembrar o valor do cabeçalho.
 
 #### `includeSubDomains`
-When set to `true`, the rule will be applied to site's subdomains as well.
+Quando definido como `true`, a regra será aplicada aos subdomínios do site também.
 
 #### `preload`
-Whether or not to preload the header value from the HSTS preload service. [Learn more](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security#preloading_strict_transport_security)
+Se deve ou não pré-carregar o valor do cabeçalho do serviço de pré-carregamento HSTS. [Saiba mais](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security#preloading_strict_transport_security)
 
-## No sniffing
-Using the `contentTypeSniffing` setting you can control the behavior for the [X-Content-Type-Options](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options) header.
+## Sem sniffing
+Usando a configuração `contentTypeSniffing`, você pode controlar o comportamento do cabeçalho [X-Content-Type-Options](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options).
 
-The header is only set when the `enabled` property is set to true.
+O cabeçalho é definido somente quando a propriedade `enabled` é definida como true.
 
 ```ts
 export const contentTypeSniffing: ShieldConfig['contentTypeSniffing'] = {

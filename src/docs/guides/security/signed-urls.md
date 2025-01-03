@@ -1,14 +1,12 @@
-# Signed URLs
+# URLs assinadas
 
-Signed URLs provide a neat way to generate URLs with a hash signature appended to them. The hash ensures that the generated URL is not modified or tampered with.
+URLs assinadas fornecem uma maneira bacana de gerar URLs com uma assinatura hash anexada a elas. O hash garante que a URL gerada não seja modificada ou adulterada.
 
-:::note
-
-The `makeSignedUrl` function accepts the same set of arguments accepted by the [Route.makeUrl](../http/routing.md#url-generation) method. So make sure to read the docs for `Route.makeUrl` as well.
-
+::: info NOTA
+A função `makeSignedUrl` aceita o mesmo conjunto de argumentos aceitos pelo método [Route.makeUrl](../http/routing.md#url-generation). Portanto, certifique-se de ler a documentação para `Route.makeUrl` também.
 :::
 
-For example:
+Por exemplo:
 
 ```ts
 Route.makeSignedUrl('verifyEmail', {
@@ -18,11 +16,11 @@ Route.makeSignedUrl('verifyEmail', {
 // /verify/foo@bar.com?signature=eyJtZXNzYWdlIjoiL3ZlcmlmeS9mb29AYmFyLmNvbSJ9.Xu-a0xu_E4O0sJxeAhyhUU5TVMPtxHGNz4bY9skxqRo
 ```
 
-The signature appended to the URL is generated from the complete URI string. Changing any portion of the URL will result in an invalid signature.
+A assinatura anexada à URL é gerada a partir da sequência de caracteres URI completa. Alterar qualquer parte da URL resultará em uma assinatura inválida.
 
-## Verifying signature
+## Verificando assinatura
 
-The route for which you generated the signed URL can verify the signature using the `request.hasValidSignature()` method.
+A rota para a qual você gerou a URL assinada pode verificar a assinatura usando o método `request.hasValidSignature()`.
 
 ```ts
 Route.get('/verify/:email', async ({ request }) => {
@@ -34,9 +32,9 @@ Route.get('/verify/:email', async ({ request }) => {
 }).as('verifyEmail')
 ```
 
-## Expiring signed URLs
+## URLs assinadas expirando
 
-By default, the signed URLs live forever. However, you can add expiry to them at the time of generating one.
+Por padrão, as URLs assinadas vivem para sempre. No entanto, você pode adicionar expiração a elas no momento da geração de uma.
 
 ```ts
 Route.makeSignedUrl(
@@ -50,9 +48,9 @@ Route.makeSignedUrl(
 )
 ```
 
-## Using the URL builder
+## Usando o construtor de URL
 
-You can also make use of the URL builder to generate signed URLs.
+Você também pode usar o construtor de URL para gerar URLs assinadas.
 
 ```ts
 Route.builder()

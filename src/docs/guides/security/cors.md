@@ -1,25 +1,26 @@
 # CORS
 
-[Cross-Origin Resource Sharing](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) support is baked into the framework core, and hence there is no need to install any additional packages.
+O suporte a [Compartilhamento de Recursos de Origem Cruzada](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) está incorporado ao núcleo do framework e, portanto, não há necessidade de instalar nenhum pacote adicional.
 
-Make sure CORS is enabled inside the `config/cors.ts` file by setting the `enabled` property to true.
+Certifique-se de que o CORS esteja habilitado dentro do arquivo `config/cors.ts` definindo a propriedade `enabled` como true.
 
-:::note
-If the config file is missing, then create a new one manually and copy/paste the contents from the [CORS stub](https://github.com/adonisjs/core/blob/develop/templates/config/cors.txt).
+::: info NOTA
+Se o arquivo de configuração estiver faltando, crie um novo manualmente e copie/cole o conteúdo do [stub do CORS](https://github.com/adonisjs/core/blob/develop/templates/config/cors.txt).
 :::
 
 ```ts
-// title: config/cors.ts
+// config/cors.ts
+
 {
   "enabled": true
 }
 ```
 
-## Allowed origin
-You can control the origins to allow for the CORS request using the `origin` property. This property controls the [Access-Control-Allow-Origin](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin) header.
+## Origem permitida
+Você pode controlar as origens para permitir a solicitação do CORS usando a propriedade `origin`. Esta propriedade controla o cabeçalho [Access-Control-Allow-Origin](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin).
 
-#### Boolean value
-Setting the value to `true` will allow any origin. Whereas setting the value to `false` will disallow any origin.
+#### Valor booleano
+Definir o valor como `true` permitirá qualquer origem. Enquanto definir o valor como `false` não permitirá nenhuma origem.
 
 ```ts
 {
@@ -27,26 +28,22 @@ Setting the value to `true` will allow any origin. Whereas setting the value to 
 }
 ```
 
----
-
-#### String or array of origins
-You can allow one or more origins by defining them as a string or an array of strings.
+#### String ou array de origens
+Você pode permitir uma ou mais origens definindo-as como uma string ou um array de strings.
 
 ```ts
 {
   origin: 'adonisjs.com',
 }
 
-// or
+// ou
 {
   origin: ['adonisjs.com']
 }
 ```
 
----
-
-#### Wildcard
-Set the value of `Access-Control-Allow-Origin` to a wildcard.
+#### Curinga
+Defina o valor de `Access-Control-Allow-Origin` como um curinga.
 
 ```ts
 {
@@ -54,12 +51,10 @@ Set the value of `Access-Control-Allow-Origin` to a wildcard.
 }
 ```
 
----
+#### Função
+Você também pode definir uma função como o valor para a propriedade `origin` para decidir qual origem permitir ou não em tempo de execução.
 
-#### Function
-You can also define a function as the value for the `origin` property to decide which origin to allow or disallow at runtime.
-
-The method receives the current origin as the only argument and must return a **boolean**, a **wildcard**, or a **string/array of allowed origins**.
+O método recebe a origem atual como o único argumento e deve retornar um **booleano**, um **curinga** ou uma **string/matriz de origens permitidas**.
 
 ```ts
 const ALLOWED_ORIGINS = []
@@ -71,8 +66,8 @@ const ALLOWED_ORIGINS = []
 }
 ```
 
-## Allowed methods
-The `methods` property controls the method to allow during the preflight request. The [Access-Control-Request-Method](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Request-Method) header value is checked against the allowed methods.
+## Métodos permitidos
+A propriedade `methods` controla o método a ser permitido durante a solicitação de pré-voo. O valor do cabeçalho [Access-Control-Request-Method](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Request-Method) é verificado em relação aos métodos permitidos.
 
 ```ts
 {
@@ -80,11 +75,11 @@ The `methods` property controls the method to allow during the preflight request
 }
 ```
 
-## Allowed headers
-The `headers` property controls the headers to allow during the preflight request. The [Access-Control-Request-Headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Request-Headers) header value is checked against the `headers` property.
+## Cabeçalhos permitidos
+A propriedade `headers` controla os cabeçalhos a serem permitidos durante a solicitação de pré-voo. O valor do cabeçalho [Access-Control-Request-Headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Request-Headers) é verificado em relação à propriedade `headers`.
 
-#### Boolean value
-Setting the value to `true` will allow all the headers. Whereas setting the value to `false` will dis-allow all the headers.
+#### Valor booleano
+Definir o valor como `true` permitirá todos os cabeçalhos. Enquanto definir o valor como `false` não permitirá todos os cabeçalhos.
 
 ```ts
 {
@@ -92,8 +87,8 @@ Setting the value to `true` will allow all the headers. Whereas setting the valu
 }
 ```
 
-#### String or array of headers
-You can allow one or more headers by defining them as a string or an array of strings.
+#### String ou array de cabeçalhos
+Você pode permitir um ou mais cabeçalhos definindo-os como uma string ou um array de strings.
 
 ```ts
 {
@@ -105,12 +100,10 @@ You can allow one or more headers by defining them as a string or an array of st
 }
 ```
 
----
+#### Função
+Você também pode definir uma função como o valor para a propriedade `headers` para decidir quais cabeçalhos permitir ou não em tempo de execução.
 
-#### Function
-You can also define a function as the value for the `headers` property to decide which headers to allow or disallow at runtime.
-
-The method receives the current header value as the only argument and must return a **boolean** or a **string/array of allowed origins**.
+O método recebe o valor do cabeçalho atual como o único argumento e deve retornar um **booleano** ou uma **string/matriz de origens permitidas**.
 
 ```ts
 const ALLOWED_HEADERS = []
@@ -122,8 +115,8 @@ const ALLOWED_HEADERS = []
 }
 ```
 
-## Exposed headers
-The `exposeHeaders` property controls the headers to expose via [Access-Control-Expose-Headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Expose-Headers) header during the preflight request.
+## Cabeçalhos expostos
+A propriedade `exposeHeaders` controla os cabeçalhos a serem expostos via cabeçalho [Access-Control-Expose-Headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Expose-Headers) durante a solicitação de pré-voo.
 
 ```ts
 {
@@ -138,8 +131,8 @@ The `exposeHeaders` property controls the headers to expose via [Access-Control-
 }
 ```
 
-## Allow credentials
-The `credentials` property controls whether or not to set the [Access-Control-Allow-Credentials](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Credentials) header during the preflight request.
+## Permitir credenciais
+A propriedade `credentials` controla se o cabeçalho [Access-Control-Allow-Credentials](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Credentials) deve ou não ser definido durante a solicitação de pré-voo.
 
 ```ts
 {
@@ -147,11 +140,11 @@ The `credentials` property controls whether or not to set the [Access-Control-Al
 }
 ```
 
-## Max age
-The `maxAge` property controls the [Access-Control-Max-Age](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Max-Age) response header. **The value is in seconds**.
+## Idade máxima
+A propriedade `maxAge` controla o cabeçalho de resposta [Access-Control-Max-Age](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Max-Age). **O valor está em segundos**.
 
-- Setting the value to `null` will not set the header.
-- Whereas, setting it to `-1` does set the header but disables the cache.
+- Definir o valor como `null` não definirá o cabeçalho.
+- Ao passo que defini-lo como `-1` define o cabeçalho, mas desabilita o cache.
 
 ```ts
 {

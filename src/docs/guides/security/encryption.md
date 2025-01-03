@@ -1,6 +1,6 @@
-# Encryption
+# Criptografia
 
-You can make use of the AdonisJS encryption module to encrypt and decrypt values in your application.
+Você pode usar o módulo de criptografia AdonisJS para criptografar e descriptografar valores em seu aplicativo.
 
 ```ts
 import Encryption from '@ioc:Adonis/Core/Encryption'
@@ -8,29 +8,29 @@ import Encryption from '@ioc:Adonis/Core/Encryption'
 const encrypted = Encryption.encrypt('hello-world')
 ```
 
-The encryption is based on the `aes-256-cbc` algorithm, and uses the `appKey` saved inside the `config/app.ts` file as the secret for encryption.
+A criptografia é baseada no algoritmo `aes-256-cbc` e usa o `appKey` salvo dentro do arquivo `config/app.ts` como o segredo para criptografia.
 
-## Encrypting/decrypting values
+## Criptografando/descriptografando valores
 
-The encryption module also generates a unique [iv](https://en.wikipedia.org/wiki/Initialization_vector) for every encryption call. Hence encrypting the same value twice will result in a different visual output.
+O módulo de criptografia também gera um [iv](https://en.wikipedia.org/wiki/Initialization_vector) exclusivo para cada chamada de criptografia. Portanto, criptografar o mesmo valor duas vezes resultará em uma saída visual diferente.
 
 #### `encrypt`
 
-The `Encryption.encrypt` method encrypts a given value.
+O método `Encryption.encrypt` criptografa um determinado valor.
 
 ```ts
 Encryption.encrypt('hello-world')
 ```
 
-You can also optionally define an expiration date. After the given timeframe, the decryption will fail.
+Você também pode definir opcionalmente uma data de expiração. Após o período de tempo fornecido, a descriptografia falhará.
 
 ```ts
 Encryption.encrypt('hello-world', '2 hours')
 ```
 
-Finally, you can also define a purpose for the encryption. This is usually helpful when you are encrypting the value for a specific task or resource.
+Finalmente, você também pode definir uma finalidade para a criptografia. Isso geralmente é útil quando você está criptografando o valor para uma tarefa ou recurso específico.
 
-For example, you want to generate an encrypted link for sharing a post and then want to make sure that the link only works if the post id is the same as the one you generated the link.
+Por exemplo, você quer gerar um link criptografado para compartilhar uma postagem e então quer ter certeza de que o link só funciona se o ID da postagem for o mesmo que você gerou o link.
 
 ```ts
 const key = Encryption.encrypt(`post-${post.id}`, '30mins', String(post.id))
@@ -38,7 +38,7 @@ const key = Encryption.encrypt(`post-${post.id}`, '30mins', String(post.id))
 return `/posts/${post.id}?key=${key}`
 ```
 
-During decryption, you can check if the post id matches or not as follows.
+Durante a descriptografia, você pode verificar se o ID da postagem corresponde ou não da seguinte forma.
 
 ```ts
 Encryption.decrypt(key, String(params.id))
@@ -46,16 +46,16 @@ Encryption.decrypt(key, String(params.id))
 
 #### `decrypt`
 
-The `Encryption.decrypt` method decrypts the encrypted value. Returns `null` when unable to decrypt the value.
+O método `Encryption.decrypt` descriptografa o valor criptografado. Retorna `null` quando não é possível descriptografar o valor.
 
 ```ts
 Encryption.decrypt(value)
 Encryption.decrypt(value, purpose)
 ```
 
-## Supported data types
+## Tipos de dados suportados
 
-You can encrypt the following data types.
+Você pode criptografar os seguintes tipos de dados.
 
 ```ts
 // Object
@@ -77,9 +77,9 @@ Encryption.encrypt(10)
 Encryption.encrypt(new Date())
 ```
 
-## Using a custom secret key
+## Usando uma chave secreta personalizada
 
-The Encryption module uses the `appKey` defined inside the `config/app.ts` file as the secret for encrypting values. However, you can create a child instance with a custom secret key as well.
+O módulo Encryption usa a `appKey` definida dentro do arquivo `config/app.ts` como o segredo para criptografar valores. No entanto, você também pode criar uma instância filha com uma chave secreta personalizada.
 
 ```ts
 const userEncryptor = Encryption.child({
