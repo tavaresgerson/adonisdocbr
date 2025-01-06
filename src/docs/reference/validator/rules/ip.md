@@ -1,6 +1,6 @@
 # ip
 
-Validates the value to be a valid IP address. Optionally, you can also enforce the IP version as `4` or `6`.
+Valida o valor para ser um endereço IP válido. Opcionalmente, você também pode impor a versão IP como `4` ou `6`.
 
 ```ts
 import { schema, rules } from '@ioc:Adonis/Core/Validator'

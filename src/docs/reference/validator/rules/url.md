@@ -1,6 +1,6 @@
 # url
 
-Validates the value to be formatted as a valid URL string. 
+Valida o valor a ser formatado como uma sequência de caracteres de URL válida.
 
 ```ts
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
@@ -12,20 +12,20 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
 }
 ```
 
-Along with the format validation, you can also **enforce the url to be from a certain domain**. For example:
+Junto com a validação do formato, você também pode **impor que a URL seja de um determinado domínio**. Por exemplo:
 
 ```ts
 {
   twitterProfile: schema.string([
     rules.url({
-      // Only twitter.com urls are allowed
+      // Somente URLs do twitter.com são permitidas
       allowedHosts: ['twitter.com']
     })
   ])
 }
 ```
 
-The inverse of `allowedHosts` is the `bannedHosts`.
+O inverso de `allowedHosts` é o `bannedHosts`.
 
 ```ts
 {
@@ -40,9 +40,9 @@ The inverse of `allowedHosts` is the `bannedHosts`.
 }
 ```
 
-## Validation options
+## Opções de validação
 
-Following is the list of options for validate a URL string
+A seguir está a lista de opções para validar uma sequência de caracteres de URL
 
 ```ts
 {
@@ -60,18 +60,18 @@ Following is the list of options for validate a URL string
 }
 ```
 
-| Option | Description |
-|---------|------------------|
-| `protocols` | An array of allowed protocols ("http", "https", or "ftp"). Defining protocols will implicitly set the `requireProtocol` option to `true`. |
-| `requireTld` | Ensure the tld is present in the URL. Defaults to `true`  |
-| `requireProtocol` | Ensure the URL has protocol defined. Defaults to `false` |
-| `requireHost` | Ensure the URL has the host defined. Defaults to `true` |
-| `allowedHosts` | An array of allowed hosts. URLs outside the defined hosts will fail the validation. |
-| `bannedHosts` | An array of banned hosts. URLs matching the defined hosts will fail the validation. |
-| `validateLength` | Validate the length of the URL to be under or equal to **2083 characters**. Defaults to `true`. |
+| Opção             | Descrição         |
+|-------------------|-------------------|
+| `protocols`       | Uma matriz de protocolos permitidos ("http", "https" ou "ftp"). Definir protocolos definirá implicitamente a opção `requireProtocol` como `true`. |
+| `requireTld`      | Garanta que o tld esteja presente na URL. O padrão é `true` |
+| `requireProtocol` | Garanta que a URL tenha o protocolo definido. O padrão é `false` |
+| `requireHost`     | Garanta que a URL tenha o host definido. O padrão é `true` |
+| `allowedHosts`    | Uma matriz de hosts permitidos. URLs fora dos hosts definidos falharão na validação. |
+| `bannedHosts`     | Uma matriz de hosts banidos. URLs que correspondem aos hosts definidos falharão na validação. |
+| `validateLength`  | Valide o comprimento da URL para ser menor ou igual a **2083 caracteres**. O padrão é `true`. |
 
-## Normalizing url
-You can normalize the URL using the `rules.normalizeUrl` method.
+## Normalizando url
+Você pode normalizar a URL usando o método `rules.normalizeUrl`.
 
 ```ts
 {
@@ -85,7 +85,7 @@ You can normalize the URL using the `rules.normalizeUrl` method.
 }
 ```
 
-| Option | Description |
+| Opção   | Descrição |
 |--------|-------------|
-| `ensureProtocol` | The property ensures that the URL post validation has `https` protocol |
-| `stripWWW` | Strips the `www` from the URL |
+| `ensureProtocol`  | A propriedade garante que a validação da postagem da URL tenha o protocolo `https` |
+| `stripWWW`        | Remove o `www` da URL |

@@ -1,11 +1,9 @@
 # exists
 
-Queries the database to ensure the value exists inside a given database table and column.
+Consulta o banco de dados para garantir que o valor exista dentro de uma determinada tabela e coluna do banco de dados.
 
-:::note
-
-The validation rule is added by `@adonisjs/lucid` package. So make sure it is [installed and configured](../../../guides/database/setup.md), before using this rule.
-
+::: info NOTA
+A regra de validação é adicionada pelo pacote `@adonisjs/lucid`. Portanto, certifique-se de que ele esteja [instalado e configurado](../../../guides/database/setup.md), antes de usar esta regra.
 :::
 
 ```ts
@@ -18,9 +16,9 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
 }
 ```
 
-## Case insensitivity
+## Insensibilidade a maiúsculas e minúsculas
 
-Many databases perform case sensitive queries. So either you can transform the value to `lowerCase` in JavaScript or make use of the `caseInsensitive` option to convert value to lowercase during the query.
+Muitos bancos de dados realizam consultas que diferenciam maiúsculas de minúsculas. Portanto, você pode transformar o valor para `lowerCase` em JavaScript ou usar a opção `caseInsensitive` para converter o valor para minúsculas durante a consulta.
 
 ```ts
 {
@@ -34,28 +32,26 @@ Many databases perform case sensitive queries. So either you can transform the v
 }
 ```
 
-Following is an example of the query executed behind the scenes.
+A seguir está um exemplo da consulta executada nos bastidores.
 
 ```sql
 SELECT username FROM users WHERE LOWER(username) = LOWER(?)
 ```
 
-## Additional constraints
+## Restrições adicionais
 
-Additionally, you can also define `where` and `whereNot` constraints as an object of key-value pair. The `key` is the column name.
+Além disso, você também pode definir as restrições `where` e `whereNot` como um objeto de par chave-valor. A `key` é o nome da coluna.
 
-```ts
+```ts {6-9}
 {
   slug: schema.string([
     rules.exists({
       table: 'categories',
       column: 'slug',
-      // highlight-start
       where: {
         tenant_id: 1,
         status: 'active',
       },
-      // highlight-end
     })
   ])
 }
@@ -68,17 +64,15 @@ SELECT slug FROM categories
   AND status = ?
 ```
 
-We perform a `whereIn` query if the value is an **array**. For example:
+Realizamos uma consulta `whereIn` se o valor for um **array**. Por exemplo:
 
-```ts
+```ts {4-6}
 rules.exists({
   table: 'categories',
   column: 'slug',
-  // highlight-start
   where: {
     group_id: [1, 2, 4],
   },
-  // highlight-end
 })
 ```
 
@@ -88,11 +82,11 @@ SELECT slug FROM categories
   AND group_id IN (?, ?, ?)
 ```
 
-## Using refs
+## Usando refs
 
-If you are caching your validation schema using the `cacheKey` and your **where constraints** relies on a runtime value, then you must make use of refs.
+Se você estiver armazenando em cache seu esquema de validação usando `cacheKey` e suas **restrições where** dependerem de um valor de tempo de execução, você deverá usar refs.
 
-```ts
+```ts {8-10,17}
 import { schema } from '@ioc:Adonis/Core/Validator'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
@@ -100,20 +94,16 @@ export default class CreateUserValidator {
   constructor (protected ctx: HttpContextContract) {
   }
 
-  // highlight-start
   public refs = schema.refs({
     tenantId: this.ctx.auth.user!.tenantId
   })
-  // highlight-end
 
   public schema = schema.create({
     username: schema.string([
       rules.exists({
         table: 'users',
         column: 'username',
-        // highlight-start
         where: { tenant_id: this.refs.tenantId },
-        // highlight-end
       })
     ])
   })

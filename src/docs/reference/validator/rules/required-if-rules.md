@@ -1,21 +1,17 @@
 # requiredIfRules
 
-The `requiredIf` rules allows you to mark a field as required when a certain condition is met. When using the `requiredIf` rules, you must mark the field as optional first.
+As regras `requiredIf` permitem que você marque um campo como obrigatório quando uma determinada condição for atendida. Ao usar as regras `requiredIf`, você deve marcar o campo como opcional primeiro.
 
 ## requiredIfExists
 
-Validates the field to be present when other the field is present. For example: The user must fill out the shipping address when opted for delivery.
+Valida o campo para estar presente quando o outro campo estiver presente. Por exemplo: O usuário deve preencher o endereço de entrega quando optar pela entrega.
 
-:::note
-
-The opposite of this rule is `requiredIfNotExists`
-
+::: info NOTA
+O oposto desta regra é `requiredIfNotExists`
 :::
 
-:::note
-
-If field parameter starts with `/`, then it will be searched from the root of the object.
-
+::: info NOTA
+Se o parâmetro do campo começar com `/`, ele será pesquisado a partir da raiz do objeto.
 :::
 
 ```ts
@@ -29,20 +25,15 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
 ```
 
 ## requiredIfExistsAll
-Same as the `requiredIf` rule, but here you can define more than one field to exist in order for the field to be required.
+O mesmo que a regra `requiredIf`, mas aqui você pode definir mais de um campo para existir para que o campo seja obrigatório.
 
-:::note
-
-The opposite of this rule is `requiredIfNotExistsAll`
-
+::: info NOTA
+O oposto desta regra é `requiredIfNotExistsAll`
 :::
 
-:::note
-
-If field parameter starts with `/`, then it will be searched from the root of the object.
-
+::: info NOTA
+Se o parâmetro de campo começar com `/`, ele será pesquisado a partir da raiz do objeto.
 :::
-
 
 ```ts
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
@@ -55,20 +46,15 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
 ```
 
 ## requiredIfExistsAny
-Mark the current field as required, **when any of the other fields exists** and contains some value.
+Marque o campo atual como obrigatório, **quando qualquer um dos outros campos existir** e contiver algum valor.
 
-:::note
-
-The opposite of this rule is `requiredIfNotExistsAny`
-
+::: info NOTA
+O oposto desta regra é `requiredIfNotExistsAny`
 :::
 
-:::note
-
-If field parameter starts with `/`, then it will be searched from the root of the object.
-
+::: info NOTA
+Se o parâmetro de campo começar com `/`, ele será pesquisado a partir da raiz do objeto.
 :::
-
 
 ```ts
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
@@ -81,12 +67,10 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
 ```
 
 ## requiredWhen
-Mark the current field as required **when the value of the other field matches a given criteria**.
+Marque o campo atual como obrigatório **quando o valor do outro campo corresponder a um determinado critério**.
 
-:::note
-
-If field parameter starts with `/`, then it will be searched from the root of the object.
-
+::: info NOTA
+Se o parâmetro de campo começar com `/`, ele será pesquisado a partir da raiz do objeto.
 :::
 
 ```ts
@@ -99,13 +83,13 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
 }
 ```
 
-The `requiredWhen` rule support the following operators.
+A regra `requiredWhen` suporta os seguintes operadores.
 
-- `in` accepts an array of values
-- `notIn` accepts an array of values
-- `=` accepts a literal value
-- `!=` accepts a literal value
-- `>` accepts a numeric value
-- `<` accepts a numeric value
-- `>=` accepts a numeric value
-- `<=` accepts a numeric value
+- `in` aceita uma matriz de valores
+- `notIn` aceita uma matriz de valores
+- `=` aceita um valor literal
+- `!=` aceita um valor literal
+- `>` aceita um valor numérico
+- `<` aceita um valor numérico
+- `>=` aceita um valor numérico
+- `<=` aceita um valor numérico

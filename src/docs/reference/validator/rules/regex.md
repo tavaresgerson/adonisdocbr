@@ -1,6 +1,6 @@
 # regex
 
-Validates the value against the defined regex. The rule can only be used with the `string` schema type.
+Valida o valor em relação ao regex definido. A regra só pode ser usada com o tipo de esquema `string`.
 
 ```ts
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
@@ -12,7 +12,7 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
 }
 ```
 
-You can pass the `RegExp` instance directly.
+Você pode passar a instância `RegExp` diretamente.
 
 ```ts
 {

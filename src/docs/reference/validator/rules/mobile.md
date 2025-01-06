@@ -1,6 +1,6 @@
 # mobile
 
-Enforces the value to be properly formatted as a phone number. You can also define locales for country specific validation.
+Força o valor a ser formatado corretamente como um número de telefone. Você também pode definir localidades para validação específica do país.
 
 ```ts
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
@@ -12,7 +12,7 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
 }
 ```
 
-You can also specify one or more locales to force format validation for a specific country.
+Você também pode especificar uma ou mais localidades para forçar a validação do formato para um país específico.
 
 ```ts
 {
@@ -24,8 +24,8 @@ You can also specify one or more locales to force format validation for a specif
 }
 ```
 
-## Strict mode
-Enabling the strict mode forces the user to always define the country code and prefix the phone number with `+` symbol.
+## Modo estrito
+Habilitar o modo estrito força o usuário a sempre definir o código do país e prefixar o número de telefone com o símbolo `+`.
 
 ```ts
 {

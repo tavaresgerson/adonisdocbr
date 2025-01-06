@@ -1,6 +1,6 @@
 # confirmed
 
-Enforce the field under validation is also confirmed using the `_confirmation` convention. You will mostly use this rule for password confirmation.
+Aplicar o campo sob validação também é confirmado usando a convenção `_confirmation`. Você usará essa regra principalmente para confirmação de senha.
 
 ```ts
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
@@ -19,7 +19,7 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
  */
 ```
 
-Optionally, you can also change the field name that should be checked for the confirmation. It is usually helpful when you are not using the `snake_case` convention for the field names.
+Opcionalmente, você também pode alterar o nome do campo que deve ser verificado para a confirmação. Geralmente é útil quando você não está usando a convenção `snake_case` para os nomes de campo.
 
 ```ts
 {
@@ -36,8 +36,8 @@ Optionally, you can also change the field name that should be checked for the co
  */
 ```
 
-## Custom message
-You can define custom message for the `confirmed` rule on confirmation field.
+## Mensagem personalizada
+Você pode definir uma mensagem personalizada para a regra `confirmed` no campo de confirmação.
 
 ```ts
 {

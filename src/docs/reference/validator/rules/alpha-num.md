@@ -1,7 +1,10 @@
 # alphaNum
 
-Validates the value to only have letters, numeric or both of them. **The validation rule only works with the `string` schema
-type**.
+Valida o valor para ter apenas letras, números ou ambos. 
+
+::: warning ATENÇÃO
+A regra de validação só funciona com o tipo de esquema `string`
+:::
 
 ```ts
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
@@ -13,7 +16,7 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
 }
 ```
 
-You can also allow the string to have `spaces`, `dash` and `underscore` characters.
+Você também pode permitir que a string tenha caracteres `espaços`, `traço` e `sublinhado`.
 
 ```ts
 {

@@ -1,6 +1,6 @@
 # beforeField
 
-Similar to the [before rule](./before.md). However, instead of defining a date/offset for comparison, you define **a field to check against**. For example:
+Semelhante à regra [before](./before.md). No entanto, em vez de definir uma data/deslocamento para comparação, você define **um campo para verificar**. Por exemplo:
 
 ```ts
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
@@ -13,7 +13,7 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
 }
 ```
 
-Also, you can make use of the `beforeOrEqualToField` for enforcing the date to be same or after a given field.
+Além disso, você pode usar `beforeOrEqualToField` para impor que a data seja a mesma ou posterior a um determinado campo.
 
 ```ts
 {

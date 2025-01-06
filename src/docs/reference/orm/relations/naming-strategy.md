@@ -8,7 +8,7 @@ Toda estratégia de nomenclatura deve implementar o contrato `NamingStrategyCont
 import { SnakeCaseNamingStrategy } from '@ioc:Adonis/Lucid/Orm'
 
 class CamelCaseNamingStrategy extends SnakeCaseNamingStrategy {
-  //... definir todos os métodos necessários
+  //... define all the required methods
 }
 ```
 
@@ -102,8 +102,10 @@ class CamelCaseNamingStrategy extends SnakeCaseNamingStrategy {
 ### `relationForeignKey`
 Retorna a chave estrangeira para um determinado relacionamento. A estratégia de nomenclatura padrão combina o nome da coluna `modelName` e `primaryKey` e os converte para camelCase.
 
-::: info NOTA
-A `foreignKey` aponta para a propriedade do modelo e não para o nome da coluna do banco de dados. Derivamos o nome da coluna do banco de dados do nome da propriedade do modelo.
+:::note
+
+A foreignKey aponta para a propriedade do modelo e não para o nome da coluna do banco de dados. Derivamos o nome da coluna do banco de dados do nome da propriedade do modelo.
+
 :::
 
 ```ts

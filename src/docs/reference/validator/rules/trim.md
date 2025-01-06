@@ -1,6 +1,6 @@
 # trim
 
-The `trim` is sanitization rule to trim all the whitespace from the left and the right of the string.
+`trim` é uma regra de higienização para cortar todos os espaços em branco da esquerda e da direita da string.
 
 ```ts
 import { schema, rules } from '@ioc:Adonis/Core/Validator'

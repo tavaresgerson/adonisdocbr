@@ -1,8 +1,8 @@
-# Has many through
+# Tem muitos através
 
-The [HasManyThrough relationship class](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/HasManyThrough/index.ts) manages you to define a has many relationship via an intermediate model. A great example of this is, **"a country has many posts via users"**.
+A [classe de relacionamento HasManyThrough](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/HasManyThrough/index.ts) permite que você defina um relacionamento has many por meio de um modelo intermediário. Um ótimo exemplo disso é, **"um país tem muitas postagens por meio de usuários"**.
 
-You will not find yourself directly working with this class. However, an instance of the class can be accessed using the `Model.$getRelation` method.
+Você não trabalhará diretamente com essa classe. No entanto, uma instância da classe pode ser acessada usando o método `Model.$getRelation`.
 
 ```ts
 import {
@@ -26,11 +26,11 @@ Country.$getRelation('posts').type
 Country.$getRelation('posts').relatedModel()
 ```
 
-## Methods/Properties
-Following is the list of methods and properties available on the `HasManyThrough` relationship.
+## Métodos/Propriedades
+A seguir está a lista de métodos e propriedades disponíveis no relacionamento `HasManyThrough`.
 
 ### `type`
-The type of the relationship. The value is always set to `hasManyThrough`.
+O tipo do relacionamento. O valor é sempre definido como `hasManyThrough`.
 
 ```ts
 class Country extends BaseModel {
@@ -42,7 +42,7 @@ Country.$getRelation('posts').type // 'hasManyThrough'
 ```
 
 ### `relationName`
-The relationship name. It is a property name defined on the parent model.
+O nome do relacionamento. É um nome de propriedade definido no modelo pai.
 
 ```ts
 class Country extends BaseModel {
@@ -54,7 +54,7 @@ Country.$getRelation('posts').relationName // 'posts'
 ```
 
 ### `serializeAs`
-The name to be used for serializing the relationship. You can define it using the decorator options.
+O nome a ser usado para serializar o relacionamento. Você pode defini-lo usando as opções do decorador.
 
 ```ts
 class Country extends BaseModel {
@@ -66,13 +66,13 @@ class Country extends BaseModel {
 ```
 
 ### `booted`
-Find if the relationship has been booted. If not, call the `boot` method.
+Descubra se o relacionamento foi inicializado. Caso contrário, chame o método `boot`.
 
 ### `boot`
-Boot the relationship. Lucid models public APIs call this method internally, and you never have to boot the relationship manually.
+Inicialize o relacionamento. As APIs públicas dos modelos Lucid chamam esse método internamente, e você nunca precisa inicializar o relacionamento manualmente.
 
 ### `model`
-Reference to the parent model (the one that defines the relationship).
+Referência ao modelo pai (aquele que define o relacionamento).
 
 ```ts
 class Country extends BaseModel {
@@ -84,7 +84,7 @@ Country.$getRelation('posts').model // Country
 ```
 
 ### `relatedModel`
-Reference to the relationship model. The property value is a function that returns the related model.
+Referência ao modelo de relacionamento. O valor da propriedade é uma função que retorna o modelo relacionado.
 
 ```ts
 class Country extends BaseModel {
@@ -96,7 +96,7 @@ Country.$getRelation('posts').relatedModel() // Post
 ```
 
 ### `throughModel`
-Reference to the `throughModel`. The property value is a function that returns the throughModel.
+Referência ao `throughModel`. O valor da propriedade é uma função que retorna o throughModel.
 
 ```ts
 class Country extends BaseModel {
@@ -108,9 +108,9 @@ Country.$getRelation('posts').throughModel() // User
 ```
 
 ### `localKey`
-The `localKey` for the relationship. You must read the [NamingStrategy](../naming-strategy.md#relationlocalkey) doc to learn more about how the key name is computed.
+A `localKey` para o relacionamento. Você deve ler o documento [NamingStrategy](../naming-strategy.md#relationlocalkey) para saber mais sobre como o nome da chave é computado.
 
-You can also define the `localKey` explicitly. Do make sure you mention the model property name and NOT the database column name.
+Você também pode definir a `localKey` explicitamente. Certifique-se de mencionar o nome da propriedade do modelo e NÃO o nome da coluna do banco de dados.
 
 ```ts
 class Country extends BaseModel {
@@ -118,56 +118,56 @@ class Country extends BaseModel {
   public id: number
 
   @hasManyThrough([() => Post, () => User], {
-    localKey: 'id', // id column on the "Country" model
+    localKey: 'id', // coluna id no modelo "Country"
   })
   public posts: HasManyThrough<typeof Post>
 }
 ```
 
 ### `foreignKey`
-The `foreignKey` for the relationship. **The foreign key is the reference on the through model and not the related model**.
+A `foreignKey` para o relacionamento. **A chave estrangeira é a referência no modelo through e não no modelo relacionado**.
 
-You can also define the `foreignKey` explicitly. Do make sure you mention the model property name and NOT the database column name.
+Você também pode definir a `foreignKey` explicitamente. Certifique-se de mencionar o nome da propriedade do modelo e NÃO o nome da coluna do banco de dados.
 
 ```ts
 class Country extends BaseModel {
   @hasManyThrough([() => Post, () => User], {
-    foreignKey: 'countryId', // countryId column on the "User" model
+    foreignKey: 'countryId', // coluna countryId no modelo "User"
   })
   public posts: HasManyThrough<typeof Post>
 }
 ```
 
 ### `throughLocalKey`
-The `throughLocalKey` for the relationship. It is usually the primary key on the through model.
+A `throughLocalKey` para o relacionamento. Geralmente é a chave primária no modelo through.
 
-You can also define the `throughLocalKey` explicitly. Do make sure you mention the model property name and NOT the database column name.
+Você também pode definir a `throughLocalKey` explicitamente. Certifique-se de mencionar o nome da propriedade do modelo e NÃO o nome da coluna do banco de dados.
 
 ```ts
 class Country extends BaseModel {
   @hasManyThrough([() => Post, () => User], {
-    throughLocalKey: 'id', // id column on the "User" model
+    throughLocalKey: 'id', // coluna id no modelo "User"
   })
   public posts: HasManyThrough<typeof Post>
 }
 ```
 
 ### `throughForeignKey`
-The `throughForeignKey` for the relationship. It is the foreign key between the through and the related model.
+A `throughForeignKey` para o relacionamento. É a chave estrangeira entre o through e o modelo relacionado.
 
-You can also define the `throughForeignKey` explicitly. Do make sure you mention the model property name and NOT the database column name.
+Você também pode definir a `throughForeignKey` explicitamente. Certifique-se de mencionar o nome da propriedade do modelo e NÃO o nome da coluna do banco de dados.
 
 ```ts
 class Country extends BaseModel {
   @hasManyThrough([() => Post, () => User], {
-    throughForeignKey: 'userId', // userId column on the "Post" model
+    throughForeignKey: 'userId', // coluna userId no modelo "Post"
   })
   public posts: HasManyThrough<typeof Post>
 }
 ```
 
 ### `onQuery`
-The `onQuery` method is an optional hook to modify the relationship queries. You can define it at the time of declaring the relation.
+O método `onQuery` é um gancho opcional para modificar as consultas de relacionamento. Você pode defini-lo no momento da declaração da relação.
 
 ```ts
 class Country extends BaseModel {
@@ -180,17 +180,15 @@ class Country extends BaseModel {
 }
 ```
 
-If you want to preload a nested relationship using the `onQuery` hook, then make sure to put it inside the `!query.isRelatedSubQuery` conditional because sub-queries are **NOT executed directly**, they are used inside other queries.
+Se você quiser pré-carregar um relacionamento aninhado usando o gancho `onQuery`, certifique-se de colocá-lo dentro do condicional `!query.isRelatedSubQuery` porque as subconsultas **NÃO são executadas diretamente**, elas são usadas dentro de outras consultas.
 
-```ts
+```ts {4-6}
 class Country extends BaseModel {
   @hasManyThrough([() => Post, () => User], {
     onQuery(query) {
-      // highlight-start
       if (!query.isRelatedSubQuery) {
         query.preload('comments')
       }
-      // highlight-end
     }
   })
   public posts: HasManyThrough<typeof Post>
@@ -198,9 +196,9 @@ class Country extends BaseModel {
 ```
 
 ### `setRelated`
-Set a relationship on the parent model instance. The methods accept the parent model as the first argument and the related model instance as the second argument.
+Defina um relacionamento na instância do modelo pai. Os métodos aceitam o modelo pai como o primeiro argumento e a instância do modelo relacionada como o segundo argumento.
 
-You must ensure that both the model instances are related to each other before calling this method.
+Você deve garantir que ambas as instâncias do modelo estejam relacionadas entre si antes de chamar este método.
 
 ```ts
 const country = new Country()
@@ -210,7 +208,7 @@ Country.$getRelation('posts').setRelated(country, [post])
 ```
 
 ### `pushRelated`
-The `pushRelated` method pushes the relationship to the existing relationship value array.
+O método `pushRelated` envia o relacionamento para a matriz de valores de relacionamento existente.
 
 ```ts
 const country = new Country()
@@ -223,9 +221,9 @@ country.posts.length // 3
 ```
 
 ### `setRelatedForMany`
-Set the relationships on more than one parent model. The method accepts an array of the parent models as the first argument and an array of related models as the second argument.
+Defina os relacionamentos em mais de um modelo pai. O método aceita uma matriz dos modelos pais como o primeiro argumento e uma matriz de modelos relacionados como o segundo argumento.
 
-Lucid internally calls this with the results of the preloader.
+O Lucid chama isso internamente com os resultados do pré-carregador.
 
 ```ts
 const countries = [
@@ -271,20 +269,20 @@ Country.$getRelation('posts').setRelatedForMany(countries, posts)
 ```
 
 ### `client`
-Returns the reference to the [HasManyThroughQueryClient](#query-client). The query client exposes the API to fetch related rows from the database.
+Retorna a referência ao [HasManyThroughQueryClient](#query-client). O cliente de consulta expõe a API para buscar linhas relacionadas do banco de dados.
 
 ### `eagerQuery`
-Returns an instance of the [HasManyThroughQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/HasManyThrough/QueryBuilder.ts). The query builder has the same API as the [Model query builder](../query-builder.md)
+Retorna uma instância do [HasManyThroughQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/HasManyThrough/QueryBuilder.ts). O construtor de consultas tem a mesma API que o [Construtor de consultas do modelo](../query-builder.md)
 
 ### `subQuery`
-Returns an instance of the [HasManyThroughSubQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/HasManyThrough/SubQueryBuilder.ts). The sub queries are not meant to be executed and mainly used by the [withCount](../query-builder.md#withcount) and [whereHas](../query-builder.md#wherehas) methods.
+Retorna uma instância do [HasManyThroughSubQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/HasManyThrough/SubQueryBuilder.ts). As subconsultas não devem ser executadas e são usadas principalmente pelos métodos [withCount](../query-builder.md#withcount) e [whereHas](../query-builder.md#wherehas).
 
-## Query client
-The query client exposes the API to fetch related rows from the database. You can access the query client for a relationship using the `related` method.
+## Cliente de consulta
+O cliente de consulta expõe a API para buscar linhas relacionadas do banco de dados. Você pode acessar o cliente de consulta para um relacionamento usando o método `related`.
 
 :::note
-You cannot persist a `hasManyThrough` relationships directly and instead use the closest relationship for persistence. For example: Use the `posts` relationship on the `User` model to create related
-posts.
+Você não pode persistir um relacionamento `hasManyThrough` diretamente e, em vez disso, usar o relacionamento mais próximo para persistência. Por exemplo: Use o relacionamento `posts` no modelo `User` para criar
+posts relacionados.
 :::
 
 ```ts
@@ -292,12 +290,12 @@ const country = await Country.find(1)
 country.related('posts') // HasManyThroughClientContract
 ```
 
-Using the query client, you can access the query builder instance for making related queries.
+Usando o cliente de consulta, você pode acessar a instância do construtor de consulta para fazer consultas relacionadas.
 
-## Query Builder
-The [HasManyThroughQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/HasManyThrough/QueryBuilder.ts) has the following additional methods on top of a standard model query builder.
+## Construtor de consulta
+O [HasManyThroughQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/HasManyThrough/QueryBuilder.ts) tem os seguintes métodos adicionais em cima de um construtor de consulta de modelo padrão.
 
-You can access the relationship query builder as follows:
+Você pode acessar o construtor de consulta de relacionamento da seguinte forma:
 
 ```ts
 const country = await Country.find(1)
@@ -306,7 +304,7 @@ country.related('posts').query() // HasManyThroughQueryBuilder
 ```
 
 ### `groupLimit`
-The `groupLimit` method uses [SQL window functions](https://www.sqlservertutorial.net/sql-server-window-functions/sql-server-row_number-function/) to add a limit to each group during relationship preloading. Please read the [preloading guide](../../../guides/models/relationships.md#preload-relationship) to learn why and when you need the `groupLimit` method.
+O método `groupLimit` usa [funções de janela SQL](https://www.sqlservertutorial.net/sql-server-window-functions/sql-server-row_number-function/) para adicionar um limite a cada grupo durante o pré-carregamento do relacionamento. Leia o [guia de pré-carregamento](../../../guides/models/relationships.md#preload-relationship) para saber por que e quando você precisa do método `groupLimit`.
 
 ```ts
 await Country.query().preload('posts', (query) => {
@@ -315,12 +313,10 @@ await Country.query().preload('posts', (query) => {
 ```
 
 ### `groupOrderBy`
-Add an order by clause to the group limit query. The method has the same API as the `orderBy` method on the standard query builder.
+Adicione uma cláusula order by à consulta de limite de grupo. O método tem a mesma API que o método `orderBy` no construtor de consultas padrão.
 
 :::note
-
-You only need to apply `groupOrderBy` when using the `groupLimit` method.
-
+Você só precisa aplicar `groupOrderBy` ao usar o método `groupLimit`.
 :::
 
 ```ts

@@ -1,8 +1,8 @@
 # range
 
-Validates the value to be within a given range. The rule can only be used with the `number` schema type.
+Valida o valor para estar dentro de um intervalo fornecido. A regra só pode ser usada com o tipo de esquema `number`.
 
-In the following example, the value of `age < 18` and `> 40` will fail the validation.
+No exemplo a seguir, o valor de `age < 18` e `> 40` falhará na validação.
 
 ```ts
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
@@ -14,8 +14,8 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
 }
 ```
 
-## Custom messages options
-The `range` validation rule passes the `start` and the `stop` options to custom messages.
+## Opções de mensagens personalizadas
+A regra de validação `range` passa as opções `start` e `stop` para mensagens personalizadas.
 
 ```ts
 {

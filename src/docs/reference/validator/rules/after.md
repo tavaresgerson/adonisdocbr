@@ -1,6 +1,6 @@
 # after
 
-Validates the value to be after a given date/offset. **The rule can be only be used with the date schema type**.
+Valida o valor para ser depois de uma determinada data/deslocamento. **A regra pode ser usada somente com o tipo de esquema de data**.
 
 ```ts
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
@@ -12,7 +12,7 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
 }
 ```
 
-The `rules.after` method accepts a **duration** and the **offset** for the duration. Following are some of the examples for the same. You can use the TypeScript intellisense to discover rest of the available offsets.
+O método `rules.after` aceita uma **duração** e o **deslocamento** para a duração. A seguir estão alguns exemplos para o mesmo. Você pode usar o TypeScript intellisense para descobrir o restante dos deslocamentos disponíveis.
 
 ```ts
 rules.after(2, 'days')
@@ -21,14 +21,14 @@ rules.after(4, 'years')
 rules.after(30, 'minutes')
 ```
 
-You can also pass the one of the following shorthand keywords.
+Você também pode passar uma das seguintes palavras-chave abreviadas.
 
 ```ts
 rules.after('today')
 rules.after('tomorrow')
 ```
 
-Also, you can make use of the `afterOrEqual` for enforcing the date to be same or after a given date.
+Além disso, você pode usar o `afterOrEqual` para impor que a data seja a mesma ou depois de uma determinada data.
 
 ```ts
 {
@@ -38,28 +38,22 @@ Also, you can make use of the `afterOrEqual` for enforcing the date to be same o
 }
 ```
 
-## Using Luxon dates
+## Usando datas Luxon
 
-For more advanced use cases, you can pass an instance of the [luxon DateTime](https://moment.github.io/luxon/api-docs/index.html#datetime) object. **Do make sure to pass the value as a ref**.
+Para casos de uso mais avançados, você pode passar uma instância do objeto [luxon DateTime](https://moment.github.io/luxon/api-docs/index.html#datetime). **Certifique-se de passar o valor como uma referência**.
 
-```ts
-// highlight-start
+```ts {1,5-7,11}
 import { DateTime } from 'luxon'
-// highlight-end
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 
 class HolidayValidator {
-  // highlight-start
   public refs = schema.refs({
     allowedDate: DateTime.local().plus({ days: 2 })
   })
-  // highlight-end
 
   public schema = schema.create({
     joining_date: schema.date({}, [
-      // highlight-start
       rules.after(this.refs.allowedDate)
-      // highlight-end
     ])
   })
 }

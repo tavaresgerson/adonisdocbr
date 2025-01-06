@@ -1,8 +1,8 @@
-# Has many
+# Tem Muitos
 
-The [HasMany relationship class](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/HasMany/index.ts) manages the has many relationship between two models.
+A [classe de relacionamento HasMany](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/HasMany/index.ts) gerencia o relacionamento has many entre dois modelos.
 
-You will not find yourself directly working with this class. However, an instance of the class can be accessed using the `Model.$getRelation` method.
+Você não trabalhará diretamente com essa classe. No entanto, uma instância da classe pode ser acessada usando o método `Model.$getRelation`.
 
 ```ts
 import { BaseModel, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
@@ -20,11 +20,11 @@ User.$getRelation('posts').type
 User.$getRelation('posts').relatedModel()
 ```
 
-## Methods/Properties
-Following is the list of methods and properties available on the `HasMany` relationship.
+## Métodos/Propriedades
+A seguir está a lista de métodos e propriedades disponíveis no relacionamento `HasMany`.
 
 ### `type`
-The type of the relationship. The value is always set to `hasMany`.
+O tipo do relacionamento. O valor é sempre definido como `hasMany`.
 
 ```ts
 class User extends BaseModel {
@@ -36,7 +36,7 @@ User.$getRelation('posts').type // 'hasMany'
 ```
 
 ### `relationName`
-The relationship name. It is a property name defined on the parent model.
+O nome do relacionamento. É um nome de propriedade definido no modelo pai.
 
 ```ts
 class User extends BaseModel {
@@ -48,7 +48,7 @@ User.$getRelation('posts').relationName // 'posts'
 ```
 
 ### `serializeAs`
-The name to be used for serializing the relationship. You can define it using the decorator options.
+O nome a ser usado para serializar o relacionamento. Você pode defini-lo usando as opções do decorador.
 
 ```ts
 class User extends BaseModel {
@@ -60,13 +60,13 @@ class User extends BaseModel {
 ```
 
 ### `booted`
-Find if the relationship has been booted. If not, call the `boot` method.
+Descubra se o relacionamento foi inicializado. Caso contrário, chame o método `boot`.
 
 ### `boot`
-Boot the relationship. Lucid models public APIs call this method internally, and you never have to boot the relationship manually.
+Inicialize o relacionamento. As APIs públicas dos modelos Lucid chamam esse método internamente, e você nunca precisa inicializar o relacionamento manualmente.
 
 ### `model`
-Reference to the parent model (the one that defines the relationship).
+Referência ao modelo pai (aquele que define o relacionamento).
 
 ```ts
 class User extends BaseModel {
@@ -78,7 +78,7 @@ User.$getRelation('posts').model // User
 ```
 
 ### `relatedModel`
-Reference to the relationship model. The property value is a function that returns the related model.
+Referência ao modelo de relacionamento. O valor da propriedade é uma função que retorna o modelo relacionado.
 
 ```ts
 class User extends BaseModel {
@@ -90,9 +90,9 @@ User.$getRelation('posts').relatedModel() // Post
 ```
 
 ### `localKey`
-The `localKey` for the relationship. You must read the [NamingStrategy](../naming-strategy.md#relationlocalkey) doc to learn more about how the key name is computed.
+A `localKey` para o relacionamento. Você deve ler o documento [NamingStrategy](../naming-strategy.md#relationlocalkey) para saber mais sobre como o nome da chave é computado.
 
-You can also define the `localKey` explicitly. Do make sure you mention the model property name and NOT the database column name.
+Você também pode definir a `localKey` explicitamente. Certifique-se de mencionar o nome da propriedade do modelo e NÃO o nome da coluna do banco de dados.
 
 ```ts
 class User extends BaseModel {
@@ -100,16 +100,16 @@ class User extends BaseModel {
   public id: number
 
   @hasMany(() => Post, {
-    localKey: 'id', // id column on "User" model
+    localKey: 'id', // coluna id no modelo "Usuário"
   })
   public posts: HasMany<typeof Post>
 }
 ```
 
 ### `foreignKey`
-The `foreignKey` for the relationship. You must read the [NamingStrategy](../naming-strategy.md#relationlocalkey) doc to learn more about how the key name is computed.
+A `foreignKey` para o relacionamento. Você deve ler o documento [NamingStrategy](../naming-strategy.md#relationlocalkey) para saber mais sobre como o nome da chave é computado.
 
-You can also define the `foreignKey` explicitly. Do make sure you mention the model property name and NOT the database column name.
+Você também pode definir a `foreignKey` explicitamente. Certifique-se de mencionar o nome da propriedade do modelo e NÃO o nome da coluna do banco de dados.
 
 ```ts
 class User extends BaseModel {
@@ -117,14 +117,14 @@ class User extends BaseModel {
   public id: number
 
   @hasMany(() => Post, {
-    foreignKey: 'userId', // userId column on "Post" model
+    foreignKey: 'userId', // coluna userId no modelo "Post"
   })
   public posts: HasMany<typeof Post>
 }
 ```
 
 ### `onQuery`
-The `onQuery` method is an optional hook to modify the relationship queries. You can define it at the time of declaring the relation.
+O método `onQuery` é um gancho opcional para modificar as consultas de relacionamento. Você pode defini-lo no momento da declaração da relação.
 
 ```ts
 class User extends BaseModel {
@@ -140,20 +140,18 @@ class User extends BaseModel {
 }
 ```
 
-If you want to preload a nested relationship using the `onQuery` hook, then make sure to put it inside the `!query.isRelatedSubQuery` conditional because sub-queries are **NOT executed directly**, they are used inside other queries.
+Se você quiser pré-carregar um relacionamento aninhado usando o hook `onQuery`, certifique-se de colocá-lo dentro do condicional `!query.isRelatedSubQuery` porque subconsultas **NÃO são executadas diretamente**, elas são usadas dentro de outras consultas.
 
-```ts
+```ts {7-9}
 class User extends BaseModel {
   @column()
   public id: number
 
   @hasMany(() => Post, {
     onQuery(query) {
-      // highlight-start
       if (!query.isRelatedSubQuery) {
         query.preload('comments')
       }
-      // highlight-end
     }
   })
   public posts: HasMany<typeof Post>
@@ -161,9 +159,9 @@ class User extends BaseModel {
 ```
 
 ### `setRelated`
-Set a relationship on the parent model instance. The methods accept the parent model as the first argument and the related model instance as the second argument.
+Defina um relacionamento na instância do modelo pai. Os métodos aceitam o modelo pai como o primeiro argumento e a instância do modelo relacionado como o segundo argumento.
 
-You must ensure that both the model instances are related to each other before calling this method.
+Você deve garantir que ambas as instâncias do modelo estejam relacionadas entre si antes de chamar este método.
 
 ```ts
 const user = new User()
@@ -173,7 +171,7 @@ User.$getRelation('posts').setRelated(user, [post])
 ```
 
 ### `pushRelated`
-The `pushRelated` method pushes the relationship to the existing relationship value array.
+O método `pushRelated` envia o relacionamento para a matriz de valores de relacionamento existente.
 
 ```ts
 const user = new User()
@@ -186,9 +184,9 @@ user.posts.length // 3
 ```
 
 ### `setRelatedForMany`
-Set the relationships on more than one parent model. The method accepts an array of the parent models as the first argument and an array of related models as the second argument.
+Defina os relacionamentos em mais de um modelo pai. O método aceita uma matriz dos modelos pais como o primeiro argumento e uma matriz de modelos relacionados como o segundo argumento.
 
-Lucid internally calls this with the results of the preloader.
+O Lucid chama isso internamente com os resultados do pré-carregador.
 
 ```ts
 const users = [
@@ -226,10 +224,10 @@ User.$getRelation('posts').setRelatedForMany(users, posts)
 ```
 
 ### `client`
-Returns the reference to the [HasManyQueryClient](#query-client). The query client exposes the API to persist/fetch related rows from the database.
+Retorna a referência para [HasManyQueryClient](#query-client). O cliente de consulta expõe a API para persistir/buscar linhas relacionadas do banco de dados.
 
 ### `hydrateForPersistance`
-Hydrates the values for persistence by defining the foreignKey value. The method accepts the parent model as the first argument and an object or the related model instance as the second argument.
+Hidrata os valores para persistência definindo o valor foreignKey. O método aceita o modelo pai como o primeiro argumento e um objeto ou a instância do modelo relacionado como o segundo argumento.
 
 ```ts
 const user = new User()
@@ -242,13 +240,13 @@ console.log(post.userId === user.id) // true
 ```
 
 ### `eagerQuery`
-Returns an instance of the [HasManyQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/HasMany/QueryBuilder.ts). The query builder has the same API as the [Model query builder](../query-builder.md)
+Retorna uma instância do [HasManyQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/HasMany/QueryBuilder.ts). O construtor de consultas tem a mesma API que o [Construtor de consultas do modelo](../query-builder.md)
 
 ### `subQuery`
-Returns an instance of the [HasManySubQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/HasMany/SubQueryBuilder.ts). The sub queries are not meant to be executed and mainly used by the [withCount](../query-builder.md#withcount) and [whereHas](../query-builder.md#wherehas) methods.
+Retorna uma instância do [HasManySubQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/HasMany/SubQueryBuilder.ts). As subconsultas não devem ser executadas e são usadas principalmente pelos métodos [withCount](../query-builder.md#withcount) e [whereHas](../query-builder.md#wherehas).
 
-## Query client
-The query client exposes the API to persist/fetch related rows from the database. You can access the query client for a relationship using the `related` method.
+## Cliente de consulta
+O cliente de consulta expõe a API para persistir/buscar linhas relacionadas do banco de dados. Você pode acessar o cliente de consulta para um relacionamento usando o método `related`.
 
 ```ts
 const user = await User.find(1)
@@ -257,7 +255,7 @@ user.related('posts') // HasManyClientContract
 ```
 
 ### `create`
-Please create a new relationship model instance and persist it to the database right away.
+Crie uma nova instância de modelo de relacionamento e persista no banco de dados imediatamente.
 
 ```ts
 const post = await user
@@ -267,15 +265,15 @@ const post = await user
   })
 ```
 
-The `create` method inherits the transaction client, or the connection name defined on the parent model instance. For example:
+O método `create` herda o cliente de transação ou o nome de conexão definido na instância do modelo pai. Por exemplo:
 
 ```ts
 const trx = await Database.transaction()
 const user = await User.query({ client: trx }).first()
 
 /**
-* Uses the `$trx` property from the `user` instance to
-* persist relationship
+* Usa a propriedade `$trx` da instância `user` para
+* persistir o relacionamento
 */
 await user.related('posts').create()
 
@@ -283,10 +281,10 @@ await trx.commit()
 ```
 
 ### `createMany`
-Create multiple instances of a relationship model and persist them to the database. The method accepts an array of objects to persist.
+Crie várias instâncias de um modelo de relacionamento e persista-as no banco de dados. O método aceita uma matriz de objetos para persistir.
 
-- One insert query is issued for each model instance to ensure that we execute the lifecycle hooks for every individual instance.
-- All the insert queries are internally wrapped inside a transaction. In case of an error, we will roll everything back.
+- Uma consulta de inserção é emitida para cada instância do modelo para garantir que executemos os ganchos do ciclo de vida para cada instância individual.
+- Todas as consultas de inserção são encapsuladas internamente dentro de uma transação. Em caso de erro, reverteremos tudo.
 
 ```ts
 await user.related('posts').createMany([
@@ -300,9 +298,9 @@ await user.related('posts').createMany([
 ```
 
 ### `save`
-The save method persists an existing instance of the relationship.
+O método save persiste uma instância existente do relacionamento.
 
-Like the `create` method, the `save` method also uses the transaction client/connection name from the parent model.
+Assim como o método `create`, o método `save` também usa o nome do cliente/conexão da transação do modelo pai.
 
 ```ts
 const post = new Post()
@@ -314,10 +312,10 @@ const post = await user
 ```
 
 ### `saveMany`
-The `saveMany` method persists an array of related model instances to the database.
+O método `saveMany` persiste uma matriz de instâncias de modelo relacionadas ao banco de dados.
 
-- One insert query is issued for each model instance to ensure that we execute the lifecycle hooks for every individual instance.
-- All the insert queries are internally wrapped inside a transaction. In case of an error, we will roll everything back.
+- Uma consulta de inserção é emitida para cada instância de modelo para garantir que executemos os ganchos do ciclo de vida para cada instância individual.
+- Todas as consultas de inserção são encapsuladas internamente dentro de uma transação. Em caso de erro, reverteremos tudo.
 
 ```ts
 const post = new Post()
@@ -335,7 +333,7 @@ const post = await user
 ```
 
 ### `firstOrCreate`
-The `firstOrCreate` method works similar to the [static firstOrCreate](../base-model.md#static-firstorcreate) method on the base model. However, we **implicitly adds the foreignKey and its value** to the search payload.
+O método `firstOrCreate` funciona de forma semelhante ao método [static firstOrCreate](../base-model.md#static-firstorcreate) no modelo base. No entanto, nós **implicitamente adicionamos a foreignKey e seu valor** à carga útil da pesquisa.
 
 ```ts
 await user
@@ -346,7 +344,7 @@ await user
 ```
 
 ### `updateOrCreate`
-The `updateOrCreate` method works similar to the [static updateOrCreate](../base-model.md#static-updateorcreate) method on the base model. However, we **implicitly adds the foreignKey and its value** to the search payload.
+O método `updateOrCreate` funciona de forma semelhante ao método [static updateOrCreate](../base-model.md#static-updateorcreate) no modelo base. No entanto, nós **implicitamente adicionamos a foreignKey e seu valor** à carga útil da pesquisa.
 
 ```ts
 await user
@@ -357,9 +355,9 @@ await user
 ```
 
 ### `fetchOrCreateMany`
-The `fetchOrCreateMany` method works similar to the [static fetchOrCreateMany](../base-model.md#static-fetchorcreatemany) method on the base model. However, we **implicitly add the foreignKey as the lookup key** for finding unique rows.
+O método `fetchOrCreateMany` funciona de forma semelhante ao método [static fetchOrCreateMany](../base-model.md#static-fetchorcreatemany) no modelo base. No entanto, nós **implicitamente adicionamos a foreignKey como a chave de pesquisa** para encontrar linhas exclusivas.
 
-In the following example, only the posts with a **unique slug** for **a given user** will be created.
+No exemplo a seguir, somente as postagens com um **slug exclusivo** para **um determinado usuário** serão criadas.
 
 ```ts
 const posts = [
@@ -379,9 +377,9 @@ await user
 ```
 
 ### `updateOrCreateMany`
-The `updateOrCreateMany` method works similar to the [static updateOrCreateMany](../base-model.md#static-updateorcreatemany) method on the base model. However, we **implicitly add the foreignKey as the lookup key** for finding unique rows.
+O método `updateOrCreateMany` funciona de forma semelhante ao método [static updateOrCreateMany](../base-model.md#static-updateorcreatemany) no modelo base. No entanto, **implicitamente adicionamos a foreignKey como a chave de pesquisa** para encontrar linhas exclusivas.
 
-In the following example, only the posts with a **unique slug** for **a given user** will be created.
+No exemplo a seguir, somente as postagens com um **slug exclusivo** para **um determinado usuário** serão criadas.
 
 ```ts
 const posts = [
@@ -401,12 +399,12 @@ await user
 ```
 
 ### `query`
-Returns an instance of the [HasManyQueryBuilder](#query-builder).
+Retorna uma instância do [HasManyQueryBuilder](#query-builder).
 
 ## Query Builder
-The [HasManyQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/HasMany/QueryBuilder.ts) has the following additional methods on top of a standard model query builder.
+O [HasManyQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/HasMany/QueryBuilder.ts) tem os seguintes métodos adicionais além de um construtor de consulta de modelo padrão.
 
-You can access the relationship query builder as follows:
+Você pode acessar o construtor de consulta de relacionamento da seguinte forma:
 
 ```ts
 const user = await User.find(1)
@@ -415,7 +413,7 @@ user.related('posts').query() // HasManyQueryBuilder
 ```
 
 ### `groupLimit`
-The `groupLimit` method uses [SQL window functions](https://www.sqlservertutorial.net/sql-server-window-functions/sql-server-row_number-function/) to add a limit to each group during relationship preloading. Please read the [preloading guide](../../guides) to learn why and when you need the `groupLimit` method.
+O método `groupLimit` usa [funções de janela SQL](https://www.sqlservertutorial.net/sql-server-window-functions/sql-server-row_number-function/) para adicionar um limite a cada grupo durante o pré-carregamento de relacionamento. Leia o [guia de pré-carregamento](../../guides) para saber por que e quando você precisa do método `groupLimit`.
 
 ```ts
 await User.query().preload('posts', (query) => {
@@ -424,12 +422,10 @@ await User.query().preload('posts', (query) => {
 ```
 
 ### `groupOrderBy`
-Add an order by clause to the group limit query. The method has the same API as the `orderBy` method on the standard query builder.
+Adicione uma cláusula order by à consulta de limite de grupo. O método tem a mesma API que o método `orderBy` no construtor de consultas padrão.
 
-:::note
-
-You only need to apply `groupOrderBy` when using the `groupLimit` method.
-
+::: info NOTA
+Você só precisa aplicar `groupOrderBy` ao usar o método `groupLimit`.
 :::
 
 ```ts

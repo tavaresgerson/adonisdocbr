@@ -1,11 +1,12 @@
 # distinct
 
-The `distinct` rule ensures that all values of a property inside an array are unique. **The validation rule only works with the `array` schema type.**
+A regra `distinct` garante que todos os valores de uma propriedade dentro de uma matriz sejam únicos. **A regra de validação só funciona com o tipo de esquema `array`.**
 
-Assuming you have an array of objects, each defining a product id property and you want to ensure that no duplicates product ids are being used.
+Supondo que você tenha uma matriz de objetos, cada um definindo uma propriedade de id de produto e você queira garantir que nenhuma id de produto duplicada esteja sendo usada.
 
 ```ts
-// title: Sample Data
+// Dados de amostra
+
 {
   "products": [
     {
@@ -24,19 +25,18 @@ Assuming you have an array of objects, each defining a product id property and y
 }
 ```
 
-The rule is applied on the array itself and **NOT its members**.
+A regra é aplicada na própria matriz e **NÃO em seus membros**.
 
-```ts
+```ts {7-9}
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 
-// title: Validation rule
+// Regra de validação
+
 {
   products: schema
-    // highlight-start
     .array([
       rules.distinct('id')
     ])
-    // highlight-end
     .members(schema.object().members({
       id: schema.number(),
       quantity: schema.number(),
@@ -44,24 +44,24 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
 }
 ```
 
-You can also use the distinct rule with an array of literal values by using the wildcard `*` keyword. For example:
+Você também pode usar a regra distinct com uma matriz de valores literais usando a palavra-chave curinga `*`. Por exemplo:
 
 ```ts
-// title: Sample Data
+// Dados de amostra
+
 {
   "tags": [1, 10, 15, 8]
 }
 ```
 
-```ts
-// title: Validation rule
+```ts {5-7}
+// Regra de validação
+
 {
   tags: schema
-    // highlight-start
     .array([
       rules.distinct('*')
     ])
-    // highlight-end
     .members(schema.number())
 }
 ```

@@ -1,8 +1,8 @@
 # maxLength
 
-Enforces the value to have maximum length as per defined by the rule. The rule can only be applied to `string` or an `array` schema type.
+Força o valor a ter o comprimento máximo conforme definido pela regra. A regra só pode ser aplicada a um tipo de esquema `string` ou `array`.
 
-In the following example, the username with greater than 40 characters will fail the validation.
+No exemplo a seguir, o nome de usuário com mais de 40 caracteres falhará na validação.
 
 ```ts
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
@@ -14,7 +14,7 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
 }
 ```
 
-Following is an example of applying the `maxLength` rule on an array.
+A seguir está um exemplo de aplicação da regra `maxLength` em um array.
 
 ```ts
 {
@@ -26,8 +26,8 @@ Following is an example of applying the `maxLength` rule on an array.
 }
 ```
 
-## Custom messages options
-The `maxLength` validation rule passes the `maxLength` option to custom messages.
+## Opções de mensagens personalizadas
+A regra de validação `maxLength` passa a opção `maxLength` para mensagens personalizadas.
 
 ```ts
 {

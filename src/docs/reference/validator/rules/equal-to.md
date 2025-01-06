@@ -1,6 +1,6 @@
 # equalTo
 
-Validates the value to be equal to a provided value. 
+Valida o valor para ser igual a um valor fornecido.
 
 ```ts
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
@@ -12,16 +12,15 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
 }
 ```
 
-If the provided value is computed at runtime and you are using schema caching, then you must make use of `refs`.
+Se o valor fornecido for computado em tempo de execução e você estiver usando cache de esquema, então você deve fazer uso de `refs`.
 
-```ts
+```ts {7-15}
 import { schema } from '@ioc:Adonis/Core/Validator'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class CreateUserValidator {
   constructor(protected ctx: HttpContextContract) {}
 
-  // highlight-start
   public refs = schema.refs({
     teamsCountry: getTeamCountryFromSomeWhere(),
   })
@@ -31,7 +30,6 @@ export default class CreateUserValidator {
       rules.equalTo(this.refs.teamsCountry)
     ]),
   })
-  // highlight-end
 
   public cacheKey = this.ctx.routeKey
 }

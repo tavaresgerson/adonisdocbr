@@ -1,6 +1,6 @@
 # email
 
-Enforces the value to be properly formatted as an email. **The validation rule only works with the `string` schema type**.
+Força o valor a ser formatado corretamente como um e-mail. **A regra de validação só funciona com o tipo de esquema `string`**.
 
 ```ts
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
@@ -12,7 +12,7 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
 }
 ```
 
-The `email` rule uses the `validator.isEmail` method from the [validatorjs](https://www.npmjs.com/package/validator) package. You can specify all of the options accepted by the `validator.isEmail` method. Just make sure to pass them in **camelCase form**.
+A regra `email` usa o método `validator.isEmail` do pacote [validatorjs](https://www.npmjs.com/package/validator). Você pode especificar todas as opções aceitas pelo método `validator.isEmail`. Apenas certifique-se de passá-las no **formato camelCase**.
 
 ```ts
 {
@@ -26,10 +26,10 @@ The `email` rule uses the `validator.isEmail` method from the [validatorjs](http
 }
 ```
 
-## Normalize email
-You can make use of the `rules.normalizeEmail` method to normalize the email address.
+## Normalizar e-mail
+Você pode usar o método `rules.normalizeEmail` para normalizar o endereço de e-mail.
 
-The `normalizeEmail` rule uses the `validator.normalizeEmail` method from the [validatorjs](https://www.npmjs.com/package/validator) package. You can specify all of the options accepted by the `validator.normalizeEmail` method. Just make sure to pass them in **camelCase form**.
+A regra `normalizeEmail` usa o método `validator.normalizeEmail` do pacote [validatorjs](https://www.npmjs.com/package/validator). Você pode especificar todas as opções aceitas pelo método `validator.normalizeEmail`. Apenas certifique-se de passá-las no **formato camelCase**.
 
 ```ts
 {

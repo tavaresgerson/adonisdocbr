@@ -20,7 +20,7 @@ const modelOptions = {
 }
 ```
 
-> Todas as propriedades do objeto são opcionais
+Todas as propriedades do objeto são opcionais
 
 [cliente de consulta](../database/query-client.md). Na maioria das vezes, você se verá passando o
 - `connection` é a referência a um nome de conexão registrado. Útil quando você tem um aplicativo multilocatário e deseja passar dinamicamente o nome da conexão usada pelo locatário.
@@ -53,45 +53,53 @@ class User extends BaseModel {
 ### ``static before``
 Defina um hook `before` para um evento específico.
 
-```ts {6-8}
+```ts
 public static boot () {
   if (this.booted) {
     return
   }
 
+  // highlight-start
   super.boot()
   this.before('create', (user) => {
   })
+  // highlight-end
 }
 ```
 
 ### ``static after``
 Defina um hook `after` para um evento específico.
 
-```ts {6-8}
+```ts
 public static boot () {
   if (this.booted) {
     return
   }
 
+  // highlight-start
   super.boot()
   this.after('create', (user) => {
   })
+  // highlight-end
 }
 ```
 
 Outra opção (preferida) é usar os [decoradores](https://github.com/adonisjs/lucid/blob/0fc3e2391ba6743427fac62e0895e458d7bc8137/src/Orm/Decorators/index.ts#L67-L244) para marcar métodos estáticos do modelo como hooks.
 
-```ts {3,7-9}
+```ts
 import {
   BaseModel,
+  // highlight-start
   beforeSave,
+  // highlight-end
 } from '@ioc:Adonis/Lucid/Orm'
 
 class User extends BaseModel {
+  // highlight-start
   @beforeSave()
   public static hashPassword(user: User) {
   }
+  // highlight-end
 }
 ```
 
@@ -107,7 +115,8 @@ const user = await User.create({
 
 O método aceita um total de três argumentos.
 
-- `data`: Os dados a persistir no banco de dados [opções do adaptador de modelo](#model-adapter-options).
+- `data`: Os dados a persistir no banco de dados
+[opções do adaptador de modelo](#model-adapter-options).
 - `allowExtraProperties`: Um booleano para permitir a passagem de propriedades extras no objeto de dados. Quando definido como `false`, o método gerará uma exceção quando as propriedades de dados não forem marcadas como colunas.
 
 ### ``static createMany``
@@ -143,10 +152,10 @@ console.log(user instanceof User)
 
 O método aceita um total de dois argumentos.
 
-- `value`: O valor da chave primária.
-- `options`: Defina opcionalmente as [opções do adaptador do modelo](#model-adapter-options).
+- ``value`: O valor da chave primária.
+[opções do adaptador do modelo](#model-adapter-options).
 
-### `static findOrFail`
+### ``static findOrFail``
 O mesmo que o método `find`. Mas em vez de retornar `null`, ele gerará uma exceção quando a linha não existir.
 
 O método `findOrFail` aceita as mesmas opções que o método [find](#static-find).
@@ -155,7 +164,7 @@ O método `findOrFail` aceita as mesmas opções que o método [find](#static-fi
 const user = await User.findOrFail(1)
 ```
 
-### `static findBy`
+### ``static findBy``
 Encontre uma linha dentro do banco de dados usando um par chave-valor. Se uma linha existir, ela será hidratada para a instância do modelo, caso contrário, ``null` será retornado.
 
 ```ts
@@ -165,10 +174,10 @@ const user = await User.findBy('email', 'virk@adonisjs.com')
 O método aceita um total de três argumentos.
 
 - `columName`: O nome da coluna a ser usado na condição where.
-- `value`: O valor da coluna.
-- `options`: [opções do adaptador de modelo](#model-adapter-options).
+- ``value`: O valor da coluna.
+[opções do adaptador de modelo](#model-adapter-options).
 
-### `static findByOrFail`
+### ``static findByOrFail``
 O mesmo que o método `findBy`. Mas em vez de retornar `null`, ele gerará uma exceção quando a linha não existir.
 
 O método `findByOrFail` aceita as mesmas opções que o método [findBy](#static-find-by).
@@ -180,7 +189,7 @@ const user = await User.findByOrFail('email', 'virk@adonisjs.com')
 ### ``static first``
 Retorna a primeira linha do banco de dados. Se uma linha existir, ela será hidratada para a instância do modelo, caso contrário, `null` será retornado.
 
-::: info NOTA
+:::note
 O método `first` depende da ordem padrão do mecanismo de banco de dados subjacente.
 :::
 
@@ -207,8 +216,8 @@ const users = await User.findMany([1, 2, 3])
 ```
 
 - Os resultados serão ordenados pela chave primária em ordem desc.
-- Internamente, o método usa a cláusula SQL `where in` e sempre retorna um array.
-- Opcionalmente, você também pode passar [opções do adaptador de modelo](#model-adapter-options) como o segundo argumento.
+- Internamente, o método usa a cláusula SQL `where in` e sempre retorna uma matriz.
+[opções do adaptador de modelo](#model-adapter-options) como o segundo argumento.
 
 ### ``static firstOrNew``
 Retorna uma linha existente do banco de dados ou cria uma instância local do modelo, quando a linha para os critérios de pesquisa não é encontrada.
@@ -227,9 +236,9 @@ const savePayload = {
 const user = await User.firstOrNew(searchCriteria, savePayload)
 
 if (user.$isPersisted) {
-  // usuário existe no banco de dados
+  // user exists in the database
 } else {
-  // instância de usuário não persistente
+  // un-persisted user instance
 }
 ```
 
@@ -249,9 +258,9 @@ O método aceita as mesmas opções que o método [firstOrNew](#static-firstorne
 const user = await User.firstOrCreate(searchCriteria, savePayload)
 
 if (user.$isLocal) {
-  // nenhuma linha encontrada no db. Portanto, uma nova é criada
+  // no rows found in db. Hence a new one is created
 } else {
-  // linha existente do db
+  // existing db row
 }
 ```
 
@@ -293,9 +302,9 @@ const users = await User.fetchOrNewUpMany(keyForSearch, payload)
 
 for (let user of users) {
   if (user.$isPersisted) {
-    // linha existente no banco de dados
+    // existing row in the database
   } else {
-    // instância local
+    // local instance
   }
 }
 ```
@@ -325,9 +334,9 @@ const users = await User.fetchOrCreateMany(keyForSearch, payload)
 
 for (let user of users) {
   if (user.$isLocal) {
-    // instância local+persistida
+    // local+persisted instance
   } else {
-    // linha existente no banco de dados
+    // existing row in the database
   }
 }
 ```
@@ -389,10 +398,10 @@ Um atalho para truncar a tabela do banco de dados. . Opcionalmente, você també
 ```ts
 await User.truncate()
 
-// cascata
+// cascade
 await User.truncate(true)
 
-// conexão personalizada
+// custom connection
 await User.truncate(true, {
   connection: 'pg',
 })
@@ -431,8 +440,10 @@ await user.save()
 ### `static connection`
 Defina uma conexão de banco de dados personalizada para o modelo.
 
-::: warning ATENÇÃO
+:::note
+
 NÃO use esta propriedade para alternar a conexão em tempo de execução. Esta propriedade serve apenas para definir um nome de conexão estático que permanece o mesmo durante todo o ciclo de vida do aplicativo.
+
 :::
 
 ```ts
@@ -544,7 +555,7 @@ const sideloaded = {
 }
 
 const options = {
-  // A instância usará este cliente de consulta daqui para frente
+  // Instance will use this query client moving forward
   client: Database.connection('pg')
 }
 
@@ -570,8 +581,10 @@ User.$createFromAdapterResult([
 ### `static $addColumn`
 Defina uma coluna de modelo. O decorador `@column` usa este método para marcar uma propriedade como uma coluna.
 
-::: tip DICA
+:::tip
+
 Propriedades de modelo que não são marcadas como colunas nunca são inseridas no banco de dados e também são ignoradas quando retornadas por uma chamada select.
+
 :::
 
 ```ts
@@ -807,9 +820,9 @@ console.log(user.$isDirty) // false
 
 user.fullName = 'Harminder Virk'
 console.log(user.$isDirty) // true
-console.log(user.$dirty) // diferença entre $original e $attributes
+console.log(user.$dirty) // diff between $original and $attributes
 
-await user.save() // persistir e atualizar $original
+await user.save() // persist and update $original
 
 console.log(user.$isDirty) // false
 ```
@@ -933,7 +946,7 @@ const user = new User()
 console.log(user.$isLocal) // true
 
 await user.save()
-console.log(user.$isLocal) // AINDA true
+console.log(user.$isLocal) // STILL true
 ```
 
 No exemplo a seguir, a instância do modelo é criada buscando os valores de linha da tabela do banco de dados.
@@ -996,11 +1009,11 @@ A propriedade `$trx` na instância do modelo é definida automaticamente quando 
 ```ts
 const trx = await Database.transaction()
 
-// a consulta select está usando trx
+// select query is using trx
 const users = await User.query().useTransaction(trx)
 
 users.forEach((user) => {
-  // todas as instâncias do modelo usam a mesma instância trx
+  // all of the model instances uses the same trx instance
   console.log(user.$trx === trx) // true
 })
 ```
@@ -1166,7 +1179,7 @@ Serializa apenas os relacionamentos pré-carregados
 ```ts
 user.serializeRelations()
 
-// Cherry pick de campos
+// Cherry pick fields
 user.serializeRelations({
   profile: {
     fields: {}

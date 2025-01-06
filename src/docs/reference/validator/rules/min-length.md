@@ -1,8 +1,8 @@
 # minLength
 
-Enforces the value to have minimum length as per defined by the rule. The rule can only be applied to `string` or an `array` schema type.
+Força o valor a ter o comprimento mínimo conforme definido pela regra. A regra só pode ser aplicada a um tipo de esquema `string` ou `array`.
 
-In the following example, the username with less than 4 characters will fail the validation.
+No exemplo a seguir, o nome de usuário com menos de 4 caracteres falhará na validação.
 
 ```ts
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
@@ -14,7 +14,7 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
 }
 ```
 
-Following is an example of applying the `minLength` rule on an array.
+A seguir está um exemplo de aplicação da regra `minLength` em um array.
 
 ```ts
 {
@@ -26,8 +26,8 @@ Following is an example of applying the `minLength` rule on an array.
 }
 ```
 
-## Custom messages options
-The `minLength` validation rule passes the `minLength` option to custom messages.
+## Opções de mensagens personalizadas
+A regra de validação `minLength` passa a opção `minLength` para mensagens personalizadas.
 
 ```ts
 {

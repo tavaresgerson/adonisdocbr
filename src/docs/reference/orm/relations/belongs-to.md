@@ -1,8 +1,8 @@
-# Belongs to
+# Pertence a
 
-The [BelongsTo relationship class](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/BelongsTo/index.ts) manages the belongs to the relationship between two models.
+A [classe de relacionamento BelongsTo](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/BelongsTo/index.ts) gerencia o pertence ao relacionamento entre dois modelos.
 
-You will not find yourself directly working with this class. However, an instance of the class can be accessed using the `Model.$getRelation` method.
+Você não se verá trabalhando diretamente com esta classe. No entanto, uma instância da classe pode ser acessada usando o método `Model.$getRelation`.
 
 ```ts
 import { BaseModel, belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm'
@@ -20,11 +20,11 @@ Post.$getRelation('author').type
 Post.$getRelation('author').relatedModel()
 ```
 
-## Methods/Properties
-Following is the list of methods and properties available on the `BelongsTo` relationship.
+## Métodos/Propriedades
+A seguir está a lista de métodos e propriedades disponíveis no relacionamento `BelongsTo`.
 
 ### `type`
-The type of the relationship. The value is always set to `belongsTo`.
+O tipo do relacionamento. O valor é sempre definido como `belongsTo`.
 
 ```ts
 class Post extends BaseModel {
@@ -36,7 +36,7 @@ Post.$getRelation('author').type // 'belongsTo'
 ```
 
 ### `relationName`
-The relationship name. It is a property name defined on the parent model.
+O nome do relacionamento. É um nome de propriedade definido no modelo pai.
 
 ```ts
 class Post extends BaseModel {
@@ -48,7 +48,7 @@ Post.$getRelation('author').relationName // 'author'
 ```
 
 ### `serializeAs`
-The name to use for serializing the relationship. You can define it using the decorator options.
+O nome a ser usado para serializar o relacionamento. Você pode defini-lo usando as opções do decorador.
 
 ```ts
 class Post extends BaseModel {
@@ -60,13 +60,13 @@ class Post extends BaseModel {
 ```
 
 ### `booted`
-Find if the relationship has been booted. If not, call the `boot` method.
+Descubra se o relacionamento foi inicializado. Caso contrário, chame o método `boot`.
 
 ### `boot`
-Boot the relationship. Lucid models public APIs call this method internally, and you never have to boot the relationship manually.
+Inicialize o relacionamento. As APIs públicas dos modelos Lucid chamam esse método internamente, e você nunca precisa inicializar o relacionamento manualmente.
 
 ### `model`
-Reference to the parent model (the one that defines the relationship).
+Referência ao modelo pai (aquele que define o relacionamento).
 
 ```ts
 class Post extends BaseModel {
@@ -78,7 +78,7 @@ Post.$getRelation('author').model // Post
 ```
 
 ### `relatedModel`
-Reference to the relationship model. The property value is a function that returns the related model.
+Referência ao modelo de relacionamento. O valor da propriedade é uma função que retorna o modelo relacionado.
 
 ```ts
 class Post extends BaseModel {
@@ -90,23 +90,23 @@ Post.$getRelation('author').relatedModel() // User
 ```
 
 ### `localKey`
-The `localKey` for the relationship. You must read the [NamingStrategy](../naming-strategy.md#relationlocalkey) doc to learn more about how the key name is computed.
+A `localKey` para o relacionamento. Você deve ler o documento [NamingStrategy](../naming-strategy.md#relationlocalkey) para saber mais sobre como o nome da chave é computado.
 
-You can also define the `localKey` explicitly. Do make sure you mention the model property name and NOT the database column name.
+Você também pode definir a `localKey` explicitamente. Certifique-se de mencionar o nome da propriedade do modelo e NÃO o nome da coluna do banco de dados.
 
 ```ts
 class Post extends BaseModel {
   @belongsTo(() => User, {
-    localKey: 'id', // id column on "User" model
+    localKey: 'id', //coluna id no modelo "Usuário"
   })
   public author: BelongsTo<typeof User>
 }
 ```
 
 ### `foreignKey`
-The `foreignKey` for the relationship. You must read the [NamingStrategy](../naming-strategy.md#relationlocalkey) doc to learn more about how the key name is computed.
+A `foreignKey` para o relacionamento. Você deve ler o documento [NamingStrategy](../naming-strategy.md#relationlocalkey) para saber mais sobre como o nome da chave é computado.
 
-You can also define the `foreignKey` explicitly. Do make sure you mention the model property name and NOT the database column name.
+Você também pode definir a `foreignKey` explicitamente. Certifique-se de mencionar o nome da propriedade do modelo e NÃO o nome da coluna do banco de dados.
 
 ```ts
 class Post extends BaseModel {
@@ -114,14 +114,14 @@ class Post extends BaseModel {
   public userId: number
 
   @belongsTo(() => User, {
-    foreignKey: 'userId', // userId column on "Post" model
+    foreignKey: 'userId', // coluna userId no modelo "Post"
   })
   public author: BelongsTo<typeof User>
 }
 ```
 
 ### `onQuery`
-The `onQuery` method is an optional hook to modify the relationship queries. You can define it at the time of declaring the relation.
+O método `onQuery` é um gancho opcional para modificar as consultas de relacionamento. Você pode defini-lo no momento da declaração da relação.
 
 ```ts
 class Post extends BaseModel {
@@ -137,20 +137,18 @@ class Post extends BaseModel {
 }
 ```
 
-If you want to preload a nested relationship using the `onQuery` hook, then make sure to put it inside the `!query.isRelatedSubQuery` conditional because sub-queries are **NOT executed directly**, they are used inside other queries.
+Se você quiser pré-carregar um relacionamento aninhado usando o gancho `onQuery`, certifique-se de colocá-lo dentro do condicional `!query.isRelatedSubQuery` porque as subconsultas **NÃO são executadas diretamente**, elas são usadas dentro de outras consultas.
 
-```ts
+```ts {7-9}
 class Post extends BaseModel {
   @column()
   public userId: number
 
   @belongsTo(() => User, {
     onQuery(query) {
-      // highlight-start
       if (!query.isRelatedSubQuery) {
         query.preload('profile')
       }
-      // highlight-end
     }
   })
   public author: BelongsTo<typeof User>
@@ -158,9 +156,9 @@ class Post extends BaseModel {
 ```
 
 ### `setRelated`
-Set a relationship on the parent model instance. The methods accept the parent model as the first argument and the related model instance as the second argument.
+Defina um relacionamento na instância do modelo pai. Os métodos aceitam o modelo pai como o primeiro argumento e a instância do modelo relacionada como o segundo argumento.
 
-You must ensure that both the model instances are related to each other before calling this method.
+Você deve garantir que ambas as instâncias do modelo estejam relacionadas entre si antes de chamar este método.
 
 ```ts
 const user = new User()
@@ -170,12 +168,12 @@ Post.$getRelation('author').setRelated(user, post)
 ```
 
 ### `pushRelated`
-The `pushRelated` method pushes the relationship to the existing relationship value array. However, for the `belongsTo` relationship, the method works similar to `setRelated`.
+O método `pushRelated` envia o relacionamento para a matriz de valores de relacionamento existente. No entanto, para o relacionamento `belongsTo`, o método funciona de forma semelhante a `setRelated`.
 
 ### `setRelatedForMany`
-Set the relationships on more than one parent model. The method accepts an array of the parent models as the first argument and an array of related models as the second argument.
+Defina os relacionamentos em mais de um modelo pai. O método aceita uma matriz dos modelos pais como o primeiro argumento e uma matriz de modelos relacionados como o segundo argumento.
 
-Lucid internally calls this with the results of the preloader.
+O Lucid chama isso internamente com os resultados do pré-carregador.
 
 ```ts
 const users = [
@@ -213,10 +211,10 @@ Post.$getRelation('author').setRelatedForMany(posts, users)
 ```
 
 ### `client`
-Returns the reference to the [BelongsToQueryClient](#query-client). The query client exposes the API to persist/fetch related rows from the database.
+Retorna a referência para [BelongsToQueryClient](#query-client). O cliente de consulta expõe a API para persistir/buscar linhas relacionadas do banco de dados.
 
 ### `hydrateForPersistance`
-Hydrates the values for persistence by defining the `foreignKey` value. The method accepts the parent model as the first argument and an object or the related model instance as the second argument.
+Hidrata os valores para persistência definindo o valor `foreignKey`. O método aceita o modelo pai como o primeiro argumento e um objeto ou a instância do modelo relacionado como o segundo argumento.
 
 ```ts
 const user = new User()
@@ -231,13 +229,13 @@ console.log(post.userId === user.id) // true
 ```
 
 ### `eagerQuery`
-Returns an instance of the [BelongsToQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/BelongsTo/QueryBuilder.ts). The query builder has the same API as the [Model query builder](../query-builder.md)
+Retorna uma instância do [BelongsToQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/BelongsTo/QueryBuilder.ts). O construtor de consultas tem a mesma API que o [Construtor de consultas do modelo](../query-builder.md)
 
 ### `subQuery`
-Returns an instance of the [BelongsToSubQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/BelongsTo/SubQueryBuilder.ts). The sub queries are not meant to be executed and mainly used by the [withCount](../query-builder.md#withcount) and [whereHas](../query-builder.md#wherehas) methods.
+Retorna uma instância do [BelongsToSubQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/BelongsTo/SubQueryBuilder.ts). As subconsultas não devem ser executadas e usadas principalmente pelos métodos [withCount](../query-builder.md#withcount) e [whereHas](../query-builder.md#wherehas).
 
-## Query client
-The query client exposes the API to persist/fetch related rows from the database. You can access the query client for a relationship using the `related` method.
+## Cliente de consulta
+O cliente de consulta expõe a API para persistir/buscar linhas relacionadas do banco de dados. Você pode acessar o cliente de consulta para um relacionamento usando o método `related`.
 
 ```ts
 const post = await Post.find(1)
@@ -246,7 +244,7 @@ post.related('author') // BelongsToClientContract
 ```
 
 ### `associate`
-Associate the related model with the parent model. For example, associate the user with the post.
+Associe o modelo relacionado ao modelo pai. Por exemplo, associe o usuário à postagem.
 
 ```ts
 const user = await User.find(1)
@@ -257,7 +255,7 @@ await post
   .associate(user)
 ```
 
-The `associate` method inherits the transaction client, or the connection name defined on the parent model instance. For example:
+O método `associate` herda o cliente de transação ou o nome da conexão definido na instância do modelo pai. Por exemplo:
 
 ```ts
 const trx = await Database.transaction()
@@ -265,8 +263,8 @@ const post = await Post.query({ client: trx }).first()
 const user = await User.query({ client: trx }).first()
 
 /**
-* Uses the `$trx` property from the `post` instance to
-* persist relationship
+* Usa a propriedade `$trx` da instância `post` para
+* persistir o relacionamento
 */
 await post.related('author').associate(user)
 
@@ -274,7 +272,7 @@ await trx.commit()
 ```
 
 ### `dissociate`
-The `dissociate` method removes the relationship by setting the foreign key value to `null`.
+O método `dissociate` remove o relacionamento definindo o valor da chave estrangeira como `null`.
 
 ```ts
 const post = await Post.find(1)
@@ -284,4 +282,4 @@ post.userId // null
 ```
 
 ### `query`
-Returns an instance of the [BelongsToQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/BelongsTo/QueryBuilder.ts). The query builder has the same API as the [Model query builder](../query-builder.md).
+Retorna uma instância do [BelongsToQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/BelongsTo/QueryBuilder.ts). O construtor de consultas tem a mesma API que o [Construtor de consultas do modelo](../query-builder.md).

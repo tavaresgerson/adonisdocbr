@@ -1,6 +1,6 @@
 # escape
 
-The `escape` is sanitization rule to replace `<`, `>`, `&`, `'`, `"` and `/` with HTML entities.
+`escape` é uma regra de higienização para substituir `<`, `>`, `&`, `'`, `"` e `/` por entidades HTML.
 
 ```ts
 import { schema, rules } from '@ioc:Adonis/Core/Validator'

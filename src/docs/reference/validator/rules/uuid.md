@@ -1,6 +1,6 @@
 # uuid
 
-Enforce the value of field under validation is a valid `uuid`. You can also optionally enforce a specific uuid version.
+Imponha que o valor do campo sob validação seja um `uuid` válido. Você também pode, opcionalmente, impor uma versão específica do uuid.
 
 ```ts
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
@@ -12,7 +12,7 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
 }
 ```
 
-Following is an example of validating the `id` to be a `uuidv4` string. 
+A seguir, um exemplo de validação do `id` para ser uma string `uuidv4`.
 
 ```ts
 {
