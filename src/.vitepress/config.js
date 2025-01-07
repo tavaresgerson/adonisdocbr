@@ -5,6 +5,19 @@ export default {
     description: 'A fully featured web framework for Node.js',
     lang: 'pt-BR',
     head: [
+      [
+        'script',
+        { async: '', src: 'https://www.googletagmanager.com/gtag/js?id=G-JSBVEGFEQ9' }
+      ],
+      [
+        'script',
+        {},
+        `window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-JSBVEGFEQ9');`
+      ],
       ['link', { rel: 'icon', href: '/favicon.ico' }]
     ],
     ignoreDeadLinks: true,
