@@ -1,0 +1,512 @@
+[
+  {
+    "permalink": "preface/introduction",
+    "title": "Introduction",
+    "contentPath": "./preface/introduction.md",
+    "category": "Preface"
+  },
+  {
+    "permalink": "preface/faqs",
+    "title": "FAQs",
+    "contentPath": "./preface/faqs.md",
+    "category": "Preface"
+  },
+  {
+    "permalink": "preface/governance",
+    "title": "Governance",
+    "contentPath": "./preface/governance.md",
+    "category": "Preface"
+  },
+  {
+    "permalink": "preface/releases",
+    "title": "Releases",
+    "contentPath": "./preface/releases.md",
+    "category": "Preface"
+  },
+  {
+    "permalink": "preface/contribution-guide",
+    "title": "Contribution Guide",
+    "contentPath": "./preface/contribution_guide.md",
+    "category": "Preface"
+  },
+  {
+    "permalink": "getting-started/installation",
+    "title": "Installation",
+    "contentPath": "./getting_started/installation.md",
+    "category": "Getting started"
+  },
+  {
+    "permalink": "getting-started/configuration",
+    "title": "Configuration",
+    "contentPath": "./getting_started/configuration.md",
+    "category": "Getting started"
+  },
+  {
+    "permalink": "getting-started/environment-variables",
+    "title": "Environment variables",
+    "contentPath": "./getting_started/environment_variables.md",
+    "category": "Getting started"
+  },
+  {
+    "permalink": "getting-started/folder-structure",
+    "title": "Folder structure",
+    "contentPath": "./getting_started/folder_structure.md",
+    "category": "Getting started"
+  },
+  {
+    "permalink": "getting-started/deployment",
+    "title": "Deployment",
+    "contentPath": "./getting_started/deployment.md",
+    "category": "Getting started"
+  },
+  {
+    "permalink": "concepts/adonisrc-file",
+    "title": "AdonisRC file",
+    "contentPath": "./concepts/adonisrc_file.md",
+    "category": "Concepts"
+  },
+  {
+    "permalink": "concepts/async-local-storage",
+    "title": "Async local storage",
+    "contentPath": "./concepts/async_local_storage.md",
+    "category": "Concepts"
+  },
+  {
+    "permalink": "concepts/assembler-hooks",
+    "title": "Assembler hooks",
+    "contentPath": "./concepts/assembler_hooks.md",
+    "category": "Concepts"
+  },
+  {
+    "permalink": "concepts/application",
+    "title": "Application",
+    "contentPath": "./concepts/application.md",
+    "category": "Concepts"
+  },
+  {
+    "permalink": "concepts/application-lifecycle",
+    "title": "Application lifecycle",
+    "contentPath": "./concepts/application_lifecycle.md",
+    "category": "Concepts"
+  },
+  {
+    "permalink": "concepts/config-providers",
+    "title": "Config providers",
+    "contentPath": "./concepts/config_providers.md",
+    "category": "Concepts"
+  },
+  {
+    "permalink": "concepts/container-services",
+    "title": "Container services",
+    "contentPath": "./concepts/container_services.md",
+    "category": "Concepts"
+  },
+  {
+    "permalink": "concepts/dependency-injection",
+    "title": "Dependency injection (DI)",
+    "contentPath": "./concepts/dependency_injection.md",
+    "category": "Concepts"
+  },
+  {
+    "permalink": "concepts/extending-adonisjs",
+    "title": "Extending the framework",
+    "contentPath": "./concepts/extending_the_framework.md",
+    "category": "Concepts"
+  },
+  {
+    "permalink": "concepts/hot-module-replacement",
+    "title": "Hot module replacement (HMR)",
+    "contentPath": "./concepts/hmr.md",
+    "category": "Concepts"
+  },
+  {
+    "permalink": "concepts/http-overview",
+    "title": "HTTP overview",
+    "contentPath": "./concepts/http_overview.md",
+    "category": "Concepts"
+  },
+  {
+    "permalink": "concepts/http-context",
+    "title": "HTTP context",
+    "contentPath": "./concepts/http_context.md",
+    "category": "Concepts"
+  },
+  {
+    "permalink": "concepts/service-providers",
+    "title": "Service providers",
+    "contentPath": "./concepts/service_providers.md",
+    "category": "Concepts"
+  },
+  {
+    "permalink": "concepts/scaffolding",
+    "title": "Scaffolding",
+    "contentPath": "./concepts/scaffolding.md",
+    "category": "Concepts"
+  },
+  {
+    "permalink": "concepts/tooling-config",
+    "title": "Tooling config",
+    "contentPath": "./concepts/tooling_config.md",
+    "category": "Concepts"
+  },
+  {
+    "permalink": "concepts/typescript-build-process",
+    "title": "TypeScript build process",
+    "contentPath": "./concepts/typescript_build_process.md",
+    "category": "Concepts"
+  },
+  {
+    "permalink": "basics/routing",
+    "title": "Routing",
+    "contentPath": "./basics/routing.md",
+    "category": "Basics"
+  },
+  {
+    "permalink": "basics/controllers",
+    "title": "Controllers",
+    "contentPath": "./basics/controllers.md",
+    "category": "Basics"
+  },
+  {
+    "permalink": "basics/middleware",
+    "title": "Middleware",
+    "contentPath": "./basics/middleware.md",
+    "category": "Basics"
+  },
+  {
+    "permalink": "basics/body-parser",
+    "title": "Body parser",
+    "contentPath": "./basics/body_parser.md",
+    "category": "Basics"
+  },
+  {
+    "permalink": "basics/request",
+    "title": "Request",
+    "contentPath": "./basics/request.md",
+    "category": "Basics"
+  },
+  {
+    "permalink": "basics/response",
+    "title": "Response",
+    "contentPath": "./basics/response.md",
+    "category": "Basics"
+  },
+  {
+    "permalink": "basics/validation",
+    "title": "Validation",
+    "contentPath": "./basics/validation.md",
+    "category": "Basics"
+  },
+  {
+    "permalink": "basics/file-uploads",
+    "title": "File uploads",
+    "contentPath": "./basics/file_uploads.md",
+    "category": "Basics"
+  },
+  {
+    "permalink": "basics/session",
+    "title": "Session",
+    "contentPath": "./basics/session.md",
+    "category": "Basics"
+  },
+  {
+    "permalink": "basics/cookies",
+    "title": "Cookies",
+    "contentPath": "./basics/cookies.md",
+    "category": "Basics"
+  },
+  {
+    "permalink": "basics/exception-handling",
+    "title": "Exception handling",
+    "contentPath": "./basics/exception_handling.md",
+    "category": "Basics"
+  },
+  {
+    "permalink": "basics/debugging",
+    "title": "Debugging",
+    "contentPath": "./basics/debugging.md",
+    "category": "Basics"
+  },
+  {
+    "permalink": "basics/vite",
+    "title": "Vite",
+    "contentPath": "./basics/vite.md",
+    "category": "Basics"
+  },
+  {
+    "permalink": "basics/static-file-server",
+    "title": "Static file server",
+    "contentPath": "./basics/static_file_server.md",
+    "category": "Basics"
+  },
+  {
+    "permalink": "database/introduction",
+    "title": "Introduction",
+    "contentPath": "./database/introduction.md",
+    "category": "Database"
+  },
+  {
+    "permalink": "database/lucid",
+    "title": "Lucid",
+    "contentPath": "./database/lucid.md",
+    "category": "Database"
+  },
+  {
+    "permalink": "database/redis",
+    "title": "Redis",
+    "contentPath": "./database/redis.md",
+    "category": "Database"
+  },
+  {
+    "permalink": "authentication/introduction",
+    "title": "Introduction",
+    "contentPath": "./authentication/introduction.md",
+    "category": "Authentication"
+  },
+  {
+    "permalink": "authentication/verifying-user-credentials",
+    "title": "Verifying user credentials",
+    "contentPath": "./authentication/verifying_user_credentials.md",
+    "category": "Authentication"
+  },
+  {
+    "permalink": "authentication/session-guard",
+    "title": "Session guard",
+    "contentPath": "./authentication/session_guard.md",
+    "category": "Authentication"
+  },
+  {
+    "permalink": "authentication/access-tokens-guard",
+    "title": "Access tokens guard",
+    "contentPath": "./authentication/access_tokens_guard.md",
+    "category": "Authentication"
+  },
+  {
+    "permalink": "authentication/basic-auth-guard",
+    "title": "Basic auth guard",
+    "contentPath": "./authentication/basic_auth_guard.md",
+    "category": "Authentication"
+  },
+  {
+    "permalink": "authentication/custom-auth-guard",
+    "title": "Custom auth guard",
+    "contentPath": "./authentication/custom_auth_guard.md",
+    "category": "Authentication"
+  },
+  {
+    "permalink": "authentication/social-authentication",
+    "title": "Social authentication",
+    "contentPath": "./authentication/social_authentication.md",
+    "category": "Authentication"
+  },
+  {
+    "permalink": "security/authorization",
+    "title": "Authorization",
+    "contentPath": "./security/authorization.md",
+    "category": "Security"
+  },
+  {
+    "permalink": "security/encryption",
+    "title": "Encryption",
+    "contentPath": "./security/encryption.md",
+    "category": "Security"
+  },
+  {
+    "permalink": "security/hashing",
+    "title": "Hashing",
+    "contentPath": "./security/hashing.md",
+    "category": "Security"
+  },
+  {
+    "permalink": "security/cors",
+    "title": "CORS",
+    "contentPath": "./security/cors.md",
+    "category": "Security"
+  },
+  {
+    "permalink": "security/securing-ssr-applications",
+    "title": "Securing SSR apps",
+    "contentPath": "./security/securing_ssr_applications.md",
+    "category": "Security"
+  },
+  {
+    "permalink": "security/rate-limiting",
+    "title": "Rate limiting",
+    "contentPath": "./security/rate_limiting.md",
+    "category": "Security"
+  },
+  {
+    "permalink": "views-and-templates/introduction",
+    "title": "Introduction",
+    "contentPath": "./views-and-templates/introduction.md",
+    "category": "Views & Templates"
+  },
+  {
+    "permalink": "views-and-templates/edgejs",
+    "title": "EdgeJS",
+    "contentPath": "./views-and-templates/edgejs.md",
+    "category": "Views & Templates"
+  },
+  {
+    "permalink": "views-and-templates/inertia",
+    "title": "Inertia",
+    "contentPath": "./views-and-templates/inertia.md",
+    "category": "Views & Templates"
+  },
+  {
+    "permalink": "testing/introduction",
+    "title": "Introduction",
+    "contentPath": "./testing/introduction.md",
+    "category": "Testing"
+  },
+  {
+    "permalink": "testing/http-tests",
+    "title": "HTTP tests",
+    "contentPath": "./testing/http_tests.md",
+    "category": "Testing"
+  },
+  {
+    "permalink": "testing/browser-tests",
+    "title": "Browser tests",
+    "contentPath": "./testing/browser_tests.md",
+    "category": "Testing"
+  },
+  {
+    "permalink": "testing/console-tests",
+    "title": "Console tests",
+    "contentPath": "./testing/console_tests.md",
+    "category": "Testing"
+  },
+  {
+    "permalink": "testing/database",
+    "title": "Database",
+    "contentPath": "./testing/database.md",
+    "category": "Testing"
+  },
+  {
+    "permalink": "testing/mocks-and-fakes",
+    "title": "Mocks & Fakes",
+    "contentPath": "./testing/mocks_and_fakes.md",
+    "category": "Testing"
+  },
+  {
+    "permalink": "digging-deeper/drive",
+    "title": "Drive",
+    "contentPath": "./digging_deeper/drive.md",
+    "category": "Digging deeper"
+  },
+  {
+    "permalink": "digging-deeper/emitter",
+    "title": "Emitter",
+    "contentPath": "./digging_deeper/emitter.md",
+    "category": "Digging deeper"
+  },
+  {
+    "permalink": "digging-deeper/health-checks",
+    "title": "Health checks",
+    "contentPath": "./digging_deeper/health_checks.md",
+    "category": "Digging deeper"
+  },
+  {
+    "permalink": "digging-deeper/i18n",
+    "title": "I18n",
+    "contentPath": "./digging_deeper/i18n.md",
+    "category": "Digging deeper"
+  },
+  {
+    "permalink": "digging-deeper/locks",
+    "title": "Locks",
+    "contentPath": "./digging_deeper/locks.md",
+    "category": "Digging deeper"
+  },
+  {
+    "permalink": "digging-deeper/logger",
+    "title": "Logger",
+    "contentPath": "./digging_deeper/logger.md",
+    "category": "Digging deeper"
+  },
+  {
+    "permalink": "digging-deeper/mail",
+    "title": "Mail",
+    "contentPath": "./digging_deeper/mail.md",
+    "category": "Digging deeper"
+  },
+  {
+    "permalink": "digging-deeper/transmit",
+    "title": "Transmit",
+    "contentPath": "./digging_deeper/transmit.md",
+    "category": "Digging deeper"
+  },
+  {
+    "permalink": "digging-deeper/repl",
+    "title": "Repl",
+    "contentPath": "./digging_deeper/repl.md",
+    "category": "Digging deeper"
+  },
+  {
+    "permalink": "ace/introduction",
+    "title": "Introduction",
+    "contentPath": "./ace/introduction.md",
+    "category": "Ace commands"
+  },
+  {
+    "permalink": "ace/creating-commands",
+    "title": "Creating commands",
+    "contentPath": "./ace/creating_commands.md",
+    "category": "Ace commands"
+  },
+  {
+    "permalink": "ace/arguments",
+    "title": "Command arguments",
+    "contentPath": "./ace/args.md",
+    "category": "Ace commands"
+  },
+  {
+    "permalink": "ace/flags",
+    "title": "Command flags",
+    "contentPath": "./ace/flags.md",
+    "category": "Ace commands"
+  },
+  {
+    "permalink": "ace/prompts",
+    "title": "Prompts",
+    "contentPath": "./ace/prompts.md",
+    "category": "Ace commands"
+  },
+  {
+    "permalink": "ace/terminal-ui",
+    "title": "Terminal UI",
+    "contentPath": "./ace/tui.md",
+    "category": "Ace commands"
+  },
+  {
+    "permalink": "references/commands",
+    "title": "Commands",
+    "contentPath": "./references/commands.md",
+    "category": "References"
+  },
+  {
+    "permalink": "references/edge",
+    "title": "Edge helpers and tags",
+    "contentPath": "./references/edge.md",
+    "category": "References"
+  },
+  {
+    "permalink": "references/events",
+    "title": "Events",
+    "contentPath": "./references/events.md",
+    "category": "References"
+  },
+  {
+    "permalink": "references/exceptions",
+    "title": "Exceptions",
+    "contentPath": "./references/exceptions.md",
+    "category": "References"
+  },
+  {
+    "permalink": "references/helpers",
+    "title": "Helpers",
+    "contentPath": "./references/helpers.md",
+    "category": "References"
+  }
+]

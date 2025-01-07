@@ -1,0 +1,62 @@
+{
+  "menu": [
+    {
+      "href": "https://v6-migration.adonisjs.com",
+      "title": "Migration Guide"
+    },
+    {
+      "href": "https://v5-docs.adonisjs.com",
+      "title": "V5 Documentation"
+    }
+  ],
+  "links": {
+    "home": {
+      "title": "AdonisJS",
+      "href": "/"
+    },
+    "github": {
+      "title": "AdonisJS on GitHub",
+      "href": "https://github.com/adonisjs/core"
+    }
+  },
+  "search": {
+    "appId": "KXECYAMEX8",
+    "indexName": "adonisjs_next",
+    "apiKey": "01279e9ede105d87a1ade54565b1a2fd"
+  },
+  "sponsors_sources": [
+    "https://raw.githubusercontent.com/thetutlage/static/main/sponsorkit/sponsors.json"
+  ],
+  "featured_sponsors": [
+    {
+      "name": "Relancer",
+      "website": "https://relancer.com/",
+      "logo": "logos/sponsors/relancer"
+    },
+    {
+      "name": "Cleavr",
+      "website": "https://cleavr.io/",
+      "logo": "logos/sponsors/cleavr"
+    },
+    {
+      "name": "ToolZZ",
+      "website": "https://www.toolzz.com.br/",
+      "logo": "logos/sponsors/toolzz"
+    },
+    {
+      "name": "Vehicle Routing and Route Optimization Software",
+      "website": "https://route4me.com/",
+      "logo": "logos/sponsors/route4me"
+    },
+    {
+      "name": "Ezycourse",
+      "website": "https://ezycourse.com/",
+      "logo": "logos/sponsors/ezycourse"
+    }
+  ],
+  "carbon_ads": {
+    "url": "//cdn.carbonads.com/carbon.js?serve=CKYIL23I&placement=docsadonisjscom"
+  },
+  "fileEditBaseUrl": "https://github.com/adonisjs/v6-docs/blob/main",
+  "copyright": "AdonisJS"
+}

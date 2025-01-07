@@ -1,0 +1,12 @@
+p > img, video {
+  border-radius: 0.35rem;
+}
+
+.tip {
+  background: #caf5c8 !important;
+}
+
+.dark .tip {
+  color: #fff;
+  background: #40923b !important;
+}
