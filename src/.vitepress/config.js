@@ -1,8 +1,7 @@
 import sidebar from "./sidebar";
 
 export default {
-    // site-level options
-    title: 'Adonis 5.0',
+    title: 'Adonis 5',
     description: 'A fully featured web framework for Node.js',
     lang: 'pt-BR',
     head: [

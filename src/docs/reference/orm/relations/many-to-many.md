@@ -1,4 +1,4 @@
-# Muitos para muitos
+# Many to many
 
 A [classe de relacionamento Muitos para muitos](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/ManyToMany/index.ts) gerencia o relacionamento muitos para muitos entre dois modelos.
 

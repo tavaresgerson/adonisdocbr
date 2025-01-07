@@ -1,6 +1,6 @@
 # debugger
 
-The `@debugger` tag is an inline tag. It drops the `debugger` keyword to the template output. You can use the chrome devtools to debug the compiled templates.
+A tag `@debugger` é uma tag inline. Ela descarta a palavra-chave `debugger` na saída do template. Você pode usar o chrome devtools para depurar os templates compilados.
 
 ```edge
 @debugger

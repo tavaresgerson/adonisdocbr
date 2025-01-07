@@ -1,6 +1,6 @@
-# route/signedRoute
+# `route` / `signedRoute`
 
-The route helper let you [generate URLs](../../../guides/http/routing.md#url-generation) for pre-registered routes by either using their `name` or the `controller.method` reference.
+O assistente de rota permite que você [gere URLs](../../../guides/http/routing.md#url-generation) para rotas pré-registradas usando seu `name` ou a referência `controller.method`.
 
 ```edge
 <form
@@ -10,9 +10,9 @@ The route helper let you [generate URLs](../../../guides/http/routing.md#url-gen
 </form>
 ```
 
-## Route params
+## Parâmetros de rota
 
-You can pass route params as the second argument. It can be an positional array of values or an object of key-value pair. The `key` is the route param name.
+Você pode passar parâmetros de rota como o segundo argumento. Pode ser uma matriz posicional de valores ou um objeto de par chave-valor. A `key` é o nome do parâmetro de rota.
 
 ```ts
 import Route from '@ioc:Adonis/Core/Route'
@@ -28,7 +28,7 @@ Route.put('posts/:id', 'PostsController.update')
 </form>
 ```
 
-Example of route params as an object.
+Exemplo de parâmetros de rota como um objeto.
 
 ```edge
 <form
@@ -38,11 +38,11 @@ Example of route params as an object.
 </form>
 ```
 
-## Options
-The `route` helper also accepts additional options to append the query string, prefix a URL or lookup a route inside a specific domain.
+## Opções
+O assistente `route` também aceita opções adicionais para anexar a sequência de consulta, prefixar uma URL ou procurar uma rota dentro de um domínio específico.
 
-### Query string
-You can define the query string as an object using the `qs` property.
+### Sequência de consulta
+Você pode definir a sequência de consulta como um objeto usando a propriedade `qs`.
 
 ```edge
 <form
@@ -58,8 +58,8 @@ You can define the query string as an object using the `qs` property.
 </form>
 ```
 
-### Lookup within a domain
-You can also perform the route lookup within a specific domain. For example:
+### Pesquisa dentro de um domínio
+Você também pode executar a pesquisa de rota dentro de um domínio específico. Por exemplo:
 
 ```ts
 import Route from '@ioc:Adonis/Core/Route'
@@ -79,8 +79,8 @@ Route
 }}"> View post </a>
 ```
 
-### Prefix URL
-The URLs created by the `route` helper are always relative from the root of the domain. If required, you can manually prefix a URL.
+### Prefixo de URL
+As URLs criadas pelo auxiliar `route` são sempre relativas à raiz do domínio. Se necessário, você pode prefixar manualmente uma URL.
 
 ```edge
 <a href="{{
@@ -91,10 +91,10 @@ The URLs created by the `route` helper are always relative from the root of the 
 }}"> View post </a>
 ```
 
-## Signed routes
-The `signedRoute` helper is similar to the route helper, instead it creates a [signed URL](../../../guides/security/signed-urls.md).
+## Rotas assinadas
+O auxiliar `signedRoute` é semelhante ao auxiliar de rota, em vez disso, ele cria uma [URL assinada](../../../guides/security/signed-urls.md).
 
-The helpers accept the following additional options.
+Os auxiliares aceitam as seguintes opções adicionais.
 
 ```edge
 {{

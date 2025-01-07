@@ -1,9 +1,9 @@
 # each
 
-The `@each` tag let you loop over an array or an object of values.
+A tag `@each` permite que você faça um loop sobre um array ou um objeto de valores.
 
-- It is a block level tag
-- It accepts a binary expression with `(in)` operator as the only argument.
+- É uma tag de nível de bloco
+- Ela aceita uma expressão binária com o operador `(in)` como único argumento.
 
 ```edge
 @each(username in ['virk', 'nikk', 'romain'])
@@ -11,7 +11,7 @@ The `@each` tag let you loop over an array or an object of values.
 @end
 ```
 
-You can access the array index as follows:
+Você pode acessar o índice do array da seguinte forma:
 
 ```edge
 @each((username, key) in ['virk', 'nikk', 'romain'])
@@ -19,7 +19,7 @@ You can access the array index as follows:
 @end
 ```
 
-Similarly, you can also loop over objects.
+Da mesma forma, você também pode fazer um loop sobre objetos.
 
 ```edge
 @each((amount, ingredient) in {

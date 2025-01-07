@@ -1,4 +1,4 @@
-# Schema
+# Esquema
 
 As classes de migração de esquema devem estender a classe [Base Schema class](https://github.com/adonisjs/lucid/blob/master/src/Schema/index.ts) para executar operações SQL DDL como código.
 

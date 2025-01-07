@@ -1,39 +1,33 @@
-# View helpers
+# Auxiliares para visualizações
 
-Following is the list of helper properties and methods shared with the templates. 
+A seguir está a lista de propriedades e métodos auxiliares compartilhados com os modelos.
 
-### i18n
-An instance of `i18n` for the default locale is shared with the templates as a global property.
+### `i18n`
+Uma instância de `i18n` para o local padrão é compartilhada com os modelos como uma propriedade global.
 
-However, the [DetectUserLocale](https://github.com/adonisjs/i18n/blob/develop/templates/DetectUserLocale.txt#L47) middleware overrides this property and shares a request specific instance for the current user's locale.
+No entanto, o middleware [DetectUserLocale](https://github.com/adonisjs/i18n/blob/develop/templates/DetectUserLocale.txt#L47) substitui essa propriedade e compartilha uma instância específica de solicitação para o local do usuário atual.
 
 ```edge
 {{ i18n.locale }}
 {{ i18n.formatNumber(100) }}
 ```
 
----
-
-### t
-The `t` helper is an alias for the `i18n.formatMessage` method.
+### `t`
+O auxiliar `t` é um alias para o método `i18n.formatMessage`.
 
 ```edge
 {{ t('messages.title') }}
 ```
 
----
-
-### getDefaultLocale
-Returns the default locale for the application.
+### `getDefaultLocale`
+Retorna o local padrão para o aplicativo.
 
 ```edge
 {{ getDefaultLocale() }}
 ```
 
----
-
-### getSupportedLocales
-Returns an array of the supported locales. 
+### `getSupportedLocales`
+Retorna uma matriz dos locais suportados.
 
 ```edge
 {{ getSupportedLocales() }}

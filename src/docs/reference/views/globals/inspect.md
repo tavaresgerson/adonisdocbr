@@ -1,6 +1,6 @@
-# inspect
+# `inspect`
 
-The global helper to inspect a value or the entire state of the template. The helper method can pretty print the following JavaScript primitives.
+O helper global para inspecionar um valor ou o estado inteiro do template. O método helper pode imprimir as seguintes primitivas JavaScript.
 
 ```edge
 {{
@@ -25,11 +25,11 @@ The global helper to inspect a value or the entire state of the template. The he
 }}
 ```
 
-Output
+Saída
 
 ![](/docs/assets/edge-inspect.webp)
 
-You can inspect the state of the entire view using the state variable.
+Você pode inspecionar o estado de toda a view usando a variável state.
 
 ```ts
 inspect(state)

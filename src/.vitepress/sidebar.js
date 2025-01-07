@@ -3,22 +3,22 @@ export default [
       text: 'Início',
       collapsed: false,
       items: [
-        { text: 'Introduction', link: '/docs/guides/introduction.md' },
-        { text: 'Installation', link: '/docs/guides/installation.md' },
-        { text: 'Release process', link: '/docs/guides/release-process.md' },
+        { text: 'Instalação', link: '/docs/guides/introduction.md' },
+        { text: 'Introdução', link: '/docs/guides/installation.md' },
+        { text: 'Processo de lançamento', link: '/docs/guides/release-process.md' },
       ]
   },
   {
-      text: 'Fundamentals',
+      text: 'Fundamentos',
       collapsed: true,
       items: [
-        { text: 'Application', link: '/docs/guides/fundamentals/application.md' },
-        { text: 'AdonisRC file', link: '/docs/guides/fundamentals/adonisrc-file.md' },
+        { text: 'Aplicação', link: '/docs/guides/fundamentals/application.md' },
+        { text: 'Arquivo AdonisRC', link: '/docs/guides/fundamentals/adonisrc-file.md' },
         { text: 'Config', link: '/docs/guides/fundamentals/config.md' },
-        { text: 'Environment variables', link: '/docs/guides/fundamentals/environment-variables.md' },
-        { text: 'TypeScript build process', link: '/docs/guides/fundamentals/typescript-build-process.md' },
-        { text: 'Deployment', link: '/docs/guides/fundamentals/deployment.md' },
-        { text: 'Async local storage', link: '/docs/guides/fundamentals/async-local-storage.md' },
+        { text: 'Variáveis ​​de ambiente', link: '/docs/guides/fundamentals/environment-variables.md' },
+        { text: 'Processo de construção do TypeScript', link: '/docs/guides/fundamentals/typescript-build-process.md' },
+        { text: 'Implantação', link: '/docs/guides/fundamentals/deployment.md' },
+        { text: 'Armazenamento local assíncrono', link: '/docs/guides/fundamentals/async-local-storage.md' },
       ]
   },
   {
@@ -26,31 +26,31 @@ export default [
     collapsed: true,
     items: [
       {
-        text: 'Context',
+        text: 'Contexto',
         link: '/docs/guides/http/context.md'
       },
       {
-        text: 'Routing',
+        text: 'Roteamento',
         link: '/docs/guides/http/routing.md'
       },
       {
-        text: 'Controllers',
+        text: 'Controladores',
         link: '/docs/guides/http/controllers.md'
       },
       {
-        text: 'Request',
+        text: 'Solicitação',
         link: '/docs/guides/http/request.md'
       },
       {
-        text: 'Response',
+        text: 'Resposta',
         link: '/docs/guides/http/response.md'
       },
       {
-        text: 'File uploads',
+        text: 'Uploads de arquivo',
         link: '/docs/guides/http/file-uploads.md'
       },
       {
-        text: 'Direct file uploads',
+        text: 'Uploads diretos de arquivo',
         link: '/docs/guides/http/direct-file-uploads.md'
       },
       {
@@ -62,19 +62,19 @@ export default [
         link: '/docs/guides/http/cookies.md'
       },
       {
-        text: 'Session',
+        text: 'Sessão',
         link: '/docs/guides/http/session.md'
       },
       {
-        text: 'Static assets',
+        text: 'Ativos estáticos',
         link: '/docs/guides/http/static-assets.md'
       },
       {
-        text: 'Assets manager',
+        text: 'Gerenciador de ativos',
         link: '/docs/guides/http/assets-manager.md'
       },
       {
-        text: 'Exception handling',
+        text: 'Tratamento de exceções',
         link: '/docs/guides/http/exception-handling.md'
       }
     ]
@@ -84,23 +84,23 @@ export default [
     collapsed: true,
     items: [
       {
-        text: 'Introduction',
+        text: 'Introdução',
         link: '/docs/guides/views/introduction.md'
       },
       {
-        text: 'Rendering',
+        text: 'Renderização',
         link: '/docs/guides/views/rendering.md'
       },
       {
-        text: 'Templating syntax',
+        text: 'Sintaxe do template',
         link: '/docs/guides/views/templating-syntax.md'
       },
       {
-        text: 'Data flow',
+        text: 'Fluxo de dados',
         link: '/docs/guides/views/data-flow.md'
       },
       {
-        text: 'Conditionals',
+        text: 'Condicionais',
         link: '/docs/guides/views/conditionals.md'
       },
       {
@@ -108,7 +108,7 @@ export default [
         link: '/docs/guides/views/loops.md'
       },
       {
-        text: 'Partials',
+        text: 'Parciais',
         link: '/docs/guides/views/partials.md'
       },
       {
@@ -116,75 +116,75 @@ export default [
         link: '/docs/guides/views/layouts.md'
       },
       {
-        text: 'Components',
+        text: 'Componentes',
         link: '/docs/guides/views/components.md'
       },
       {
-        text: 'Mutations',
+        text: 'Mutações',
         link: '/docs/guides/views/mutations.md'
       },
       {
-        text: 'Debugging',
+        text: 'Depuração',
         link: '/docs/guides/views/debugging.md'
       }
     ]
   },
   {
-    text: 'Validator',
+    text: 'Validador',
     collapsed: true,
     items: [
       {
-        text: 'Introduction',
+        text: 'Introdução',
         link: '/docs/guides/validator/introduction.md'
       },
       {
-        text: 'Custom messages',
+        text: 'Mensagens personalizadas',
         link: '/docs/guides/validator/custom-messages.md'
       },
       {
-        text: 'Error reporters',
+        text: 'Relatores de erros',
         link: '/docs/guides/validator/error-reporters.md'
       },
       {
-        text: 'Schema caching',
+        text: 'Cache de esquema',
         link: '/docs/guides/validator/schema-caching.md'
       },
       {
-        text: 'Custom validation rules',
+        text: 'Regras de validação personalizadas',
         link: '/docs/guides/validator/custom-rules.md'
       }
     ]
   },
   {
-    text: 'Database',
+    text: 'Banco de Dados',
     collapsed: true,
     items: [
       {
-        text: 'Introduction',
+        text: 'Introdução',
         link: '/docs/guides/database/introduction.md'
       },
       {
-        text: 'Query builder',
+        text: 'Construtor de consultas',
         link: '/docs/guides/database/query-builder.md'
       },
       {
-        text: 'Transactions',
+        text: 'Transações',
         link: '/docs/guides/database/transactions.md'
       },
       {
-        text: 'Pagination',
+        text: 'Paginação',
         link: '/docs/guides/database/pagination.md'
       },
       {
-        text: 'Schema migrations',
+        text: 'Migrações de esquema',
         link: '/docs/guides/database/migrations.md'
       },
       {
-        text: 'Database seeders',
+        text: 'Semeadores de banco de dados',
         link: '/docs/guides/database/seeders.md'
       },
       {
-        text: 'Debugging',
+        text: 'Depuração',
         link: '/docs/guides/database/debugging.md'
       }
     ]
@@ -194,41 +194,41 @@ export default [
     collapsed: true,
     items: [
       {
-        text: 'Introduction',
+        text: 'Introdução',
         link: '/docs/guides/models/introduction.md'
       },
       {
-        text: 'CRUD operations',
+        text: 'Operações CRUD',
         link: '/docs/guides/models/crud.md'
       },
       {
-        text: 'Hooks',
+        text: 'Ganchos',
         link: '/docs/guides/models/hooks.md'
       },
       {
-        text: 'Query scopes',
+        text: 'Escopos de consulta',
         link: '/docs/guides/models/query-scopes.md'
       },
       {
-        text: 'Serializing models',
+        text: 'Serializando modelos',
         link: '/docs/guides/models/serialization.md'
       },
       {
-        text: 'Relationships',
+        text: 'Relacionamentos',
         link: '/docs/guides/models/relationships.md'
       },
       {
-        text: 'Model factories',
+        text: 'Fábricas de modelos',
         link: '/docs/guides/models/factories.md'
       }
     ]
   },
   {
-    text: 'Authentication',
+    text: 'Autenticação',
     collapsed: true,
     items: [
       {
-        text: 'Introduction',
+        text: 'Introdução',
         link: '/docs/guides/auth/introduction.md'
       },
       {
@@ -236,33 +236,33 @@ export default [
         link: '/docs/guides/auth/web-guard.md'
       },
       {
-        text: 'API tokens',
+        text: 'Tokens de API',
         link: '/docs/guides/auth/api-tokens-guard.md'
       },
       {
-        text: 'Basic auth',
+        text: 'Autenticação básica',
         link: '/docs/guides/auth/basic-auth-guard.md'
       },
       {
-        text: 'Auth middleware',
+        text: 'Middleware de autenticação',
         link: '/docs/guides/auth/middleware.md'
       },
       {
-        text: 'Social authentication',
+        text: 'Autenticação social',
         link: '/docs/guides/auth/social.md'
       },
       {
-        text: 'Custom user provider',
+        text: 'Provedor de usuário personalizado',
         link: '/docs/guides/auth/custom-user-provider.md'
       }
     ]
   },
   {
-    text: 'Security',
+    text: 'Segurança',
     collapsed: true,
     items: [
       {
-        text: 'Web security',
+        text: 'Segurança da Web',
         link: '/docs/guides/security/web-security.md'
       },
       {
@@ -270,7 +270,7 @@ export default [
         link: '/docs/guides/security/cors.md'
       },
       {
-        text: 'Encryption',
+        text: 'Criptografia',
         link: '/docs/guides/security/encryption.md'
       },
       {
@@ -278,35 +278,35 @@ export default [
         link: '/docs/guides/security/hashing.md'
       },
       {
-        text: 'Signed URLs',
+        text: 'URLs assinadas',
         link: '/docs/guides/security/signed-urls.md'
       }
     ]
   },
   {
-    text: 'Testing',
+    text: 'Testando',
     collapsed: true,
     items: [
       {
-        text: 'Introduction',
+        text: 'Introdução',
         link: '/docs/guides/testing/introduction.md'
       },
       {
-        text: 'HTTP tests',
+        text: 'Testes HTTP',
         link: '/docs/guides/testing/http-tests.md'
       },
       {
-        text: 'Mocking and Fakes',
+        text: 'Mocking e Fakes',
         link: '/docs/guides/testing/fakes.md'
       }
     ]
   },
   {
-    text: 'Digging deeper',
+    text: 'Cavando mais fundo',
     collapsed: true,
     items: [
       {
-        text: 'Authorization',
+        text: 'Autorização',
         link: '/docs/guides/digging-deeper/authorization.md'
       },
       {
@@ -314,7 +314,7 @@ export default [
         link: '/docs/guides/digging-deeper/drive.md'
       },
       {
-        text: 'Internationalization',
+        text: 'Internacionalização',
         link: '/docs/guides/digging-deeper/i18n.md'
       },
       {
@@ -330,7 +330,7 @@ export default [
         link: '/docs/guides/digging-deeper/logger.md'
       },
       {
-        text: 'Events',
+        text: 'Eventos',
         link: '/docs/guides/digging-deeper/events.md'
       },
       {
@@ -346,11 +346,11 @@ export default [
         link: '/docs/guides/digging-deeper/redis.md'
       },
       {
-        text: 'Health check',
+        text: 'Verificação de saúde',
         link: '/docs/guides/digging-deeper/health-check.md'
       },
       {
-        text: 'Rate limiting',
+        text: 'Limitação de taxa',
         link: '/docs/guides/digging-deeper/rate-limiting.md'
       },
       {
@@ -361,84 +361,84 @@ export default [
   },
 
   {
-    text: 'Reference',
+    text: 'Referência',
     collapsed: true,
     items: [
       {
-        text: 'Database',
+        text: 'Banco de dados',
         collapsed: true,
         items: [
           {
-            text: 'Connection',
+            text: 'Conexão',
             link: '/docs/reference/database/connection.md'
           },
           {
-            text: 'Connection manager',
+            text: 'Gerenciador de conexões',
             link: '/docs/reference/database/connection-manager.md'
           },
           {
-            text: 'Query builder',
+            text: 'Construtor de consultas',
             link: '/docs/reference/database/query-builder.md'
           },
           {
-            text: 'Insert query builder',
+            text: 'Inserir construtor de consulta',
             link: '/docs/reference/database/insert-query-builder.md'
           },
           {
-            text: 'Raw query builder',
+            text: 'Consultas cruas',
             link: '/docs/reference/database/raw-query-builder.md'
           },
           {
-            text: 'Query client',
+            text: 'Cliente de consulta',
             link: '/docs/reference/database/query-client.md'
           },
           {
-            text: 'Transaction client',
+            text: 'Cliente de transação',
             link: '/docs/reference/database/transaction-client.md'
           },
           {
-            text: 'Database',
+            text: 'Banco de dados',
             link: '/docs/reference/database/database.md'
           },
           {
-            text: 'Schema',
+            text: 'Esquema',
             link: '/docs/reference/database/schema.md'
           },
           {
-            text: 'Schema builder',
+            text: 'Construtor de esquemas',
             link: '/docs/reference/database/schema-builder.md'
           },
           {
-            text: 'Table builder',
+            text: 'Construtor de tabela',
             link: '/docs/reference/database/table-builder.md'
           },
           {
             text: 'ORM',
             items: [
               {
-                text: 'Base Model',
+                text: 'Modelo Base',
                 link: '/docs/reference/orm/base-model.md'
               },
               {
-                text: 'Naming strategy',
+                text: 'Estratégia de nomenclatura',
                 link: '/docs/reference/orm/naming-strategy.md'
               },
               {
-                text: 'Query builder',
+                text: 'Construtor de consultas',
                 link: '/docs/reference/orm/query-builder.md'
               },
               {
-                text: 'Decorators',
+                text: 'Decoradores',
                 link: '/docs/reference/orm/decorators.md'
               },
               {
-                text: 'Adapter',
+                text: 'Adaptador',
                 link: '/docs/reference/orm/adapter.md'
               }
             ]
           },
           {
-            text: 'Relationships',
+            text: 'Relacionamentos',
             items: [
               {
                 text: 'Has one',
@@ -465,11 +465,11 @@ export default [
         ]
       },
       {
-        text: 'Validator',
+        text: 'Validador',
         collapsed: true,
         items: [
           {
-            text: 'Schema types',
+            text: 'Tipos de esquema',
             collapsed: true,
             items: [
               {
@@ -507,7 +507,7 @@ export default [
             ]
           },
           {
-            text: 'Validation rules',
+            text: 'Regras de validação',
             collapsed: true,
             items: [
               {
@@ -612,11 +612,11 @@ export default [
       },
 
       {
-        text: 'Views & Templates',
+        text: 'Visualizações e modelos',
         collapsed: true,
         items: [
           {
-            text: 'Globals',
+            text: 'Globais',
             collapsed: true,
             items: [
               {
@@ -656,7 +656,7 @@ export default [
                 link: '/docs/reference/views/globals/string-helpers.md'
               },
               {
-                text: 'All other helpers',
+                text: 'Todos os outros auxiliares',
                 link: '/docs/reference/views/globals/all-helpers.md'
               }
             ]
@@ -707,7 +707,7 @@ export default [
         ]
       },
       {
-        text: 'Internationalization',
+        text: 'Internacionalização',
         collapsed: true,
         items: [
           {
@@ -719,7 +719,7 @@ export default [
             link: '/docs/reference/i18n/i18n.md'
           },
           {
-            text: 'View helpers',
+            text: 'Auxiliares para visualizações',
             link: '/docs/reference/i18n/view-helpers.md'
           }
         ]

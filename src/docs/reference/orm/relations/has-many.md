@@ -1,4 +1,4 @@
-# Tem Muitos
+# Has many
 
 A [classe de relacionamento HasMany](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/HasMany/index.ts) gerencia o relacionamento has many entre dois modelos.
 

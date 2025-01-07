@@ -1,9 +1,9 @@
 # component/slot/inject
 
-The `@component` tag allows you to use an Edge template as a component. 
+A tag `@component` permite que você use um modelo Edge como um componente.
 
-- It is a block level tag
-- It accepts the template path relative from the `views` directory, along with the component state as the second argument.
+- É uma tag de nível de bloco
+- Ela aceita o caminho do modelo relativo do diretório `views`, junto com o estado do componente como o segundo argumento.
 
 ```edge
 @!component('components/button', {
@@ -11,7 +11,7 @@ The `@component` tag allows you to use an Edge template as a component.
 })
 ```
 
-You can also derive the component name from a runtime value.
+Você também pode derivar o nome do componente de um valor de tempo de execução.
 
 ```edge
 @!component(currentTheme.button, {
@@ -19,8 +19,8 @@ You can also derive the component name from a runtime value.
 })
 ```
 
-## slot
-The `@slot` tag allows you define the markup for the named slots. It accepts the slot name as the first argument and can also receive additional arguments from the component template.
+## `slot`
+A tag `@slot` permite que você defina a marcação para os slots nomeados. Ela aceita o nome do slot como o primeiro argumento e também pode receber argumentos adicionais do modelo do componente.
 
 ```edge
 @slot('main')
@@ -28,7 +28,7 @@ The `@slot` tag allows you define the markup for the named slots. It accepts the
 @end
 ```
 
-If the component passes any additional arguments to the slot, then you can access them as follows:
+Se o componente passar quaisquer argumentos adicionais para o slot, você poderá acessá-los da seguinte forma:
 
 ```edge
 @slot('main', scope)
@@ -36,14 +36,14 @@ If the component passes any additional arguments to the slot, then you can acces
 @end
 ```
 
-Since slots are regular functions, the component calls the function and passes it the arguments.
+Como os slots são funções regulares, o componente chama a função e passa os argumentos.
 
 ```edge
 {{{ await $slots.main({ title: 'Hello world' }) }}}
 ```
 
-## inject
-The `@inject` tag allows the component template to [inject data](../../../guides/views/components.md#injecting-data-to-the-component-tree) into the component tree. The tag accepts an object as the only argument.
+## `inject`
+A tag `@inject` permite que o modelo de componente [injete dados](../../../guides/views/components.md#injecting-data-to-the-component-tree) na árvore de componentes. A tag aceita um objeto como o único argumento.
 
 ```edge
 @inject({ tabs: [] })

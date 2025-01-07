@@ -1,6 +1,6 @@
-# truncate
+# `truncate`
 
-The view helper truncates a given string value by the number of characters. For example:
+O view helper trunca um valor de string fornecido pelo número de caracteres. Por exemplo:
 
 ```edge
 {{
@@ -13,7 +13,7 @@ The view helper truncates a given string value by the number of characters. For 
 <!-- Output: This is a very long... -->
 ```
 
-The `truncate` method doesn't chop the words in between and let them get completed. However, you can turn off this behavior by setting `completeWords` option to `false`.
+O método `truncate` não corta as palavras no meio e as deixa ser concluídas. No entanto, você pode desativar esse comportamento definindo a opção `completeWords` como `false`.
 
 ```edge
 {{
@@ -31,7 +31,7 @@ The `truncate` method doesn't chop the words in between and let them get complet
 // highlight-end
 ```
 
-Also, you can define a custom suffix for the truncated string.
+Além disso, você pode definir um sufixo personalizado para a string truncada.
 
 ```edge
 {{

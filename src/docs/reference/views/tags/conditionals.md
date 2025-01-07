@@ -1,23 +1,23 @@
 # if/elseif/else
 
-The `@if`, `@elseif` and the `@else` tags allows you to write conditionals inside the Edge templates. 
+As tags `@if`, `@elseif` e `@else` permitem que você escreva condicionais dentro dos modelos Edge.
 
-- The `@if` and the `@elseif` tag accepts the expression to evaluate as the only argument.
-- Only the `@if` tag needs to be closed explicitly with the `@end` statement. Other tags must appear within the opening and closing if block.
+- As tags `@if` e `@elseif` aceitam a expressão a ser avaliada como o único argumento.
+- Somente a tag `@if` precisa ser fechada explicitamente com a declaração `@end`. Outras tags devem aparecer dentro do bloco if de abertura e fechamento.
 
 ```edge
-<!-- Start if -->
+<!-- Início do if -->
 @if(user.fullName)
   <p> Hello {{ user.fullName }}! </p>
 @elseif(user.firstName)
   <p> Hello {{ user.firstName }}! </p>
 @else
   <p> Hello Guest! </p>
-<!-- End if -->
+<!-- Fim do if -->
 @end
 ```
 
-You can use the `@unless` tag in place of the `@if` tag to write an inverse if statement.
+Você pode usar a tag `@unless` no lugar da tag `@if` para escrever uma declaração if inversa.
 
 ```edge
 @unless(account.isActive)

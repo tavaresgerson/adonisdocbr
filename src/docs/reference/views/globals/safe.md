@@ -1,19 +1,19 @@
-# safe
+# `safe`
 
-The output of interpolation (the code inside the `curly braces`) is HTML escaped to avoid XSS attacks. However, at times you do want to render HTML without escaping and for that you can make use of three curly braces instead of two.
+A saída da interpolação (o código dentro das `chaves`) é HTML escapado para evitar ataques XSS. No entanto, às vezes você quer renderizar HTML sem escapar e para isso você pode usar três chaves em vez de duas.
 
 ```edge
 {{ '<p> I will be escaped </p>' }}
 {{{ '<p> I will render as it is </p>' }}}
 ```
 
-Another way to render HTML without escaping, is to make use of the `safe` method.
+Outra maneira de renderizar HTML sem escapar é usar o método `safe`.
 
 ```edge
 {{ safe('<p> I will render as it is </p>') }}
 ```
 
-Using the `safe` method has no advantage over three curly braces. However, it becomes helpful, when you are creating your own global methods and want to render HTML from them without instructing the end user to use three curly braces.
+Usar o método `safe` não tem nenhuma vantagem sobre três chaves. No entanto, ele se torna útil quando você está criando seus próprios métodos globais e quer renderizar HTML a partir deles sem instruir o usuário final a usar três chaves.
 
 ```ts
 View.global('input', (type: string, value: string) => {
@@ -21,7 +21,7 @@ View.global('input', (type: string, value: string) => {
 })
 ```
 
-And now you can use the `input` global inside the standard double curly braces.
+E agora você pode usar o `input` global dentro das chaves duplas padrão.
 
 ```edge
 {{ input('text', 'foo') }}

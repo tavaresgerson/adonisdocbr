@@ -1,6 +1,6 @@
-# Raw query builder
+# Consultas cruas
 
-O raw query builder permite que você execute consultas de uma string SQL. Mesmo que você esteja executando diretamente strings SQL brutas, você ainda pode manter suas consultas seguras de injeção de SQL usando placeholders para valores.
+As consultas cruas permite que você execute consultas de uma string SQL. Mesmo que você esteja executando diretamente strings SQL brutas, você ainda pode manter suas consultas seguras de injeção de SQL usando placeholders para valores.
 
 ## Executando consulta
 A seguir está um exemplo de execução de consulta de uma string SQL.

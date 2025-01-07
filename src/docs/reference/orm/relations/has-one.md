@@ -1,4 +1,4 @@
-# Tem um
+# Has one
 
 A [classe de relacionamento HasOne](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/HasOne/index.ts) gerencia o relacionamento has one entre dois modelos.
 

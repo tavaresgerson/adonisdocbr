@@ -1,4 +1,4 @@
-# Pertence a
+# Belongs to
 
 A [classe de relacionamento BelongsTo](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/BelongsTo/index.ts) gerencia o pertence ao relacionamento entre dois modelos.
 

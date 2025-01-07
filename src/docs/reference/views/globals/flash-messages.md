@@ -1,23 +1,19 @@
-# flashMessages
+# `flashMessages`
 
-The `flashMessages` helper gives you the access to the session flash messages available for the given HTTP requests.
+O auxiliar `flashMessages` fornece acesso às mensagens flash de sessão disponíveis para as solicitações HTTP fornecidas.
 
-:::note
-
-The helper is only available when rendering views using `ctx.view.render` and `ctx.view.renderAsync` methods.
-
+::: info NOTA
+O auxiliar só está disponível ao renderizar visualizações usando os métodos `ctx.view.render` e `ctx.view.renderAsync`.
 :::
 
-You can make use of the `inspect` helper to view all the available flash messages.
+Você pode usar o auxiliar `inspect` para visualizar todas as mensagens flash disponíveis.
 
 ```edge
 {{ inspect(flashMessages.all()) }}
 ```
 
----
-
-### has
-Find if the flash message exists for a given key or not. You can make use of the dot notation to lookup nested values.
+### `has`
+Descubra se a mensagem flash existe para uma determinada chave ou não. Você pode usar a notação de ponto para pesquisar valores aninhados.
 
 ```edge
 @if(flashMessages.has('errors.username'))
@@ -25,25 +21,21 @@ Find if the flash message exists for a given key or not. You can make use of the
 @endif
 ```
 
----
-
-### get
-Returns the value for a given key. You can make use of the dot notation to lookup nested values.
+### `get`
+Retorna o valor para uma determinada chave. Você pode usar a notação de ponto para pesquisar valores aninhados.
 
 ```edge
 {{ flashMessages.get('errors.username') }}
 ```
 
-Optionally, you can pass a default value as the second parameter.
+Opcionalmente, você pode passar um valor padrão como o segundo parâmetro.
 
 ```edge
 {{ flashMessages.get('username', 'Enter username') }}
 ```
 
----
-
-### all
-Returns all the available flash messages as an object.
+### `all`
+Retorna todas as mensagens flash disponíveis como um objeto.
 
 ```edge
 {{ flashMessages.all().username }}

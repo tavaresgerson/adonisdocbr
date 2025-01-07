@@ -1,6 +1,6 @@
-# Schema builder
+# Construtor de esquemas
 
-O schema builder permite que você **crie**, **altere**, **descarte** e execute outras operações SQL DDL.
+O construtor de esquemas permite que você **crie**, **altere**, **descarte** e execute outras operações SQL DDL.
 
 Você pode acessar a instância do schema builder usando a propriedade `this.schema` em seus arquivos de migração.
 

@@ -1,22 +1,22 @@
 # include/includeIf
 
-The `@include` tag allows you include a partial to a given template.
+A tag `@include` permite que você inclua um parcial em um determinado modelo.
 
-- It is an inline tag.
-- It accepts only a single argument, that is the partial path relative from the views directory.
-- The partial have access to the parent template state.
+- É uma tag inline.
+- Ela aceita apenas um único argumento, que é o caminho parcial relativo do diretório de visualizações.
+- O parcial tem acesso ao estado do modelo pai.
 
 ```edge
 @include('partials/header')
 ```
 
-You can also use variables to define the partial path.
+Você também pode usar variáveis ​​para definir o caminho parcial.
 
 ```edge
 @include(headerPartial)
 ```
 
-You can also make use of the `@includeIf` tag to include a partial conditionally. The first argument is the condition to evaluate before including the partial.
+Você também pode usar a tag `@includeIf` para incluir um parcial condicionalmente. O primeiro argumento é a condição a ser avaliada antes de incluir o parcial.
 
 ```edge
 @includeIf(post.comments.length, 'partials/comments')

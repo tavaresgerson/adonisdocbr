@@ -1,23 +1,19 @@
-# session
+# `session`
 
-The `session` helper gives you the access to a readonly instance of the session store for the current HTTP request.
+O auxiliar `session` fornece acesso a uma instância somente leitura do armazenamento de sessão para a solicitação HTTP atual.
 
-:::note
-
-The helper is only available when rendering views using `ctx.view.render` and `ctx.view.renderAsync` methods.
-
+::: info NOTA
+O auxiliar só está disponível ao renderizar visualizações usando os métodos `ctx.view.render` e `ctx.view.renderAsync`.
 :::
 
-You can make use of the `inspect` helper to view all the available session data.
+Você pode usar o auxiliar `inspect` para visualizar todos os dados de sessão disponíveis.
 
 ```edge
 {{ inspect(session.all()) }}
 ```
 
----
-
-### has
-Find if the value for a given key exists inside the session store. You can make use of the dot notation to lookup nested values.
+### `has`
+Descubra se o valor para uma determinada chave existe dentro do armazenamento de sessão. Você pode usar a notação de ponto para pesquisar valores aninhados.
 
 ```edge
 @if(session.has('user.id'))
@@ -25,25 +21,21 @@ Find if the value for a given key exists inside the session store. You can make 
 @endif
 ```
 
----
-
-### get
-Returns the value for a given key. You can make use of the dot notation to lookup nested values.
+### `get`
+Retorna o valor para uma determinada chave. Você pode usar a notação de ponto para pesquisar valores aninhados.
 
 ```edge
 {{ session.get('user.id') }}
 ```
 
-Optionally, you can pass a default value as the second parameter.
+Opcionalmente, você pode passar um valor padrão como o segundo parâmetro.
 
 ```edge
 {{ session.get('cartTotal', 0) }}
 ```
 
----
-
-### all
-Returns all the available values from the session store.
+### `all`
+Retorna todos os valores disponíveis do armazenamento de sessão.
 
 ```edge
 {{ session.all() }}

@@ -1,11 +1,9 @@
 # String helpers
 
-Following is the list of available string helpers that you can use with in your Edge templates. The framework core and official packages of AdonisJS are already using these helpers, its just we have also injected them as view helpers.
+A seguir está a lista de auxiliares de string disponíveis que você pode usar em seus modelos do Edge. O núcleo do framework e os pacotes oficiais do AdonisJS já estão usando esses auxiliares, só que também os injetamos como auxiliares de visualização.
 
----
-
-### camelCase
-Convert a string to its `camelCase` version.
+### `camelCase`
+Converte uma string para sua versão `camelCase`.
 
 ```edge
 {{ camelCase('hello-world') }}
@@ -13,10 +11,8 @@ Convert a string to its `camelCase` version.
 <!-- Output: helloWorld -->
 ```
 
----
-
-### snakeCase
-Convert a string to its `snake_case` version.
+### `snakeCase`
+Converte uma string para sua versão `snake_case`.
 
 ```edge
 {{ snakeCase('helloWorld') }}
@@ -24,10 +20,8 @@ Convert a string to its `snake_case` version.
 <!-- Output: hello_world -->
 ```
 
----
-
-### dashCase
-Convert a string to its `dash-case` version. Optionally, you can also capitalize the first letter of each segment.
+### `dashCase`
+Converte uma string para sua versão `dash-case`. Opcionalmente, você também pode colocar a primeira letra de cada segmento em maiúscula.
 
 ```edge
 {{ string.dashCase('helloWorld') }} <!-- hello-world -->
@@ -37,10 +31,8 @@ Convert a string to its `dash-case` version. Optionally, you can also capitalize
 }} <!-- Hello-World -->
 ```
 
----
-
-### pascalCase
-Convert a string to its `PascalCase` version.
+### `pascalCase`
+Converte uma string para sua versão `PascalCase`.
 
 ```edge
 {{ pascalCase('helloWorld') }}
@@ -48,10 +40,8 @@ Convert a string to its `PascalCase` version.
 <!-- Output: HelloWorld -->
 ```
 
----
-
-### capitalCase
-Capitalize a string value.
+### `capitalCase`
+Coloca um valor de string em maiúsculas.
 
 ```edge
 {{ capitalCase('helloWorld') }}
@@ -59,10 +49,8 @@ Capitalize a string value.
 <!-- Output: Hello World -->
 ```
 
----
-
-### sentenceCase
-Convert string to sentence case.
+### `sentenceCase`
+Converte string para maiúsculas e minúsculas.
 
 ```edge
 {{ sentenceCase('hello-world') }}
@@ -70,10 +58,8 @@ Convert string to sentence case.
 <!-- Output: Hello world -->
 ```
 
----
-
-### dotCase
-Convert string to its `dot.case` version.
+### `dotCase`
+Converte string para sua versão `dot.case`.
 
 ```edge
 {{ dotCase('hello-world') }}
@@ -81,10 +67,8 @@ Convert string to its `dot.case` version.
 <!-- Output: hello.world -->
 ```
 
----
-
-### noCase
-Remove all sorts of casing from a string.
+### `noCase`
+Remove todos os tipos de maiúsculas e minúsculas de uma string.
 
 ```edge
 {{ noCase('hello-world') }} <!-- hello world -->
@@ -92,10 +76,8 @@ Remove all sorts of casing from a string.
 {{ noCase('helloWorld') }} <!-- hello world -->
 ```
 
----
-
-### titleCase
-Convert a sentence to title case.
+### `titleCase`
+Converte uma frase para maiúsculas e minúsculas.
 
 ```edge
 {{ titleCase('Here is a fox') }}
@@ -103,20 +85,16 @@ Convert a sentence to title case.
 <!-- Output: Here Is a fox -->
 ```
 
----
-
-### pluralize
-Pluralize a word.
+### `pluralize`
+Pluraliza uma palavra.
 
 ```edge
 {{ pluralize('box') }} <!-- boxes -->
 {{ pluralize('i') }} <!-- we -->
 ```
 
----
-
-### toSentence
-Join an array of words with a separator to form a sentence.
+### `toSentence`
+Junte uma matriz de palavras com um separador para formar uma frase.
 
 ```edge
 {{ 
@@ -130,11 +108,11 @@ Join an array of words with a separator to form a sentence.
 <!-- route, middleware, and controller -->
 ```
 
-You can also define the following options to customize the separators.
+Você também pode definir as seguintes opções para personalizar os separadores.
 
-- `separator`: The value between two words except the last one.
-- `pairSeparator`: The value between the first and the last word. Used, only when there are two words.
-- `lastSeparator`: The value between the second last and the last word. Used, only when there are more than two words.
+- `separator`: O valor entre duas palavras, exceto a última.
+- `pairSeparator`: O valor entre a primeira e a última palavra. Usado somente quando há duas palavras.
+- `lastSeparator`: O valor entre a segunda última e a última palavra. Usado somente quando há mais de duas palavras.
 
 ```edge
 {{
@@ -151,10 +129,8 @@ You can also define the following options to customize the separators.
 <!-- route/ middleware/or controller -->
 ```
 
----
-
-### prettyBytes
-Convert bytes value to a human readable string. Accepts and forwards all the options to the [bytes](https://www.npmjs.com/package/bytes) package.
+### `prettyBytes`
+Converte o valor de bytes em uma string legível por humanos. Aceita e encaminha todas as opções para o pacote [bytes](https://www.npmjs.com/package/bytes).
 
 ```edge
 {{ prettyBytes(1024) }} <!-- 1KB -->
@@ -164,19 +140,15 @@ Convert bytes value to a human readable string. Accepts and forwards all the opt
 }} <!-- 1 KB -->
 ```
 
----
-
-### toBytes
-Convert human readable string to bytes. This method is the opposite of the `prettyBytes` method.
+### `toBytes`
+Converte uma string legível para humanos em bytes. Este método é o oposto do método `prettyBytes`.
 
 ```edge
 {{ toBytes('1KB') }} <!-- 1024 -->
 ```
 
----
-
-### prettyMs
-Convert time represented in milliseconds to a human readable string.
+### `prettyMs`
+Converte o tempo representado em milissegundos para uma string legível para humanos.
 
 ```edge
 {{ prettyMs(60000) }} <!-- 1min -->
@@ -184,53 +156,43 @@ Convert time represented in milliseconds to a human readable string.
 {{ prettyMs(60000, { long: true }) }} <!-- 1 minute -->
 ```
 
----
-
-### toMs
-Convert human readable string to milliseconds. This method is the opposite of the `prettyMs` method.
+### `toMs`
+Converte uma string legível para humanos em milissegundos. Este método é o oposto do método `prettyMs`.
 
 ```edge
 {{ toMs('1min') }} <!-- 60000 -->
 ```
 
----
-
-### ordinalize
-Ordinalize a string or a number value.
+### `ordinalize`
+Ordinalize uma string ou um valor numérico.
 
 ```edge
 {{ ordinalize(1) }} <!-- 1st -->
 {{ ordinalize(99) }} <!-- 99th -->
 ```
 
----
-
-### nl2br
-Convert the newline charcaters with a `<br>` tag.
+### `nl2br`
+Converte os caracteres de nova linha com uma tag `<br>`.
 
 ```ts
 {{{ nl2br(post.content) }}}
 ```
 
-When using the `nl2br` helper, you will have to use three curly braces to render the `<br>` tag a HTML instead of escaping it.
+Ao usar o auxiliar `nl2br`, você terá que usar três chaves para renderizar a tag `<br>` como HTML em vez de escapá-la.
 
-However, this will also render the HTML tags from the `post.content` variable. To overcome this situation, we recommend you to separately escape the user input before passing it to the `nl2br` method.
+No entanto, isso também renderizará as tags HTML da variável `post.content`. Para superar essa situação, recomendamos que você escape separadamente a entrada do usuário antes de passá-la para o método `nl2br`.
 
 :::note
-Following is the correct way of using the `nl2br` method. This ensures, the user input is always escaped.
+A seguir está a maneira correta de usar o método `nl2br`. Isso garante que a entrada do usuário seja sempre escapada.
 :::
 
 ```ts
 {{{ nl2br(e(post.content)) }}}
 ```
 
----
-
-### e
-Escape HTML inside a string value. The double curly braces already escape the value, so use this method only when you are not using the double curly braces.
+### `e`
+Escape HTML dentro de um valor de string. As chaves duplas já escapam o valor, então use este método somente quando não estiver usando as chaves duplas.
 
 ```ts
 {{{ e(post.content) }}}
 ```
-
----

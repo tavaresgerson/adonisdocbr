@@ -1,14 +1,12 @@
 # entryPoints
 
-The `@entryPointScripts` and the `@entryPointStyles` tags renders the required `script` and `link` elements for a given entrypoint.
+As tags `@entryPointScripts` e `@entryPointStyles` renderizam os elementos `script` e `link` necessários para um determinado ponto de entrada.
 
-- Both are inline tags
-- They accepts the name of the entrypoint defined inside the `webpack.config.js` file.
+- Ambas são tags inline
+- Elas aceitam o nome do ponto de entrada definido dentro do arquivo `webpack.config.js`.
 
-:::note
-
-Make sure to read the [assets manager](../../../guides/http/assets-manager.md) guide to learn more about entrypoints.
-
+::: info NOTA
+Certifique-se de ler o guia [assets manager](../../../guides/http/assets-manager.md) para saber mais sobre pontos de entrada.
 :::
 
 ```edge
@@ -19,25 +17,21 @@ Make sure to read the [assets manager](../../../guides/http/assets-manager.md) g
 @entryPointStyles('app')
 ```
 
-You can control the attributes of the script and link elements by modifying the `assets.script.attributes` and `assets.style.attributes` objects inside the `config/app.ts` file.
+Você pode controlar os atributos dos elementos script e link modificando os objetos `assets.script.attributes` e `assets.style.attributes` dentro do arquivo `config/app.ts`.
 
-```ts
+```ts {6-8,12}
 export const assets: AssetsManagerConfig = {
   driver: 'encore',
   publicPath: Application.publicPath('assets'),
 
   script: {
-    // highlight-start
     attributes: {
       defer: true,
     },
-    // highlight-end
   },
 
   style: {
-    // highlight-start
     attributes: {},
-    // highlight-end
   },
 }
 ```

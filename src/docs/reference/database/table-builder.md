@@ -1,6 +1,6 @@
-# Table builder
+# Construtor de tabela
 
-O table builder permite que você **crie**, **remova** ou **renomeie** colunas em uma tabela de banco de dados selecionada.
+O construtor de tabela permite que você **crie**, **remova** ou **renomeie** colunas em uma tabela de banco de dados selecionada.
 
 Você obtém acesso à instância do table builder chamando um dos seguintes métodos do schema builder.
 

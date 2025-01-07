@@ -1,8 +1,8 @@
-# stringify
+# `stringify`
 
-The `stringify` method is very similar to the `JSON.stringify` but escaped certain HTML characters to prevent XSS attacks when passing data from the backend to the frontend script.
+O método `stringify` é muito semelhante ao `JSON.stringify`, mas escapou certos caracteres HTML para evitar ataques XSS ao passar dados do backend para o script frontend.
 
-Consider the following example.
+Considere o exemplo a seguir.
 
 ```edge
 @set('userInput', "</script><script>alert('bad actor')</script>")
@@ -13,4 +13,4 @@ Consider the following example.
 </script>
 ```
 
-The `JSON.stringify` usage will execute the code as HTML, whereas the `stringify` method will not. Therefore, converting your back-end data structures to a JSON string using the `stringify` helper is recommended.
+O uso de `JSON.stringify` executará o código como HTML, enquanto o método `stringify` não. Portanto, é recomendável converter suas estruturas de dados de backend em uma string JSON usando o auxiliar `stringify`.

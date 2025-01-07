@@ -1,6 +1,6 @@
-# excerpt
+# `excerpt`
 
-The view helper generates the excerpt from an HTML fragment. The return value removes the HTML tags and returns a plain string.
+O view helper gera o excerpt de um fragmento HTML. O valor de retorno remove as tags HTML e retorna uma string simples.
 
 ```edge
 {{
@@ -13,25 +13,21 @@ The view helper generates the excerpt from an HTML fragment. The return value re
 <!-- Output: Hello, this is a dummy... -->
 ```
 
-The `excerpt` method doesn't chop the words in between and let them get completed. However, you can turn off this behavior by setting `completeWords` option to `false`.
+O método `excerpt` não corta as palavras no meio e as deixa ser completadas. No entanto, você pode desativar esse comportamento definindo a opção `completeWords` como `false`.
 
-```edge
+```edge {5,9}
 {{
   excerpt(
     '<p> Hello, this is a dummy <strong> post </strong> </p>',
     20,
-    // highlight-start
     { completeWords: false }
-    // highlight-end
   )
 }}
 
-// highlight-start
 <!-- Output: Hello, this is a du... -->
-// highlight-end
 ```
 
-Also, you can define a custom suffix for the truncated string.
+Além disso, você pode definir um sufixo personalizado para a string truncada.
 
 ```edge
 {{

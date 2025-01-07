@@ -1,21 +1,21 @@
 # set
 
-The `@set` tag allows you to define local variables within the template scope or mutate the value of an existing variable.
+A tag `@set` permite que você defina variáveis ​​locais dentro do escopo do modelo ou altere o valor de uma variável existente.
 
-- It is an inline tag.
-- It accepts the variable name as the first argument and its value as the second argument.
+- É uma tag inline.
+- Ela aceita o nome da variável como o primeiro argumento e seu valor como o segundo argumento.
 
 ```edge
 @set('title', 'AdonisJS - A fully featured framework')
 ```
 
-Following is the compiled output
+A seguir está a saída compilada
 
 ```js
 let title = 'AdonisJS - A fully featured framework';
 ```
 
-Re-defining the same variable will update the existing value.
+Redefinir a mesma variável atualizará o valor existente.
 
 ```edge
 @set('title', 'AdonisJS - A fully featured framework')
@@ -27,7 +27,7 @@ let title = 'AdonisJS - A fully featured framework';
 title = 'AdonisJS - About page';
 ```
 
-The `@set` tag can also update the properties on an existing variable. The behavior is similar to the `lodash.set` method.
+A tag `@set` também pode atualizar as propriedades em uma variável existente. O comportamento é semelhante ao método `lodash.set`.
 
 ```edge
 @set(post, 'title', 'New title')

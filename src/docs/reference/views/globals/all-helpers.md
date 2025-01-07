@@ -1,11 +1,9 @@
-# All other helpers"
+# Todos os outros auxiliares
 
-Following is the list of all other available view helpers.
+A seguir está a lista de todos os outros auxiliares de visualização disponíveis.
 
----
-
-### app
-Reference to the [Application](../../../guides/fundamentals/application.md) instance.
+### `app`
+Referência à instância [Application](../../../guides/fundamentals/application.md).
 
 ```edge
 @if(app.nodeEnvironment === 'development')
@@ -13,28 +11,22 @@ Reference to the [Application](../../../guides/fundamentals/application.md) inst
 @endif
 ```
 
----
-
-### env
-Reference to the [Env.get](../../../guides/fundamentals/environment-variables.md#access-environment-variables) method.
+### `env`
+Referência ao método [Env.get](../../../guides/fundamentals/environment-variables.md#access-environment-variables).
 
 ```edge
 {{ env('APP_URL') }}
 ```
 
----
-
-### config
-Reference to the [Config.get](../../../guides/fundamentals/config.md#using-the-config-provider) method.
+### `config`
+Referência ao método [Config.get](../../../guides/fundamentals/config.md#using-the-config-provider).
 
 ```edge
 {{ config('app.appKey') }}
 ```
 
----
-
-### asset
-The `asset` helper returns the path to a [compiled frontend assets](../../../guides/http/assets-manager.md#assets-view-helpers) by doing a lookup inside the `manifest.json` file.
+### `asset`
+O auxiliar `asset` retorna o caminho para um [ativos frontend compilados](../../../guides/http/assets-manager.md#assets-view-helpers) fazendo uma pesquisa dentro do arquivo `manifest.json`.
 
 ```edge
 <script src="{{ asset('assets/app.js') }}"></script>
@@ -46,26 +38,20 @@ The `asset` helper returns the path to a [compiled frontend assets](../../../gui
 > 
 ```
 
----
+### `assetsManager`
+Os auxiliares `assetsManager` são uma referência à instância da [classe AssetsManager](https://github.com/adonisjs/core/blob/develop/src/AssetsManager/index.ts#L29).
 
-### assetsManager
-The `assetsManager` helpers is a reference to the instance of [AssetsManager class](https://github.com/adonisjs/core/blob/develop/src/AssetsManager/index.ts#L29). 
+Você dificilmente dependerá do gerenciador de ativos diretamente, pois o auxiliar `asset` e as tags `@entryPointStyles` e `@entryPointScripts` permitem que você faça referência aos ativos dentro de seus modelos.
 
-You will hardly rely on assets manager directly, as the `asset` helper and the `@entryPointStyles` and `@entryPointScripts` tags let you reference the assets inside your templates.
-
----
-
-### csrfToken
-Returns the value of the CSRF token. The helper is only available when the `@adonisjs/shield` is installed and configured.
+### `csrfToken`
+Retorna o valor do token CSRF. O auxiliar só está disponível quando o `@adonisjs/shield` está instalado e configurado.
 
 ```edge
 <input type="hidden" value="{{ csrfToken }}" name="_csrf">
 ```
 
----
-
-### csrfMeta
-Returns a meta tag with the csrf token as the content. The helper is only available when the `@adonisjs/shield` is installed and configured.
+### `csrfMeta`
+Retorna uma meta tag com o token csrf como conteúdo. O auxiliar só está disponível quando o `@adonisjs/shield` está instalado e configurado.
 
 ```edge
 <head>
@@ -73,8 +59,8 @@ Returns a meta tag with the csrf token as the content. The helper is only availa
 </head>
 ```
 
-### csrfField
-Returns the hidden input element for the CSRF token. The helper is only available when the `@adonisjs/shield` is installed and configured.
+### `csrfField`
+Retorna o elemento de entrada oculto para o token CSRF. O auxiliar só está disponível quando o `@adonisjs/shield` está instalado e configurado.
 
 ```edge
 <form method="POST" action="posts">
@@ -82,21 +68,16 @@ Returns the hidden input element for the CSRF token. The helper is only availabl
 </form>
 ```
 
----
-
-### cspNonce
-Returns the value for the `nonce` to be used with inline script tags. Make sure to read the [CSP section](../../../guides/security/web-security.md#csp-nonce) in the web security guide. The helper is only available when the `@adonisjs/shield` is installed and configured.
+### `cspNonce`
+Retorna o valor para o `nonce` a ser usado com tags de script inline. Certifique-se de ler a [seção CSP](../../../guides/security/web-security.md#csp-nonce) no guia de segurança da web. O auxiliar só está disponível quando o `@adonisjs/shield` está instalado e configurado.
 
 ```edge
 <script nonce="{{ cspNonce }}">
 </script>
 ```
 
----
-
-### request
-
-Reference to the [ctx.request](../../../guides/http/request.md) instance. You can use it to access to the current url.
+### `request`
+Referência à instância [ctx.request](../../../guides/http/request.md). Você pode usá-lo para acessar a URL atual.
 
 ```edge
 <a href="{{ route('UsersController.index') }}" class="{{ (request.matchesRoute('namedRoute')) ? 'link-active' : 'link-inactive' }}">
@@ -104,12 +85,10 @@ Reference to the [ctx.request](../../../guides/http/request.md) instance. You ca
 </a>
 ```
 
----
+### `auth`
+Referência à instância [ctx.auth](../../../guides/auth/introduction.md#usage). Você pode usá-lo para exibir a parte específica da sua marcação condicionalmente.
 
-### auth
-Reference to the [ctx.auth](../../../guides/auth/introduction.md#usage) instance. You can use it to display the specific portion of your markup conditionally.
-
-This helper is only available when using the `@adonisjs/auth` package.
+Este auxiliar só está disponível ao usar o pacote `@adonisjs/auth`.
 
 ```edge
 @if(auth.isLoggedIn)
@@ -117,12 +96,10 @@ This helper is only available when using the `@adonisjs/auth` package.
 @endif
 ```
 
----
+### `bouncer`
+Referência à instância [ctx.bouncer](../../../guides/digging-deeper/authorization.md#basic-example). Você pode usar as tags [@can/@cannot](../tags/can.md) para exibir condicionalmente a marcação dentro dos seus modelos.
 
-### bouncer
-Reference to the [ctx.bouncer](../../../guides/digging-deeper/authorization.md#basic-example) instance. You can make use of the [@can/@cannot](../tags/can.md) tags to conditionally display markup inside your templates.
-
-This helper is only available when using the `@adonisjs/bouncer` package.
+Este auxiliar só está disponível ao usar o pacote `@adonisjs/bouncer`.
 
 ```edge
 @if(await bouncer.allows('editPost'))
@@ -130,40 +107,32 @@ This helper is only available when using the `@adonisjs/bouncer` package.
 @end
 ```
 
----
+### `i18n`
+Uma instância de `i18n` para o local padrão é compartilhada com os modelos como uma propriedade global.
 
-### i18n
-An instance of `i18n` for the default locale is shared with the templates as a global property.
-
-However, the [DetectUserLocale](https://github.com/adonisjs/i18n/blob/develop/templates/DetectUserLocale.txt#L47) middleware overrides this property and shares a request specific instance for the current user's locale.
+No entanto, o middleware [DetectUserLocale](https://github.com/adonisjs/i18n/blob/develop/templates/DetectUserLocale.txt#L47) substitui essa propriedade e compartilha uma instância específica de solicitação para a localidade do usuário atual.
 
 ```edge
 {{ i18n.locale }}
 {{ i18n.formatNumber(100) }}
 ```
 
----
-
-### t
-The `t` helper is an alias for the `i18n.formatMessage` method.
+### `t`
+O auxiliar `t` é um alias para o método `i18n.formatMessage`.
 
 ```edge
 {{ t('messages.title') }}
 ```
 
----
-
-### getDefaultLocale
-Returns the default locale for the application.
+### `getDefaultLocale`
+Retorna a localidade padrão para o aplicativo.
 
 ```edge
 {{ getDefaultLocale() }}
 ```
 
----
-
-### getSupportedLocales
-Returns an array of the supported locales. 
+### `getSupportedLocales`
+Retorna uma matriz das localidades suportadas.
 
 ```edge
 {{ getSupportedLocales() }}

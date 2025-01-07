@@ -1,9 +1,9 @@
 # can/cannot
 
-The `@can` and the `@cannot` tags are contributed by the [@adonisjs/bouncer](../../../guides/digging-deeper/authorization.md) package. It allows you write conditionals around the bouncer permissions.
+As tags `@can` e `@cannot` são contribuídas pelo pacote [@adonisjs/bouncer](../../../guides/digging-deeper/authorization.md). Ele permite que você escreva condicionais em torno das permissões do bouncer.
 
-- Both are block-level tags.
-- They accept the action name as the first argument, followed by the data accepted by the action.
+- Ambas são tags de nível de bloco.
+- Elas aceitam o nome da ação como o primeiro argumento, seguido pelos dados aceitos pela ação.
 
 ```edge
 @can('editPost', post)
@@ -15,7 +15,7 @@ The `@can` and the `@cannot` tags are contributed by the [@adonisjs/bouncer](../
 @end
 ```
 
-You can reference the actions on a policy by passing a string containing both the policy name and the action name separated by the dot notation.
+Você pode referenciar as ações em uma política passando uma string contendo o nome da política e o nome da ação separados pela notação de ponto.
 
 ```edge
 @can('PostPolicy.edit', post)
@@ -23,13 +23,13 @@ You can reference the actions on a policy by passing a string containing both th
 @end
 ```
 
-### Passing authorizer for a different user
+### Passando autorizador para um usuário diferente
 
-The `@can` and the `@cannot` tags authorize the actions against the currently logged-in user. If the underlying bouncer/policy action needs a different user, you will have to pass an explicit authorizer instance.
+As tags `@can` e `@cannot` autorizam as ações contra o usuário atualmente conectado. Se a ação do bouncer/política subjacente precisar de um usuário diferente, você terá que passar uma instância de autorizador explícita.
 
 ```edge
 @can('PostPolicy.edit', bouncer.forUser(admin), post)
 @end
 ```
 
-In the above example, the second argument, `bouncer.forUser(admin)` is a child instance of bouncer for a specific user, followed by the action arguments.
+No exemplo acima, o segundo argumento, `bouncer.forUser(admin)` é uma instância filha de bouncer para um usuário específico, seguido pelos argumentos de ação.

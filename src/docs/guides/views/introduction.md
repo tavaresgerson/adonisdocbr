@@ -44,7 +44,7 @@ Ao contrário do Nunjucks, o Edge parece escrever JavaScript e não Python. Como
 
 <div class="fancy-codeblock">
 
-```nunjucks
+```txt
 {% if happy and hungry %}
   I am happy *and* hungry; both are true.
 {% endif %}

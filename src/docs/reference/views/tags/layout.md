@@ -1,22 +1,22 @@
 # layout/section/super
 
-The `@layout` tag allows you define the layout template for the current template.
+A tag `@layout` permite que você defina o modelo de layout para o modelo atual.
 
-- The tag must be used on the first line of the template. Otherwise, it will be ignored.
-- It is an inline tag and accepts the layout path.
-- You cannot define a layout at runtime. The value has to be a static string, since layouts are processed at the compile time.
+- A tag deve ser usada na primeira linha do modelo. Caso contrário, será ignorada.
+- É uma tag inline e aceita o caminho do layout.
+- Você não pode definir um layout em tempo de execução. O valor deve ser uma string estática, pois os layouts são processados ​​em tempo de compilação.
 
 ```edge
 @layout('layouts/main')
 ```
 
-## section
-The template using the layout must define all the markup inside the sections exported by the layout. Any content outside of the `@section` tag is ignored.
+## `section`
+O modelo que usa o layout deve definir toda a marcação dentro das seções exportadas pelo layout. Qualquer conteúdo fora da tag `@section` é ignorado.
 
-- `@section` is a block level tag.
-- It accepts the section name as the only argument.
-- The section name has to be a static string. Runtime values are not allowed.
-- All section tags must appear as top level tags. Meaning you cannot nest a section inside a conditional or a loop.
+- `@section` é uma tag de nível de bloco.
+- Ela aceita o nome da seção como o único argumento.
+- O nome da seção deve ser uma string estática. Valores de tempo de execução não são permitidos.
+- Todas as tags de seção devem aparecer como tags de nível superior. O que significa que você não pode aninhar uma seção dentro de uma condicional ou um loop.
 
 ```edge
 @layout('layouts/main')
@@ -30,15 +30,15 @@ The template using the layout must define all the markup inside the sections exp
 @end
 ```
 
-The layout also has to export the sections with the same name.
+O layout também precisa exportar as seções com o mesmo nome.
 
 ```edge
 @!section('body')
 @!section('footer')
 ```
 
-## super
-The `@super` tag allows you to inherit the existing content of the section. It is an inline tag and does not accept any arguments.
+## `super`
+A tag `@super` permite que você herde o conteúdo existente da seção. É uma tag inline e não aceita argumentos.
 
 ```edge
 @layout('layouts/main')

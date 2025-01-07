@@ -1,4 +1,4 @@
-# Tem muitos através
+# Has many through
 
 A [classe de relacionamento HasManyThrough](https://github.com/adonisjs/lucid/blob/develop/src/Orm/Relations/HasManyThrough/index.ts) permite que você defina um relacionamento has many por meio de um modelo intermediário. Um ótimo exemplo disso é, **"um país tem muitas postagens por meio de usuários"**.
 
