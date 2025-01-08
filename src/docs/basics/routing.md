@@ -234,9 +234,7 @@ router.post('users', () => {
 ```
 
 :::note
-
 Route handlers can be async functions, and AdonisJS will handle the promise resolution automatically.
-
 :::
 
 In the following example, we import the `UsersController` class and bind it to the route. During an HTTP request, AdonisJS will create an instance of the controller class using the IoC container and execute the `store` method.
@@ -365,9 +363,7 @@ router
 Similar to prefixing the route pattern, you can also prefix the route names inside a group using the `group.as` method.
 
 :::note
-
 The routes inside a group must have names before you can prefix them.
-
 :::
 
 ```ts
@@ -477,9 +473,7 @@ You may use the `router.on().render()` method if you have a route handler that o
 The render method accepts the name of the edge template to render. Optionally, you can pass the template data as the second argument.
 
 :::warning
-
 The `route.on().render()` method only exists when you have configured the [Edge service provider](../views-and-templates/edgejs.md)
-
 :::
 
 ```ts
@@ -498,9 +492,7 @@ If you are using the Inertia.js adapter, you can use the `router.on().renderIner
 The renderInertia method accepts the name of the Inertia component to render. Optionally, you can pass the component data as the second argument.
 
 :::warning
-
 The `route.on().renderInertia()` method only exists when you have configured the [Inertia service provider](../views-and-templates/inertia.md)
-
 :::
 
 ```ts
@@ -632,7 +624,6 @@ This behavior can be fixed by re-ordering the routes by placing the most specifi
 router.get('posts/archived', () => {})
 router.get('posts/:id', () => {})
 ```
-
 
 ### Handling 404 requests 
 
@@ -860,7 +851,7 @@ You can add custom properties to different router classes using macros and gette
 
 Following is the list of classes you can extend.
 
-### Router
+### `Router`
 
 The [Router class](https://github.com/adonisjs/http-server/blob/main/src/router/main.ts) contains the top-level methods for creating a route, a route group, or a route resource. An instance of this class is made available via the router service.
 
@@ -884,7 +875,7 @@ declare module '@adonisjs/core/http' {
 }
 ```
 
-### Route
+### `Route`
 
 The [Route class](https://github.com/adonisjs/http-server/blob/main/src/router/route.ts) represents a single route. An instance of the Route class is created once you call the `router.get`, `router.post`, and other similar methods.
 
@@ -908,7 +899,7 @@ declare module '@adonisjs/core/http' {
 }
 ```
 
-### RouteGroup
+### `RouteGroup`
 
 The [RouteGroup class](https://github.com/adonisjs/http-server/blob/main/src/router/group.ts) represents a group of routes. An instance of RouteGroup class is created once you call the `router.group` method.
 
@@ -934,7 +925,7 @@ declare module '@adonisjs/core/http' {
 }
 ```
 
-### RouteResource
+### `RouteResource`
 
 The [RouteResource class](https://github.com/adonisjs/http-server/blob/main/src/router/resource.ts) represents a group of routes for a resource. An instance of RouteResource class is created once you call the `router.resource` method.
 
@@ -960,7 +951,7 @@ declare module '@adonisjs/core/http' {
 }
 ```
 
-### BriskRoute
+### `BriskRoute`
 
 The [BriskRoute class](https://github.com/adonisjs/http-server/blob/main/src/router/brisk.ts) represents a route without an explicit handler. An instance of BriskRoute class is created once you call the `router.on` method.
 

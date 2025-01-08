@@ -100,12 +100,10 @@ If you use Dependency injection throughout your application, you can inject the 
 
 
 :::warning
-
 Ensure the `#middleware/container_bindings_middleware` middleware is registered inside the `kernel/start.ts` file. This middleware is required to resolve request-specific values (i.e., the HttpContext class) from the container.
-
 :::
 
-See also: [IoC container guide](../concepts/dependency_injection.md)
+* See also: [IoC container guide](../concepts/dependency_injection.md)
 
 ```ts
 // title: app/services/user_service.ts
@@ -179,153 +177,53 @@ export default class UsersController {
 
 Following is the list of properties you can access through the HTTP context. As you install new packages, they may add additional properties to the context.
 
-<dl>
-<dt>
-
-ctx.request
-
-</dt>
-
-<dd>
+### `ctx.request`
 
 Reference to an instance of the [HTTP Request class](../basics/request.md).
 
-</dd>
-
-<dt>
-
-ctx.response
-
-</dt>
-
-<dd>
+### `ctx.response`
 
 Reference to an instance of the [HTTP Response class](../basics/response.md).
 
-</dd>
-
-<dt>
-
-ctx.logger
-
-</dt>
-
-<dd>
+### `ctx.logger`
 
 Reference to an instance of [logger](../digging_deeper/logger.md) created for a given HTTP request.
 
-</dd>
-
-<dt>
-
-ctx.route
-
-</dt>
-
-<dd>
+### `ctx.route`
 
 The matched route for the current HTTP request. The `route` property is an object of type [StoreRouteNode](https://github.com/adonisjs/http-server/blob/main/src/types/route.ts#L69)
 
-</dd>
-
-<dt>
-
-ctx.params
-
-</dt>
-
-<dd>
+### `ctx.params`
 
 An object of route params
 
-</dd>
-
-<dt>
-
-ctx.subdomains
-
-</dt>
-
-<dd>
+### `ctx.subdomains`
 
 An object of route subdomains. Only exists when the route is part of a dynamic subdomain
 
-</dd>
-
-<dt>
-
-ctx.session
-
-</dt>
-
-<dd>
+### `ctx.session`
 
 Reference to an instance of [Session](../basics/session.md) created for the current HTTP request.
 
-</dd>
-
-<dt>
-
-ctx.auth
-
-</dt>
-
-<dd>
+### `ctx.auth`
 
 Reference to an instance of the [Authenticator class](https://github.com/adonisjs/auth/blob/main/src/authenticator.ts). Learn more about [authentication](../authentication/introduction.md).
 
-</dd>
-
-<dt>
-
-ctx.view
-
-</dt>
-
-<dd>
+### `ctx.view`
 
 Reference to an instance of Edge renderer. Learn more about Edge in [View and templates guide](../views-and-templates/introduction.md#using-edge)
 
-</dd>
-
-<dt>
-
-ctx\.ally
-
-</dt>
-
-<dd>
+### `ctx.ally`
 
 Reference to an instance of the [Ally Manager class](https://github.com/adonisjs/ally/blob/main/src/ally_manager.ts) to implement social login in your apps. Learn more about [Ally](../authentication/social_authentication.md)
 
-</dd>
-
-<dt>
-
-ctx.bouncer
-
-</dt>
-
-<dd>
+### `ctx.bouncer`
 
 Reference to an instance of the [Bouncer class](https://github.com/adonisjs/bouncer/blob/main/src/bouncer.ts). Learn more about [Authorization](../security/authorization.md).
 
-</dd>
-
-<dt>
-
-ctx.i18n
-
-</dt>
-
-<dd>
+### `ctx.i18n`
 
 Reference to an instance of the [I18n class](https://github.com/adonisjs/i18n/blob/main/src/i18n.ts). Learn more about `i18n` in [Internationalization](../digging_deeper/i18n.md) guide.
-
-</dd>
-
-</dl>
-
 
 ## Extending HTTP context
 

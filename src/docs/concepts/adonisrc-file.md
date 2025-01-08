@@ -7,9 +7,7 @@ summary: 'The `adonisrc.ts` file is used to configure the workspace settings of 
 The `adonisrc.ts` file is used to configure the workspace settings of your application. In this file, you can [register providers](#providers), define [command aliases](#commandsaliases), specify the [files to copy](#metafiles) to the production build, and much more.
 
 :::warning
-
 The `adonisrc.ts` file is imported by tools other than your AdonisJS application. Therefore, you must not write any application specific code or environment specific conditionals in this file.
-
 :::
 
 The file contains the minimum required configuration to run your application. However, you can view the complete file contents by running the `node ace inspect:rcfile` command.
@@ -26,11 +24,11 @@ import app from '@adonisjs/core/services/app'
 console.log(app.rcFile)
 ```
 
-## typescript
+## `typescript`
 
 The `typescript` property informs the framework and the Ace commands that your application uses TypeScript. Currently, this value is always set to `true`. However, we will later allow applications to be written in JavaScript.
 
-## directories
+## `directories`
 
 A set of directories and their paths used by the scaffolding commands. If you decide to rename specific directories, update their new path inside the `directories` object to notify scaffolding commands.
 
@@ -65,7 +63,7 @@ A set of directories and their paths used by the scaffolding commands. If you de
 }
 ```
 
-## preloads
+## `preloads`
 An array of files to import at the time of booting the application. The files are imported immediately after booting the service providers.
 
 You can define the environment in which to import the file. The valid options are:
@@ -77,10 +75,7 @@ You can define the environment in which to import the file. The valid options ar
 
 
 :::note
-
 You can create and register a preload file using the `node ace make:preload` command.
-
-
 :::
 
 
@@ -107,7 +102,7 @@ You can create and register a preload file using the `node ace make:preload` com
 }
 ```
 
-## metaFiles
+## `metaFiles`
 
 The `metaFiles` array is a collection of files you want to copy to the `build` folder when creating the production build.
 
@@ -131,7 +126,7 @@ These are non-TypeScript/JavaScript files that must exist in the production buil
 }
 ```
 
-## commands
+## `commands`
 An array of functions to lazy import ace commands from installed packages. Your applications commands will be imported automatically and hence you do not have to register them explicitly.
 
 See also: [Creating ace commands](../ace/creating_commands.md)
@@ -145,7 +140,7 @@ See also: [Creating ace commands](../ace/creating_commands.md)
 }
 ```
 
-## commandsAliases
+## `commandsAliases`
 A key-value pair of command aliases. This is usually to help you create memorable aliases for the commands that are harder to type or remember.
 
 See also: [Creating command aliases](../ace/introduction.md#creating-command-aliases)
@@ -169,7 +164,7 @@ You can also define multiple aliases for the same command.
 }
 ```
 
-## tests
+## `tests`
 
 The `tests` object registers the test suites and some of the global settings for the test runner.
 
@@ -199,7 +194,7 @@ See also: [Introduction to testing](../testing/introduction.md)
 - `suite.files`: An array of glob patterns to import the test files.
 - `suite.timeout`: The default timeout for all the tests inside the suite.
 
-## providers
+## `providers`
 An array of service providers to load during the application boot phase.
 
 By default, the providers are loaded in all the environments. However, you can also define an explicit array of environments to import the provider.
@@ -249,7 +244,7 @@ See also: [Service providers](./service_providers.md)
 }
 ```
 
-## assetsBundler
+## `assetsBundler`
 
 The `serve` and `build` command attempts to detect the assets used by your application to compile the frontend assets.
 

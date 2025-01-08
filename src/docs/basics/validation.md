@@ -30,7 +30,7 @@ See also: [VineJS documentation](https://vinejs.dev)
 node ace add vinejs
 ```
 
-:::disclosure{title="See steps performed by the add command"}
+::: details See steps performed by the add command
 
 1. Installs the `@vinejs/vine` package using the detected package manager.
 
@@ -93,9 +93,7 @@ The validators are created inside the `app/validators` directory. The validator 
 In the following example, we define `createPostValidator` and `updatePostValidator`. Both validators have a slight variation in their schemas. During creation, we allow the user to provide a custom slug for the post, whereas we disallow updating it.
 
 :::note
-
 Do not worry too much about the duplication within the validator schemas. We recommend you opt for easy-to-understand schemas vs. avoiding duplication at all costs. The [wet codebase analogy](https://www.deconstructconf.com/2019/dan-abramov-the-wet-codebase) might help you embrace duplication.
-
 :::
 
 ```ts
@@ -163,11 +161,9 @@ Also, you do not have to wrap the `validate` method call inside a `try/catch`. B
 The [HttpExceptionHandler](./exception_handling.md) will convert the validation errors to an HTTP response automatically. The exception handler uses content negotiation and returns a response based upon the [Accept](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept) header value.
 
 :::tip
-
 You might want to peek through the [ExceptionHandler codebase](https://github.com/adonisjs/http-server/blob/main/src/exception_handler.ts#L343-L345) and see how the validation exceptions are converted to an HTTP response.
 
 Also, the session middleware [overwrites the `renderValidationErrorAsHTML` method](https://github.com/adonisjs/session/blob/main/src/session_middleware.ts#L30-L37) and uses flash messages to share the validation errors with the form.
-
 :::
 
 - HTTP requests with `Accept=application/json` header will receive an array of error messages created using the [SimpleErrorReporter](https://github.com/vinejs/vine/blob/main/src/reporters/simple_error_reporter.ts).

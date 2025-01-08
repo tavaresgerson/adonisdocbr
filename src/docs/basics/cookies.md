@@ -120,14 +120,9 @@ The cookies set using the `response.cookie` method are signed. A signed cookie i
 
 The cookies are signed using the `appKey` defined inside the `config/app.ts` file.
 
-
 :::note
-
 The signed cookies are still readable by Base64 decoding them. You can use encrypted cookies if you want the cookie value to be unreadable.
-
-
 :::
-
 
 ```ts
 import router from '@adonisjs/core/services/router'

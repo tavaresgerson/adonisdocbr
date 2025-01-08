@@ -77,7 +77,7 @@ export default class AppProvider {
 }
 ```
 
-### register
+### `register`
 
 The `register` method is called after an instance of the provider class is created. The `register` method can register bindings within the IoC container. 
 
@@ -93,7 +93,7 @@ export default class AppProvider {
 }
 ```
 
-### boot
+### `boot`
 
 The `boot` method is called after all the bindings have been registered with the IoC container. Inside this method, you can resolve bindings from the container to extend/mutate them.
 
@@ -118,11 +118,11 @@ async boot() {
 }
 ```
 
-### start
+### `start`
 
 The `start` method is called after the `boot` and before the `ready ` method. It allows you to perform actions that the `ready` hook actions might need.
 
-### ready
+### `ready`
 
 The `ready` method gets called at different stages based on the application's environment.
 
@@ -163,7 +163,7 @@ export default class AppProvider {
 }
 ```
 
-### shutdown
+### `shutdown`
 
 The `shutdown` method is called when AdonisJS is in the middle of gracefully exiting the application.
 

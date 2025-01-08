@@ -61,9 +61,7 @@ export default class MakeApiResource extends BaseCommand {
 We use [Tempura](https://github.com/lukeed/tempura) template engine to process the stubs with runtime data. Tempura is a super lightweight handlebars-style template engine for JavaScript.
 
 :::tip
-
 Since Tempura's syntax is compatible with handlebars, you can set your code editors to use handlebar syntax highlighting with `.stub` files.
-
 :::
 
 In the following example, we create a stub that outputs a JavaScript class. It uses the double curly braces to evaluate runtime values.
@@ -281,7 +279,7 @@ export async function configure(command: ConfigureCommand) {
 }
 ```
 
-### defineEnvValidations
+### `defineEnvValidations`
 Define validation rules for environment variables. The method accepts a key-value pair of variables. The `key` is the env variable name, and the `value` is the validation expression as a string.
 
 :::note
@@ -320,7 +318,7 @@ export default await Env.create(new URL('../', import.meta.url), {
 })
 ```
 
-### defineEnvVariables
+### `defineEnvVariables`
 Add one or multiple new environment variables to the `.env` and `.env.example` files. The method accepts a key-value pair of variables.
 
 ```ts
@@ -351,7 +349,7 @@ await codemods.defineEnvVariables({
 
 The above code will insert `MY_NEW_VARIABLE=SOME_VALUE` in the `.env` file and `MY_NEW_VARIABLE=` in the `.env.example` file.
 
-### registerMiddleware
+### `registerMiddleware`
 Register AdonisJS middleware to one of the known middleware stacks. The method accepts the middleware stack and an array of middleware to register.
 
 The middleware stack could be one of `server | router | named`.
@@ -402,7 +400,7 @@ try {
 }
 ```
 
-### updateRcFile
+### `updateRcFile`
 Register `providers`, `commands`, define `metaFiles` and `commandAliases` to the `adonisrc.ts` file.
 
 :::note
@@ -442,7 +440,7 @@ export default defineConfig({
 })
 ```
 
-### registerJapaPlugin
+### `registerJapaPlugin`
 Register a Japa plugin to the `tests/bootstrap.ts` file.
 
 :::note
@@ -484,7 +482,7 @@ export const plugins: Config['plugins'] = [
 ]
 ```
 
-### registerPolicies
+### `registerPolicies`
 Register AdonisJS bouncer policies to the list of `policies` object exported from the `app/policies/main.ts` file.
 
 :::note
@@ -514,7 +512,7 @@ export const policies = {
 }
 ```
 
-### registerVitePlugin
+### `registerVitePlugin`
 
 Register a Vite plugin to the `vite.config.ts` file.
 
@@ -553,7 +551,7 @@ export default defineConfig({
 })
 ```
 
-### installPackages
+### `installPackages`
 
 Install one or multiple packages using the detected package manager in the user's project.
 
@@ -571,7 +569,7 @@ try {
 }
 ```
 
-### getTsMorphProject
+### `getTsMorphProject`
 
 The `getTsMorphProject` method returns an instance of `ts-morph`. This can be useful when you want to perform custom file transformations that are not covered by the Codemods API.
 

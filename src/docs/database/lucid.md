@@ -41,7 +41,7 @@ Install and configure Lucid using the following command.
 node ace add @adonisjs/lucid
 ```
 
-:::disclosure{title="See steps performed by the configure command"}
+::: details See steps performed by the configure command
 
 1. Registers the following service provider inside the `adonisrc.ts` file.
 

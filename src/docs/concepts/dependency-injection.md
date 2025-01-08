@@ -116,10 +116,7 @@ Voila, that's all we have to do. Without changing a single line of code inside t
 
 
 :::note
-
 The great thing about using the container is that you can have deeply nested dependencies, and the container can resolve the entire tree for you. The only deal is to use the `@inject` decorator.
-
-
 :::
 
 ## Using method injection
@@ -129,9 +126,7 @@ Method injection is used to inject dependencies inside a class method. For metho
 Let's continue with our previous example and move the `EchoService` dependency from the `HomeController` constructor to the `handle` method.
 
 :::note
-
 When using method injection inside a controller, remember the first parameter receives a fixed value (i.e., the HTTP context), and the rest of the parameters are resolved using the container.
-
 :::
 
 ```ts
@@ -262,10 +257,7 @@ Following are some of the examples which are using container bindings inside the
 
 
 :::important
-
 The concept of container bindings is not commonly used in the JavaScript ecosystem. Therefore, feel free to [join our Discord community](https://discord.gg/vDcEjq6) to clarify your doubts.
-
-
 :::
 
 

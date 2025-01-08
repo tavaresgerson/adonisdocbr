@@ -66,11 +66,9 @@ Also, you might want to update the `dev` script within the `package.json` file t
 ## Full reloads vs HMR
 
 :::note
-
 This section explains the underlying workings of `hot-hook`. Feel free to skip it if you are not in the mood to read extended technical theory 🤓
 
 Or, go through the [README file](https://github.com/Julien-R44/hot-hook) of the package if you want an even deeper explanation.
-
 :::
 
 Let's understand when AdonisJS will perform a complete reload (restarting the process) and when it will hot reload the module.

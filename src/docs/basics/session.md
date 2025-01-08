@@ -28,7 +28,7 @@ Install and configure the package using the following command :
 node ace add @adonisjs/session
 ```
 
-:::disclosure{title="See steps performed by the add command"}
+::: details See steps performed by the add command
 
 1. Installs the `@adonisjs/session` package using the detected package manager.
 
@@ -91,96 +91,35 @@ export default defineConfig({
 })
 ```
 
-<dl>
-
-<dt>
-
-  enabled
-
-</dt>
-
-<dd>
+### `enabled`
 
 Enable or disable the middleware temporarily without removing it from the middleware stack.
 
-</dd>
-
-
-<dt>
-
-  cookieName
-
-</dt>
-
-<dd>
+### `cookieName`
 
 The cookie name is used to store the session ID. Feel free to rename it.
 
-</dd>
-
-<dt>
-
-  clearWithBrowser
-
-</dt>
-
-<dd>
+### `clearWithBrowser`
 
 When set to true, the session ID cookie will be removed after the user closes the browser window. This cookie is technically known as [session cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#define_the_lifetime_of_a_cookie).
 
-</dd>
-
-<dt>
-
-  age
-
-</dt>
-
-<dd>
+### `age`
 
 The `age` property controls the validity of session data without user activity. After the given duration, the session data is considered expired.
 
-</dd>
-
-<dt>
-
-  cookie
-
-</dt>
-
-<dd>
+### `cookie`
 
 Control session ID cookie attributes. See also [cookie configuration](./cookies.md#configuration).
 
-</dd>
-
-<dt>
-
-store
-
-</dt>
-
-<dd>
+### `store`
 
 Define the store you want to use to store the session data. It can be a fixed value or read from the environment variables.
 
-</dd>
-
-<dt>
-
-  stores
-
-</dt>
-
-<dd>
+### `stores`
 
 The `stores` object is used to configure one or multiple backend stores. 
 
 Most applications will use a single store. However, you can configure multiple stores and switch between them based on the environment in which your application is running.
-
-</dd>
-
-</dl>
 
 ---
 
@@ -214,55 +153,21 @@ export default defineConfig({
 })
 ```
 
-<dl>
-
-<dt>
-
-  stores.cookie
-
-</dt>
-
-<dd>
+### `stores.cookie`
 
 The `cookie` store encrypts and stores the session data inside a cookie.
 
-</dd>
-
-
-<dt>
-
-  stores.file
-
-</dt>
-
-<dd>
+### `stores.file`
 
 Define the configuration for the `file` store. The method accepts the `location` path for storing the session files.
 
-</dd>
-
-
-<dt>
-
-  stores.redis
-
-</dt>
-
-<dd>
+### `stores.redis`
 
 Define the configuration for the `redis` store. The method accepts the `connection` name for storing the session data.
 
 Make sure to first install and configure the [@adonisjs/redis](../database/redis.md) package before using the `redis` store.
 
-</dd>
-
-<dt>
-
-  stores.dynamodb
-
-</dt>
-
-<dd>
+### `stores.dynamodb`
 
 Define the configuration for the `dynamodb` store. You may either pass the [DynamoDB config](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/Package/-aws-sdk-client-dynamodb/Interface/DynamoDBClientConfig/) via the `clientConfig` property or pass an instance of the DynamoDB as the `client` property.
 
@@ -298,10 +203,6 @@ stores.dynamodb({
   keyAttributName: 'key'
 })
 ```
-
-</dd>
-
-</dl>
 
 ---
 
@@ -394,7 +295,7 @@ session.put('visited_at', new Date())
 ## Reading and writing data
 The following is the list of methods you can use to interact with the data from the `session` object.
 
-### get
+### `get`
 Returns the value of a key from the store. You can use dot notation to read nested values.
 
 ```ts
@@ -408,7 +309,7 @@ You can also define a default value as the second parameter. The default value w
 session.get('visits', 0)
 ```
 
-### has
+### `has`
 Check if a key exists in the session store.
 
 ```ts
@@ -416,14 +317,14 @@ if (session.has('visits')) {
 }
 ```
 
-### all
+### `all`
 Returns all the data from the session store. The return value will always be an object.
 
 ```ts
 session.all()
 ```
 
-### put
+### `put`
 Add a key-value pair to the session store. You can create objects with nested values using the dot notation.
 
 ```ts
@@ -433,7 +334,7 @@ session.put('user', { email: 'foo@bar.com' })
 session.put('user.email', 'foo@bar.com')
 ```
 
-### forget
+### `forget`
 Remove a key-value pair from the session store.
 
 ```ts
@@ -443,7 +344,7 @@ session.forget('user')
 session.forget('user.email')
 ```
 
-### pull
+### `pull`
 The `pull` method returns the value of a key and removes it from the store simultaneously.
 
 ```ts
@@ -451,7 +352,7 @@ const user = session.pull('user')
 session.has('user') // false
 ```
 
-### increment
+### `increment`
 The `increment` method increments the value of a key. A new key value is defined if it does not exist already.
 
 ```ts
@@ -461,7 +362,7 @@ session.increment('visits')
 session.increment('visits', 4)
 ```
 
-### decrement
+### `decrement`
 The `decrement` method decrements the value of a key. A new key value is defined if it does not exist already.
 
 ```ts
@@ -471,7 +372,7 @@ session.decrement('visits')
 session.decrement('visits', 4)
 ```
 
-### clear
+### `clear`
 The `clear` method removes everything from the session store.
 
 ```ts

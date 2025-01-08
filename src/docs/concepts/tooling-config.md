@@ -83,9 +83,7 @@ The [`@adonisjs/eslint-config`](https://github.com/adonisjs/tooling-config/tree/
 You can install the package and use it as follows.
 
 :::note
-
 Our config preset uses the [eslint-plugin-prettier](https://github.com/prettier/eslint-plugin-prettier) to ensure ESLint and Prettier can work together without stepping over each other.
-
 :::
 
 ```sh

@@ -31,7 +31,7 @@ Then install and configure the `@adonisjs/vite` package. The command below insta
 node ace add @adonisjs/vite
 ```
 
-:::disclosure{title="See steps performed by the configure command"}
+::: details See steps performed by the configure command
 
 1. Registers the following service provider inside the `adonisrc.ts` file.
 
@@ -93,25 +93,13 @@ export default defineConfig({
 })
 ```
 
-<dl>
-
-<dt>
-entrypoints
-</dt>
-
-<dd>
+### `entrypoints`
 
 The `entrypoints` refers to the entry point file of your frontend codebase. Usually, it will be a JavaScript or a TypeScript file with additional imports. Each entry point will result in a separate output bundle.
 
 Also, if needed, you can define multiple entrypoints. For example, an entry point for your user-facing app and another for the admin panel.
 
-</dd>
-
-<dt>
-buildDirectory
-</dt>
-
-<dd>
+### `buildDirectory`
 
 The `buildDirectory` option defines a relative path to the output directory. The option value is supplied to Vite as the [`build.outDir`](https://vitejs.dev/config/build-options.html#build-outdir) option.
 
@@ -119,30 +107,15 @@ If you decide to change the default value, make sure also to update the `buildDi
 
 **Default: public/assets**
 
-</dd>
-
-<dt>
-reload
-</dt>
-
-<dd>
+### `reload`
 
 It contains an array of glob patterns to watch and reload the browser on file change. By default, we watch for Edge templates. However, you can configure additional patterns as well.
 
-</dd>
-
-<dt>
-assetsUrl
-</dt>
-
-<dd>
+### `assetsUrl`
 
 It contains the URL to prefix when generating links for assets in production. If you upload the Vite output to a CDN, then the value of this property should be the CDN server URL.
 
 Ensure you update the backend configuration to use the same `assetsUrl` value.
-
-</dd>
-</dl>
 
 ---
 
@@ -160,34 +133,15 @@ const viteBackendConfig = defineConfig({
 
 export default viteBackendConfig
 ```
-
-<dl>
-
-<dt>
-buildDirectory
-</dt>
-
-<dd>
+### `buildDirectory`
 
 It contains the path to the Vite's build output directory. You must also update this backend config if you change the default value inside the `vite.config.ts` file.
 
-</dd>
-
-<dt>
-assetsUrl
-</dt>
-
-<dd>
+### `assetsUrl`
 
 The URL to prefix when generating links for assets in production. If you upload the Vite output to a CDN, then the value of this property should be the CDN server URL.
 
-</dd>
-
-<dt>
-scriptAttributes
-</dt>
-
-<dd>
+### `scriptAttributes`
 
 You can use the `scriptAttributes` property to set attributes on the script tags generated using the `@vite` tag. The attributes are a collection of key-value pairs.
 
@@ -201,13 +155,7 @@ defineConfig({
 })
 ```
 
-</dd>
-
-<dt>
-styleAttributes
-</dt>
-
-<dd>
+### `styleAttributes`
 
 You can use the `styleAttributes` property to set attributes on the link tags generated using the `@vite` tag. The attributes are a collection of key-value pairs.
 
@@ -233,10 +181,6 @@ defineConfig({
   }
 })
 ```
-
-</dd>
-
-</dl>
 
 ## Folder structure for frontend assets
 Technically, AdonisJS does not enforce any folder structure for storing your frontend assets. You can organize them as you like.

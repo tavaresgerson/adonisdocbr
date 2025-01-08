@@ -79,18 +79,18 @@ And now, every time you run `node ace build`, the `onBuildStarting` hook will be
 
 Here's the list of available hooks:
 
-### onBuildStarting
+### `onBuildStarting`
 
 This hook is executed before the build starts. It is helpful for tasks such as file generation or for injecting custom build steps.
 
-### onBuildCompleted
+### `onBuildCompleted`
 
 This hook is executed once the build is complete. It can also be used to customize the build process.
 
-### onDevServerStarted
+### `onDevServerStarted`
 
 This hook is executed once the Adonis dev server is started. 
 
-### onSourceFileChanged
+### `onSourceFileChanged`
 
 This hook is executed each time a source file (included by your `tsconfig.json` ) is modified. Your hook will receive the path of the modified file as an argument.

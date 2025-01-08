@@ -70,7 +70,7 @@ router.named({
 
 Middleware are stored inside the `./app/middleware` directory, and you can create a new middleware file by running the `make:middleware` ace command.
 
-See also: [Make middleware command](../references/commands.md#makemiddleware)
+* See also: [Make middleware command](../references/commands.md#makemiddleware)
 
 ```sh
 node ace make:middleware user_location
@@ -109,7 +109,6 @@ export default class UserLocationMiddleware {
 }
 ```
 
-
 ### Continue with the request
 
 You must call the `next` method to continue with the request. Otherwise, the rest of the actions inside the middleware stack will not be executed.
@@ -126,7 +125,6 @@ export default class UserLocationMiddleware {
 ### Send a response, and do not call the `next` method
 
 Finally, you can end the request by sending the response. In this case, do not call the `next` method.
-
 
 ```ts
 export default class UserLocationMiddleware {
@@ -234,7 +232,6 @@ export default class UserLocationMiddleware {
   }
 }
 ```
-
 
 ## Middleware execution flow
 
@@ -353,7 +350,7 @@ await middleware.handle(ctx, () => {
 
 The `testUtils` service is available only after the AdonisJS application is booted. However, if you are testing a middleware inside a package, you can use the `HttpContextFactory` class to create a dummy HTTP context instance without booting an application.
 
-See also: [CORS middleware test](https://github.com/adonisjs/cors/blob/main/tests/cors_middleware.spec.ts#L24-L41) for a real-world example.
+* See also: [CORS middleware test](https://github.com/adonisjs/cors/blob/main/tests/cors_middleware.spec.ts#L24-L41) for a real-world example.
 
 ```ts
 import {
@@ -372,7 +369,6 @@ await middleware.handle(ctx, () => {
   console.log('Next function invoked')
 })
 ```
-
 
 ### Using server pipeline
 

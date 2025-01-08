@@ -14,7 +14,7 @@ Install and configure the package using the following command :
 node ace add @adonisjs/redis
 ```
 
-:::disclosure{title="See steps performed by the add command"}
+::: details See steps performed by the add command
 
 1. Installs the `@adonisjs/redis` package using the detected package manager.
 
@@ -68,37 +68,18 @@ const redisConfig = defineConfig({
 export default redisConfig
 ```
 
-<dl>
-<dt>
-
-connection
-
-<dt>
-
-<dd>
+### `connection`
 
 The `connection` property defines the connection to use by default. When you run redis commands without choosing an explicit connection, they will be executed against the default connection.
 
-</dd>
-
-<dt>
-
-connections
-
-<dt>
-
-<dd>
+### `connections`
 
 The `connections` property is a collection of multiple named connections. You can define one or more connections inside this object and switch between them using the `redis.connection()` method.
 
 Every named connection config is identical to the [config accepted by ioredis](https://redis.github.io/ioredis/index.html#RedisOptions).
 
-</dd>
-</dl>
-
 ### Connect via Socket
 You can configure Redis to use a Unix socket for connections. Use the `path` property in your Redis configuration object and provide the file system path to the socket.
-
 
 ```ts
 import env from '#start/env'
@@ -470,7 +451,7 @@ redis.on('connection', (connection) => {
 })
 ```
 
-### wait
+### `wait`
 Emitted when the connection is in `wait` mode because the `lazyConnect` option is set inside the config. After executing the first command, the connection will be moved from the `wait` state.
 
 ```ts
@@ -481,7 +462,7 @@ redis.on('connection', (connection) => {
 })
 ```
 
-### ready / subscriber\:ready
+### `ready` / `subscriber:ready`
 The event will be emitted immediately after the `connect` event unless you have enabled the `enableReadyCheck` flag inside the config. In that case, we will wait for the Redis server to report it is ready to accept commands.
 
 ```ts
@@ -493,7 +474,7 @@ redis.on('connection', (connection) => {
 })
 ```
 
-### error / subscriber\:error
+### `error` / `subscriber:error`
 The event is emitted when unable to connect to the redis server. See [error handling](#error-handling) to learn how AdonisJS handles connection errors.
 
 ```ts
@@ -505,7 +486,7 @@ redis.on('connection', (connection) => {
 })
 ```
 
-### close / subscriber\:close
+### `close` / `subscriber:close`
 The event is emitted when a connection is closed. IORedis might retry establishing a connection after emitting the `close` event, depending upon the retry strategy.
 
 ```ts
@@ -517,7 +498,7 @@ redis.on('connection', (connection) => {
 })
 ```
 
-### reconnecting / subscriber\:reconnecting
+### `reconnecting` / `subscriber:reconnecting`
 The event is emitted when trying to reconnect to the redis server after the `close` event.
 
 ```ts
@@ -533,7 +514,7 @@ redis.on('connection', (connection) => {
 })
 ```
 
-### end / subscriber\:end
+### `end` / `subscriber:end`
 The event is emitted when the connection has been closed, and no further reconnections will be made. It should be the end of the connection lifecycle.
 
 ```ts
@@ -545,7 +526,7 @@ redis.on('connection', (connection) => {
 })
 ```
 
-### node\:added
+### `node:added`
 The event is emitted when connected to a new cluster node (Applicable to cluster instances only).
 
 ```ts
@@ -556,7 +537,7 @@ redis.on('connection', (connection) => {
 })
 ```
 
-### node\:removed
+### `node:removed`
 The event is emitted when a cluster node is removed (Applicable to cluster instances only).
 
 ```ts
@@ -567,7 +548,7 @@ redis.on('connection', (connection) => {
 })
 ```
 
-### node\:error
+### `node:error`
 The event is emitted when unable to connect to a cluster node (Applicable to cluster instances only).
 
 ```ts
@@ -580,7 +561,7 @@ redis.on('connection', (connection) => {
 })
 ```
 
-### subscription\:ready / psubscription\:ready
+### `subscription:ready` / `psubscription:ready`
 The event is emitted when a subscription on a given channel or a pattern has been established.
 
 ```ts
@@ -596,7 +577,7 @@ redis.on('connection', (connection) => {
 })
 ```
 
-### subscription\:error / psubscription\:error
+### `subscription:error` / `psubscription:error`
 The event is emitted when unable to subscribe to a channel or a pattern.
 
 ```ts

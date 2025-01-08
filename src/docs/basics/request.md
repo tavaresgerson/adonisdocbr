@@ -199,9 +199,7 @@ router.patch('posts', async ({ request }) => {
 The `request.ip` method returns the user IP address for the current HTTP request. This method relies on the [`X-Forwarded-For`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For) header set by proxy servers like Nginx or Caddy.
 
 :::note
-
 Read the [trusted proxies](#configuring-trusted-proxies) section to configure the proxies your application should trust.
-
 :::
 
 ```ts
@@ -309,9 +307,7 @@ const charset = request.charset(['utf-8', 'hex', 'ascii'])
 Request ids help you [debug and trace application issues](https://blog.heroku.com/http_request_id_s_improve_visibility_across_the_application_stack) from logs by assigning a unique id to every HTTP request. By default, request id creation is disabled. However, you can enable it inside the `config/app.ts` file.
 
 :::note
-
 Request ids are generated using the [cuid2](https://github.com/paralleldrive/cuid2) package. Before generating an id, we check for the `X-Request-Id` request header and use its value (if it exists).
-
 :::
 
 ```ts
@@ -387,7 +383,7 @@ export const http = defineConfig({
 
 Query strings from the request URL are parsed using the [qs](http://npmjs.com/qs) module. You can configure the parser settings inside the `config/app.ts` file.
 
-[View the list](https://github.com/adonisjs/http-server/blob/main/src/types/qs.ts#L11) of all the available options.
+* [View the list](https://github.com/adonisjs/http-server/blob/main/src/types/qs.ts#L11) of all the available options.
 
 ```ts
 export const http = defineConfig({

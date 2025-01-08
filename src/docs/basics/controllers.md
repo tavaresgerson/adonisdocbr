@@ -17,7 +17,8 @@ node ace make:controller users
 A newly created controller is scaffolded with the `class` declaration, and you may manually create methods inside it. For this example, let's create an `index` method and return an array of users.
 
 ```ts
-// title: app/controllers/users_controller.ts  
+// app/controllers/users_controller.ts
+
 export default class UsersController {
   index() {
     return [
@@ -37,7 +38,8 @@ export default class UsersController {
 Finally, let's bind this controller to a route. We will import the controller using the `#controllers` alias. The aliases are defined using [subpath imports feature of Node.js](../getting_started/folder_structure.md#the-sub-path-imports).
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import router from '@adonisjs/core/services/router'
 const UsersController = () => import('#controllers/users_controller')
 
@@ -52,9 +54,7 @@ As you might have noticed, we do not create an instance of the controller class 
 You can also notice that we are lazy-loading the controller using a function.
 
 :::warning
-
 Lazy-loading controllers are needed when you are using [HMR](../concepts/hmr.md).
-
 :::
 
 As your codebase grows, you will notice it starts impacting the boot time of your application. A common reason for that is importing all controllers inside the routes file.
@@ -64,9 +64,7 @@ Since controllers handle HTTP requests, they often import other modules like mod
 Lazy-loading is as simple as moving the import statement behind a function and using dynamic imports.
 
 :::tip
-
 You can use our [ESLint plugin](https://github.com/adonisjs/tooling-config/tree/main/packages/eslint-plugin) to enforce and automatically convert standard controller imports to lazy dynamic imports.
-
 :::
 
 ### Using magic strings
@@ -76,7 +74,8 @@ Another way of lazy loading the controllers is to reference the controller and i
 In the following example, we do not have any import statements within the routes file, and we bind the controller import path + method as a string to the route.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import router from '@adonisjs/core/services/router'
 
 router.get('users', '#controllers/users_controller.index')
@@ -93,7 +92,8 @@ Using magic strings is subjective, and you can decide if you want to use them pe
 AdonisJS provides a way to define a single action controller. It's an effective way to wrap up functionality into clearly named classes. To accomplish this, you need to define a handle method inside the controller.
 
 ```ts
-// title: app/controllers/register_newsletter_subscription_controller.ts
+// app/controllers/register_newsletter_subscription_controller.ts
+
 export default class RegisterNewsletterSubscriptionController {
   handle() {
     // ...
@@ -104,7 +104,8 @@ export default class RegisterNewsletterSubscriptionController {
 Then, you can reference the controller on the route with the following.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router.post('newsletter/subscriptions', [RegisterNewsletterSubscriptionController])
 ```
 
@@ -113,7 +114,8 @@ router.post('newsletter/subscriptions', [RegisterNewsletterSubscriptionControlle
 The controller methods receive an instance of the [HttpContext](../concepts/http_context.md) class as the first argument. 
 
 ```ts
-// title: app/controllers/users_controller.ts
+// app/controllers/users_controller.ts
+
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class UsersController {
@@ -130,7 +132,8 @@ The controller classes are instantiated using the [IoC container](../concepts/de
 Given you have a `UserService` class, you can inject an instance of it inside the controller as follows.
 
 ```ts
-// title: app/services/user_service.ts
+// app/services/user_service.ts
+
 export class UserService {
   all() {
     // return users from db
@@ -139,7 +142,8 @@ export class UserService {
 ```
 
 ```ts
-// title: app/controllers/users_controller.ts
+// app/controllers/users_controller.ts
+
 import { inject } from '@adonisjs/core'
 import UserService from '#services/user_service'
 
@@ -162,7 +166,8 @@ You can inject an instance of `UserService` directly inside the controller metho
 The first parameter passed to the controller method is always the [`HttpContext`](../concepts/http_context.md). Therefore, you must type-hint the `UserService` as the second parameter.
 
 ```ts
-// title: app/controllers/users_controller.ts
+// app/controllers/users_controller.ts
+
 import { inject } from '@adonisjs/core'
 import { HttpContext } from '@adonisjs/core/http'
 
@@ -183,7 +188,8 @@ Automatic resolution of dependencies is not only limited to the controller. Any 
 For example, let's modify the `UserService` class to accept an instance of the [HttpContext](../concepts/http_context.md) as a constructor dependency.
 
 ```ts
-// title: app/services/user_service.ts
+// app/services/user_service.ts
+
 import { inject } from '@adonisjs/core'
 import { HttpContext } from '@adonisjs/core/http'
 

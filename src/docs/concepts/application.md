@@ -171,7 +171,7 @@ app.notify({
 
 Instead of self-constructing absolute URLs or paths to project files, we highly recommend using the following helpers.
 
-### makeURL
+### `makeURL`
 
 The make URL method returns a file URL to a given file or directory within the project root. For example, you may generate a URL when importing a file.
 
@@ -188,7 +188,7 @@ await Promise.all(files.map((file) => {
 }))
 ```
 
-### makePath
+### `makePath`
 
 The `makePath` method returns an absolute path to a given file or directory within the project root.
 
@@ -198,7 +198,7 @@ import app from '@adonisjs/core/services/app'
 app.makePath('app/middleware/auth.ts')
 ```
 
-### configPath
+### `configPath`
 
 Returns path to a file inside the project's config directory.
 
@@ -210,7 +210,7 @@ app.configPath()
 // /project_root/config
 ```
 
-### publicPath
+### `publicPath`
 
 Returns path to a file inside the project's public directory.
 
@@ -222,7 +222,7 @@ app.publicPath()
 // /project_root/public
 ```
 
-### providersPath
+### `providersPath`
 
 Returns path to a file inside the provider's directory.
 
@@ -234,7 +234,7 @@ app.providersPath()
 // /project_root/providers
 ```
 
-### factoriesPath
+### `factoriesPath`
 
 Returns path to a file inside the database factories directory.
 
@@ -246,7 +246,7 @@ app.factoriesPath()
 // /project_root/database/factories
 ```
 
-### migrationsPath
+### `migrationsPath`
 Returns path to a file inside the database migrations directory.
 
 ```ts
@@ -257,7 +257,7 @@ app.migrationsPath()
 // /project_root/database/migrations
 ```
 
-### seedersPath
+### `seedersPath`
 Returns path to a file inside the database seeders directory.
 
 ```ts
@@ -268,7 +268,7 @@ app.seedersPath()
 // /project_root/database/seeders
 ```
 
-### languageFilesPath
+### `languageFilesPath`
 Returns path to a file inside languages directory.
 
 ```ts
@@ -279,7 +279,7 @@ app.languageFilesPath()
 // /project_root/resources/lang
 ```
 
-### viewsPath
+### `viewsPath`
 Returns path to a file inside the views directory.
 
 ```ts
@@ -290,7 +290,7 @@ app.viewsPath()
 // /project_root/resources/views
 ```
 
-### startPath
+### `startPath`
 Returns path to a file inside the start directory.
 
 ```ts
@@ -301,7 +301,7 @@ app.startPath()
 // /project_root/start
 ```
 
-### tmpPath
+### `tmpPath`
 
 Returns path to a file inside the `tmp` directory within the project root.
 
@@ -313,7 +313,7 @@ app.tmpPath()
 // /project_root/tmp
 ```
 
-### httpControllersPath
+### `httpControllersPath`
 
 Returns path to a file inside the HTTP controllers directory.
 
@@ -325,7 +325,7 @@ app.httpControllersPath()
 // /project_root/app/controllers
 ```
 
-### modelsPath
+### `modelsPath`
 
 Returns path to a file inside the model's directory.
 
@@ -337,7 +337,7 @@ app.modelsPath()
 // /project_root/app/models
 ```
 
-### servicesPath
+### `servicesPath`
 
 Returns path to a file inside the services directory.
 
@@ -349,7 +349,7 @@ app.servicesPath()
 // /project_root/app/services
 ```
 
-### exceptionsPath
+### `exceptionsPath`
 
 Returns path to a file inside the exceptions directory.
 
@@ -361,7 +361,7 @@ app.exceptionsPath()
 // /project_root/app/exceptions
 ```
 
-### mailsPath
+### `mailsPath`
 
 Returns path to a file inside the mails directory.
 
@@ -373,7 +373,7 @@ app.mailsPath()
 // /project_root/app/mails
 ```
 
-### middlewarePath
+### `middlewarePath`
 
 Returns path to a file inside the middleware directory.
 
@@ -385,7 +385,7 @@ app.middlewarePath()
 // /project_root/app/middleware
 ```
 
-### policiesPath
+### `policiesPath`
 
 Returns path to a file inside the policies directory.
 
@@ -397,7 +397,7 @@ app.policiesPath()
 // /project_root/app/polices
 ```
 
-### validatorsPath
+### `validatorsPath`
 
 Returns path to a file inside the validators directory.
 
@@ -409,7 +409,7 @@ app.validatorsPath()
 // /project_root/app/validators/create_user.ts
 ```
 
-### commandsPath
+### `commandsPath`
 
 Returns path to a file inside the commands directory.
 
@@ -421,7 +421,7 @@ app.commandsPath()
 // /project_root/commands
 ```
 
-### eventsPath
+### `eventsPath`
 
 Return path to a file inside the events directory.
 
@@ -433,7 +433,7 @@ app.eventsPath()
 // /project_root/app/events
 ```
 
-### listenersPath
+### `listenersPath`
 
 Return path to a file inside the listeners directory.
 

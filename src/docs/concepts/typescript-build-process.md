@@ -8,14 +8,9 @@ Applications written in TypeScript must be compiled into JavaScript before you c
 
 Compiling TypeScript source files can be performed using many different build tools. However, with AdonisJS, we stick to the most straightforward approach and use the following time-tested tools.
 
-
 :::note
-
 All the below-mentioned tools come pre-installed as development dependencies with official starter kits.
-
-
 :::
-
 
 - **[TSC](https://www.typescriptlang.org/docs/handbook/compiler-options.html)** is the TypeScript's official compiler. We use TSC to perform type-checking and create the production build.
 
@@ -49,7 +44,6 @@ You may repeat this process for other TypeScript files as well. For example:
 // title: Run tests
 node --loader ts-node/esm bin/test.js
 ```
-
 
 ```sh
 // title: Run ace commands

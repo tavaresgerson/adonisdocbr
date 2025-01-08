@@ -10,7 +10,7 @@ Debugging AdonisJS applications using the VSCode debugger is straightforward. Yo
 
 In the following example, we define a configuration to start the AdonisJS development server in the debug mode and then attach the VSCode debugger to it. 
 
-See also: [VSCode Debugging Docs](https://code.visualstudio.com/docs/editor/debugging)
+* See also: [VSCode Debugging Docs](https://code.visualstudio.com/docs/editor/debugging)
 
 ```json
 // title: .vscode/launch.json
@@ -127,9 +127,7 @@ To start debugging in attach mode:
 You can debug Edge templates similar to your application code written in TypeScript. However, with Edge, you cannot use the breakpoints provided by VSCode. Instead, you must use the `@debugger` tag to define an in-code breakpoint.
 
 :::note
-
 The debugger will show the compiled output for Edge templates.
-
 :::
 
 ```edge
@@ -235,24 +233,15 @@ export const dumper = dumperConfig({
 })
 ```
 
-<dl>
-
-<dt> showHidden </dt>
-<dd>
+### `showHidden`
 
 When set to `true`, the non-enumerable properties of an object will be processed. **Default: `false`**
 
-</dd>
-
-<dt> depth </dt>
-<dd>
+### `depth`
 
 The depth at which to stop parsing nested values. The depth is shared among all tree-like data structures. For example, Objects, Arrays, Maps, and Sets. **Default: `5`**
 
-</dd>
-
-<dt> inspectObjectPrototype </dt>
-<dd>
+### `inspectObjectPrototype`
 
 Inspect prototype properties of an object. The non-enumerable properties of the prototype are included by default. **Default: `'unless-plain-object'`**.
 
@@ -260,44 +249,25 @@ Inspect prototype properties of an object. The non-enumerable properties of the 
 - The prototype properties are never processed when set to `false`.
 - When set to `'unless-plain-object'`, the prototype properties of class instances will be processed.
 
-</dd>
-
-<dt> inspectArrayPrototype </dt>
-<dd>
+### `inspectArrayPrototype`
 
 Inspect prototype properties of an Array. **Default: `false`**.
 
-</dd>
-
-<dt> inspectStaticMembers </dt>
-<dd>
+### `inspectStaticMembers`
 
 Inspect static members of a class. Even though functions and classes are technically the same, this config only applies to functions defined using the `[class]` keyword. **Default: `false`**.
 
-</dd>
-
-<dt> maxArrayLength </dt>
-<dd>
+### `maxArrayLength`
 
 Maximum number of members to process for `Arrays`, `Maps`, and `Sets`. **Default: `100`**.
 
-</dd>
-
-<dt> maxStringLength </dt>
-<dd>
+### `maxStringLength`
 
 Maximum number of characters to display for a string. **Default: `1000`**.
 
-</dd>
-
-<dt> collapse </dt>
-<dd>
+### `collapse`
 
 An array of object constructor names that should not be further inspected.
-
-</dd>
-
-</dl>
 
 ## Framework debug logs
 You can view the framework debug logs using the `NODE_DEBUG` environment variable. The `NODE_DEBUG` flag is supported by the Node.js runtime, and you may use it to view logs for one or more modules using the module name.
@@ -313,41 +283,3 @@ Similarly, you may use the `NODE_DEBUG` environment variable to view logs from t
 ```sh
 NODE_DEBUG="adonisjs:*,net,fs" node ace serve --hmr
 ```
-
-<!-- ## Observing activities
-Observing actions performed by different parts of your application can present some meaningful insights and help you debug and understand the inner workings of the framework.
-
-### Lucid queries
-You may debug Lucid queries by enabling the `debug` flag inside the `config/database.ts` file. Additionally, you must enable the `prettyPrintDebugQueries` within the same file to print SQL queries in the terminal.
-
-```ts
-// title: config/database.ts
-const dbConfig = defineConfig({
-  connection: 'sqlite',
-  // insert-start
-  prettyPrintDebugQueries: true,
-  // insert-end
-  connections: {
-    sqlite: {
-      client: 'better-sqlite3',
-      connection: {
-        filename: app.tmpPath('db.sqlite3'),
-      },
-      // insert-start
-      debug: true,
-      // insert-end
-      useNullAsDefault: true,
-      migrations: {
-        naturalSort: true,
-        paths: ['database/migrations'],
-      },
-    },
-  },
-})
-```
-
-![](./debug-sql-queries.png) -->
-
-<!-- ### Outgoing emails
-
-### HTTP requests -->

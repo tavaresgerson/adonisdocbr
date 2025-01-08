@@ -8,8 +8,8 @@ The request data is parsed using the `BodyParser` middleware registered inside t
 
 The configuration for the middleware is stored inside the `config/bodyparser.ts` file. In this file, you may configure parsers for parsing **JSON payloads**, **multipart forms with file uploads**, and **URL-encoded forms**.
 
-See also: [Reading request body](./request.md#request-body)\
-See also: [File uploads](./file_uploads.md)
+* See also: [Reading request body](./request.md#request-body)
+* See also: [File uploads](./file_uploads.md)
 
 ```ts
 import { defineConfig } from '@adonisjs/core/bodyparser'
@@ -93,57 +93,21 @@ json: {
 }
 ```
 
-<dl>
-
-<dt>
-
-encoding
-
-</dt>
-
-<dd>
+### `encoding`
 
 The encoding to use when converting the request body Buffer to a string. Most likely, you want to use `utf-8`. However, you can use any encoding supported by the [iconv-lite package](https://www.npmjs.com/package/iconv-lite#readme).
 
-</dd>
-
-<dt>
-
-limit
-
-</dt>
-
-<dd>
+### `limit`
 
 The maximum limit of request body data the parser should allow. A `413` error will be returned if the request body exceeds the configured limit.
 
-</dd>
-
-<dt>
-
-strict
-
-</dt>
-
-<dd>
+### `strict`
 
 The strict parsing allows only `objects` and `arrays` at the top level of a JSON-encoded string.
 
-</dd>
-
-<dt>
-
-types
-
-</dt>
-
-<dd>
+### `types`
 
 An array of values for the `Content-type` header should be parsed using the JSON parser.
-
-</dd>
-
-</dl>
 
 ## URL encoded form parser
 
@@ -159,39 +123,15 @@ form: {
 }
 ```
 
-<dl>
-
-<dt>
-
-encoding
-
-<dt>
-
-<dd>
+### `encoding`
 
 The encoding to use when converting the request body Buffer to a string. Most likely, you want to use `utf-8`. However, you can use any encoding supported by the [iconv-lite package](https://www.npmjs.com/package/iconv-lite#readme).
 
-</dd>
-
-<dt>
-
-limit
-
-<dt>
-
-<dd>
+### `limit`
 
 The maximum limit of request body data the parser should allow. A `413` error will be returned if the request body exceeds the configured limit.
 
-</dd>
-
-<dt>
-
-queryString
-
-<dt>
-
-<dd>
+### `queryString`
 
 The URL-encoded request body is parsed using the [qs package](https://www.npmjs.com/package/qs). You can define the options for the package using the `queryString` property.
 
@@ -203,10 +143,6 @@ The URL-encoded request body is parsed using the [qs package](https://www.npmjs.
     },
   }
 ```
-
-</dd>
-
-</dl>
 
 ## Multipart parser
 
@@ -226,15 +162,7 @@ multipart: {
 }
 ```
 
-<dl>
-
-<dt>
-
-autoProcess
-
-</dt>
-
-<dd>
+### `autoProcess`
 
 Enabling `autoProcess` will move all the user-uploaded files to the `tmp` directory of your operating system.
 
@@ -253,15 +181,7 @@ You may define an array of routes for which to auto process the files. The value
 }
 ```
 
-</dd>
-
-<dt>
-
-processManually
-
-</dt>
-
-<dd>
+### `processManually`
 
 The `processManually` array allows you to turn off auto processing of files for selected routes. The values **must be a route pattern** and not the URL.
 
@@ -275,42 +195,14 @@ multipart: {
 }
 ```
 
-</dd>
-
-<dt>
-
-encoding
-
-</dt>
-
-<dd>
+### `encoding`
 
 The encoding to use when converting the request body Buffer to a string. Most likely, you want to use `utf-8`. However, you can use any encoding supported by the [iconv-lite package](https://www.npmjs.com/package/iconv-lite#readme).
 
-</dd>
-
-<dt>
-
-limit
-
-</dt>
-
-<dd>
+### `limit`
 
 The maximum limit of bytes to allow when processing all files. You can define the individual file size limit using the [request.file](./file_uploads.md) method.
 
-</dd>
-
-<dt>
-
-fieldsLimit
-
-</dt>
-
-<dd>
+### `fieldsLimit`
 
 The maximum limit of bytes to allow for the fields (not files) when processing the multipart request. A `413` error will be returned if the field size exceeds the configured limit.
-
-</dd>
-
-</dl>

@@ -16,7 +16,7 @@ Install and configure the `@adonisjs/drive` package using the following command:
 node ace add @adonisjs/drive
 ```
 
-:::disclosure{title="See steps performed by the add command"}
+::: details See steps performed by the add command
 
 1. Installs the `@adonisjs/drive` package using the detected package manager.
 
@@ -94,9 +94,7 @@ Also, the `DRIVE_DISK` environment variable defines the default disk/service for
 Once you have configured Drive, you can import the `drive` service to interact with its APIs. In the following example, we handle a file upload operation using Drive.
 
 :::note
-
 Since AdonisJS integration is a thin wrapper on top of FlyDrive. To better understand its APIs, you should read [FlyDrive docs](https://flydrive.dev).
-
 :::
 
 ```ts
@@ -211,70 +209,25 @@ Following is the list of options you may use configure the filesystem driver.
 }
 ```
 
-<dl>
-
-<dt>
-
-location
-
-<dt>
-
-<dd>
+### `location`
 
 The `location` property defines the stores inside which the files should be stored. This directory should be added to `.gitignore` so that you do not push files uploaded during development to the production server.
 
-</dd>
-
-<dt>
-
-visibility
-
-<dt>
-
-<dd>
+### `visibility`
 
 The `visibility` property is used to mark files public or private. Private files can only be accessed using signed URLs. [Learn more](https://flydrive.dev/docs/disk_api#getsignedurl)
 
-</dd>
-
-<dt>
-
-serveFiles
-
-<dt>
-
-<dd>
+### `serveFiles`
 
 The `serveFiles` option auto registers a route to serve the files from the local filesystem. You can view this route using the [list\:routes](../references/commands.md#listroutes) ace command.
 
-</dd>
-
-<dt>
-
-routeBasePath
-
-<dt>
-
-<dd>
+### `routeBasePath`
 
 The `routeBasePath` option defines the base prefix for the route to serve files. Make sure the base prefix is unique.
 
-</dd>
-
-<dt>
-
-appUrl
-
-<dt>
-
-<dd>
+### `appUrl`
 
 You may optionally define the `appUrl` property to create URLs with the complete domain name of your application. Otherwise relative URLs will be created.
-
-</dd>
-
-
-</dl>
 
 ## Edge helpers
 Within the Edge templates, you may use one the following helper methods to generate URLs. Both the methods are async, so make sure to `await` them.

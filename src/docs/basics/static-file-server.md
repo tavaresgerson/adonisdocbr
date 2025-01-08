@@ -17,7 +17,7 @@ Install and configure the package using the following command :
 node ace add @adonisjs/static
 ```
 
-:::disclosure{title="See steps performed by the add command"}
+::: details See steps performed by the add command
 
 1. Installs the `@adonisjs/static` package using the detected package manager.
 
@@ -61,60 +61,27 @@ const staticServerConfig = defineConfig({
 export default staticServerConfig
 ```
 
-<dl>
-
-<dt>
-
-  enabled
-
-</dt>
-
-<dd>
+### `enabled`
 
 Enable or disable the middleware temporarily without removing it from the middleware stack.
 
-</dd>
-
-<dt>
-
-  acceptRanges
-
-</dt>
-
-<dd>
+### `acceptRanges`
 
 The `Accept-Range` header allows browsers to resume an interrupted file download instead of trying to restart the download. You can disable resumable downloads by setting `acceptsRanges` to `false`.
 
 Defaults to `true`.
 
-</dd>
-
-<dt>
-
-  cacheControl
-
-</dt>
-
-<dd>
+### `cacheControl`
 
 Enable or disable the [Cache-Control](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control) header. The `immutable` and `maxAge` properties will be ignored when `cacheControl` is disabled.
-
 
 ```ts
 {
   cacheControl: true
 }
 ```
-</dd>
 
-
-<dt>
-
-  dotFiles
-
-</dt>
-
-<dd>
+### `dotFiles`
 
 Define how to treat requests for dot files inside the `public` directory. You can set one of the following options.
 
@@ -128,17 +95,7 @@ Define how to treat requests for dot files inside the `public` directory. You ca
 }
 ```
 
-</dd>
-
-
-<dt>
-
-  etag
-
-</dt>
-
-<dd>
-
+### `etag`
 
 Enable or disable [etag](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag) generation.
 
@@ -148,16 +105,7 @@ Enable or disable [etag](https://developer.mozilla.org/en-US/docs/Web/HTTP/Heade
 }
 ```
 
-</dd>
-
-<dt>
-
-  lastModified
-
-</dt>
-
-<dd>
-
+### `lastModified`
 
 Enable or disable the [Last-Modified](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Last-Modified) header. The file [stat.mtime](https://nodejs.org/api/fs.html#statsmtime) property is used as the value for the header.
 
@@ -167,17 +115,7 @@ Enable or disable the [Last-Modified](https://developer.mozilla.org/en-US/docs/W
 }
 ```
 
-</dd>
-
-
-<dt>
-
-  immutable
-
-</dt>
-
-<dd>
-
+### `immutable`
 
 Enable or disable the [immutable](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#immutable) directive for the `Cache-Control` header. By default, the `immutable` property is disabled.
 
@@ -189,15 +127,7 @@ If the `immutable` property is enabled, you must define the `maxAge` property to
 }
 ```
 
-</dd>
-
-<dt>
-
-  maxAge
-
-</dt>
-
-<dd>
+### `maxAge`
 
 Define the [max-age](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#max-age) directive for the `Cache-Control` header. The value should be either in milliseconds or a time expression string.
 
@@ -207,15 +137,7 @@ Define the [max-age](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/C
 }
 ```
 
-</dd>
-
-<dt>
-
-  headers
-
-</dt>
-
-<dd>
+### `headers`
 
 A function that returns an object of headers to set on the response. The function receives the file path as the first argument and the [file stats](https://nodejs.org/api/fs.html#class-fsstats) object as the second argument.
 
@@ -230,11 +152,6 @@ A function that returns an object of headers to set on the response. The functio
   }
 }
 ```
-
-</dd>
-
-
-</dl>
 
 ## Serving static files
 

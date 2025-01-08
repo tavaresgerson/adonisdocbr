@@ -247,7 +247,6 @@ router.get('/uploads/*', ({ request, response }) => {
 - Using the `PATH_TRAVERSAL_REGEX` we protect this route against [path traversal](https://owasp.org/www-community/attacks/Path_Traversal).
 - Finally, we convert the `normalizedPath` to an absolute path inside the `uploads` directory and serve the file using the `response.download` method.
 
-
 ## Using Drive to upload and serve files
 
 Drive is a file system abstraction created by the AdonisJS core team. You may use Drive to manage user-uploaded files and store them inside the local file system or move them to a cloud storage service like S3 or GCS.
@@ -319,7 +318,6 @@ export default class AssetsController {
   }
 }
 ```
-
 
 - The `multipart.onFile` method accepts the input field name for which you want to process the files. You can use the wildcard `*` to process all the files.
 
