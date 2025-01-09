@@ -311,7 +311,6 @@ export default [
         }
       ],
     },
-
     {
       text: 'Digging deeper',
       collapsed: true,
@@ -384,7 +383,6 @@ export default [
           }
       ],
     },
-
     {
       text: 'References',
       collapsed: true,
@@ -410,5 +408,123 @@ export default [
           link: 'docs/references/helpers.md',
         }
       ]
-    }
+    },
+    {
+      text: 'Lucid',
+      collapsed: true,
+      items: [
+        {
+          text: 'Guides',
+          collapsed: false,
+          items: [
+            {
+              text: 'Introduction',
+              link: '/docs/lucid/guides/introduction.md',
+            },
+            {
+              text: 'Installation and Usage',
+              link: '/docs/lucid/guides/installation.md',
+            },
+            {
+              text: 'Debugging',
+              link: '/docs/lucid/guides/debugging.md',
+            },
+            {
+              text: 'Transactions',
+              link: '/docs/lucid/guides/transactions.md',
+            },
+            {
+              text: 'Pagination',
+              link: '/docs/lucid/guides/pagination.md',
+            },
+            {
+              text: 'Database seeders',
+              link: '/docs/lucid/guides/seeders.md',
+            },
+            {
+              text: 'Validation rules',
+              link: '/docs/lucid/guides/validation.md',
+            },
+          ]
+        },
+        {
+          text: 'Query builders',
+          collapsed: false,
+          items: [
+            {
+              text: 'Select query builder',
+              link: '/docs/lucid/query_builders/select.md',
+            },
+            {
+              text: 'Insert query builder',
+              link: '/docs/lucid/query_builders/insert.md',
+            },
+            {
+              text: 'Raw query builder',
+              link: '/docs/lucid/query_builders/raw.md',
+            },    
+          ]
+        },
+        {
+          text: 'Migrations',
+          collapsed: false,
+          items: [
+            {
+              text: 'Introduction',
+              link: '/docs/lucid/migrations/introduction.md',
+            },
+            {
+              text: 'Schema builder',
+              link: '/docs/lucid/migrations/schema_builder.md',
+            },
+            {
+              text: 'Table builder',
+              link: '/docs/lucid/migrations/table_builder.md',
+            },
+          ]
+        },
+        {
+          text: 'Models',
+          collapsed: false,
+          items: [
+            {
+              text: 'Introduction',
+              link: '/docs/lucid/models/introduction.md',
+            },
+            {
+              text: 'CRUD operations',
+              link: '/docs/lucid/models/crud_operations.md',
+            },
+            {
+              text: 'Hooks',
+              link: '/docs/lucid/models/hooks.md',
+            },
+            {
+              text: 'Query builder',
+              link: '/docs/lucid/models/query_builder.md',
+            },
+            {
+              text: 'Naming strategy',
+              link: '/docs/lucid/models/naming_strategy.md',
+            },
+            {
+              text: 'Query scopes',
+              link: '/docs/lucid/models/query_scopes.md',
+            },
+            {
+              text: 'Serializing models',
+              link: '/docs/lucid/models/serializing_models.md',
+            },
+            {
+              text: 'Relationships',
+              link: '/docs/lucid/models/relationships.md',
+            },
+            {
+              text: 'Model factories',
+              link: '/docs/lucid/models/model_factories.md',
+            }
+          ]
+        }
+      ]
+    },
 ]

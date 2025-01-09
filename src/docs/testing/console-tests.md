@@ -239,7 +239,7 @@ command.prompt
 
 Following is the list of assertion methods available on a command instance.
 
-### assertSucceeded
+### `assertSucceeded`
 
 Assert the command exited with `exitCode=0`.
 
@@ -248,7 +248,7 @@ await command.exec()
 command.assertSucceeded()
 ```
 
-### assertFailed
+### `assertFailed`
 
 Assert the command exited with non-zero `exitCode`.
 
@@ -257,7 +257,7 @@ await command.exec()
 command.assertSucceeded()
 ```
 
-### assertExitCode
+### `assertExitCode`
 
 Assert the command exited with a specific `exitCode`.
 
@@ -266,7 +266,7 @@ await command.exec()
 command.assertExitCode(2)
 ```
 
-### assertNotExitCode
+### `assertNotExitCode`
 
 Assert the command exited with any `exitCode`, but not the given exit code.
 
@@ -275,7 +275,7 @@ await command.exec()
 command.assertNotExitCode(0)
 ```
 
-### assertLog
+### `assertLog`
 
 Assert the command writes a log message using the `this.logger` property. You can optionally assert the output stream as `stdout` or `stderr`.
 
@@ -286,7 +286,7 @@ command.assertLog('Hello world from "Greet"')
 command.assertLog('Hello world from "Greet"', 'stdout')
 ```
 
-### assertLogMatches
+### `assertLogMatches`
 
 Assert the command writes a log message that matches the given regular expression.
 
@@ -296,7 +296,7 @@ await command.exec()
 command.assertLogMatches(/Hello world/)
 ```
 
-### assertTableRows
+### `assertTableRows`
 
 Assert the command prints a table to the `stdout`. You can provide the table rows as an array of columns. The columns are represented as an array of cells.
 
