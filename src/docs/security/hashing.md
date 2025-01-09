@@ -90,15 +90,7 @@ export default defineConfig({
 })
 ```
 
-<dl>
-
-<dt>
-
-variant
-
-</dt>
-
-<dd>
+### `variant`
 
 The argon hash variant to use.
 
@@ -106,91 +98,39 @@ The argon hash variant to use.
 - `i` is slower and resistant against tradeoff attacks, which is preferred for password hashing and key derivation.
 - `id` *(default)* is a hybrid combination of the above, resistant against GPU and tradeoff attacks.
 
-</dd>
-
-<dt>
-
-version
-
-</dt>
-
-<dd>
+### 'version'
 
 The argon version to use. The available options are `0x10 (1.0)` and `0x13 (1.3)`. The latest version should be used by default.
 
-</dd>
-
-<dt>
-
-iterations
-
-</dt>
-
-<dd>
+### `iterations`
 
 The `iterations` count increases the hash strength but takes more time to compute. 
 
 The default value is `3`.
 
-</dd>
-
-<dt>
-
-memory
-
-</dt>
-
-<dd>
+### `memory`
 
 The amount of memory to be used for hashing the value. Each parallel thread will have a memory pool of this size. 
 
 The default value is `65536 (KiB)`.
 
-</dd>
-
-<dt>
-
-parallelism
-
-</dt>
-
-<dd>
+### `parallelism`
 
 The number of threads to use for computing the hash. 
 
 The default value is `4`.
 
-</dd>
-
-<dt>
-
-saltSize
-
-</dt>
-
-<dd>
+### `saltSize`
 
 The length of salt (in bytes). Argon generates a cryptographically secure random salt of this size when computing the hash.
 
 The default and recommended value for password hashing is `16`.
 
-</dd>
-
-<dt>
-
-hashLength
-
-</dt>
-
-<dd>
+### `hashLength`
 
 Maximum length for the raw hash (in bytes). The output value will be longer than the mentioned hash length because the raw hash output is further encoded to PHC format.
 
 The default value is `32`
-
-</dd>
-
-</dl>
 
 ### Bcrypt
 
@@ -219,49 +159,21 @@ export default defineConfig({
 })
 ```
 
-<dl>
-
-<dt>
-
-rounds
-
-</dt>
-
-<dd>
+### `rounds`
 
 The cost for computing the hash. We recommend reading the [A Note on Rounds](https://github.com/kelektiv/node.bcrypt.js#a-note-on-rounds) section from Bcrypt docs to learn how the `rounds` value has an impact on the time it takes to compute the hash.
 
 The default value is `10`.
 
-</dd>
-
-<dt>
-
-saltSize
-
-</dt>
-
-<dd>
+### `saltSize`
 
 The length of salt (in bytes). When computing the hash, we generate a cryptographically secure random salt of this size.
 
 The default value is `16`.
 
-</dd>
-
-<dt>
-
-version
-
-</dt>
-
-<dd>
+### `version`
 
 The version for the hashing algorithm. The supported values are `2a` and `2b`. Using the latest version, i.e., `2b` is recommended.
-
-</dd>
-
-</dl>
 
 ### Scrypt
 
@@ -292,9 +204,7 @@ export default defineConfig({
 Since you will be using the `hash` service to hash user passwords, you may find placing the logic inside the `beforeSave` model hook helpful.
 
 :::note
-
 If you are using the `@adonisjs/auth` module, hashing passwords within your model is unnecessary. The `AuthFinder` automatically handles password hashing, ensuring your user credentials are securely processed. Learn more about this process [here](../authentication/verifying_user_credentials.md#hashing-user-password).
-
 :::
 
 ```ts

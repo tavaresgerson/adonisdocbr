@@ -6,8 +6,6 @@ summary: Learn about the exceptions raised by the AdonisJS framework core and of
 
 In this guide we will go through the list of known exceptions raised by the framework core and the official packages. Some of the exceptions are marked as **self-handled**. [Self-handled exceptions](../basics/exception_handling.md#defining-the-handle-method) can convert themselves to an HTTP response.
 
-<div style="--prose-h2-font-size: 22px;">
-
 ## E_ROUTE_NOT_FOUND
 The exception is raised when the HTTP server receives a request for a non-existing route. By default, the client will get a 404 response, and optionally, you may render an HTML page using [status pages](../basics/exception_handling.md#status-pages).
 
@@ -392,5 +390,3 @@ if (error instanceof sessionErrors.E_SESSION_NOT_READY) {
   console.log(error.message)
 }
 ```
-
-</div>

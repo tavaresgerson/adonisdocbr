@@ -18,7 +18,6 @@ node -v
 **Are you more of a visual learner?** - Checkout the [Let's Learn AdonisJS 6](https://adocasts.com/series/lets-learn-adonisjs-6) free screencasts series from our friends at Adocasts.
 :::
 
-
 ## Creating a new application
 
 You may create a new project using [npm init](https://docs.npmjs.com/cli/v7/commands/npm-init). These commands will download the [create-adonisjs](http://npmjs.com/create-adonisjs) initializer package and begin the installation process.
@@ -64,9 +63,7 @@ Starter kits serve as a starting point for creating applications using AdonisJS.
 
 
 :::note
-
 The official starter kits use ES modules and TypeScript. This combination allows you to use modern JavaScript constructs and leverage static-type safety.
-
 :::
 
 ### Web starter kit

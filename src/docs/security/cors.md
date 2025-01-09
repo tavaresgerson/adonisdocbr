@@ -65,27 +65,11 @@ const corsConfig = defineConfig({
 export default corsConfig
 ```
 
-<dl>
-
-<dt>
-
-enabled
-
-</dt>
-
-<dd>
+### `enabled`
 
 Turn the middleware on or off temporarily without removing it from the middleware stack.
 
-</dd>
-
-<dt>
-
-origin
-
-</dt>
-
-<dd>
+### `origin`
 
 The `origin` property controls the value for the [Access-Control-Allow-Origin](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin) header.
 
@@ -125,15 +109,7 @@ You can compute the `origin` value during the HTTP request using a function. For
 }
 ```
 
-</dd>
-
-<dt>
-
-methods
-
-</dt>
-
-<dd>
+### `methods`
 
 The `methods` property controls the method to allow during the preflight request. The [Access-Control-Request-Method](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Request-Method) header value is checked against the allowed methods.
 
@@ -143,15 +119,7 @@ The `methods` property controls the method to allow during the preflight request
 }
 ```
 
-</dd>
-
-<dt>
-
-headers
-
-</dt>
-
-<dd>
+### `headers`
 
 The `headers` property controls the request headers to allow during the preflight request. The [Access-Control-Request-Headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Request-Headers) header value is checked against the headers property.
 
@@ -185,15 +153,7 @@ You can compute the `headers` config value using a function during the HTTP requ
 }
 ```
 
-</dd>
-
-<dt>
-
-exposeHeaders
-
-</dt>
-
-<dd>
+### `exposeHeaders`
 
 The `exposeHeaders` property controls the headers to expose via [Access-Control-Expose-Headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Expose-Headers) header during the preflight request.
 
@@ -210,15 +170,7 @@ The `exposeHeaders` property controls the headers to expose via [Access-Control-
 }
 ```
 
-</dd>
-
-<dt>
-
-credentials
-
-</dt>
-
-<dd>
+### `credentials`
 
 The `credentials` property controls whether to set the [Access-Control-Allow-Credentials](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Credentials) header during the preflight request.
 
@@ -228,15 +180,7 @@ The `credentials` property controls whether to set the [Access-Control-Allow-Cre
 }
 ```
 
-</dd>
-
-<dt>
-
-maxAge
-
-</dt>
-
-<dd>
+### `maxAge`
 
 The `maxAge` property controls the [Access-Control-Max-Age](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Max-Age) response header. The value is in seconds.
 
@@ -248,10 +192,6 @@ The `maxAge` property controls the [Access-Control-Max-Age](https://developer.mo
   maxAge: 90
 }
 ```
-
-</dd>
-
-</dl>
 
 ## Debugging CORS errors
 Debugging CORS issues is a challenging experience. However, there are no shortcuts other than understanding the rules of CORS and debugging the response headers to ensure everything is in place.

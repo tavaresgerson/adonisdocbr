@@ -142,27 +142,11 @@ const shieldConfig = defineConfig({
 export default shieldConfig
 ```
 
-<dl>
-
-<dt>
-
-enabled
-
-</dt>
-
-<dd>
+### `enabled`
 
 Turn the CSRF guard on or off.
 
-</dd>
-
-<dt>
-
-exceptRoutes
-
-</dt>
-
-<dd>
+### `exceptRoutes`
 
 An array of route patterns to exempt from the CSRF protection. If your application has routes that accept form submissions via an API, you might want to exempt them.
 
@@ -177,15 +161,7 @@ For more advanced use cases, you may register a function to exempt specific rout
 }
 ```
 
-</dd>
-
-<dt>
-
-enableXsrfCookie
-
-</dt>
-
-<dd>
+### `enableXsrfCookie`
 
 When enabled, Shield will store the CSRF token inside an encrypted cookie named `XSRF-TOKEN`, which can be read by the frontend JavaScript code.
 
@@ -193,33 +169,13 @@ This allows frontend request libraries like Axios to read the `XSRF-TOKEN` autom
 
 You must keep the `enableXsrfCookie` disabled if you are not triggering Ajax requests programmatically.
 
-</dd>
-
-<dt>
-
-methods
-
-</dt>
-
-<dd>
+### `methods`
 
 An array of HTTP methods to protect. All incoming requests for the mentioned methods must present a valid CSRF token.
 
-</dd>
-
-<dt>
-
-cookieOptions
-
-</dt>
-
-<dd>
+### `cookieOptions`
 
 Configuration for the `XSRF-TOKEN` cookie. [See cookies configuration](../basics/cookies.md#configuration) for available options.
-
-</dd>
-
-</dl>
 
 ## Defining CSP policy
 [CSP (Content security policy)](https://web.dev/csp/) protects your applications from XSS attacks by defining trusted sources for loading JavaScript, CSS, fonts, images, and so on.
@@ -242,27 +198,11 @@ const shieldConfig = defineConfig({
 export default shieldConfig
 ```
 
-<dl>
-
-<dt>
-
-enabled
-
-</dt>
-
-<dd>
+### `enabled`
 
 Turn the CSP guard on or off.
 
-</dd>
-
-<dt>
-
-directives
-
-</dt>
-
-<dd>
+### `directives`
 
 Configure the CSP directives. You can view the list of available directives on [https://content-security-policy.com/](https://content-security-policy.com/#directive)
 
@@ -284,15 +224,7 @@ const shieldConfig = defineConfig({
 export default shieldConfig
 ```
 
-</dd>
-
-<dt>
-
-reportOnly
-
-</dt>
-
-<dd>
+### `reportOnly`
 
 The CSP policy will not block the resources when the `reportOnly` flag is enabled. Instead, it will report the violations on an endpoint configured using the `reportUri` directive.
 
@@ -320,9 +252,6 @@ router.post('/csp-report', async ({ request }) => {
   const report = request.input('csp-report')
 })
 ```
-</dd>
-
-</dl>
 
 ### Using Nonce
 You may allow inline `script` and `style` tags by defining the [nonce attribute](https://content-security-policy.com/nonce/) on them. The value of the nonce attribute can be accessed inside Edge templates using the `cspNonce` property.
@@ -399,27 +328,11 @@ const shieldConfig = defineConfig({
 })
 ```
 
-<dl>
-
-<dt>
-
-enabled
-
-</dt>
-
-<dd>
+### `enabled`
 
 Turn the hsts guard on or off.
 
-</dd>
-
-<dt>
-
-maxAge
-
-</dt>
-
-<dd>
+### `maxAge`
 
 Defines the `max-age` attribute. The value should either be a number in seconds or a string-based time expression.
 
@@ -437,29 +350,15 @@ Defines the `max-age` attribute. The value should either be a number in seconds 
 }
 ```
 
-</dd>
-
-<dt>
-
-includeSubDomains
-
-</dt>
-
-<dd>
+### `includeSubDomains`
 
 Defines the `includeSubDomains` directive to apply the setting on subdomains.
-
-</dd>
-
-</dl>
 
 ## Configuring X-Frame protection
 The [**X-Frame-Options**](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options) header is used to indicate if a browser is allowed to render a website embedded inside an `iframe`, `frame`, `embed`, or `object` tags.
 
 :::note
-
 If you have configured CSP, you may instead use the [frame-ancestors](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors) directive and disable the `xFrame` guard.
-
 :::
 
 You can configure the header directives using the `config/shield.ts` file.
@@ -475,27 +374,11 @@ const shieldConfig = defineConfig({
 })
 ```
 
-<dl>
-
-<dt>
-
-enabled
-
-</dt>
-
-<dd>
+### `enabled`
 
 Turn the xFrame guard on or off.
 
-</dd>
-
-<dt>
-
-action
-
-</dt>
-
-<dd>
+### `action`
 
 The `action` property defines the header value. It could be `DENY`, `SAMEORIGIN`, or `ALLOW-FROM`.
 
@@ -513,10 +396,6 @@ In the case of `ALLOW-FROM`, you must also define the `domain` property.
   domain: 'https://foo.com',
 }
 ```
-
-</dd>
-
-</dl>
 
 ## Disabling MIME sniffing
 The [**X-Content-Type-Options**](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options) header instructs browsers to follow the `content-type` header and not perform MIME sniffing by inspecting the content of an HTTP response.

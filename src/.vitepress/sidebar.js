@@ -16,10 +16,6 @@ export default [
           link: 'docs/preface/governance.md',
         },
         {
-          text: 'Releases',
-          link: 'docs/preface/releases.md',
-        },
-        {
           text: 'Contribution Guide',
           link: 'docs/preface/contribution-guide.md',
         }

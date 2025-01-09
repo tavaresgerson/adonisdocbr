@@ -24,7 +24,7 @@ node ace add @adonisjs/mail
 node ace add @adonisjs/mail --transports=resend --transports=smtp
 ```
 
-:::disclosure{title="See steps performed by the add command"}
+::: details See steps performed by the add command
 
 1. Installs the `@adonisjs/mail` package using the detected package manager.
 
@@ -101,57 +101,21 @@ const mailConfig = defineConfig({
 })
 ```
 
-<dl>
-
-<dt>
-
-default
-
-</dt>
-
-<dd>
+### `default`
 
 The name of the mailer to use by default for sending emails.
 
-</dd>
-
-<dt>
-
-from
-
-</dt>
-
-<dd>
+### `from`
 
 A static global address to use for the `from` property. The global address will be used unless an explicit `from` address is defined on the email.
 
-</dd>
-
-<dt>
-
-replyTo
-
-</dt>
-
-<dd>
+### `replyTo`
 
 A static global address to use for the `reply-to` property. The global address will be used unless an explicit `replyTo` address is defined on the email.
 
-</dd>
-
-<dt>
-
-mailers
-
-</dt>
-
-<dd>
+### `mailers`
 
 The `mailers` object is used to configure one or more mailers you want to use for sending emails. You can switch between the mailers at runtime using the `mail.use` method.
-
-</dd>
-
-</dl>
 
 ## Transports config
 Following is a complete reference of configuration options accepted by the officially supported transports.
@@ -160,8 +124,7 @@ See also: [TypeScript types for config object](https://github.com/adonisjs/mail/
 
 <div class="disclosure_wrapper">
 
-:::disclosure{title="Mailgun config"}
-<br />
+::: details Mailgun config
 
 The following configuration options are sent to the Mailgun's [`/messages.mime`](https://documentation.mailgun.com/en/latest/api-sending.html#sending) API endpoint.
 
@@ -199,8 +162,7 @@ The following configuration options are sent to the Mailgun's [`/messages.mime`]
 
 :::
 
-:::disclosure{title="SMTP config"}
-<br />
+::: details SMTP config
 
 The following configuration options are forwarded to Nodemailer as it is. So please check the [Nodemailer documentation](https://nodemailer.com/smtp/) as well.
 
@@ -233,8 +195,7 @@ The following configuration options are forwarded to Nodemailer as it is. So ple
 
 :::
 
-:::disclosure{title="SES config"}
-<br />
+::: details SES config
 
 The following configuration options are forwarded to Nodemailer as it is. So please check the [Nodemailer documentation](https://nodemailer.com/transports/ses/) as well.
 
@@ -266,7 +227,7 @@ Make sure to install the `@aws-sdk/client-ses` package to use the SES transport.
 
 :::
 
-:::disclosure{title="SparkPost config"}
+::: details SparkPost config
 
 <br />
 
@@ -298,8 +259,7 @@ The following configuration options are sent to the SparkPost's [`/transmissions
 
 :::
 
-:::disclosure{title="Resend config"}
-<br />
+::: details Resend config
 
 The following configuration options are sent to the Resend's [`/emails`](https://resend.com/docs/api-reference/emails/send-email) API endpoint.
 
@@ -325,8 +285,6 @@ The following configuration options are sent to the Resend's [`/emails`](https:/
 }
 ```
 :::
-
-</div>
 
 ## Basic example
 
@@ -680,9 +638,7 @@ npm i mjml
 Once done, you can write MJML markup inside your Edge templates by wrapping it inside the `@mjml` tag.
 
 :::note
-
 Since the output of MJML contains the `html`, `head`, and `body` tags, it is unnecessary to define them within your Edge templates.
-
 :::
 
 ```edge
@@ -764,7 +720,6 @@ The complete list of options accepted by the `message.attach` method follows.
 You may create email attachments from streams and buffers using the `message.attachData` method. The method accepts a readable stream or the buffer as the first argument and the options object as the second argument.
 
 :::note
-
 The `message.attachData` method should not be used when queueing emails using the `mail.sendLater` method. Since queued jobs are serialized and persisted inside a database, attaching raw data will increase the storage size.
 
 Moreover, queueing an email will fail if you attach a stream using the `message.attachData` method.
@@ -962,73 +917,29 @@ export default class VerifyEmailNotification extends BaseMail {
 }
 ```
 
-<dl>
-
-<dt>
-
-from
-
-</dt>
-
-<dd>
+### `from`
 
 Configure the sender's email address. If you omit this property, you must call the `message.from` method to define the sender.
 
-</dd>
-
-<dt>
-
-subject
-
-</dt>
-
-<dd>
+### `subject`
 
 Configure the email subject. If you omit this property, you must use the `message.subject` method to define the email subject.
 
-</dd>
-
-<dt>
-
-replyTo
-
-</dt>
-
-<dd>
+### `replyTo`
 
 Configure the `replyTo` email address.
 
-</dd>
-
-<dt>
-
-prepare
-
-</dt>
-
-<dd>
+### `prepare`
 
 The `prepare` method is called automatically by the `build` method to prepare the mail message for sending.
 
 You must define the email contents, attachments, recipients, etc, within this method.
 
-</dd>
-
-<dt>
-
-build :span[Inherited]{class="badge"}
-
-</dt>
-
-<dd>
+### `build`
 
 The `build` method is inherited from the `BaseMail` class. The method is called automatically at the time of sending the email.
 
 Make sure to reference the [original implementation](https://github.com/adonisjs/mail/blob/main/src/base_mail.ts#L81) if you decide to override this method.
-
-</dd>
-
-</dl>
 
 ### Sending email using the mail class
 You may call the `mail.send` method and pass it an instance of the mail class to send the email. For example:

@@ -6,7 +6,7 @@ summary: Learn about the events dispatched by the AdonisJS framework core and of
 
 In this guide, we look at the list of events dispatched by the framework core and the official packages. Check out the [emitter](../digging_deeper/emitter.md) documentation to learn more about its usage.
 
-## http\:request_completed
+## `http:request_completed`
 
 The [`http:request_completed`](https://github.com/adonisjs/http-server/blob/main/src/types/server.ts#L65) event is dispatched after an HTTP request is completed. The event contains an instance of the [HttpContext](../concepts/http_context.md) and the request duration. The `duration` value is the output of the `process.hrtime` method.
 
@@ -23,7 +23,7 @@ emitter.on('http:request_completed', (event) => {
 })
 ```
 
-## http\:server_ready
+## `http:server_ready`
 The event is dispatched once the AdonisJS HTTP server is ready to accept incoming requests.
 
 ```ts
@@ -41,7 +41,7 @@ emitter.on('http:server_ready', (event) => {
 })
 ```
 
-## container_binding\:resolved
+## `container_binding:resolved`
 
 The event is dispatched after the IoC container resolves a binding or constructs a class instance. The `event.binding` property will be a string (binding name) or a class constructor, and the `event.value` property is the resolved value.
 
@@ -54,7 +54,7 @@ emitter.on('container_binding:resolved', (event) => {
 })
 ```
 
-## session\:initiated
+## `session:initiated`
 The `@adonisjs/session` package emits the event when the session store is initiated during an HTTP request. The `event.session` property is an instance of the [Session class](https://github.com/adonisjs/session/blob/main/src/session.ts).
 
 ```ts
@@ -65,7 +65,7 @@ emitter.on('session:initiated', (event) => {
 })
 ```
 
-## session\:committed
+## `session:committed`
 The `@adonisjs/session` package emits the event when the session data is written to the session store during an HTTP request.
 
 ```ts
@@ -76,7 +76,7 @@ emitter.on('session:committed', (event) => {
 })
 ```
 
-## session\:migrated
+## `session:migrated`
 The `@adonisjs/session` package emits the event when a new session ID is generated using the `session.regenerate()` method.
 
 ```ts
@@ -88,7 +88,7 @@ emitter.on('session:migrated', (event) => {
 })
 ```
 
-## i18n\:missing\:translation
+## `i18n:missing:translation`
 The event is dispatched by the `@adonisjs/i18n` package when a translation for a specific key and locale is missing. You may listen to this event to find the missing translations for a given locale.
 
 ```ts
@@ -101,7 +101,7 @@ emitter.on('i18n:missing:translation', function (event) {
 })
 ```
 
-## mail\:sending
+## `mail:sending`
 The `@adonisjs/mail` package emits the event before sending an email. In the case of the `mail.sendLater` method call, the event will be emitted when the mail queue processes the job.
 
 ```ts
@@ -114,7 +114,7 @@ emitter.on('mail:sending', (event) => {
 })
 ```
 
-## mail\:sent
+## `mail:sent`
 After sending the email, the event is dispatched by the `@adonisjs/mail` package.
 
 ```ts
@@ -129,7 +129,7 @@ emitter.on('mail:sent', (event) => {
 })
 ```
 
-## mail\:queueing
+## `mail:queueing`
 The `@adonisjs/mail` package emits the event before queueing the job to send the email.
 
 ```ts
@@ -142,7 +142,7 @@ emitter.on('mail:queueing', (event) => {
 })
 ```
 
-## mail\:queued
+## `mail:queued`
 After the email has been queued, the event is dispatched by the `@adonisjs/mail` package.
 
 ```ts
@@ -155,7 +155,7 @@ emitter.on('mail:queued', (event) => {
 })
 ```
 
-## queued\:mail\:error
+## `queued:mail:error`
 The event is dispatched when the [MemoryQueue](https://github.com/adonisjs/mail/blob/main/src/messengers/memory_queue.ts) implementation of the `@adonisjs/mail` package is unable to send the email queued using the `mail.sendLater` method.
 
 If you are using a custom queue implementation, you must capture the job errors and emit this event.
@@ -169,7 +169,7 @@ emitter.on('queued:mail:error', (event) => {
 })
 ```
 
-## session_auth\:login_attempted
+## `session_auth:login_attempted`
 
 The event is dispatched by the [SessionGuard](https://github.com/adonisjs/auth/blob/main/src/guards/session/guard.ts) implementation of the `@adonisjs/auth` package when the `auth.login` method is called either directly or internally by the session guard.
 
@@ -182,7 +182,7 @@ emitter.on('session_auth:login_attempted', (event) => {
 })
 ```
 
-## session_auth\:login_succeeded
+## `session_auth:login_succeeded`
 
 The event is dispatched by the [SessionGuard](https://github.com/adonisjs/auth/blob/main/src/guards/session/guard.ts) implementation of the `@adonisjs/auth` package after a user has been logged in successfully. 
 
@@ -199,7 +199,7 @@ emitter.on('session_auth:login_succeeded', (event) => {
 })
 ```
 
-## session_auth\:authentication_attempted
+## `session_auth:authentication_attempted`
 The event is dispatched by the `@adonisjs/auth` package when an attempt is made to validate the request session and check for a logged-in user.
 
 ```ts
@@ -211,7 +211,7 @@ emitter.on('session_auth:authentication_attempted', (event) => {
 })
 ```
 
-## session_auth\:authentication_succeeded
+## `session_auth:authentication_succeeded`
 The event is dispatched by the `@adonisjs/auth` package after the request session has been validated and the user is logged in. You may access the logged-in user using the `event.user` property.
 
 ```ts
@@ -226,7 +226,7 @@ emitter.on('session_auth:authentication_succeeded', (event) => {
 })
 ```
 
-## session_auth\:authentication_failed
+## `session_auth:authentication_failed`
 The event is dispatched by the `@adonisjs/auth` package when the authentication check fails, and the user is not logged in during the current HTTP request.
 
 ```ts
@@ -240,7 +240,7 @@ emitter.on('session_auth:authentication_failed', (event) => {
 })
 ```
 
-## session_auth\:logged_out
+## `session_auth:logged_out`
 The event is dispatched by the `@adonisjs/auth` package after the user has been logged out.
 
 ```ts
@@ -258,7 +258,7 @@ emitter.on('session_auth:logged_out', (event) => {
 })
 ```
 
-## access_tokens_auth\:authentication_attempted
+## `access_tokens_auth:authentication_attempted`
 The event is dispatched by the `@adonisjs/auth` package when an attempt is made to validate the access token during an HTTP request.
 
 ```ts
@@ -269,7 +269,7 @@ emitter.on('access_tokens_auth:authentication_attempted', (event) => {
 })
 ```
 
-## access_tokens_auth\:authentication_succeeded
+## `access_tokens_auth:authentication_succeeded`
 The event is dispatched by the `@adonisjs/auth` package after the access token has been verified. You may access the authenticated user using the `event.user` property.
 
 ```ts
@@ -282,7 +282,7 @@ emitter.on('access_tokens_auth:authentication_succeeded', (event) => {
 })
 ```
 
-## access_tokens_auth\:authentication_failed
+## `access_tokens_auth:authentication_failed`
 The event is dispatched by the `@adonisjs/auth` package when the authentication check fails.
 
 ```ts
@@ -294,8 +294,7 @@ emitter.on('access_tokens_auth:authentication_failed', (event) => {
 })
 ```
 
-
-## authorization\:finished
+## `authorization:finished`
 The event is dispatched by the `@adonisjs/bouncer` package after the authorization check has been performed. The event payload includes the final response you may inspect to know the status of the check.
 
 ```ts

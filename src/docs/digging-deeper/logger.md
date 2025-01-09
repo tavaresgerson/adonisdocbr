@@ -52,45 +52,23 @@ export default defineConfig({
 })
 ```
 
-<dl>
-<dt>
-
-default
-
-<dt>
-
-<dd>
+### `default`
 
 The `default` property is a reference to one of the configured loggers within the same file under the `loggers` object. 
 
 The default logger is used to write logs unless you select a specific logger when using the logger API.
 
-</dd>
-
-<dt>
-
-loggers
-
-<dt>
-
-<dd>
+### `loggers`
 
 The `loggers` object is a key-value pair to configure multiple loggers. The key is the name of the logger, and the value is the config object accepted by [pino](https://getpino.io/#/docs/api?id=options)
-
-</dd>
-</dl>
-
-
 
 ## Transport targets
 Transports in pino play an essential role as they write logs to a destination. You can configure [multiple targets](https://getpino.io/#/docs/api?id=transport-object) within your config file, and pino will deliver logs to all of them. Each target can also specify a level from which it wants to receive the logs.
 
 :::note
-
 If you have not defined the `level` within the target configuration, the configured targets will inherit it from the parent logger.
 
 This behavior is different from pino. In Pino, targets do not inherit levels from the parent logger.
-
 :::
 
 ```ts
@@ -124,31 +102,13 @@ This behavior is different from pino. In Pino, targets do not inherit levels fro
 }
 ```
 
-<dl>
-<dt>
-
-File target
-
-<dt>
-
-<dd>
+### File target
 
 The `pino/file` target writes logs to a file descriptor. The `destination = 1` means write logs to `stdout` (this is a standard [unix convention for file descriptors](https://en.wikipedia.org/wiki/File_descriptor)).
 
-</dd>
-
-<dt>
-
-Pretty target
-
-<dt>
-
-<dd>
+### Pretty target
 
 The `pino-pretty` target uses the [pino-pretty npm module](http://npmjs.com/package/pino-pretty) to pretty-print logs to a file descriptor.
-
-</dd>
-</dl>
 
 ## Defining targets conditionally
 
@@ -418,7 +378,6 @@ app: {
   }
 }
 ```
-
 
 ## Hiding sensitive values
 

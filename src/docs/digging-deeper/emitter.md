@@ -60,10 +60,7 @@ In the following example, we register the `User` model as the data type for the 
 
 
 :::note
-
 If you find defining types for every event cumbersome, you may switch to [class-based events](#class-based-events).
-
-
 :::
 
 
@@ -128,10 +125,7 @@ emitter.on('user:registered', [SendVerificationEmail, 'handle'])
 ### Dependency injection
 
 :::warning
-
 You cannot inject the `HttpContext` inside a listener class. Because events are processed asynchronously, the listener might run after the HTTP request is finished.
-
-
 :::
 
 The listener classes are instantiated using the [IoC container](../concepts/dependency_injection.md); therefore, you can type-hint dependencies inside the class constructor or the method which handles the event.
@@ -313,7 +307,7 @@ emitter.on('user:registered', sendEmail)
 emitter.off('user:registered', sendEmail)
 ```
 
-### emitter.offAny
+### `emitter.offAny`
 
 The `emitter.offAny` removes a wildcard listener, listening for all the events.
 
@@ -321,7 +315,7 @@ The `emitter.offAny` removes a wildcard listener, listening for all the events.
 emitter.offAny(callback)
 ```
 
-### emitter.clearListeners
+### `emitter.clearListeners`
 
 The `emitter.clearListeners` method removes all the listeners for a given event.
 
@@ -333,7 +327,7 @@ emitter.clearListeners('user:registered')
 emitter.clearListeners(UserRegistered)
 ```
 
-### emitter.clearAllListeners
+### `emitter.clearAllListeners`
 
 The `emitter.clearAllListeners` method removes all the listeners for all the events.
 

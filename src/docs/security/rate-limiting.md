@@ -73,33 +73,13 @@ declare module '@adonisjs/limiter/types' {
 }
 ```
 
-<dl>
-
-<dt>
-
-default
-
-</dt>
-
-<dd>
+### `default`
 
 The `default` store to use for applying rate limits. The store is defined within the same config file under the `stores` object.
 
-</dd>
-
-<dt>
-
-stores
-
-</dt>
-
-<dd>
+### `stores`
 
 A collection of stores you plan to use within your application. We recommend always configuring the `memory` store that could be used during testing.
-
-</dd>
-
-</dl>
 
 ---
 
@@ -117,42 +97,17 @@ Also, the environment variable must be validated to allow one of the pre-configu
 ### Shared options
 Following is the list of options shared by all the bundled stores.
 
-<dl>
-
-
-<dt>
-
-keyPrefix
-
-</dt>
-
-<dd>
+### `keyPrefix`
 
 Define the prefix for the keys stored inside the database store. The database store ignores the `keyPrefix` since different database tables can be used to isolate data.
 
-</dd>
-
-<dt>
-
-execEvenly
-
-</dt>
-
-<dd>
+### `execEvenly`
 
 The `execEvenly` option adds a delay when throttling the requests so that all requests are exhausted at the end of the provided duration.
 
 For example, if you allow a user to make **10 requests/min**, all requests will have an artificial delay, so the tenth request finishes at the end of the 1 minute. Read the [smooth out traffic peaks](https://github.com/animir/node-rate-limiter-flexible/wiki/Smooth-out-traffic-peaks) article on `rate-limiter-flexible` repo to learn more about the `execEvenly` option.
 
-</dd>
-
-<dt>
-
-inMemoryBlockOnConsumed
-
-</dt>
-
-<dd>
+`inMemoryBlockOnConsumed`
 
 Define the number of requests after which the key should be blocked within memory. For example, you allow a user to make **10 requests/min**, and they have consumed all the requests within the first 10 seconds.
 
@@ -173,15 +128,7 @@ To reduce the load on the database, you can define the number of requests, after
 }
 ```
 
-</dd>
-
-<dt>
-
-inMemoryBlockDuration
-
-</dt>
-
-<dd>
+### `inMemoryBlockDuration`
 
 The duration for which to block the key within memory. This option will reduce the load on the database since the backend stores will first check within memory to see if a key is blocked.
 
@@ -191,12 +138,7 @@ The duration for which to block the key within memory. This option will reduce t
 }
 ```
 
-</dd>
-
-</dl>
-
 ---
-
 
 ### Redis store
 The `redis` store has a peer dependency on the `@adonisjs/redis` package; therefore, you must configure this package before using the redis store.
@@ -212,33 +154,13 @@ Following is the list of options the redis store accepts (alongside the shared o
 }
 ```
 
-<dl>
-
-<dt>
-
-connectionName
-
-</dt>
-
-<dd>
+### `connectionName`
 
 The `connectionName` property refers to a connection defined within the `config/redis.ts` file. We recommend using a separate redis database for the limiter.
 
-</dd>
-
-<dt>
-
-rejectIfRedisNotReady
-
-</dt>
-
-<dd>
+### `rejectIfRedisNotReady`
 
 Reject the rate-limiting requests when the status of the Redis connection is not `ready.` 
-
-</dd>
-
-</dl>
 
 ---
 
@@ -248,9 +170,7 @@ The `database` store has a peer dependency on the `@adonisjs/lucid` package, and
 Following is the list of options the database store accepts (alongside the shared options).
 
 :::note
-
 Only MySQL and PostgreSQL databases can be used with the database store.
-
 :::
 
 ```ts
@@ -265,69 +185,25 @@ Only MySQL and PostgreSQL databases can be used with the database store.
 }
 ```
 
-<dl>
-
-<dt>
-
-connectionName
-
-</dt>
-
-<dd>
+### `connectionName`
 
 Reference to the database connection defined within the `config/database.ts` file. If not defined, we will use the default database connection.
 
-</dd>
-
-<dt>
-
-dbName
-
-</dt>
-
-<dd>
+### `dbName`
 
 The database to use for making SQL queries. We try to infer the value of `dbName` from the connection config defined within the `config/database.ts` file. However, if using a connection string, you must supply the database name via this property.
 
-</dd>
-
-<dt>
-
-tableName
-
-</dt>
-
-<dd>
+### `tableName`
 
 The database table to use to store rate limits. 
 
-</dd>
-
-<dt>
-
-schemaName
-
-</dt>
-
-<dd>
+### `schemaName`
 
 The schema to use for making SQL queries (PostgreSQL only).
 
-</dd>
-
-<dt>
-
-clearExpiredByTimeout
-
-</dt>
-
-<dd>
+### `clearExpiredByTimeout`
 
 When enabled, the database store will clear expired keys every 5 minutes. Do note that only keys that have been expired for more than 1 hour will be cleared.
-
-</dd>
-
-</dl>
 
 
 ## Throttling HTTP requests

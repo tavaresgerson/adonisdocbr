@@ -13,9 +13,7 @@ AdonisJS provides a handful of built-in [health checks](#available-health-checks
 You may configure health checks in your application by executing the following command. The command will create a `start/health.ts` file and configures health checks for **memory usage** and **used disk space**. Feel free to modify this file and remove/add additional health checks.
 
 :::note
-
 Make sure you have installed `@adonisjs/core@6.12.1` before using the following command.
-
 :::
 
 ```sh
@@ -95,27 +93,11 @@ The `healthChecks.run` method will execute all the checks and return a detailed 
 }
 ```
 
-<dl>
-
-<dt>
-
-isHealthy
-
-</dt>
-
-<dd>
+### `isHealthy`
 
 A boolean to know if all the checks have passed. The value will be set to `false` if one or more checks fail.
 
-</dd>
-
-<dt>
-
-status
-
-</dt>
-
-<dd>
+### `status`
 
 Report status after performing all the checks. It will be one of the following.
 
@@ -123,39 +105,15 @@ Report status after performing all the checks. It will be one of the following.
 - `warning`: One or more checks have reported a warning.
 - `error`: One or more checks have failed.
 
-</dd>
-
-<dt>
-
-finishedAt
-
-</dt>
-
-<dd>
+### `finishedAt`
 
 The DateTime at which the tests were completed.
 
-</dd>
-
-<dt>
-
-checks
-
-</dt>
-
-<dd>
+### `checks`
 
 An array of objects containing the detailed report of all the performed checks.
 
-</dd>
-
-<dt>
-
-debugInfo
-
-</dt>
-
-<dd>
+### `debugInfo`
 
 Debug info can be used to identify the process and the duration for which it has been running. It includes the following properties.
 
@@ -164,10 +122,6 @@ Debug info can be used to identify the process and the duration for which it has
 - `platform`: The platform on which the application is running.
 - `uptime`: The duration (in seconds) for which the application is running.
 - `version`: Node.js version.
-
-</dd>
-
-</dl>
 
 ### Protecting the endpoint
 You may protect the `/health` endpoint from public access using either the auth middleware or creating a custom middleware that checks for a particular API secret inside the request header. For example:
@@ -192,7 +146,7 @@ router
 
 Following is the list of available health checks you can configure within the `start/health.ts` file.
 
-### DiskSpaceCheck
+### `DiskSpaceCheck`
 
 The `DiskSpaceCheck` calculates the used disk space on your server and reports a warning/error when a certain threshold has been exceeded.
 
@@ -216,7 +170,7 @@ export const healthChecks = new HealthChecks().register([
 ])
 ```
 
-### MemoryHeapCheck
+### `MemoryHeapCheck`
 
 The `MemoryHeapCheck` monitors the heap size reported by the [process.memoryUsage()](https://nodejs.org/api/process.html#processmemoryusage) method and reports a warning/error when a certain threshold has been exceeded.
 
@@ -240,7 +194,7 @@ export const healthChecks = new HealthChecks().register([
 ])
 ```
 
-### MemoryRSSCheck
+### `MemoryRSSCheck`
 
 The `MemoryRSSCheck` monitors the Resident Set Size reported by the [process.memoryUsage()](https://nodejs.org/api/process.html#processmemoryusage) method and reports a warning/error when a certain threshold has been exceeded.
 
@@ -264,7 +218,7 @@ export const healthChecks = new HealthChecks().register([
 ])
 ```
 
-### DbCheck
+### `DbCheck`
 The `DbCheck` is provided by the `@adonisjs/lucid` package to monitor the connection with a SQL database. You can import and use it as follows.
 
 ```ts
@@ -317,7 +271,7 @@ export const healthChecks = new HealthChecks().register([
 ])
 ```
 
-### DbConnectionCountCheck
+### `DbConnectionCountCheck`
 The `DbConnectionCountCheck` monitors the active connections on the database server and reports a warning/error when a certain threshold has been exceeded. This check is only supported for **PostgreSQL** and **MySQL** databases.
 
 ```ts
@@ -369,7 +323,7 @@ new DbConnectionCountCheck(db.connection())
   .failWhenExceeds(10)
 ```
 
-### RedisCheck
+### `RedisCheck`
 The `RedisCheck` is provided by the `@adonisjs/redis` package to monitor the connection with a Redis database (including Cluster). You can import and use it as follows.
 
 ```ts
@@ -422,7 +376,7 @@ export const healthChecks = new HealthChecks().register([
 ])
 ```
 
-### RedisMemoryUsageCheck
+### `RedisMemoryUsageCheck`
 The `RedisMemoryUsageCheck` monitors the memory consumption of the redis server and reports a warning/error when a certain threshold has been exceeded.
 
 ```ts

@@ -13,12 +13,10 @@ node ace list
 ![](../ace/ace_help_screen.jpeg)
 
 :::note
-
 The output of the help screen is formatted as per the [docopt](http://docopt.org/) standard.
-
 :::
 
-## serve
+## `serve`
 The `serve` uses the [@adonisjs/assembler](https://github.com/adonisjs/assembler?tab=readme-ov-file#dev-server) package to start the AdonisJS application in development environment. You can optionally watch for file changes and restart the HTTP server on every file change.
 
 ```sh
@@ -33,75 +31,27 @@ node ace --no-warnings --inspect serve --hmr
 
 Following is the list of available options you can pass to the `serve` command. Alternatively, use the `--help` flag to view the command's help.
 
-<dl>
-
-<dt>
-
---hmr
-
-</dt>
-
-<dd>
+### `--hmr`
 
 Watch the filesystem and reload the server in HMR mode.
 
-</dd>
-
-<dt>
-
---watch
-
-</dt>
-
-<dd>
+### `--watch`
 
 Watch the filesystem and always restart the process on file change.
 
-</dd>
-
-<dt>
-
---poll
-
-</dt>
-
-<dd>
+### `--poll`
 
 Use polling to detect filesystem changes. You might want to use polling when using a Docker container for development.
 
-</dd>
-
-<dt>
-
---clear | --no-clear
-
-</dt>
-
-<dd>
+### `--clear` | `--no-clear`
 
 Clear the terminal after every file change and before displaying the new logs. Use the `--no-clear` flag to retain old logs.
 
-</dd>
-
-<dt>
-
---assets | --no-assets
-
-</dt>
-
-<dd>
+### `--assets` | `--no-assets`
 
 Start the assets bundle development server alongside the AdonisJS HTTP server. Use the `--no-assets` flag to turn off the assets bundler dev server.
 
-</dd>
-
-<dt>
-
---assets-args
-
-</dt>
-
-<dd>
+### `--assets-args`
 
 Pass commandline arguments to the asset manager child process. For example, if you use vite, you can define its options as follows.
 
@@ -109,11 +59,7 @@ Pass commandline arguments to the asset manager child process. For example, if y
 node ace serve --hmr --assets-args="--cors --open"
 ```
 
-</dd>
-
-</dl>
-
-## build
+## `build`
 The `build` command uses the [@adonisjs/assembler](https://github.com/adonisjs/assembler?tab=readme-ov-file#bundler) package to create the production build of your AdonisJS application. The following steps are performed to generate the build.
 
 See also: [TypeScript build process](../concepts/typescript_build_process.md).
@@ -124,53 +70,21 @@ node ace build
 
 Following is the list of available options you can pass to the `build` command. Alternatively, use the `--help` flag to view the command's help.
 
-<dl>
-
-<dt>
-
---ignore-ts-errors
-
-</dt>
-
-<dd>
+### `--ignore-ts-errors`
 
 The build command terminates the build process when your project has TypeScript errors. However, you can ignore those errors and finish the build using the `--ignore-ts-errors` flag.
 
-</dd>
-
-<dt>
-
---package-manager
-
-</dt>
-
-<dd>
+### `--package-manager`
 
 The build command copies the `package.json` file alongside the lock file of the package manager your application is using. 
 
 We detect the package manager using the [@antfu/install-pkg](https://github.com/antfu/install-pkg) package. However, you can turn off detection by explicitly providing the package manager's name.
 
-</dd>
-
-<dt>
-
---assets | --no-assets
-
-</dt>
-
-<dd>
+### `--assets` | `--no-assets`
 
 Bundle frontend assets alongside your backend application. Use the `--no-assets` flag to turn off the assets bundler dev server.
 
-</dd>
-
-<dt>
-
---assets-args
-
-</dt>
-
-<dd>
+### `--assets-args`
 
 Pass commandline arguments to the asset manager child process. For example, if you use vite, you can define its options as follows.
 
@@ -178,11 +92,7 @@ Pass commandline arguments to the asset manager child process. For example, if y
 node ace build --assets-args="--sourcemap --debug"
 ```
 
-</dd>
-
-</dl>
-
-## add
+## `add`
 
 The `add` command combines the `npm install <package-name>` and `node ace configure` commands. So, instead of running two separate commands, you can install and configure the package in one go using the `add` command.
 
@@ -202,94 +112,40 @@ If the package can be configured using flags, you can pass them directly to the 
 node ace add @adonisjs/lucid --db=sqlite
 ```
 
-<dl>
-
-<dt>
-
---verbose
-
-</dt>
-
-<dd>
+### `--verbose`
 
 Enable verbose mode to display the package installation and configuration logs.
 
-</dd>
-
-<dt>
-
---force
-
-</dt>
-
-<dd>
+### `--force`
 
 Passed down to the `configure` command. Force overwrite files when configuring the package. See the `configure` command for more information.
 
-<dt>
-
---package-manager
-
-</dt>
-
-<dd>
+### `--package-manager`
 
 Define the package manager to use for installing the package. The value must be `npm`, `pnpm`, `bun` or `yarn`.
 
-</dd>
-
-<dt>
-
---dev
-
-</dt>
-
-<dd>
+### `--dev`
 
 Install the package as a development dependency.
 
-</dd>
-
-</dl>
-
-## configure
+## `configure`
 Configure a package after it has been installed. The command accepts the package name as the first argument.
 
 ```sh
 node ace configure @adonisjs/lucid
 ```
 
-<dl>
-
-<dt>
-
---verbose
-
-</dt>
-
-<dd>
+### `--verbose`
 
 Enable verbose mode to display the package installation logs.
 
-</dd>
-
-<dt>
-
---force
-
-</dt>
-
-<dd>
+### `--force`
 
 The stubs system of AdonisJS does not overwrite existing files. For example, if you configure the `@adonisjs/lucid` package and your application already has a `config/database.ts` file, the configure process will not overwrite the existing config file.
 
 However, you can force overwrite files using the `--force` flag.
 
-</dd>
-
-</dl>
-
-## eject
+## `eject`
 
 Eject stubs from a given package to your application `stubs` directory. In the following example, we copy the `make/controller` stubs to our application for modification.
 
@@ -303,7 +159,7 @@ node ace eject make/controller
 node ace eject make/policy --pkg=@adonisjs/bouncer
 ```
 
-## generate\:key
+## `generate:key`
 Generate a cryptographically secure random key and write to the `.env` file as the `APP_KEY` environment variable.
 
 See also: [App key](../security/encryption.md)
@@ -312,35 +168,15 @@ See also: [App key](../security/encryption.md)
 node ace generate:key
 ```
 
-<dl>
-
-<dt>
-
---show
-
-</dt>
-
-<dd>
+### `--show`
 
 Display the key on the terminal instead of writing it to the `.env` file. By default, the key is written to the env file.
 
-</dd>
-
-<dt>
-
---force
-
-</dt>
-
-<dd>
+### `--force`
 
 The `generate:key` command does not write the key to the `.env` file when running your application in production. However, you can use the `--force` flag to override this behavior.
 
-</dd>
-
-</dl>
-
-## make\:controller
+## `make:controller`
 
 Create a new HTTP controller class. Controllers are created inside the `app/controllers` directory and use the following naming conventions.
 
@@ -360,47 +196,19 @@ You also generate a controller with custom action names, as shown in the followi
 node ace make:controller users index show store
 ```
 
-<dl>
-
-<dt>
-
---singular
-
-</dt>
-
-<dd>
+### `--singular`
 
 Force the controller name to be in singular form.
 
-</dd>
-
-<dt>
-
---resource
-
-</dt>
-
-<dd>
+### `--resource`
 
 Generate a controller with methods to perform CRUD operations on a resource.
 
-</dd>
-
-<dt>
-
---api
-
-</dt>
-
-<dd>
+### `--api`
 
 The `--api` flag is similar to the `--resource` flag. However, it does not define the `create` and the `edit` methods since they are used to display forms.
 
-</dd>
-
-</dl>
-
-## make\:middleware
+## `make:middleware`
 Create a new middleware for HTTP requests. Middleware are stored inside the `app/middleware` directory and uses the following naming conventions.
 
 - Form: `singular`
@@ -412,15 +220,7 @@ Create a new middleware for HTTP requests. Middleware are stored inside the `app
 node ace make:middleware bodyparser
 ```
 
-<dl>
-
-<dt>
-
---stack
-
-</dt>
-
-<dd>
+### `--stack`
 
 Skip the [middleware stack](../basics/middleware.md#middleware-stacks) selection prompt by defining the stack explicitly. The value must be `server`, `named`, or `router`.
 
@@ -428,11 +228,7 @@ Skip the [middleware stack](../basics/middleware.md#middleware-stacks) selection
 node ace make:middleware bodyparser --stack=router
 ```
 
-</dd>
-
-</dl>
-
-## make\:event
+## `make:event`
 Create a new event class. Events are stored inside the `app/events` directory and use the following naming conventions.
 
 - Form: `NA`
@@ -445,7 +241,7 @@ Create a new event class. Events are stored inside the `app/events` directory an
 node ace make:event orderShipped
 ```
 
-## make\:validator
+## `make:validator`
 Create a new VineJS validator file. The validators are stored inside the `app/validators` directory, and each file may export multiple validators.
 
 - Form: `singular`
@@ -461,15 +257,7 @@ node ace make:validator user
 node ace make:validator post
 ```
 
-<dl>
-
-<dt>
-
---resource
-
-</dt>
-
-<dd>
+### `--resource`
 
 Create a validator file with pre-defined validators for `create` and `update` actions.
 
@@ -477,11 +265,7 @@ Create a validator file with pre-defined validators for `create` and `update` ac
 node ace make:validator post --resource
 ```
 
-</dd>
-
-</dl>
-
-## make\:listener
+## `make:listener`
 
 Create a new event listener class. The listener classes are stored inside the `app/listeners` directory and use the following naming conventions.
 
@@ -495,15 +279,7 @@ Create a new event listener class. The listener classes are stored inside the `a
 node ace make:listener sendShipmentNotification
 ```
 
-<dl>
-
-<dt>
-
---event
-
-</dt>
-
-<dd>
+### `--event`
 
 Generate an event class alongside the event listener.
 
@@ -511,18 +287,12 @@ Generate an event class alongside the event listener.
 node ace make:listener sendShipmentNotification --event=shipment_received
 ```
 
-</dd>
-
-</dl>
-
-## make\:service
+## `make:service`
 
 Create a new service class. Service classes are stored inside the `app/services` directory and use the following naming conventions.
 
 :::note
-
 A service has no pre-defined meaning, and you can use it to extract the business logic inside your application. For example, if your application generates a lot of PDFs, you may create a service called `PdfGeneratorService` and reuse it in multiple places.
-
 :::
 
 - Form: `singular`
@@ -534,7 +304,7 @@ A service has no pre-defined meaning, and you can use it to extract the business
 node ace make:service invoice
 ```
 
-## make\:exception
+## `make:exception`
 
 Create a new [custom exception class](../basics/exception_handling.md#custom-exceptions). Exceptions are stored inside the `app/exceptions` directory.
 
@@ -547,7 +317,7 @@ Create a new [custom exception class](../basics/exception_handling.md#custom-exc
 node ace make:exception commandValidation
 ```
 
-## make\:command
+## `make:command`
 
 Create a new Ace command. By default, the commands are stored inside the `commands` directory at the root of your application.
 
@@ -563,7 +333,7 @@ Commands from this directory are imported automatically by AdonisJS when you try
 node ace make:command listRoutes
 ```
 
-## make\:view
+## `make:view`
 Create a new Edge.js template file. The templates are created inside the `resources/views` directory.
 
 - Form: `NA`
@@ -576,7 +346,7 @@ node ace make:view posts/create
 node ace make:view posts/list
 ```
 
-## make\:provider
+## `make:provider`
 
 Create a [service provider file](../concepts/service_providers.md). Providers are stored inside the `providers` directory at the root of your application and use the following naming conventions.
 
@@ -589,16 +359,7 @@ Create a [service provider file](../concepts/service_providers.md). Providers ar
 node ace make:provider app
 ```
 
-
-<dl>
-
-<dt>
-
---environments
-
-</dt>
-
-<dd>
+### `--environments`
 
 Define environments in which the provider should get imported. [Learn more about app environments](../concepts/application.md#environment)
 
@@ -606,11 +367,7 @@ Define environments in which the provider should get imported. [Learn more about
 node ace make:provider app -e=web -e=console
 ```
 
-</dd>
-
-</dl>
-
-## make\:preload
+## `make:preload`
 
 Create a new [preload file](../concepts/adonisrc_file.md#preloads). Preload files are stored inside the `start` directory.
 
@@ -618,15 +375,7 @@ Create a new [preload file](../concepts/adonisrc_file.md#preloads). Preload file
 node ace make:preload view
 ```
 
-<dl>
-
-<dt>
-
---environments
-
-</dt>
-
-<dd>
+### `--environments`
 
 Define environments in which the preload file should get imported. [Learn more about app environments](../concepts/application.md#environment)
 
@@ -634,11 +383,7 @@ Define environments in which the preload file should get imported. [Learn more a
 node ace make:preload view app -e=web -e=console
 ```
 
-</dd>
-
-</dl>
-
-## make\:test
+## `make:test`
 Create a new test file inside the `tests/<suite>` directory.
 
 - Form: NA
@@ -649,23 +394,11 @@ Create a new test file inside the `tests/<suite>` directory.
 node ace make:test --suite=unit
 ```
 
-<dl>
-
-<dt>
-
---suite
-
-</dt>
-
-<dd>
+### `--suite`
 
 Define the suite for which you want to create the test file. Otherwise, the command will display a prompt for suite selection.
 
-</dd>
-
-</dl>
-
-## make\:mail
+## `make:mail`
 
 Create a new mail class inside the `app/mails` directory. The mail classes are suffixed with the `Notification` keyword. However, you may define a custom suffix using the `--intent` CLI flag.
 
@@ -679,16 +412,7 @@ node ace make:mail shipment
 # ./app/mails/shipment_notification.ts
 ```
 
-
-<dl>
-
-<dt>
-
---intent
-
-</dt>
-
-<dd>
+### `--intent`
 
 Define a custom intent for the mail.
 
@@ -700,11 +424,7 @@ node ace make:mail storage --intent=warning
 # ./app/mails/storage_warning.ts
 ```
 
-</dd>
-
-</dl>
-
-## make\:policy
+## `make:policy`
 
 Create a new Bouncer policy class. The policies are stored inside the `app/policies` folder and use the following naming conventions.
 
@@ -717,7 +437,7 @@ Create a new Bouncer policy class. The policies are stored inside the `app/polic
 node ace make:policy post
 ```
 
-## inspect\:rcfile
+## `inspect:rcfile`
 View the contents of the `adonisrc.ts` file after merging the defaults. You may use this command to inspect the available configuration options and override them per your application requirements.
 
 See also: [AdonisRC file](../concepts/adonisrc_file.md)
@@ -726,7 +446,7 @@ See also: [AdonisRC file](../concepts/adonisrc_file.md)
 node ace inspect:rcfile
 ```
 
-## list\:routes
+## `list:routes`
 View list of routes registered by your application. This command will boot your AdonisJS application in the `console` environment.
 
 ```sh
@@ -737,59 +457,23 @@ Also, you can see the routes list from the VSCode activity bar if you are using 
 
 ![](../basics/vscode_routes_list.png)
 
-<dl>
-
-<dt>
-
---json
-
-</dt>
-
-<dd>
+### `--json`
 
 View routes as a JSON string. The output will be an array of object.
 
-</dd>
-
-<dt>
-
---table
-
-</dt>
-
-<dd>
+### `--table`
 
 View routes inside a CLI table. By default, we display routes inside a compact, pretty list.
 
-</dd>
-
-<dt>
-
---middleware
-
-</dt>
-
-<dd>
+### `--middleware`
 
 Filter routes list and include the ones using the mentioned middleware. You may use the `*` keyword to include routes using one or more middleware.
 
-</dd>
-
-<dt>
-
---ignore-middleware
-
-</dt>
-
-<dd>
+### `--ignore-middleware`
 
 Filter routes list and include the ones NOT using the mentioned middleware. You may use the `*` keyword to include routes that do not use any middleware.
 
-</dd>
-
-</dl>
-
-## env\:add
+## `env:add`
 
 The `env:add` command allows you to add a new environment variables to the `.env`, `.env.example` files and will also define the validation rules in the `start/env.ts` file. 
 
@@ -803,34 +487,14 @@ node ace env:add
 node ace env:add MY_VARIABLE value --type=string
 ```
 
-<dl>
-
-<dt>
-
---type
-
-</dt>
-
-<dd>
+### `--type`
 
 Define the type of the environment variable. The value must be one of the following: `string`, `boolean`, `number`, `enum`.
 
-</dd>
-
-<dt>
-
---enum-values
-
-</dt>
-
-<dd>
+### `--enum-values`
 
 Define the allowed values for the environment variable when the type is `enum`. 
 
 ```sh
 node ace env:add MY_VARIABLE foo --type=enum --enum-values=foo --enum-values=bar
 ```
-
-</dd>
-
-</dl>

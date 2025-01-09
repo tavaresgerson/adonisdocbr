@@ -2,7 +2,7 @@
 summary: Use the `@adonisjs/lock` package to manage atomic locks in your AdonisJS application. 
 ---
 
-# Atomic Locks
+# tomic Locks
 
 An atomic lock, otherwise known as a `mutex`, is used for synchronizing access to a shared resource. In other words, it prevents several processes, or concurrent code, from executing a section of code at the same time.
 
@@ -16,7 +16,7 @@ Install and configure the package using the following command:
 node ace add @adonisjs/lock
 ```
 
-:::disclosure{title="See steps performed by the add command"}
+::: details See steps performed by the add command
 
 1. Install the `@adonisjs/lock` package using the detected package manager.
 
@@ -68,37 +68,15 @@ declare module '@adonisjs/lock/types' {
 }
 ```
 
-
-<dl>
-
-<dt>
-
-default
-
-</dt>
-
-<dd>
+### `default`
 
 The `default` store to use for managing locks. The store is defined within the same config file under the `stores` object.
 
-</dd>
-
-<dt>
-
-stores
-
-</dt>
-
-<dd>
+### `stores`
 
 A collection of stores you plan to use within your application. We recommend always configuring the `memory` store that could be used during testing.
 
-</dd>
-
-</dl>
-
 ---
-
 
 ### Environment variables
 The default lock store is defined using the `LOCK_STORE` environment variable, and therefore, you can switch between different stores in different environments. For example, use the `memory` store during testing and the `redis` store for development and production.
@@ -124,16 +102,9 @@ Following is the list of options the Redis store accepts:
 }
 ```
 
-<dl>
-<dt>
-connectionName
-</dt>
-<dd>
+#### `connectionName`
 
 The `connectionName` property refers to a connection defined within the `config/redis.ts` file.
-
-</dd>
-</dl>
 
 ### Database store
 
@@ -150,33 +121,13 @@ Following is the list of options the database store accepts:
 }
 ```
 
-<dl>
-
-<dt>
-
-connectionName
-
-</dt>
-
-<dd>
+#### `connectionName`
 
 Reference to the database connection defined within the `config/database.ts` file. If not defined, we will use the default database connection.
 
-</dd>
-
-<dt>
-
-tableName
-
-</dt>
-
-<dd>
+#### `tableName`
 
 The database table to use to store rate limits. 
-
-</dd>
-
-</dl>
 
 ### Memory store
 
@@ -195,7 +146,6 @@ The memory store is built on top of the [`async-mutex`](https://www.npmjs.com/pa
 Once you have configured your lock store, you can start using locks to protect your resources anywhere within your application.
 
 Here is a simple example of how to use locks to protect a resource.
-
 
 :::codegroup
 

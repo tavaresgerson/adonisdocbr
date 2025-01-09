@@ -14,7 +14,7 @@ import * as helpers from '@adonisjs/core/helpers'
 import string from '@adonisjs/core/helpers/string'
 ```
 
-## escapeHTML
+## `escapeHTML`
 
 Escape HTML entities in a string value. Under the hood, we use the [he](https://www.npmjs.com/package/he#heescapetext) package.
 
@@ -36,7 +36,7 @@ string.escapeHTML('<p> foo © bar </p>', {
 // &lt;p&gt; foo &#xA9; bar &lt;/p&gt;
 ```
 
-## encodeSymbols
+## `encodeSymbols`
 
 You may encode non-ASCII symbols in a string value using the `encodeSymbols` helper. Under the hood, we use [he.encode](https://www.npmjs.com/package/he#heencodetext-options) method.
 
@@ -47,7 +47,7 @@ string.encodeSymbols('foo © bar ≠ baz 𝌆 qux')
 // 'foo &#xA9; bar &#x2260; baz &#x1D306; qux'
 ```
 
-## prettyHrTime
+## `prettyHrTime`
 
 Pretty print the diff of [process.hrtime](https://nodejs.org/api/process.html#processhrtimetime) method.
 
@@ -62,7 +62,7 @@ const endTime = hrtime(startTime)
 console.log(string.prettyHrTime(endTime))
 ```
 
-## isEmpty
+## `isEmpty`
 
 Check if a string value is empty.
 
@@ -73,7 +73,7 @@ string.isEmpty('') // true
 string.isEmpty('      ') // true
 ```
 
-## truncate
+## `truncate`
 
 Truncate a string at a given number of characters.
 
@@ -103,7 +103,7 @@ string.truncate('This is a very long, maybe not that long title', 12, {
 // Output: This is a very... <a href="/1"> Read more </a>
 ```
 
-## excerpt
+## `excerpt`
 
 The `excerpt` method is identical to the `truncate` method. However, it strips the HTML tags from the string.
 
@@ -116,7 +116,7 @@ string.excerpt('<p>This is a <strong>very long</strong>, maybe not that long tit
 // Output: This is a very...
 ```
 
-## slug
+## `slug`
 
 Generate slug for a string value. The method is exported from the [slugify package](https://www.npmjs.com/package/slugify); therefore, consult its documentation for available options.
 
@@ -136,7 +136,7 @@ console.log(string.slug('unicode ♥ is ☢'))
 // unicode-love-is-radioactive
 ```
 
-## interpolate
+## `interpolate`
 
 Interpolate variables inside a string. The variables must be inside double curly braces.
 
@@ -158,7 +158,7 @@ string.interpolate('hello \\{{ users.0 }}', {})
 // hello {{ users.0 }}
 ```
 
-## plural
+## `plural`
 
 Convert a word to its plural form. The method is exported from the [pluralize package](https://www.npmjs.com/package/pluralize).
 
@@ -169,7 +169,7 @@ string.plural('test')
 // tests
 ```
 
-## isPlural
+## `isPlural`
 
 Find if a word already is in plural form.
 
@@ -179,7 +179,7 @@ import string from '@adonisjs/core/helpers/string'
 string.isPlural('tests') // true
 ```
 
-## pluralize
+## `pluralize`
 
 This method combines the `singular` and the `plural` methods and uses one or the other based on the count. For example:
 
@@ -204,7 +204,7 @@ string.pluralize.addUncountableRule('paper')
 string.pluralize.addSingularRule(/singles$/i, 'singular')
 ```
 
-## singular
+## `singular`
 
 Convert a word to its singular form. The method is exported from the [pluralize package](https://www.npmjs.com/package/pluralize).
 
@@ -215,7 +215,7 @@ string.singular('tests')
 // test
 ```
 
-## isSingular
+## `isSingular`
 
 Find if a word is already in a singular form.
 
@@ -225,7 +225,7 @@ import string from '@adonisjs/core/helpers/string'
 string.isSingular('test') // true
 ```
 
-## camelCase
+## `camelCase`
 
 Convert a string value to camelcase.
 
@@ -247,7 +247,7 @@ Following are some of the conversion examples.
 | 'version 1.2.10' | 'version1210' |
 | 'version 1.21.0' | 'version1210' |
 
-## capitalCase
+## `capitalCase`
 
 Convert a string value to a capital case.
 
@@ -268,7 +268,7 @@ Following are some of the conversion examples.
 | 'version 1.2.10' | 'Version 1.2.10' |
 | 'version 1.21.0' | 'Version 1.21.0' |
 
-## dashCase
+## `dashCase`
 
 Convert a string value to a dash case.
 
@@ -296,7 +296,7 @@ Following are some of the conversion examples.
 | 'version 1.2.10' | 'version-1210' |
 | 'version 1.21.0' | 'version-1210' |
 
-## dotCase
+## `dotCase`
 
 Convert a string value to a dot case.
 
@@ -325,7 +325,7 @@ Following are some of the conversion examples.
 | 'version 1.2.10' | 'version.1210' |
 | 'version 1.21.0' | 'version.1210' |
 
-## noCase
+## `noCase`
 
 Remove all sorts of casing from a string value.
 
@@ -366,7 +366,7 @@ Following are some of the conversion examples.
 | 'amazon s3 data'       | 'amazon s3 data'       |
 | 'foo_13_bar'           | 'foo 13 bar'           |
 
-## pascalCase
+## `pascalCase`
 
 Convert a string value to a Pascal case. Great for generating JavaScript class names.
 
@@ -387,7 +387,7 @@ Following are some of the conversion examples.
 | 'version 1.2.10' | 'Version1210' |
 | 'version 1.21.0' | 'Version1210' |
 
-## sentenceCase
+## `sentenceCase`
 
 Convert a value to a sentence.
 
@@ -409,7 +409,7 @@ Following are some of the conversion examples.
 | 'version 1.2.10' | 'Version 1 2 10' |
 | 'version 1.21.0' | 'Version 1 21 0' |
 
-## snakeCase
+## `snakeCase`
 
 Convert value to snake case.
 
@@ -432,7 +432,7 @@ Following are some of the conversion examples.
 | 'version 1.2.10' | 'version_1210' |
 | 'version 1.21.0' | 'version_1210' |
 
-## titleCase
+## `titleCase`
 
 Convert a string value to the title case.
 
@@ -458,7 +458,7 @@ Following are some of the conversion examples.
 | 'newcastle upon tyne'              | 'Newcastle upon Tyne'              |
 | 'newcastle \*upon\* tyne'          | 'Newcastle \*upon\* Tyne'          |
 
-## random
+## `random`
 
 Generate a cryptographically secure random string of a given length. The output value is a URL-safe base64 encoded string.
 
@@ -469,7 +469,7 @@ string.random(32)
 // 8mejfWWbXbry8Rh7u8MW3o-6dxd80Thk
 ```
 
-## sentence
+## `sentence`
 
 Convert an array of words to a comma-separated sentence.
 
@@ -500,7 +500,7 @@ string.sentence(['routes', 'controllers'], {
 // routes, and controllers
 ```
 
-## condenseWhitespace
+## `condenseWhitespace`
 
 Remove multiple whitespaces from a string to a single whitespace.
 
@@ -514,7 +514,7 @@ string.condenseWhitespace('  hello  world  ')
 // hello world
 ```
 
-## seconds
+## `seconds`
 
 Parse a string-based time expression to seconds.
 
@@ -538,7 +538,7 @@ string.seconds.format(36000) // 10h
 string.seconds.format(36000, true) // 10 hours
 ```
 
-## milliseconds
+## `milliseconds`
 
 Parse a string-based time expression to milliseconds.
 
@@ -562,7 +562,7 @@ string.milliseconds.format(3.6e6) // 1h
 string.milliseconds.format(3.6e6, true) // 1 hour
 ```
 
-## bytes
+## `bytes`
 
 Parse a string-based unit expression to bytes.
 
@@ -587,7 +587,7 @@ string.bytes.format(1024 * 1024 * 1000) // 1000MB
 string.bytes.format(1024 * 1024 * 1000, { thousandsSeparator: ',' }) // 1,000MB
 ```
 
-## ordinal
+## `ordinal`
 
 Get the ordinal letter for a given number.
 
@@ -603,7 +603,7 @@ string.ordinal(23) // '23rd'
 string.ordinal(24) // '24th'
 ```
 
-## safeEqual
+## `safeEqual`
 
 Check if two buffer or string values are the same. This method does not leak any timing information and prevents [timing attack](https://javascript.plainenglish.io/what-are-timing-attacks-and-how-to-prevent-them-using-nodejs-158cc7e2d70c).
 
@@ -629,7 +629,7 @@ if (safeEqual(trustedValue, userInput)) {
 }
 ```
 
-## cuid
+## `cuid`
 Create a secure, collision-resistant ID optimized for horizontal scaling and performance. This method uses the [@paralleldrive/cuid2](https://github.com/paralleldrive/cuid2) package under the hood.
 
 ```ts
@@ -648,7 +648,7 @@ const id = cuid()
 isCuid(id) // true
 ```
 
-## compose
+## `compose`
 
 The `compose` helper allows you to use TypeScript class mixins with a cleaner API. Following is an example of mixin usage without the `compose` helper.
 
@@ -673,7 +673,7 @@ class User extends compose(
 ) {}
 ```
 
-## base64
+## `base64`
 
 Utility methods to base64 encode and decode values.
 
@@ -714,7 +714,7 @@ base64.decode('hello world') // null
 base64.decode('hello world', 'utf-8', true) // raises exception
 ```
 
-## fsReadAll
+## `fsReadAll`
 
 Get a list of all the files from a directory. The method recursively fetches files from the main and the sub-folders. The dotfiles are ignored implicitly.
 
@@ -746,7 +746,7 @@ await fsReadAll(location, options)
 | `sort` | Define a custom method to sort file paths. By default, the files are sorted using natural sort. |
 | `pathType` | Define how to return the collected paths. By default, OS-specific relative paths are returned. If you want to import the collected files, you must set the`pathType = 'url'` |
 
-## fsImportAll
+## `fsImportAll`
 
 The `fsImportAll` method imports all the files recursively from a given directory and sets the exported value from each module on an object.
 
@@ -844,7 +844,7 @@ if (!decoded) {
 console.log(decoded.token)
 ```
 
-## Secret
+## `Secret`
 The `Secret` class lets you hold sensitive values within your application without accidentally leaking them inside logs and console statements.
 
 For example, the `appKey` value defined inside the `config/app.ts` file is an instance of the `Secret` class. If you try to log this value to the console, you will see `[redacted]` and not the original value.

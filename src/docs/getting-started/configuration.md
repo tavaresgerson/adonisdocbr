@@ -10,10 +10,7 @@ Feel free to create additional files your application requires inside the `confi
 
 
 :::note
-
 We recommend using [environment variables](./environment_variables.md) for storing secrets and environment-specific configuration.
-
-
 :::
 
 ## Importing config files
@@ -122,9 +119,7 @@ Fundamentally, this limitation positively impacts your codebase because the appl
 You can mutate the config values at runtime using the config service. The `config.set` updates the value within the memory, and no changes are made to the files on the disk.
 
 :::note
-
 The config value is mutated for the entire application, not just for a single HTTP request. This is because Node.js is not a threaded runtime, and the memory in Node.js is shared between multiple HTTP requests.
-
 :::
 
 ```ts

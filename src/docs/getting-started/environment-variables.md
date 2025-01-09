@@ -98,7 +98,7 @@ The same validation rules are used to infer the static-type information. The typ
 
 ## Validator schema API
 
-### schema.string
+### `schema.string`
 
 The `schema.string` method ensures the value is a valid string. Empty strings fail the validation, and you must use the optional variant to allow empty strings.
 
@@ -115,7 +115,7 @@ The `schema.string` method ensures the value is a valid string. Empty strings fa
 
 The string value can be validated for its formatting. Following is the list of available formats.
 
-#### host
+#### `host`
 Validate the value to be a valid URL or an IP address.
 
 ```ts
@@ -124,7 +124,7 @@ Validate the value to be a valid URL or an IP address.
 }
 ```
 
-#### url
+#### `url`
 Validate the value to be a valid URL. Optionally, you can make the validation less strict by allowing URLs not to have `protocol` or `tld`.
 
 ```ts
@@ -139,7 +139,7 @@ Validate the value to be a valid URL. Optionally, you can make the validation le
 }
 ```
   
-#### email
+#### `email`
 Validate the value to be a valid email address.
 
 ```ts
@@ -148,7 +148,7 @@ Validate the value to be a valid email address.
 }
 ```
 
-### schema.boolean
+### `schema.boolean`
 
 The `schema.boolean` method ensures the value is a valid boolean. Empty values fail the validation, and you must use the optional variant to allow empty values.
 
@@ -165,7 +165,7 @@ The string representations of `'true'`, `'1'`, `'false'`, and `'0'` are cast to 
 }
 ```
 
-### schema.number
+### `schema.number`
 
 The `schema.number` method ensures the value is a valid number. The string representation of a number value is cast to the number data type.
 
@@ -180,7 +180,7 @@ The `schema.number` method ensures the value is a valid number. The string repre
 }
 ```
 
-### schema.enum
+### `schema.enum`
 
 The `schema.enum` method validates the environment variable against one of the pre-defined values. The enum options can be specified as an array of values or a TypeScript native enum type.
 

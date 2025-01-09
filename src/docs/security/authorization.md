@@ -13,9 +13,7 @@ The goal of abilities and policies is to abstract the logic of authorizing an ac
 - [Policies](#defining-policies) are defined as classes, and you must create one policy for every resource in your application. Policies can also benefit from [automatic dependency injection](#dependency-injection).
 
 :::note
-
 Bouncer is not an implementation of RBAC or ACL. Instead, it provides a low-level API with fine-grained control to authorize actions in your AdonisJS applications.
-
 :::
 
 ## Installation
@@ -71,9 +69,7 @@ During setup, we create and register the `#middleware/initialize_bouncer_middlew
 Also, we share the same Bouncer instance with Edge templates using the `ctx.view.share` method. Feel free to remove the following lines of code from the middleware if you are not using Edge inside your application.
 
 :::note
-
 You own your application's source code, including the files created during the initial setup. So, do not hesitate to change them and make them work with your application environment.
-
 :::
 
 ```ts
@@ -104,9 +100,7 @@ Abilities are JavaScript functions usually written inside the `./app/abilities/m
 In the following example, we define an ability called `editPost` using the `Bouncer.ability` method. The implementation callback must return `true` to authorize the user and return `false` to deny access.
 
 :::note
-
 An ability should always accept the `User` as the first parameter, followed by additional parameters needed for the authorization check.
-
 :::
 
 ```ts
@@ -347,9 +341,7 @@ export default class PostPolicy extends BasePolicy {
 You may define the `before` and the `after` template methods on a policy class to run actions around an authorization check. A common use case is always allowing or denying access to a certain user.
 
 :::note
-
 The `before` and the `after` methods are always invoked, regardless of a logged-in user. So make sure to handle the case where the value of `user` will be `null`.
-
 :::
 
 The response from the `before` is interpreted as follows.

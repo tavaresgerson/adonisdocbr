@@ -4,8 +4,6 @@ summary: "AdonisJS is a TypeScript-first web framework for Node.js. You can use 
 
 # Introduction
 
-::include{template="partials/introduction_cards"}
-
 ## What is AdonisJS?
 
 AdonisJS is a TypeScript-first web framework for Node.js. You can use it to create a full-stack web application or a JSON API server.
@@ -94,9 +92,3 @@ With that said, the documentation extensively covers the usage of available modu
 
 ## Recent releases
 Following is the list of recent releases. [Click here](./releases.md) to view all the releases.
-
-::include{template="partials/recent_releases"}
-
-## Sponsors
-
-::include{template="partials/sponsors"}

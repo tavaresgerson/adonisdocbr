@@ -49,27 +49,11 @@ export default defineConfig({
 })
 ```
 
-<dl>
-
-<dt>
-
-pingInterval
-
-</dt>
-
-<dd>
+### `pingInterval`
 
 The interval used to send ping messages to the client. The value is in milliseconds or using a string `Duration` format (i.e: `10s`). Set to `false` to disable ping messages.
 
-</dd>
-
-<dt>
-
-transport
-
-</dt>
-
-<dd>
+### `transport`
 
 Transmit supports syncing events across multiple servers or instances. You can enable the feature by referencing the wanted transport layer (only `redis` is supported for now). Set to `null` to disable syncing.
 
@@ -93,10 +77,6 @@ export default defineConfig({
 :::note
 Ensure you have `ioredis` installed when using the `redis` transport.
 :::
-
-</dd>
-
-</dl>
 
 ## Register Routes
 
@@ -227,166 +207,57 @@ You should create only one instance of the `Transmit` class and reuse it through
 
 The `Transmit` class accepts an object with the following properties:
 
-<dl>
-
-<dt>
-
-baseUrl
-
-</dt>
-
-<dd>
+### `baseUrl`
 
 The base URL of the server. The URL must include the protocol (http or https) and the domain name.
 
-</dd>
-
-<dt>
-
-uidGenerator
-
-</dt>
-
-<dd>
+### `uidGenerator`
 
 A function that generates a unique identifier for the client. The function must return a string. It defaults to `crypto.randomUUID`.
 
-</dd>
-
-<dt>
-
-eventSourceFactory
-
-</dt>
-
-<dd>
+### `eventSourceFactory`
 
 A function that creates a new `EventSource` instance. It defaults to the WebAPI [`EventSource`](https://developer.mozilla.org/en-US/docs/Web/API/EventSource). You need to provide a custom implementation if you want to use the client on `Node.js`, `React Native` or any other environment that does not support the `EventSource` API.
 
-</dd>
-
-<dt>
-
-eventTargetFactory 
-
-</dt>
-
-<dd>
+### `eventTargetFactory`
 
 A function that creates a new `EventTarget` instance. It defaults to the WebAPI [`EventTarget`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget). You need to provide a custom implementation if you want to use the client on `Node.js`, `React Native` or any other environment that does not support the `EventTarget` API. Return `null` to disable the `EventTarget` API.
 
-</dd>
-
-<dt>
-
-httpClientFactory
-
-</dt>
-
-<dd>
+### `httpClientFactory`
 
 A function that creates a new `HttpClient` instance. It is mainly used for testing purposes.
 
-</dd>
-
-<dt>
-
-beforeSubscribe
-
-</dt>
-
-<dd>
+### `beforeSubscribe`
 
 A function that is called before subscribing to a channel. It receives the channel name and the `Request` object sent to the server. Use this function to add custom headers or modify the request object.
 
-</dd>
-
-<dt>
-
-beforeUnsubscribe
-
-</dt>
-
-<dd>
+### `beforeUnsubscribe`
 
 A function that is called before unsubscribing from a channel. It receives the channel name and the `Request` object sent to the server. Use this function to add custom headers or modify the request object.
 
-</dd>
-
-<dt>
-
-maxReconnectAttempts
-
-</dt>
-
-<dd>
+### `maxReconnectAttempts`
 
 The maximum number of reconnection attempts. It defaults to `5`.
 
-</dd>
-
-<dt>
-
-onReconnectAttempt
-
-</dt>
-
-<dd>
+### `onReconnectAttempt`
 
 A function that is called before each reconnection attempt and receives the number of attempts made so far. Use this function to add custom logic.
 
-</dd>
-
-<dt>
-
-onReconnectFailed
-
-</dt>
-
-<dd>
+### `onReconnectFailed`
 
 A function that is called when the reconnection attempts fail. Use this function to add custom logic.
 
-</dd>
-
-<dt>
-
-onSubscribeFailed
-
-</dt>
-
-<dd>
+### `onSubscribeFailed`
 
 A function that is called when the subscription fails. It receives the `Response` object. Use this function to add custom logic.
 
-</dd>
-
-<dt>
-
-onSubscription
-
-</dt>
-
-<dd>
+### `onSubscription`
 
 A function that is called when the subscription is successful. It receives the channel name. Use this function to add custom logic.
 
-</dd>
-
-<dt>
-
-onUnsubscription
-
-</dt>
-
-<dd>
+### `onUnsubscription`
 
 A function that is called when the unsubscription is successful. It receives the channel name. Use this function to add custom logic.
-
-</dd>
-
-</dl>
-
 
 ### Creating a Subscription
 

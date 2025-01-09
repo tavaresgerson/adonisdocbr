@@ -6,7 +6,7 @@ summary: Learn about the helpers and tags contributed by the AdonisJS official p
 
 In this guide, we will learn about the **helpers and the tags** contributed to Edge by the AdonisJS official packages. The helpers shipped with Edge are not covered in this guide and must reference [Edge](https://edgejs.dev/docs/helpers) documentation for the same.
 
-## request
+## `request`
 Reference to the instance of ongoing [HTTP request](../basics/request.md). The property is only available when a template is rendered using the `ctx.view.render` method.
 
 ```edge
@@ -14,7 +14,7 @@ Reference to the instance of ongoing [HTTP request](../basics/request.md). The p
 {{ request.input('signature') }}
 ```
 
-## route/signedRoute
+## `route` / `signedRoute`
 Helper functions to create URL for a route using the [URL builder](../basics/routing.md#url-builder). Unlike the URL builder, the view helpers do not have a fluent API and accept the following parameters.
 
 <table>
@@ -61,14 +61,14 @@ Helper functions to create URL for a route using the [URL builder](../basics/rou
 </a>
 ```
 
-## app
+## `app`
 Reference to the [Application instance](../concepts/application.md).
 
 ```edge
 {{ app.getEnvironment() }}
 ```
 
-## config
+## `config`
 A [helper function](../getting_started/configuration.md#reading-config-inside-edge-templates) to reference configuration values inside Edge templates. You may use the `config.has` method to check if the value for a key exists.
 
 ```edge
@@ -79,14 +79,14 @@ A [helper function](../getting_started/configuration.md#reading-config-inside-ed
 @end
 ```
 
-## session
+## `session`
 A read-only copy of the [session object](../basics/session.md#reading-and-writing-data). You cannot mutate session data within Edge templates. The `session` property is only available when the template is rendered using the `ctx.view.render` method.
 
 ```edge
 Post views: {{ session.get(`post.${post.id}.visits`) }}
 ```
 
-## flashMessages
+## `flashMessages`
 A read-only copy of [session flash messages](../basics/session.md#flash-messages). The `flashMessages` property is only available when the template is rendered using the `ctx.view.render` method.
 
 ```edge
@@ -101,7 +101,7 @@ A read-only copy of [session flash messages](../basics/session.md#flash-messages
 @end
 ```
 
-## old
+## `old`
 The `old` method is a shorthand for the `flashMessages.get` method.
 
 ```edge
@@ -112,21 +112,21 @@ The `old` method is a shorthand for the `flashMessages.get` method.
 />
 ```
 
-## t
+## `t`
 The `t` method is contributed by the `@adonisjs/i18n` package to display translations using the [i18n class](../digging_deeper/i18n.md#resolving-translations). The method accepts the translation key identifier, message data and a fallback message as the parameters.
 
 ```edge
 <h1> {{ t('messages.greeting') }} </h1>
 ```
 
-## i18n
+## `i18n`
 Reference to an instance of the I18n class configured using the application's default locale. However, the [`DetectUserLocaleMiddleware`](../digging_deeper/i18n.md#detecting-user-locale-during-an-http-request) overrides this property with an instance created for the current HTTP request locale.
 
 ```edge
 {{ i18n.formatCurrency(200, { currency: 'USD' }) }}
 ```
 
-## auth
+## `auth`
 Reference to the [ctx.auth](../concepts/http_context.md#http-context-properties) property shared by the [InitializeAuthMiddleware](https://github.com/adonisjs/auth/blob/main/src/auth/middleware/initialize_auth_middleware.ts#L14). You may use this property to access information about the logged-in user.
 
 ```edge
@@ -146,14 +146,14 @@ If you are displaying the logged-in user info on a public page (not protected by
 @end
 ```
 
-## asset
+## `asset`
 Resolve the URL of an asset processed by Vite. Learn more about [referencing assets inside Edge templates](../basics/vite.md#referencing-assets-inside-edge-templates).
 
 ```edge
 <img src="{{ asset('resources/images/hero.jpg') }}" />
 ```
 
-## embedImage / embedImageData
+## `embedImage` / `embedImageData`
 The `embedImage` and the `embedImageData` helpers are added by the [mail](../digging_deeper/mail.md#embedding-images) package and are only available when rendering a template to send an email.
 
 ```edge
@@ -162,7 +162,7 @@ The `embedImage` and the `embedImageData` helpers are added by the [mail](../dig
 }}" />
 ```
 
-## @flashMessage
+## `@flashMessage`
 The `@flashMessage` tag provides a better DX for reading flash messages for a given key conditionally.
 
 :::caption{for="error"}
@@ -189,7 +189,7 @@ The `@flashMessage` tag provides a better DX for reading flash messages for a gi
 @end
 ```
 
-## @error
+## `@error`
 The `@error` tag provides a better DX for reading error messages stored inside the `errorsBag` key in `flashMessages`.
 
 :::caption{for="error"}
@@ -212,7 +212,7 @@ The `@error` tag provides a better DX for reading error messages stored inside t
 @end
 ```
 
-## @inputError
+## `@inputError`
 The `@inputError` tag provides a better DX for reading validation error messages stored inside the `inputErrorsBag` key in `flashMessages`.
 
 :::caption{for="error"}
@@ -239,7 +239,7 @@ The `@inputError` tag provides a better DX for reading validation error messages
 @end
 ```
 
-## @vite
+## `@vite`
 The `@vite` tag accepts an array of entry point paths and returns the `script` and the `link` tags for the same. The path you provide to the `@vite` tag should match exactly the path registered inside the `vite.config.js` file.
 
 ```ts
@@ -266,7 +266,7 @@ You can define the script tag attributes as the 2nd argument. For example:
 })
 ```
 
-## @viteReactRefresh
+## `@viteReactRefresh`
 The `@viteReactRefresh` tag returns a [script tag to enable React HMR](https://vitejs.dev/guide/backend-integration.html#:~:text=you%27ll%20also%20need%20to%20add%20this%20before%20the%20above%20scripts) for project using the [@vitejs/plugin-react](https://www.npmjs.com/package/@vitejs/plugin-react) package.
 
 ```edge
@@ -285,7 +285,7 @@ Output HTML
 </script>
 ```
 
-## @can/@cannot
+## `@can` / `@cannot`
 The `@can` and `@cannot` tags allows you write authorization checks in Edge templates by referencing the ability name or the policy name as a string.
 
 The first argument is the ability or the policy reference followed by the arguments accepted by the check.
