@@ -1,14 +1,14 @@
 ---
-summary: Learn about config providers and how they help you lazily compute the configuration after the application is booted.
+resumo: Aprenda sobre provedores de configuração e como eles ajudam você a calcular preguiçosamente a configuração após o aplicativo ser inicializado.
 ---
 
-# Config providers
+# Provedores de configuração
 
-Some configuration files like (`config/hash.ts`) do not export config as a plain object. Instead, they export a [config provider](https://github.com/adonisjs/core/blob/main/src/config_provider.ts#L16). The config provider provides a transparent API for packages to lazily compute the configuration after the application is booted.
+Alguns arquivos de configuração como (`config/hash.ts`) não exportam a configuração como um objeto simples. Em vez disso, eles exportam um [provedor de configuração](https://github.com/adonisjs/core/blob/main/src/config_provider.ts#L16). O provedor de configuração fornece uma API transparente para pacotes calcularem preguiçosamente a configuração após o aplicativo ser inicializado.
 
-## Without config providers
+## Sem provedores de configuração
 
-To understand config providers, let's see what the `config/hash.ts` file would look like if we were not using config providers.
+Para entender os provedores de configuração, vamos ver como o arquivo `config/hash.ts` ficaria se não estivéssemos usando provedores de configuração.
 
 ```ts
 import { Scrypt } from '@adonisjs/core/hash/drivers/scrypt'
@@ -26,9 +26,9 @@ export default {
 }
 ```
 
-So far, so good. Instead of referencing the `scrypt` driver from the `drivers` collection. We are importing it directly and returning an instance using a factory function.
+Até agora, tudo bem. Em vez de referenciar o driver `scrypt` da coleção `drivers`. Estamos importando-o diretamente e retornando uma instância usando uma função de fábrica.
 
-Let's say the `Scrypt` driver needs an instance of the Emitter class to emit an event every time it hashes a value.
+Digamos que o driver `Scrypt` precisa de uma instância da classe Emitter para emitir um evento toda vez que ele faz hash de um valor.
 
 ```ts
 import { Scrypt } from '@adonisjs/core/hash/drivers/scrypt'
@@ -51,10 +51,10 @@ export default {
 }
 ```
 
-**🚨 The above example will fail** because the AdonisJS [container services](./container_services.md) are unavailable until the application has been booted and the config files are imported before the application boot phase.
+**🚨 O exemplo acima falhará** porque os serviços de contêiner do AdonisJS [./container_services.md](./container_services.md) não estão disponíveis até que o aplicativo seja inicializado e os arquivos de configuração sejam importados antes da fase de inicialização do aplicativo.
 
-### Well, that's a problem with AdonisJS architecture 🤷🏻‍♂️
-Not really. Let's not use the container service and create an instance of the Emitter class directly within the config file.
+### Bem, esse é um problema com a arquitetura do AdonisJS 🤷🏻‍♂️
+Na verdade, não. Não vamos usar o serviço de contêiner e criar uma instância da classe Emitter diretamente no arquivo de configuração.
 
 ```ts
 import { Scrypt } from '@adonisjs/core/hash/drivers/scrypt'
@@ -82,9 +82,9 @@ export default {
 }
 ```
 
-Now, we have a new problem. The `emitter` instance we have created for the `Scrypt` driver is not globally available for us to import and listen for events emitted by the driver.
+Agora, temos um novo problema. A instância `emitter` que criamos para o driver `Scrypt` não está disponível globalmente para importarmos e ouvirmos eventos emitidos pelo driver.
 
-Therefore, you might want to move the construction of the `Emitter` class to its file and export an instance of it. This way, you can pass the emitter instance to the driver and use it to listen to events.
+Portanto, você pode querer mover a construção da classe `Emitter` para seu arquivo e exportar uma instância dela. Dessa forma, você pode passar a instância do emissor para o driver e usá-la para ouvir eventos.
 
 ```ts
 // title: start/emitter.ts
@@ -118,12 +118,12 @@ export default {
 }
 ```
 
-The above code will work fine. However, you are manually constructing the dependencies your application needs this time. As a result, your application will have a lot of boilerplate code to wire everything together.
+O código acima funcionará bem. No entanto, você está construindo manualmente as dependências que seu aplicativo precisa dessa vez. Como resultado, seu aplicativo terá muito código boilerplate para conectar tudo.
 
-With AdonisJS, we strive to write minimal boilerplate code and use the IoC container for lookup dependencies.
+Com o AdonisJS, nos esforçamos para escrever o mínimo de código boilerplate e usar o contêiner IoC para dependências de pesquisa.
 
-## With config provider
-Now, let's re-write the `config/hash.ts` file and use a config provider this time. Config provider is a fancy name for a function that accepts an [instance of the Application class](./application.md) and resolves its dependencies using the container.
+## Com o provedor de configuração
+Agora, vamos reescrever o arquivo `config/hash.ts` e usar um provedor de configuração dessa vez. Provedor de configuração é um nome chique para uma função que aceita uma [instância da classe Application](./application.md) e resolve suas dependências usando o contêiner.
 
 ```ts
 // highlight-start
@@ -150,9 +150,9 @@ export default {
 }
 ```
 
-Once you use the [hash](../security/hashing.md) service, the config provider for the `scrypt` driver will be executed to resolve its dependencies. As a result, we do not attempt to look up the `emitter` until we use the hash service elsewhere inside our code.
+Depois de usar o serviço [hash](../security/hashing.md), o provedor de configuração para o driver `scrypt` será executado para resolver suas dependências. Como resultado, não tentamos procurar o `emitter` até usarmos o serviço de hash em outro lugar dentro do nosso código.
 
-Since config providers are async, you might want to import the `Scrypt` driver lazily via dynamic import.
+Como os provedores de configuração são assíncronos, você pode querer importar o driver `Scrypt` preguiçosamente por meio de importação dinâmica.
 
 ```ts
 import { configProvider } from '@adonisjs/core'
@@ -180,8 +180,8 @@ export default {
 }
 ```
 
-## How do I access the resolved config?
-You may access the resolved config from the service directly. For example, in the case of the hash service, you can get a reference to the resolved config as follows.
+## Como acesso a configuração resolvida?
+Você pode acessar a configuração resolvida diretamente do serviço. Por exemplo, no caso do serviço de hash, você pode obter uma referência à configuração resolvida da seguinte forma.
 
 ```ts
 import hash from '@adonisjs/core/services/hash'

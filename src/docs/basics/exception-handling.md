@@ -1,12 +1,12 @@
 ---
-summary: Exception are errors raised during the HTTP request lifecycle. AdonisJS provides a robust exception handling mechanism to convert exceptions to HTTP responses and report them to the logger.
+resumo: Exceções são erros levantados durante o ciclo de vida da solicitação HTTP. O AdonisJS fornece um mecanismo robusto de tratamento de exceções para converter exceções em respostas HTTP e relatá-las ao logger.
 ---
 
-# Exception handling
+# Tratamento de exceções
 
-Exceptions raised during an HTTP request are handled by the `HttpExceptionHandler` defined inside the `./app/exceptions/handler.ts` file. Inside this file, you can decide how to convert exceptions to responses and log them using the logger or report them to an external logging provider.
+Exceções levantadas durante uma solicitação HTTP são tratadas pelo `HttpExceptionHandler` definido dentro do arquivo `./app/exceptions/handler.ts`. Dentro deste arquivo, você pode decidir como converter exceções em respostas e registrá-las usando o logger ou relatá-las a um provedor de registro externo.
 
-The `HttpExceptionHandler` extends the [ExceptionHandler](https://github.com/adonisjs/http-server/blob/main/src/exception_handler.ts) class, which does all the heavy lifting of handling errors and provides you with high-level APIs to tweak the reporting and rendering behavior.
+O `HttpExceptionHandler` estende a classe [ExceptionHandler](https://github.com/adonisjs/http-server/blob/main/src/exception_handler.ts), que faz todo o trabalho pesado de tratamento de erros e fornece APIs de alto nível para ajustar o comportamento de relatórios e renderização.
 
 ```ts
 import app from '@adonisjs/core/services/app'
@@ -26,23 +26,23 @@ export default class HttpExceptionHandler extends ExceptionHandler {
 }
 ```
 
-## Assigning error handler to the server
+## Atribuindo manipulador de erros ao servidor
 
-The error handler is registered with the AdonisJS HTTP server inside the `start/kernel.ts` file. We lazily import the HTTP handler using the `#exceptions` alias defined in the `package.json` file.
+O manipulador de erros é registrado com o servidor HTTP AdonisJS dentro do arquivo `start/kernel.ts`. Importamos preguiçosamente o manipulador HTTP usando o alias `#exceptions` definido no arquivo `package.json`.
 
 ```ts
 server.errorHandler(() => import('#exceptions/handler'))
 ```
 
-## Handling exceptions
+## Lidando com exceções
 
-The exceptions are handled by the `handle` method on the exceptions handler class. By default, the following steps are performed while handling an error.
+As exceções são tratadas pelo método `handle` na classe do manipulador de exceções. Por padrão, as seguintes etapas são executadas durante o tratamento de um erro.
 
-- Check if the error instance has a `handle` method. If yes, call the [error.handle](#defining-the-handle-method) method and return its response.
-- Check if a status page is defined for the `error.status` code. If yes, render the status page.
-- Otherwise, render the exception using content negotiation renderers.
+[error.handle](#defining-the-handle-method) e retorna sua resposta.
+- Verifique se uma página de status está definida para o código `error.status`. Se sim, renderize a página de status.
+- Caso contrário, renderize a exceção usando renderizadores de negociação de conteúdo.
 
-If you want to handle a specific exception differently, you can do that inside the `handle` method. Make sure to use the `ctx.response.send` method to send a response, since the return value from the `handle` method is discarded.
+Se você quiser lidar com uma exceção específica de forma diferente, pode fazer isso dentro do método `handle`. Certifique-se de usar o método `ctx.response.send` para enviar uma resposta, pois o valor de retorno do método `handle` é descartado.
 
 ```ts
 import { errors } from '@vinejs/vine'
@@ -59,13 +59,13 @@ export default class HttpExceptionHandler extends ExceptionHandler {
 }
 ```
 
-### Status pages
+### Páginas de status
 
-Status pages are a collection of templates you want to render for a given or a range of status codes. 
+Páginas de status são uma coleção de modelos que você deseja renderizar para um determinado ou um intervalo de códigos de status.
 
-The range of status codes can be defined as a string expression. Two dots separate the starting and the ending status codes (`..`).
+O intervalo de códigos de status pode ser definido como uma expressão de string. Dois pontos separam os códigos de status inicial e final (`..`).
 
-If you are creating a JSON server, you may not need status pages.
+Se você estiver criando um servidor JSON, pode não precisar de páginas de status.
 
 ```ts
 import { StatusPageRange, StatusPageRenderer } from '@adonisjs/http-server/types'
@@ -78,13 +78,13 @@ export default class HttpExceptionHandler extends ExceptionHandler {
 }
 ```
 
-### Debug mode
+### Modo de depuração
 
-The content negotiation renderers handle exceptions that are not self-handled and not converted to a status page.
+Os renderizadores de negociação de conteúdo manipulam exceções que não são automanipuladas e não convertidas em uma página de status.
 
-The content negotiation renderers have support for debug mode. They can parse and pretty-print errors in debug mode using the [Youch](https://www.npmjs.com/package/youch) npm package.
+Os renderizadores de negociação de conteúdo têm suporte para o modo de depuração. Eles podem analisar e imprimir erros no modo de depuração usando o pacote npm [Youch](https://www.npmjs.com/package/youch).
 
-You can toggle the debug mode using the `debug` property on the exceptions handler class. However, turning off the debug mode in production is recommended, as it exposes sensitive information about your app.
+Você pode alternar o modo de depuração usando a propriedade `debug` na classe do manipulador de exceções. No entanto, é recomendável desativar o modo de depuração na produção, pois ele expõe informações confidenciais sobre seu aplicativo.
 
 ```ts
 export default class HttpExceptionHandler extends ExceptionHandler {
@@ -92,21 +92,21 @@ export default class HttpExceptionHandler extends ExceptionHandler {
 }
 ```
 
-## Reporting exceptions
+## Relatando exceções
 
-The `report` method on the exceptions handler class handles reporting of exceptions. 
+O método `report` na classe do manipulador de exceções manipula o relatório de exceções.
 
-The method receives the error as the first argument and the [HTTP context](../concepts/http_context.md) as the second argument. You should not write a response from the `report` method and use the context only to read the request information.
+O método recebe o erro como o primeiro argumento e o [contexto HTTP](../concepts/http_context.md) como o segundo argumento. Você não deve escrever uma resposta do método `report` e usar o contexto apenas para ler as informações da solicitação.
 
-### Logging exceptions
+### Registrando exceções
 
-All exceptions are reported using the [logger](../digging_deeper/logger.md) by default.
+Todas as exceções são relatadas usando o [logger](../digging_deeper/logger.md) por padrão.
 
-- Exceptions with status codes in the `400..499` range are logged in the `warning` level.
-- Exceptions with the status code `>=500` are logged in the `error` level.
-- All other exceptions are logged in the `info` level.
+- Exceções com códigos de status no intervalo `400..499` são registradas no nível `warning`.
+- Exceções com o código de status `>=500` são registradas no nível `error`.
+- Todas as outras exceções são registradas no nível `info`.
 
-You can add custom properties to the log messages by returning an object from the `context` method.
+Você pode adicionar propriedades personalizadas às mensagens de log retornando um objeto do método `context`.
 
 ```ts
 export default class HttpExceptionHandler extends ExceptionHandler {
@@ -120,9 +120,9 @@ export default class HttpExceptionHandler extends ExceptionHandler {
 }
 ```
 
-### Ignoring status codes
+### Ignorando códigos de status
 
-You can ignore exceptions from being reported by defining an array of status codes via the `ignoreStatuses` property.
+Você pode ignorar exceções de serem relatadas definindo uma matriz de códigos de status por meio da propriedade `ignoreStatuses`.
 
 ```ts
 export default class HttpExceptionHandler extends ExceptionHandler {
@@ -135,9 +135,9 @@ export default class HttpExceptionHandler extends ExceptionHandler {
 }
 ```
 
-### Ignoring errors
+### Ignorando erros
 
-You can also ignore exceptions by defining an array of error codes or error classes to ignore.
+Você também pode ignorar exceções definindo uma matriz de códigos de erro ou classes de erro para ignorar.
 
 ```ts
 import { errors } from '@adonisjs/core'
@@ -151,7 +151,7 @@ export default class HttpExceptionHandler extends ExceptionHandler {
 }
 ```
 
-An array of exception classes can be ignored using the `ignoreExceptions` property.
+Uma matriz de classes de exceção pode ser ignorada usando a propriedade `ignoreExceptions`.
 
 ```ts
 import { errors } from '@adonisjs/core'
@@ -165,9 +165,9 @@ export default class HttpExceptionHandler extends ExceptionHandler {
 }
 ```
 
-### Custom shouldReport method
+### Método shouldReport personalizado
 
-The logic to ignore status codes or exceptions is written inside the [`shouldReport` method](https://github.com/adonisjs/http-server/blob/main/src/exception_handler.ts#L155). If needed, you can override this method and define your custom logic for ignoring exceptions.
+A lógica para ignorar códigos de status ou exceções é escrita dentro do [método `shouldReport`](https://github.com/adonisjs/http-server/blob/main/src/exception_handler.ts#L155). Se necessário, você pode substituir esse método e definir sua lógica personalizada para ignorar exceções.
 
 ```ts
 import { HttpError } from '@adonisjs/core/types/http'
@@ -179,11 +179,11 @@ export default class HttpExceptionHandler extends ExceptionHandler {
 }
 ```
 
-## Custom exceptions
+## Exceções personalizadas
 
-You can create an exception class using the `make:exception` ace command. An exception extends the `Exception` class from the `@adonisjs/core` package.
+Você pode criar uma classe de exceção usando o comando ace `make:exception`. Uma exceção estende a classe `Exception` do pacote `@adonisjs/core`.
 
-See also: [Make exception command](../references/commands.md#makeexception)
+Veja também: [Comando Make exception](../references/commands.md#makeexception)
 
 ```sh
 node ace make:exception UnAuthorized
@@ -195,7 +195,7 @@ import { Exception } from '@adonisjs/core/exceptions'
 export default class UnAuthorizedException extends Exception {}
 ```
 
-You can raise the exception by creating a new instance of it. When raising the exception, you can assign a custom **error code** and **status code** to the exception.
+Você pode levantar a exceção criando uma nova instância dela. Ao levantar a exceção, você pode atribuir um **código de erro** e um **código de status** personalizados à exceção.
 
 ```ts
 import UnAuthorizedException from '#exceptions/unauthorized_exception'
@@ -206,7 +206,7 @@ throw new UnAuthorizedException('You are not authorized', {
 })
 ```
 
-The error and status codes can also be defined as static properties on the exception class. The static values will be used if no custom value is defined when throwing the exception.
+Os códigos de erro e status também podem ser definidos como propriedades estáticas na classe de exceção. Os valores estáticos serão usados ​​se nenhum valor personalizado for definido ao lançar a exceção.
 
 ```ts
 import { Exception } from '@adonisjs/core/exceptions'
@@ -216,11 +216,11 @@ export default class UnAuthorizedException extends Exception {
 }
 ```
 
-### Defining the `handle` method
+### Definindo o método `handle`
 
-To self-handle the exception, you can define the `handle` method on the exception class. This method should convert an error to an HTTP response using the `ctx.response.send` method.
+Para automanipular a exceção, você pode definir o método `handle` na classe de exceção. Este método deve converter um erro em uma resposta HTTP usando o método `ctx.response.send`.
 
-The `error.handle` method receives an instance of the error as the first argument and the HTTP context as the second argument.
+O método `error.handle` recebe uma instância do erro como o primeiro argumento e o contexto HTTP como o segundo argumento.
 
 ```ts
 import { Exception } from '@adonisjs/core/exceptions'
@@ -233,9 +233,9 @@ export default class UnAuthorizedException extends Exception {
 }
 ```
 
-### Define the `report` method
+### Defina o método `report`
 
-You can implement the `report` method on the exception class to self-handle the exception reporting. The report method receives an instance of the error as the first argument and the HTTP context as the second argument.
+Você pode implementar o método `report` na classe de exceção para automanipular o relatório de exceção. O método report recebe uma instância do erro como o primeiro argumento e o contexto HTTP como o segundo argumento.
 
 ```ts
 import { Exception } from '@adonisjs/core/exceptions'
@@ -248,8 +248,8 @@ export default class UnAuthorizedException extends Exception {
 }
 ```
 
-## Narrowing down the error type
-The framework core and other official packages exports the exceptions raised by them. You can verify if an error is an instance of a specific exception using the `instanceof` check. For example:
+## Restringindo o tipo de erro
+O núcleo do framework e outros pacotes oficiais exportam as exceções geradas por eles. Você pode verificar se um erro é uma instância de uma exceção específica usando a verificação `instanceof`. Por exemplo:
 
 ```ts
 import { errors } from '@adonisjs/core'
@@ -263,6 +263,6 @@ try {
 }
 ```
 
-## Known errors
+## Erros conhecidos
 
-Please check the [exceptions reference guide](../references/exceptions.md) to view the list of known errors.
+[guia de referência de exceções](../references/exceptions.md) para visualizar a lista de erros conhecidos.

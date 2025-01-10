@@ -12,6 +12,6 @@
   "author": "Tavares <gerson@tavares.in>",
   "license": "ISC",
   "devDependencies": {
-    "vitepress": "^1.0.0-rc.45"
+    "vitepress": "^1.5.0"
   }
 }

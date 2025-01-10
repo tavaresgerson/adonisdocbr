@@ -1,12 +1,12 @@
 ---
-summary: Learn how to define and process command flags in Ace commands.
+resumo: Aprenda a definir e processar sinalizadores de comando em comandos Ace.
 ---
 
-# Command flags
+# Sinalizadores de comando
 
-Flags are named parameters mentioned with either two hyphens (`--`) or a single hyphen (`-`) (known as the flag alias). The flags can be mentioned in any order.
+Os sinalizadores são parâmetros nomeados mencionados com dois hifens (`--`) ou um único hífen (`-`) (conhecido como alias do sinalizador). Os sinalizadores podem ser mencionados em qualquer ordem.
 
-You must define flags as class properties and decorate them using the `@flags` decorator. In the following example, we define `resource` and `singular` flags, and both represent a boolean value.
+Você deve definir os sinalizadores como propriedades de classe e decorá-los usando o decorador `@flags`. No exemplo a seguir, definimos os sinalizadores `resource` e `singular`, e ambos representam um valor booleano.
 
 ```ts
 import { BaseCommand, flags } from '@adonisjs/core/ace'
@@ -20,13 +20,13 @@ export default class MakeControllerCommand extends BaseCommands {
 }
 ```
 
-## Flag types
+## Tipos de sinalizadores
 
-Ace allows defining flags for one of the following types.
+O Ace permite definir sinalizadores para um dos seguintes tipos.
 
-### Boolean flag
+### Sinalizador booleano
 
-A boolean flag is defined using the `@flags.boolean` decorator. Mentioning the flag will set its value to `true`. Otherwise, the flag value is `undefined`.
+Um sinalizador booleano é definido usando o decorador `@flags.boolean`. Mencionar o sinalizador definirá seu valor como `true`. Caso contrário, o valor do sinalizador será `undefined`.
 
 ```sh
 make:controller --resource
@@ -46,9 +46,9 @@ make:controller --no-resource
 # this.resource === false
 ```
 
-The last example shows that the boolean flags can be negated with the `--no-` prefix. 
+O último exemplo mostra que os sinalizadores booleanos podem ser negados com o prefixo `--no-`.
 
-By default, the negated option is not shown in the help output. However, you may enable it using the `showNegatedVariantInHelp` option.
+Por padrão, a opção negada não é mostrada na saída de ajuda. No entanto, você pode habilitá-la usando a opção `showNegatedVariantInHelp`.
 
 ```ts
 export default class MakeControllerCommand extends BaseCommands {
@@ -59,9 +59,9 @@ export default class MakeControllerCommand extends BaseCommands {
 }
 ```
 
-### String flag
+### Sinalizador de string
 
-A string flag accepts a value after the flag name. You may define a string flag using the `@flags.string` method.
+Um sinalizador de string aceita um valor após o nome do sinalizador. Você pode definir um sinalizador de string usando o método `@flags.string`.
 
 ```ts
 import { BaseCommand, flags } from '@adonisjs/core/ace'
@@ -78,7 +78,7 @@ make:controller --model user
 # this.model = 'user'
 ```
 
-If the flag value has spaces or special characters, it must be wrapped inside the quotes `""`.
+Se o valor do sinalizador tiver espaços ou caracteres especiais, ele deve ser colocado entre aspas `""`.
 
 ```sh
 make:controller --model blog user
@@ -88,7 +88,7 @@ make:controller --model "blog user"
 # this.model = 'blog user'
 ```
 
-An error is displayed if the flag is mentioned but no value is provided (even when the flag is optional).
+Um erro é exibido se o sinalizador for mencionado, mas nenhum valor for fornecido (mesmo quando o sinalizador for opcional).
 
 ```sh
 make:controller
@@ -98,11 +98,11 @@ make:controller --model
 # Error! Missing value
 ```
 
-### Number flag
+### Sinalizador numérico
 
-The parsing of a number flag is similar to the string flag. However, the value is validated to ensure it is a valid number.
+A análise de um sinalizador numérico é semelhante ao sinalizador de string. No entanto, o valor é validado para garantir que seja um número válido.
 
-You can create a number flag using the `@flags.number` decorator.
+Você pode criar um sinalizador numérico usando o decorador `@flags.number`.
 
 ```ts
 import { BaseCommand, flags } from '@adonisjs/core/ace'
@@ -113,9 +113,9 @@ export default class MakeUserCommand extends BaseCommands {
 }
 ```
 
-### Array flag
+### Sinalizador de matriz
 
-The array flag allows the usage of the flag multiple times when running a command. You can define an array flag using the `@flags.array` method.
+O sinalizador de matriz permite o uso do sinalizador várias vezes ao executar um comando. Você pode definir um sinalizador de matriz usando o método `@flags.array`.
 
 ```ts
 import { BaseCommand, flags } from '@adonisjs/core/ace'
@@ -132,9 +132,9 @@ make:user --groups=admin --groups=moderators --groups=creators
 # this.groups = ['admin', 'moderators', 'creators']
 ```
 
-## Flag name and description
+## Nome e descrição do sinalizador
 
-By default, the flag name is a dashed case representation of the class property name. However, you can define a custom name via the `flagName` option.
+Por padrão, o nome do sinalizador é uma representação tracejada do nome da propriedade da classe. No entanto, você pode definir um nome personalizado por meio da opção `flagName`.
 
 ```ts
 @flags.boolean({
@@ -143,7 +143,7 @@ By default, the flag name is a dashed case representation of the class property 
 declare startServer: boolean
 ```
 
-The flag description is displayed on the help screen. You can define it using the `description` option.
+A descrição do sinalizador é exibida na tela de ajuda. Você pode defini-la usando a opção `description`.
 
 ```ts
 @flags.boolean({
@@ -153,9 +153,9 @@ The flag description is displayed on the help screen. You can define it using th
 declare startServer: boolean
 ```
 
-## Flag aliases
+## Aliases de sinalizadores
 
-Aliases the shorthand names for a flag mentioned using a single hyphen (`-`). An alias must be a single character.
+Aliases os nomes abreviados para um sinalizador mencionado usando um único hífen (`-`). Um alias deve ser um único caractere.
 
 ```ts
 @flags.boolean({
@@ -169,7 +169,7 @@ declare resource: boolean
 declare singular: boolean
 ```
 
-Flag aliases can be combined when running the command.
+Os aliases de sinalizadores podem ser combinados ao executar o comando.
 
 ```ts
 make:controller -rs
@@ -178,9 +178,9 @@ make:controller -rs
 make:controller --resource --singular
 ```
 
-## Default value
+## Valor padrão
 
-You can define the default value for a flag using the `default` option. The default value is used when the flag is not mentioned or mentioned without a value.
+Você pode definir o valor padrão para um sinalizador usando a opção `default`. O valor padrão é usado quando o sinalizador não é mencionado ou é mencionado sem um valor.
 
 ```ts
 @flags.boolean({
@@ -194,10 +194,9 @@ declare startServer: boolean
 declare connection: string
 ```
 
+## Processando valor do sinalizador
 
-## Processing flag value
-
-Using the `parse` method, you can process the flag value before it is defined as the class property.
+Usando o método `parse`, você pode processar o valor do sinalizador antes que ele seja definido como propriedade de classe.
 
 ```ts
 @flags.string({
@@ -208,9 +207,9 @@ Using the `parse` method, you can process the flag value before it is defined as
 declare connection: string
 ```
 
-## Accessing all flags
+## Acessando todos os sinalizadores
 
-You can access all flags mentioned while running the command using the `this.parsed.flags` property. The flags property is an object of key-value pair.
+Você pode acessar todos os sinalizadores mencionados ao executar o comando usando a propriedade `this.parsed.flags`. A propriedade flags é um objeto de par chave-valor.
 
 ```ts
 import { BaseCommand, flags } from '@adonisjs/core/ace'

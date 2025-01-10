@@ -1,14 +1,14 @@
 ---
-summary: Learn about defining and processing command arguments in Ace commands.
+summary: Aprenda sobre como definir e processar argumentos de comando em comandos Ace.
 ---
 
-# Command arguments
+# Argumentos de comando
 
-Arguments refer to the positional arguments mentioned after the command name. Since arguments are positional, passing them in the correct order is necessary.
+Argumentos referem-se aos argumentos posicionais mencionados após o nome do comando. Como os argumentos são posicionais, é necessário passá-los na ordem correta.
 
-You must define command arguments as class properties and decorate them using the `args` decorator. The arguments will be accepted in the same order as they are defined in the class.
+Você deve definir argumentos de comando como propriedades de classe e decorá-los usando o decorador `args`. Os argumentos serão aceitos na mesma ordem em que são definidos na classe.
 
-In the following example, we use the `@args.string` decorator to define an argument that accepts a string value.
+No exemplo a seguir, usamos o decorador `@args.string` para definir um argumento que aceita um valor de string.
 
 ```ts
 import { BaseCommand, args, flags } from '@adonisjs/core/ace'
@@ -26,7 +26,7 @@ export default class GreetCommand extends BaseCommand {
 }
 ```
 
-To accept multiple values under the same argument name, you may use the `@agrs.spread` decorator. Do note, the spread argument must be the last.
+Para aceitar vários valores sob o mesmo nome de argumento, você pode usar o decorador `@agrs.spread`. Observe que o argumento spread deve ser o último.
 
 ```ts
 import { BaseCommand, args, flags } from '@adonisjs/core/ace'
@@ -46,18 +46,18 @@ export default class GreetCommand extends BaseCommand {
 }
 ```
 
-## Argument name and description
+## Nome e descrição do argumento
 
-The argument name is displayed on the help screen. By default, the argument name is a dashed case representation of the class property name. However, you can define a custom value as well.
+O nome do argumento é exibido na tela de ajuda. Por padrão, o nome do argumento é uma representação tracejada do nome da propriedade da classe. No entanto, você também pode definir um valor personalizado.
 
 ```ts
 @args.string({
   argumentName: 'user-name'
 })
 declare name: string
-``` 
+```
 
-The argument description is shown on the help screen and can be set using the `description` option. 
+A descrição do argumento é mostrada na tela de ajuda e pode ser definida usando a opção `description`.
 
 ```ts
 @args.string({
@@ -67,9 +67,9 @@ The argument description is shown on the help screen and can be set using the `d
 declare name: string
 ```
 
-## Optional arguments with a default value
+## Argumentos opcionais com um valor padrão
 
-By default, all arguments are required. However, you can make them optional by setting the `required` option to `false`. The optional arguments must be at the end.
+Por padrão, todos os argumentos são obrigatórios. No entanto, você pode torná-los opcionais definindo a opção `required` como `false`. Os argumentos opcionais devem estar no final.
 
 ```ts
 @args.string({
@@ -79,7 +79,7 @@ By default, all arguments are required. However, you can make them optional by s
 declare name?: string
 ```
 
-You may set the default value of an optional argument using the `default` property.
+Você pode definir o valor padrão de um argumento opcional usando a propriedade `default`.
 
 ```ts
 @args.string({
@@ -90,9 +90,9 @@ You may set the default value of an optional argument using the `default` proper
 declare name: string
 ```
 
-## Processing argument value
+## Processando o valor do argumento
 
-Using the `parse` method, you can process the argument value before it is defined as the class property.
+Usando o método `parse`, você pode processar o valor do argumento antes que ele seja definido como a propriedade da classe.
 
 ```ts
 @args.string({
@@ -105,9 +105,9 @@ Using the `parse` method, you can process the argument value before it is define
 declare name: string
 ```
 
-## Accessing all arguments
+## Acessando todos os argumentos
 
-You can access all the arguments mentioned while running the command using the `this.parsed.args` property. 
+Você pode acessar todos os argumentos mencionados ao executar o comando usando a propriedade `this.parsed.args`.
 
 ```ts
 import { BaseCommand, args, flags } from '@adonisjs/core/ace'

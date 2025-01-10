@@ -1,12 +1,12 @@
 ---
-summary: Learn how to define routes, route params, and route handlers in AdonisJS.
+resumo: Aprenda a definir rotas, parâmetros de rota e manipuladores de rota no AdonisJS.
 ---
 
-# Routing
+# Roteamento
 
-The users of your website or web application can visit different URLs like `/`, `/about`, or `/posts/1`. To make these URLs work, you have to define routes.
+Os usuários do seu site ou aplicativo da web podem visitar diferentes URLs como `/`, `/about` ou `/posts/1`. Para fazer essas URLs funcionarem, você precisa definir rotas.
 
-In AdonisJS, routes are defined inside the `start/routes.ts` file. A route is a combination of a **URI pattern** and a **handler** to handle requests for that specific route. For example:
+No AdonisJS, as rotas são definidas dentro do arquivo `start/routes.ts`. Uma rota é uma combinação de um **padrão de URI** e um **manipulador** para manipular solicitações para essa rota específica. Por exemplo:
 
 ```ts
 // title: start/routes.ts
@@ -25,24 +25,24 @@ router.get('/posts/:id', ({ params }) => {
 })
 ```
 
-The last route in the above example uses a dynamic URI pattern. The `:id` is a way to tell the router to accept any value for the id. We call them **route params**.
+A última rota no exemplo acima usa um padrão de URI dinâmico. O `:id` é uma maneira de dizer ao roteador para aceitar qualquer valor para o id. Nós os chamamos de **parâmetros de rota**.
 
-## View list of registered routes
-You can run the `list:routes` command to view the list of routes registered by your application.
+## Ver lista de rotas registradas
+Você pode executar o comando `list:routes` para visualizar a lista de rotas registradas pelo seu aplicativo.
 
 ```sh
 node ace list:routes
 ```
 
-Also, you can see the routes list from the VSCode activity bar, if you are using our [official VSCode extension](https://marketplace.visualstudio.com/items?itemName=jripouteau.adonis-vscode-extension).
+Além disso, você pode ver a lista de rotas na barra de atividades do VSCode, se estiver usando nossa [extensão oficial do VSCode](https://marketplace.visualstudio.com/items?itemName=jripouteau.adonis-vscode-extension).
 
 ![](./vscode_routes_list.png)
 
-## Route params
+## Parâmetros de rota
 
-Route params allow you to define URIs that can accept dynamic values. Each param captures the value of a URI segment, and you can access this value within the route handler.
+Os parâmetros de rota permitem que você defina URIs que podem aceitar valores dinâmicos. Cada parâmetro captura o valor de um segmento de URI, e você pode acessar esse valor dentro do manipulador de rota.
 
-A route param always starts with a colon `:`, followed by the param's name.
+Um parâmetro de rota sempre começa com dois pontos `:`, seguido pelo nome do parâmetro.
 
 ```ts
 // title: start/routes.ts
@@ -59,7 +59,7 @@ router.get('/posts/:id', ({ params }) => {
 | `/posts/100`     | `100`     |
 | `/posts/foo-bar` | `foo-bar` |
 
-A URI can also accept multiple params. Each param should have a unique name.
+Um URI também pode aceitar múltiplos parâmetros. Cada parâmetro deve ter um nome exclusivo.
 
 ```ts
 // title: start/routes.ts
@@ -76,9 +76,9 @@ router.get('/posts/:id/comments/:commentId', ({ params }) => {
 | `/posts/1/comments/4`        | `1`       | `4`        |
 | `/posts/foo-bar/comments/22` | `foo-bar` | `22`       |
 
-### Optional params
+### Parâmetros opcionais
 
-The route params can also be optional by appending a question mark `?` at the end of the param name. The optional params should come after the required params.
+Os parâmetros de rota também podem ser opcionais, acrescentando um ponto de interrogação `?` no final do nome do parâmetro. Os parâmetros opcionais devem vir depois dos parâmetros obrigatórios.
 
 ```ts
 // title: start/routes.ts
@@ -93,9 +93,9 @@ router.get('/posts/:id?', ({ params }) => {
 })
 ```
 
-### Wildcard params
+### Parâmetros curinga
 
-To capture all the segments of a URI, you can define a wildcard param. The wildcard param is specified using a special `*` keyword and must be defined at the last position.
+Para capturar todos os segmentos de um URI, você pode definir um parâmetro curinga. O parâmetro curinga é especificado usando uma palavra-chave especial `*` e deve ser definido na última posição.
 
 ```ts
 // title: start/routes.ts
@@ -112,13 +112,13 @@ router.get('/docs/:category/*', ({ params }) => {
 | `/docs/http/context` | `http`   | `['context']`    |
 | `/docs/api/sql/orm`  | `api`    | `['sql', 'orm']` |
 
-### Params matchers
+### Correspondentes de parâmetros
 
-The router does not know the format of the param data you want to accept. For example, a request with URI `/posts/foo-bar` and `/posts/1` will match the same route. However, you can explicitly validate the params values using param matchers.
+O roteador não sabe o formato dos dados de parâmetros que você deseja aceitar. Por exemplo, uma solicitação com URI `/posts/foo-bar` e `/posts/1` corresponderá à mesma rota. No entanto, você pode validar explicitamente os valores de parâmetros usando correspondentes de parâmetros.
 
-A matcher is registered by chaining the `where()` method. The first argument is the param name, and the second argument is the matcher object.
+Um correspondente é registrado encadeando o método `where()`. O primeiro argumento é o nome do parâmetro e o segundo argumento é o objeto correspondente.
 
-In the following example, we define a regex to validate the id to be a valid number. The route will be skipped in case the validation fails.
+No exemplo a seguir, definimos um regex para validar o id como um número válido. A rota será ignorada caso a validação falhe.
 
 ```ts
 // title: start/routes.ts
@@ -131,7 +131,7 @@ router
   })
 ```
 
-Alongside the `match` regex, you can also define a `cast` function to convert the param value to its correct data type. In this example, we can convert the id to a number.
+Juntamente com o regex `match`, você também pode definir uma função `cast` para converter o valor do parâmetro em seu tipo de dados correto. Neste exemplo, podemos converter o id em um número.
 
 ```ts
 // title: start/routes.ts
@@ -147,9 +147,9 @@ router
   })
 ```
 
-### Inbuilt matchers
+### Correspondentes embutidos
 
-The router ships with the following helper methods for commonly used data types.
+O roteador é fornecido com os seguintes métodos auxiliares para tipos de dados comumente usados.
 
 ```ts
 // title: start/routes.ts
@@ -165,9 +165,9 @@ router.where('id', router.matchers.uuid())
 router.where('slug', router.matchers.slug())
 ```
 
-### Global matchers
+### Correspondentes globais
 
-The route matchers can be defined globally on the router instance. Unless explicitly overridden at the route level, a global matcher is applied on all the routes.
+Os correspondentes de rota podem ser definidos globalmente na instância do roteador. A menos que explicitamente substituído no nível da rota, um correspondente global é aplicado em todas as rotas.
 
 ```ts
 // title: start/routes.ts
@@ -182,9 +182,9 @@ router
   .where('id', router.matchers.number())
 ```
 
-## HTTP methods
+## Métodos HTTP
 
-The `router.get()` method creates a route that responds to [GET HTTP method](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET). Similarly, you can use the following methods to register routes for different HTTP methods.
+O método `router.get()` cria uma rota que responde ao [método HTTP GET](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET). Da mesma forma, você pode usar os seguintes métodos para registrar rotas para diferentes métodos HTTP.
 
 ```ts
 // title: start/routes.ts
@@ -206,25 +206,25 @@ router.patch('users/:id', () => {})
 router.delete('users/:id', () => {})
 ```
 
-You can use the `router.any()` method to create a route that responds to all standard HTTP methods.
+Você pode usar o método `router.any()` para criar uma rota que responde a todos os métodos HTTP padrão.
 
 ```ts
 // title: start/routes.ts
 router.any('reports', () => {})
 ```
 
-Finally, you can create a route for custom HTTP methods using the `router.route()` method.
+Finalmente, você pode criar uma rota para métodos HTTP personalizados usando o método `router.route()`.
 
 ```ts
 // title: start/routes.ts
 router.route('/', ['TRACE'], () => {})
 ```
 
-## Router handler
+## Manipulador de roteador
 
-The route handler handles the request by returning a response or raising an exception to abort the request.
+O manipulador de rota manipula a solicitação retornando uma resposta ou gerando uma exceção para abortar a solicitação.
 
-A handler can be an inline callback (as seen in this guide) or a reference to a controller method.
+Um manipulador pode ser um retorno de chamada em linha (como visto neste guia) ou uma referência a um método de controlador.
 
 ```ts
 // title: start/routes.ts
@@ -234,13 +234,12 @@ router.post('users', () => {
 ```
 
 :::note
-Route handlers can be async functions, and AdonisJS will handle the promise resolution automatically.
+Os manipuladores de rota podem ser funções assíncronas, e o AdonisJS manipulará a resolução de promessa automaticamente.
 :::
 
-In the following example, we import the `UsersController` class and bind it to the route. During an HTTP request, AdonisJS will create an instance of the controller class using the IoC container and execute the `store` method.
+No exemplo a seguir, importamos a classe `UsersController` e a vinculamos à rota. Durante uma solicitação HTTP, o AdonisJS criará uma instância da classe de controlador usando o contêiner IoC e executará o método `store`.
 
-See also: Dedicated guide on [controllers](./controllers.md).
-
+Veja também: Guia dedicado em [controladores](./controllers.md).
 
 ```ts
 // title: start/routes.ts
@@ -249,11 +248,11 @@ const UsersController = () => import('#controllers/users_controller')
 router.post('users', [UsersController, 'store'])
 ```
 
-## Route middleware
+## Middleware de rota
 
-You can define a middleware on a route by chaining the `use()` method. The method accepts an inline callback or a reference to a named middleware.
+Você pode definir um middleware em uma rota encadeando o método `use()`. O método aceita um retorno de chamada em linha ou uma referência a um middleware nomeado.
 
-Following is a minimal example of defining a route middleware. We recommend reading the [dedicated guide on middleware](./middleware.md) to explore all the available options and the execution flow of middleware.
+A seguir está um exemplo mínimo de definição de um middleware de rota. Recomendamos a leitura do [guia dedicado em middleware](./middleware.md) para explorar todas as opções disponíveis e o fluxo de execução do middleware.
 
 ```ts
 // title: start/routes.ts
@@ -269,11 +268,11 @@ router
   })
 ```
 
-## Route identifier
+## Identificador de rota
 
-Every route has a unique identifier you can use to reference the route elsewhere in your application. For example, you can generate a URL to a route using the [URL builder](#url-builder) or redirect to a route using the [`response.redirect()`](./response.md#redirects) method.
+Cada rota tem um identificador exclusivo que você pode usar para referenciar a rota em outro lugar em seu aplicativo. Por exemplo, você pode gerar uma URL para uma rota usando o [URL builder](#url-builder) ou redirecionar para uma rota usando o método [`response.redirect()`](./response.md#redirects).
 
-By default, the route pattern is the route identifier. However, you can assign a unique, memorable name to the route using the `route.as` method.
+Por padrão, o padrão de rota é o identificador de rota. No entanto, você pode atribuir um nome exclusivo e memorável à rota usando o método `route.as`.
 
 ```ts
 // title: start/routes.ts
@@ -284,7 +283,7 @@ router.post('users', () => {}).as('users.store')
 router.delete('users/:id', () => {}).as('users.delete')
 ```
 
-You can now construct URLs using the route name within your templates or using the URL builder.
+Agora você pode construir URLs usando o nome da rota em seus modelos ou usando o construtor de URL.
 
 ```ts
 const url = router.builder().make('users.delete', [user.id])
@@ -299,9 +298,9 @@ const url = router.builder().make('users.delete', [user.id])
 ></form>
 ```
 
-## Grouping routes
+## Agrupando rotas
 
-Route groups offer a convenience layer to bulk configure nested inside a group. You may create a group of routes using the `router.group` method.
+Grupos de rotas oferecem uma camada de conveniência para configuração em massa aninhada dentro de um grupo. Você pode criar um grupo de rotas usando o método `router.group`.
 
 ```ts
 // title: start/routes.ts
@@ -315,7 +314,7 @@ router.group(() => {
 })
 ```
 
-Route groups can be nested inside each other, and AdonisJS will merge or override properties based on the behavior of the applied setting.
+Grupos de rotas podem ser aninhados uns dentro dos outros, e o AdonisJS mesclará ou substituirá propriedades com base no comportamento da configuração aplicada.
 
 ```ts
 // title: start/routes.ts
@@ -328,9 +327,9 @@ router.group(() => {
 })
 ```
 
-### Prefixing routes inside a group
+### Prefixando rotas dentro de um grupo
 
-The URI pattern of routes inside a group can be prefixed using the `group.prefix` method. The following example will create routes for the `/api/users` and `/api/payments` URI patterns.
+O padrão URI de rotas dentro de um grupo pode ser prefixado usando o método `group.prefix`. O exemplo a seguir criará rotas para os padrões URI `/api/users` e `/api/payments`.
 
 ```ts
 // title: start/routes.ts
@@ -342,7 +341,7 @@ router
   .prefix('/api')
 ```
 
-In the case of nested groups, the prefix will be applied from the outer to the inner group. The following example will create routes for `/api/v1/users` and `/api/v1/payments` URI patterns.
+No caso de grupos aninhados, o prefixo será aplicado do grupo externo para o interno. O exemplo a seguir criará rotas para os padrões URI `/api/v1/users` e `/api/v1/payments`.
 
 ```ts
 // title: start/routes.ts
@@ -358,12 +357,12 @@ router
   .prefix('api')
 ```
 
-### Naming routes inside a group
+### Nomeando rotas dentro de um grupo
 
-Similar to prefixing the route pattern, you can also prefix the route names inside a group using the `group.as` method.
+Semelhante a prefixar o padrão de rota, você também pode prefixar os nomes de rota dentro de um grupo usando o método `group.as`.
 
 :::note
-The routes inside a group must have names before you can prefix them.
+As rotas dentro de um grupo devem ter nomes antes que você possa prefixá-las.
 :::
 
 ```ts
@@ -378,7 +377,7 @@ router
   .as('api')
 ```
 
-In the case of nested groups, the names will be prefixed from the outer to the inner group.
+No caso de grupos aninhados, os nomes serão prefixados do grupo externo para o interno.
 
 ```ts
 // title: start/routes.ts
@@ -400,13 +399,13 @@ router
   .as('api')
 ```
 
-### Applying middleware to routes inside a group
+### Aplicando middleware a rotas dentro de um grupo
 
-You can assign middleware to routes inside a group using the `group.use` method. The group middleware are executed before the middleware applied on individual routes within the group.
+Você pode atribuir middleware a rotas dentro de um grupo usando o método `group.use`. O middleware do grupo é executado antes do middleware aplicado em rotas individuais dentro do grupo.
 
-In the case of nested groups, the middleware from the outermost group will run first. In other words, a group prepends middleware to the route middleware stack.
+No caso de grupos aninhados, o middleware do grupo mais externo será executado primeiro. Em outras palavras, um grupo adiciona o middleware à pilha de middleware da rota.
 
-See also: [Middleware guide](./middleware.md)
+Veja também: [Guia de middleware](./middleware.md)
 
 ```ts
 // title: start/routes.ts
@@ -425,14 +424,14 @@ router
   })
 ```
 
-## Registering routes for a specific domain
+## Registrando rotas para um domínio específico
 
-AdonisJS allows you to register routes under a specific domain name. This is helpful when you have an application mapped to multiple domains and want different routes for each domain.
+O AdonisJS permite que você registre rotas sob um nome de domínio específico. Isso é útil quando você tem um aplicativo mapeado para vários domínios e deseja rotas diferentes para cada domínio.
 
-In the following example, we define two sets of routes.
+No exemplo a seguir, definimos dois conjuntos de rotas.
 
-- Routes that are resolved for any domain/hostname. 
-- Routes that are matched when the domain/hostname matches the pre-defined domain name value.
+- Rotas que são resolvidas para qualquer domínio/nome de host.
+- Rotas que são correspondidas quando o domínio/nome de host corresponde ao valor do nome de domínio predefinido.
 
 ```ts
 // title: start/routes.ts
@@ -447,13 +446,13 @@ router.group(() => {
 }).domain('blog.adonisjs.com')
 ```
 
-Once you deploy your application, the routes under the group with an explicit domain will only be matched if the request's hostname is `blog.adonisjs.com`.
+Depois de implantar seu aplicativo, as rotas sob o grupo com um domínio explícito só serão correspondidas se o nome do host da solicitação for `blog.adonisjs.com`.
 
-### Dynamic subdomains
+### Subdomínios dinâmicos
 
-You can specify dynamic subdomains using the `group.domain` method. Similar to the route params, the dynamic segment of a domain starts with a colon `:`.
+Você pode especificar subdomínios dinâmicos usando o método `group.domain`. Semelhante aos parâmetros de rota, o segmento dinâmico de um domínio começa com dois pontos `:`.
 
-In the following example, the `tenant` segment accepts any subdomain, and you can access its value using the `HttpContext.subdomains` object.
+No exemplo a seguir, o segmento `tenant` aceita qualquer subdomínio, e você pode acessar seu valor usando o objeto `HttpContext.subdomains`.
 
 ```ts
 // title: start/routes.ts
@@ -466,14 +465,14 @@ router
  .domain(':tenant.adonisjs.com')
 ```
 
-## Render Edge view from a route
+## Renderizar visualização Edge de uma rota
 
-You may use the `router.on().render()` method if you have a route handler that only renders a view. It is a convenient shortcut to render a view without defining an explicit handler.
+Você pode usar o método `router.on().render()` se tiver um manipulador de rota que renderize apenas uma visualização. É um atalho conveniente para renderizar uma visualização sem definir um manipulador explícito.
 
-The render method accepts the name of the edge template to render. Optionally, you can pass the template data as the second argument.
+O método render aceita o nome do modelo edge a ser renderizado. Opcionalmente, você pode passar os dados do modelo como o segundo argumento.
 
 :::warning
-The `route.on().render()` method only exists when you have configured the [Edge service provider](../views-and-templates/edgejs.md)
+O método `route.on().render()` só existe quando você configurou o [provedor de serviços Edge](../views-and-templates/edgejs.md)
 :::
 
 ```ts
@@ -485,14 +484,14 @@ router.on('about').render('about', { title: 'About us' })
 router.on('contact').render('contact', { title: 'Contact us' })
 ```
 
-## Render Inertia view from a route
+## Renderizar a visualização Inertia de uma rota
 
-If you are using the Inertia.js adapter, you can use the `router.on().renderInertia()` method to render an Inertia view. It is a convenient shortcut to render a view without defining an explicit handler.
+Se você estiver usando o adaptador Inertia.js, poderá usar o método `router.on().renderInertia()` para renderizar uma visualização Inertia. É um atalho conveniente para renderizar uma visualização sem definir um manipulador explícito.
 
-The renderInertia method accepts the name of the Inertia component to render. Optionally, you can pass the component data as the second argument.
+O método renderInertia aceita o nome do componente Inertia a ser renderizado. Opcionalmente, você pode passar os dados do componente como o segundo argumento.
 
 :::warning
-The `route.on().renderInertia()` method only exists when you have configured the [Inertia service provider](../views-and-templates/inertia.md)
+O método `route.on().renderInertia()` só existe quando você configurou o [provedor de serviços Inertia](../views-and-templates/inertia.md)
 :::
 
 ```ts
@@ -504,11 +503,11 @@ router.on('about').renderInertia('about', { title: 'About us' })
 router.on('contact').renderInertia('contact', { title: 'Contact us' })
 ```
 
-## Redirect from a route
+## Redirecionar de uma rota
 
-If you are defining a route handler to redirect the request to another path or route, you may use the `router.on().redirect()` or `router.on().redirectToPath()` methods.
+Se você estiver definindo um manipulador de rota para redirecionar a solicitação para outro caminho ou rota, você pode usar os métodos `router.on().redirect()` ou `router.on().redirectToPath()`.
 
-The `redirect` method accepts the route identifier. Whereas the `redirectToPath` method accepts a static path/URL.
+O método `redirect` aceita o identificador de rota. Enquanto o método `redirectToPath` aceita um caminho/URL estático.
 
 ```ts
 // title: start/routes.ts
@@ -521,9 +520,9 @@ router.on('/posts').redirect('/articles')
 router.on('/posts').redirectToPath('https://medium.com/my-blog')
 ```
 
-### Forwarding params
+### Parâmetros de encaminhamento
 
-In the following example, the value of `id` from the original request will be used to construct the `/articles/:id` route. So,  if a request comes for `/posts/20`, it will be redirected to `/articles/20`.
+No exemplo a seguir, o valor de `id` da solicitação original será usado para construir a rota `/articles/:id`. Então, se uma requisição vier para `/posts/20`, ela será redirecionada para `/articles/20`.
 
 ```ts
 // title: start/routes.ts
@@ -532,9 +531,9 @@ import router from '@adonisjs/core/services/router'
 router.on('/posts/:id').redirect('/articles/:id')
 ```
 
-### Explicitly specifying params
+### Especificando parâmetros explicitamente
 
-You can also specify the route params explicitly as the second argument. In this case, the params from the current request will be ignored.
+Você também pode especificar os parâmetros de rota explicitamente como o segundo argumento. Neste caso, os parâmetros da requisição atual serão ignorados.
 
 ```ts
 // title: start/routes.ts
@@ -546,9 +545,9 @@ router.on('/posts/:id').redirect('/articles/:id', {
 })
 ```
 
-### With query string
+### Com string de consulta
 
-The query string for the redirect URL can be defined within the options object.
+A string de consulta para a URL de redirecionamento pode ser definida dentro do objeto options.
 
 ```ts
 // title: start/routes.ts
@@ -562,9 +561,9 @@ router.on('/posts').redirect('/articles', {
 })
 ```
 
-## Current request route
+## Rota da requisição atual
 
-The route of the current request can be accessed using the [`HttpContext.route`](../concepts/http_context.md#http-context-properties) property. It includes the **route pattern**, **name**, **reference to its middleware store**, and **reference to the route handler**.
+A rota da requisição atual pode ser acessada usando a propriedade [`HttpContext.route`](../concepts/http_context.md#http-context-properties). Ela inclui o **padrão de rota**, **nome**, **referência ao seu armazenamento de middleware** e **referência ao manipulador de rota**.
 
 ```ts
 // title: start/routes.ts
@@ -573,7 +572,7 @@ router.get('payments', ({ route }) => {
 })
 ```
 
-You can also check if the current request is for a specific route or not using the `request.matchesRoute` method. The method accepts either the route URI pattern or the route name.
+Você também pode verificar se a solicitação atual é para uma rota específica ou não usando o método `request.matchesRoute`. O método aceita o padrão URI da rota ou o nome da rota.
 
 ```ts
 // title: start/routes.ts
@@ -593,7 +592,7 @@ router
   .as('posts.show')
 ```
 
-You can also match against multiple routes. The method will return true as soon as it finds the first match.
+Você também pode corresponder a várias rotas. O método retornará true assim que encontrar a primeira correspondência.
 
 ```ts
 if (request.matchesRoute(['/posts/:id', '/posts/:id/comments'])) {
@@ -601,13 +600,13 @@ if (request.matchesRoute(['/posts/:id', '/posts/:id/comments'])) {
 }
 ```
 
-## How AdonisJS matches routes
+## Como o AdonisJS corresponde às rotas
 
-The routes are matched in the same order as they are registered inside the routes file. We begin the match from the topmost route and stop at the first matching route.
+As rotas são correspondidas na mesma ordem em que são registradas dentro do arquivo de rotas. Começamos a correspondência da rota mais alta e paramos na primeira rota correspondente.
 
-If you have two similar routes, you must first register the most specific route.
+Se você tiver duas rotas semelhantes, primeiro deve registrar a rota mais específica.
 
-In the following example, the request for the URL `/posts/archived` will be handled by the first route (i.e., `/posts/:id` ) because the dynamic param `id` will capture the `archived` value.
+No exemplo a seguir, a solicitação para a URL `/posts/archived` será tratada pela primeira rota (ou seja, `/posts/:id` ) porque o parâmetro dinâmico `id` capturará o valor `archived`.
 
 ```ts
 // title: start/routes.ts
@@ -617,7 +616,7 @@ router.get('posts/:id', () => {})
 router.get('posts/archived', () => {})
 ```
 
-This behavior can be fixed by re-ordering the routes by placing the most specific route before the route with a dynamic param.
+Esse comportamento pode ser corrigido reordenando as rotas colocando a rota mais específica antes da rota com um parâmetro dinâmico.
 
 ```ts
 // title: start/routes.ts
@@ -625,11 +624,11 @@ router.get('posts/archived', () => {})
 router.get('posts/:id', () => {})
 ```
 
-### Handling 404 requests 
+### Lidando com solicitações 404
 
-AdonisJS raises a 404 exception when no matching route is found for the current request's URL.
+O AdonisJS gera uma exceção 404 quando nenhuma rota correspondente é encontrada para a URL da solicitação atual.
 
-To display a 404 page to the user, you can catch the `E_ROUTE_NOT_FOUND` exception inside the [global exception handler](./exception_handling.md) and render a template.
+Para exibir uma página 404 para o usuário, você pode capturar a exceção `E_ROUTE_NOT_FOUND` dentro do [manipulador de exceção global](./exception_handling.md) e renderizar um modelo.
 
 ```ts
 // app/exceptions/handler.ts
@@ -647,11 +646,11 @@ export default class HttpExceptionHandler extends ExceptionHandler {
 }
 ```
 
-## URL builder
+## Construtor de URL
 
-You may use the URL builder to create URLs for pre-defined routes in your application. For example, create a form action URL inside Edge templates, or make the URL to redirect the request to another route.
+Você pode usar o construtor de URL para criar URLs para rotas predefinidas em seu aplicativo. Por exemplo, crie uma URL de ação de formulário dentro de modelos do Edge ou crie a URL para redirecionar a solicitação para outra rota.
 
-The `router.builder` method creates an instance of the [URL builder](https://github.com/adonisjs/http-server/blob/main/src/router/lookup_store/url_builder.ts) class, and you can use the builder's fluent API to look up a route and create a URL for it.
+O método `router.builder` cria uma instância da classe [URL builder](https://github.com/adonisjs/http-server/blob/main/src/router/lookup_store/url_builder.ts), e você pode usar a API fluente do builder para procurar uma rota e criar uma URL para ela.
 
 ```ts
 // title: start/routes.ts
@@ -663,7 +662,7 @@ router
   .as('posts.show')
 ```
 
-You may generate the URL for the `posts.show` route as follows.
+Você pode gerar a URL para a rota `posts.show` da seguinte forma.
 
 ```ts
 // title: start/routes.ts
@@ -680,7 +679,7 @@ router
  .make('posts.show') // /posts/20
 ```
 
-The params can be specified as an array of positional arguments. Or you can define them as a key-value pair.
+Os parâmetros podem ser especificados como uma matriz de argumentos posicionais. Ou você pode defini-los como um par chave-valor.
 
 ```ts
 // title: start/routes.ts
@@ -690,9 +689,9 @@ router
  .make('posts.show') // /posts/1
 ```
 
-### Defining query parameters
+### Definindo parâmetros de consulta
 
-The query parameters can be defined using the `builder.qs` method. The method accepts an object of key-value pair and serializes it to a query string.
+Os parâmetros de consulta podem ser definidos usando o método `builder.qs`. O método aceita um objeto de par chave-valor e o serializa para uma string de consulta.
 
 ```ts
 // title: start/routes.ts
@@ -702,7 +701,7 @@ router
   .make('posts.index') // /posts?page=1&sort=asc
 ```
 
-The query string is serialized using the [qs](https://www.npmjs.com/package/qs) npm package. You can [configure its settings](https://github.com/adonisjs/http-server/blob/main/src/define_config.ts#L49-L54) inside the `config/app.ts` file under the `http` object.
+A sequência de consulta é serializada usando o pacote npm [qs](https://www.npmjs.com/package/qs). Você pode [configurar suas configurações](https://github.com/adonisjs/http-server/blob/main/src/define_config.ts#L49-L54) dentro do arquivo `config/app.ts` sob o objeto `http`.
 
 ```ts
 // title: config/app.js
@@ -715,9 +714,9 @@ http: defineConfig({
 })
 ```
 
-### Prefixing URL
+### Prefixando URL
 
-You may prefix a base URL to the output using the `builder.prefixUrl` method.
+Você pode prefixar uma URL base para a saída usando o método `builder.prefixUrl`.
 
 ```ts
 // title: start/routes.ts
@@ -728,17 +727,17 @@ router
   .make('posts.show')
 ```
 
-### Generating signed URLs
+### Gerando URLs assinadas
 
-Signed URLs are URLs with a signature query string appended to them. The signature is used to verify if the URL has been tampered after it was generated.
+URLs assinadas são URLs com uma sequência de consulta de assinatura anexada a elas. A assinatura é usada para verificar se a URL foi adulterada após ser gerada.
 
-For example, you have a URL to unsubscribe users from your newsletter. The URL contains the `userId` and might look as follows.
+Por exemplo, você tem uma URL para cancelar a assinatura de usuários do seu boletim informativo. A URL contém o `userId` e pode ter a seguinte aparência.
 
 ```
 /unsubscribe/231
 ```
 
-To prevent someone from changing the user id from `231` to something else, you can sign this URL and verify the signature when handling requests for this route.
+Para evitar que alguém altere o ID do usuário de `231` para outra coisa, você pode assinar esta URL e verificar a assinatura ao lidar com solicitações para esta rota.
 
 ```ts
 // title: start/routes.ts
@@ -751,7 +750,7 @@ router.get('unsubscribe/:id', ({ request, response }) => {
 }).as('unsubscribe')
 ```
 
-You may use the `makeSigned` method to create a signed URL.
+Você pode usar o método `makeSigned` para criar uma URL assinada.
 
 ```ts
 // title: start/routes.ts
@@ -764,9 +763,9 @@ router
   // highlight-end
 ```
 
-#### Signed URL expiration
+#### Expiração de URL assinada
 
-You may generate signed URLs that expire after a given duration using the `expiresIn` option. The value can be a number in milliseconds or a time expression string.
+Você pode gerar URLs assinadas que expiram após uma duração determinada usando a opção `expiresIn`. O valor pode ser um número em milissegundos ou uma string de expressão de tempo.
 
 ```ts
 // title: start/routes.ts
@@ -781,11 +780,11 @@ router
   // highlight-end
 ```
 
-### Disabling route lookup
+### Desabilitando a pesquisa de rota
 
-The URL builder performs a route lookup with the route identifier given to the `make` and the `makeSigned` methods.
+O construtor de URL executa uma pesquisa de rota com o identificador de rota fornecido aos métodos `make` e `makeSigned`.
 
-If you want to create a URL for routes defined outside your AdonisJS application, you may disable the route lookup and give the route pattern to the `make` and the `makeSigned` methods.
+Se você quiser criar uma URL para rotas definidas fora do seu aplicativo AdonisJS, você pode desabilitar a pesquisa de rota e fornecer o padrão de rota aos métodos `make` e `makeSigned`.
 
 ```ts
 // title: start/routes.ts
@@ -797,8 +796,8 @@ router
   .make('/email/verify/:token') // /email/verify/foobar
 ```
 
-### Making URL for routes under a domain
-You can make URLs for routes registered under a specific domain using the `router.builderForDomain` method. The method accepts the route pattern you used at the time of defining the routes.
+### Criando URL para rotas em um domínio
+Você pode criar URLs para rotas registradas em um domínio específico usando o método `router.builderForDomain`. O método aceita o padrão de rota que você usou no momento da definição das rotas.
 
 ```ts
 // title: start/routes.ts
@@ -812,7 +811,7 @@ router.group(() => {
 }).domain('blog.adonisjs.com')
 ```
 
-You can create URL for the `posts.show` route under `blog.adonisjs.com` domain as follows.
+Você pode criar URL para a rota `posts.show` no domínio `blog.adonisjs.com` da seguinte forma.
 
 ```ts
 // title: start/routes.ts
@@ -822,11 +821,11 @@ router
   .make('posts.show')
 ```
 
-### Generating URLs inside templates
+### Gerando URLs dentro de modelos
 
-You may use the `route` and the `signedRoute` methods inside templates to generate a URL using the URL builder.
+Você pode usar os métodos `route` e `signedRoute` dentro de modelos para gerar uma URL usando o construtor de URL.
 
-See also: [Edge helpers reference](../references/edge.md#routesignedroute)
+Veja também: [Referência de ajudantes do Edge](../references/edge.md#routesignedroute)
 
 ```edge
 <a href="{{ route('posts.show', [post.id]) }}">
@@ -845,15 +844,15 @@ See also: [Edge helpers reference](../references/edge.md#routesignedroute)
 </a>
 ```
 
-## Extending router
+## Estendendo o roteador
 
-You can add custom properties to different router classes using macros and getters. Make sure to read the [extending AdonisJS guide](../concepts/extending_the_framework.md) first if you are new to the concept of macros.
+Você pode adicionar propriedades personalizadas a diferentes classes de roteador usando macros e getters. Certifique-se de ler o [guia de extensão do AdonisJS](../concepts/extending_the_framework.md) primeiro se você for novo no conceito de macros.
 
-Following is the list of classes you can extend.
+A seguir está a lista de classes que você pode estender.
 
 ### `Router`
 
-The [Router class](https://github.com/adonisjs/http-server/blob/main/src/router/main.ts) contains the top-level methods for creating a route, a route group, or a route resource. An instance of this class is made available via the router service.
+A [classe Router](https://github.com/adonisjs/http-server/blob/main/src/router/main.ts) contém os métodos de nível superior para criar uma rota, um grupo de rotas ou um recurso de rota. Uma instância desta classe é disponibilizada por meio do serviço de roteador.
 
 ```ts
 import { Router } from '@adonisjs/core/http'
@@ -877,7 +876,7 @@ declare module '@adonisjs/core/http' {
 
 ### `Route`
 
-The [Route class](https://github.com/adonisjs/http-server/blob/main/src/router/route.ts) represents a single route. An instance of the Route class is created once you call the `router.get`, `router.post`, and other similar methods.
+A [classe Route](https://github.com/adonisjs/http-server/blob/main/src/router/route.ts) representa uma única rota. Uma instância da classe Route é criada quando você chama os métodos `router.get`, `router.post` e outros semelhantes.
 
 ```ts
 import { Route } from '@adonisjs/core/http'
@@ -901,9 +900,9 @@ declare module '@adonisjs/core/http' {
 
 ### `RouteGroup`
 
-The [RouteGroup class](https://github.com/adonisjs/http-server/blob/main/src/router/group.ts) represents a group of routes. An instance of RouteGroup class is created once you call the `router.group` method.
+A [classe RouteGroup](https://github.com/adonisjs/http-server/blob/main/src/router/group.ts) representa um grupo de rotas. Uma instância da classe RouteGroup é criada quando você chama o método `router.group`.
 
-You can access the group's routes using the `this.routes` property inside your macro or getter implementation.
+Você pode acessar as rotas do grupo usando a propriedade `this.routes` dentro da sua implementação de macro ou getter.
 
 ```ts
 import { RouteGroup } from '@adonisjs/core/http'
@@ -927,9 +926,9 @@ declare module '@adonisjs/core/http' {
 
 ### `RouteResource`
 
-The [RouteResource class](https://github.com/adonisjs/http-server/blob/main/src/router/resource.ts) represents a group of routes for a resource. An instance of RouteResource class is created once you call the `router.resource` method.
+A [classe RouteResource](https://github.com/adonisjs/http-server/blob/main/src/router/resource.ts) representa um grupo de rotas para um recurso. Uma instância da classe RouteResource é criada quando você chama o método `router.resource`.
 
-You can access the routes of the resource using the `this.routes` property inside your macro or getter implementation.
+Você pode acessar as rotas do recurso usando a propriedade `this.routes` dentro da sua implementação de macro ou getter.
 
 ```ts
 import { RouteResource } from '@adonisjs/core/http'
@@ -953,9 +952,9 @@ declare module '@adonisjs/core/http' {
 
 ### `BriskRoute`
 
-The [BriskRoute class](https://github.com/adonisjs/http-server/blob/main/src/router/brisk.ts) represents a route without an explicit handler. An instance of BriskRoute class is created once you call the `router.on` method.
+A [classe BriskRoute](https://github.com/adonisjs/http-server/blob/main/src/router/brisk.ts) representa uma rota sem um manipulador explícito. Uma instância da classe BriskRoute é criada quando você chama o método `router.on`.
 
-You can call the `this.setHandler` method inside your macro or getter to assign a route handler.
+Você pode chamar o método `this.setHandler` dentro da sua macro ou getter para atribuir um manipulador de rota.
 
 ```ts
 import { BriskRoute } from '@adonisjs/core/http'

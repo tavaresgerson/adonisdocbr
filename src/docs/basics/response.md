@@ -1,14 +1,14 @@
 ---
-summary: Response class is used to send HTTP responses. It supports sending HTML fragments, JSON objects, streams, and much more.
+Resumo: A classe Response é usada para enviar respostas HTTP. Ela suporta o envio de fragmentos HTML, objetos JSON, fluxos e muito mais.
 ---
 
 # Response
 
-An instance of the [response class](https://github.com/adonisjs/http-server/blob/main/src/response.ts) is used to respond to HTTP requests. AdonisJS supports sending **HTML fragments**, **JSON objects**, **streams**, and much more. The response instance can be accessed using the `ctx.response` property.
+Uma instância da [classe response](https://github.com/adonisjs/http-server/blob/main/src/response.ts) é usada para responder a solicitações HTTP. O AdonisJS suporta o envio de **fragmentos HTML**, **objetos JSON**, **fluxos** e muito mais. A instância response pode ser acessada usando a propriedade `ctx.response`.
 
-## Sending response
+## Enviando resposta
 
-The simplest way to send a response is to return a value from the route handler.
+A maneira mais simples de enviar uma resposta é retornar um valor do manipulador de rota.
 
 ```ts
 import router from '@adonisjs/core/services/router'
@@ -28,7 +28,7 @@ router.get('/', async () => {
 })
 ```
 
-Along with returning a value from the route handler, you can use the `response.send` method to explicitly set the response body. However, calling the `response.send` method multiple times will overwrite the old body and only keep the latest one.
+Além de retornar um valor do manipulador de rota, você pode usar o método `response.send` para definir explicitamente o corpo da resposta. No entanto, chamar o método `response.send` várias vezes substituirá o corpo antigo e manterá apenas o mais recente.
 
 ```ts
 import router from '@adonisjs/core/services/router'
@@ -48,7 +48,7 @@ router.get('/', async ({ response }) => {
 })
 ```
 
-A custom status code for the response can be set using the `response.status` method.
+Um código de status personalizado para a resposta pode ser definido usando o método `response.status`.
 
 ```ts
 response.status(200).send({ page: 'home' })
@@ -57,11 +57,11 @@ response.status(200).send({ page: 'home' })
 response.status(201).send('')
 ```
 
-## Streaming content
+## Conteúdo de streaming
 
-The `response.stream` method allows piping a stream to the response. The method internally destroys the stream after it finishes.
+O método `response.stream` permite canalizar um fluxo para a resposta. O método destrói internamente o fluxo após terminar.
 
-The `response.stream` method does not set the `content-type` and the `content-length` headers; you must set them explicitly before streaming the content.
+O método `response.stream` não define os cabeçalhos `content-type` e `content-length`; você deve defini-los explicitamente antes de transmitir o conteúdo.
 
 ```ts
 import router from '@adonisjs/core/services/router'
@@ -72,7 +72,7 @@ router.get('/', async ({ response }) => {
 })
 ```
 
-A 500 status code is sent to the client in case of an error. However, you can customize the error code and message by defining a callback as the second parameter.
+Um código de status 500 é enviado ao cliente em caso de erro. No entanto, você pode personalizar o código de erro e a mensagem definindo um retorno de chamada como o segundo parâmetro.
 
 ```ts
 const image = fs.createReadStream('./some-file.jpg')
@@ -85,9 +85,9 @@ response.stream(image, () => {
 })
 ```
 
-## Downloading files
+## Baixando arquivos
 
-We recommend using the `response.download` method over the `response.stream` method when you want to stream files from the disk. This is because the `download` method automatically sets the `content-type` and the `content-length` headers.
+Recomendamos usar o método `response.download` em vez do método `response.stream` quando você quiser transmitir arquivos do disco. Isso ocorre porque o método `download` define automaticamente os cabeçalhos `content-type` e `content-length`.
 
 ```ts
 import app from '@adonisjs/core/services/app'
@@ -100,7 +100,7 @@ router.get('/uploads/:file', async ({ response, params }) => {
 })
 ```
 
-Optionally, you can generate an [Etag](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag) for the file contents. Using Etags will help the browser re-use the cached response from the previous request (if any).
+Opcionalmente, você pode gerar uma [Etag](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag) para o conteúdo do arquivo. Usar Etags ajudará o navegador a reutilizar a resposta em cache da solicitação anterior (se houver).
 
 ```ts
 const filePath = app.makePath(`uploads/${params.file}`)
@@ -109,7 +109,7 @@ const generateEtag = true
 response.download(filePath, generateEtag)
 ```
 
-Similar to the `response.stream` method, you can send a custom error message and status code by defining a callback as the last parameter.
+Semelhante ao método `response.stream`, você pode enviar uma mensagem de erro personalizada e um código de status definindo um retorno de chamada como o último parâmetro.
 
 ```ts
 const filePath = app.makePath(`uploads/${params.file}`)
@@ -124,9 +124,9 @@ response.download(filePath, generateEtag, (error) => {
 })
 ```
 
-### Force downloading files
+### Forçar download de arquivos
 
-The `response.attachment` method is similar to the `response.download` method, but it forces the browsers to save the file on the user's computer by setting the [Content-Disposition](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition) header.
+O método `response.attachment` é semelhante ao método `response.download`, mas força os navegadores a salvar o arquivo no computador do usuário definindo o cabeçalho [Content-Disposition](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition).
 
 ```ts
 import app from '@adonisjs/core/services/app'
@@ -139,11 +139,11 @@ router.get('/uploads/:file', async ({ response, params }) => {
 })
 ```
 
-## Setting response status and headers
+## Definindo status de resposta e cabeçalhos
 
-### Setting status
+### Definindo status
 
-You may set the response status using the `response.status` method. Calling this method will override the existing response status (if any). However, you may use the `response.safeStatus` method to set the status only when it is `undefined`.
+Você pode definir o status de resposta usando o método `response.status`. Chamar esse método substituirá o status de resposta existente (se houver). No entanto, você pode usar o método `response.safeStatus` para definir o status somente quando ele for `undefined`.
 
 ```ts
 import router from '@adonisjs/core/services/router'
@@ -162,9 +162,9 @@ router.get('/', async ({ response }) => {
 })
 ```
 
-### Setting headers
+### Definindo cabeçalhos
 
-You may set the response headers using the `response.header` method. This method overrides the existing header value (if it already exists). However, you may use the `response.safeHeader` method to set the header only when it is `undefined`.
+Você pode definir os cabeçalhos de resposta usando o método `response.header`. Este método substitui o valor do cabeçalho existente (se ele já existir). No entanto, você pode usar o método `response.safeHeader` para definir o cabeçalho somente quando ele for `undefined`.
 
 ```ts
 import router from '@adonisjs/core/services/router'
@@ -183,27 +183,27 @@ router.get('/', async ({ response }) => {
 })
 ```
 
-You can use the `response.append` method to append values to existing header values.
+Você pode usar o método `response.append` para anexar valores aos valores de cabeçalho existentes.
 
 ```ts
 response.append('Set-cookie', 'cookie-value')
 ```
 
-The `response.removeHeader` method removes the existing header.
+O método `response.removeHeader` remove o cabeçalho existente.
 
 ```ts
 response.removeHeader('Set-cookie')
 ```
 
-### X-Request-Id header
+### Cabeçalho X-Request-Id
 
-If the header exists in the current request or if [Generating request ids](./request#generating-request-ids) is enabled, the header will be present in the response.
+Se o cabeçalho existir na solicitação atual ou se [Gerando IDs de solicitação](./request#generating-request-ids) estiver habilitado, o cabeçalho estará presente na resposta.
 
-## Redirects
+## Redirecionamentos
 
-The `response.redirect` method returns an instance of the [Redirect](https://github.com/adonisjs/http-server/blob/main/src/redirect.ts) class. The redirect class uses fluent API to construct the redirect URL.
+O método `response.redirect` retorna uma instância da classe [Redirect](https://github.com/adonisjs/http-server/blob/main/src/redirect.ts). A classe redirect usa a API fluente para construir a URL de redirecionamento.
 
-The simplest way to perform a redirect is to call the `redirect.toPath` method with the redirection path.
+A maneira mais simples de executar um redirecionamento é chamar o método `redirect.toPath` com o caminho de redirecionamento.
 
 ```ts
 import router from '@adonisjs/core/services/router'
@@ -213,7 +213,7 @@ router.get('/posts', async ({ response }) => {
 })
 ```
 
-The redirect class also allows constructing a URL from a pre-registered route. The `redirect.toRoute` method accepts the [route identifier](./routing.md#route-identifier) as the first parameter and the route params as the second parameter.
+A classe redirect também permite construir uma URL a partir de uma rota pré-registrada. O método `redirect.toRoute` aceita o [identificador de rota](./routing.md#route-identifier) ​​como o primeiro parâmetro e os parâmetros de rota como o segundo parâmetro.
 
 ```ts
 import router from '@adonisjs/core/services/router'
@@ -225,47 +225,47 @@ router.get('/posts/:id', async ({ response, params }) => {
 })
 ```
 
-### Redirect back to the previous page
+### Redirecionar de volta para a página anterior
 
-You might want to redirect the user to the previous page during form submissions in case of validation errors. You can do that using the `redirect.back` method.
+Você pode querer redirecionar o usuário para a página anterior durante os envios de formulários em caso de erros de validação. Você pode fazer isso usando o método `redirect.back`.
 
 ```ts
 response.redirect().back()
 ```
 
-### Redirection status code
+### Código de status de redirecionamento
 
-The default status for redirect responses is `302`; you can change it by calling the `redirect.status` method.
+O status padrão para respostas de redirecionamento é `302`; você pode alterá-lo chamando o método `redirect.status`.
 
 ```ts
 response.redirect().status(301).toRoute('articles.show', { id: params.id })
 ```
 
-### Redirect with query string
+### Redirecionar com sequência de consulta
 
-You can use the `withQs` method to append a query string to the redirect URL. The method accepts an object of a key-value pair and converts it to a string.
+Você pode usar o método `withQs` para anexar uma sequência de consulta à URL de redirecionamento. O método aceita um objeto de um par de chave-valor e o converte em uma sequência.
 
 ```ts
 response.redirect().withQs({ page: 1, limit: 20 }).toRoute('articles.index')
 ```
 
-To forward the query string from the current request URL, call the `withQs` method without any parameters.
+Para encaminhar a sequência de consulta da URL de solicitação atual, chame o método `withQs` sem nenhum parâmetro.
 
 ```ts
 // Forward current URL query string
 response.redirect().withQs().toRoute('articles.index')
 ```
 
-When redirecting back to the previous page, the `withQs` method will forward the query string of the previous page.
+Ao redirecionar de volta para a página anterior, o método `withQs` encaminhará a sequência de consulta da página anterior.
 
 ```ts
 // Forward current URL query string
 response.redirect().withQs().back()
 ```
 
-## Aborting request with an error
+## Abortando solicitação com erro
 
-You may use the `response.abort` method to end the request by raising an exception. The method will throw an `E_HTTP_REQUEST_ABORTED` exception and trigger the [exception handling](./exception_handling.md) flow.
+Você pode usar o método `response.abort` para encerrar a solicitação gerando uma exceção. O método lançará uma exceção `E_HTTP_REQUEST_ABORTED` e acionará o fluxo [exception handling](./exception_handling.md).
 
 ```ts
 router.get('posts/:id/edit', async ({ response, auth, params }) => {
@@ -279,15 +279,15 @@ router.get('posts/:id/edit', async ({ response, auth, params }) => {
 })
 ```
 
-By default, the exception will create an HTTP response with a `400` status code. However, you can specify a custom status code as the second parameter.
+Por padrão, a exceção criará uma resposta HTTP com um código de status `400`. No entanto, você pode especificar um código de status personalizado como o segundo parâmetro.
 
 ```ts
 response.abort({ message: 'Cannot edit post' }, 403)
 ```
 
-## Running actions after response finishes
+## Executando ações após o término da resposta
 
-You may listen for the event when Node.js finishes writing the response to the TCP socket using the `response.onFinish` method. Under the hood, we use the [on-finished](https://github.com/jshttp/on-finished) package, so feel free to consult the package README file for an in-depth technical explanation.
+Você pode ouvir o evento quando o Node.js terminar de gravar a resposta no soquete TCP usando o método `response.onFinish`. Nos bastidores, usamos o pacote [on-finished](https://github.com/jshttp/on-finished), então sinta-se à vontade para consultar o arquivo README do pacote para uma explicação técnica aprofundada.
 
 ```ts
 router.get('posts', ({ response }) => {
@@ -297,9 +297,9 @@ router.get('posts', ({ response }) => {
 })
 ```
 
-## Accessing Node.js `res` object
+## Acessando o objeto `res` do Node.js
 
-You can access the [Node.js res object](https://nodejs.org/dist/latest-v19.x/docs/api/http.html#class-httpserverresponse) using the `response.response` property.
+Você pode acessar o [objeto res do Node.js](https://nodejs.org/dist/latest-v19.x/docs/api/http.html#class-httpserverresponse) usando a propriedade `response.response`.
 
 ```ts
 router.get('posts', ({ response }) => {
@@ -307,32 +307,32 @@ router.get('posts', ({ response }) => {
 })
 ```
 
-## Response body serialization
+## Serialização do corpo da resposta
 
-The response body set using the `response.send` method gets serialized to a string before it is [written as response](https://nodejs.org/dist/latest-v18.x/docs/api/http.html#responsewritechunk-encoding-callback) to the outgoing message stream.
+O conjunto de corpos de resposta usando o método `response.send` é serializado para uma string antes de ser [escrito como resposta](https://nodejs.org/dist/latest-v18.x/docs/api/http.html#responsewritechunk-encoding-callback) para o fluxo de mensagens de saída.
 
-Following is the list of supported data types and their serialization rules.
+A seguir está a lista de tipos de dados suportados e suas regras de serialização.
 
-- Arrays and Objects are stringified using the [safe stringify function](https://github.com/poppinss/utils/blob/main/src/json/safe_stringify.ts). The method is similar to `JSON.stringify` but removes the circular references and serializes `BigInt(s)`.
-- The number and boolean values are converted to a string.
-- The instance of the Date class is converted to a string by calling the `toISOString` method.
-- Regular expressions and error objects are converted to a string by calling the `toString` method.
-- Any other data type results in an exception.
+[função stringify segura](https://github.com/poppinss/utils/blob/main/src/json/safe_stringify.ts). O método é semelhante a `JSON.stringify`, mas remove as referências circulares e serializa `BigInt(s)`.
+- Os valores numéricos e booleanos são convertidos em uma string.
+- A instância da classe Date é convertida em uma string chamando o método `toISOString`.
+- Expressões regulares e objetos de erro são convertidos em uma string chamando o método `toString`.
+- Qualquer outro tipo de dado resulta em uma exceção.
 
-### Content type inference
+### Inferência de tipo de conteúdo
 
-After serializing the response, the response class automatically infers and sets the `content-type` and the `content-length` headers.
+Após serializar a resposta, a classe de resposta infere e define automaticamente os cabeçalhos `content-type` e `content-length`.
 
-Following is the list of rules we follow to set the `content-type` header.
+A seguir está a lista de regras que seguimos para definir o cabeçalho `content-type`.
 
-- Content type is set to `application/json` for arrays and objects.
-- It is set to `text/html` for HTML fragments.
-- JSONP responses are sent with the `text/javascript` content type.
-- The content type is set to `text/plain` for everything else.
+- O tipo de conteúdo é definido como `application/json` para matrizes e objetos.
+- É definido como `text/html` para fragmentos HTML.
+- As respostas JSONP são enviadas com o tipo de conteúdo `text/javascript`.
+- O tipo de conteúdo é definido como `text/plain` para todo o resto.
 
-## Extending Response class
+## Estendendo a classe Response
 
-You can add custom properties to the Response class using macros or getters. Make sure to read the [extending AdonisJS guide](../concepts/extending_the_framework.md) first if you are new to the concept of macros.
+Você pode adicionar propriedades personalizadas à classe Response usando macros ou getters. Certifique-se de ler o [guia de extensão do AdonisJS](../concepts/extending_the_framework.md) primeiro se você for novo no conceito de macros.
 
 ```ts
 import { Response } from '@adonisjs/core/http'
@@ -345,7 +345,7 @@ Response.getter('property', function (this: Response) {
 })
 ```
 
-Since the macros and getters are added at runtime, you must inform TypeScript about their types.
+Como as macros e getters são adicionados em tempo de execução, você deve informar o TypeScript sobre seus tipos.
 
 ```ts
 declare module '@adonisjs/core/http' {

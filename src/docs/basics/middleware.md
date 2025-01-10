@@ -1,26 +1,26 @@
 ---
-summary: Learn about middleware in AdonisJS, how to create them, and how to assign them to routes and route groups.
+resumo: Aprenda sobre middleware no AdonisJS, como criá-los e como atribuí-los a rotas e grupos de rotas.
 ---
 
 # Middleware
 
-Middleware are a series of functions executed during an HTTP request before the request reaches the route handler. Every function in the chain can end the request or forward it to the next middleware.
+Middleware é uma série de funções executadas durante uma solicitação HTTP antes que a solicitação chegue ao manipulador de rotas. Cada função na cadeia pode encerrar a solicitação ou encaminhá-la para o próximo middleware.
 
-A typical AdonisJS application uses middleware for **parsing request body**, **managing users sessions**, **authenticating requests**, **serving static assets**, etc.
+Um aplicativo AdonisJS típico usa middleware para **analisar o corpo da solicitação**, **gerenciar sessões de usuários**, **autenticar solicitações**, **servir ativos estáticos**, etc.
 
-You can also create custom middleware to perform additional tasks during an HTTP request.
+Você também pode criar middleware personalizado para executar tarefas adicionais durante uma solicitação HTTP.
 
-## Middleware stacks
+## Pilhas de middleware
 
-To give you better control over the execution of the middleware pipeline, AdonisJS split the middleware stack into following three groups.
+Para dar a você melhor controle sobre a execução do pipeline de middleware, o AdonisJS dividiu a pilha de middleware nos três grupos a seguir.
 
-### Server middleware stack
+### Pilha de middleware do servidor
 
-Server middleware runs on every HTTP request, even if you have not defined any route for the current request's URL.
+O middleware do servidor é executado em todas as solicitações HTTP, mesmo que você não tenha definido nenhuma rota para a URL da solicitação atual.
 
-They are great for adding additional functionality to your app that does not rely on the routing system of the framework. For example, the Static assets middleware is registered as server middleware.
+Eles são ótimos para adicionar funcionalidades adicionais ao seu aplicativo que não dependem do sistema de roteamento do framework. Por exemplo, o middleware Static Assets é registrado como middleware de servidor.
 
-You can register server middleware using the `server.use` method inside the `start/kernel.ts` file.
+Você pode registrar o middleware de servidor usando o método `server.use` dentro do arquivo `start/kernel.ts`.
 
 ```ts
 import server from '@adonisjs/core/services/server'
@@ -32,13 +32,13 @@ server.use([
 
 ---
 
-### Router middleware stack
+### Pilha de middleware de roteador
 
-Router middleware are also known as global middleware. They are executed on every HTTP request that has a matching route.
+O middleware de roteador também é conhecido como middleware global. Ele é executado em cada solicitação HTTP que tem uma rota correspondente.
 
-The Bodyparser, auth, and session middleware are registered under the router middleware stack.
+O Bodyparser, auth e o middleware de sessão são registrados na pilha de middleware de roteador.
 
-You can register router middleware using the `router.use` method inside the `start/kernel.ts` file.
+Você pode registrar o middleware de roteador usando o método `router.use` dentro do arquivo `start/kernel.ts`.
 
 ```ts
 import router from '@adonisjs/core/services/router'
@@ -50,13 +50,13 @@ router.use([
 
 ---
 
-### Named middleware collection
+### Coleção de middleware nomeado
 
-Named middleware is a collection of middleware that are not executed unless explicitly assigned to a route or a group.
+O middleware nomeado é uma coleção de middleware que não são executados a menos que explicitamente atribuídos a uma rota ou grupo.
 
-Instead of defining middleware as an inline callback within the routes file, we recommend you create dedicated middleware classes, store them inside the named middleware collection and then assign them to the routes.
+Em vez de definir o middleware como um retorno de chamada em linha dentro do arquivo de rotas, recomendamos que você crie classes de middleware dedicadas, armazene-as dentro da coleção de middleware nomeada e, em seguida, atribua-as às rotas.
 
-You can define named middleware using the `router.named` method inside the `start/kernel.ts` file. Make sure to export the named collection to be able to use it [inside the routes file](#assigning-middleware-to-routes-and-route-groups).
+Você pode definir o middleware nomeado usando o método `router.named` dentro do arquivo `start/kernel.ts`. Certifique-se de exportar a coleção nomeada para poder usá-la [dentro do arquivo de rotas](#assigning-middleware-to-routes-and-route-groups).
 
 ```ts
 import router from '@adonisjs/core/services/router'
@@ -66,19 +66,19 @@ router.named({
 })
 ```
 
-## Creating middleware
+## Criando middleware
 
-Middleware are stored inside the `./app/middleware` directory, and you can create a new middleware file by running the `make:middleware` ace command.
+O middleware é armazenado dentro do diretório `./app/middleware`, e você pode criar um novo arquivo de middleware executando o comando ace `make:middleware`.
 
-* See also: [Make middleware command](../references/commands.md#makemiddleware)
+[Comando Make middleware](../references/commands.md#makemiddleware)
 
 ```sh
 node ace make:middleware user_location
 ```
 
-The above command will create the `user_location_middleware.ts` file under the middleware directory. 
+O comando acima criará o arquivo `user_location_middleware.ts` no diretório middleware.
 
-A middleware is represented as a class with the `handle` method. During execution, AdonisJS will automatically call this method and give it the [HttpContext](../concepts/http_context.md) as the first argument.
+Um middleware é representado como uma classe com o método `handle`. Durante a execução, o AdonisJS chamará automaticamente esse método e dará a ele o [HttpContext](../concepts/http_context.md) como o primeiro argumento.
 
 ```ts
 // title: app/middleware/user_location_middleware.ts
@@ -91,12 +91,12 @@ export default class UserLocationMiddleware {
 }
 ```
 
-Within the `handle` method, a middleware has to decide whether to continue with the request, finish the request by sending a response or raise an exception to abort the request.
+Dentro do método `handle`, um middleware tem que decidir se continua com a solicitação, finaliza a solicitação enviando uma resposta ou gera uma exceção para abortar a solicitação.
 
 
-### Abort request
+### Abortar solicitação
 
-If a middleware raises an exception, all the upcoming middleware and the route handler will not be executed, and the exception will be given to the global exception handler.
+Se um middleware gerar uma exceção, todos os middlewares futuros e o manipulador de rotas não serão executados, e a exceção será dada ao manipulador de exceções global.
 
 ```ts
 import { Exception } from '@adonisjs/core/exceptions'
@@ -109,9 +109,9 @@ export default class UserLocationMiddleware {
 }
 ```
 
-### Continue with the request
+### Continuar com a solicitação
 
-You must call the `next` method to continue with the request. Otherwise, the rest of the actions inside the middleware stack will not be executed.
+Você deve chamar o método `next` para continuar com a solicitação. Caso contrário, o restante das ações dentro da pilha de middleware não serão executadas.
 
 ```ts
 export default class UserLocationMiddleware {
@@ -122,9 +122,9 @@ export default class UserLocationMiddleware {
 }
 ```
 
-### Send a response, and do not call the `next` method
+### Enviar uma resposta e não chamar o método `next`
 
-Finally, you can end the request by sending the response. In this case, do not call the `next` method.
+Finalmente, você pode encerrar a solicitação enviando a resposta. Nesse caso, não chame o método `next`.
 
 ```ts
 export default class UserLocationMiddleware {
@@ -135,11 +135,11 @@ export default class UserLocationMiddleware {
 }
 ```
 
-## Assigning middleware to routes and route groups
+## Atribuindo middleware a rotas e grupos de rotas
 
-The named middleware collection is unused by default, and you must explicitly assign them to routes or the route groups.
+A coleção de middleware nomeada não é usada por padrão, e você deve atribuí-la explicitamente a rotas ou grupos de rotas.
 
-In the following example, we first import the `middleware` collection and assign the `userLocation` middleware to a route.
+No exemplo a seguir, primeiro importamos a coleção `middleware` e atribuímos o middleware `userLocation` a uma rota.
 
 ```ts
 import router from '@adonisjs/core/services/router'
@@ -150,7 +150,7 @@ router
   .use(middleware.userLocation())
 ```
 
-Multiple middleware can be applied either as an array or by calling the `use` method multiple times.
+Vários middlewares podem ser aplicados como uma matriz ou chamando o método `use` várias vezes.
 
 ```ts
 router
@@ -161,7 +161,7 @@ router
   ])
 ```
 
-Similarly, you can assign middleware to a route group as well. The group middleware will be applied to all group routes automatically.
+Da mesma forma, você também pode atribuir middleware a um grupo de rotas. O middleware do grupo será aplicado a todas as rotas do grupo automaticamente.
 
 ```ts
 import router from '@adonisjs/core/services/router'
@@ -176,9 +176,9 @@ router.group(() => {
 }).use(middleware.userLocation())
 ```
 
-## Middleware parameters
+## Parâmetros do middleware
 
-Middleware registered under the named middleware collection can accept an additional parameter as part of the `handle` method arguments. For example, the `auth` middleware accepts the authentication guard as a configuration option.
+O middleware registrado na coleção de middleware nomeada pode aceitar um parâmetro adicional como parte dos argumentos do método `handle`. Por exemplo, o middleware `auth` aceita o guard de autenticação como uma opção de configuração.
 
 ```ts
 type AuthGuards = 'web' | 'api'
@@ -189,7 +189,7 @@ export default class AuthMiddleware {
 }
 ```
 
-When assigning the middleware to the route, you can specify the guard to use.
+Ao atribuir o middleware à rota, você pode especificar o guard a ser usado.
 
 ```ts
 import router from '@adonisjs/core/services/router'
@@ -200,11 +200,11 @@ router.get('payments', () => {}).use(
 )
 ```
 
-## Dependency injection 
+## Injeção de dependência
 
-Middleware classes are instantiated using the [IoC container](../concepts/dependency_injection.md); therefore, you can type-hint dependencies inside the middleware constructor, and the container will inject them for you.
+As classes de middleware são instanciadas usando o [contêiner IoC](../concepts/dependency_injection.md); portanto, você pode dar dicas de tipo para dependências dentro do construtor de middleware, e o contêiner as injetará para você.
 
-Given you have a `GeoIpService` class to look up user location from the request IP, you can inject it into the middleware using the `@inject` decorator.
+Dado que você tem uma classe `GeoIpService` para procurar a localização do usuário a partir do IP da solicitação, você pode injetá-la no middleware usando o decorador `@inject`.
 
 ```ts
 // title: app/services/geoip_service.ts
@@ -233,36 +233,36 @@ export default class UserLocationMiddleware {
 }
 ```
 
-## Middleware execution flow
+## Fluxo de execução do middleware
 
-The middleware layer of AdonisJS is built on top of [Chain of Responsibility](https://refactoring.guru/design-patterns/chain-of-responsibility) design pattern. A middleware has two execution phases: the **downstream phase** and the **upstream phase**.
+A camada de middleware do AdonisJS é construída sobre o padrão de design [Chain of Responsibility](https://refactoring.guru/design-patterns/chain-of-responsibility). Um middleware tem duas fases de execução: a **fase downstream** e a **fase upstream**.
 
-- The downstream phase is the block of code you write before calling the `next` method. In this phase, you handle the request.
-- The upstream phase is the block of code you might write after calling the `next` method. In this phase, you can inspect the response or change it completely. 
+- A fase downstream é o bloco de código que você escreve antes de chamar o método `next`. Nesta fase, você manipula a solicitação.
+- A fase upstream é o bloco de código que você pode escrever após chamar o método `next`. Nesta fase, você pode inspecionar a resposta ou alterá-la completamente.
 
 ![](./middleware_flow.jpeg)
 
-## Middleware and exception handling
+## Middleware e tratamento de exceções
 
-AdonisJS automatically captures the exception raised by the middleware pipeline or the route handler and converts it into an HTTP response using the [global exception handler](./exception_handling.md).
+O AdonisJS captura automaticamente a exceção gerada pelo pipeline do middleware ou pelo manipulador de rotas e a converte em uma resposta HTTP usando o [manipulador de exceções global](./exception_handling.md).
 
-As a result, you do not have to wrap the `next` function calls inside a `try/catch` statement. Also, the automatic exception handling ensures that the upstream logic of middleware is always executed after the `next` function call.
+Como resultado, você não precisa encapsular as chamadas de função `next` dentro de uma instrução `try/catch`. Além disso, o tratamento automático de exceções garante que a lógica upstream do middleware seja sempre executada após a chamada de função `next`.
 
-## Mutating response from a middleware
+## Mutando a resposta de um middleware
 
-The upstream phase of middleware can mutate the response body, headers, and status code. Doing so will discard the old response set by the route handler or any other middleware.
+A fase upstream do middleware pode mutar o corpo da resposta, os cabeçalhos e o código de status. Isso descartará a resposta antiga definida pelo manipulador de rota ou qualquer outro middleware.
 
-Before mutating the response, you must ensure you are dealing with the correct response type. Following is the list of response types in the `Response` class.
+Antes de mutar a resposta, você deve garantir que está lidando com o tipo de resposta correto. A seguir está a lista de tipos de resposta na classe `Response`.
 
-- **Standard response** refers to sending data values using the `response.send` method. Its value might be an `Array`, `Object`, `String`, `Boolean`, or `Buffer`.
-- **Streaming response** refers to piping a stream to the response socket using the `response.stream` method. 
-- **File download response** refers to downloading a file using the `response.download` method.
+- **Resposta padrão** refere-se ao envio de valores de dados usando o método `response.send`. Seu valor pode ser um `Array`, `Object`, `String`, `Boolean` ou `Buffer`.
+- **Resposta de streaming** refere-se ao envio de um fluxo para o soquete de resposta usando o método `response.stream`.
+- **Resposta de download de arquivo** refere-se ao download de um arquivo usando o método `response.download`.
 
-You will/will not have access to specific response properties based on the kind of response.
+Você terá/não terá acesso a propriedades de resposta específicas com base no tipo de resposta.
 
-### Dealing with a standard response
+### Lidando com uma resposta padrão
 
-When mutating a standard response, you can access it using the `response.content` property. Make sure first to check if the `content` exists or not.
+Ao mutar uma resposta padrão, você pode acessá-la usando a propriedade `response.content`. Certifique-se primeiro de verificar se o `content` existe ou não.
 
 ```ts
 import { HttpContext } from '@adonisjs/core/http'
@@ -282,11 +282,11 @@ export default class {
 }
 ```
 
-### Dealing with a streaming response
+### Lidando com uma resposta de streaming
 
-Response streams set using the `response.stream` method are not immediately piped to the outgoing [HTTP response](https://nodejs.org/api/http.html#class-httpserverresponse). Instead, AdonisJS waits for the route handler and the middleware pipeline to finish.
+Os fluxos de resposta definidos usando o método `response.stream` não são imediatamente canalizados para a [resposta HTTP](https://nodejs.org/api/http.html#class-httpserverresponse) de saída. Em vez disso, o AdonisJS aguarda o manipulador de rota e o pipeline do middleware terminarem.
 
-As a result, inside a middleware, you can replace the existing stream with a new stream or define event handlers to monitor the stream.
+Como resultado, dentro de um middleware, você pode substituir o fluxo existente por um novo fluxo ou definir manipuladores de eventos para monitorar o fluxo.
 
 ```ts
 import { HttpContext } from '@adonisjs/core/http'
@@ -305,11 +305,11 @@ export default class {
 }
 ```
 
-### Dealing with file downloads
+### Lidando com downloads de arquivos
 
-The file downloads performed using the `response.download`, and `response.attachment` methods defer the download process until the route handler and the middleware pipeline finish.
+Os downloads de arquivos realizados usando os métodos `response.download` e `response.attachment` adiam o processo de download até que o manipulador de rotas e o pipeline do middleware terminem.
 
-As a result, inside a middleware, you can replace the path for the file to download.
+Como resultado, dentro de um middleware, você pode substituir o caminho para o arquivo ser baixado.
 
 ```ts
 import { HttpContext } from '@adonisjs/core/http'
@@ -327,11 +327,11 @@ export default class {
 }
 ```
 
-## Testing middleware classes
+## Testando classes de middleware
 
-Creating middleware as classes allows you to easily test a middleware in isolation (aka unit test a middleware). There are a few different ways to test middleware. Let's explore all the available options.
+A criação de middleware como classes permite que você teste facilmente um middleware isoladamente (também conhecido como teste de unidade de um middleware). Existem algumas maneiras diferentes de testar middleware. Vamos explorar todas as opções disponíveis.
 
-The simplest option is to create a new instance of the middleware class and invoke the `handle` method with the HTTP context and `next` callback function.
+A opção mais simples é criar uma nova instância da classe de middleware e invocar o método `handle` com o contexto HTTP e a função de retorno de chamada `next`.
 
 ```ts
 import testUtils from '@adonisjs/core/services/test_utils'
@@ -348,9 +348,9 @@ await middleware.handle(ctx, () => {
 })
 ```
 
-The `testUtils` service is available only after the AdonisJS application is booted. However, if you are testing a middleware inside a package, you can use the `HttpContextFactory` class to create a dummy HTTP context instance without booting an application.
+O serviço `testUtils` está disponível somente após o aplicativo AdonisJS ser inicializado. No entanto, se você estiver testando um middleware dentro de um pacote, você pode usar a classe `HttpContextFactory` para criar uma instância de contexto HTTP fictícia sem inicializar um aplicativo.
 
-* See also: [CORS middleware test](https://github.com/adonisjs/cors/blob/main/tests/cors_middleware.spec.ts#L24-L41) for a real-world example.
+[Teste de middleware CORS](https://github.com/adonisjs/cors/blob/main/tests/cors_middleware.spec.ts#L24-L41) para um exemplo do mundo real.
 
 ```ts
 import {
@@ -370,13 +370,13 @@ await middleware.handle(ctx, () => {
 })
 ```
 
-### Using server pipeline
+### Usando o pipeline do servidor
 
-If your middleware relies on other middleware to be executed first, you may compose a pipeline of middleware using the `server.pipeline` method.
+Se seu middleware depende de outro middleware para ser executado primeiro, você pode compor um pipeline de middleware usando o método `server.pipeline`.
 
-- The `server.pipeline` method accepts an array of middleware classes.
-- The class instance is created using the IoC container.
-- The execution flow is the same as the original execution flow of middleware during an HTTP request.
+- O método `server.pipeline` aceita uma matriz de classes de middleware.
+- A instância de classe é criada usando o contêiner IoC.
+- O fluxo de execução é o mesmo que o fluxo de execução original do middleware durante uma solicitação HTTP.
 
 ```ts
 import testUtils from '@adonisjs/core/services/test_utils'
@@ -391,10 +391,10 @@ const ctx = testUtils.createHttpContext()
 await pipeline.run(ctx)
 ```
 
-You can define the `finalHandler` and `errorHandler` functions before calling the `pipeline.run` method. 
+Você pode definir as funções `finalHandler` e `errorHandler` antes de chamar o método `pipeline.run`.
 
-- The final handler is executed after all the middleware has been executed. The final handler is not executed when any middleware ends the chain without calling the `next` method.
-- The error handler is executed if a middleware raises an exception. The upstream flow will start after the error handler is invoked.
+- O manipulador final é executado após todo o middleware ter sido executado. O manipulador final não é executado quando qualquer middleware encerra a cadeia sem chamar o método `next`.
+- O manipulador de erros é executado se um middleware gera uma exceção. O fluxo upstream será iniciado após o manipulador de erros ser invocado.
 
 ```ts
 const ctx = testUtils.createHttpContext()
@@ -413,7 +413,7 @@ await pipeline
 console.log('pipeline executed')
 ```
 
-The `server` service is available after the application is booted. However, if you are creating a package, you can use the `ServerFactory` to create an instance of the Server class without booting the application.
+O serviço `server` fica disponível após o aplicativo ser inicializado. No entanto, se você estiver criando um pacote, poderá usar o `ServerFactory` para criar uma instância da classe Server sem inicializar o aplicativo.
 
 ```ts
 import { ServerFactory } from '@adonisjs/core/factories/http'

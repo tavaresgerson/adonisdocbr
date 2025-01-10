@@ -1,18 +1,18 @@
 ---
-summary: Assembler hooks are a way of executing code at specific points in the assembler lifecycle. 
+Resumo: Os ganchos do Assembler são uma maneira de executar código em pontos específicos do ciclo de vida do assembler.
 ---
 
-# Assembler hooks
+# Ganchos do Assembler
 
-Assembler hooks are a way of executing code at specific points in the assembler lifecycle. As a reminder, the Assembler is a part of AdonisJS that enables you to launch your dev server, build your application, and run your tests. 
+Os ganchos do Assembler são uma maneira de executar código em pontos específicos do ciclo de vida do assembler. Como um lembrete, o Assembler é uma parte do AdonisJS que permite que você inicie seu servidor de desenvolvimento, crie seu aplicativo e execute seus testes.
 
-These hooks can be helpful for tasks such as file generation, code compilation, or injecting custom build steps.
+Esses ganchos podem ser úteis para tarefas como geração de arquivos, compilação de código ou injeção de etapas de construção personalizadas.
 
-For example, the `@adonisjs/vite` package uses the `onBuildStarting` hook to inject a step where front-end assets are built. So, when you run `node ace build`, the `@adonisjs/vite` package will build your front-end assets before the rest of the build process. This is a good example of how hooks can be used to customize the build process.
+Por exemplo, o pacote `@adonisjs/vite` usa o gancho `onBuildStarting` para injetar uma etapa em que os ativos de front-end são construídos. Então, quando você executa `node ace build`, o pacote `@adonisjs/vite` construirá seus ativos de front-end antes do resto do processo de construção. Este é um bom exemplo de como os ganchos podem ser usados ​​para personalizar o processo de construção.
 
-## Adding a hook
+## Adicionando um hook
 
-Assembler hooks are defined in the `adonisrc.ts` file, in the `hooks` key :
+Os hooks do assembler são definidos no arquivo `adonisrc.ts`, na chave `hooks`:
 
 ```ts
 import { defineConfig } from '@adonisjs/core/app'
@@ -35,13 +35,13 @@ export default defineConfig({
 })
 ```
 
-Several hooks can be defined for each stage of the assembly lifecycle. Each hook is an array of functions to be executed.
+Vários hooks podem ser definidos para cada estágio do ciclo de vida do assembly. Cada hook é uma matriz de funções a serem executadas.
 
-We recommend using dynamic imports to load hooks. It ensures that hooks are not loaded unnecessarily but only when needed. If you write your hook code directly in the `adonisrc.ts` file, this may slow down the start-up of your application.
+Recomendamos usar importações dinâmicas para carregar hooks. Isso garante que os hooks não sejam carregados desnecessariamente, mas apenas quando necessário. Se você escrever seu código de hook diretamente no arquivo `adonisrc.ts`, isso pode tornar a inicialização do seu aplicativo mais lenta.
 
-## Create a hook
+## Crie um hook
 
-A hook is just a simple function. Let's take an example of a hook that is supposed to execute a custom build task.
+Um hook é apenas uma função simples. Vamos dar um exemplo de um hook que deve executar uma tarefa de build personalizada.
 
 ```ts
 // title: hooks/on_build_starting.ts
@@ -56,9 +56,9 @@ const buildHook: AssemblerHookHandler = async ({ logger }) => {
 export default buildHook
 ```
 
-Note that the hook must be exported by default.
+Observe que o hook deve ser exportado por padrão.
 
-Once this hook has been defined, all you have to do is add it to the `adonisrc.ts` file like this:
+Uma vez que este gancho tenha sido definido, tudo o que você precisa fazer é adicioná-lo ao arquivo `adonisrc.ts` assim:
 
 ```ts
 // title: adonisrc.ts
@@ -73,24 +73,24 @@ export default defineConfig({
 })
 ```
 
-And now, every time you run `node ace build`, the `onBuildStarting` hook will be executed with the custom logic you defined.
+E agora, toda vez que você executar `node ace build`, o gancho `onBuildStarting` será executado com a lógica personalizada que você definiu.
 
-## Hooks list
+## Lista de ganchos
 
-Here's the list of available hooks:
+Aqui está a lista de ganchos disponíveis:
 
 ### `onBuildStarting`
 
-This hook is executed before the build starts. It is helpful for tasks such as file generation or for injecting custom build steps.
+Este gancho é executado antes do início da compilação. É útil para tarefas como geração de arquivo ou para injetar etapas de compilação personalizadas.
 
 ### `onBuildCompleted`
 
-This hook is executed once the build is complete. It can also be used to customize the build process.
+Este gancho é executado assim que a compilação é concluída. Ele também pode ser usado para personalizar o processo de compilação.
 
 ### `onDevServerStarted`
 
-This hook is executed once the Adonis dev server is started. 
+Este gancho é executado assim que o servidor de desenvolvimento Adonis é iniciado.
 
 ### `onSourceFileChanged`
 
-This hook is executed each time a source file (included by your `tsconfig.json` ) is modified. Your hook will receive the path of the modified file as an argument.
+Este hook é executado sempre que um arquivo de origem (incluído pelo seu `tsconfig.json` ) é modificado. Seu hook receberá o caminho do arquivo modificado como um argumento.

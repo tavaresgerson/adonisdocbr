@@ -1,44 +1,44 @@
 ---
-summary: Learn about the Typescript build process in AdonisJS 
+resumo: Aprenda sobre o processo de construção do TypeScript no AdonisJS
 ---
 
-# TypeScript build process
+# Processo de construção do TypeScript
 
-Applications written in TypeScript must be compiled into JavaScript before you can run them in production.
+Aplicativos escritos em TypeScript devem ser compilados em JavaScript antes que você possa executá-los em produção.
 
-Compiling TypeScript source files can be performed using many different build tools. However, with AdonisJS, we stick to the most straightforward approach and use the following time-tested tools.
+A compilação de arquivos de origem do TypeScript pode ser realizada usando muitas ferramentas de construção diferentes. No entanto, com o AdonisJS, seguimos a abordagem mais direta e usamos as seguintes ferramentas testadas pelo tempo.
 
 :::note
-All the below-mentioned tools come pre-installed as development dependencies with official starter kits.
+Todas as ferramentas mencionadas abaixo vêm pré-instaladas como dependências de desenvolvimento com kits iniciais oficiais.
 :::
 
-- **[TSC](https://www.typescriptlang.org/docs/handbook/compiler-options.html)** is the TypeScript's official compiler. We use TSC to perform type-checking and create the production build.
+[TSC](https://www.typescriptlang.org/docs/handbook/compiler-options.html)** é o compilador oficial do TypeScript. Usamos o TSC para executar a verificação de tipos e criar a construção de produção.
 
-- **[TS Node](https://typestrong.org/ts-node/)** is a Just-in-Time compiler for TypeScript. It allows you to execute TypeScript files without compiling them to JavaScript and proves to be a great tool for development.
+[TS Node](https://typestrong.org/ts-node/)** é um compilador Just-in-Time para TypeScript. Ele permite que você execute arquivos TypeScript sem compilá-los para JavaScript e prova ser uma ótima ferramenta para desenvolvimento.
 
-- **[SWC](https://swc.rs/)** is a TypeScript compiler written in Rust. We use it during development with TS Node to make the JIT process extremely fast.
+[SWC](https://swc.rs/)** é um compilador TypeScript escrito em Rust. Nós o usamos durante o desenvolvimento com o TS Node para tornar o processo JIT extremamente rápido.
 
-| Tool      | Used for                  | Type checking |
-|-----------|---------------------------|---------------|
-| `TSC`     | Creating production build | Yes           |
-| `TS Node` | Development               | No            |
-| `SWC`     | Development               | No            |
+| Ferramenta  | Usado para                | Verificação de tipo |
+|-------------|---------------------------|---------------------|
+| `TSC`       | Criando build de produção | Yes                 |
+| `TS Node`   | Desenvolvimento           | No                  |
+| `SWC`       | Desenvolvimento           | No                  |
 
-## Executing TypeScript files without compilation
+## Executando arquivos TypeScript sem compilação
 
-You may execute the TypeScript files without compiling them using the `ts-node/esm` loader. For example, you may start the HTTP server by running the following command.
+Você pode executar os arquivos TypeScript sem compilá-los usando o carregador `ts-node/esm`. Por exemplo, você pode iniciar o servidor HTTP executando o seguinte comando.
 
 ```sh
 node --loader="ts-node/esm" bin/server.js
 ```
 
-- `--loader`: The loader flag registers the module loader hooks with the ES module system. Loader hooks are part of the [Node.js API](https://nodejs.org/dist/latest-v21.x/docs/api/esm.html#loaders).
+[API Node.js](https://nodejs.org/dist/latest-v21.x/docs/api/esm.html#loaders).
 
-- `ts-node/esm`: The path to the `ts-node/esm` script that registers lifecycle hooks to perform Just-in-Time compilation of TypeScript source to JavaScript.
+- `ts-node/esm`: O caminho para o script `ts-node/esm` que registra ganchos de ciclo de vida para executar a compilação Just-in-Time da fonte TypeScript para JavaScript.
 
-- `bin/server.js`: The path to the AdonisJS HTTP server entry point file. **See also: [A note on file extensions](#a-note-on-file-extensions)**
+[Uma nota sobre extensões de arquivo](#a-note-on-file-extensions)**
 
-You may repeat this process for other TypeScript files as well. For example:
+Você pode repetir esse processo para outros arquivos TypeScript também. Por exemplo:
 
 ```sh
 // title: Run tests
@@ -55,63 +55,63 @@ node --loader ts-node/esm bin/console.js
 node --loader ts-node/esm path/to/file.js
 ```
 
-### A note on file extensions
+### Uma observação sobre extensões de arquivo
 
-You might have noticed us using the `.js` file extension everywhere, even though the file on disk is saved with the `.ts` file extension.
+Você pode ter notado que usamos a extensão de arquivo `.js` em todos os lugares, mesmo que o arquivo no disco seja salvo com a extensão de arquivo `.ts`.
 
-This is because, with ES modules, TypeScript forces you to use the `.js` extension in imports and when running scripts. You can learn about the thesis behind this choice in [TypeScript documentation](https://www.typescriptlang.org/docs/handbook/modules/theory.html#typescript-imitates-the-hosts-module-resolution-but-with-types).
+Isso ocorre porque, com módulos ES, o TypeScript força você a usar a extensão `.js` em importações e ao executar scripts. Você pode aprender sobre a tese por trás dessa escolha na [documentação do TypeScript](https://www.typescriptlang.org/docs/handbook/modules/theory.html#typescript-imitates-the-hosts-module-resolution-but-with-types).
 
-## Running the development server
-Instead of running the `bin/server.js` file directly, we recommend using the `serve` command for the following reasons.
+## Executando o servidor de desenvolvimento
+Em vez de executar o arquivo `bin/server.js` diretamente, recomendamos usar o comando `serve` pelos seguintes motivos.
 
-- The command includes a file watcher and restarts the development server on file change.
-- The `serve` command detects the frontend assets bundler your app is using and starts its development server. For example, If you have a `vite.config.js` file in your project root, the `serve` command will start the `vite` dev server.
+- O comando inclui um observador de arquivo e reinicia o servidor de desenvolvimento na alteração do arquivo.
+- O comando `serve` detecta o empacotador de ativos de frontend que seu aplicativo está usando e inicia seu servidor de desenvolvimento. Por exemplo, se você tiver um arquivo `vite.config.js` na raiz do seu projeto, o comando `serve` iniciará o servidor de desenvolvimento `vite`.
 
 ```sh
 node ace serve --watch
 ```
 
-You may pass arguments to the Vite dev server using the `--assets-args` command line flag.
+Você pode passar argumentos para o servidor de desenvolvimento Vite usando o sinalizador de linha de comando `--assets-args`.
 
 ```sh
 node ace serve --watch --assets-args="--debug --base=/public"
 ```
 
-You may use the `--no-assets` flag to disable the Vite dev server.
+Você pode usar o sinalizador `--no-assets` para desabilitar o servidor de desenvolvimento Vite.
 
 ```sh
 node ace serve --watch --no-assets
 ```
 
-### Passing options to the Node.js commandline
-The `serve` command starts the development server `(bin/server.ts file)` as a child process. If you want to pass [node arguments](https://nodejs.org/api/cli.html#options) to the child process, you can define them before the command name.
+### Passando opções para a linha de comando Node.js
+O comando `serve` inicia o servidor de desenvolvimento `(arquivo bin/server.ts)` como um processo filho. Se você quiser passar [argumentos do nó](https://nodejs.org/api/cli.html#options) para o processo filho, você pode defini-los antes do nome do comando.
 
 ```sh
 node ace --no-warnings --inspect serve --watch
 ```
 
-## Creating production build
+## Criando build de produção
 
-The production build of your AdonisJS application is created using the `node ace build` command. The `build` command performs the following operations to create a [**standalone JavaScript application**](#what-is-a-standalone-build) inside the `./build` directory.
+O build de produção do seu aplicativo AdonisJS é criado usando o comando `node ace build`. O comando `build` executa as seguintes operações para criar um [**aplicativo JavaScript autônomo**](#what-is-a-standalone-build) dentro do diretório `./build`.
 
-- Remove the existing `./build` folder (if any).
-- Rewrite the `ace.js` file **from scratch** to remove the `ts-node/esm` loader. 
-- Compile frontend assets using Vite (if configured).
-- Compile TypeScript source code to JavaScript using [`tsc`](https://www.typescriptlang.org/docs/handbook/compiler-options.html).
-- Copy non-TypeScript files registered under the [`metaFiles`](../concepts/adonisrc_file.md#metafiles) array to the `./build` folder.
-- Copy the `package.json` and `package-lock.json/yarn.lock` files to the `./build` folder.
+- Remova a pasta `./build` existente (se houver).
+- Reescreva o arquivo `ace.js` **do zero** para remover o carregador `ts-node/esm`.
+- Compile os ativos do frontend usando o Vite (se configurado).
+[`tsc`](https://www.typescriptlang.org/docs/handbook/compiler-options.html).
+[`metaFiles`](../concepts/adonisrc_file.md#metafiles) array para a pasta `./build`.
+- Copie os arquivos `package.json` e `package-lock.json/yarn.lock` para a pasta `./build`.
 
 :::warning
-Any modifications to the `ace.js` file will be lost during the build process since the file is rewritten from scratch. If you want to have any additional code that runs before Ace starts, you should instead do it inside the `bin/console.ts` file.
+Quaisquer modificações no arquivo `ace.js` serão perdidas durante o processo de build, pois o arquivo é reescrito do zero. Se você quiser ter algum código adicional que seja executado antes do Ace iniciar, você deve fazê-lo dentro do arquivo `bin/console.ts`.
 :::
 
-And that is all!
+E isso é tudo!
 
 ```sh
 node ace build
 ```
 
-Once the build has been created, you can `cd` into the `build` folder, install production dependencies, and run your application.
+Depois que o build for criado, você pode `cd` para a pasta `build`, instalar dependências de produção e executar seu aplicativo.
 
 ```sh
 cd build
@@ -123,22 +123,22 @@ npm i --omit=dev
 node bin/server.js
 ```
 
-You may pass arguments to the Vite build command using the `--assets-args` command line flag.
+Você pode passar argumentos para o comando de compilação do Vite usando o sinalizador de linha de comando `--assets-args`.
 
 ```sh
 node ace build --assets-args="--debug --base=/public"
 ```
 
-You may use the `--no-assets` flag to avoid compiling the frontend assets.
+Você pode usar o sinalizador `--no-assets` para evitar compilar os ativos do frontend.
 
 ```sh
 node ace build --no-assets
 ```
 
-### What is a standalone build?
+### O que é uma compilação autônoma?
 
-Standalone build refers to the JavaScript output of your application that you can run without the original TypeScript source. 
+A compilação autônoma se refere à saída JavaScript do seu aplicativo que você pode executar sem a fonte TypeScript original.
 
-Creating a standalone build helps reduce the size of the code you deploy on your production server, as you do not have to copy both the source files and the JavaScript output.
+A criação de uma compilação autônoma ajuda a reduzir o tamanho do código que você implanta no seu servidor de produção, pois você não precisa copiar os arquivos de origem e a saída JavaScript.
 
-After creating the production build, you can copy the `./build` to your production server, install dependencies, define environment variables, and run the application.
+Após criar a compilação de produção, você pode copiar o `./build` para o seu servidor de produção, instalar dependências, definir variáveis ​​de ambiente e executar o aplicativo.

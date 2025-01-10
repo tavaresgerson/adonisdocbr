@@ -1,18 +1,18 @@
 ---
-summary: Ace Terminal UI utilizes the @poppinss/cliui package, offering tools to display logs, tables, and animations. Designed for testing, it includes a 'raw' mode to simplify log collection and assertions.
+Resumo: Ace Terminal UI utiliza o pacote @poppinss/cliui, oferecendo ferramentas para exibir logs, tabelas e animações. Projetado para testes, ele inclui um modo 'raw' para simplificar a coleta de logs e asserções.
 ---
 
 # Terminal UI
 
-Ace terminal UI is powered by the [@poppinss/cliui](https://github.com/poppinss/cliui) package. The package exports helpers to display logs, render tables, render animated tasks UI, and much more.
+Ace terminal UI é alimentada pelo pacote [@poppinss/cliui](https://github.com/poppinss/cliui). O pacote exporta auxiliares para exibir logs, renderizar tabelas, renderizar tarefas animadas UI e muito mais.
 
-The terminal UI primitives are built with testing in mind. When writing tests, you may turn on the `raw` mode to disable colors and formatting and collect all logs in memory to write assertions against them.
+Os primitivos do terminal UI são construídos com testes em mente. Ao escrever testes, você pode ativar o modo `raw` para desabilitar cores e formatação e coletar todos os logs na memória para escrever asserções contra eles.
 
-See also: [Testing Ace commands](../testing/console_tests.md)
+[Testando comandos Ace](../testing/console_tests.md)
 
-## Displaying log messages
+## Exibindo mensagens de log
 
-You may display log messages using the CLI logger. Following is the list of available log methods.
+Você pode exibir mensagens de log usando o registrador CLI. A seguir está a lista de métodos de log disponíveis.
 
 ```ts
 import { BaseCommand } from '@adonisjs/core/ace'
@@ -31,9 +31,9 @@ export default class GreetCommand extends BaseCommand {
 }
 ```
 
-### Adding prefix and suffix
+### Adicionando prefixo e sufixo
 
-Using the options object, you may define the `prefix` and `suffix` for the log message. The prefix and suffix are displayed with lower opacity.
+Usando o objeto de opções, você pode definir o `prefixo` e o `sufixo` para a mensagem de log. O prefixo e o sufixo são exibidos com menor opacidade.
 
 ```ts
 this.logger.info('installing packages', {
@@ -45,9 +45,9 @@ this.logger.info('installing packages', {
 })
 ```
 
-### Loading animation
+### Animação de carregamento
 
-A log message with loading animation appends animated three dots (...) to the message. You may update the log message using the `animation.update` method and stop the animation using the `animation.stop` method.
+Uma mensagem de log com animação de carregamento anexa três pontos animados (...) à mensagem. Você pode atualizar a mensagem de log usando o método `animation.update` e parar a animação usando o método `animation.stop`.
 
 ```ts
 const animation = this.logger.await('installing packages', {
@@ -65,11 +65,11 @@ animation.update('unpacking packages', {
 animation.stop()
 ```
 
-### Logger actions
+### Ações do logger
 
-Logger actions can display the state of action with consistent styling and colors. 
+Ações do logger podem exibir o estado da ação com estilo e cores consistentes.
 
-You may create an action using the `logger.action` method. The method accepts the action title as the first parameter.
+Você pode criar uma ação usando o método `logger.action`. O método aceita o título da ação como o primeiro parâmetro.
 
 ```ts
 const createFile = this.logger.action('creating config/auth.ts')
@@ -82,7 +82,7 @@ try {
 }
 ```
 
-You can mark an action as either `succeeded`, `failed`, or `skipped`.
+Você pode marcar uma ação como `succeeded`, `failed` ou `skipped`.
 
 ```ts
 action.succeeded()
@@ -90,18 +90,18 @@ action.skipped('Skip reason')
 action.failed(new Error())
 ```
 
-## Formatting text with ANSI colors
+## Formatando texto com cores ANSI
 
-Ace uses [kleur](https://www.npmjs.com/package/kleur) for formatting text with ANSI colors. Using the `this.colors` property, you can access kleur's chained API.
+Ace usa [kleur](https://www.npmjs.com/package/kleur) para formatar texto com cores ANSI. Usando a propriedade `this.colors`, você pode acessar a API encadeada do kleur.
 
 ```ts
 this.colors.red('[ERROR]')
 this.colors.bgGreen().white(' CREATED ')
 ```
 
-## Rendering tables
+## Renderizando tabelas
 
-A table can be created using the `this.ui.table` method. The method returns an instance of the `Table` class that you can use to define the table head and rows.
+Uma tabela pode ser criada usando o método `this.ui.table`. O método retorna uma instância da classe `Table` que você pode usar para definir o cabeçalho e as linhas da tabela.
 
 ```ts
 import { BaseCommand } from '@adonisjs/core/ace'
@@ -131,7 +131,7 @@ export default class GreetCommand extends BaseCommand {
 }
 ```
 
-You may apply color transforms to any value when rendering the table. For example:
+Você pode aplicar transformações de cor a qualquer valor ao renderizar a tabela. Por exemplo:
 
 ```ts
 table.row([
@@ -141,9 +141,9 @@ table.row([
 ])
 ```
 
-### Right-align columns
+### Alinhar colunas à direita
 
-You may right-align the columns by defining them as objects and using the hAlign property. Make sure to also right-align the header column.
+Você pode alinhar as colunas à direita definindo-as como objetos e usando a propriedade hAlign. Certifique-se de também alinhar à direita a coluna de cabeçalho.
 
 ```ts
 table
@@ -166,20 +166,20 @@ table.row([
 ])
 ```
 
-### Full-width rendering
+### Renderização de largura total
 
-By default, tables are rendered with width `auto`, taking only the space required by the contents of each column.
+Por padrão, as tabelas são renderizadas com largura ``auto``, ocupando apenas o espaço necessário para o conteúdo de cada coluna.
 
-However, you may render tables at full-width (taking all the terminal space) using the `fullWidth` method. In full-width mode:
+No entanto, você pode renderizar tabelas em largura total (ocupando todo o espaço do terminal) usando o método `fullWidth`. No modo de largura total:
 
-- We will render all columns as per the size of the content.
-- Except for the first column, which takes all the available space.
+- Renderizaremos todas as colunas de acordo com o tamanho do conteúdo.
+- Exceto a primeira coluna, que ocupa todo o espaço disponível.
 
 ```ts
 table.fullWidth().render()
 ```
 
-You may change the column index for the fluid column (the one that takes all the space) by calling the `table.fluidColumnIndex` method.
+Você pode alterar o índice da coluna para a coluna fluida (aquela que ocupa todo o espaço) chamando o método `table.fluidColumnIndex`.
 
 ```ts
 table
@@ -187,11 +187,11 @@ table
   .fluidColumnIndex(1)
 ```
 
-## Printing stickers
+## Imprimindo adesivos
 
-Stickers allow you to render content inside a box with a border. They are helpful when you want to draw the user's attention to an essential piece of information.
+Os adesivos permitem que você renderize conteúdo dentro de uma caixa com uma borda. Eles são úteis quando você quer chamar a atenção do usuário para uma informação essencial.
 
-You can create an instance of a sticker using the `this.ui.sticker` method.
+Você pode criar uma instância de um adesivo usando o método `this.ui.sticker`.
 
 ```ts
 import { BaseCommand } from '@adonisjs/core/ace'
@@ -210,16 +210,16 @@ export default class GreetCommand extends BaseCommand {
 }
 ```
 
-If you want to display a set of instructions inside a box, you can use the `this.ui.instructions` method. Each line in the instructions output will be prefixed with an arrow sign `>`.
+Se você quiser exibir um conjunto de instruções dentro de uma caixa, você pode usar o método `this.ui.instructions`. Cada linha na saída das instruções será prefixada com um sinal de seta `>`.
 
-## Rendering tasks
+## Renderizando tarefas
 
-The tasks widget provides an excellent UI for sharing the progress of multiple time-taking tasks. The widget has the following two rendering modes:
+O widget de tarefas fornece uma excelente IU para compartilhar o progresso de várias tarefas demoradas. O widget tem os dois modos de renderização a seguir:
 
-- In `minimal` mode, the UI for the currently running task is expanded to show one log line at a time.
-- In `verbose` mode, each log statement is rendered in its line. The verbose renderer must be used for debugging tasks.
+- No modo `mínimo`, a IU para a tarefa em execução no momento é expandida para mostrar uma linha de log por vez.
+- No modo `verbose`, cada declaração de log é renderizada em sua linha. O renderizador verbose deve ser usado para tarefas de depuração.
 
-You can create an instance of the tasks widget using the `this.ui.tasks` method. 
+Você pode criar uma instância do widget de tarefas usando o método `this.ui.tasks`.
 
 ```ts
 import { BaseCommand } from '@adonisjs/core/ace'
@@ -233,9 +233,9 @@ export default class GreetCommand extends BaseCommand {
 }
 ```
 
-Individual tasks are added using the `tasks.add` method. The method accepts the task title as the first parameter and the implementation callback as the second parameter.
+Tarefas individuais são adicionadas usando o método `tasks.add`. O método aceita o título da tarefa como o primeiro parâmetro e o retorno de chamada de implementação como o segundo parâmetro.
 
-You must return the status of the task from the callback. All return values are considered success messages until you wrap them inside the `task.error` method or throw an exception inside the callback.
+Você deve retornar o status da tarefa do retorno de chamada. Todos os valores de retorno são considerados mensagens de sucesso até que você os envolva dentro do método `task.error` ou lance uma exceção dentro do retorno de chamada.
 
 ```ts
 import { BaseCommand } from '@adonisjs/core/ace'
@@ -261,11 +261,11 @@ export default class GreetCommand extends BaseCommand {
 }
 ```
 
-### Reporting task progress
+### Relatando o progresso da tarefa
 
-Instead of writing the task progress messages to the console, it is recommended to call the `task.update` method.
+Em vez de escrever as mensagens de progresso da tarefa no console, é recomendável chamar o método `task.update`.
 
-The `update` method displays the latest log message using the `minimal` renderer and logs all messages using the `verbose` renderer.
+O método `update` exibe a mensagem de log mais recente usando o renderizador `minimal` e registra todas as mensagens usando o renderizador `verbose`.
 
 ```ts
 const sleep = () => new Promise<void>((resolve) => setTimeout(resolve, 50))
@@ -282,9 +282,9 @@ await tasks
   .run()
 ```
 
-### Switching to the verbose renderer
+### Mudando para o renderizador verbose
 
-You may switch to a verbose renderer when creating the tasks widget. You might consider allowing the command's user to pass a flag to turn on the `verbose` mode.
+Você pode mudar para um renderizador verbose ao criar o widget de tarefas. Você pode considerar permitir que o usuário do comando passe um sinalizador para ativar o modo `verbose`.
 
 ```ts
 import { BaseCommand, flags } from '@adonisjs/core/ace'

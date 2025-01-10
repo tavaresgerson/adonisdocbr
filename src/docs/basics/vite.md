@@ -1,41 +1,41 @@
 ---
-summary: Learn how to use Vite to bundle frontend assets in AdonisJS applications.
+resumo: Aprenda a usar o Vite para agrupar ativos de front-end em aplicativos AdonisJS.
 ---
 
 # Vite
 
-AdonisJS uses [Vite](https://vitejs.dev/) to bundle the frontend assets of your applications. We provide an official integration that performs all the heavy lifting required to integrate Vite with a backend framework like AdonisJS. It includes:
+O AdonisJS usa [Vite](https://vitejs.dev/) para agrupar os ativos de front-end de seus aplicativos. Fornecemos uma integração oficial que realiza todo o trabalho pesado necessário para integrar o Vite com uma estrutura de back-end como o AdonisJS. Inclui:
 
-- Embedding the Vite development server inside AdonisJS.
-- A dedicated Vite plugin to simplify configuration options.
-- Edge helpers and tags to generate URLs for assets processed by Vite.
-- Access to the [Vite Runtime API](https://vitejs.dev/guide/api-vite-runtime.html#vite-runtime-api) to perform server-side rendering (SSR).
+- Incorporação do servidor de desenvolvimento Vite dentro do AdonisJS.
+- Um plugin Vite dedicado para simplificar as opções de configuração.
+- Ajudantes e tags de ponta para gerar URLs para ativos processados ​​pelo Vite.
+[API de tempo de execução Vite](https://vitejs.dev/guide/api-vite-runtime.html#vite-runtime-api) para executar renderização do lado do servidor (SSR).
 
-Vite is embedded inside the AdonisJS dev server, and every request that should be handled by Vite is proxied to it through an AdonisJS middleware. It allows us to directly access Vite's runtime API to perform server-side rendering (SSR) and manage a single dev server. That also means that assets are served by AdonisJS directly and not by a separate process.
+O Vite é incorporado dentro do servidor de desenvolvimento AdonisJS, e cada solicitação que deve ser tratada pelo Vite é enviada por proxy para ele por meio de um middleware AdonisJS. Ele nos permite acessar diretamente a API de tempo de execução do Vite para executar a renderização do lado do servidor (SSR) e gerenciar um único servidor de desenvolvimento. Isso também significa que os ativos são servidos pelo AdonisJS diretamente e não por um processo separado.
 
 :::tip
-Still using @adonisjs/vite 2.x ? [See the migration guide](https://github.com/adonisjs/vite/releases/tag/v3.0.0) to upgrade to the latest version.
+Ainda está usando @adonisjs/vite 2.x? [Consulte o guia de migração](https://github.com/adonisjs/vite/releases/tag/v3.0.0) para atualizar para a versão mais recente.
 :::
 
-## Installation
+## Instalação
 
-First, make sure to have at least the following versions of AdonisJS installed:
+Primeiro, certifique-se de ter pelo menos as seguintes versões do AdonisJS instaladas:
 
-- `@adonisjs/core`: 6.9.1 or later
-- `@adonisjs/assembler`: 7.7.0 or later
+- `@adonisjs/core`: 6.9.1 ou posterior
+- `@adonisjs/assembler`: 7.7.0 ou posterior
 
-Then install and configure the `@adonisjs/vite` package. The command below installs the package and `vite`, and configures the project by creating the necessary configuration files.
+Em seguida, instale e configure o pacote `@adonisjs/vite`. O comando abaixo instala o pacote e o `vite` e configura o projeto criando os arquivos de configuração necessários.
 
 ```sh
 // title: npm
 node ace add @adonisjs/vite
 ```
 
-::: details See steps performed by the configure command
+::: details Veja os passos realizados pelo comando configure
 
-1. Registers the following service provider inside the `adonisrc.ts` file.
+1. Registra o seguinte provedor de serviço dentro do arquivo `adonisrc.ts`.
 
-    ```ts
+```ts
     {
       providers: [
         // ...other providers
@@ -44,13 +44,13 @@ node ace add @adonisjs/vite
     }
     ```
 
-2. Create `vite.config.ts` and `config/vite.ts` configuration files.
+2. Crie os arquivos de configuração `vite.config.ts` e `config/vite.ts`.
 
-3. Create the frontend entry point file, i.e. `resources/js/app.js`.
+3. Crie o arquivo de ponto de entrada do frontend, ou seja, `resources/js/app.js`.
 
 :::
 
-Once done, add the following to your `adonisrc.ts` file.
+Uma vez feito isso, adicione o seguinte ao seu arquivo `adonisrc.ts`.
 
 ```ts
 import { defineConfig } from '@adonisjs/core/build/standalone'
@@ -65,18 +65,17 @@ export default defineConfig({
 })
 ```
 
-The `assetsBundler` property is set to `false` to turn off the assets bundler management done by the AdonisJS Assembler.
+A propriedade `assetsBundler` é definida como `false` para desativar o gerenciamento do bundler de ativos feito pelo AdonisJS Assembler.
 
-The `hooks` property registers the `@adonisjs/vite/build_hook` to execute the Vite build process. See [Assembler hooks](../concepts/assembler_hooks.md) for more information.
+A propriedade `hooks` registra o `@adonisjs/vite/build_hook` para executar o processo de construção do Vite. Veja [Ganchos do Assembler](../concepts/assembler_hooks.md) para mais informações.
 
+## Configuração
+O processo de configuração cria dois arquivos de configuração. O arquivo `vite.config.ts` é usado para configurar o bundler Vite, e `config/vite.ts` é usado pelo AdonisJS no backend.
 
-## Configuration
-The setup process creates two configuration files. The `vite.config.ts` file is used to configure the Vite bundler, and `config/vite.ts` is used by AdonisJS on the backend.
+### Arquivo de configuração Vite
+O arquivo `vite.config.ts` é um arquivo de configuração regular usado pelo Vite. De acordo com os requisitos do seu projeto, você pode instalar e registrar plugins Vite adicionais dentro deste arquivo.
 
-### Vite config file
-The `vite.config.ts` file is a regular configuration file used by Vite. Per your project requirements, you can install and register additional Vite plugins inside this file.
-
-By default, the `vite.config.ts` file uses the AdonisJS plugin, which accepts the following options.
+Por padrão, o arquivo `vite.config.ts` usa o plugin AdonisJS, que aceita as seguintes opções.
 
 ```ts
 // title: vite.config.ts
@@ -95,32 +94,32 @@ export default defineConfig({
 
 ### `entrypoints`
 
-The `entrypoints` refers to the entry point file of your frontend codebase. Usually, it will be a JavaScript or a TypeScript file with additional imports. Each entry point will result in a separate output bundle.
+O `entrypoints` se refere ao arquivo de ponto de entrada da sua base de código frontend. Normalmente, será um arquivo JavaScript ou TypeScript com importações adicionais. Cada ponto de entrada resultará em um pacote de saída separado.
 
-Also, if needed, you can define multiple entrypoints. For example, an entry point for your user-facing app and another for the admin panel.
+Além disso, se necessário, você pode definir vários pontos de entrada. Por exemplo, um ponto de entrada para seu aplicativo voltado para o usuário e outro para o painel de administração.
 
 ### `buildDirectory`
 
-The `buildDirectory` option defines a relative path to the output directory. The option value is supplied to Vite as the [`build.outDir`](https://vitejs.dev/config/build-options.html#build-outdir) option.
+A opção `buildDirectory` define um caminho relativo para o diretório de saída. O valor da opção é fornecido ao Vite como a opção [`build.outDir`](https://vitejs.dev/config/build-options.html#build-outdir).
 
-If you decide to change the default value, make sure also to update the `buildDirectory` path in the `config/vite.ts` file.
+Se você decidir alterar o valor padrão, certifique-se de atualizar também o caminho `buildDirectory` no arquivo `config/vite.ts`.
 
-**Default: public/assets**
+**Padrão: public/assets**
 
 ### `reload`
 
-It contains an array of glob patterns to watch and reload the browser on file change. By default, we watch for Edge templates. However, you can configure additional patterns as well.
+Ele contém uma matriz de padrões glob para observar e recarregar o navegador na alteração do arquivo. Por padrão, observamos os modelos do Edge. No entanto, você também pode configurar padrões adicionais.
 
 ### `assetsUrl`
 
-It contains the URL to prefix when generating links for assets in production. If you upload the Vite output to a CDN, then the value of this property should be the CDN server URL.
+Ele contém a URL para prefixar ao gerar links para ativos em produção. Se você carregar a saída do Vite para um CDN, o valor desta propriedade deverá ser a URL do servidor CDN.
 
-Ensure you update the backend configuration to use the same `assetsUrl` value.
+Certifique-se de atualizar a configuração do backend para usar o mesmo valor `assetsUrl`.
 
 ---
 
-### AdonisJS config file
-AdonisJS uses the `config/vite.ts` file on the backend to know about the output paths of the Vite build process. 
+### Arquivo de configuração do AdonisJS
+O AdonisJS usa o arquivo `config/vite.ts` no backend para saber sobre os caminhos de saída do processo de construção do Vite.
 
 ```ts
 // title: config/vite.ts
@@ -135,15 +134,15 @@ export default viteBackendConfig
 ```
 ### `buildDirectory`
 
-It contains the path to the Vite's build output directory. You must also update this backend config if you change the default value inside the `vite.config.ts` file.
+Ele contém o caminho para o diretório de saída de construção do Vite. Você também deve atualizar esta configuração de backend se alterar o valor padrão dentro do arquivo `vite.config.ts`.
 
 ### `assetsUrl`
 
-The URL to prefix when generating links for assets in production. If you upload the Vite output to a CDN, then the value of this property should be the CDN server URL.
+A URL para prefixar ao gerar links para ativos em produção. Se você carregar a saída do Vite para um CDN, o valor desta propriedade deve ser a URL do servidor CDN.
 
 ### `scriptAttributes`
 
-You can use the `scriptAttributes` property to set attributes on the script tags generated using the `@vite` tag. The attributes are a collection of key-value pairs.
+Você pode usar a propriedade `scriptAttributes` para definir atributos nas tags de script geradas usando a tag `@vite`. Os atributos são uma coleção de pares de chave-valor.
 
 ```ts
 // title: config/vite.ts
@@ -157,7 +156,7 @@ defineConfig({
 
 ### `styleAttributes`
 
-You can use the `styleAttributes` property to set attributes on the link tags generated using the `@vite` tag. The attributes are a collection of key-value pairs.
+Você pode usar a propriedade `styleAttributes` para definir atributos nas tags de link geradas usando a tag `@vite`. Os atributos são uma coleção de pares de chave-valor.
 
 ```ts
 // title: config/vite.ts
@@ -168,7 +167,7 @@ defineConfig({
 })
 ```
 
-You can also apply the attributes conditionally by assigning a function to the `styleAttributes` option.
+Você também pode aplicar os atributos condicionalmente atribuindo uma função à opção `styleAttributes`.
 
 ```ts
 defineConfig({
@@ -182,10 +181,10 @@ defineConfig({
 })
 ```
 
-## Folder structure for frontend assets
-Technically, AdonisJS does not enforce any folder structure for storing your frontend assets. You can organize them as you like.
+## Estrutura de pastas para ativos de frontend
+Tecnicamente, o AdonisJS não impõe nenhuma estrutura de pastas para armazenar seus ativos de frontend. Você pode organizá-los como quiser.
 
-However, we recommend storing frontend assets inside the `resources` folder, with each asset class inside its subdirectory.
+No entanto, recomendamos armazenar ativos de frontend dentro da pasta `resources`, com cada classe de ativo dentro de seu subdiretório.
 
 ```
 resources
@@ -195,18 +194,18 @@ resources
 └── images
 ```
 
-The vite output will be in the `public/assets` folder. We choose the `/assets` subdirectory so you can continue using the `public` folder for other static files you wish not to process using Vite.
+A saída do vite estará na pasta `public/assets`. Escolhemos o subdiretório `/assets` para que você possa continuar usando a pasta `public` para outros arquivos estáticos que não deseja processar usando o Vite.
 
-## Starting the dev server
+## Iniciando o servidor de desenvolvimento
 
-You can start your application as usual, and AdonisJS will automatically proxy the needed requests to Vite.
+Você pode iniciar seu aplicativo normalmente, e o AdonisJS fará proxy automaticamente das solicitações necessárias para o Vite.
 
 ```sh
 node ace serve --hmr
 ```
 
-## Including entrypoints in Edge templates
-You can render the script and the style tags for the entrypoints defined inside the `vite.config.ts` file using the `@vite` Edge tag. The tag accepts an array of entrypoints and returns the `script` and the `link` tags.
+## Incluindo pontos de entrada em modelos do Edge
+Você pode renderizar o script e as tags de estilo para os pontos de entrada definidos dentro do arquivo `vite.config.ts` usando a tag Edge `@vite`. A tag aceita uma matriz de pontos de entrada e retorna as tags `script` e `link`.
 
 ```edge
 <!DOCTYPE html>
@@ -224,7 +223,7 @@ You can render the script and the style tags for the entrypoints defined inside 
 </html>
 ```
 
-We recommend importing CSS files inside your JavaScript files and not registering them separately as an entry point. For example:
+Recomendamos importar arquivos CSS dentro de seus arquivos JavaScript e não registrá-los separadamente como um ponto de entrada. Por exemplo:
 
 ```
 resources
@@ -239,13 +238,13 @@ resources
 import '../css/app.css'
 ```
 
-## Referencing assets inside Edge templates
-Vite creates a dependency graph of files imported by the entrypoints and auto-updates their paths per the bundled output. However, Vite is unaware of Edge templates and cannot detect their referenced assets.
+## Referenciando ativos dentro de modelos Edge
+O Vite cria um gráfico de dependência de arquivos importados pelos pontos de entrada e atualiza automaticamente seus caminhos de acordo com a saída agrupada. No entanto, o Vite não tem conhecimento dos modelos Edge e não consegue detectar seus ativos referenciados.
 
-Therefore, we provide an Edge helper you can use to create URLs for files processed by Vite. In the following example:
+Portanto, fornecemos um auxiliar do Edge que você pode usar para criar URLs para arquivos processados ​​pelo Vite. No exemplo a seguir:
 
-- The `asset` helper will return a URL pointing to the Vite dev server during development.
-- Return a URL pointing to the output filename during production.
+- O auxiliar `asset` retornará uma URL apontando para o servidor de desenvolvimento do Vite durante o desenvolvimento.
+- Retornará uma URL apontando para o nome do arquivo de saída durante a produção.
 
 ```edge
 <link rel="stylesheet" href="{{ asset('resources/css/app.css') }}">
@@ -261,26 +260,26 @@ Therefore, we provide an Edge helper you can use to create URLs for files proces
 <link rel="stylesheet" href="/assets/app-3bc29777.css">
 ```
 
-## Processing additional assets with Vite
-Vite ignores static assets not imported by the frontend code. It could be static images, fonts, or SVG icons only referenced inside the Edge templates.
+## Processando ativos adicionais com o Vite
+O Vite ignora ativos estáticos não importados pelo código do frontend. Podem ser imagens estáticas, fontes ou ícones SVG referenciados somente dentro dos modelos Edge.
 
-Therefore, you will have to notify Vite about the existence of these assets using its [Glob imports](https://vitejs.dev/guide/features.html#glob-import) API.
+Portanto, você terá que notificar o Vite sobre a existência desses ativos usando sua API [importações Glob](https://vitejs.dev/guide/features.html#glob-import).
 
-In the following example, we ask Vite to process all the files within the `resources/images` directory. This code should be written within an entry point file.
+No exemplo a seguir, pedimos ao Vite para processar todos os arquivos dentro do diretório `resources/images`. Este código deve ser escrito dentro de um arquivo de ponto de entrada.
 
 ```js
 // title: resources/js/app.js
 import.meta.glob(['../images/**'])
 ```
 
-Now, you can reference the images within your Edge templates as follows.
+Agora, você pode referenciar as imagens dentro dos seus modelos Edge da seguinte forma.
 
 ```edge
 <img src="{{ asset('resources/images/hero.jpg') }}" />
 ```
 
-## Configuring TypeScript
-If you plan to use TypeScript in your frontend codebase, create an additional `tsconfig.json` file inside the `resources` directory. Vite and your code editor will automatically use this config file for the TypeScript source code inside the `resources` directory.
+## Configurando TypeScript
+Se você planeja usar TypeScript na sua base de código frontend, crie um arquivo `tsconfig.json` adicional dentro do diretório `resources`. O Vite e seu editor de código usarão automaticamente este arquivo de configuração para o código-fonte TypeScript dentro do diretório `resources`.
 
 ```json
 // title: resources/tsconfig.json
@@ -297,8 +296,8 @@ If you plan to use TypeScript in your frontend codebase, create an additional `t
 }
 ```
 
-## Enabling HMR with React
-To enable [react-refresh](https://www.npmjs.com/package/react-refresh) during development, you must use the `@viteReactRefresh` Edge tag. It should be written before you include the entrypoints using the `@vite` tag.
+## Habilitando HMR com React
+Para habilitar [react-refresh](https://www.npmjs.com/package/react-refresh) durante o desenvolvimento, você deve usar a tag Edge `@viteReactRefresh`. Ela deve ser escrita antes de você incluir os pontos de entrada usando a tag `@vite`.
 
 ```edge
 <!DOCTYPE html>
@@ -317,7 +316,7 @@ To enable [react-refresh](https://www.npmjs.com/package/react-refresh) during de
 </html>
 ```
 
-Once done, you can configure the React plugin as usual in a regular Vite project.
+Uma vez feito isso, você pode configurar o plugin React como de costume em um projeto Vite regular.
 
 ```ts
 import { defineConfig } from 'vite'
@@ -336,12 +335,12 @@ export default defineConfig({
 })
 ```
 
-## Deploying assets to a CDN
-After you create the production build using Vite, you can upload the bundled output to a CDN server to serve the files.
+## Implantando ativos em um CDN
+Depois de criar a compilação de produção usando o Vite, você pode carregar a saída agrupada em um servidor CDN para servir os arquivos.
 
-However, before you do that, you must register the URL of your CDN server with both Vite and AdonisJS so that the output URLs inside the `manifest.json` file or lazy loaded chunks should point to your CDN server.
+No entanto, antes de fazer isso, você deve registrar a URL do seu servidor CDN com o Vite e o AdonisJS para que as URLs de saída dentro do arquivo `manifest.json` ou pedaços carregados lentamente apontem para o seu servidor CDN.
 
-You must define the `assetsUrl` inside the `vite.config.ts` and `config/vite.ts` files.
+Você deve definir o `assetsUrl` dentro dos arquivos `vite.config.ts` e `config/vite.ts`.
 
 ```ts
 // title: vite.config.ts
@@ -375,19 +374,19 @@ const viteBackendConfig = defineConfig({
 export default viteBackendConfig
 ```
 
-## Advanced concepts
+## Conceitos avançados
 
-### Middleware Mode 
+### Modo Middleware
 
-With older versions of AdonisJS, Vite was spawned as a separate process and had its own dev server.
+Com versões mais antigas do AdonisJS, o Vite era gerado como um processo separado e tinha seu próprio servidor de desenvolvimento.
 
-With the 3.x version, Vite is embedded inside the AdonisJS dev server, and every request that should be handled by Vite are proxied to it through an AdonisJS middleware.
+Com a versão 3.x, o Vite é incorporado dentro do servidor de desenvolvimento do AdonisJS, e cada solicitação que deve ser tratada pelo Vite é enviada por proxy para ele por meio de um middleware do AdonisJS.
 
-The advantages of the middleware mode are that we can directly access Vite's runtime API to perform server-side rendering (SSR) and have a single dev server to manage.
+As vantagens do modo middleware são que podemos acessar diretamente a API de tempo de execução do Vite para executar a renderização do lado do servidor (SSR) e ter um único servidor de desenvolvimento para gerenciar.
 
-You can read more about the middleware mode in the [Vite documentation](https://vitejs.dev/guide/ssr#setting-up-the-dev-server).
+Você pode ler mais sobre o modo middleware na [documentação do Vite](https://vitejs.dev/guide/ssr#setting-up-the-dev-server).
 
-### Manifest file
-Vite generates the [manifest file](https://vitejs.dev/guide/backend-integration.html) alongside the production build of your assets.
+### Arquivo manifesto
+O Vite gera o [arquivo manifesto](https://vitejs.dev/guide/backend-integration.html) junto com a compilação de produção dos seus ativos.
 
-The manifest file contains the URLs to the assets processed by Vite, and AdonisJS uses this file to create URLs for assets referenced inside the Edge templates either using the `asset` helper or the `@vite` tag.
+O arquivo manifesto contém as URLs para os ativos processados ​​pelo Vite, e o AdonisJS usa esse arquivo para criar URLs para ativos referenciados dentro dos modelos do Edge usando o auxiliar `asset` ou a tag `@vite`.

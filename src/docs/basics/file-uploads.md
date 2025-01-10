@@ -1,16 +1,16 @@
 ---
-summary: Learn how to process user-uploaded files in AdonisJS using the `request.file` method and validate them using the validator.
+resumo: Aprenda como processar arquivos enviados pelo usuário no AdonisJS usando o método `request.file` e validá-los usando o validador.
 ---
 
-# File uploads
+# Uploads de arquivo
 
-AdonisJS has first-class support for processing user-uploaded files sent using the `multipart/form-data` content type. The files are auto-processed using the [bodyparser middleware](../basics/body_parser.md#multipart-parser) and saved inside your operating system's `tmp` directory.
+O AdonisJS tem suporte de primeira classe para processar arquivos enviados pelo usuário usando o tipo de conteúdo `multipart/form-data`. Os arquivos são processados ​​automaticamente usando o [middleware bodyparser](../basics/body_parser.md#multipart-parser) e salvos dentro do diretório `tmp` do seu sistema operacional.
 
-Later, inside your controllers, you may access the files, validate them and move them to a persistent location or a cloud storage service like S3.
+Mais tarde, dentro dos seus controladores, você pode acessar os arquivos, validá-los e movê-los para um local persistente ou um serviço de armazenamento em nuvem como o S3.
 
-## Access user-uploaded files
+## Acessar arquivos enviados pelo usuário
 
-You may access the user-uploaded files using the `request.file` method. The method accepts the field name and returns an instance of [MultipartFile](https://github.com/adonisjs/bodyparser/blob/main/src/multipart/file.ts).
+Você pode acessar os arquivos enviados pelo usuário usando o método `request.file`. O método aceita o nome do campo e retorna uma instância de [MultipartFile](https://github.com/adonisjs/bodyparser/blob/main/src/multipart/file.ts).
 
 ```ts
 import { HttpContext } from '@adonisjs/core/http'
@@ -25,7 +25,7 @@ export default class UserAvatarsController {
 }
 ```
 
-If a single input field is used to upload multiple files, you may access them using the `request.files` method. The method accepts the field name and returns an array of `MultipartFile` instances.
+Se um único campo de entrada for usado para carregar vários arquivos, você pode acessá-los usando o método `request.files`. O método aceita o nome do campo e retorna uma matriz de instâncias `MultipartFile`.
 
 ```ts
 import { HttpContext } from '@adonisjs/core/http'
@@ -43,11 +43,11 @@ export default class InvoicesController {
 }
 ```
 
-## Manually validating files
+## Validando arquivos manualmente
 
-You may validate files using the [validator](#using-validator) or define the validation rules via the `request.file` method. 
+Você pode validar arquivos usando o [validator](#using-validator) ou definir as regras de validação por meio do método `request.file`.
 
-In the following example, we will define the validation rules inline via the `request.file` method and use the `file.errors` property to access the validation errors.
+No exemplo a seguir, definiremos as regras de validação em linha por meio do método `request.file` e usaremos a propriedade `file.errors` para acessar os erros de validação.
 
 ```ts
 const avatar = request.file('avatar', {
@@ -62,9 +62,9 @@ if (!avatar.isValid) {
 }
 ```
 
-When working with an array of files, you can iterate over files and check if one or more files have failed the validation. 
+Ao trabalhar com uma matriz de arquivos, você pode iterar sobre os arquivos e verificar se um ou mais arquivos falharam na validação.
 
-The validation options provided to the `request.files` method are applied to all files. In the following example, we expect each file to be under `2mb` and must have one of the allowed file extensions.
+As opções de validação fornecidas ao método `request.files` são aplicadas a todos os arquivos. No exemplo a seguir, esperamos que cada arquivo tenha menos de `2mb` e deve ter uma das extensões de arquivo permitidas.
 
 ```ts
 const invoiceDocuments = request.files('documents', {
@@ -92,9 +92,9 @@ if (invalidDocuments.length) {
 }
 ```
 
-## Using validator to validate files
+## Usando o validador para validar arquivos
 
-Instead of validating files manually (as seen in the previous section), you may use the [validator](./validation.md) to validate files as part of the validation pipeline. You do not have to manually check for errors when using the validator; the validation pipeline takes care of that.
+Em vez de validar arquivos manualmente (como visto na seção anterior), você pode usar o [validator](./validation.md) para validar arquivos como parte do pipeline de validação. Você não precisa verificar manualmente se há erros ao usar o validador; o pipeline de validação cuida disso.
 
 ```ts
 // app/validators/user_validator.ts
@@ -127,7 +127,7 @@ export default class UserAvatarsController {
 }
 ```
 
-An array of files can be validated using the `vine.array` type. For example:
+Uma matriz de arquivos pode ser validada usando o tipo `vine.array`. Por exemplo:
 
 ```ts
 import vine from '@vinejs/vine'
@@ -146,11 +146,11 @@ export const createInvoiceValidator = vine.compile(
 )
 ```
 
-## Moving files to a persistent location
+## Movendo arquivos para um local persistente
 
-By default, the user-uploaded files are saved in your operating system's `tmp` directory and may get deleted as your computer cleans up the `tmp` directory.
+Por padrão, os arquivos enviados pelo usuário são salvos no diretório `tmp` do seu sistema operacional e podem ser excluídos conforme o computador limpa o diretório `tmp`.
 
-Therefore, it is recommended to store files in a persistent location. You may use the `file.move` to move a file within the same filesystem. The method accepts an absolute path to the directory to move the file.
+Portanto, é recomendável armazenar arquivos em um local persistente. Você pode usar o `file.move` para mover um arquivo dentro do mesmo sistema de arquivos. O método aceita um caminho absoluto para o diretório para mover o arquivo.
 
 ```ts
 import app from '@adonisjs/core/services/app'
@@ -168,7 +168,7 @@ await avatar.move(app.makePath('storage/uploads'))
 // highlight-end
 ```
 
-It is recommended to provide a unique random name to the moved file. For this, you may use the `cuid` helper.
+É recomendável fornecer um nome aleatório exclusivo para o arquivo movido. Para isso, você pode usar o auxiliar `cuid`.
 
 ```ts
 // highlight-start
@@ -183,7 +183,7 @@ await avatar.move(app.makePath('storage/uploads'), {
 })
 ```
 
-Once the file has been moved, you may store its name inside the database for later reference.
+Depois que o arquivo for movido, você pode armazenar seu nome dentro do banco de dados para referência posterior.
 
 ```ts
 await avatar.move(app.makePath('uploads'))
@@ -197,30 +197,30 @@ auth.user!.avatar = avatar.fileName!
 await auth.user.save()
 ```
 
-### File properties
+### Propriedades do arquivo
 
-Following is the list of properties you may access on the [MultipartFile](https://github.com/adonisjs/bodyparser/blob/main/src/multipart/file.ts) instance.
+A seguir está a lista de propriedades que você pode acessar na instância [MultipartFile](https://github.com/adonisjs/bodyparser/blob/main/src/multipart/file.ts).
 
-| Property     | Description                                                                                                  |
+| Propriedade  | Descrição                                                                                                    |
 |--------------|--------------------------------------------------------------------------------------------------------------|
-| `fieldName`  | The name of the HTML input field.                                                                            |
-| `clientName` | The file name on the user's computer.                                                                        |
-| `size`       | The size of the file in bytes.                                                                               |
-| `extname`    | The file extname                                                                                             |
-| `errors`     | An array of errors associated with a given file.                                                             |
-| `type`       | The [mime type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) of the file     |
-| `subtype`    | The [mime subtype](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) of the file. |
-| `filePath`   | The absolute path to the file after the `move` operation.                                                    |
-| `fileName`   | The file name after the `move` operation.                                                                    |
-| `tmpPath`    | The absolute path to the file inside the `tmp` directory.                                                    |
-| `meta`       | Metadata associated with the file as a key-value pair. The object is empty by default.                       |
-| `validated`  | A boolean to know if the file has been validated.                                                            |
-| `isValid`    | A boolean to know if the file has passed the validation rules.                                               |
-| `hasErrors`  | A boolean to know if one or more errors are associated with a given file.                                    |
+| `fieldName`  | O nome do campo de entrada HTML.                                                                             |
+| `clientName` | O nome do arquivo no computador do usuário.                                                                  |
+| `size`       | O tamanho do arquivo em bytes.                                                                               |
+| `extname`    | O nome da extensão do arquivo                                                                                |
+| `errors`     | Uma matriz de erros associados a um determinado arquivo.                                                     |
+| `type`       | O [tipo mime](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) do arquivo        |
+| `subtype`    | O [subtipo mime](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) do arquivo.    |
+| `filePath`   | O caminho absoluto para o arquivo após a operação `move`.                                                    |
+| `fileName`   | O nome do arquivo após a operação `move`.                                                                    |
+| `tmpPath`    | O caminho absoluto para o arquivo dentro do diretório `tmp`.                                                 |
+| `meta`       | Metadados associados ao arquivo como um par chave-valor. O objeto está vazio por padrão.                     |
+| `validated`  | Um booleano para saber se o arquivo foi validado.                                                            |
+| `isValid`    | Um booleano para saber se o arquivo passou nas regras de validação.                                          |
+| `hasErrors`  | Um booleano para saber se um ou mais erros estão associados a um determinado arquivo.                        |
 
-## Serving files
+## Servindo arquivos
 
-If you have persisted user-uploaded files in the same filesystem as your application code, you may serve files by creating a route and using the [`response.download`](./response.md#downloading-files) method. 
+Se você persistiu com arquivos enviados pelo usuário no mesmo sistema de arquivos que o código do seu aplicativo, você pode servir arquivos criando uma rota e usando o método [`response.download`](./response.md#downloading-files).
 
 ```ts
 import { sep, normalize } from 'node:path'
@@ -242,21 +242,21 @@ router.get('/uploads/*', ({ request, response }) => {
 })
 ```
 
-- We get the file path using the [wildcard route param](./routing.md#wildcard-params) and convert the array into a string.
-- Next, we normalize the path using the Node.js path module.
-- Using the `PATH_TRAVERSAL_REGEX` we protect this route against [path traversal](https://owasp.org/www-community/attacks/Path_Traversal).
-- Finally, we convert the `normalizedPath` to an absolute path inside the `uploads` directory and serve the file using the `response.download` method.
+[parâmetro de rota curinga](./routing.md#wildcard-params) e converter a matriz em uma string.
+- Em seguida, normalizamos o caminho usando o módulo de caminho do Node.js.
+[travessia de caminho](https://owasp.org/www-community/attacks/Path_Traversal).
+- Finalmente, convertemos o `normalizedPath` em um caminho absoluto dentro do diretório `uploads` e servimos o arquivo usando o método `response.download`.
 
-## Using Drive to upload and serve files
+## Usando o Drive para carregar e servir arquivos
 
-Drive is a file system abstraction created by the AdonisJS core team. You may use Drive to manage user-uploaded files and store them inside the local file system or move them to a cloud storage service like S3 or GCS.
+O Drive é uma abstração do sistema de arquivos criada pela equipe principal do AdonisJS. Você pode usar o Drive para gerenciar arquivos carregados pelo usuário e armazená-los dentro do sistema de arquivos local ou movê-los para um serviço de armazenamento em nuvem como S3 ou GCS.
 
-We recommend using Drive over manually uploading and serving files. Drive handles many security concerns like path traversal and offers a unified API across multiple storage providers.
+Recomendamos usar o Drive em vez de carregar e servir arquivos manualmente. O Drive lida com muitas preocupações de segurança, como travessia de caminho, e oferece uma API unificada em vários provedores de armazenamento.
 
-[Learn more about Drive](../digging_deeper/drive.md)
+[Saiba mais sobre o Drive](../digging_deeper/drive.md)
 
-## Advanced - Self-processing multipart stream
-You can turn off the automatic processing of multipart requests and self-process the stream for advanced use cases. Open the `config/bodyparser.ts` file and change one of the following options to disable auto-processing.
+## Avançado - Fluxo multiparte de autoprocessamento
+Você pode desativar o processamento automático de solicitações multiparte e autoprocessar o fluxo para casos de uso avançados. Abra o arquivo `config/bodyparser.ts` e altere uma das seguintes opções para desabilitar o processamento automático.
 
 ```ts
 {
@@ -282,9 +282,9 @@ You can turn off the automatic processing of multipart requests and self-process
 }
 ```
 
-Once you have disabled the auto-processing, you can use the `request.multipart` object to process individual files.
+Depois de desabilitar o processamento automático, você pode usar o objeto `request.multipart` para processar arquivos individuais.
 
-In the following example, we use the `stream.pipeline` method from Node.js to process the multipart readable stream and write it to a file on the disk. However, you can stream this file to some external service like `s3`.
+No exemplo a seguir, usamos o método `stream.pipeline` do Node.js para processar o fluxo legível multipart e gravá-lo em um arquivo no disco. No entanto, você pode transmitir esse arquivo para algum serviço externo como `s3`.
 
 ```ts
 import { createWriteStream } from 'node:fs'
@@ -319,21 +319,21 @@ export default class AssetsController {
 }
 ```
 
-- The `multipart.onFile` method accepts the input field name for which you want to process the files. You can use the wildcard `*` to process all the files.
+- O método `multipart.onFile` aceita o nome do campo de entrada para o qual você deseja processar os arquivos. Você pode usar o curinga `*` para processar todos os arquivos.
 
-- The `onFile` listener receives the `part` (readable stream) as the first parameter and a `reporter` function as the second parameter.
+- O ouvinte `onFile` recebe a `part` (fluxo legível) como o primeiro parâmetro e uma função `reporter` como o segundo parâmetro.
 
-- The `reporter` function is used to track the stream progress so that AdonisJS can provide you access to the processed bytes, file extension, and other meta-data after the stream has been processed.
+- A função `reporter` é usada para rastrear o progresso do fluxo para que o AdonisJS possa fornecer acesso aos bytes processados, extensão de arquivo e outros metadados após o fluxo ter sido processado.
 
-- Finally, you can return an object of properties from the `onFile` listener, and they will be merged with the file object you access using the `request.file` or `request.allFiles()` methods.
+- Finalmente, você pode retornar um objeto de propriedades do listener `onFile`, e eles serão mesclados com o objeto de arquivo que você acessa usando os métodos `request.file` ou `request.allFiles()`.
 
-### Error handling
-You must listen to the `error` event on the `part` object and handle the errors manually. Usually, the stream reader (the writeable stream) will internally listen for this event and abort the write operation.
+### Tratamento de erros
+Você deve ouvir o evento `error` no objeto `part` e tratar os erros manualmente. Normalmente, o leitor de fluxo (o fluxo gravável) ouvirá internamente esse evento e abortará a operação de gravação.
 
-### Validating stream parts
-AdonisJS allows you to validate the stream parts (aka files) even when you process the multipart stream manually. In case of an error, the `error` event is emitted on the `part` object.
+### Validando partes do fluxo
+O AdonisJS permite que você valide as partes do fluxo (também conhecidas como arquivos) mesmo quando você processa o fluxo multipart manualmente. Em caso de erro, o evento `error` é emitido no objeto `part`.
 
-The `multipart.onFile` method accepts the validation options as the second parameter. Also, make sure to listen for the `data` event and bind the `reporter` method to it. Otherwise, no validations will occur.
+O método `multipart.onFile` aceita as opções de validação como o segundo parâmetro. Além disso, certifique-se de ouvir o evento `data` e vincular o método `reporter` a ele. Caso contrário, nenhuma validação ocorrerá.
 
 ```ts
 request.multipart.onFile('*', {

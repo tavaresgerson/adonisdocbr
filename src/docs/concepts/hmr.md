@@ -1,40 +1,40 @@
 ---
-summary: Update your AdonisJS application without restarting the process using hot module replacement (HMR).
+Resumo: Atualize seu aplicativo AdonisJS sem reiniciar o processo usando a substituição de módulo a quente (HMR).
 ---
 
-# Hot module replacement
+# Substituição de módulo a quente
 
-Hot module replacement (HMR) refers to the process of reloading JavaScript modules after modification without restarting the entire process. HMR usually results in a faster feedback loop since, after a file change, you do not have to wait for the whole of the process to restart.
+A substituição de módulo a quente (HMR) se refere ao processo de recarregar módulos JavaScript após a modificação sem reiniciar todo o processo. O HMR geralmente resulta em um loop de feedback mais rápido, pois, após uma alteração de arquivo, você não precisa esperar que todo o processo reinicie.
 
-The term HMR has been used for many years now in the frontend ecosystem, where tools like Vite can hot-reload modules and apply changes to a webpage while maintaining its existing state.
+O termo HMR é usado há muitos anos no ecossistema de front-end, onde ferramentas como o Vite podem recarregar módulos a quente e aplicar alterações a uma página da web, mantendo seu estado existente.
 
-However, the HMR performed by AdonisJS is a lot simpler and vastly differs from tools like Vite or Webpack. Our goal with HMR is to offer faster reloads, and that's it.
+No entanto, o HMR realizado pelo AdonisJS é muito mais simples e difere muito de ferramentas como o Vite ou o Webpack. Nosso objetivo com o HMR é oferecer recarregamentos mais rápidos, e é isso.
 
-## Key concepts
+## Conceitos-chave
 
-### No updates are propagated to the browser
+### Nenhuma atualização é propagada para o navegador
 
-Since AdonisJS is a backend framework, we are not in charge of maintaining the state of a frontend application or applying CSS to a web page. Therefore, our HMR integration cannot talk to your frontend app and reconcile its state.
+Como o AdonisJS é uma estrutura de back-end, não somos responsáveis ​​por manter o estado de um aplicativo front-end ou aplicar CSS a uma página da web. Portanto, nossa integração HMR não pode se comunicar com seu aplicativo front-end e reconciliar seu estado.
 
-In fact, not every AdonisJS application is a browser-rendered web app. Many use AdonisJS for creating pure JSON APIs, and they can also benefit from our HMR integration.
+Na verdade, nem todo aplicativo AdonisJS é um aplicativo da web renderizado pelo navegador. Muitos usam o AdonisJS para criar APIs JSON puras e também podem se beneficiar da nossa integração HMR.
 
-### Works only with dynamic imports
-Most HMR tools use code transformations to inject additional code into the compiled output. At AdonisJS, we are not a big fan of transpilers and always strive to embrace the platform as it is. Therefore, our approach to HMR uses [Node.js loader hooks](https://nodejs.org/api/module.html#customization-hooks) and works only with dynamic imports.
+### Funciona apenas com importações dinâmicas
+A maioria das ferramentas HMR usa transformações de código para injetar código adicional na saída compilada. Na AdonisJS, não somos grandes fãs de transpiladores e sempre nos esforçamos para abraçar a plataforma como ela é. Portanto, nossa abordagem para HMR usa [ganchos de carregador Node.js](https://nodejs.org/api/module.html#customization-hooks) e funciona apenas com importações dinâmicas.
 
-**The good news is that all the critical parts of your AdonisJS application are dynamically imported by default**. For example, Controllers, middleware, and event listeners are all dynamically imported, and hence, you can leverage HMR from today without changing a single line of code in your app.
+**A boa notícia é que todas as partes críticas do seu aplicativo AdonisJS são importadas dinamicamente por padrão**. Por exemplo, controladores, middleware e ouvintes de eventos são todos importados dinamicamente e, portanto, você pode aproveitar o HMR a partir de hoje sem alterar uma única linha de código em seu aplicativo.
 
-It is worth mentioning that the imports of a dynamically imported module can be at the top level. For example, a controller (which is dynamically imported in the routes file) can have top-level imports for validators, TSX files, models, and services, and they all benefit from HMR.
+Vale a pena mencionar que as importações de um módulo importado dinamicamente podem estar no nível superior. Por exemplo, um controlador (que é importado dinamicamente no arquivo de rotas) pode ter importações de nível superior para validadores, arquivos TSX, modelos e serviços, e todos eles se beneficiam do HMR.
 
-## Usage
-All official starter kits have been updated to use HMR by default. However, if you have an existing application, you can configure HMR as follows.
+## Uso
+Todos os kits iniciais oficiais foram atualizados para usar o HMR por padrão. No entanto, se você tiver um aplicativo existente, poderá configurar o HMR da seguinte maneira.
 
-Install the [hot-hook](https://github.com/Julien-R44/hot-hook) npm package as a development dependency. The AdonisJS core team has created this package, which can also be used outside of an AdonisJS application.
+Instale o pacote npm [hot-hook](https://github.com/Julien-R44/hot-hook) como uma dependência de desenvolvimento. A equipe principal do AdonisJS criou este pacote, que também pode ser usado fora de um aplicativo AdonisJS.
 
 ```sh
 npm i -D hot-hook
 ```
 
-Next, copy-paste the following configuration to the `package.json` file. The `boundaries` property accepts an array of glob patterns that must be considered for HMR.
+Em seguida, copie e cole a seguinte configuração no arquivo `package.json`. A propriedade `boundaries` aceita uma matriz de padrões glob que devem ser considerados para o HMR.
 
 ```json
 {
@@ -47,13 +47,13 @@ Next, copy-paste the following configuration to the `package.json` file. The `bo
 }
 ```
 
-After the configuration, you can start the development server with the `--hmr` flag.
+Após a configuração, você pode iniciar o servidor de desenvolvimento com o sinalizador `--hmr`.
 
 ```sh
 node ace serve --hmr
 ```
 
-Also, you might want to update the `dev` script within the `package.json` file to use this new flag.
+Além disso, você pode querer atualizar o script `dev` dentro do arquivo `package.json` para usar este novo sinalizador.
 
 ```json
 {
@@ -63,32 +63,32 @@ Also, you might want to update the `dev` script within the `package.json` file t
 }
 ```
 
-## Full reloads vs HMR
+## Recargas completas vs HMR
 
 :::note
-This section explains the underlying workings of `hot-hook`. Feel free to skip it if you are not in the mood to read extended technical theory 🤓
+Esta seção explica o funcionamento subjacente do `hot-hook`. Sinta-se à vontade para ignorá-la se não estiver com vontade de ler teoria técnica estendida 🤓
 
-Or, go through the [README file](https://github.com/Julien-R44/hot-hook) of the package if you want an even deeper explanation.
+Ou, leia o [arquivo README](https://github.com/Julien-R44/hot-hook) do pacote se quiser uma explicação ainda mais aprofundada.
 :::
 
-Let's understand when AdonisJS will perform a complete reload (restarting the process) and when it will hot reload the module.
+Vamos entender quando o AdonisJS executará uma recarga completa (reiniciando o processo) e quando ele recarregará o módulo a quente.
 
-### Creating a dependency tree
-When using the `--hmr` flag, AdonisJS will use `hot-hook` to create a dependency tree of your application starting from the `bin/server.ts` file and will watch all the files that are part of this dependency tree.
+### Criando uma árvore de dependências
+Ao usar o sinalizador `--hmr`, o AdonisJS usará `hot-hook` para criar uma árvore de dependências do seu aplicativo começando pelo arquivo `bin/server.ts` e observará todos os arquivos que fazem parte dessa árvore de dependências.
 
-It means that if you create a TypeScript file in your application source code but never import it anywhere in your app, this file will not trigger any reload. It will be ignored as if the file does not exist.
+Isso significa que se você criar um arquivo TypeScript no código-fonte do seu aplicativo, mas nunca importá-lo em nenhum lugar do seu aplicativo, esse arquivo não acionará nenhuma recarga. Ele será ignorado como se o arquivo não existisse.
 
-### Identifying boundaries
-Next, `hot-hook` will use the `boundaries` array from the configuration to identify the files that qualify for HMR. 
+### Identificando limites
+Em seguida, `hot-hook` usará o array `boundaries` da configuração para identificar os arquivos que se qualificam para HMR.
 
-As a rule of thumb, you should never register config files, service providers, or preload files as boundaries. This is because these files usually result in some side-effect that will re-occur if we reload them without clearing the side-effects. Here are some examples:
+Como regra geral, você nunca deve registrar arquivos de configuração, provedores de serviço ou arquivos de pré-carregamento como limites. Isso ocorre porque esses arquivos geralmente resultam em algum efeito colateral que ocorrerá novamente se os recarregarmos sem limpar os efeitos colaterais. Aqui estão alguns exemplos:
 
-- The `config/database.ts` file establishes a connection with the database. Hot reloading this file means closing the existing connection and re-creating it. The same can be achieved by restarting the entire process without adding any additional complexity.
+- O arquivo `config/database.ts` estabelece uma conexão com o banco de dados. Recarregar este arquivo a quente significa fechar a conexão existente e recriá-la. O mesmo pode ser alcançado reiniciando todo o processo sem adicionar nenhuma complexidade adicional.
 
-- The `start/routes.ts` file is used to register the routes. Hot reloading this file means removing existing routes registered with the framework and re-registering them. Again, restarting the process is simple.
+- O arquivo `start/routes.ts` é usado para registrar as rotas. Recarregar este arquivo a quente significa remover rotas existentes registradas com o framework e registrá-las novamente. Novamente, reiniciar o processo é simples.
 
-In other words, we can say that the modules imported/executed during an HTTP request should be part of HMR boundaries, and modules needed to boot the application should not be.
+Em outras palavras, podemos dizer que os módulos importados/executados durante uma solicitação HTTP devem fazer parte dos limites HMR, e os módulos necessários para inicializar o aplicativo não devem ser.
 
-### Performing reloads
-Once `hot-hook` has identified the boundaries, it will perform HMR for dynamically imported modules that are part of the boundary and restart the process for the rest of the files.
+### Executando recarregamentos
+Depois que o `hot-hook` identificar os limites, ele executará o HMR para módulos importados dinamicamente que fazem parte do limite e reiniciará o processo para o restante dos arquivos.
 

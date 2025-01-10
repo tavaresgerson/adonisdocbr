@@ -1,29 +1,28 @@
 ---
-summary: Learn about AsyncLocalStorage and how to use it in AdonisJS.
+resumo: Aprenda sobre AsyncLocalStorage e como usá-lo no AdonisJS.
 ---
 
-# Async local storage
+# Armazenamento local assíncrono
 
-As per the [Node.js official documentation](https://nodejs.org/docs/latest-v21.x/api/async_context.html#class-asynclocalstorage): “AsyncLocalStorage is used to create asynchronous state within callbacks and promise chains. **It allows storing data throughout the lifetime of a web request or any other asynchronous duration. It is similar to thread-local storage in other languages**.”
+De acordo com a [documentação oficial do Node.js](https://nodejs.org/docs/latest-v21.x/api/async_context.html#class-asynclocalstorage): “AsyncLocalStorage é usado para criar estado assíncrono dentro de callbacks e cadeias de promessas. **Ele permite armazenar dados durante todo o tempo de vida de uma solicitação da web ou qualquer outra duração assíncrona. É semelhante ao armazenamento local de thread em outras linguagens**.”
 
-To simplify the explanation further, AsyncLocalStorage allows you to store a state when executing an async function and make it available to all the code paths within that function.
+Para simplificar ainda mais a explicação, AsyncLocalStorage permite que você armazene um estado ao executar uma função assíncrona e o disponibilize para todos os caminhos de código dentro dessa função.
 
-## Basic example
+## Exemplo básico
 
-Let's see it in action. First, we will create a new Node.js project (without any dependencies) and use `AsyncLocalStorage` to share the state between modules without passing it by reference.
-
+Vamos ver em ação. Primeiro, criaremos um novo projeto Node.js (sem nenhuma dependência) e usaremos `AsyncLocalStorage` para compartilhar o estado entre os módulos sem passá-lo por referência.
 
 :::note
-You can find the final code for this example on [als-basic-example](https://github.com/thetutlage/als-basic-example) GitHub repo.
+Você pode encontrar o código final para este exemplo no repositório GitHub [als-basic-example](https://github.com/thetutlage/als-basic-example).
 :::
 
-### Step 1. Creating a new project
+### Etapa 1. Criando um novo projeto
 
 ```sh
 npm init --yes
 ```
 
-Open the `package.json` file and set the module system to ESM.
+Abra o arquivo `package.json` e defina o sistema de módulos como ESM.
 
 ```json
 {
@@ -31,9 +30,9 @@ Open the `package.json` file and set the module system to ESM.
 }
 ```
 
-### Step 2. Creating an instance of `AsyncLocalStorage`
+### Etapa 2. Criando uma instância de `AsyncLocalStorage`
 
-Create a file named `storage.js`, which creates and exports an instance of the `AsyncLocalStorage`.
+Crie um arquivo chamado `storage.js`, que cria e exporta uma instância de `AsyncLocalStorage`.
 
 ```ts
 // title: storage.js
@@ -41,11 +40,11 @@ import { AsyncLocalStorage } from 'async_hooks'
 export const storage = new AsyncLocalStorage()
 ```
 
-### Step 3. Execute code inside `storage.run`
+### Etapa 3. Execute o código dentro de `storage.run`
 
-Create an entry point file named `main.js`.  Inside this file, import the instance of `AsyncLocalStorage` created inside the `./storage.js` file.
+Crie um arquivo de ponto de entrada chamado `main.js`. Dentro deste arquivo, importe a instância de `AsyncLocalStorage` criada dentro do arquivo `./storage.js`.
 
-The `storage.run` method accepts the state we want to share as the first argument and a callback function as the second argument. All code paths inside this callback (including the imported modules) will have access to the same state.
+O método `storage.run` aceita o estado que queremos compartilhar como o primeiro argumento e uma função de retorno de chamada como o segundo argumento. Todos os caminhos de código dentro deste retorno de chamada (incluindo os módulos importados) terão acesso ao mesmo estado.
 
 ```ts
 // title: main.js
@@ -64,7 +63,7 @@ async function run(user) {
 }
 ```
 
-For demonstration, we will execute the `run` method three times without awaiting it. Paste the following code at the end of the `main.js` file.
+Para demonstração, executaremos o método `run` três vezes sem aguardá-lo. Cole o seguinte código no final do arquivo `main.js`.
 
 ```ts
 // title: main.js
@@ -73,9 +72,9 @@ run({ id: 2 })
 run({ id: 3 })
 ```
 
-### Step 4. Access the state from the `user_service` module.
+### Etapa 4. Acesse o estado do módulo `user_service`.
 
-Finally, let's import the storage instance inside the `user_service` module and access the current state.
+Por fim, vamos importar a instância de armazenamento dentro do módulo `user_service` e acessar o estado atual.
 
 ```ts
 // title: user_service.js
@@ -89,27 +88,27 @@ export class UserService {
 }
 ```
 
-### Step 5. Execute the `main.js` file.
+### Etapa 5. Execute o arquivo `main.js`.
 
-Let's run the `main.js` file to see if the `UserService` can access the state.
+Vamos executar o arquivo `main.js` para ver se o `UserService` pode acessar o estado.
 
 ```sh
 node main.js
 ```
 
-## What is the need for Async local storage?
+## Qual é a necessidade do armazenamento local assíncrono?
 
-Unlike other languages like PHP, Node.js is not a threaded language. In PHP, every HTTP request creates a new thread, and each thread has its memory. This allows you to store the state in the global memory and access it anywhere inside your codebase.
+Ao contrário de outras linguagens como PHP, o Node.js não é uma linguagem encadeada. No PHP, cada solicitação HTTP cria uma nova thread, e cada thread tem sua memória. Isso permite que você armazene o estado na memória global e acesse-o em qualquer lugar dentro da sua base de código.
 
-In Node.js, you cannot have a global state isolated between HTTP requests because Node.js runs on a single thread and has shared memory. As a result, all Node.js applications share data by passing it as parameters.
+No Node.js, você não pode ter um estado global isolado entre solicitações HTTP porque o Node.js é executado em uma única thread e tem memória compartilhada. Como resultado, todos os aplicativos Node.js compartilham dados passando-os como parâmetros.
 
-Passing data by reference has no technical downsides. But, it does make the code verbose, especially when you configure APM tools and have to provide request data to them manually.
+Passar dados por referência não tem desvantagens técnicas. Mas, isso torna o código detalhado, especialmente quando você configura ferramentas APM e precisa fornecer dados de solicitação a elas manualmente.
 
-## Usage
+## Uso
 
-AdonisJS uses `AsyncLocalStorage` during HTTP requests and shares the [HTTP context](./http_context.md) as the state. As a result, you can access the HTTP context in your application globally.
+O AdonisJS usa `AsyncLocalStorage` durante solicitações HTTP e compartilha o [contexto HTTP](./http_context.md) como o estado. Como resultado, você pode acessar o contexto HTTP em seu aplicativo globalmente.
 
-First, you must enable the `useAsyncLocalStorage` flag inside the `config/app.ts` file.
+Primeiro, você deve habilitar o sinalizador `useAsyncLocalStorage` dentro do arquivo `config/app.ts`.
 
 ```ts
 // title: config/app.ts
@@ -118,9 +117,9 @@ export const http = defineConfig({
 })
 ```
 
-Once enabled, you can use the `HttpContext.get` or `HttpContext.getOrFail` methods to get an instance of the HTTP Context for the ongoing request.
+Depois de habilitado, você pode usar os métodos `HttpContext.get` ou `HttpContext.getOrFail` para obter uma instância do Contexto HTTP para a solicitação em andamento.
 
-In the following example, we get the context inside a Lucid model.
+No exemplo a seguir, obtemos o contexto dentro de um modelo Lucid.
 
 ```ts
 import { HttpContext } from '@adonisjs/core/http'
@@ -138,21 +137,19 @@ export default class Post extends BaseModel {
 }
 ```
 
-## Caveats
-You can use ALS if it makes your code straightforward and you prefer global access vs. passing HTTP Context by reference.
+## Advertências
+Você pode usar o ALS se ele tornar seu código simples e você preferir acesso global em vez de passar o contexto HTTP por referência.
 
-However, be aware of the following situations that can easily lead to memory leaks or unstable behavior of the program.
+No entanto, esteja ciente das seguintes situações que podem facilmente levar a vazamentos de memória ou comportamento instável do programa.
 
+### Acesso de nível superior
 
-### Top-level access
-
-Do not access the ALS at the top level of any module because modules in Node.js are cached. 
+Não acesse o ALS no nível superior de nenhum módulo porque os módulos no Node.js são armazenados em cache.
 
 :::caption{for="error"}
-**Incorrect usage**\
-Assigning the result of the `HttpContext.getOrFail()` method to a variable at top-level will hold the reference to the request that first imported the module.
+**Uso incorreto**\
+Atribuir o resultado do método `HttpContext.getOrFail()` a uma variável no nível superior manterá a referência à solicitação que importou o módulo pela primeira vez.
 :::
-
 
 ```ts
 import { HttpContext } from '@adonisjs/core/http'
@@ -166,8 +163,8 @@ export default class UsersController {
 ```
 
 :::caption[]{for="success"}
-**Correct usage**\
-Instead, you should move the `getOrFail` method call inside the `index` method.
+**Uso correto**\
+Em vez disso, você deve mover a chamada do método `getOrFail` para dentro do método `index`.
 :::
 
 ```ts
@@ -180,11 +177,11 @@ export default class UsersController {
 }
 ```
 
-### Inside static properties
-Static properties (not methods) of any class are evaluated as soon as the module is imported; hence, you should not access the HTTP context within static properties.
+### Dentro de propriedades estáticas
+Propriedades estáticas (não métodos) de qualquer classe são avaliadas assim que o módulo é importado; portanto, você não deve acessar o contexto HTTP dentro de propriedades estáticas.
 
 :::caption{for="error"}
-**Incorrect usage**
+**Uso incorreto**
 :::
 
 ```ts
@@ -197,8 +194,8 @@ export default class User extends BaseModel {
 ```
 
 :::caption[]{for="success"}
-**Correct usage**\
-Instead, you should move the `HttpContext.get` call inside a method or convert the property to a getter.
+**Uso correto**\
+Em vez disso, você deve mover a chamada `HttpContext.get` para dentro de um método ou converter a propriedade em um getter.
 :::
 
 ```ts
@@ -213,8 +210,8 @@ export default class User extends BaseModel {
 }
 ```
 
-### Event handlers
-Event handlers are executed after the HTTP request finishes. Therefore you should refrain from attempting to access the HTTP context inside them.
+### Manipuladores de eventos
+Os manipuladores de eventos são executados após a conclusão da solicitação HTTP. Portanto, você deve evitar tentar acessar o contexto HTTP dentro deles.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -228,7 +225,7 @@ export default class UsersController {
 ```
 
 :::caption[]{for="error"}
-**Avoid usage inside event listeners**
+**Evite o uso dentro de ouvintes de eventos**
 :::
 
 ```ts

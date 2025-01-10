@@ -1,23 +1,23 @@
 ---
-summary: Learn how to use the access tokens guard to authenticate HTTP requests using access tokens.
+resumo: Aprenda a usar o access tokens guard para autenticar solicitações HTTP usando tokens de acesso.
 ---
 
 # Access tokens guard
-Access tokens authenticate HTTP requests in API contexts where the server cannot persist cookies on the end-user device, for example, third-party access to an API or authentication for a mobile app.
+Os tokens de acesso autenticam solicitações HTTP em contextos de API onde o servidor não pode persistir cookies no dispositivo do usuário final, por exemplo, acesso de terceiros a uma API ou autenticação para um aplicativo móvel.
 
-Access tokens can be generated in any format; for instance, the tokens that conform to the JWT standard are known as JWT access tokens, and tokens in a proprietary format are known as opaque access tokens.
+Os tokens de acesso podem ser gerados em qualquer formato; por exemplo, os tokens que estão em conformidade com o padrão JWT são conhecidos como tokens de acesso JWT, e os tokens em um formato proprietário são conhecidos como tokens de acesso opacos.
 
-AdonisJS uses opaque access tokens that are structured and stored as follows.
+O AdonisJS usa tokens de acesso opacos que são estruturados e armazenados da seguinte forma.
 
-- A token is represented by a cryptographically secure random value suffixed with a CRC32 checksum.
-- A hash of the token value is persisted in the database. This hash is used to verify the token at the time of authentication.
-- The final token value is base64 encoded and prefixed with `oat_`. The prefix can be customized.
-- The prefix and the CRC32 checksum suffix help [secret scanning tools](https://docs.github.com/en/code-security/secret-scanning/about-secret-scanning) identify a token and prevent them from leaking inside a codebase. 
+- Um token é representado por um valor aleatório criptograficamente seguro sufixado com uma soma de verificação CRC32.
+- Um hash do valor do token é persistido no banco de dados. Este hash é usado para verificar o token no momento da autenticação.
+- O valor final do token é codificado em base64 e prefixado com `oat_`. O prefixo pode ser personalizado.
+[ferramentas de varredura secreta](https://docs.github.com/en/code-security/secret-scanning/about-secret-scanning) identificam um token e evitam que ele vaze dentro de uma base de código.
 
-## Configuring the user model
-Before using the access tokens guard, you must set up a tokens provider with the User model. **The tokens provider is used to create, list, and verify access tokens**.
+## Configurando o modelo de usuário
+Antes de usar a proteção de tokens de acesso, você deve configurar um provedor de tokens com o modelo de usuário. **O provedor de tokens é usado para criar, listar e verificar tokens de acesso**.
 
-The auth package comes with a database tokens provider, which persists tokens inside an SQL database. You can configure it as follows.
+O pacote auth vem com um provedor de tokens de banco de dados, que persiste tokens dentro de um banco de dados SQL. Você pode configurá-lo da seguinte forma.
 
 ```ts
 import { BaseModel } from '@adonisjs/lucid/orm'
@@ -34,7 +34,7 @@ export default class User extends BaseModel {
 }
 ```
 
-The `DbAccessTokensProvider.forModel` accepts the User model as the first argument and an options object as the second argument.
+O `DbAccessTokensProvider.forModel` aceita o modelo de usuário como o primeiro argumento e um objeto de opções como o segundo argumento.
 
 ```ts
 export default class User extends BaseModel {
@@ -52,46 +52,46 @@ export default class User extends BaseModel {
 
 ### `expiresIn`
 
-The duration after which the token will expire. You can pass a numeric value in seconds or a [time expression](https://github.com/poppinss/utils?tab=readme-ov-file#secondsparseformat) as a string.
+A duração após a qual o token irá expirar. Você pode passar um valor numérico em segundos ou uma [expressão de tempo](https://github.com/poppinss/utils?tab=readme-ov-file#secondsparseformat) como uma string.
 
-By default, tokens are long-lived and do not expire. Also, you can specify the expiry of a token at the time it is generated.
+Por padrão, os tokens têm vida longa e não expiram. Além disso, você pode especificar a expiração de um token no momento em que ele é gerado.
 
 ### `prefix`
 
-The prefix for the publicly shared token value. Defining a prefix helps [secret scanning tools](https://github.blog/2021-04-05-behind-githubs-new-authentication-token-formats/#identifiable-prefixes) identify a token and prevent it from leaking inside the codebases.
+O prefixo para o valor do token compartilhado publicamente. Definir um prefixo ajuda [as ferramentas de varredura secreta](https://github.blog/2021-04-05-behind-githubs-new-authentication-token-formats/#identifiable-prefixes) a identificar um token e evitar que ele vaze dentro das bases de código.
 
-Changing the prefix after issuing tokens will make them invalid. Therefore, choose the prefix carefully and do not change them often.
+Alterar o prefixo após emitir tokens os tornará inválidos. Portanto, escolha o prefixo com cuidado e não os altere com frequência.
 
-Defaults to `oat_`.
+O padrão é `oat_`.
 
 ### `table`
 
-The database table name for storing the access tokens. Defaults to `auth_access_tokens`. 
+O nome da tabela do banco de dados para armazenar os tokens de acesso. O padrão é `auth_access_tokens`.
 
 ### `type`
 
-A unique type to identify a bucket of tokens. If you issue multiple types of tokens within a single application, you must define a unique type for all of them.
+Um tipo exclusivo para identificar um bucket de tokens. Se você emitir vários tipos de tokens em um único aplicativo, deverá definir um tipo exclusivo para todos eles.
 
-Defaults to `auth_token`.
+O padrão é `auth_token`.
 
 ### `tokenSecretLength`
 
-The length (in characters) of the random token value. Defaults to `40`.
+O comprimento (em caracteres) do valor aleatório do token. O padrão é `40`.
 
 ---
 
-Once you have configured a token provider, you can start [issuing tokens](#issuing-a-token) on behalf of a user. You do not have to set up an authentication guard for issuing tokens. The guard is needed to verify tokens.
+Depois de configurar um provedor de token, você pode começar a [emitir tokens](#emitindo-um-token) em nome de um usuário. Você não precisa configurar um guarda de autenticação para emitir tokens. O guarda é necessário para verificar tokens.
 
-## Creating the access tokens database table
-We create the migration file for the `auth_access_tokens` table during the initial setup. The migration file is stored inside the `database/migrations` directory.
+## Criando a tabela de banco de dados de tokens de acesso
+Criamos o arquivo de migração para a tabela `auth_access_tokens` durante a configuração inicial. O arquivo de migração é armazenado dentro do diretório `database/migrations`.
 
-You may create the database table by executing the `migration:run` command.
+Você pode criar a tabela do banco de dados executando o comando `migration:run`.
 
 ```sh
 node ace migration:run
 ```
 
-However, if you are configuring the auth package manually for some reason, you can create a migration file manually and copy-paste the following code snippet inside it.
+No entanto, se você estiver configurando o pacote auth manualmente por algum motivo, você pode criar um arquivo de migração manualmente e copiar e colar o seguinte trecho de código dentro dele.
 
 ```sh
 node ace make:migration auth_access_tokens
@@ -131,14 +131,14 @@ export default class extends BaseSchema {
 }
 ```
 
-## Issuing tokens
-Depending upon your application, you might issue a token during login or after login from the application dashboard. In either case, issuing a token requires a user object (for whom the token will be generated), and you can generate them directly using the `User` model.
+## Emissão de tokens
+Dependendo do seu aplicativo, você pode emitir um token durante o login ou após o login no painel do aplicativo. Em ambos os casos, a emissão de um token requer um objeto de usuário (para quem o token será gerado), e você pode gerá-los diretamente usando o modelo `User`.
 
-In the following example, we **find a user by id** and **issue them an access token** using the `User.accessTokens.create` method. Of course, in a real-world application, you will have this endpoint guarded by authentication, but let's keep it simple for now.
+No exemplo a seguir, nós **encontramos um usuário por id** e **emitimos a ele um token de acesso** usando o método `User.accessTokens.create`. Claro, em um aplicativo do mundo real, você terá esse endpoint protegido por autenticação, mas vamos manter isso simples por enquanto.
 
-The `.create` method accepts an instance of the User model and returns an instance of the [AccessToken](https://github.com/adonisjs/auth/blob/main/modules/access_tokens_guard/access_token.ts) class. 
+O método `.create` aceita uma instância do modelo User e retorna uma instância da classe [AccessToken](https://github.com/adonisjs/auth/blob/main/modules/access_tokens_guard/access_token.ts).
 
-The `token.value` property contains the value (wrapped as a [Secret](../references/helpers.md#secret)) that must be shared with the user. The value is only available when generating the token, and the user will not be able to see it again.
+A propriedade `token.value` contém o valor (encapsulado como um [Secret](../references/helpers.md#secret)) que deve ser compartilhado com o usuário. O valor só está disponível ao gerar o token, e o usuário não poderá vê-lo novamente.
 
 ```ts
 import router from '@adonisjs/core/services/router'
@@ -155,7 +155,7 @@ router.post('users/:id/tokens', ({ params }) => {
 })
 ```
 
-You can also return the `token` directly in response, which will be serialized to the following JSON object.
+Você também pode retornar o `token` diretamente na resposta, que será serializado para o seguinte objeto JSON.
 
 ```ts
 router.post('users/:id/tokens', ({ params }) => {
@@ -182,31 +182,31 @@ router.post('users/:id/tokens', ({ params }) => {
  */
 ```
 
-### Defining abilities
-Depending upon the application you are building, you might want to limit access tokens to only perform specific tasks. For example, issue a token that allows reading and listing projects without creating or deleting them.
+### Definindo habilidades
+Dependendo do aplicativo que você está construindo, você pode querer limitar os tokens de acesso para executar apenas tarefas específicas. Por exemplo, emita um token que permita ler e listar projetos sem criá-los ou excluí-los.
 
-In the following example, we define an array of abilities as the second parameter. The abilities are serialized to a JSON string and persisted inside the database.
+No exemplo a seguir, definimos uma matriz de habilidades como o segundo parâmetro. As habilidades são serializadas para uma string JSON e persistidas dentro do banco de dados.
 
-For the auth package, the abilities have no real meaning. It is up to your application to check for token abilities before performing a given action.
+Para o pacote auth, as habilidades não têm significado real. Cabe ao seu aplicativo verificar as habilidades do token antes de executar uma determinada ação.
 
 ```ts
 await User.accessTokens.create(user, ['server:create', 'server:read'])
 ```
 
-### Token abilities vs. Bouncer abilities
+### Habilidades do token vs. Habilidades do Bouncer
 
-You should not confuse token abilities with [bouncer authorization checks](../security/authorization.md#defining-abilities). Let's try to understand the difference with a practical example.
+Você não deve confundir habilidades do token com [verificações de autorização do bouncer](../security/authorization.md#defining-abilities). Vamos tentar entender a diferença com um exemplo prático.
 
-- Let's say you define a **bouncer ability that allows admin users to create new projects**.
+- Digamos que você defina uma **habilidade do bouncer que permite que usuários administradores criem novos projetos**.
 
-- The same admin user creates a token for themselves, but to prevent token abuse, they limit the token abilities to **read projects**.
+- O mesmo usuário administrador cria um token para si mesmo, mas para evitar abuso de token, ele limita as habilidades do token para **ler projetos**.
 
-- Now, within your application, you will have to implement access control, which allows the admin users to create new projects while disallowing the token from creating new projects.
+- Agora, dentro do seu aplicativo, você terá que implementar o controle de acesso, que permite que os usuários administradores criem novos projetos enquanto impede o token de criar novos projetos.
 
-You can write a bouncer ability for this use case as follows.
+Você pode escrever uma habilidade de bouncer para este caso de uso da seguinte forma.
 
 :::note
-The `user.currentAccessToken` refers to the access token used for authentication during the current HTTP request. You can learn more about it inside the [authenticating requests](#the-current-access-token) section.
+O `user.currentAccessToken` se refere ao token de acesso usado para autenticação durante a solicitação HTTP atual. Você pode aprender mais sobre isso na seção [autenticando solicitações](#the-current-access-token).
 :::
 
 ```ts
@@ -233,10 +233,10 @@ export const createProject = Bouncer.ability(
 )
 ```
 
-### Expiring tokens
-By default, the tokens are long-lived, and they never expire. However, you define the expiration at the time of [configuring the tokens provider](#configuring-the-user-model) or when generating a token.
+### Tokens expirados
+Por padrão, os tokens têm vida longa e nunca expiram. No entanto, você define a expiração no momento da [configuração do provedor de tokens](#configuring-the-user-model) ou ao gerar um token.
 
-The expiry can be defined as a numeric value representing seconds or a string-based time expression.
+A expiração pode ser definida como um valor numérico representando segundos ou uma expressão de tempo baseada em string.
 
 ```ts
 await User.accessTokens.create(
@@ -248,8 +248,8 @@ await User.accessTokens.create(
 )
 ```
 
-### Naming tokens
-By default, the tokens are not named. However, you can assign them a name when generating the token. For example, if you allow the users of your application to self-generate tokens, you may ask them also to specify a recognizable name.
+### Nomeando tokens
+Por padrão, os tokens não são nomeados. No entanto, você pode atribuir um nome a eles ao gerar o token. Por exemplo, se você permitir que os usuários do seu aplicativo gerem tokens por conta própria, você pode pedir que eles também especifiquem um nome reconhecível.
 
 ```ts
 await User.accessTokens.create(
@@ -262,8 +262,8 @@ await User.accessTokens.create(
 )
 ```
 
-## Configuring the guard
-Now that we can issue tokens, let's configure an authentication guard to verify requests and authenticate users. The guard must be configured inside the `config/auth.ts` file under the `guards` object.
+## Configurando o guard
+Agora que podemos emitir tokens, vamos configurar um guard de autenticação para verificar solicitações e autenticar usuários. O guard deve ser configurado dentro do arquivo `config/auth.ts` sob o objeto `guards`.
 
 ```ts
 // title: config/auth.ts
@@ -289,17 +289,17 @@ const authConfig = defineConfig({
 export default authConfig
 ```
 
-The `tokensGuard` method creates an instance of the [AccessTokensGuard](https://github.com/adonisjs/auth/blob/main/modules/access_tokens_guard/guard.ts) class. It accepts a user provider that can be used for verifying tokens and finding users.
+O método `tokensGuard` cria uma instância da classe [AccessTokensGuard](https://github.com/adonisjs/auth/blob/main/modules/access_tokens_guard/guard.ts). Ele aceita um provedor de usuário que pode ser usado para verificar tokens e encontrar usuários.
 
-The `tokensUserProvider` method accepts the following options and returns an instance of the [AccessTokensLucidUserProvider](https://github.com/adonisjs/auth/blob/main/modules/access_tokens_guard/user_providers/lucid.ts) class.
+O método `tokensUserProvider` aceita as seguintes opções e retorna uma instância da classe [AccessTokensLucidUserProvider](https://github.com/adonisjs/auth/blob/main/modules/access_tokens_guard/user_providers/lucid.ts).
 
-- `model`: The Lucid model to use for finding users.
-- `tokens`: The static property name of the model to reference the tokens provider.
+- `model`: O modelo Lucid a ser usado para encontrar usuários.
+- `tokens`: O nome da propriedade estática do modelo para referenciar o provedor de tokens.
 
-## Authenticating requests
-Once the guard has been configured, you can start authenticating requests using the `auth` middleware or manually calling the `auth.authenticate` method.
+## Autenticando solicitações
+Depois que o guard tiver sido configurado, você pode começar a autenticar solicitações usando o middleware `auth` ou chamando manualmente o método `auth.authenticate`.
 
-The `auth.authenticate` method returns an instance of the User model for the authenticated user, or it throws an [E_UNAUTHORIZED_ACCESS](../references/exceptions.md#e_unauthorized_access) exception when unable to authenticate the request.
+O método `auth.authenticate` retorna uma instância do modelo User para o usuário autenticado ou lança uma exceção [E_UNAUTHORIZED_ACCESS](../references/exceptions.md#e_unauthorized_access) quando não é possível autenticar a solicitação.
 
 ```ts
 import router from '@adonisjs/core/services/router'
@@ -313,11 +313,11 @@ router.post('projects', async ({ auth }) => {
 })
 ```
 
-### Using the auth middleware
+### Usando o middleware auth
 
-Instead of manually calling the `authenticate` method. You can use the `auth` middleware to authenticate the request or throw an exception.
+Em vez de chamar manualmente o método `authenticate`. Você pode usar o middleware `auth` para autenticar a solicitação ou lançar uma exceção.
 
-The auth middleware accepts an array of guards to use for authenticating the request. The authentication process stops after one of the mentioned guards authenticates the request.
+O middleware auth aceita uma matriz de guards para usar na autenticação da solicitação. O processo de autenticação para depois que um dos guards mencionados autentica a solicitação.
 
 ```ts
 import router from '@adonisjs/core/services/router'
@@ -334,8 +334,8 @@ router
   }))
 ```
 
-### Check if the request is authenticated
-You can check if a request has been authenticated using the `auth.isAuthenticated` flag. The value of `auth.user` will always be defined for an authenticated request.
+### Verifique se a solicitação é autenticada
+Você pode verificar se uma solicitação foi autenticada usando o sinalizador `auth.isAuthenticated`. O valor de `auth.user` sempre será definido para uma solicitação autenticada.
 
 ```ts
 import { HttpContext } from '@adonisjs/core/http'
@@ -349,9 +349,9 @@ class PostsController {
 }
 ```
 
-### Get authenticated user or fail
+### Obtenha o usuário autenticado ou falhe
 
-If you do not like using the [non-null assertion operator](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#non-null-assertion-operator-postfix-) on the `auth.user` property, you may use the `auth.getUserOrFail` method. This method will return the user object or throw [E_UNAUTHORIZED_ACCESS](../references/exceptions.md#e_unauthorized_access) exception.
+Se você não gosta de usar o [operador de asserção não nulo](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#non-null-assertion-operator-postfix-) na propriedade `auth.user`, você pode usar o método `auth.getUserOrFail`. Este método retornará o objeto do usuário ou lançará a exceção [E_UNAUTHORIZED_ACCESS](../references/exceptions.md#e_unauthorized_access).
 
 ```ts
 import { HttpContext } from '@adonisjs/core/http'
@@ -364,12 +364,12 @@ class PostsController {
 }
 ```
 
-## The current access token
-The access token guard defines the `currentAccessToken` property on the user object after successfully authenticating the request. The `currentAccessToken` property is an instance of the [AccessToken](https://github.com/adonisjs/auth/blob/main/modules/access_tokens_guard/access_token.ts) class. 
+## O token de acesso atual
+O guarda do token de acesso define a propriedade `currentAccessToken` no objeto do usuário após autenticar a solicitação com sucesso. A propriedade `currentAccessToken` é uma instância da classe [AccessToken](https://github.com/adonisjs/auth/blob/main/modules/access_tokens_guard/access_token.ts).
 
-You may use the `currentAccessToken` object to get the token's abilities or check the expiration of the token. Also, during authentication, the guard will update the `last_used_at` column to reflect the current timestamp.
+Você pode usar o objeto `currentAccessToken` para obter as habilidades do token ou verificar a expiração do token. Além disso, durante a autenticação, o guarda atualizará a coluna `last_used_at` para refletir o carimbo de data/hora atual.
 
-If you reference the User model with `currentAccessToken` as a type in the rest of the codebase, you may want to declare this property on the model itself.
+Se você referenciar o modelo User com `currentAccessToken` como um tipo no restante da base de código, talvez queira declarar essa propriedade no próprio modelo.
 
 :::caption{for="error"}
 **Instead of merging `currentAccessToken`**
@@ -401,8 +401,8 @@ Bouncer.ability((user: User) => {
 })
 ```
 
-## Listing all tokens
-You may use the tokens provider to get a list of all the tokens using the `accessTokens.all` method. The return value will be an array of `AccessToken` class instances.
+## Listando todos os tokens
+Você pode usar o provedor de tokens para obter uma lista de todos os tokens usando o método `accessTokens.all`. O valor de retorno será uma matriz de instâncias da classe `AccessToken`.
 
 ```ts
 router
@@ -416,7 +416,7 @@ router
   )
 ```
 
-The `all` method also returns expired tokens. You may want to filter them before rendering the list or display a **"Token expired"** message next to the token. For example
+O método `all` também retorna tokens expirados. Você pode querer filtrá-los antes de renderizar a lista ou exibir uma mensagem **"Token expirado"** ao lado do token. Por exemplo
 
 ```edge
 @each(token in tokens)
@@ -429,12 +429,12 @@ The `all` method also returns expired tokens. You may want to filter them before
 @end
 ```
 
-## Deleting tokens
-You may delete a token using the `accessTokens.delete` method. The method accepts the user as the first parameter and the token id as the second parameter.
+## Excluindo tokens
+Você pode excluir um token usando o método `accessTokens.delete`. O método aceita o usuário como o primeiro parâmetro e o ID do token como o segundo parâmetro.
 
 ```ts
 await User.accessTokens.delete(user, token.identifier)
 ```
 
-## Events
-Please check the [events reference guide](../references/events.md#access_tokens_authauthentication_attempted) to view the list of available events emitted by the access tokens guard.
+## Eventos
+Consulte o [guia de referência de eventos](../references/events.md#access_tokens_authauthentication_attempted) para visualizar a lista de eventos disponíveis emitidos pelo guarda de tokens de acesso.

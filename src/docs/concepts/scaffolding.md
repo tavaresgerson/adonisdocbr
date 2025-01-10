@@ -1,45 +1,45 @@
 ---
-summary: Scaffold source files from templates and update TypeScript source code using codemods in AdonisJS
+resumo: Crie andaimes de arquivos de origem a partir de modelos e atualize o código-fonte TypeScript usando codemods no AdonisJS
 ---
 
-# Scaffolding and codemods
+# Scaffolding e codemods
 
-Scaffolding refers to the process of generating source files from static templates (aka stubs), and codemods refer to updating the TypeScript source code by parsing the AST.
+Scaffolding se refere ao processo de geração de arquivos de origem a partir de modelos estáticos (também conhecidos como stubs), e codemods se referem à atualização do código-fonte TypeScript analisando o AST.
 
-AdonisJS uses both to speed up the repetitive tasks of creating new files and configuring packages. In this guide, we will go through the building blocks of Scaffolding and cover the codemods API you can use within Ace commands.
+O AdonisJS usa ambos para acelerar as tarefas repetitivas de criação de novos arquivos e configuração de pacotes. Neste guia, abordaremos os blocos de construção do Scaffolding e abordaremos a API codemods que você pode usar nos comandos Ace.
 
-## Building blocks
+## Blocos de construção
 
 ### Stubs
-Stubs refers to the templates, that are used to create source files on a given action. For example, The `make:controller` command uses the [controller stub](https://github.com/adonisjs/core/blob/main/stubs/make/controller/main.stub) to create a controller file inside the host project.
+Stubs se refere aos modelos, que são usados ​​para criar arquivos de origem em uma determinada ação. Por exemplo, o comando `make:controller` usa o [controller stub](https://github.com/adonisjs/core/blob/main/stubs/make/controller/main.stub) para criar um arquivo de controlador dentro do projeto host.
 
-### Generators
-Generators enforce a naming convention and generate file, class, or method names based on the pre-defined conventions.
+### Geradores
+Os geradores impõem uma convenção de nomenclatura e geram nomes de arquivo, classe ou método com base nas convenções predefinidas.
 
-For example, the controller stubs use the [controllerName](https://github.com/adonisjs/application/blob/main/src/generators.ts#L122) and [controllerFileName](https://github.com/adonisjs/application/blob/main/src/generators.ts#L139) generators to create a controller. 
+Por exemplo, os stubs do controlador usam os geradores [controllerName](https://github.com/adonisjs/application/blob/main/src/generators.ts#L122) e [controllerFileName](https://github.com/adonisjs/application/blob/main/src/generators.ts#L139) para criar um controlador.
 
-Since generators are defined as an object, you can override the existing methods to tweak the conventions. We learn more about that later in this guide.
+Como os geradores são definidos como um objeto, você pode substituir os métodos existentes para ajustar as convenções. Aprenderemos mais sobre isso mais adiante neste guia.
 
 ### Codemods
-The codemods API comes from the [@adonisjs/assembler](https://github.com/adonisjs/assembler/blob/main/src/code_transformer/main.ts) package, and it uses [ts-morph](https://github.com/dsherret/ts-morph) under the hood.
+A API codemods vem do pacote [@adonisjs/assembler](https://github.com/adonisjs/assembler/blob/main/src/code_transformer/main.ts) e usa [ts-morph](https://github.com/dsherret/ts-morph) por baixo dos panos.
 
-Since `@adonisjs/assembler` is a development dependency, `ts-morph` does not bloat your project dependencies in production. Also, it means, the codemods APIs are not available in production.
+Como `@adonisjs/assembler` é uma dependência de desenvolvimento, `ts-morph` não incha as dependências do seu projeto na produção. Além disso, significa que as APIs codemods não estão disponíveis na produção.
 
-The codemods API exposed by AdonisJS are very specific to accomplish high-level tasks like **add a provider to the `.adonisrc.ts` file**, or **register a middleware inside the `start/kernel.ts`** file. Also, these APIs rely on the default naming conventions, so if you make drastic changes to your project, you will not be able to run codemods.
+A API codemods exposta pelo AdonisJS é muito específica para realizar tarefas de alto nível, como **adicionar um provedor ao arquivo `.adonisrc.ts`** ou **registrar um middleware dentro do arquivo `start/kernel.ts`**. Além disso, essas APIs dependem das convenções de nomenclatura padrão, então se você fizer mudanças drásticas no seu projeto, não poderá executar codemods.
 
-### Configure command
-The configure command is used to configure an AdonisJS package. Under the hood, this command imports the main entry point file and executes the `configure` method exported by the mentioned package.
+### Comando Configure
+O comando configure é usado para configurar um pacote AdonisJS. Por baixo dos panos, esse comando importa o arquivo de ponto de entrada principal e executa o método `configure` exportado pelo pacote mencionado.
 
-The package's `configure` method receives an instance of the [Configure command](https://github.com/adonisjs/core/blob/main/commands/configure.ts), and therefore, it can access the stubs and codemods API from the command instance directly.
+O método `configure` do pacote recebe uma instância do [comando Configure](https://github.com/adonisjs/core/blob/main/commands/configure.ts) e, portanto, pode acessar os stubs e a API codemods diretamente da instância do comando.
 
-## Using stubs
-Most of the time, you will use stubs within an Ace command or inside the `configure` method of a package you have created. You can initialize the codemods module in both cases via the Ace command's `createCodemods` method. 
+## Usando stubs
+Na maioria das vezes, você usará stubs dentro de um comando Ace ou dentro do método `configure` de um pacote que você criou. Você pode inicializar o módulo codemods em ambos os casos por meio do método `createCodemods` do comando Ace.
 
-The `codemods.makeUsingStub` method creates a source file from a stub template. It accepts the following arguments:
+O método `codemods.makeUsingStub` cria um arquivo de origem a partir de um modelo de stub. Ele aceita os seguintes argumentos:
 
-- The URL to the root of the directory where stubs are stored.
-- Relative path from the `STUBS_ROOT` directory to the stub file (including extension).
-- And the data object to share with the stub.
+- A URL para a raiz do diretório onde os stubs são armazenados.
+- Caminho relativo do diretório `STUBS_ROOT` para o arquivo stub (incluindo extensão).
+- E o objeto de dados para compartilhar com o stub.
 
 ```ts
 // title: Inside a command
@@ -57,14 +57,14 @@ export default class MakeApiResource extends BaseCommand {
 }
 ```
 
-### Stubs templating
-We use [Tempura](https://github.com/lukeed/tempura) template engine to process the stubs with runtime data. Tempura is a super lightweight handlebars-style template engine for JavaScript.
+### Modelos de stubs
+Usamos o mecanismo de modelo [Tempura](https://github.com/lukeed/tempura) para processar os stubs com dados de tempo de execução. Tempura é um mecanismo de modelo estilo handlebars superleve para JavaScript.
 
 :::tip
-Since Tempura's syntax is compatible with handlebars, you can set your code editors to use handlebar syntax highlighting with `.stub` files.
+Como a sintaxe do Tempura é compatível com handlebars, você pode configurar seus editores de código para usar o realce de sintaxe handlebar com arquivos `.stub`.
 :::
 
-In the following example, we create a stub that outputs a JavaScript class. It uses the double curly braces to evaluate runtime values.
+No exemplo a seguir, criamos um stub que gera uma classe JavaScript. Ele usa as chaves duplas para avaliar valores de tempo de execução.
 
 ```handlebars
 export default class {{ modelName }}Resource {
@@ -74,11 +74,11 @@ export default class {{ modelName }}Resource {
 }
 ```
 
-### Using generators
+### Usando geradores
 
-If you execute the above stub right now, it will fail because we have not provided the `modelName` and `modelReference` data properties.
+Se você executar o stub acima agora, ele falhará porque não fornecemos as propriedades de dados `modelName` e `modelReference`.
 
-We recommend computing these properties within the stub using inline variables. This way, the host application can [eject the stub](#ejecting-stubs) and modify the variables.
+Recomendamos calcular essas propriedades dentro do stub usando variáveis ​​inline. Dessa forma, o aplicativo host pode [ejetar o stub](#ejecting-stubs) e modificar as variáveis.
 
 ```js
 // insert-start
@@ -94,10 +94,10 @@ export default class {{ modelName }}Resource {
 }
 ```
 
-### Output destination
-Finally, we have to specify the destination path of the file that will be created using the stub. Once again, we specify the destination path within the stub file, as it allows the host application to [eject the stub](#ejecting-stubs) and customize its output destination.
+### Destino de saída
+Finalmente, temos que especificar o caminho de destino do arquivo que será criado usando o stub. Mais uma vez, especificamos o caminho de destino dentro do arquivo stub, pois ele permite que o aplicativo host [ejete o stub](#ejecting-stubs) e personalize seu destino de saída.
 
-The destination path is defined using the `exports` function. The function accepts an object and exports it as the output state of the stub. Later, the codemods API uses this object to create the file at the mentioned location.
+O caminho de destino é definido usando a função `exports`. A função aceita um objeto e o exporta como o estado de saída do stub. Mais tarde, a API codemods usa esse objeto para criar o arquivo no local mencionado.
 
 ```js
 {{#var entity = generators.createEntity('user')}}
@@ -118,8 +118,8 @@ export default class {{ modelName }}Resource {
 }
 ```
 
-### Accepting entity name via command
-Right now, we have hardcoded the entity name as `user` within the stub. However, you should accept it as a command argument and share it with the stub as the template state.
+### Aceitando nome da entidade via comando
+Agora, codificamos o nome da entidade como `user` dentro do stub. No entanto, você deve aceitá-lo como um argumento de comando e compartilhá-lo com o stub como o estado do modelo.
 
 ```ts
 import { BaseCommand, args } from '@adonisjs/core/ace'
@@ -165,28 +165,27 @@ export default class {{ modelName }}Resource {
 }
 ```
 
-### Global variables
-The following global variables are always shared with a stub.
+### Variáveis ​​globais
+As seguintes variáveis ​​globais são sempre compartilhadas com um stub.
 
-| Variable       | Description                                                                                                                                                         |
-|----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `app`          | Reference to an instance of the [application class](./application.md).                                                                                                |
-| `generators`   | Reference to the [generators module](https://github.com/adonisjs/application/blob/main/src/generators.ts).                                                          |
-| `randomString` | Reference to the [randomString](../references/helpers.md#random) helper function.                                                                               |
-| `string`       | A function to create a [string builder](../references/helpers.md#string-builder) instance. You can use the string builder to apply transformations on a string. |
-| `flags`        | The command-line flags are defined when running the ace command.                                                                                                    |
+| Variável       | Descrição    |
+|----------------|--------------|
+| `app`          | Referência a uma instância da [classe de aplicativo](./application.md).|
+| `generators`   | Referência ao [módulo geradores](https://github.com/adonisjs/application/blob/main/src/generators.ts).|
+| `randomString` | Referência à função auxiliar [randomString](../references/helpers.md#random).|
+| `string`       | Uma função para criar uma instância [construtor de strings](../references/helpers.md#string-builder). Você pode usar o construtor de strings para aplicar transformações em uma string.|
+| `flags`        | Os sinalizadores de linha de comando são definidos ao executar o comando ace.|
 
+## Ejetando stubs
+Você pode ejetar/copiar stubs dentro de um aplicativo AdonisJS usando o comando `node ace eject`. O comando eject aceita um caminho para o arquivo stub original ou seu diretório pai e copia os modelos dentro do diretório `stubs` da raiz do seu projeto.
 
-## Ejecting stubs
-You can eject/copy stubs inside an AdonisJS application using the `node ace eject` command. The eject command accepts a path to the original stub file or its parent directory and copies the templates inside the `stubs` directory of your project's root.
-
-In the following example, we will copy the `make/controller/main.stub` file from the `@adonisjs/core` package.
+No exemplo a seguir, copiaremos o arquivo `make/controller/main.stub` do pacote `@adonisjs/core`.
 
 ```sh
 node ace eject make/controller/main.stub
 ```
 
-If you open the stub file, it will have the following contents.
+Se você abrir o arquivo stub, ele terá o seguinte conteúdo.
 
 ```js
 {{#var controllerName = generators.controllerName(entity.name)}}
@@ -202,15 +201,15 @@ export default class {{ controllerName }} {
 }
 ```
 
-- In the first two lines, we use the [generators module](https://github.com/adonisjs/application/blob/main/src/generators.ts) to generate the controller class name and the controller file name.
-- From lines 3-7, we [define the destination path](#using-cli-flags-to-customize-stub-output-destination)customizing-the-destination-path) for the controller file using the `exports` function.
-- Finally, we define the contents of the scaffolded controller.
+[módulo generators](https://github.com/adonisjs/application/blob/main/src/generators.ts) para gerar o nome da classe do controlador e o nome do arquivo do controlador.
+[define o caminho de destino](#using-cli-flags-to-customize-stub-output-destination)customizing-the-destination-path) para o arquivo do controlador usando a função `exports`.
+- Finalmente, definimos o conteúdo do controlador de scaffold.
 
-Feel free to modify the stub. Next time, the changes will be picked when you run the `make:controller` command.
+Sinta-se à vontade para modificar o stub. Da próxima vez, as alterações serão selecionadas quando você executar o comando `make:controller`.
 
-### Ejecting directories
+### Ejetando diretórios
 
-You may eject an entire directory of stubs using the `eject` command. Pass the path to the directory, and the command will copy the whole directory.
+Você pode ejetar um diretório inteiro de stubs usando o comando `eject`. Passe o caminho para o diretório, e o comando copiará o diretório inteiro.
 
 ```sh
 # Publish all the make stubs
@@ -220,10 +219,10 @@ node ace eject make
 node ace eject make/controller
 ```
 
-### Using CLI flags to customize stub output destination
-All scaffolding commands share the CLI flags (including unsupported ones) with the stub templates. Therefore, you can use them to create custom workflows or change the output destination.
+### Usando sinalizadores CLI para personalizar o destino de saída do stub
+Todos os comandos de scaffold compartilham os sinalizadores CLI (incluindo os não suportados) com os modelos de stub. Portanto, você pode usá-los para criar fluxos de trabalho personalizados ou alterar o destino de saída.
 
-In the following example, we use the `--feature` flag to create a controller inside the mentioned features directory.
+No exemplo a seguir, usamos o sinalizador `--feature` para criar um controlador dentro do diretório de recursos mencionado.
 
 ```sh
 node ace make:controller invoice --feature=billing
@@ -252,24 +251,24 @@ export default class {{ controllerName }} {
 }
 ```
 
-### Ejecting stubs from other packages
+### Ejetando stubs de outros pacotes
 
-By default, the `eject` command copies templates from the `@adonisjs/core` package. However, you may copy stubs from other packages using the `--pkg` flag.
+Por padrão, o comando `eject` copia modelos do pacote `@adonisjs/core`. No entanto, você pode copiar stubs de outros pacotes usando o sinalizador `--pkg`.
 
 ```sh
 node ace eject make/migration/main.stub --pkg=@adonisjs/lucid
 ```
 
-### How do you find which stubs to copy?
-You can find a package's stubs by visiting its GitHub repo. We store all the stubs at the root level of the package inside the `stubs` directory.
+### Como você encontra quais stubs copiar?
+Você pode encontrar os stubs de um pacote visitando seu repositório GitHub. Armazenamos todos os stubs no nível raiz do pacote dentro do diretório `stubs`.
 
-## Stubs execution flow
-Here's a visual representation of how we find and execute stubs via the `makeUsingStub` method.
+## Fluxo de execução de stubs
+Aqui está uma representação visual de como encontramos e executamos stubs por meio do método `makeUsingStub`.
 
 ![](./scaffolding_workflow.png)
 
-## Codemods API
-The codemods API is powered by [ts-morph](https://github.com/dsherret/ts-morph) and is only available during development. You can lazily instantiate the codemods module using the `command.createCodemods` method. The `createCodemods` method returns an instance of the [Codemods](https://github.com/adonisjs/core/blob/main/modules/ace/codemods.ts) class.
+## API Codemods
+A API codemods é alimentada por [ts-morph](https://github.com/dsherret/ts-morph) e só está disponível durante o desenvolvimento. Você pode instanciar preguiçosamente o módulo codemods usando o método `command.createCodemods`. O método `createCodemods` retorna uma instância da classe [Codemods](https://github.com/adonisjs/core/blob/main/modules/ace/codemods.ts).
 
 ```ts
 import type Configure from '@adonisjs/core/commands/configure'
@@ -280,12 +279,12 @@ export async function configure(command: ConfigureCommand) {
 ```
 
 ### `defineEnvValidations`
-Define validation rules for environment variables. The method accepts a key-value pair of variables. The `key` is the env variable name, and the `value` is the validation expression as a string.
+Defina regras de validação para variáveis ​​de ambiente. O método aceita um par de variáveis ​​chave-valor. `key` é o nome da variável env e `value` é a expressão de validação como uma string.
 
 :::note
-This codemod expects the `start/env.ts` file to exist and must have the `export default await Env.create` method call.
+Este codemod espera que o arquivo `start/env.ts` exista e deve ter a chamada de método `export default await Env.create`.
 
-Also, the codemod does not overwrite the existing validation rule for a given environment variable. This is done to respect in-app modifications.
+Além disso, o codemod não substitui a regra de validação existente para uma determinada variável de ambiente. Isso é feito para respeitar as modificações no aplicativo.
 :::
 
 ```ts
@@ -319,7 +318,7 @@ export default await Env.create(new URL('../', import.meta.url), {
 ```
 
 ### `defineEnvVariables`
-Add one or multiple new environment variables to the `.env` and `.env.example` files. The method accepts a key-value pair of variables.
+Adicione uma ou várias novas variáveis ​​de ambiente aos arquivos `.env` e `.env.example`. O método aceita um par de variáveis ​​chave-valor.
 
 ```ts
 const codemods = await command.createCodemods()
@@ -335,7 +334,7 @@ try {
 }
 ```
 
-Sometimes you may want to **not** insert the variable value in the `.env.example` file. You can do so by using the `omitFromExample` option.
+Às vezes, você pode querer **não** inserir o valor da variável no arquivo `.env.example`. Você pode fazer isso usando a opção `omitFromExample`.
 
 ```ts
 const codemods = await command.createCodemods()
@@ -347,15 +346,15 @@ await codemods.defineEnvVariables({
 })
 ```
 
-The above code will insert `MY_NEW_VARIABLE=SOME_VALUE` in the `.env` file and `MY_NEW_VARIABLE=` in the `.env.example` file.
+O código acima irá inserir `MY_NEW_VARIABLE=SOME_VALUE` no arquivo `.env` e `MY_NEW_VARIABLE=` no arquivo `.env.example`.
 
 ### `registerMiddleware`
-Register AdonisJS middleware to one of the known middleware stacks. The method accepts the middleware stack and an array of middleware to register.
+Registre o middleware AdonisJS em uma das pilhas de middleware conhecidas. O método aceita a pilha de middleware e uma matriz de middleware para registrar.
 
-The middleware stack could be one of `server | router | named`.
+A pilha de middleware pode ser uma de `server | router | named`.
 
 :::note
-This codemod expects the `start/kernel.ts` file to exist and must have a function call for the middleware stack for which you are trying to register a middleware.
+Este codemod espera que o arquivo `start/kernel.ts` exista e deve ter uma chamada de função para a pilha de middleware para a qual você está tentando registrar um middleware.
 :::
 
 ```ts
@@ -382,7 +381,7 @@ router.use([
 ])
 ```
 
-You may define named middleware as follows.
+Você pode definir o middleware nomeado da seguinte forma.
 
 ```ts
 const codemods = await command.createCodemods()
@@ -401,10 +400,10 @@ try {
 ```
 
 ### `updateRcFile`
-Register `providers`, `commands`, define `metaFiles` and `commandAliases` to the `adonisrc.ts` file.
+Registre `providers`, `commands`, defina `metaFiles` e `commandAliases` no arquivo `adonisrc.ts`.
 
 :::note
-This codemod expects the `adonisrc.ts` file to exist and must have an `export default defineConfig` function call.
+Este codemod espera que o arquivo `adonisrc.ts` exista e deve ter uma chamada de função `export default defineConfig`.
 :::
 
 ```ts
@@ -441,10 +440,10 @@ export default defineConfig({
 ```
 
 ### `registerJapaPlugin`
-Register a Japa plugin to the `tests/bootstrap.ts` file.
+Registre um plugin Japa no arquivo `tests/bootstrap.ts`.
 
 :::note
-This codemod expects the `tests/bootstrap.ts` file to exist and must have the `export const plugins: Config['plugins']` export.
+Este codemod espera que o arquivo `tests/bootstrap.ts` exista e deve ter a exportação `export const plugins: Config['plugins']`.
 :::
 
 ```ts
@@ -483,10 +482,10 @@ export const plugins: Config['plugins'] = [
 ```
 
 ### `registerPolicies`
-Register AdonisJS bouncer policies to the list of `policies` object exported from the `app/policies/main.ts` file.
+Registre as políticas do bouncer do AdonisJS na lista de objetos `policies` exportados do arquivo `app/policies/main.ts`.
 
 :::note
-This codemod expects the `app/policies/main.ts` file to exist and must export a `policies` object from it.
+Este codemod espera que o arquivo `app/policies/main.ts` exista e deve exportar um objeto `policies` dele.
 :::
 
 ```ts
@@ -514,10 +513,10 @@ export const policies = {
 
 ### `registerVitePlugin`
 
-Register a Vite plugin to the `vite.config.ts` file.
+Registre um plugin Vite no arquivo `vite.config.ts`.
 
 :::note
-This codemod expects the `vite.config.ts` file to exist and must have the `export default defineConfig` function call.
+Este codemod espera que o arquivo `vite.config.ts` exista e deve ter a chamada de função `export default defineConfig`.
 :::
 
 ```ts
@@ -553,7 +552,7 @@ export default defineConfig({
 
 ### `installPackages`
 
-Install one or multiple packages using the detected package manager in the user's project.
+Instale um ou vários pacotes usando o gerenciador de pacotes detectado no projeto do usuário.
 
 ```ts
 const codemods = await command.createCodemods()
@@ -571,7 +570,7 @@ try {
 
 ### `getTsMorphProject`
 
-The `getTsMorphProject` method returns an instance of `ts-morph`. This can be useful when you want to perform custom file transformations that are not covered by the Codemods API.
+O método `getTsMorphProject` retorna uma instância de `ts-morph`. Isso pode ser útil quando você deseja executar transformações de arquivo personalizadas que não são cobertas pela API Codemods.
 
 ```ts
 const project = await codemods.getTsMorphProject()
@@ -579,4 +578,4 @@ const project = await codemods.getTsMorphProject()
 project.getSourceFileOrThrow('start/routes.ts')
 ```
 
-Make sure to read the [ts-morph documentation](https://ts-morph.com/) to know more about the available APIs.
+Certifique-se de ler a [documentação do ts-morph](https://ts-morph.com/) para saber mais sobre as APIs disponíveis.

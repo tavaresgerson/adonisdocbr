@@ -1,30 +1,30 @@
 ---
-summary: Learn how to validate user input in AdonisJS using VineJS.
+Resumo: Aprenda a validar a entrada do usuário no AdonisJS usando o VineJS.
 ---
 
-# Validation
+# Validação
 
-The data validation in AdonisJS is usually performed at the controller level. This ensures you validate the user input as soon as your application handles the request and send errors in the response that can be displayed next to the form fields.
+A validação de dados no AdonisJS geralmente é realizada no nível do controlador. Isso garante que você valide a entrada do usuário assim que seu aplicativo manipular a solicitação e enviar erros na resposta que podem ser exibidos ao lado dos campos do formulário.
 
-Once the validation is completed, you can use the trusted data to perform the rest of the operations, like database queries, scheduling queue jobs, sending emails, etc.
+Uma vez que a validação for concluída, você pode usar os dados confiáveis ​​para executar o restante das operações, como consultas ao banco de dados, agendamento de trabalhos de fila, envio de e-mails, etc.
 
-## Choosing the validation library
-The AdonisJS core team has created a framework agnostic data validation library called [VineJS](https://vinejs.dev/docs/introduction). Following are some of the reasons for using VineJS.
+## Escolhendo a biblioteca de validação
+A equipe principal do AdonisJS criou uma biblioteca de validação de dados agnóstica de estrutura chamada [VineJS](https://vinejs.dev/docs/introduction). A seguir estão alguns dos motivos para usar o VineJS.
 
-- It is **one of the fastest validation libraries** in the Node.js ecosystem.
+- É **uma das bibliotecas de validação mais rápidas** no ecossistema Node.js.
 
-- Provides **static type safety** alongside the runtime validations.
+- Fornece **segurança de tipo estático** junto com as validações de tempo de execução.
 
-- It comes pre-configured with the `web` and the `api` starter kits.
+- Ele vem pré-configurado com os kits iniciais `web` e `api`.
 
-- Official AdonisJS packages extend VineJS with custom rules. For example, Lucid contributes `unique` and `exists` rules to VineJS.
+- Os pacotes oficiais do AdonisJS estendem o VineJS com regras personalizadas. Por exemplo, o Lucid contribui com as regras `unique` e `exists` para o VineJS.
 
-However, AdonisJS does not technically force you to use VineJS. You can use any validation library that fits great for you or your team. Just uninstall the `@vinejs/vine` package and install the package you want to use.
+No entanto, o AdonisJS não força você tecnicamente a usar o VineJS. Você pode usar qualquer biblioteca de validação que seja ótima para você ou sua equipe. Basta desinstalar o pacote `@vinejs/vine` e instalar o pacote que deseja usar.
 
-## Configuring VineJS
-Install and configure VineJS using the following command.
+## Configurando o VineJS
+Instale e configure o VineJS usando o seguinte comando.
 
-See also: [VineJS documentation](https://vinejs.dev)
+[Documentação do VineJS](https://vinejs.dev)
 
 ```sh
 node ace add vinejs
@@ -32,11 +32,11 @@ node ace add vinejs
 
 ::: details See steps performed by the add command
 
-1. Installs the `@vinejs/vine` package using the detected package manager.
+1. Instala o pacote `@vinejs/vine` usando o gerenciador de pacotes detectado.
 
-2. Registers the following service provider inside the `adonisrc.ts` file.
+2. Registra o seguinte provedor de serviços dentro do arquivo `adonisrc.ts`.
 
-    ```ts
+```ts
     {
       providers: [
         // ...other providers
@@ -47,10 +47,10 @@ node ace add vinejs
 
 :::
 
-## Using validators
-VineJS uses the concept of validators. You create one validator for each action your application can perform. For example: Define a validator for **creating a new post**, another for **updating the post**, and maybe a validator for **deleting a post**.
+## Usando validadores
+O VineJS usa o conceito de validadores. Você cria um validador para cada ação que seu aplicativo pode executar. Por exemplo: defina um validador para **criar uma nova postagem**, outro para **atualizar a postagem** e talvez um validador para **excluir uma postagem**.
 
-We will use a blog as an example and define validators to create/update a post. Let's start by registering a couple of routes and the `PostsController`.
+Usaremos um blog como exemplo e definiremos validadores para criar/atualizar uma postagem. Vamos começar registrando algumas rotas e o `PostsController`.
 
 ```ts
 // title: Define routes
@@ -78,22 +78,22 @@ export default class PostsController {
 }
 ```
 
-### Creating validators
+### Criando validadores
 
-Once you have created the `PostsController` and defined the routes, you may use the following ace command to create a validator.
+Depois de criar o `PostsController` e definir as rotas, você pode usar o seguinte comando ace para criar um validador.
 
-See also: [Make validator command](../references/commands.md#makevalidator)
+Veja também: [Comando Make validator](../references/commands.md#makevalidator)
 
 ```sh
 node ace make:validator post
 ```
 
-The validators are created inside the `app/validators` directory. The validator file is empty by default, and you can use it to export multiple validators from it. Each validator is a `const` variable holding the result of [`vine.compile`](https://vinejs.dev/docs/getting_started#pre-compiling-schema) method.
+Os validadores são criados dentro do diretório `app/validators`. O arquivo do validador está vazio por padrão, e você pode usá-lo para exportar vários validadores dele. Cada validador é uma variável `const` que contém o resultado do método [`vine.compile`](https://vinejs.dev/docs/getting_started#pre-compiling-schema).
 
-In the following example, we define `createPostValidator` and `updatePostValidator`. Both validators have a slight variation in their schemas. During creation, we allow the user to provide a custom slug for the post, whereas we disallow updating it.
+No exemplo a seguir, definimos `createPostValidator` e `updatePostValidator`. Ambos os validadores têm uma pequena variação em seus esquemas. Durante a criação, permitimos que o usuário forneça um slug personalizado para a postagem, enquanto não permitimos sua atualização.
 
 :::note
-Do not worry too much about the duplication within the validator schemas. We recommend you opt for easy-to-understand schemas vs. avoiding duplication at all costs. The [wet codebase analogy](https://www.deconstructconf.com/2019/dan-abramov-the-wet-codebase) might help you embrace duplication.
+Não se preocupe muito com a duplicação dentro dos esquemas do validador. Recomendamos que você opte por esquemas fáceis de entender em vez de evitar duplicação a todo custo. A [analogia da base de código molhada](https://www.deconstructconf.com/2019/dan-abramov-the-wet-codebase) pode ajudá-lo a adotar a duplicação.
 :::
 
 ```ts
@@ -122,8 +122,8 @@ export const updatePostValidator = vine.compile(
 )
 ```
 
-### Using validators inside controllers
-Let's go back to the `PostsController` and use the validators to validate the request body. You can access the request body using the `request.all()` method.
+### Usando validadores dentro de controladores
+Vamos voltar ao `PostsController` e usar os validadores para validar o corpo da solicitação. Você pode acessar o corpo da solicitação usando o método `request.all()`.
 
 ```ts
 import { HttpContext } from '@adonisjs/core/http'
@@ -153,29 +153,27 @@ export default class PostsController {
 }
 ```
 
-That is all! Validating the user input is two lines of code inside your controllers. The validated output has static-type information inferred from the schema.
+Isso é tudo! Validar a entrada do usuário são duas linhas de código dentro dos seus controladores. A saída validada tem informações de tipo estático inferidas do esquema.
 
-Also, you do not have to wrap the `validate` method call inside a `try/catch`. Because in the case of an error, AdonisJS will automatically convert the error to an HTTP response.
+Além disso, você não precisa encapsular a chamada do método `validate` dentro de um `try/catch`. Porque no caso de um erro, o AdonisJS converterá automaticamente o erro em uma resposta HTTP.
 
-## Error handling
-The [HttpExceptionHandler](./exception_handling.md) will convert the validation errors to an HTTP response automatically. The exception handler uses content negotiation and returns a response based upon the [Accept](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept) header value.
+## Tratamento de erros
+O [HttpExceptionHandler](./exception_handling.md) converterá os erros de validação em uma resposta HTTP automaticamente. O manipulador de exceções usa negociação de conteúdo e retorna uma resposta com base no valor do cabeçalho [Accept](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept).
 
 :::tip
-You might want to peek through the [ExceptionHandler codebase](https://github.com/adonisjs/http-server/blob/main/src/exception_handler.ts#L343-L345) and see how the validation exceptions are converted to an HTTP response.
+Você pode dar uma olhada na [base de código do ExceptionHandler](https://github.com/adonisjs/http-server/blob/main/src/exception_handler.ts#L343-L345) e ver como as exceções de validação são convertidas em uma resposta HTTP.
 
-Also, the session middleware [overwrites the `renderValidationErrorAsHTML` method](https://github.com/adonisjs/session/blob/main/src/session_middleware.ts#L30-L37) and uses flash messages to share the validation errors with the form.
+Além disso, o middleware de sessão [substitui o método `renderValidationErrorAsHTML`](https://github.com/adonisjs/session/blob/main/src/session_middleware.ts#L30-L37) e usa mensagens flash para compartilhar os erros de validação com o formulário.
 :::
 
-- HTTP requests with `Accept=application/json` header will receive an array of error messages created using the [SimpleErrorReporter](https://github.com/vinejs/vine/blob/main/src/reporters/simple_error_reporter.ts).
+[SimpleErrorReporter](https://github.com/vinejs/vine/blob/main/src/reporters/simple_error_reporter.ts).
+[JSON API](https://jsonapi.org/format/#errors) spec.
+[session package](./session.md) will receive the errors via 
 
-- HTTP requests with `Accept=application/vnd.api+json` header will receive an array of error messages formatted as per the [JSON API](https://jsonapi.org/format/#errors) spec.
+- Todas as outras solicitações receberão erros de volta como texto simples.
 
-- Server rendered forms using the [session package](./session.md) will receive the errors via [session flash messages](./session.md#validation-errors-and-flash-messages).
-
-- All other requests will receive errors back as plain text.
-
-## The request.validateUsing method
-The recommended way to perform validations inside controllers is to use the `request.validateUsing` method. When using `request.validateUsing` method, you do not have do define the validation data explicitly; the **request body**, **query string values**, and **the files** are merged together and passed as data to the validator.
+## O método request.validateUsing
+A maneira recomendada de executar validações dentro de controladores é usar o método `request.validateUsing`. Ao usar o método `request.validateUsing`, você não precisa definir os dados de validação explicitamente; o **corpo da solicitação**, os **valores da sequência de consulta** e os **arquivos** são mesclados e passados ​​como dados para o validador.
 
 ```ts
 import { HttpContext } from '@adonisjs/core/http'
@@ -207,8 +205,8 @@ export default class PostsController {
 }
 ```
 
-### Validating cookies, headers and route params
-When using the `request.validateUsing` method you can validate cookies, headers and route params as follows.
+### Validando cookies, cabeçalhos e parâmetros de rota
+Ao usar o método `request.validateUsing`, você pode validar cookies, cabeçalhos e parâmetros de rota da seguinte forma.
 
 ```ts
 const validator = vine.compile(
@@ -234,12 +232,12 @@ const validator = vine.compile(
 await request.validateUsing(validator)
 ```
 
-## Passing metadata to validators
-Since validators are defined outside the request lifecycle, they do not have direct access to the request data. This is usually good because it makes validators reusable outside an HTTP request lifecycle.
+## Passando metadados para validadores
+Como os validadores são definidos fora do ciclo de vida da solicitação, eles não têm acesso direto aos dados da solicitação. Isso geralmente é bom porque torna os validadores reutilizáveis ​​fora do ciclo de vida de uma solicitação HTTP.
 
-However, if a validator needs access to some runtime data, you must pass it as metadata during the `validate` method call.
+No entanto, se um validador precisar acessar alguns dados de tempo de execução, você deve passá-los como metadados durante a chamada do método `validate`.
 
-Let's take an example of the `unique` validation rule. We want to ensure the user email is unique in the database but skip the row for the currently logged-in user.
+Vamos dar um exemplo da regra de validação `unique`. Queremos garantir que o e-mail do usuário seja único no banco de dados, mas pular a linha para o usuário conectado no momento.
 
 ```ts
 export const updateUserValidator = vine
@@ -259,7 +257,7 @@ export const updateUserValidator = vine
   )
 ```
 
-In the above example, we access the currently logged-in user via the `meta.userId` property. Let's see how we can pass the `userId` during an HTTP request.
+No exemplo acima, acessamos o usuário conectado no momento por meio da propriedade `meta.userId`. Vamos ver como podemos passar o `userId` durante uma solicitação HTTP.
 
 ```ts
 async update({ request, auth }: HttpContext) {
@@ -274,10 +272,10 @@ async update({ request, auth }: HttpContext) {
 }
 ```
 
-### Making metadata type-safe
-In the previous example, we must remember to pass the `meta.userId` during the validation. It would be great if we could make TypeScript remind us of the same.
+### Tornando os metadados seguros para o tipo
+No exemplo anterior, devemos lembrar de passar o `meta.userId` durante a validação. Seria ótimo se pudéssemos fazer o TypeScript nos lembrar do mesmo.
 
-In the following example, we use the `vine.withMetaData` function to define the static type of the metadata we expect to use in our schema.
+No exemplo a seguir, usamos a função `vine.withMetaData` para definir o tipo estático dos metadados que esperamos usar em nosso esquema.
 
 ```ts
 export const updateUserValidator = vine
@@ -298,7 +296,7 @@ export const updateUserValidator = vine
   )
 ```
 
-Do note, VineJS does not validate the metadata at runtime. However, if you want to do that, you can pass a callback to the `withMetaData` method and perform the validation manually.
+Observe que o VineJS não valida os metadados em tempo de execução. No entanto, se quiser fazer isso, você pode passar um retorno de chamada para o método `withMetaData` e executar a validação manualmente.
 
 ```ts
 vine.withMetaData<{ userId: number }>((meta) => {
@@ -306,14 +304,14 @@ vine.withMetaData<{ userId: number }>((meta) => {
 })
 ```
 
-## Configuring VineJS
-You may create a [preload file](../concepts/adonisrc_file.md#preloads) inside the `start` directory to configure VineJS with custom error messages or use a custom error reporter.
+## Configurando o VineJS
+Você pode criar um [arquivo de pré-carregamento](../concepts/adonisrc_file.md#preloads) dentro do diretório `start` para configurar o VineJS com mensagens de erro personalizadas ou usar um relator de erro personalizado.
 
 ```sh
 node ace make:preload validator
 ```
 
-In the following example, we [define custom error messages](https://vinejs.dev/docs/custom_error_messages).
+No exemplo a seguir, nós [definimos mensagens de erro personalizadas](https://vinejs.dev/docs/custom_error_messages).
 
 ```ts
 // title: start/validator.ts
@@ -330,7 +328,7 @@ vine.messagesProvider = new SimpleMessagesProvider({
 })
 ```
 
-In the following example, we [register a custom error reporter](https://vinejs.dev/docs/error_reporter).
+No exemplo a seguir, nós [registramos um relator de erro personalizado](https://vinejs.dev/docs/error_reporter).
 
 ```ts
 // title: start/validator.ts
@@ -340,14 +338,14 @@ import { JSONAPIErrorReporter } from '../app/validation_reporters.js'
 vine.errorReporter = () => new JSONAPIErrorReporter()
 ```
 
-## Rules contributed by AdonisJS
-Following is the list of VineJS rules contributed by AdonisJS.
+## Regras contribuídas pelo AdonisJS
+A seguir está a lista de regras do VineJS contribuídas pelo AdonisJS.
 
-- The [`vine.file`](https://github.com/adonisjs/core/blob/main/providers/vinejs_provider.ts) schema type is added by the AdonisJS core package.
+O tipo de esquema [`vine.file`](https://github.com/adonisjs/core/blob/main/providers/vinejs_provider.ts) é adicionado pelo pacote principal do AdonisJS.
 
-## What's next?
+## O que vem a seguir?
 
-- Learn more about using [custom messages](https://vinejs.dev/docs/custom_error_messages) in VineJS.
-- Learn more about using [error reporters](https://vinejs.dev/docs/error_reporter) in VineJS.
-- Read the VineJS [schema API](https://vinejs.dev/docs/schema_101) documentation.
-- Use [i18n translations](../digging_deeper/i18n.md#translating-validation-messages) to define validation error messages.
+[mensagens personalizadas](https://vinejs.dev/docs/custom_error_messages) no VineJS.
+[relatores de erro](https://vinejs.dev/docs/error_reporter) no VineJS.
+[schema API](https://vinejs.dev/docs/schema_101).
+[traduções i18n](../digging_deeper/i18n.md#translating-validation-messages) para definir mensagens de erro de validação.

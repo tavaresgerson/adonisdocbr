@@ -1,40 +1,40 @@
 ---
-summary: Manage user sessions inside your AdonisJS application using the @adonisjs/session package. 
+resumo: gerencie sessões de usuário dentro do seu aplicativo AdonisJS usando o pacote @adonisjs/session.
 ---
 
 # Session
 
-You can manage user sessions inside your AdonisJS application using the `@adonisjs/session` package. The session package provides a unified API for storing session data across different storage providers. 
+Você pode gerenciar sessões de usuário dentro do seu aplicativo AdonisJS usando o pacote `@adonisjs/session`. O pacote session fornece uma API unificada para armazenar dados de sessão em diferentes provedores de armazenamento.
 
-**Following is the list of the bundled stores.**
+**A seguir está a lista dos armazenamentos agrupados.**
 
-- `cookie`: The session data is stored inside an encrypted cookie. The cookie store works great with multi-server deployments since the data is stored with the client.
+- `cookie`: os dados da sessão são armazenados dentro de um cookie criptografado. O armazenamento de cookies funciona muito bem com implantações de vários servidores, pois os dados são armazenados com o cliente.
 
-- `file`: The session data is saved inside a file on the server. The file store can only scale to multi-server deployments if you implement sticky sessions with the load balancer.
+- `file`: os dados da sessão são salvos dentro de um arquivo no servidor. O armazenamento de arquivos só pode ser dimensionado para implantações de vários servidores se você implementar sessões persistentes com o balanceador de carga.
 
-- `redis`: The session data is stored inside a Redis database. The redis store is recommended for apps with large volumes of session data and can scale to multi-server deployments.
+- `redis`: os dados da sessão são armazenados dentro de um banco de dados Redis. O armazenamento redis é recomendado para aplicativos com grandes volumes de dados de sessão e pode ser dimensionado para implantações de vários servidores.
 
-- `dynamodb`: The session data is stored inside an Amazon DynamoDB table. The DynamoDB store is suitable for applications that require a highly scalable and distributed session store, especially when the infrastructure is built on AWS.
+- `dynamodb`: Os dados da sessão são armazenados dentro de uma tabela do Amazon DynamoDB. O armazenamento do DynamoDB é adequado para aplicativos que exigem um armazenamento de sessão altamente escalável e distribuído, especialmente quando a infraestrutura é construída na AWS.
 
-- `memory`: The session data is stored within a global memory store. The memory store is used during testing.
+- `memory`: Os dados da sessão são armazenados dentro de um armazenamento de memória global. O armazenamento de memória é usado durante os testes.
 
-Alongside the inbuilt backend stores, you can also create and [register custom session stores](#creating-a-custom-session-store).
+Juntamente com os armazenamentos de backend integrados, você também pode criar e [registrar armazenamentos de sessão personalizados](#creating-a-custom-session-store).
 
-## Installation
+## Instalação
 
-Install and configure the package using the following command :
+Instale e configure o pacote usando o seguinte comando:
 
 ```sh
 node ace add @adonisjs/session
 ```
 
-::: details See steps performed by the add command
+::: details Veja as etapas executadas pelo comando add
 
-1. Installs the `@adonisjs/session` package using the detected package manager.
+1. Instala o pacote `@adonisjs/session` usando o gerenciador de pacotes detectado.
 
-2. Registers the following service provider inside the `adonisrc.ts` file.
+2. Registra o seguinte provedor de serviços dentro do arquivo `adonisrc.ts`.
 
-    ```ts
+```ts
     {
       providers: [
         // ...other providers
@@ -43,17 +43,21 @@ node ace add @adonisjs/session
     }
     ```
 
-3. Create the `config/session.ts` file.
+3. Crie o arquivo `config/session.ts`.
 
-4. Define the following environment variables and their validations. 
+4. Defina as seguintes variáveis ​​de ambiente e suas validações.
+5. Registra o seguinte middleware dentro do arquivo `start/kernel.ts`.
 
-    ```dotenv
+```dotenv
     SESSION_DRIVER=cookie
     ```
 
-5. Registers the following middleware inside the `start/kernel.ts` file.
+3. Crie o arquivo `config/session.ts`.
 
-    ```ts
+4. Defina as seguintes variáveis ​​de ambiente e suas validações.
+5. Registra o seguinte middleware dentro do arquivo `start/kernel.ts`.
+
+```ts
     router.use([
       () => import('@adonisjs/session/session_middleware')
     ])
@@ -61,10 +65,10 @@ node ace add @adonisjs/session
 
 :::
 
-## Configuration
-The configuration for the session package is stored inside the `config/session.ts` file.
+## Configuração
+A configuração do pacote de sessão é armazenada dentro do arquivo `config/session.ts`.
 
-See also: [Session config stub](https://github.com/adonisjs/session/blob/main/stubs/config/session.stub)
+Veja também: [Stub de configuração de sessão](https://github.com/adonisjs/session/blob/main/stubs/config/session.stub)
 
 ```ts
 import env from '#start/env'
@@ -93,38 +97,38 @@ export default defineConfig({
 
 ### `enabled`
 
-Enable or disable the middleware temporarily without removing it from the middleware stack.
+Habilite ou desabilite o middleware temporariamente sem removê-lo da pilha de middleware.
 
 ### `cookieName`
 
-The cookie name is used to store the session ID. Feel free to rename it.
+O nome do cookie é usado para armazenar o ID da sessão. Sinta-se à vontade para renomeá-lo.
 
 ### `clearWithBrowser`
 
-When set to true, the session ID cookie will be removed after the user closes the browser window. This cookie is technically known as [session cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#define_the_lifetime_of_a_cookie).
+Quando definido como verdadeiro, o cookie do ID da sessão será removido após o usuário fechar a janela do navegador. Este cookie é tecnicamente conhecido como [cookie de sessão](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#define_the_lifetime_of_a_cookie).
 
 ### `age`
 
-The `age` property controls the validity of session data without user activity. After the given duration, the session data is considered expired.
+A propriedade `age` controla a validade dos dados da sessão sem atividade do usuário. Após a duração fornecida, os dados da sessão são considerados expirados.
 
 ### `cookie`
 
-Control session ID cookie attributes. See also [cookie configuration](./cookies.md#configuration).
+Controle os atributos do cookie de ID da sessão. Veja também [configuração do cookie](./cookies.md#configuration).
 
 ### `store`
 
-Define the store you want to use to store the session data. It can be a fixed value or read from the environment variables.
+Defina o armazenamento que você deseja usar para armazenar os dados da sessão. Pode ser um valor fixo ou lido das variáveis ​​de ambiente.
 
 ### `stores`
 
-The `stores` object is used to configure one or multiple backend stores. 
+O objeto `stores` é usado para configurar um ou vários armazenamentos de backend.
 
-Most applications will use a single store. However, you can configure multiple stores and switch between them based on the environment in which your application is running.
+A maioria dos aplicativos usará um único armazenamento. No entanto, você pode configurar vários armazenamentos e alternar entre eles com base no ambiente em que seu aplicativo está sendo executado.
 
 ---
 
-### Stores configuration
-Following is the list of the backend stores bundled with the `@adonisjs/session` package.
+### Configuração de lojas
+A seguir está a lista de lojas de backend agrupadas com o pacote `@adonisjs/session`.
 
 ```ts
 import app from '@adonisjs/core/services/app'
@@ -155,21 +159,21 @@ export default defineConfig({
 
 ### `stores.cookie`
 
-The `cookie` store encrypts and stores the session data inside a cookie.
+A loja `cookie` criptografa e armazena os dados da sessão dentro de um cookie.
 
 ### `stores.file`
 
-Define the configuration for the `file` store. The method accepts the `location` path for storing the session files.
+Defina a configuração para a loja `file`. O método aceita o caminho `location` para armazenar os arquivos da sessão.
 
 ### `stores.redis`
 
-Define the configuration for the `redis` store. The method accepts the `connection` name for storing the session data.
+Defina a configuração para a loja `redis`. O método aceita o nome `connection` para armazenar os dados da sessão.
 
-Make sure to first install and configure the [@adonisjs/redis](../database/redis.md) package before using the `redis` store.
+Certifique-se de instalar e configurar primeiro o pacote [@adonisjs/redis](../database/redis.md) antes de usar a loja `redis`.
 
 ### `stores.dynamodb`
 
-Define the configuration for the `dynamodb` store. You may either pass the [DynamoDB config](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/Package/-aws-sdk-client-dynamodb/Interface/DynamoDBClientConfig/) via the `clientConfig` property or pass an instance of the DynamoDB as the `client` property.
+Defina a configuração para a loja `dynamodb`. Você pode passar a [configuração do DynamoDB](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/Package/-aws-sdk-client-dynamodb/Interface/DynamoDBClientConfig/) por meio da propriedade `clientConfig` ou passar uma instância do DynamoDB como a propriedade `client`.
 
 ```ts
 // title: With client config
@@ -195,7 +199,7 @@ stores.dynamodb({
 })
 ```
 
-Additionally, you may define a custom table name and key attribute name.
+Além disso, você pode definir um nome de tabela personalizado e um nome de atributo de chave.
 
 ```ts
 stores.dynamodb({
@@ -206,10 +210,10 @@ stores.dynamodb({
 
 ---
 
-### Updating environment variables validation
-If you decide to use session stores other than the default one, make sure to also update the environment variables validation for the `SESSION_DRIVER` environment variable.
+### Atualizando a validação de variáveis ​​de ambiente
+Se você decidir usar armazenamentos de sessão diferentes do padrão, certifique-se de atualizar também a validação de variáveis ​​de ambiente para a variável de ambiente `SESSION_DRIVER`.
 
-We configure the `cookie`, the `redis`, and the `dynamodb` stores in the following example. Therefore, we should also allow the `SESSION_DRIVER` environment variable to be one of them.
+Configuramos os armazenamentos `cookie`, `redis` e `dynamodb` no exemplo a seguir. Portanto, também devemos permitir que a variável de ambiente `SESSION_DRIVER` seja uma delas.
 
 ```ts
 import { defineConfig, stores } from '@adonisjs/session'
@@ -235,8 +239,8 @@ export default defineConfig({
 }
 ```
 
-## Basic example
-Once the session package has been registered, you can access the `session` property from the [HTTP Context](../concepts/http_context.md). The session property exposes the API for reading and writing data to the session store.
+## Exemplo básico
+Depois que o pacote de sessão for registrado, você pode acessar a propriedade `session` do [HTTP Context](../concepts/http_context.md). A propriedade de sessão expõe a API para ler e gravar dados no armazenamento de sessão.
 
 ```ts
 import router from '@adonisjs/core/services/router'
@@ -256,10 +260,10 @@ router.get('/', async ({ session }) => {
 })
 ```
 
-The session data is read from the session store at the start of the request and written back to the store at the end. Therefore, all changes are kept in memory until the request finishes.
+Os dados da sessão são lidos do armazenamento de sessão no início da solicitação e gravados de volta no armazenamento no final. Portanto, todas as alterações são mantidas na memória até que a solicitação termine.
 
-## Supported data types
-The session data is serialized to a string using `JSON.stringify`; therefore, you can use the following JavaScript data types as session values.
+## Tipos de dados suportados
+Os dados da sessão são serializados em uma string usando `JSON.stringify`; portanto, você pode usar os seguintes tipos de dados JavaScript como valores de sessão.
 
 - string
 - number
@@ -292,25 +296,25 @@ session.put('visits', BigInt(10))
 session.put('visited_at', new Date())
 ```
 
-## Reading and writing data
-The following is the list of methods you can use to interact with the data from the `session` object.
+## Lendo e escrevendo dados
+A seguir está a lista de métodos que você pode usar para interagir com os dados do objeto `session`.
 
 ### `get`
-Returns the value of a key from the store. You can use dot notation to read nested values.
+Retorna o valor de uma chave do armazenamento. Você pode usar a notação de ponto para ler valores aninhados.
 
 ```ts
 session.get('key')
 session.get('user.email')
 ```
 
-You can also define a default value as the second parameter. The default value will be returned if the key does not exist in the store.
+Você também pode definir um valor padrão como o segundo parâmetro. O valor padrão será retornado se a chave não existir no armazenamento.
 
 ```ts
 session.get('visits', 0)
 ```
 
 ### `has`
-Check if a key exists in the session store.
+Verifique se uma chave existe no armazenamento de sessão.
 
 ```ts
 if (session.has('visits')) {
@@ -318,14 +322,14 @@ if (session.has('visits')) {
 ```
 
 ### `all`
-Returns all the data from the session store. The return value will always be an object.
+Retorna todos os dados do armazenamento de sessão. O valor de retorno sempre será um objeto.
 
 ```ts
 session.all()
 ```
 
 ### `put`
-Add a key-value pair to the session store. You can create objects with nested values using the dot notation.
+Adicione um par chave-valor ao armazenamento de sessão. Você pode criar objetos com valores aninhados usando a notação de ponto.
 
 ```ts
 session.put('user', { email: 'foo@bar.com' })
@@ -335,7 +339,7 @@ session.put('user.email', 'foo@bar.com')
 ```
 
 ### `forget`
-Remove a key-value pair from the session store.
+Remove um par de chave-valor do armazenamento de sessão.
 
 ```ts
 session.forget('user')
@@ -345,7 +349,7 @@ session.forget('user.email')
 ```
 
 ### `pull`
-The `pull` method returns the value of a key and removes it from the store simultaneously.
+O método `pull` retorna o valor de uma chave e o remove do armazenamento simultaneamente.
 
 ```ts
 const user = session.pull('user')
@@ -353,7 +357,7 @@ session.has('user') // false
 ```
 
 ### `increment`
-The `increment` method increments the value of a key. A new key value is defined if it does not exist already.
+O método `increment` incrementa o valor de uma chave. Um novo valor de chave é definido se ele ainda não existir.
 
 ```ts
 session.increment('visits')
@@ -363,7 +367,7 @@ session.increment('visits', 4)
 ```
 
 ### `decrement`
-The `decrement` method decrements the value of a key. A new key value is defined if it does not exist already.
+O método `decrement` decrementa o valor de uma chave. Um novo valor de chave é definido se ele ainda não existir.
 
 ```ts
 session.decrement('visits')
@@ -373,27 +377,27 @@ session.decrement('visits', 4)
 ```
 
 ### `clear`
-The `clear` method removes everything from the session store.
+O método `clear` remove tudo do armazenamento de sessão.
 
 ```ts
 session.clear()
 ```
 
-## Session lifecycle
-AdonisJS creates an empty session store and assigns it to a unique session ID on the first HTTP request, even if the request/response lifecycle doesn't interact with sessions.
+## Ciclo de vida da sessão
+O AdonisJS cria um armazenamento de sessão vazio e o atribui a um ID de sessão exclusivo na primeira solicitação HTTP, mesmo que o ciclo de vida da solicitação/resposta não interaja com as sessões.
 
-On every subsequent request, we update the `maxAge` property of the session ID cookie to ensure it doesn't expire. The session store is also notified about the changes (if any) to update and persist them.
+Em cada solicitação subsequente, atualizamos a propriedade `maxAge` do cookie do ID da sessão para garantir que ele não expire. O armazenamento de sessão também é notificado sobre as alterações (se houver) para atualizá-las e persisti-las.
 
-You can access the unique session ID using the `sessionId` property. A visitor's session ID remains the same until it expires.
+Você pode acessar o ID de sessão exclusivo usando a propriedade `sessionId`. O ID de sessão de um visitante permanece o mesmo até que expire.
 
 ```ts
 console.log(session.sessionId)
 ```
 
-### Re-generating session id
-Re-generating session ID helps prevent a [session fixation](https://owasp.org/www-community/attacks/Session_fixation) attack in your application. You must re-generate the session ID when associating an anonymous session with a logged-in user.
+### Regenerando o ID da sessão
+Regenerar o ID da sessão ajuda a evitar um ataque de [fixação de sessão](https://owasp.org/www-community/attacks/Session_fixation) em seu aplicativo. Você deve gerar novamente o ID da sessão ao associar uma sessão anônima a um usuário conectado.
 
-The `@adonisjs/auth` package automatically re-generates the session ID, so you do not have to do it manually.
+O pacote `@adonisjs/auth` gera novamente o ID da sessão automaticamente, então você não precisa fazer isso manualmente.
 
 ```ts
 /**
@@ -403,10 +407,10 @@ The `@adonisjs/auth` package automatically re-generates the session ID, so you d
 session.regenerate()
 ```
 
-## Flash messages
-Flash messages are used to pass data between two HTTP requests. They are commonly used to provide feedback to the user after a specific action. For example, showing the success message after the form submission or displaying the validation error messages.
+## Mensagens Flash
+Mensagens Flash são usadas para passar dados entre duas solicitações HTTP. Elas são comumente usadas para fornecer feedback ao usuário após uma ação específica. Por exemplo, mostrar a mensagem de sucesso após o envio do formulário ou exibir as mensagens de erro de validação.
 
-In the following example, we define the routes for displaying the contact form and submitting the form details to the database. Post form submission, we redirect the user back to the form alongside a success notification using flash messages.
+No exemplo a seguir, definimos as rotas para exibir o formulário de contato e enviar os detalhes do formulário para o banco de dados. Após o envio do formulário, redirecionamos o usuário de volta ao formulário juntamente com uma notificação de sucesso usando mensagens flash.
 
 ```ts
 import router from '@adonisjs/core/services/router'
@@ -430,7 +434,7 @@ router.get('/contact', ({ view }) => {
 })
 ```
 
-You can access the flash messages inside the edge templates using the `flashMessage` tag or the `flashMessages` property.
+Você pode acessar as mensagens flash dentro dos modelos edge usando a tag `flashMessage` ou a propriedade `flashMessages`.
 
 ```edge
 @flashMessage('notification')
@@ -444,7 +448,7 @@ You can access the flash messages inside the edge templates using the `flashMess
 </form>
 ```
 
-You can access the flash messages inside controllers using the `session.flashMessages` property.
+Você pode acessar as mensagens flash dentro dos controladores usando a propriedade `session.flashMessages`.
 
 ```ts
 router.get('/contact', ({ view, session }) => {
@@ -455,13 +459,13 @@ router.get('/contact', ({ view, session }) => {
 })
 ```
 
-### Validation errors and flash messages
-The Session middleware automatically captures the [validation exceptions](./validation.md#error-handling) and redirects the user back to the form. The validation errors and form input data are kept within flash messages, and you can access them inside Edge templates.
+### Erros de validação e mensagens flash
+O middleware Session captura automaticamente as [exceções de validação](./validation.md#error-handling) e redireciona o usuário de volta ao formulário. Os erros de validação e os dados de entrada do formulário são mantidos em mensagens flash, e você pode acessá-los dentro dos modelos Edge.
 
-In the following example:
+No exemplo a seguir:
 
-- We access the value of the `title` input field using the [`old` method](../references/edge.md#old).
-- And access the error message using the [`@inputError` tag](../references/edge.md#inputerror).
+[método`old`](../references/edge.md#old).
+[tag `@inputError`](../references/edge.md#inputerror).
 
 ```edge
 <form method="POST" action="/posts">
@@ -483,8 +487,8 @@ In the following example:
 </form>
 ```
 
-### Writing flash messages
-The following are the methods to write data to the flash messages store. The `session.flash` method accepts a key-value pair and writes it to the flash messages property inside the session store.
+### Escrevendo mensagens flash
+A seguir estão os métodos para gravar dados no armazenamento de mensagens flash. O método `session.flash` aceita um par de chave-valor e o grava na propriedade de mensagens flash dentro do armazenamento de sessão.
 
 ```ts
 session.flash('key', value)
@@ -493,7 +497,7 @@ session.flash({
 })
 ```
 
-Instead of manually reading the request data and storing it in the flash messages, you can use one of the following methods to flash form data.
+Em vez de ler manualmente os dados da solicitação e armazená-los nas mensagens flash, você pode usar um dos seguintes métodos para fazer o flash dos dados do formulário.
 
 ```ts
 // title: flashAll
@@ -537,7 +541,7 @@ session.flashExcept(['password'])
 session.flash(request.except(['password']))
 ```
 
-Finally, you can reflash the current flash messages using the `session.reflash` method.
+Finalmente, você pode fazer o flash das mensagens flash atuais usando o método `session.reflash`.
 
 ```ts
 session.reflash()
@@ -545,8 +549,8 @@ session.reflashOnly(['notification', 'errors'])
 session.reflashExcept(['errors'])
 ```
 
-### Reading flash messages
-The flash messages are only available in the subsequent request after the redirect. You can access them using the `session.flashMessages` property.
+### Lendo mensagens flash
+As mensagens flash só estão disponíveis na solicitação subsequente após o redirecionamento. Você pode acessá-las usando a propriedade `session.flashMessages`.
 
 ```ts
 console.log(session.flashMessages.all())
@@ -554,9 +558,9 @@ console.log(session.flashMessages.get('key'))
 console.log(session.flashMessages.has('key'))
 ```
 
-The same `flashMessages` property is also shared with Edge templates, and you can access it as follows.
+A mesma propriedade `flashMessages` também é compartilhada com modelos do Edge, e você pode acessá-la da seguinte forma.
 
-See also: [Edge helpers reference](../references/edge.md#flashmessages)
+Veja também: [Referência de auxiliares do Edge](../references/edge.md#flashmessages)
 
 ```edge
 {{ flashMessages.all() }}
@@ -564,7 +568,7 @@ See also: [Edge helpers reference](../references/edge.md#flashmessages)
 {{ flashMessages.has('key') }}
 ```
 
-Finally, you can access a specific flash message or a validation error using the following Edge tags. 
+Finalmente, você pode acessar uma mensagem flash específica ou um erro de validação usando as seguintes tags do Edge.
 
 ```edge
 {{-- Read any flash message by key --}}
@@ -583,11 +587,11 @@ Finally, you can access a specific flash message or a validation error using the
 @end
 ```
 
-## Events
-Please check the [events reference guide](../references/events.md#sessioninitiated) to view the list of events dispatched by the `@adonisjs/session` package.
+## Eventos
+Consulte o [guia de referência de eventos](../references/events.md#sessioninitiated) para visualizar a lista de eventos despachados pelo pacote `@adonisjs/session`.
 
-## Creating a custom session store
-Session stores must implement the [SessionStoreContract](https://github.com/adonisjs/session/blob/main/src/types.ts#L23C18-L23C38) interface and define the following methods.
+## Criando um armazenamento de sessão personalizado
+Os armazenamentos de sessão devem implementar a interface [SessionStoreContract](https://github.com/adonisjs/session/blob/main/src/types.ts#L23C18-L23C38) e definir os seguintes métodos.
 
 ```ts
 import {
@@ -645,17 +649,17 @@ export function mongoDbStore (config: MongoDbConfig): SessionStoreFactory {
 }
 ```
 
-In the above code example, we export the following values.
+No exemplo de código acima, exportamos os seguintes valores.
 
-- `MongoDBConfig`: TypeScript type for the configuration you want to accept.
+- `MongoDBConfig`: tipo TypeScript para a configuração que você deseja aceitar.
 
-- `MongoDBStore`: The store's implementation as a class. It must adhere to the `SessionStoreContract` interface.
+- `MongoDBStore`: a implementação do armazenamento como uma classe. Ele deve aderir à interface `SessionStoreContract`.
 
-- `mongoDbStore`: Finally, a factory function to create an instance of the store for every HTTP request.
+- `mongoDbStore`: finalmente, uma função de fábrica para criar uma instância do armazenamento para cada solicitação HTTP.
 
-### Using the store
+### Usando o armazenamento
 
-Once the store has been created, you can reference it inside the config file using the `mongoDbStore` factory function.
+Depois que o armazenamento for criado, você pode referenciá-lo dentro do arquivo de configuração usando a função de fábrica `mongoDbStore`.
 
 ```ts
 // title: config/session.ts
@@ -671,6 +675,6 @@ export default defineConfig({
 })
 ```
 
-### A note on serializing data
+### Uma nota sobre serialização de dados
 
-The `write` method receives the session data as an object, and you might have to convert it to a string before saving it. You can use any serialization package for the same or the [MessageBuilder](../references/helpers.md#message-builder) helper provided by the AdonisJS helpers module. For inspiration, please consult the official [session stores](https://github.com/adonisjs/session/blob/main/src/stores/redis.ts#L59).
+O método `write` recebe os dados da sessão como um objeto, e você pode ter que convertê-los em uma string antes de salvá-los. Você pode usar qualquer pacote de serialização para o mesmo ou o auxiliar [MessageBuilder](../references/helpers.md#message-builder) fornecido pelo módulo auxiliares do AdonisJS. Para inspiração, consulte os [session stores](https://github.com/adonisjs/session/blob/main/src/stores/redis.ts#L59) oficiais.

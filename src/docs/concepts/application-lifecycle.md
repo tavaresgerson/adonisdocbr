@@ -1,63 +1,63 @@
 ---
-summary: Learn how AdonisJS boots your application and what lifecycle hooks you can use to change the application state before it is considered ready.
+resumo: Aprenda como o AdonisJS inicializa seu aplicativo e quais ganchos de ciclo de vida você pode usar para alterar o estado do aplicativo antes que ele seja considerado pronto.
 ---
 
-# Application lifecycle
+# Ciclo de vida do aplicativo
 
-In this guide, we will learn how AdonisJS boots your application and what lifecycle hooks you can use to change the application state before it is considered ready.
+Neste guia, aprenderemos como o AdonisJS inicializa seu aplicativo e quais ganchos de ciclo de vida você pode usar para alterar o estado do aplicativo antes que ele seja considerado pronto.
 
-The lifecycle of an application depends upon the environment in which it is running. For example, a long-lived process started to serve HTTP requests is managed differently from a short-lived ace command.
+O ciclo de vida de um aplicativo depende do ambiente em que ele está sendo executado. Por exemplo, um processo de longa duração iniciado para atender a solicitações HTTP é gerenciado de forma diferente de um comando ace de curta duração.
 
-So, let's understand the application lifecycle for every supported environment.
+Então, vamos entender o ciclo de vida do aplicativo para cada ambiente suportado.
 
-## How an AdonisJS application gets started
-An AdonisJS application has multiple entry points, and each entry point boots the application in a specific environment. The following entrypoint files are stored inside the `bin` directory.
+## Como um aplicativo AdonisJS é iniciado
+Um aplicativo AdonisJS tem vários pontos de entrada, e cada ponto de entrada inicializa o aplicativo em um ambiente específico. Os seguintes arquivos de ponto de entrada são armazenados dentro do diretório `bin`.
 
-- The `bin/server.ts` entry point boots the AdonisJS application to handle HTTP requests. When you run the `node ace serve` command, behind the scenes we run this file as a child process.
-- The `bin/console.ts` entry point boots the AdonisJS application to handle CLI commands. This file uses [Ace](../ace/introduction.md) under the hood.
-- The `bin/test.ts` entrypoint boots the AdonisJS application to run tests using Japa.
+- O ponto de entrada `bin/server.ts` inicializa o aplicativo AdonisJS para manipular solicitações HTTP. Quando você executa o comando `node ace serve`, nos bastidores, executamos esse arquivo como um processo filho.
+[Ace](../ace/introduction.md) nos bastidores.
+- O ponto de entrada `bin/test.ts` inicializa o aplicativo AdonisJS para executar testes usando Japa.
 
-If you open any of these files, you will find us using the [Ignitor](https://github.com/adonisjs/core/blob/main/src/ignitor/main.ts#L23) module to wire things up and then start the application.
+Se você abrir qualquer um desses arquivos, nos verá usando o módulo [Ignitor](https://github.com/adonisjs/core/blob/main/src/ignitor/main.ts#L23) para conectar as coisas e, em seguida, iniciar o aplicativo.
 
-The Ignitor module encapsulates the logic of starting an AdonisJS application. Under the hood, it performs the following actions.
+O módulo Ignitor encapsula a lógica de iniciar um aplicativo AdonisJS. Nos bastidores, ele executa as seguintes ações.
 
-- Create an instance of the [Application](https://github.com/adonisjs/application/blob/main/src/application.ts) class.
-- Initiate/boot the application.
-- Perform the main action to start the application. For example, in the case of an HTTP server, the `main` action involves starting the HTTP server. Whereas, in the case of tests, the `main` action involves running the tests.
+Classe [Application](https://github.com/adonisjs/application/blob/main/src/application.ts).
+- Iniciar/inicializar o aplicativo.
+- Executar a ação principal para iniciar o aplicativo. Por exemplo, no caso de um servidor HTTP, a ação `main` envolve iniciar o servidor HTTP. Enquanto isso, no caso de testes, a ação `main` envolve executar os testes.
 
-The [Ignitor codebase](https://github.com/adonisjs/core/tree/main/src/ignitor) is relatively straightforward, so browse the source code to understand it better.
+A [base de código do Ignitor](https://github.com/adonisjs/core/tree/main/src/ignitor) é relativamente simples, então navegue pelo código-fonte para entendê-lo melhor.
 
-## The boot phase
+## A fase de inicialização
 
-The boot phase remains the same for all the environments except the `console` environment. In the `console` environment, the executed command decides whether to boot the application.
+A fase de inicialização permanece a mesma para todos os ambientes, exceto o ambiente `console`. No ambiente `console`, o comando executado decide se deve inicializar o aplicativo.
 
-You can only use the container bindings and services once the application is booted.
+Você só pode usar as ligações e serviços do contêiner depois que o aplicativo for inicializado.
 
 ![](./boot_phase_flow_chart.png)
 
-## The start phase
+## A fase de inicialização
 
-The start phase varies between all the environments. Also, the execution flow is further divided into the following sub-phases
+A fase de inicialização varia entre todos os ambientes. Além disso, o fluxo de execução é dividido nas seguintes subfases
 
-- The `pre-start` phase refers to the actions performed before starting the app. 
+- A fase `pré-inicialização` se refere às ações realizadas antes de iniciar o aplicativo.
 
-- The `post-start` phase refers to the actions performed after starting the app. In the case of an HTTP server, the actions will be executed after the HTTP server is ready to accept new connections.
+- A fase `post-start` se refere às ações realizadas após iniciar o aplicativo. No caso de um servidor HTTP, as ações serão executadas após o servidor HTTP estar pronto para aceitar novas conexões.
 
 ![](./start_phase_flow_chart.png)
 
-### During the web environment
+### Durante o ambiente da web
 
-In the web environment, a long-lived HTTP connection is created to listen for incoming requests, and the application stays in the `ready` state until the server crashes or the process receives a signal to shut down.
+No ambiente da web, uma conexão HTTP de longa duração é criada para escutar solicitações de entrada, e o aplicativo permanece no estado `ready` até que o servidor falhe ou o processo receba um sinal para desligar.
 
-### During the test environment
+### Durante o ambiente de teste
 
-The **pre-start** and the **post-start** actions are executed in the test environment. After that, we import the test files and execute the tests.
+As ações **pre-start** e **post-start** são executadas no ambiente de teste. Depois disso, importamos os arquivos de teste e executamos os testes.
 
-### During the console environment
+### Durante o ambiente do console
 
-In the `console` environment, the executed command decides whether to start the application.
+No ambiente `console`, o comando executado decide se deve iniciar o aplicativo.
 
-A command can start the application by enabling the `options.startApp` flag. As a result, the **pre-start** and the **post-start** actions will run before the command's `run` method.
+Um comando pode iniciar o aplicativo habilitando o sinalizador `options.startApp`. Como resultado, as ações **pré-início** e **pós-início** serão executadas antes do método `run` do comando.
 
 ```ts
 import { BaseCommand } from '@adonisjs/core/ace'
@@ -73,33 +73,33 @@ export default class GreetCommand extends BaseCommand {
 }
 ```
 
-## The termination phase
+## A fase de encerramento
 
-The termination of the application varies greatly between short-lived and long-lived processes. 
+O encerramento do aplicativo varia muito entre processos de curta e longa duração.
 
-A short-lived command or the test process begins the termination after the main operation ends.
+Um comando de curta duração ou o processo de teste inicia o encerramento após o término da operação principal.
 
-A long-lived HTTP server process waits for exit signals like `SIGTERM` to begin the termination process.
+Um processo de servidor HTTP de longa duração aguarda sinais de saída como `SIGTERM` para iniciar o processo de encerramento.
 
 ![](./termination_phase_flow_chart.png)
 
-### Responding to process signals
+### Respondendo a sinais de processo
 
-In all the environments, we begin a graceful shutdown process when the application receives a `SIGTERM` signal. If you have started your application using [pm2](https://pm2.keymetrics.io/docs/usage/signals-clean-restart/), the graceful shutdown will happen after receiving the `SIGINT` event.
+Em todos os ambientes, iniciamos um processo de encerramento normal quando o aplicativo recebe um sinal `SIGTERM`. Se você iniciou seu aplicativo usando [pm2](https://pm2.keymetrics.io/docs/usage/signals-clean-restart/), o encerramento normal ocorrerá após receber o evento `SIGINT`.
 
-### During the web environment
+### Durante o ambiente da web
 
-In the web environment, the application keeps running until the underlying HTTP server crashes with an error. In that case, we begin terminating the app.
+No ambiente da web, o aplicativo continua em execução até que o servidor HTTP subjacente trave com um erro. Nesse caso, iniciamos o encerramento do aplicativo.
 
-### During the test environment
+### Durante o ambiente de teste
 
-The graceful termination begins after all the tests have been executed.
+O encerramento normal começa depois que todos os testes foram executados.
 
-### During the console environment
+### Durante o ambiente de console
 
-In the `console` environment, the termination of the app depends on the executed command.
+No ambiente `console`, o encerramento do aplicativo depende do comando executado.
 
-The app will terminate as soon as the command is executed unless the `options.staysAlive` flag is enabled, and in this case, the command should explicitly terminate the app.
+O aplicativo será encerrado assim que o comando for executado, a menos que o sinalizador `options.staysAlive` esteja habilitado e, neste caso, o comando deve encerrar explicitamente o aplicativo.
 
 ```ts
 import { BaseCommand } from '@adonisjs/core/ace'
@@ -119,17 +119,17 @@ export default class GreetCommand extends BaseCommand {
 }
 ```
 
-## Lifecycle hooks
+## Ganchos do ciclo de vida
 
-Lifecycle hooks allow you to hook into the application bootstrap process and perform actions as the app goes through different states.
+Os ganchos do ciclo de vida permitem que você se conecte ao processo de bootstrap do aplicativo e execute ações conforme o aplicativo passa por diferentes estados.
 
-You can listen for hooks using the service provider classes or define them inline on the application class.
+Você pode ouvir ganchos usando as classes do provedor de serviços ou defini-los em linha na classe do aplicativo.
 
-### Inline callbacks
+### Retornos de chamada em linha
 
-You should register lifecycle hooks as soon as an application instance is created. 
+Você deve registrar ganchos do ciclo de vida assim que uma instância do aplicativo for criada.
 
-The entry point files `bin/server.ts`, `bin/console.ts`, and `bin/test.ts` creates a fresh application instance for different environments, and you can register inline callbacks within these files.
+Os arquivos de ponto de entrada `bin/server.ts`, `bin/console.ts` e `bin/test.ts` criam uma nova instância de aplicativo para diferentes ambientes, e você pode registrar retornos de chamada em linha nesses arquivos.
 
 ```ts
 const app = new Application(new URL('../', import.meta.url))
@@ -152,23 +152,23 @@ new Ignitor(APP_ROOT, { importer: IMPORTER })
   })
 ```
 
-- `initiating`: The hook actions are called before the application moves to the initiated state. The `adonisrc.ts` file is parsed after executing the `initiating` hooks.
+- `initiating`: As ações de hook são chamadas antes que o aplicativo passe para o estado iniciado. O arquivo `adonisrc.ts` é analisado após a execução dos hooks `initiating`.
 
-- `booting`: The hook actions are called before booting the app. The config files are imported after executing `booting` hooks.
+- `booting`: As ações de hook são chamadas antes da inicialização do aplicativo. Os arquivos de configuração são importados após a execução dos hooks `booting`.
 
-- `booted`: The hook actions are invoked after all the service providers have been registered and booted.
+- `booted`: As ações de hook são invocadas após todos os provedores de serviço terem sido registrados e inicializados.
 
-- `starting`: The hook actions are invoked before importing the preload files.
+- `starting`: As ações de hook são invocadas antes da importação dos arquivos de pré-carregamento.
 
-- `ready`: The hook actions are invoked after the application is ready.
+- `ready`: As ações de hook são invocadas após o aplicativo estar pronto.
 
-- `terminating`: The hook actions are invoked once the graceful exit process begins. For example, this hook can close database connections or end open streams.
+- `terminating`: As ações de hook são invocadas quando o processo de saída normal começa. Por exemplo, este hook pode fechar conexões de banco de dados ou encerrar fluxos abertos.
 
-### Using service providers
+### Usando provedores de serviço
 
-Services providers define the lifecycle hooks as methods in the provider class. We recommend using service providers over inline callbacks, as they keep everything neatly organized.
+Os provedores de serviço definem os hooks do ciclo de vida como métodos na classe do provedor. Recomendamos usar provedores de serviço em vez de retornos de chamada em linha, pois eles mantêm tudo bem organizado.
 
-Following is the list of available lifecycle methods.
+A seguir está a lista de métodos de ciclo de vida disponíveis.
 
 ```ts
 import { ApplicationService } from '@adonisjs/core/types'
@@ -193,12 +193,12 @@ export default class AppProvider {
 }
 ```
 
-- `register`: The register method registers bindings within the container. This method is synchronous by design.
+- `register`: O método register registra ligações dentro do contêiner. Este método é síncrono por design.
 
-- `boot`: The boot method is used to boot or initialize the bindings you have registered inside the container.
+- `boot`: O método boot é usado para inicializar ou inicializar as ligações que você registrou dentro do contêiner.
 
-- `start`: The start method runs just before the `ready` method. It allows you to perform actions that the `ready` hook actions might need.
+- `start`: O método start é executado logo antes do método `ready`. Ele permite que você execute ações que as ações do hook `ready` podem precisar.
 
-- `ready`: The ready method runs after the application is considered ready.
+- `ready`: O método ready é executado após o aplicativo ser considerado pronto.
 
-- `shutdown`: The shutdown method is invoked when the application begins the graceful shutdown. You can use this method to close database connections, or end opened streams.
+- `shutdown`: O método shutdown é invocado quando o aplicativo inicia o desligamento normal. Você pode usar esse método para fechar conexões de banco de dados ou encerrar fluxos abertos.

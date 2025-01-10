@@ -1,15 +1,15 @@
 ---
-summary: Learn how to parse request bodies using the BodyParser middleware.
+resumo: Aprenda a analisar corpos de solicitação usando o middleware BodyParser.
 ---
 
-# Body parser middleware
+# Middleware do analisador de corpo
 
-The request data is parsed using the `BodyParser` middleware registered inside the `start/kernel.ts` file.
+Os dados da solicitação são analisados ​​usando o middleware `BodyParser` registrado dentro do arquivo `start/kernel.ts`.
 
-The configuration for the middleware is stored inside the `config/bodyparser.ts` file. In this file, you may configure parsers for parsing **JSON payloads**, **multipart forms with file uploads**, and **URL-encoded forms**.
+A configuração do middleware é armazenada dentro do arquivo `config/bodyparser.ts`. Neste arquivo, você pode configurar analisadores para analisar **payloads JSON**, **formulários multipartes com uploads de arquivo** e **formulários codificados por URL**.
 
-* See also: [Reading request body](./request.md#request-body)
-* See also: [File uploads](./file_uploads.md)
+[Lendo corpo da solicitação](./request.md#request-body)
+[Uploads de arquivo](./file_uploads.md)
 
 ```ts
 import { defineConfig } from '@adonisjs/core/bodyparser'
@@ -35,9 +35,9 @@ export const defineConfig({
 })
 ```
 
-## Allowed methods
+## Métodos permitidos
 
-You may define an array of `allowedMethods` for which the bodyparser middleware should attempt to parse the request body. By default, the following methods are configured. However, feel free to remove or add new methods.
+Você pode definir uma matriz de `allowedMethods` para os quais o middleware bodyparser deve tentar analisar o corpo da solicitação. Por padrão, os seguintes métodos são configurados. No entanto, sinta-se à vontade para remover ou adicionar novos métodos.
 
 ```ts
 {
@@ -45,15 +45,15 @@ You may define an array of `allowedMethods` for which the bodyparser middleware 
 }
 ```
 
-## Converting empty strings to null
+## Convertendo strings vazias para nulas
 
-HTML forms send an empty string in the request body when an input field has no value. This behavior of HTML forms makes data normalization at the database layer harder.
+Formulários HTML enviam uma string vazia no corpo da solicitação quando um campo de entrada não tem valor. Esse comportamento de formulários HTML dificulta a normalização de dados na camada do banco de dados.
 
-For example, if you have a database column `country` set to nullable, you would want to store `null` as a value inside this column when the user does not select a country.
+Por exemplo, se você tiver uma coluna de banco de dados `country` definida como anulável, você desejará armazenar `null` como um valor dentro desta coluna quando o usuário não selecionar um país.
 
-However, with HTML forms, the backend receives an empty string, and you might insert an empty string into the database instead of leaving the column as `null`.
+No entanto, com formulários HTML, o backend recebe uma string vazia, e você pode inserir uma string vazia no banco de dados em vez de deixar a coluna como `null`.
 
-The `BodyParser` middleware can handle this inconsistency by converting all empty string values to `null` when the `convertEmptyStringsToNull` flag is enabled inside the config.
+O middleware `BodyParser` pode lidar com essa inconsistência convertendo todos os valores de string vazia para `null` quando o sinalizador `convertEmptyStringsToNull` estiver habilitado dentro da configuração.
 
 ```ts
 {
@@ -74,9 +74,9 @@ The `BodyParser` middleware can handle this inconsistency by converting all empt
 }
 ```
 
-## JSON parser
+## Analisador JSON
 
-The JSON parser is used for parsing request body defined as a JSON encoded string with the `Content-type` header matching one of the pre-defined `types` values.
+O analisador JSON é usado para analisar o corpo da solicitação definido como uma string codificada JSON com o cabeçalho `Content-type` correspondendo a um dos valores `types` predefinidos.
 
 ```ts
 json: {
@@ -95,23 +95,23 @@ json: {
 
 ### `encoding`
 
-The encoding to use when converting the request body Buffer to a string. Most likely, you want to use `utf-8`. However, you can use any encoding supported by the [iconv-lite package](https://www.npmjs.com/package/iconv-lite#readme).
+A codificação a ser usada ao converter o Buffer do corpo da solicitação em uma string. Provavelmente, você deseja usar `utf-8`. No entanto, você pode usar qualquer codificação suportada pelo [pacote iconv-lite](https://www.npmjs.com/package/iconv-lite#readme).
 
 ### `limit`
 
-The maximum limit of request body data the parser should allow. A `413` error will be returned if the request body exceeds the configured limit.
+O limite máximo de dados do corpo da solicitação que o analisador deve permitir. Um erro `413` será retornado se o corpo da solicitação exceder o limite configurado.
 
 ### `strict`
 
-The strict parsing allows only `objects` and `arrays` at the top level of a JSON-encoded string.
+A análise estrita permite apenas `objects` e `arrays` no nível superior de uma string codificada em JSON.
 
 ### `types`
 
-An array of values for the `Content-type` header should be parsed using the JSON parser.
+Uma matriz de valores para o cabeçalho `Content-type` deve ser analisada usando o analisador JSON.
 
-## URL encoded form parser
+## Analisador de formulário codificado em URL
 
-The `form` parser is used for parsing URL encoded strings with the `Content-type` header set to `application/x-www-form-urlencoded`. In other words, the HTML forms data is parsed using the `form` parser.
+O analisador `form` é usado para analisar strings codificadas em URL com o cabeçalho `Content-type` definido como `application/x-www-form-urlencoded`. Em outras palavras, os dados dos formulários HTML são analisados ​​usando o analisador `form`.
 
 ```ts
 form: {
@@ -125,15 +125,15 @@ form: {
 
 ### `encoding`
 
-The encoding to use when converting the request body Buffer to a string. Most likely, you want to use `utf-8`. However, you can use any encoding supported by the [iconv-lite package](https://www.npmjs.com/package/iconv-lite#readme).
+A codificação a ser usada ao converter o Buffer do corpo da solicitação em uma string. Provavelmente, você deseja usar `utf-8`. No entanto, você pode usar qualquer codificação suportada pelo [pacote iconv-lite](https://www.npmjs.com/package/iconv-lite#readme).
 
 ### `limit`
 
-The maximum limit of request body data the parser should allow. A `413` error will be returned if the request body exceeds the configured limit.
+O limite máximo de dados do corpo da solicitação que o analisador deve permitir. Um erro `413` será retornado se o corpo da solicitação exceder o limite configurado.
 
 ### `queryString`
 
-The URL-encoded request body is parsed using the [qs package](https://www.npmjs.com/package/qs). You can define the options for the package using the `queryString` property.
+O corpo da solicitação codificado em URL é analisado usando o [pacote qs](https://www.npmjs.com/package/qs). Você pode definir as opções para o pacote usando a propriedade `queryString`.
 
 ```ts
   form: {
@@ -144,11 +144,11 @@ The URL-encoded request body is parsed using the [qs package](https://www.npmjs.
   }
 ```
 
-## Multipart parser
+## Analisador multipartes
 
-The `multipart` parser is used for parsing HTML form requests with file uploads.
+O analisador `multipartes` é usado para analisar solicitações de formulário HTML com uploads de arquivo.
 
-See also: [File uploads](./file_uploads.md)
+Veja também: [Uploads de arquivo](./file_uploads.md)
 
 ```ts
 multipart: {
@@ -164,13 +164,13 @@ multipart: {
 
 ### `autoProcess`
 
-Enabling `autoProcess` will move all the user-uploaded files to the `tmp` directory of your operating system.
+Habilitar `autoProcess` moverá todos os arquivos enviados pelo usuário para o diretório `tmp` do seu sistema operacional.
 
-Later, inside the controllers, you can validate the files and move them to a persistent location or a cloud service.
+Mais tarde, dentro dos controladores, você pode validar os arquivos e movê-los para um local persistente ou um serviço de nuvem.
 
-If you disable the `autoProcess` flag, then you will have to manually process the stream and read files/fields from the request body. See also: [Self-processing multipart stream](./file_uploads.md#self-processing-multipart-stream).
+Se você desabilitar o sinalizador `autoProcess`, terá que processar manualmente o fluxo e ler arquivos/campos do corpo da solicitação. Veja também: [Fluxo multipartes de autoprocessamento](./file_uploads.md#self-processing-multipart-stream).
 
-You may define an array of routes for which to auto process the files. The values **must be a route pattern** and not the URL.
+Você pode definir uma matriz de rotas para as quais processar automaticamente os arquivos. Os valores **devem ser um padrão de rota** e não a URL.
 
 ```ts
 {
@@ -183,7 +183,7 @@ You may define an array of routes for which to auto process the files. The value
 
 ### `processManually`
 
-The `processManually` array allows you to turn off auto processing of files for selected routes. The values **must be a route pattern** and not the URL.
+A matriz `processManually` permite que você desative o processamento automático de arquivos para rotas selecionadas. Os valores **devem ser um padrão de rota** e não a URL.
 
 ```ts
 multipart: {
@@ -197,12 +197,12 @@ multipart: {
 
 ### `encoding`
 
-The encoding to use when converting the request body Buffer to a string. Most likely, you want to use `utf-8`. However, you can use any encoding supported by the [iconv-lite package](https://www.npmjs.com/package/iconv-lite#readme).
+A codificação a ser usada ao converter o Buffer do corpo da solicitação em uma string. Provavelmente, você deseja usar `utf-8`. No entanto, você pode usar qualquer codificação suportada pelo [pacote iconv-lite](https://www.npmjs.com/package/iconv-lite#readme).
 
 ### `limit`
 
-The maximum limit of bytes to allow when processing all files. You can define the individual file size limit using the [request.file](./file_uploads.md) method.
+O limite máximo de bytes a serem permitidos ao processar todos os arquivos. Você pode definir o limite de tamanho de arquivo individual usando o método [request.file](./file_uploads.md).
 
 ### `fieldsLimit`
 
-The maximum limit of bytes to allow for the fields (not files) when processing the multipart request. A `413` error will be returned if the field size exceeds the configured limit.
+O limite máximo de bytes a serem permitidos para os campos (não arquivos) ao processar a solicitação multipart. Um erro `413` será retornado se o tamanho do campo exceder o limite configurado.

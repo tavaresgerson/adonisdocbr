@@ -1,14 +1,14 @@
 ---
-summary: Learn how to authenticate users using the session guard in AdonisJS.
+resumo: Aprenda como autenticar usuários usando o guarda de sessão no AdonisJS.
 ---
 
-# Session guard
-The session guard uses the [@adonisjs/session](../basics/session.md) package to login and authenticate users during an HTTP request.
+# Guarda de sessão
+O guarda de sessão usa o pacote [@adonisjs/session](../basics/session.md) para fazer login e autenticar usuários durante uma solicitação HTTP.
 
-Sessions and cookies have been on the internet for a long time and work great for most applications. Therefore, we recommend using the session guard for server-rendered applications or an SPA web client on the same top-level domain.
+Sessões e cookies estão na internet há muito tempo e funcionam muito bem para a maioria dos aplicativos. Portanto, recomendamos usar o guarda de sessão para aplicativos renderizados pelo servidor ou um cliente web SPA no mesmo domínio de nível superior.
 
-## Configuring the guard
-The authentication guards are defined inside the `config/auth.ts` file. You can configure multiple guards inside this file under the `guards` object.
+## Configurando o guarda
+Os guardas de autenticação são definidos dentro do arquivo `config/auth.ts`. Você pode configurar vários guardas dentro deste arquivo sob o objeto `guards`.
 
 ```ts
 // title: config/auth.ts
@@ -34,22 +34,22 @@ const authConfig = defineConfig({
 export default authConfig
 ```
 
-The `sessionGuard` method creates an instance of the [SessionGuard](https://github.com/adonisjs/auth/blob/main/modules/session_guard/guard.ts) class. It accepts a user provider that can be used to find users during authentication and an optional config object to configure the remember tokens behavior.
+O método `sessionGuard` cria uma instância da classe [SessionGuard](https://github.com/adonisjs/auth/blob/main/modules/session_guard/guard.ts). Ele aceita um provedor de usuário que pode ser usado para encontrar usuários durante a autenticação e um objeto de configuração opcional para configurar o comportamento de tokens de lembrança.
 
-The `sessionUserProvider` method creates an instance of the [SessionLucidUserProvider](https://github.com/adonisjs/auth/blob/main/modules/session_guard/user_providers/lucid.ts) class. It accepts a reference to the model to use for authentication.
+O método `sessionUserProvider` cria uma instância da classe [SessionLucidUserProvider](https://github.com/adonisjs/auth/blob/main/modules/session_guard/user_providers/lucid.ts). Ele aceita uma referência ao modelo a ser usado para autenticação.
 
-## Performing login
-You can login a user using the `login` method from your guard. The method accepts an instance of the User model and creates a login session for them.
+## Executando login
+Você pode fazer login de um usuário usando o método `login` do seu guard. O método aceita uma instância do modelo User e cria uma sessão de login para eles.
 
-In the following example:
+No exemplo a seguir:
 
-- We use the `verifyCredentials` from the [AuthFinder mixin](./verifying_user_credentials.md#using-the-auth-finder-mixin) to find a user by email and password.
+[AuthFinder mixin](./verifying_user_credentials.md#using-the-auth-finder-mixin) para encontrar um usuário por e-mail e senha.
 
-- The `auth.use('web')` returns an instance of the [SessionGuard](https://github.com/adonisjs/auth/blob/main/modules/session_guard/guard.ts) configured inside the `config/auth.ts` file (`web` is the name of the guard defined in your configuration).
+[SessionGuard](https://github.com/adonisjs/auth/blob/main/modules/session_guard/guard.ts) configurado dentro do arquivo `config/auth.ts` (`web` é o nome do guard definido na sua configuração).
 
-- Next, we call the `auth.use('web').login(user)` method to create a login session for the user.
+- Em seguida, chamamos o método `auth.use('web').login(user)` para criar uma sessão de login para o usuário.
 
-- Finally, we redirect the user to the `/dashboard` endpoint. Feel free to customize the redirect endpoint.
+- Finalmente, redirecionamos o usuário para o endpoint `/dashboard`. Sinta-se à vontade para personalizar o endpoint de redirecionamento.
 
 ```ts
 import User from '#models/user'
@@ -82,9 +82,9 @@ export default class SessionController {
 }
 ```
 
-## Protecting routes
+## Protegendo rotas
 
-You can protect routes from unauthenticated users using the `auth` middleware. The middleware is registered inside the `start/kernel.ts` file under the named middleware collection.
+Você pode proteger rotas de usuários não autenticados usando o middleware `auth`. O middleware é registrado dentro do arquivo `start/kernel.ts` sob a coleção de middleware nomeada.
 
 ```ts
 import router from '@adonisjs/core/services/router'
@@ -94,7 +94,7 @@ export const middleware = router.named({
 })
 ```
 
-Apply the `auth` middleware to the routes you want to protect from unauthenticated users. 
+Aplique o middleware `auth` às rotas que você deseja proteger de usuários não autenticados.
 
 ```ts
 // highlight-start
@@ -109,9 +109,9 @@ router
  // highlight-end
 ```
 
-By default, the auth middleware will authenticate the user against the `default` guard (as defined in the config file). However, you can specify an array of guards when assigning the `auth` middleware.
+Por padrão, o middleware auth autenticará o usuário contra o guard `default` (conforme definido no arquivo de configuração). No entanto, você pode especificar uma matriz de guards ao atribuir o middleware `auth`.
 
-In the following example, the auth middleware will attempt to authenticate the request using the `web` and the `api` guards.
+No exemplo a seguir, o middleware auth tentará autenticar a solicitação usando os guards `web` e `api`.
 
 ```ts
 import { middleware } from '#start/kernel'
@@ -128,19 +128,19 @@ router
  // highlight-end
 ```
 
-### Handling authentication exception
+### Lidando com exceção de autenticação
 
-The auth middleware throws the [E_UNAUTHORIZED_ACCESS](https://github.com/adonisjs/auth/blob/main/src/errors.ts#L21) if the user is not authenticated. The exception is handled automatically using the following content-negotiation rules.
+O middleware auth lança o [E_UNAUTHORIZED_ACCESS](https://github.com/adonisjs/auth/blob/main/src/errors.ts#L21) se o usuário não for autenticado. A exceção é tratada automaticamente usando as seguintes regras de negociação de conteúdo.
 
-- Request with `Accept=application/json` header will receive an array of errors with the `message` property.
+- A solicitação com o cabeçalho `Accept=application/json` receberá uma matriz de erros com a propriedade `message`.
 
-- Request with `Accept=application/vnd.api+json` header will receive an array of errors as per the [JSON API](https://jsonapi.org/format/#errors) spec.
+[JSON API](https://jsonapi.org/format/#errors) spec.
 
-- The user will be redirected to the `/login` page for server-rendered applications. You can configure the redirect endpoint within the `auth` middleware class.
+- O usuário será redirecionado para a página `/login` para aplicativos renderizados pelo servidor. Você pode configurar o endpoint de redirecionamento dentro da classe de middleware `auth`.
 
-## Getting access to the logged-in user
+## Obtendo acesso ao usuário logado
 
-You may access the logged-in user instance using the `auth.user` property. The value is only available when using the `auth` or `silent_auth` middleware or if you call the `auth.authenticate` or `auth.check` methods manually.
+Você pode acessar a instância do usuário logado usando a propriedade `auth.user`. O valor só está disponível ao usar o middleware `auth` ou `silent_auth` ou se você chamar os métodos `auth.authenticate` ou `auth.check` manualmente.
 
 ```ts
 // title: Using auth middleware
@@ -177,13 +177,13 @@ router
   })
 ```
 
-### Silent auth middleware
+### Middleware de autenticação silenciosa
 
-The `silent_auth` middleware is similar to the `auth` middleware, but it does not throw an exception when the user is not authenticated. Instead, the request still continues as usual.
+O middleware `silent_auth` é semelhante ao middleware `auth`, mas não gera uma exceção quando o usuário não é autenticado. Em vez disso, a solicitação continua normalmente.
 
-This middleware is useful when you want to always authenticate the user to perform some actions but do not want to block the request when the user is not authenticated.
+Este middleware é útil quando você deseja sempre autenticar o usuário para executar algumas ações, mas não deseja bloquear a solicitação quando o usuário não é autenticado.
 
-If you plan to use this middleware, then you must register it inside the list of [router middleware](../basics/middleware.md#router-middleware-stack).
+Se você planeja usar este middleware, deve registrá-lo na lista de [middleware do roteador](../basics/middleware.md#router-middleware-stack).
 
 ```ts
 // title: start/kernel.ts
@@ -195,8 +195,8 @@ router.use([
 ])
 ```
 
-### Check if the request is authenticated
-You can check if a request has been authenticated using the `auth.isAuthenticated` flag. The value of `auth.user` will always be defined for an authenticated request.
+### Verifique se a solicitação é autenticada
+Você pode verificar se uma solicitação foi autenticada usando o sinalizador `auth.isAuthenticated`. O valor de `auth.user` sempre será definido para uma solicitação autenticada.
 
 ```ts
 import { middleware } from '#start/kernel'
@@ -213,9 +213,9 @@ router
   .use(middleware.auth())
 ```
 
-### Get authenticated user or fail
+### Obter usuário autenticado ou falhar
 
-If you do not like using the [non-null assertion operator](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#non-null-assertion-operator-postfix-) on the `auth.user` property, you may use the `auth.getUserOrFail` method. This method will return the user object or throw [E_UNAUTHORIZED_ACCESS](../references/exceptions.md#e_unauthorized_access) exception.
+Se você não gosta de usar o [operador de asserção não nulo](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#non-null-assertion-operator-postfix-) na propriedade `auth.user`, você pode usar o método `auth.getUserOrFail`. Este método retornará o objeto do usuário ou lançará a exceção [E_UNAUTHORIZED_ACCESS](../references/exceptions.md#e_unauthorized_access).
 
 ```ts
 import { middleware } from '#start/kernel'
@@ -231,8 +231,8 @@ router
   .use(middleware.auth())
 ```
 
-### Access user within Edge templates
-The [InitializeAuthMiddleware](./introduction.md#the-initialize-auth-middleware) also shares the `ctx.auth` property with Edge templates. Therefore, you can access the currently logged-in user via the `auth.user` property.
+### Acessar usuário dentro de modelos Edge
+O [InitializeAuthMiddleware](./introduction.md#the-initialize-auth-middleware) também compartilha a propriedade `ctx.auth` com modelos Edge. Portanto, você pode acessar o usuário conectado no momento por meio da propriedade `auth.user`.
 
 ```edge
 @if(auth.isAuthenticated)
@@ -240,7 +240,7 @@ The [InitializeAuthMiddleware](./introduction.md#the-initialize-auth-middleware)
 @end
 ```
 
-If you want to fetch logged-in user information on a non-protected route, you can use the `auth.check` method to check if the user is logged-in and then access the `auth.user` property. A great use case for this is displaying the logged-in user information on the website header of a public page.
+Se você quiser buscar informações do usuário conectado em uma rota não protegida, você pode usar o método `auth.check` para verificar se o usuário está conectado e então acessar a propriedade `auth.user`. Um ótimo caso de uso para isso é exibir as informações do usuário conectado no cabeçalho do site de uma página pública.
 
 ```edge
 {{--
@@ -263,8 +263,8 @@ If you want to fetch logged-in user information on a non-protected route, you ca
 </header>
 ```
 
-## Performing logout
-You can logout a user using the `guard.logout` method. During logout, the user state will be deleted from the session store. The currently active remember me token will also be deleted (if using remember me tokens).
+## Executando logout
+Você pode fazer logout de um usuário usando o método `guard.logout`. Durante o logout, o estado do usuário será excluído do armazenamento de sessão. O token lembre-se de mim ativo no momento também será excluído (se estiver usando tokens lembre-se de mim).
 
 ```ts
 import { middleware } from '#start/kernel'
@@ -278,14 +278,14 @@ router
   .use(middleware.auth())
 ```
 
-## Using the Remember Me feature
-The Remember Me feature automatically login user after their session expires. This is done by generating a cryptographically secure token and saving it as a cookie inside the user's browser.
+## Usando o recurso Lembre-se de mim
+O recurso Lembre-se de mim faz login automaticamente no usuário após a expiração da sessão. Isso é feito gerando um token criptograficamente seguro e salvando-o como um cookie dentro do navegador do usuário.
 
-After the user session has expired, AdonisJS will use the remember me cookie, verify the token's validity, and automatically re-create the logged-in session for the user.
+Após a expiração da sessão do usuário, o AdonisJS usará o cookie "lembre-se de mim", verificará a validade do token e recriará automaticamente a sessão de login para o usuário.
 
-### Creating the Remember Me Tokens table
+### Criando a tabela "Lembre-se de mim" Tokens
 
-The remember me tokens are saved inside the database, and therefore, you must create a new migration to create the `remember_me_tokens` table.
+Os tokens "lembre-se de mim" são salvos dentro do banco de dados e, portanto, você deve criar uma nova migração para criar a tabela "remember_me_tokens".
 
 ```sh
 node ace make:migration remember_me_tokens
@@ -321,8 +321,8 @@ export default class extends BaseSchema {
 }
 ```
 
-### Configuring the tokens provider
-To read-write tokens, you will have to assign the [DbRememberMeTokensProvider](https://github.com/adonisjs/auth/blob/main/modules/session_guard/token_providers/db.ts) to the User model.
+### Configurando o provedor de tokens
+Para ler e gravar tokens, você terá que atribuir o [DbRememberMeTokensProvider](https://github.com/adonisjs/auth/blob/main/modules/session_guard/token_providers/db.ts) ao modelo User.
 
 ```ts
 import { BaseModel } from '@adonisjs/lucid/orm'
@@ -339,8 +339,8 @@ export default class User extends BaseModel {
 }
 ```
 
-### Enabling Remember Me tokens inside the config
-Finally, let's enable the `useRememberTokens` flag on the session guard config inside the `config/auth.ts` file.
+### Habilitando tokens de Lembre-se de mim dentro da configuração
+Finalmente, vamos habilitar o sinalizador `useRememberTokens` na configuração do guarda de sessão dentro do arquivo `config/auth.ts`.
 
 ```ts
 import { defineConfig } from '@adonisjs/auth'
@@ -364,8 +364,8 @@ const authConfig = defineConfig({
 export default authConfig
 ```
 
-### Remembering users during login
-Once the setup is completed, you can generate the remember me token and cookie using the `guard.login` method as follows.
+### Lembrando usuários durante o login
+Depois que a configuração for concluída, você pode gerar o token de lembre-se de mim e o cookie usando o método `guard.login` da seguinte forma.
 
 ```ts
 import User from '#models/user'
@@ -391,8 +391,8 @@ export default class SessionController {
 }
 ```
 
-## Using the guest middleware
-The auth package ships with a guest middleware you can use to redirect the logged-in users from accessing the `/login` page. This should be done to avoid creating multiple sessions for a single user on a single device.
+## Usando o middleware convidado
+O pacote auth vem com um middleware convidado que você pode usar para redirecionar os usuários conectados do acesso à página `/login`. Isso deve ser feito para evitar a criação de várias sessões para um único usuário em um único dispositivo.
 
 ```ts
 import router from '@adonisjs/core/services/router'
@@ -403,7 +403,7 @@ router
   .use(middleware.guest())
 ```
 
-By default, the guest middleware will check the user logged-in status using the `default` guard (as defined in the config file). However, you can specify an array of guards when assigning the `guest` middleware.
+Por padrão, o middleware convidado verificará o status de login do usuário usando o guard `default` (conforme definido no arquivo de configuração). No entanto, você pode especificar uma matriz de guards ao atribuir o middleware `guest`.
 
 ```ts
 router
@@ -413,7 +413,7 @@ router
   }))
 ```
 
-Finally, you can configure the redirect route for the logged-in users inside the `./app/middleware/guest_middleware.ts` file.
+Finalmente, você pode configurar a rota de redirecionamento para os usuários conectados dentro do arquivo `./app/middleware/guest_middleware.ts`.
 
-## Events
-Please check the [events reference guide](../references/events.md#session_authcredentials_verified) to view the list of available events emitted by the Auth package.
+## Eventos
+Consulte o [guia de referência de eventos](../references/events.md#session_authcredentials_verified) para visualizar a lista de eventos disponíveis emitidos pelo pacote Auth.

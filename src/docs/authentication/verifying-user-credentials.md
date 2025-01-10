@@ -1,17 +1,17 @@
 ---
-summary: Verify user credentials in an AdonisJS application using the AuthFinder mixin.
+resumo: Verifique as credenciais do usuário em um aplicativo AdonisJS usando o mixin AuthFinder.
 ---
 
-# Verifying user credentials
+# Verificando as credenciais do usuário
 
-In an AdonisJS application, verifying user credentials is decoupled from the authentication layer. This ensures you can continue using the auth guards without limiting the options to verify the user credentials.
+Em um aplicativo AdonisJS, a verificação das credenciais do usuário é dissociada da camada de autenticação. Isso garante que você possa continuar usando os auth guards sem limitar as opções para verificar as credenciais do usuário.
 
-By default, we provide secure APIs to find users and verify their passwords. However, you can also implement additional ways to verify a user, like sending an OTP to their phone number or using 2FA.
+Por padrão, fornecemos APIs seguras para encontrar usuários e verificar suas senhas. No entanto, você também pode implementar maneiras adicionais de verificar um usuário, como enviar um OTP para seu número de telefone ou usar 2FA.
 
-In this guide, we will cover the process of finding a user by a UID and verifying their password before marking them as logged in.
+Neste guia, abordaremos o processo de encontrar um usuário por um UID e verificar sua senha antes de marcá-lo como conectado.
 
-## Basic example
-You can use the User model directly to find a user and verify their password. In the following example, we find a user by email and use the [hash](../security/hashing.md) service to verify the password hash.
+## Exemplo básico
+Você pode usar o modelo User diretamente para encontrar um usuário e verificar sua senha. No exemplo a seguir, encontramos um usuário por e-mail e usamos o serviço [hash](../security/hashing.md) para verificar o hash da senha.
 
 ```ts
 // highlight-start
@@ -56,29 +56,25 @@ export default class SessionController {
 ```
 
 ::: danger ERROR
-**Issues with the above approach**
+**Problemas com a abordagem acima**
 :::
 
-<div class="card">
+O código que escrevemos no exemplo acima é propenso a [ataques de temporização](https://en.wikipedia.org/wiki/Timing_attack). No caso de autenticação, um invasor pode observar o tempo de resposta do aplicativo para descobrir se o e-mail ou a senha estão incorretos em suas credenciais fornecidas. Recomendamos que você use o [mixin AuthFinder](#using-the-auth-finder-mixin) para evitar ataques de temporização e ter uma melhor experiência do desenvolvedor.
 
-The code we have written in the above example is prone to [timing attacks](https://en.wikipedia.org/wiki/Timing_attack). In the case of authentication, an attacker can observe the application response time to find whether the email or the password is incorrect in their provided credentials. We recommend you use the [AuthFinder mixin](#using-the-auth-finder-mixin) to prevent timing attacks and have a better developer experience.
+De acordo com a implementação acima:
 
-As per the above implementation:
+- A solicitação levará menos tempo se o e-mail do usuário estiver incorreto. Isso ocorre porque não verificamos o hash da senha quando não conseguimos encontrar um usuário.
 
-- The request will take less time if the user's email is incorrect. This is because we do not verify the password hash when we cannot find a user.
+- A solicitação levará mais tempo se o e-mail existir e a senha estiver incorreta. Isso ocorre porque os algoritmos de hash de senha são lentos por natureza.
 
-- The request will take longer if the email exists and the password is incorrect. This is because password hashing algorithms are slow in nature.
+A diferença no tempo de resposta é suficiente para um invasor encontrar um endereço de e-mail válido e tentar diferentes combinações de senha.
 
-The difference in response time is enough for an attacker to find a valid email address and try different password combinations.
+## Usando o mixin Auth finder
+Para evitar ataques de tempo, recomendamos que você use o [mixin AuthFinder](https://github.com/adonisjs/auth/blob/main/src/mixins/lucid.ts) no modelo User.
 
-</div>
+O mixin Auth finder adiciona os métodos `findForAuth` e `verifyCredentials` ao modelo aplicado. O método `verifyCredentials` oferece uma API segura contra ataques de tempo para encontrar um usuário e verificar sua senha.
 
-## Using the Auth finder mixin
-To prevent the timing attacks, we recommend you use the [AuthFinder mixin](https://github.com/adonisjs/auth/blob/main/src/mixins/lucid.ts) on the User model.
-
-The Auth finder mixin adds `findForAuth` and `verifyCredentials` methods to the applied model. The `verifyCredentials` method offers a timing attack safe API for finding a user and verifying their password.
-
-You can import and apply the mixin on a model as follows.
+Você pode importar e aplicar o mixin em um modelo da seguinte maneira.
 
 ```ts
 import { DateTime } from 'luxon'
@@ -119,16 +115,16 @@ export default class User extends compose(BaseModel, AuthFinder) {
 }
 ```
 
-- The `withAuthFinder` method accepts a callback that returns a hasher as the first argument. We use the `scrypt` hasher in the above example. However, you can replace it with a different hasher.
+- O método `withAuthFinder` aceita um retorno de chamada que retorna um hasher como o primeiro argumento. Usamos o hasher `scrypt` no exemplo acima. No entanto, você pode substituí-lo por um hasher diferente.
 
-- Next, it accepts a configuration object with the following properties.
-  - `uids`: An array of model properties that can be used to identify a user uniquely. If you assign a user a username or phone number, you can also use them as a UID.
-  - `passwordColumnName`: The model property name that holds the user password.
+- Em seguida, ele aceita um objeto de configuração com as seguintes propriedades.
+  - `uids`: Uma matriz de propriedades de modelo que pode ser usada para identificar um usuário exclusivamente. Se você atribuir a um usuário um nome de usuário ou número de telefone, também poderá usá-los como um UID.
+  - `passwordColumnName`: O nome da propriedade do modelo que contém a senha do usuário.
 
-- Finally, you can use the return value of the `withAuthFinder` method as a [mixin](../references/helpers.md#compose) on the User model.
+[mixin](../references/helpers.md#compose) no modelo User.
 
-### Verifying credentials
-Once you have applied the Auth finder mixin, you can replace all the code from the `SessionController.store` method with the following code snippet.
+### Verificando credenciais
+Depois de aplicar o mixin Auth finder, você pode substituir todo o código do método `SessionController.store` pelo seguinte trecho de código.
 
 ```ts
 import { HttpContext } from '@adonisjs/core/http'
@@ -172,20 +168,20 @@ export default class SessionController {
 }
 ```
 
-### Handling exceptions
-In case of invalid credentials, the `verifyCredentials` method will throw [E_INVALID_CREDENTIALS](../references/exceptions.md#e_invalid_credentials) exception.
+### Lidando com exceções
+Em caso de credenciais inválidas, o método `verifyCredentials` lançará a exceção [E_INVALID_CREDENTIALS](../references/exceptions.md#e_invalid_credentials).
 
-The exception is self-handled and will be converted to a response using the following content negotiation rules.
+A exceção é automanipulada e será convertida em uma resposta usando as seguintes regras de negociação de conteúdo.
 
-- HTTP requests with the `Accept=application/json` header will receive an array of error messages. Each array element will be an object with the message property.
+- Solicitações HTTP com o cabeçalho `Accept=application/json` receberão uma matriz de mensagens de erro. Cada elemento da matriz será um objeto com a propriedade message.
 
-- HTTP requests with the `Accept=application/vnd.api+json` header will receive an array of error messages formatted per the JSON API spec.
+- Solicitações HTTP com o cabeçalho `Accept=application/vnd.api+json` receberão uma matriz de mensagens de erro formatadas de acordo com a especificação JSON API.
 
-- If you use sessions, the user will be redirected to the form and receive the errors via [session flash messages](../basics/session.md#flash-messages).
+[mensagens flash de sessão](../basics/session.md#flash-messages).
 
-- All other requests will receive errors back as plain text.
+- Todas as outras solicitações receberão erros de volta como texto simples.
 
-However, if needed, you can handle the exception inside the [global exception handler](../basics/exception_handling.md) as follows.
+No entanto, se necessário, você pode manipular a exceção dentro do [manipulador de exceção global](../basics/exception_handling.md) da seguinte forma.
 
 ```ts
 // highlight-start
@@ -212,5 +208,5 @@ export default class HttpExceptionHandler extends ExceptionHandler {
 }
 ```
 
-## Hashing user password
-The `AuthFinder` mixin registers a [beforeSave](https://github.com/adonisjs/auth/blob/main/src/mixins/lucid.ts#L40-L50) hook to automatically hash the user passwords during `INSERT` and `UPDATE` calls. Therefore, you do not have to manually perform password hashing in your models.
+## Hashing de senha de usuário
+O mixin `AuthFinder` registra um hook [beforeSave](https://github.com/adonisjs/auth/blob/main/src/mixins/lucid.ts#L40-L50) para fazer hash automaticamente das senhas de usuário durante chamadas `INSERT` e `UPDATE`. Portanto, você não precisa executar manualmente o hash de senha em seus modelos.

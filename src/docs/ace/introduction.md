@@ -1,22 +1,22 @@
 ---
-summary: Ace is a command line framework used by AdonisJS to create and run console commands.
+resumo: Ace é uma estrutura de linha de comando usada pelo AdonisJS para criar e executar comandos de console.
 ---
 
-# Introduction
+# Introdução
 
-Ace is a command line framework used by AdonisJS to create and run console commands. The entry point file for Ace is stored in the root of your project, and you can execute it as follows.
+Ace é uma estrutura de linha de comando usada pelo AdonisJS para criar e executar comandos de console. O arquivo de ponto de entrada para Ace é armazenado na raiz do seu projeto, e você pode executá-lo da seguinte forma.
 
 ```sh
 node ace
 ```
 
-Since the `node` binary cannot run the TypeScript source code directly, we have to keep the ace file in pure JavaScript and use the `.js` extension.
+Como o binário `node` não pode executar o código-fonte TypeScript diretamente, temos que manter o arquivo ace em JavaScript puro e usar a extensão `.js`.
 
-Under the hood, the `ace.js` file registers TS Node as an [ESM module loader hook](https://nodejs.org/api/module.html#customization-hooks) to execute the TypeScript code and imports the `bin/console.ts` file.
+Por baixo dos panos, o arquivo `ace.js` registra o TS Node como um [gancho do carregador de módulo ESM](https://nodejs.org/api/module.html#customization-hooks) para executar o código TypeScript e importa o arquivo `bin/console.ts`.
 
-## Help and list commands
+## Ajuda e lista de comandos
 
-You can view the list of available commands by running the ace entry point file without any arguments or using the `list` command.
+Você pode visualizar a lista de comandos disponíveis executando o arquivo de ponto de entrada ace sem argumentos ou usando o comando `list`.
 
 ```sh
 node ace
@@ -27,22 +27,19 @@ node ace list
 
 ![](./ace_help_screen.jpeg)
 
-You can view help for a single command by typing the command name with the `--help` flag.
+Você pode visualizar a ajuda para um único comando digitando o nome do comando com o sinalizador `--help`.
 
 ```sh
 node ace make:controller --help
 ```
 
 :::note
-
-The output of the help screen is formatted as per the [docopt](http://docopt.org/) standard.
-
+A saída da tela de ajuda é formatada de acordo com o padrão [docopt](http://docopt.org/).
 :::
 
+## Habilitando/desabilitando cores
 
-## Enabling/disabling colors
-
-Ace detects the CLI environment in which it is running and disables the colorful output if the terminal does not support colors. However, you can manually enable or disable colors using the `--ansi` flag.
+O Ace detecta o ambiente CLI no qual está sendo executado e desabilita a saída colorida se o terminal não suportar cores. No entanto, você pode habilitar ou desabilitar manualmente as cores usando o sinalizador `--ansi`.
 
 ```sh
 # Disable colors
@@ -52,9 +49,9 @@ node ace list --no-ansi
 node ace list --ansi
 ```
 
-## Creating command aliases
+## Criando aliases de comando
 
-Command aliases provide a convenience layer to define aliases for commonly used commands. For example, if you often create singular resourceful controllers, you may create an alias for it inside the `adonisrc.ts` file.
+Os aliases de comando fornecem uma camada de conveniência para definir aliases para comandos comumente usados. Por exemplo, se você costuma criar controladores singulares com recursos, pode criar um alias para ele dentro do arquivo `adonisrc.ts`.
 
 ```ts
 {
@@ -64,35 +61,35 @@ Command aliases provide a convenience layer to define aliases for commonly used 
 }
 ```
 
-Once the alias is defined, you can use the alias to run the command.
+Depois que o alias for definido, você pode usá-lo para executar o comando.
 
 ```sh
 node ace resource admin
 ```
 
-### How alias expansion works?
+### Como funciona a expansão de alias?
 
-- Every time you run a command, Ace will check for aliases inside the `commandsAliases` object. 
-- If an alias exists, the first segment (before the space) will be used to look up the command.
-- If a command exists, the rest of the alias value segments will be appended to the command name.
+- Toda vez que você executar um comando, o Ace verificará se há aliases dentro do objeto `commandsAliases`.
+- Se um alias existir, o primeiro segmento (antes do espaço) será usado para procurar o comando.
+- Se um comando existir, o restante dos segmentos de valor do alias serão anexados ao nome do comando.
 
-    For example, if you run the following command
+    Por exemplo, se você executar o seguinte comando
 
-    ```sh
+```sh
     node ace resource admin --help
     ```
-    
-    It will be expanded to
-    
-    ```sh
+
+    Ele será expandido para
+
+```sh
     make:controller --resource --singular admin --help
     ```
 
-## Running commands programmatically
+## Executando comandos programaticamente
 
-You can use the `ace` service to execute commands programmatically. The ace service is available after the application has been booted.
+Você pode usar o serviço `ace` para executar comandos programaticamente. O serviço ace fica disponível após o aplicativo ter sido inicializado.
 
-The `ace.exec` method accepts the command name as the first parameter and an array of command line arguments as the second parameter. For example:
+O método `ace.exec` aceita o nome do comando como o primeiro parâmetro e uma matriz de argumentos de linha de comando como o segundo parâmetro. Por exemplo:
 
 ```ts
 import ace from '@adonisjs/core/services/ace'
@@ -107,7 +104,7 @@ console.log(command.result)
 console.log(command.error)
 ```
 
-You may use the `ace.hasCommand` method to check if a command exists before executing it.
+Você pode usar o método `ace.hasCommand` para verificar se um comando existe antes de executá-lo.
 
 ```ts
 import ace from '@adonisjs/core/services/ace'

@@ -1,20 +1,20 @@
 ---
-summary: Learn about HTTP controllers in AdonisJS and how to organize route handlers inside dedicated files.
+resumo: Aprenda sobre controladores HTTP no AdonisJS e como organizar manipuladores de rota dentro de arquivos dedicados.
 ---
 
-# Controllers
+# Controladores
 
-HTTP controllers offer an abstraction layer to organize the route handlers inside dedicated files. Instead of expressing all the request handling logic within the routes file, you move it to controller classes.
+Os controladores HTTP oferecem uma camada de abstração para organizar os manipuladores de rota dentro de arquivos dedicados. Em vez de expressar toda a lógica de manipulação de solicitação dentro do arquivo de rotas, você a move para classes de controlador.
 
-The controllers are stored within the `./app/controllers` directory, representing each controller as a plain JavaScript class. You may create a new controller by running the following command.
+Os controladores são armazenados dentro do diretório `./app/controllers`, representando cada controlador como uma classe JavaScript simples. Você pode criar um novo controlador executando o seguinte comando.
 
-See also: [Make controller command](../references/commands.md#makecontroller)
+Veja também: [Comando Make controller](../references/commands.md#makecontroller)
 
 ```sh
 node ace make:controller users
 ```
 
-A newly created controller is scaffolded with the `class` declaration, and you may manually create methods inside it. For this example, let's create an `index` method and return an array of users.
+Um controlador recém-criado é estruturado com a declaração `class`, e você pode criar métodos manualmente dentro dele. Para este exemplo, vamos criar um método `index` e retornar uma matriz de usuários.
 
 ```ts
 // app/controllers/users_controller.ts
@@ -35,7 +35,7 @@ export default class UsersController {
 }
 ```
 
-Finally, let's bind this controller to a route. We will import the controller using the `#controllers` alias. The aliases are defined using [subpath imports feature of Node.js](../getting_started/folder_structure.md#the-sub-path-imports).
+Finalmente, vamos vincular este controlador a uma rota. Importaremos o controlador usando o alias `#controllers`. Os aliases são definidos usando o [recurso de importação de subcaminho do Node.js](../getting_started/folder_structure.md#the-sub-path-imports).
 
 ```ts
 // start/routes.ts
@@ -46,32 +46,32 @@ const UsersController = () => import('#controllers/users_controller')
 router.get('users', [UsersController, 'index'])
 ```
 
-As you might have noticed, we do not create an instance of the controller class and instead pass it directly to the route. Doing so allows AdonisJS to:
+Como você deve ter notado, não criamos uma instância da classe do controlador e, em vez disso, a passamos diretamente para a rota. Isso permite que o AdonisJS:
 
-- Create a fresh instance of the controller for each request.
-- And also construct the class using the [IoC container](../concepts/dependency_injection.md), which allows you to leverage automatic dependency injection.
+- Crie uma nova instância do controlador para cada solicitação.
+[Contêiner IoC](../concepts/dependency_injection.md), que permite que você aproveite a injeção automática de dependência.
 
-You can also notice that we are lazy-loading the controller using a function.
+Você também pode notar que estamos carregando o controlador lentamente usando uma função.
 
-:::warning
-Lazy-loading controllers are needed when you are using [HMR](../concepts/hmr.md).
+:::aviso
+Controladores de carregamento lento são necessários quando você está usando [HMR](../concepts/hmr.md).
 :::
 
-As your codebase grows, you will notice it starts impacting the boot time of your application. A common reason for that is importing all controllers inside the routes file.
+À medida que sua base de código cresce, você notará que isso começa a impactar o tempo de inicialização do seu aplicativo. Um motivo comum para isso é importar todos os controladores dentro do arquivo de rotas.
 
-Since controllers handle HTTP requests, they often import other modules like models, validators, or third-party packages. As a result, your routes file becomes this central point of importing the entire codebase.
+Como os controladores lidam com solicitações HTTP, eles geralmente importam outros módulos, como modelos, validadores ou pacotes de terceiros. Como resultado, seu arquivo de rotas se torna esse ponto central de importação de toda a base de código.
 
-Lazy-loading is as simple as moving the import statement behind a function and using dynamic imports.
+O carregamento lento é tão simples quanto mover a instrução de importação para trás de uma função e usar importações dinâmicas.
 
-:::tip
-You can use our [ESLint plugin](https://github.com/adonisjs/tooling-config/tree/main/packages/eslint-plugin) to enforce and automatically convert standard controller imports to lazy dynamic imports.
+:::dica
+Você pode usar nosso [plugin ESLint](https://github.com/adonisjs/tooling-config/tree/main/packages/eslint-plugin) para impor e converter automaticamente importações de controladores padrão em importações dinâmicas lentas.
 :::
 
-### Using magic strings
+### Usando strings mágicas
 
-Another way of lazy loading the controllers is to reference the controller and its method as a string. We call it a magic string because the string itself has no meaning, and it's just the router uses it to look up the controller and imports it behind the scenes.
+Outra maneira de carregar os controladores de forma preguiçosa é referenciar o controlador e seu método como uma string. Chamamos isso de string mágica porque a string em si não tem significado, e é apenas o roteador que a usa para procurar o controlador e importá-lo nos bastidores.
 
-In the following example, we do not have any import statements within the routes file, and we bind the controller import path + method as a string to the route.
+No exemplo a seguir, não temos nenhuma instrução de importação dentro do arquivo de rotas, e vinculamos o caminho de importação do controlador + método como uma string à rota.
 
 ```ts
 // start/routes.ts
@@ -81,15 +81,15 @@ import router from '@adonisjs/core/services/router'
 router.get('users', '#controllers/users_controller.index')
 ```
 
-The only downside of magic strings is they are not type-safe. If you make a typo in the import path, your editor will not give you any feedback.
+A única desvantagem das strings mágicas é que elas não são seguras quanto ao tipo. Se você cometer um erro de digitação no caminho de importação, seu editor não lhe dará nenhum feedback.
 
-On the upside, magic strings can clean up all the visual clutter inside your routes file because of the import statements.
+Por outro lado, as strings mágicas podem limpar toda a desordem visual dentro do seu arquivo de rotas por causa das instruções de importação.
 
-Using magic strings is subjective, and you can decide if you want to use them personally or as a team.
+Usar strings mágicas é subjetivo, e você pode decidir se deseja usá-las pessoalmente ou como uma equipe.
 
-## Single action controllers
+## Controladores de ação única
 
-AdonisJS provides a way to define a single action controller. It's an effective way to wrap up functionality into clearly named classes. To accomplish this, you need to define a handle method inside the controller.
+O AdonisJS fornece uma maneira de definir um controlador de ação única. É uma maneira eficaz de encapsular a funcionalidade em classes claramente nomeadas. Para fazer isso, você precisa definir um método handle dentro do controlador.
 
 ```ts
 // app/controllers/register_newsletter_subscription_controller.ts
@@ -101,7 +101,7 @@ export default class RegisterNewsletterSubscriptionController {
 }
 ```
 
-Then, you can reference the controller on the route with the following.
+Então, você pode referenciar o controlador na rota com o seguinte.
 
 ```ts
 // start/routes.ts
@@ -109,9 +109,9 @@ Then, you can reference the controller on the route with the following.
 router.post('newsletter/subscriptions', [RegisterNewsletterSubscriptionController])
 ```
 
-## HTTP context
+## Contexto HTTP
 
-The controller methods receive an instance of the [HttpContext](../concepts/http_context.md) class as the first argument. 
+Os métodos do controlador recebem uma instância da classe [HttpContext](../concepts/http_context.md) como o primeiro argumento.
 
 ```ts
 // app/controllers/users_controller.ts
@@ -125,11 +125,11 @@ export default class UsersController {
 }
 ```
 
-## Dependency injection
+## Injeção de dependência
 
-The controller classes are instantiated using the [IoC container](../concepts/dependency_injection.md); therefore, you can type-hint dependencies inside the controller constructor or a controller method.
+As classes do controlador são instanciadas usando o [contêiner IoC](../concepts/dependency_injection.md); portanto, você pode dar dicas de tipo para dependências dentro do construtor do controlador ou de um método do controlador.
 
-Given you have a `UserService` class, you can inject an instance of it inside the controller as follows.
+Dado que você tem uma classe `UserService`, você pode injetar uma instância dela dentro do controlador da seguinte forma.
 
 ```ts
 // app/services/user_service.ts
@@ -159,11 +159,11 @@ export default class UsersController {
 }
 ```
 
-### Method injection
+### Injeção de método
 
-You can inject an instance of `UserService` directly inside the controller method using [method injection](../concepts/dependency_injection.md#using-method-injection). In this case, you must apply the `@inject` decorator on the method name.
+Você pode injetar uma instância de `UserService` diretamente dentro do método do controlador usando [injeção de método](../concepts/dependency_injection.md#using-method-injection). Neste caso, você deve aplicar o decorador `@inject` no nome do método.
 
-The first parameter passed to the controller method is always the [`HttpContext`](../concepts/http_context.md). Therefore, you must type-hint the `UserService` as the second parameter.
+O primeiro parâmetro passado para o método do controlador é sempre o [`HttpContext`](../concepts/http_context.md). Portanto, você deve dar uma dica de tipo para `UserService` como o segundo parâmetro.
 
 ```ts
 // app/controllers/users_controller.ts
@@ -181,11 +181,11 @@ export default class UsersController {
 }
 ```
 
-### Tree of dependencies
+### Árvore de dependências
 
-Automatic resolution of dependencies is not only limited to the controller. Any class injected inside the controller can also type-hint dependencies, and the IoC container will construct the tree of dependencies for you.
+A resolução automática de dependências não se limita apenas ao controlador. Qualquer classe injetada dentro do controlador também pode dar uma dica de tipo para dependências, e o contêiner IoC construirá a árvore de dependências para você.
 
-For example, let's modify the `UserService` class to accept an instance of the [HttpContext](../concepts/http_context.md) as a constructor dependency.
+Por exemplo, vamos modificar a classe `UserService` para aceitar uma instância do [HttpContext](../concepts/http_context.md) como uma dependência do construtor.
 
 ```ts
 // app/services/user_service.ts
@@ -206,15 +206,15 @@ export class UserService {
 }
 ```
 
-After this change, the `UserService` will automatically receive an instance of the `HttpContext` class. Also, no changes are required in the controller.
+Após essa alteração, o `UserService` receberá automaticamente uma instância da classe `HttpContext`. Além disso, nenhuma alteração é necessária no controlador.
 
-## Resource-driven controllers
+## Controladores orientados a recursos
 
-For conventional [RESTful](https://en.wikipedia.org/wiki/Representational_state_transfer) applications, a controller should only be designed to manage a single resource. A resource is usually an entity in your application like a **User resource** or a **Post resource**.
+Para aplicativos convencionais [RESTful](https://en.wikipedia.org/wiki/Representational_state_transfer), um controlador deve ser projetado apenas para gerenciar um único recurso. Um recurso geralmente é uma entidade em seu aplicativo, como um **recurso de usuário** ou um **recurso de postagem**.
 
-Let's take the example of a Post resource and define the endpoints to handle its CRUD operations. We will start by creating a controller first.
+Vamos pegar o exemplo de um recurso de postagem e definir os pontos de extremidade para lidar com suas operações CRUD. Começaremos criando um controlador primeiro.
 
-You may create a controller for a resource using the `make:controller` ace command. The `--resource` flag scaffolds the controller with the following methods.
+Você pode criar um controlador para um recurso usando o comando ace `make:controller`. O sinalizador `--resource` cria o scaffold do controlador com os seguintes métodos.
 
 ```sh
 node ace make:controller posts --resource
@@ -267,7 +267,7 @@ export default class PostsController {
 }
 ```
 
-Next, let's bind the `PostsController` to a resourceful route using the `router.resource` method. The method accepts the resource name as the first argument and the controller reference as the second argument.
+Em seguida, vamos vincular o `PostsController` a uma rota com recursos usando o método `router.resource`. O método aceita o nome do recurso como o primeiro argumento e a referência do controlador como o segundo argumento.
 
 ```ts
 // title: start/routes.ts
@@ -277,15 +277,15 @@ const PostsController = () => import('#controllers/posts_controller')
 router.resource('posts', PostsController)
 ```
 
-Following is the list of routes registered by the `resource` method. You can view this list by running `node ace list:routes` command.
+A seguir está a lista de rotas registradas pelo método `resource`. Você pode visualizar essa lista executando o comando `node ace list:routes`.
 
 ![](./post_resource_routes_list.png)
 
-### Nested resources
+### Recursos aninhados
 
-Nested resources can be created by specifying the parent and the child resource name separated using the dot `.` notation.
+Recursos aninhados podem ser criados especificando o nome do recurso pai e filho separados usando a notação de ponto `.`.
 
-In the following example, we create routes for the `comments` resource nested under the `posts` resource.
+No exemplo a seguir, criamos rotas para o recurso `comments` aninhado sob o recurso `posts`.
 
 ```ts
 router.resource('posts.comments', CommentsController)
@@ -293,16 +293,16 @@ router.resource('posts.comments', CommentsController)
 
 ![](./post_comments_resource_routes_list.png)
 
-### Shallow resources
+### Recursos superficiais
 
-When using nested resources, the routes for the child resource are always prefixed with the parent resource name and its id. For example:
+Ao usar recursos aninhados, as rotas para o recurso filho são sempre prefixadas com o nome do recurso pai e seu id. Por exemplo:
 
-- The `/posts/:post_id/comments` route displays a list of all the comments for a given post.
-- And, the `/posts/:post_id/comments/:id` route displays a single comment by its id.
+- A rota `/posts/:post_id/comments` exibe uma lista de todos os comentários para um determinado post.
+- E a rota `/posts/:post_id/comments/:id` exibe um único comentário por seu id.
 
-The existence of `/posts/:post_id` in the second route is irrelevant, as you can look up the comment by its id.
+A existência de `/posts/:post_id` na segunda rota é irrelevante, pois você pode procurar o comentário por seu id.
 
-A shallow resource registers its routes by keeping the URL structure flat (wherever possible). This time, let's register the `posts.comments` as a shallow resource.
+Um recurso superficial registra suas rotas mantendo a estrutura de URL plana (sempre que possível). Desta vez, vamos registrar `posts.comments` como um recurso superficial.
 
 ```ts
 router.shallowResource('posts.comments', CommentsController)
@@ -310,46 +310,46 @@ router.shallowResource('posts.comments', CommentsController)
 
 ![](./shallow_routes_list.png)
 
-### Naming resource routes
+### Nomeando rotas de recursos
 
-The routes created using the `router.resource` method are named after the resource name and the controller action. First, we convert the resource name to snake case and concatenate the action name using the dot `.` separator.
+As rotas criadas usando o método `router.resource` são nomeadas após o nome do recurso e a ação do controlador. Primeiro, convertemos o nome do recurso para snake case e concatenamos o nome da ação usando o separador de ponto `.`.
 
-| Resource         | Action name | Route name               |
+| Recurso          | Nome da ação | Nome da rota            |
 |------------------|-------------|--------------------------|
 | posts            | index       | `posts.index`            |
 | userPhotos       | index       | `user_photos.index`      |
 | group-attributes | show        | `group_attributes.index` |
 
-You can rename the prefix for all the routes using the `resource.as` method. In the following example, we rename the `group_attributes.index` route name to `attributes.index`.
+Você pode renomear o prefixo para todas as rotas usando o método `resource.as`. No exemplo a seguir, renomeamos o nome da rota `group_attributes.index` para `attributes.index`.
 
 ```ts
 // title: start/routes.ts
 router.resource('group-attributes', GroupAttributesController).as('attributes')
 ```
 
-The prefix given to the `resource.as` method is transformed to snake\_ case. If you want, you can turn off the transformation, as shown below.
+O prefixo dado ao método `resource.as` é transformado para snake\_ case. Se desejar, você pode desativar a transformação, conforme mostrado abaixo.
 
 ```ts
 // title: start/routes.ts
 router.resource('group-attributes', GroupAttributesController).as('groupAttributes', false)
 ```
 
-### Registering API only routes
+### Registrando rotas somente de API
 
-When creating an API server, the forms to create and update a resource are rendered by a front-end client or a mobile app. Therefore, creating routes for these endpoints is redundant.
+Ao criar um servidor de API, os formulários para criar e atualizar um recurso são renderizados por um cliente front-end ou um aplicativo móvel. Portanto, criar rotas para esses endpoints é redundante.
 
-You can use the `resource.apiOnly` method to remove the `create` and the `edit` routes. As a result, only five routes will be created.
+Você pode usar o método `resource.apiOnly` para remover as rotas `create` e `edit`. Como resultado, apenas cinco rotas serão criadas.
 
 ```ts
 // title: start/routes.ts
 router.resource('posts', PostsController).apiOnly()
 ```
 
-### Registering only specific routes
+### Registrando apenas rotas específicas
 
-To register only specific routes, you may use the `resource.only` or the `resource.except` methods.
+Para registrar apenas rotas específicas, você pode usar os métodos `resource.only` ou `resource.except`.
 
-The `resource.only` method accepts an array of action names and removes all other routes except those mentioned. In the following example, only the routes for the `index`, `store`, and `destroy` actions will be registered.
+O método `resource.only` aceita uma matriz de nomes de ação e remove todas as outras rotas, exceto as mencionadas. No exemplo a seguir, apenas as rotas para as ações `index`, `store` e `destroy` serão registradas.
 
 ```ts
 // title: start/routes.ts
@@ -358,7 +358,7 @@ router
   .only(['index', 'store', 'destroy'])
 ```
 
-The `resource.except` method is the opposite of the `only` method, registering all the routes except the mentioned one's.
+O método `resource.except` é o oposto do método `only`, registrando todas as rotas, exceto as mencionadas.
 
 ```ts
 // title: start/routes.ts
@@ -367,11 +367,11 @@ router
   .except(['destroy'])
 ```
 
-### Renaming resource params
+### Renomeando parâmetros de recursos
 
-The routes generated by the `router.resource` method use `id` for the param name. For example, `GET /posts/:id` to view a single post, and `DELETE /post/:id` to delete the post.
+As rotas geradas pelo método `router.resource` usam `id` para o nome do parâmetro. Por exemplo, `GET /posts/:id` para visualizar uma única postagem e `DELETE /post/:id` para excluir a postagem.
 
-You can rename the param from `id` to something else using the `resource.params` method.
+Você pode renomear o parâmetro de `id` para outra coisa usando o método `resource.params`.
 
 ```ts
 // title: start/routes.ts
@@ -380,16 +380,16 @@ router
   .params({ posts: 'post' })
 ```
 
-The above change will generate the following routes _(showing partial list)_.
+A alteração acima gerará as seguintes rotas _(mostrando lista parcial)_.
 
-| HTTP method | Route               | Controller method |
+| Método HTTP | Rota | Método do controlador |
 |-------------|---------------------|-------------------|
 | GET         | `/posts/:post`      | show              |
 | GET         | `/posts/:post/edit` | edit              |
 | PUT         | `/posts/:post`      | update            |
 | DELETE      | `/posts/:post`      | destroy           |
 
-You can also rename params when using nested resources.
+Você também pode renomear parâmetros ao usar recursos aninhados.
 
 ```ts
 // title: start/routes.ts
@@ -401,8 +401,8 @@ router
   })
 ```
 
-### Assigning middleware to resource routes
-You may assign middleware to routes register by a resource using the `resource.use` method. The method accepts an array of action names and the middleware to assign to them. For example:
+### Atribuindo middleware a rotas de recursos
+Você pode atribuir middleware a rotas registradas por um recurso usando o método `resource.use`. O método aceita uma matriz de nomes de ação e o middleware para atribuir a eles. Por exemplo:
 
 ```ts
 // title: start/routes.ts
@@ -417,7 +417,7 @@ router
   )
 ```
 
-You may use the wildcard (*) keyword to assign a middleware to all the routes.
+Você pode usar a palavra-chave curinga (*) para atribuir um middleware a todas as rotas.
 
 ```ts
 // title: start/routes.ts
@@ -426,7 +426,7 @@ router
   .use('*', middleware.auth())
 ```
 
-Finally, you may call the `.use` method multiple times to assign multiple middleware. For example:
+Finalmente, você pode chamar o método `.use` várias vezes para atribuir vários middlewares. Por exemplo:
 
 ```ts
 // title: start/routes.ts

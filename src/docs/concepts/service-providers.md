@@ -1,20 +1,20 @@
 ---
-summary: Service providers are plain JavaScript classes with lifecycle methods to perform actions during different phases of the application.
+resumo: Provedores de serviços são classes JavaScript simples com métodos de ciclo de vida para executar ações durante diferentes fases do aplicativo.
 ---
 
-# Service providers
+# Provedores de serviços
 
-Services providers are plain JavaScript classes with lifecycle methods to perform actions during different phases of the application.
+Provedores de serviços são classes JavaScript simples com métodos de ciclo de vida para executar ações durante diferentes fases do aplicativo.
 
-A service provider can register [bindings into the container](../concepts/dependency_injection.md#container-bindings), [extend existing bindings](../concepts/dependency_injection.md#container-events), or run actions after the HTTP server starts.
+Um provedor de serviços pode registrar [vinculações no contêiner](../concepts/dependency_injection.md#container-bindings), [estender vinculações existentes](../concepts/dependency_injection.md#container-events) ou executar ações após o servidor HTTP iniciar.
 
-Service providers are the entry point to an AdonisJS application with the ability to modify the application state before it is considered ready. **It is mainly used by external packages to hook into the application lifecycle**.
+Provedores de serviços são o ponto de entrada para um aplicativo AdonisJS com a capacidade de modificar o estado do aplicativo antes que ele seja considerado pronto. **Ele é usado principalmente por pacotes externos para se conectar ao ciclo de vida do aplicativo**.
 
 :::note
-If you only want to inject dependencies into one of your classes, you can use the [dependency injection](../concepts/dependency_injection.md) feature.
+Se você deseja injetar dependências apenas em uma de suas classes, pode usar o recurso [injeção de dependência](../concepts/dependency_injection.md).
 :::
 
-The providers are registered inside the `adonisrc.ts` file under the `providers` array. The value is a function to lazily import the service provider
+Os provedores são registrados dentro do arquivo `adonisrc.ts` sob o array `providers`. O valor é uma função para importar preguiçosamente o provedor de serviços
 
 ```ts
 {
@@ -25,7 +25,7 @@ The providers are registered inside the `adonisrc.ts` file under the `providers`
 }
 ```
 
-By default, a provider is loaded in all the runtime environments. However, you can limit the provider to run in specific environments.
+Por padrão, um provedor é carregado em todos os ambientes de tempo de execução. No entanto, você pode limitar o provedor para executar em ambientes específicos.
 
 ```ts
 {
@@ -39,13 +39,13 @@ By default, a provider is loaded in all the runtime environments. However, you c
 }
 ```
 
-## Writing service providers
+## Escrevendo provedores de serviços
 
-Service providers are stored inside the `providers` directory of your app. Alternatively, you can use the `node ace make:provider app` command.
+Os provedores de serviços são armazenados dentro do diretório `providers` do seu aplicativo. Como alternativa, você pode usar o comando `node ace make:provider app`.
 
-The provider module must have an `export default` statement returning the provider class. The class constructor receives an instance of the [Application](./application.md) class.
+O módulo do provedor deve ter uma instrução `export default` retornando a classe do provedor. O construtor da classe recebe uma instância da classe [Application](./application.md).
 
-See also: [Make provider command](../references/commands.md#makeprovider)
+Veja também: [Comando Make provider](../references/commands.md#makeprovider)
 
 ```ts
 import { ApplicationService } from '@adonisjs/core/types'
@@ -56,7 +56,7 @@ export default class AppProvider {
 }
 ```
 
-Following are the lifecycle methods you can implement to perform different actions.
+A seguir estão os métodos de ciclo de vida que você pode implementar para executar diferentes ações.
 
 ```ts
 export default class AppProvider {
@@ -79,9 +79,9 @@ export default class AppProvider {
 
 ### `register`
 
-The `register` method is called after an instance of the provider class is created. The `register` method can register bindings within the IoC container. 
+O método `register` é chamado após uma instância da classe provider ser criada. O método `register` pode registrar ligações dentro do contêiner IoC.
 
-The `register` method is synchronous, so you cannot use Promises inside this method.
+O método `register` é síncrono, então você não pode usar Promises dentro deste método.
 
 ```ts
 export default class AppProvider {
@@ -95,7 +95,7 @@ export default class AppProvider {
 
 ### `boot`
 
-The `boot` method is called after all the bindings have been registered with the IoC container. Inside this method, you can resolve bindings from the container to extend/mutate them.
+O método `boot` é chamado após todas as ligações terem sido registradas com o contêiner IoC. Dentro deste método, você pode resolver ligações do contêiner para estendê-las/mutá-las.
 
 ```ts
 export default class AppProvider {
@@ -108,7 +108,7 @@ export default class AppProvider {
 }
 ```
 
-It is a good practice to extend bindings when they are resolved from the container. For example, you can use the `resolving` hook to add custom rules to the validator.
+É uma boa prática estender as ligações quando elas são resolvidas do contêiner. Por exemplo, você pode usar o hook `resolving` para adicionar regras personalizadas ao validador.
 
 ```ts
 async boot() {
@@ -120,29 +120,29 @@ async boot() {
 
 ### `start`
 
-The `start` method is called after the `boot` and before the `ready ` method. It allows you to perform actions that the `ready` hook actions might need.
+O método `start` é chamado depois do `boot` e antes do método `ready`. Ele permite que você execute ações que as ações do hook `ready` podem precisar.
 
 ### `ready`
 
-The `ready` method gets called at different stages based on the application's environment.
+O método `ready` é chamado em diferentes estágios com base no ambiente do aplicativo.
 
 <table>
-    <tr>
-        <td width="100"><code> web </code></td>
-        <td>The <code>ready</code> method is called after the HTTP server has been started and is ready to accept requests.</td>
-    </tr>
-    <tr>
-        <td width="100"><code>console</code></td>
-        <td>The <code> ready</code> method is called just before the <code>run</code> method of the main command.</td>
-    </tr>
-    <tr>
-        <td width="100"><code>test</code></td>
-        <td>The <code>ready</code> method is called just before running all the tests. However, the test files are imported before the <code>ready</code> method.</td>
-    </tr>
-    <tr>
-        <td width="100"><code>repl</code></td>
-        <td>The <code>ready</code> method is called before the REPL prompt is displayed on the terminal.</td>
-    </tr>
+<tr>
+<td width="100"><code> web </code></td>
+<td>O método <code>ready</code> é chamado depois que o servidor HTTP é iniciado e está pronto para aceitar solicitações.</td>
+</tr>
+<tr>
+<td width="100"><code>console</code></td>
+<td>O método <code>ready</code> é chamado logo antes do método <code>run</code> do comando principal.</td>
+</tr>
+<tr>
+<td width="100"><code>test</code></td>
+<td>O método <code>ready</code> é chamado logo antes de executar todos os testes. No entanto, os arquivos de teste são importados antes do método <code>ready</code>.</td>
+</tr>
+<tr>
+<td width="100"><code>repl</code></td>
+<td>O método <code>ready</code> é chamado antes que o prompt REPL seja exibido no terminal.</td>
+</tr>
 </table>
 
 ```ts
@@ -165,9 +165,9 @@ export default class AppProvider {
 
 ### `shutdown`
 
-The `shutdown` method is called when AdonisJS is in the middle of gracefully exiting the application.
+O método `shutdown` é chamado quando o AdonisJS está no meio de sair do aplicativo normalmente.
 
-The event of exiting the application depends upon the environment in which the app is running and how the application process started. Please read the [application lifecycle guide](./application_lifecycle.md) to know more about it.
+O evento de sair do aplicativo depende do ambiente em que o aplicativo está sendo executado e de como o processo do aplicativo foi iniciado. Leia o [guia do ciclo de vida do aplicativo](./application_lifecycle.md) para saber mais sobre ele.
 
 ```ts
 export default class AppProvider {

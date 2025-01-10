@@ -1,16 +1,16 @@
 ---
-summary: Explore multiple ways of debugging your AdonisJS applications, from using the VSCode debugger to using Dump and Die and viewing the debug logs of the framework.
+resumo: Explore várias maneiras de depurar seus aplicativos AdonisJS, desde o uso do depurador VSCode até o uso do Dump and Die e a visualização dos logs de depuração do framework.
 ---
 
-# Debugging
-In this guide, we will explore multiple ways of debugging your AdonisJS applications, from using the VSCode debugger to using Dump and Die and viewing the debug logs of the framework.
+# Depuração
+Neste guia, exploraremos várias maneiras de depurar seus aplicativos AdonisJS, desde o uso do depurador VSCode até o uso do Dump and Die e a visualização dos logs de depuração do framework.
 
-## Debug using the VSCode debugger
-Debugging AdonisJS applications using the VSCode debugger is straightforward. You only need to create a `.vscode/launch.json` file and use the Node.js debugger.
+## Depuração usando o depurador VSCode
+A depuração de aplicativos AdonisJS usando o depurador VSCode é simples. Você só precisa criar um arquivo `.vscode/launch.json` e usar o depurador Node.js.
 
-In the following example, we define a configuration to start the AdonisJS development server in the debug mode and then attach the VSCode debugger to it. 
+No exemplo a seguir, definimos uma configuração para iniciar o servidor de desenvolvimento AdonisJS no modo de depuração e, em seguida, anexar o depurador VSCode a ele.
 
-* See also: [VSCode Debugging Docs](https://code.visualstudio.com/docs/editor/debugging)
+[Documentos de depuração do VSCode](https://code.visualstudio.com/docs/editor/debugging)
 
 ```json
 // title: .vscode/launch.json
@@ -29,17 +29,17 @@ In the following example, we define a configuration to start the AdonisJS develo
 }
 ```
 
-To start debugging:
+Para iniciar a depuração:
 
-- Open the Command Palette with `(CMD + Shift + P)`.
-- Search for **Debug: Select and Start Debugging**. You will find a list of launch options from the `.vscode/launch.json` file. 
-- Select the **Dev server** option to run the HTTP server with the VSCode debugger.
+- Abra a Paleta de comandos com `(CMD + Shift + P)`.
+- Pesquise por **Depurar: selecionar e iniciar a depuração**. Você encontrará uma lista de opções de inicialização no arquivo `.vscode/launch.json`.
+- Selecione a opção **Servidor de desenvolvimento** para executar o servidor HTTP com o depurador do VSCode.
 
 ![](./debug-dev-server.png)
 
-### Debugging tests
+### Testes de depuração
 
-You may define another launch option to run tests in the debug mode.
+Você pode definir outra opção de inicialização para executar testes no modo de depuração.
 
 ```json
 // title: .vscode/launch.json
@@ -68,12 +68,12 @@ You may define another launch option to run tests in the debug mode.
 }
 ```
 
-### Debugging all other Ace commands
-Defining individual launch options for every ace command is not a practical option. Therefore, you can define an `attach` configuration within the `.vscode/launch.json` file.
+### Depurando todos os outros comandos Ace
+Definir opções de inicialização individuais para cada comando ace não é uma opção prática. Portanto, você pode definir uma configuração `attach` dentro do arquivo `.vscode/launch.json`.
 
-In `attach` mode, [VSCode will attach its debugger](https://code.visualstudio.com/blogs/2018/07/12/introducing-logpoints-and-auto-attach#_autoattaching-to-node-processes) with an already running Node.js process, given the process was started with the `--inspect` flag from within the VSCode integrated terminal.
+No modo `attach`, [o VSCode anexará seu depurador](https://code.visualstudio.com/blogs/2018/07/12/introducing-logpoints-and-auto-attach#_autoattaching-to-node-processes) com um processo Node.js já em execução, dado que o processo foi iniciado com o sinalizador `--inspect` de dentro do terminal integrado do VSCode.
 
-Let's start by modifying the `.vscode/launch.json` file and adding the following configuration to it.
+Vamos começar modificando o arquivo `.vscode/launch.json` e adicionando a seguinte configuração a ele.
 
 ```json
 // title: .vscode/launch.json
@@ -110,24 +110,24 @@ Let's start by modifying the `.vscode/launch.json` file and adding the following
 }
 ```
 
-To start debugging in attach mode:
+Para iniciar a depuração no modo de anexação:
 
-- Open the Command Palette with `(CMD + Shift + P)`.
-- Search for **Debug: Select and Start Debugging**. You will find a list of launch options from the `.vscode/launch.json` file.
-- Select the **Attach Program** option.
-- Run an Ace command with the `--inspect` flag. For example:
-  ```sh
+- Abra a Paleta de Comandos com `(CMD + Shift + P)`.
+- Procure por **Depurar: Selecionar e Iniciar Depuração**. Você encontrará uma lista de opções de inicialização no arquivo `.vscode/launch.json`.
+- Selecione a opção **Attach Program**.
+- Execute um comando Ace com o sinalizador `--inspect`. Por exemplo:
+```sh
   node --inspect ace migration:run
   ```
 
 ::video{url="https://res.cloudinary.com/adonis-js/video/upload/v1726932262/n91xtzqavpdoro79lnza.mp4" controls="true"}
 
 
-### Debugging Edge templates
-You can debug Edge templates similar to your application code written in TypeScript. However, with Edge, you cannot use the breakpoints provided by VSCode. Instead, you must use the `@debugger` tag to define an in-code breakpoint.
+### Depurando modelos Edge
+Você pode depurar modelos Edge semelhantes ao código do seu aplicativo escrito em TypeScript. No entanto, com o Edge, você não pode usar os pontos de interrupção fornecidos pelo VSCode. Em vez disso, você deve usar a tag `@debugger` para definir um ponto de interrupção no código.
 
 :::note
-The debugger will show the compiled output for Edge templates.
+O depurador mostrará a saída compilada para modelos Edge.
 :::
 
 ```edge
@@ -135,9 +135,9 @@ The debugger will show the compiled output for Edge templates.
 ```
 
 ## Dump and Die
-Dump and Die (known as `dd`) is similar to the most loved debugging technique, `console.log`. However, the `dd` helper will halt the execution by throwing an exception and displaying the output inside the browser or the terminal.
+Dump and Die (conhecido como `dd`) é semelhante à técnica de depuração mais amada, `console.log`. No entanto, o auxiliar `dd` interromperá a execução lançando uma exceção e exibindo a saída dentro do navegador ou do terminal.
 
-The output is rendered as an HTML document when you use the `dd` helper during an HTTP request. Otherwise, the output is displayed within the terminal.
+A saída é renderizada como um documento HTML quando você usa o auxiliar `dd` durante uma solicitação HTTP. Caso contrário, a saída é exibida dentro do terminal.
 
 ```ts
 // title: start/routes.ts
@@ -159,19 +159,19 @@ router.get('/users', async () => {
 })
 ```
 
-The output of `dd` slightly differs from what you see when using `console.log`. 
+A saída de `dd` difere um pouco do que você vê ao usar `console.log`.
 
-- You can see the source code location where the value was dumped.
-- You can view static properties of a class and prototype properties of an object.
-- By default, nested values up to 10 levels deep are displayed.
-- Support for multiple themes for the HTML output. You can choose between `nightOwl`, `catppuccin`, and `minLight`.
+- Você pode ver o local do código-fonte onde o valor foi despejado.
+- Você pode visualizar propriedades estáticas de uma classe e propriedades de protótipo de um objeto.
+- Por padrão, valores aninhados de até 10 níveis de profundidade são exibidos.
+- Suporte para vários temas para a saída HTML. Você pode escolher entre `nightOwl`, `catppuccin` e `minLight`.
 
-![Console output](./dd-cli.png)
+![Saída do console](./dd-cli.png)
 
-![Browser output](./browser-dd.png)
+![Saída do navegador](./browser-dd.png)
 
-### Edge helpers for debugging
-You can use the `dd` helper within Edge templates via the `@dd` tag. Additionally, you can use the `@dump` helper, which doesn't throw an exception and continues rendering the rest of the template.
+### Ajudantes do Edge para depuração
+Você pode usar o ajudante `dd` dentro dos modelos do Edge por meio da tag `@dd`. Além disso, você pode usar o ajudante `@dump`, que não gera uma exceção e continua renderizando o restante do modelo.
 
 ```edge
 {{-- Dump template state and die --}}
@@ -181,7 +181,7 @@ You can use the `dd` helper within Edge templates via the `@dd` tag. Additionall
 @dump(state)
 ```
 
-When using the `@dump` helper make sure there is an [EdgeJS Stack](https://edgejs.dev/docs/stacks) named "dumper" on the page. The script and styles used by the `@dump` helper will be written to this stack for inclusion in the final HTML output.
+Ao usar o auxiliar `@dump`, certifique-se de que haja uma [pilha EdgeJS](https://edgejs.dev/docs/stacks) chamada "dumper" na página. O script e os estilos usados ​​pelo auxiliar `@dump` serão gravados nesta pilha para inclusão na saída HTML final.
 
 ```edge
 <!DOCTYPE html>
@@ -197,8 +197,8 @@ When using the `@dump` helper make sure there is an [EdgeJS Stack](https://edgej
 </html>
 ```
 
-### Dumper settings
-You can configure the dumper settings inside the `config/app.ts` file. This file should export a `dumper` configuration object, as shown below.
+### Configurações do Dumper
+Você pode configurar as configurações do dumper dentro do arquivo `config/app.ts`. Este arquivo deve exportar um objeto de configuração `dumper`, conforme mostrado abaixo.
 
 ```ts
 // title: config/app.ts
@@ -235,50 +235,50 @@ export const dumper = dumperConfig({
 
 ### `showHidden`
 
-When set to `true`, the non-enumerable properties of an object will be processed. **Default: `false`**
+Quando definido como `true`, as propriedades não enumeráveis ​​de um objeto serão processadas. **Padrão: `false`**
 
 ### `depth`
 
-The depth at which to stop parsing nested values. The depth is shared among all tree-like data structures. For example, Objects, Arrays, Maps, and Sets. **Default: `5`**
+A profundidade na qual parar de analisar valores aninhados. A profundidade é compartilhada entre todas as estruturas de dados semelhantes a árvores. Por exemplo, Objetos, Matrizes, Mapas e Conjuntos. **Padrão: `5`**
 
 ### `inspectObjectPrototype`
 
-Inspect prototype properties of an object. The non-enumerable properties of the prototype are included by default. **Default: `'unless-plain-object'`**.
+Inspecione propriedades de protótipo de um objeto. As propriedades não enumeráveis ​​do protótipo são incluídas por padrão. **Padrão: `'unless-plain-object'`**.
 
-- When set to `true`, the prototype properties will be processed for all the objects.
-- The prototype properties are never processed when set to `false`.
-- When set to `'unless-plain-object'`, the prototype properties of class instances will be processed.
+- Quando definido como `'true`, as propriedades de protótipo serão processadas para todos os objetos.
+- As propriedades de protótipo nunca são processadas quando definidas como `false`.
+- Quando definido como `'unless-plain-object'`, as propriedades de protótipo de instâncias de classe serão processadas.
 
 ### `inspectArrayPrototype`
 
-Inspect prototype properties of an Array. **Default: `false`**.
+Inspecione propriedades de protótipo de uma Matriz. **Padrão: `false`**.
 
 ### `inspectStaticMembers`
 
-Inspect static members of a class. Even though functions and classes are technically the same, this config only applies to functions defined using the `[class]` keyword. **Default: `false`**.
+Inspecione membros estáticos de uma classe. Embora funções e classes sejam tecnicamente as mesmas, esta configuração se aplica somente a funções definidas usando a palavra-chave `[class]`. **Padrão: `false`**.
 
 ### `maxArrayLength`
 
-Maximum number of members to process for `Arrays`, `Maps`, and `Sets`. **Default: `100`**.
+Número máximo de membros a serem processados ​​para `Arrays`, `Maps` e `Sets`. **Padrão: `100`**.
 
 ### `maxStringLength`
 
-Maximum number of characters to display for a string. **Default: `1000`**.
+Número máximo de caracteres a serem exibidos para uma string. **Padrão: `1000`**.
 
 ### `collapse`
 
-An array of object constructor names that should not be further inspected.
+Uma matriz de nomes de construtores de objetos que não devem ser inspecionados posteriormente.
 
-## Framework debug logs
-You can view the framework debug logs using the `NODE_DEBUG` environment variable. The `NODE_DEBUG` flag is supported by the Node.js runtime, and you may use it to view logs for one or more modules using the module name.
+## Logs de depuração do framework
+Você pode visualizar os logs de depuração do framework usando a variável de ambiente `NODE_DEBUG`. O sinalizador `NODE_DEBUG` é suportado pelo tempo de execução do Node.js, e você pode usá-lo para visualizar logs de um ou mais módulos usando o nome do módulo.
 
-For example, you can view logs for all AdonisJS packages using the `NODE_DEBUG="adonisjs:*"` value.
+Por exemplo, você pode visualizar logs para todos os pacotes AdonisJS usando o valor `NODE_DEBUG="adonisjs:*"`.
 
 ```sh
 NODE_DEBUG="adonisjs:*" node ace serve --hmr
 ```
 
-Similarly, you may use the `NODE_DEBUG` environment variable to view logs from the Node.js native modules like `fs`, `net`, `module`, and so on.
+Da mesma forma, você pode usar a variável de ambiente `NODE_DEBUG` para visualizar logs dos módulos nativos do Node.js como `fs`, `net`, `module` e assim por diante.
 
 ```sh
 NODE_DEBUG="adonisjs:*,net,fs" node ace serve --hmr

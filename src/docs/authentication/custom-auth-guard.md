@@ -1,27 +1,27 @@
 ---
-summary: Learn to create a custom authentication guard for AdonisJS.
+resumo: Aprenda a criar um guarda de autenticação personalizado para AdonisJS.
 ---
 
-# Creating a custom auth guard
+# Criando um guarda de autenticação personalizado
 
-The auth package enables you to create custom authentication guards for use cases not served by the built-in guards. In this guide, we will create a guard for using JWT tokens for authentication.
+O pacote auth permite que você crie guardas de autenticação personalizados para casos de uso não atendidos pelos guardas integrados. Neste guia, criaremos um guarda para usar tokens JWT para autenticação.
 
-The authentication guard revolves around the following concepts.
+O guarda de autenticação gira em torno dos seguintes conceitos.
 
-- **User Provider**: Guards must be user agnostic. They should not hardcode the functions to query and find users from the database. Instead, a guard should rely on a User Provider and accept its implementation as a constructor dependency.
+- **Provedor de usuário**: os guardas devem ser independentes do usuário. Eles não devem codificar as funções para consultar e encontrar usuários no banco de dados. Em vez disso, um guarda deve confiar em um Provedor de usuário e aceitar sua implementação como uma dependência do construtor.
 
-- **Guard implementation**: The guard implementation must adhere to the `GuardContract` interface. This interface describes the APIs needed to integrate the guard with the rest of the Auth layer.
+- **Implementação do guarda**: a implementação do guarda deve aderir à interface `GuardContract`. Esta interface descreve as APIs necessárias para integrar o guarda com o restante da camada Auth.
 
-## Creating the `UserProvider` interface
+## Criando a interface `UserProvider`
 
-A guard is responsible for defining the `UserProvider` interface and the methods/properties it should contain. For example, the UserProvider accepted by the [Session guard](https://github.com/adonisjs/auth/blob/develop/modules/session_guard/types.ts#L153-L166) is far simpler than the UserProvider accepted by the [Access tokens guard](https://github.com/adonisjs/auth/blob/develop/modules/access_tokens_guard/types.ts#L192-L222).
+Um guarda é responsável por definir a interface `UserProvider` e os métodos/propriedades que ela deve conter. Por exemplo, o UserProvider aceito pelo [Session guard](https://github.com/adonisjs/auth/blob/develop/modules/session_guard/types.ts#L153-L166) é muito mais simples do que o UserProvider aceito pelo [Access tokens guard](https://github.com/adonisjs/auth/blob/develop/modules/access_tokens_guard/types.ts#L192-L222).
 
-So, there is no need to create User Providers that satisfy every guard implementation. Each guard can dictate the requirements for the User provider they accept.
+Portanto, não há necessidade de criar User Providers que satisfaçam todas as implementações de guarda. Cada guarda pode ditar os requisitos para o User provider que aceita.
 
-For this example, we need a provider to look up users inside the database using the `user ID`. We do not care which database is used or how the query is performed. That's the responsibility of the developer implementing the User provider.
+Para este exemplo, precisamos de um provider para procurar usuários dentro do banco de dados usando o `user ID`. Não nos importamos com qual banco de dados é usado ou como a consulta é realizada. Essa é a responsabilidade do desenvolvedor que implementa o User provider.
 
 :::note
-All the code we will write in this guide can initially live inside a single file stored within the `app/auth/guards` directory.
+Todo o código que escreveremos neste guia pode inicialmente viver dentro de um único arquivo armazenado no diretório `app/auth/guards`.
 :::
 
 ```ts
@@ -68,23 +68,23 @@ export interface JwtUserProviderContract<RealUser> {
 }
 ```
 
-In the above example, the `JwtUserProviderContract` interface accepts a generic user property named `RealUser`. Since this interface does not know what the actual user (the one we fetch from the database) looks like, it accepts it as a generic. For example:
+No exemplo acima, a interface `JwtUserProviderContract` aceita uma propriedade de usuário genérica chamada `RealUser`. Como essa interface não sabe como é o usuário real (aquele que buscamos no banco de dados), ela o aceita como genérico. Por exemplo:
 
-- An implementation using Lucid models will return an instance of the Model. Hence, the value of `RealUser` will be that instance.
+- Uma implementação usando modelos Lucid retornará uma instância do Modelo. Portanto, o valor de `RealUser` será essa instância.
 
-- An implementation using Prisma will return a user object with specific properties; therefore, the value of `RealUser` will be that object.
+- Uma implementação usando Prisma retornará um objeto de usuário com propriedades específicas; portanto, o valor de `RealUser` será esse objeto.
 
-To summarize, the `JwtUserProviderContract` leaves it to the User Provider implementation to decide the User's data type.
+Para resumir, o `JwtUserProviderContract` deixa para a implementação do Provedor de Usuário decidir o tipo de dados do Usuário.
 
-### Understanding the `JwtGuardUser` type
-The `JwtGuardUser` type acts as a bridge between the User provider and the guard. The guard uses the `getId` method to get the user's unique ID and the `getOriginal` method to get the user's object after authenticating the request.
+### Entendendo o tipo `JwtGuardUser`
+O tipo `JwtGuardUser` atua como uma ponte entre o provedor User e o guard. O guard usa o método `getId` para obter o ID exclusivo do usuário e o método `getOriginal` para obter o objeto do usuário após autenticar a solicitação.
 
-## Implementing the guard
-Let's create the `JwtGuard` class and define the methods/properties needed by the [`GuardContract`](https://github.com/adonisjs/auth/blob/main/src/types.ts#L30) interface. Initially, we will have many errors in this file, but that's okay; as we progress, all the errors will disappear.
+## Implementando o guard
+Vamos criar a classe `JwtGuard` e definir os métodos/propriedades necessários para a interface [`GuardContract`](https://github.com/adonisjs/auth/blob/main/src/types.ts#L30). Inicialmente, teremos muitos erros neste arquivo, mas tudo bem; à medida que progredimos, todos os erros desaparecerão.
 
 :::note
-Please take some time and read the comments next to every property/method in
-the following example.
+Reserve um tempo e leia os comentários ao lado de cada propriedade/método
+no exemplo a seguir.
 :::
 
 ```ts
@@ -159,8 +159,8 @@ export class JwtGuard<UserProvider extends JwtUserProviderContract<unknown>>
 }
 ```
 
-## Accepting a user provider
-A guard must accept a user provider to look up users during authentication. You can accept it as a constructor parameter and store a private reference.
+## Aceitando um provedor de usuário
+Um guarda deve aceitar um provedor de usuário para procurar usuários durante a autenticação. Você pode aceitá-lo como um parâmetro construtor e armazenar uma referência privada.
 
 ```ts
 export class JwtGuard<UserProvider extends JwtUserProviderContract<unknown>>
@@ -178,14 +178,14 @@ export class JwtGuard<UserProvider extends JwtUserProviderContract<unknown>>
 }
 ```
 
-## Generating a token
-Let's implement the `generate` method and create a token for a given user. We will install and use the `jsonwebtoken` package from npm to generate a token.
+## Gerando um token
+Vamos implementar o método `generate` e criar um token para um determinado usuário. Instalaremos e usaremos o pacote `jsonwebtoken` do npm para gerar um token.
 
 ```sh
 npm i jsonwebtoken @types/jsonwebtoken
 ```
 
-Also, we will have to use a **secret key** to sign a token, so let's update the `constructor` method and accept the secret key as an option via the options object.
+Além disso, teremos que usar uma **chave secreta** para assinar um token, então vamos atualizar o método `constructor` e aceitar a chave secreta como uma opção por meio do objeto options.
 
 ```ts
 // insert-start
@@ -235,19 +235,19 @@ export class JwtGuard<UserProvider extends JwtUserProviderContract<unknown>>
 }
 ```
 
-- First, we use the `userProvider.createUserForGuard` method to create an instance of the provider user (aka the bridge between the real user and the guard).
+- Primeiro, usamos o método `userProvider.createUserForGuard` para criar uma instância do usuário provedor (também conhecido como a ponte entre o usuário real e o guarda).
 
-- Next, we use the `jwt.sign` method to create a signed token with the `userId` in the payload and return it.
+- Em seguida, usamos o método `jwt.sign` para criar um token assinado com o `userId` no payload e retorná-lo.
 
-## Authenticating a request
+## Autenticando uma solicitação
 
-Authenticating a request includes:
+Autenticar uma solicitação inclui:
 
-- Reading the JWT token from the request header or cookie.
-- Verifying its authenticity.
-- Fetching the user for whom the token was generated.
+- Ler o token JWT do cabeçalho da solicitação ou cookie.
+- Verificar sua autenticidade.
+- Buscar o usuário para quem o token foi gerado.
 
-Our guard will need access to the [HttpContext](../concepts/http_context.md) to read request headers and cookies, so let's update the class `constructor` and accept it as an argument.
+Nosso guard precisará acessar o [HttpContext](../concepts/http_context.md) para ler cabeçalhos de solicitação e cookies, então vamos atualizar a classe `constructor` e aceitá-la como um argumento.
 
 ```ts
 // insert-start
@@ -279,7 +279,7 @@ export class JwtGuard<UserProvider extends JwtUserProviderContract<unknown>>
 }
 ```
 
-We will read the token from the `authorization` header for this example. However, you can adjust the implementation to support cookies as well.
+Leremos o token do cabeçalho `authorization` para este exemplo. No entanto, você pode ajustar a implementação para suportar cookies também.
 
 ```ts
 import {
@@ -353,8 +353,8 @@ export class JwtGuard<UserProvider extends JwtUserProviderContract<unknown>>
 }
 ```
 
-## Implementing the `check` method
-The `check` method is a silent version of the `authenticate` method, and you can implement it as follows.
+## Implementando o método `check`
+O método `check` é uma versão silenciosa do método `authenticate`, e você pode implementá-lo da seguinte forma.
 
 ```ts
 export class JwtGuard<UserProvider extends JwtUserProviderContract<unknown>>
@@ -376,8 +376,8 @@ export class JwtGuard<UserProvider extends JwtUserProviderContract<unknown>>
 }
 ```
 
-## Implementing the `getUserOrFail` method
-Finally, let's implement the `getUserOrFail` method. It should return the user instance or throw an error (if the user does not exist).
+## Implementando o método `getUserOrFail`
+Finalmente, vamos implementar o método `getUserOrFail`. Ele deve retornar a instância do usuário ou lançar um erro (se o usuário não existir).
 
 ```ts
 export class JwtGuard<UserProvider extends JwtUserProviderContract<unknown>>
@@ -400,8 +400,8 @@ export class JwtGuard<UserProvider extends JwtUserProviderContract<unknown>>
 }
 ```
 
-## Implementing the `authenticateAsClient` method
-The `authenticateAsClient` method is used during tests when you want to login a user during tests via the [`loginAs` method](../testing/http_tests.md#authenticating-users). For the JWT implementation, this method should return the `authorization` header containing the JWT token.
+## Implementando o método `authenticateAsClient`
+O método `authenticateAsClient` é usado durante os testes quando você deseja fazer login em um usuário durante os testes por meio do [método `loginAs`](../testing/http_tests.md#authenticating-users). Para a implementação do JWT, esse método deve retornar o cabeçalho `authorization` contendo o token JWT.
 
 ```ts
 export class JwtGuard<UserProvider extends JwtUserProviderContract<unknown>>
@@ -426,8 +426,8 @@ export class JwtGuard<UserProvider extends JwtUserProviderContract<unknown>>
 }
 ```
 
-## Using the guard
-Let's head over to the `config/auth.ts` and register the guard within the `guards` list.
+## Usando o guard
+Vamos para `config/auth.ts` e registrar o guard na lista `guards`.
 
 ```ts
 import { defineConfig } from '@adonisjs/auth'
@@ -460,12 +460,12 @@ const authConfig = defineConfig({
 export default authConfig
 ```
 
-As you can notice, we are using the `sessionUserProvider` with our `JwtGuard` implementation. This is because the `JwtUserProviderContract` interface is compatible with the User Provider created by the Session guard.
+Como você pode notar, estamos usando o `sessionUserProvider` com nossa implementação `JwtGuard`. Isso ocorre porque a interface `JwtUserProviderContract` é compatível com o User Provider criado pelo Session guard.
 
-So, instead of creating our own implementation of a User Provider, we re-use one from the Session guard.
+Então, em vez de criar nossa própria implementação de um User Provider, reutilizamos um do Session guard.
 
-## Final example
-Once the implementation is completed, you can use the `jwt` guard like other inbuilt guards. The following is an example of how to generate and verify JWT tokens.
+## Exemplo final
+Depois que a implementação for concluída, você pode usar o guard `jwt` como outros guards integrados. A seguir, um exemplo de como gerar e verificar tokens JWT.
 
 ```ts
 import User from '#models/user'

@@ -1,10 +1,10 @@
 ---
-summary: Learn how to read, write, and clear cookies in AdonisJS.
+resumo: Aprenda a ler, escrever e limpar cookies no AdonisJS.
 ---
 
 # Cookies
 
-The request cookies are parsed automatically during an HTTP request. You can read cookies using the [request](./request.md) object and set/clear cookies using the [response](./response.md) object.
+Os cookies de solicitação são analisados ​​automaticamente durante uma solicitação HTTP. Você pode ler cookies usando o objeto [request](./request.md) e definir/limpar cookies usando o objeto [response](./response.md).
 
 ```ts
 // title: Read cookies
@@ -41,9 +41,9 @@ router.delete('cart', async ({ request, response }) => {
 })
 ```
 
-## Configuration
+## Configuração
 
-The default configuration for setting cookies is defined inside the `config/app.ts` file. Feel free to tweak the options as per your application requirements.
+A configuração padrão para definir cookies é definida dentro do arquivo `config/app.ts`. Sinta-se à vontade para ajustar as opções de acordo com os requisitos do seu aplicativo.
 
 ```ts
 http: {
@@ -64,9 +64,9 @@ http: {
 }
 ```
 
-The options are converted to [set-cookie attributes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#attributes). The `maxAge` property accepts a string-based time expression, and its value will be converted to seconds.
+As opções são convertidas para [atributos set-cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#attributes). A propriedade `maxAge` aceita uma expressão de tempo baseada em string, e seu valor será convertido para segundos.
 
-The same set of options can be overridden when setting the cookies. 
+O mesmo conjunto de opções pode ser substituído ao definir os cookies.
 
 ```ts
 response.cookie('key', value, {
@@ -79,9 +79,9 @@ response.cookie('key', value, {
 })
 ```
 
-## Supported data types
+## Tipos de dados suportados
 
-The cookie values are serialized to a string using `JSON.stringify`; therefore, you can use the following JavaScript data types as cookie values.
+Os valores de cookie são serializados para uma string usando `JSON.stringify`; portanto, você pode usar os seguintes tipos de dados JavaScript como valores de cookie.
 
 - string
 - number
@@ -114,14 +114,14 @@ response.cookie('visits', BigInt(10))
 response.cookie('visits', new Date())
 ```
 
-## Signed cookies
+## Cookies assinados
 
-The cookies set using the `response.cookie` method are signed. A signed cookie is tamper-proof, meaning changing its contents will invalidate its signature, and the cookie will be ignored.
+Os cookies definidos usando o método `response.cookie` são assinados. Um cookie assinado é à prova de adulteração, o que significa que alterar seu conteúdo invalidará sua assinatura e o cookie será ignorado.
 
-The cookies are signed using the `appKey` defined inside the `config/app.ts` file.
+Os cookies são assinados usando o `appKey` definido dentro do arquivo `config/app.ts`.
 
 :::note
-The signed cookies are still readable by Base64 decoding them. You can use encrypted cookies if you want the cookie value to be unreadable.
+Os cookies assinados ainda são legíveis pela decodificação Base64. Você pode usar cookies criptografados se quiser que o valor do cookie seja ilegível.
 :::
 
 ```ts
@@ -136,11 +136,11 @@ router.get('/', async ({ request, response }) => {
 })
 ```
 
-## Encrypted cookies
+## Cookies criptografados
 
-Unlike signed cookies, the encrypted cookie value cannot be decoded to plain text. Therefore, you can use encrypted cookies for values containing sensitive information that should not be readable by anyone.
+Ao contrário dos cookies assinados, o valor do cookie criptografado não pode ser decodificado para texto simples. Portanto, você pode usar cookies criptografados para valores que contêm informações confidenciais que não devem ser legíveis por ninguém.
 
-Encrypted cookies are set using the `response.encryptedCookie` method and read using the `request.encryptedCookie` method. Under the hood, these methods use the [Encryption module](../security/encryption.md).
+Os cookies criptografados são definidos usando o método `response.encryptedCookie` e lidos usando o método `request.encryptedCookie`. Por baixo dos panos, esses métodos usam o [módulo Encryption](../security/encryption.md).
 
 ```ts
 import router from '@adonisjs/core/services/router'
@@ -154,13 +154,13 @@ router.get('/', async ({ request, response }) => {
 })
 ```
 
-## Plain cookies
+## Cookies simples
 
-Plain cookies are meant to be used when you want the cookie to be accessed by your frontend code using the `document.cookie` value. 
+Os cookies simples devem ser usados ​​quando você deseja que o cookie seja acessado pelo seu código frontend usando o valor `document.cookie`.
 
-By default, we call `JSON.stringify` on raw values and convert them to a base64 encoded string. It is done so that you can use `objects` and `arrays` for the cookie value. However, the encoding can be turned off.
+Por padrão, chamamos `JSON.stringify` em valores brutos e os convertemos em uma string codificada em base64. Isso é feito para que você possa usar `objects` e `arrays` para o valor do cookie. No entanto, a codificação pode ser desativada.
 
-Plain cookies are defined using the `response.plainCookie` method and can be read using the `request.plainCookie` method.
+Os cookies simples são definidos usando o método `response.plainCookie` e podem ser lidos usando o método `request.plainCookie`.
 
 ```ts
 import router from '@adonisjs/core/services/router'
@@ -174,9 +174,9 @@ router.get('/', async ({ request, response }) => {
   // read plain cookie
   request.plainCookie('user')
 })
-``` 
+```
 
-To turn off encoding, set `encoding: false` in the options object.
+Para desativar a codificação, defina `encoding: false` no objeto options.
 
 ```ts
 response.plainCookie('token', tokenValue, {
@@ -190,8 +190,8 @@ request.plainCookie('token', {
 })
 ```
 
-## Setting cookies during tests
-The following guides cover the usage of cookies when writing tests.
+## Configurando cookies durante testes
+Os guias a seguir abordam o uso de cookies ao escrever testes.
 
-- Defining cookies with [Japa API client](../testing/http_tests.md#readingwriting-cookies).
-- Defining cookie with [Japa browser client](../testing/browser_tests.md#readingwriting-cookies).
+[Japa API client](../testing/http_tests.md#readingwriting-cookies).
+[Japa browser client](../testing/browser_tests.md#readingwriting-cookies).

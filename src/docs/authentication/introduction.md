@@ -1,80 +1,67 @@
 ---
-summary: Learn about the authentication system in AdonisJS and how to authenticate users in your application.
+resumo: Aprenda sobre o sistema de autenticação no AdonisJS e como autenticar usuários em seu aplicativo.
 ---
 
-# Authentication
+# Autenticação
 
-AdonisJS ships with a robust and secure authentication system you can use to log in and authenticate users of your application. Be it a server-rendered application, a SPA client, or a mobile app, you can set up authentication for all of them.
+O AdonisJS vem com um sistema de autenticação robusto e seguro que você pode usar para fazer login e autenticar usuários do seu aplicativo. Seja um aplicativo renderizado pelo servidor, um cliente SPA ou um aplicativo móvel, você pode configurar a autenticação para todos eles.
 
-The authentication package is built around **guards** and **providers**. 
+O pacote de autenticação é construído em torno de **guardas** e **provedores**.
 
-- Guards are end-to-end implementations of a specific login type. For example, the `session` guard allows you to authenticate users using cookies and session. Meanwhile, the `access_tokens` guard will enable you to authenticate clients using tokens.
+- As guardas são implementações de ponta a ponta de um tipo de login específico. Por exemplo, a guarda `session` permite que você autentique usuários usando cookies e sessão. Enquanto isso, a guarda `access_tokens` permitirá que você autentique clientes usando tokens.
 
-- Providers are used to look up users and tokens from a database. You can either use the inbuilt providers or implement your own.
+- Os provedores são usados ​​para procurar usuários e tokens em um banco de dados. Você pode usar os provedores integrados ou implementar os seus próprios.
 
 :::note
-To ensure the security of your applications, we properly hash user passwords and tokens. Moreover, the security primitives of AdonisJS are protected from [timing attacks](https://en.wikipedia.org/wiki/Timing_attack) and [session fixation attacks](https://owasp.org/www-community/attacks/Session_fixation).
+Para garantir a segurança dos seus aplicativos, fazemos hash adequadamente nas senhas e tokens dos usuários. Além disso, os primitivos de segurança do AdonisJS são protegidos contra [ataques de temporização](https://en.wikipedia.org/wiki/Timing_attack) e [ataques de fixação de sessão](https://owasp.org/www-community/attacks/Session_fixation).
 :::
 
-## Features not supported by the Auth package
+## Recursos não suportados pelo pacote Auth
 
-The auth package narrowly focuses on authenticating HTTP requests, and the following features are outside its scope.
+O pacote auth foca estritamente na autenticação de solicitações HTTP, e os seguintes recursos estão fora de seu escopo.
 
-- User registration features like **registration forms**, **email verification**, and **account activation**.
-- Account management features like **password recovery** or **email update**.
-- Assigning roles or verifying permissions. Instead, [use bouncer](../security/authorization.md) to implement authorization checks in your application.
+- Recursos de registro de usuário como **formulários de registro**, **verificação de e-mail** e **ativação de conta**.
+- Recursos de gerenciamento de conta como **recuperação de senha** ou **atualização de e-mail**.
+[use bouncer](../security/authorization.md) para implementar verificações de autorização em seu aplicativo.
 
-<!-- :::note
+## Escolhendo um auth guard
 
-**Looking for a fully-fledged user management system?**\
+Os seguintes auth guards integrados fornecem a você o fluxo de trabalho mais direto para autenticar usuários sem comprometer a segurança de seus aplicativos. Além disso, você pode [criar seus guardas de autenticação](./custom_auth_guard.md) para requisitos personalizados.
 
-Checkout persona. Persona is an official package and a starter kit with a fully-fledged user management system. 
+### Sessão
 
-It provides ready-to-use actions for user registration, email management, session tracking, profile management, and 2FA.
+O guarda de sessão usa o pacote [@adonisjs/session](../basics/session.md) para rastrear o estado do usuário conectado dentro do armazenamento de sessão.
 
-::: -->
+Sessões e cookies estão na internet há muito tempo e funcionam muito bem para a maioria dos aplicativos. Recomendamos usar o guarda de sessão:
 
+- Se você estiver criando um aplicativo da web renderizado pelo servidor.
+- Ou uma API AdonisJS com seu cliente no mesmo domínio de nível superior. Por exemplo, `api.example.com` e `example.com`.
 
-## Choosing an auth guard
+### Tokens de acesso
 
-The following inbuilt authentication guards provide you with the most straightforward workflow for authenticating users without compromising the security of your applications. Also, you can [build your authentication guards](./custom_auth_guard.md) for custom requirements.
+Os tokens de acesso são tokens aleatórios criptograficamente seguros (também conhecidos como tokens de acesso opacos) emitidos para usuários após login bem-sucedido. Você pode usar tokens de acesso para aplicativos onde seu servidor AdonisJS não pode gravar/ler cookies. Por exemplo:
 
-### Session
+- Um aplicativo móvel nativo.
+- Um aplicativo da web hospedado em um domínio diferente do seu servidor de API AdonisJS.
 
-The session guard uses the [@adonisjs/session](../basics/session.md) package to track the logged-in user state inside the session store. 
+Ao usar tokens de acesso, torna-se responsabilidade do seu aplicativo do lado do cliente armazená-los com segurança. Os tokens de acesso fornecem acesso irrestrito ao seu aplicativo (em nome de um usuário), e vazá-los pode levar a problemas de segurança.
 
-Sessions and cookies have been on the internet for a long time and work great for most applications. We recommend using the session guard:
+### Autenticação básica
 
-- If you are creating a server-rendered web application.
-- Or, an AdonisJS API with its client on the same top-level domain. For example, `api.example.com` and `example.com`.
+A proteção de autenticação básica é uma implementação da [estrutura de autenticação HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication), na qual o cliente deve passar as credenciais do usuário como uma string codificada em base64 por meio do cabeçalho `Authorization`.
 
-### Access tokens
+Existem maneiras melhores de implementar um sistema de login seguro do que a autenticação básica. No entanto, você pode usá-lo temporariamente enquanto seu aplicativo estiver em desenvolvimento ativo.
 
-Access tokens are cryptographically secure random tokens (also known as Opaque access tokens) issued to users after successful login. You may use access tokens for apps where your AdonisJS server cannot write/read cookies. For example:
+## Escolhendo um provedor de usuário
+Conforme abordado anteriormente neste guia, um provedor de usuário é responsável por encontrar usuários durante o processo de autenticação.
 
-- A native mobile app.
-- A web application hosted on a different domain than your AdonisJS API server.
+Os provedores de usuário são específicos de proteção; por exemplo, o provedor de usuário para o guarda de sessão é responsável por encontrar usuários por sua ID, e o provedor de usuário para o guarda de tokens de acesso também é responsável por verificar tokens de acesso.
 
-When using access tokens, it becomes the responsibility of your client-side application to store them securely. Access tokens provide unrestricted access to your application (on behalf of a user), and leaking them can lead to security issues.
+Nós enviamos com um provedor de usuário Lucid para os guardas integrados, que usa modelos Lucid para encontrar usuários, gerar tokens e verificar tokens.
 
-### Basic auth
+## Instalação
 
-The basic auth guard is an implementation of the [HTTP authentication framework](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication), in which the client must pass the user credentials as a base64 encoded string via the `Authorization` header.
-
-There are better ways to implement a secure login system than basic authentication. However, you may use it temporarily while your application is in active development.
-
-## Choosing a user provider
-As covered earlier in this guide, a user provider is responsible for finding users during the authentication process.
-
-The user providers are guards specific; for example, The user provider for the session guard is responsible for finding users by their ID, and the user provider for the access tokens guard is also responsible for verifying access tokens.
-
-We ship with a Lucid user provider for the inbuilt guards, which uses Lucid models to find users, generate tokens, and verify tokens. 
-
-<!-- If you are not using Lucid, you must [implement a custom user provider](). -->
-
-## Installation
-
-The auth system comes pre-configured with the `web` and the `api` starter kits. However, you can install and configure it manually inside an application as follows.
+O sistema auth vem pré-configurado com os kits iniciais `web` e `api`. No entanto, você pode instalá-lo e configurá-lo manualmente dentro de um aplicativo da seguinte forma.
 
 ```sh
 # Configure with session guard (default)
@@ -87,13 +74,13 @@ node ace add @adonisjs/auth --guard=access_tokens
 node ace add @adonisjs/auth --guard=basic_auth
 ```
 
-### See steps performed by the add command
+### Veja as etapas executadas pelo comando add
 
-1. Install the `@adonisjs/auth` package using the detected package manager.
+1. Instale o pacote `@adonisjs/auth` usando o gerenciador de pacotes detectado.
 
-2. Registers the following service provider inside the `adonisrc.ts` file.
+2. Registra o seguinte provedor de serviços dentro do arquivo `adonisrc.ts`.
 
-    ```ts
+```ts
     {
       providers: [
         // ...other providers
@@ -102,15 +89,15 @@ node ace add @adonisjs/auth --guard=basic_auth
     }
     ```
 
-3. Creates and registers the following middleware inside the `start/kernel.ts` file.
+3. Cria e registra o seguinte middleware dentro do arquivo `start/kernel.ts`.
 
-    ```ts
+```ts
     router.use([
       () => import('@adonisjs/auth/initialize_auth_middleware')
     ])
     ```
 
-    ```ts
+```ts
     router.named({
       auth: () => import('#middleware/auth_middleware'),
       // only if using the session guard
@@ -118,16 +105,16 @@ node ace add @adonisjs/auth --guard=basic_auth
     })
     ```
 
-4. Creates the user model inside the `app/models` directory.
-5. Creates database migration for the `users` table.
-6. Creates database migrations for the selected guard.
+4. Cria o modelo de usuário dentro do diretório `app/models`.
+5. Cria migração de banco de dados para a tabela `users`.
+6. Cria migrações de banco de dados para o guard selecionado.
 
-## The Initialize auth middleware
-During setup, we register the `@adonisjs/auth/initialize_auth_middleware` within your application. The middleware is responsible for creating an instance of the [Authenticator](https://github.com/adonisjs/auth/blob/main/src/authenticator.ts) class and shares it via the `ctx.auth` property with the rest of the request.
+## O middleware Initialize auth
+Durante a configuração, registramos o `@adonisjs/auth/initialize_auth_middleware` dentro do seu aplicativo. O middleware é responsável por criar uma instância da classe [Authenticator](https://github.com/adonisjs/auth/blob/main/src/authenticator.ts) e a compartilha por meio da propriedade `ctx.auth` com o restante da solicitação.
 
-Note that the initialize auth middleware does not authenticate the request or protect the routes. It's used only for initializing the authenticator and sharing it with the rest of the request. You must use the [auth](./session_guard.md#protecting-routes) middleware for protecting routes.
+Observe que o middleware initialize auth não autentica a solicitação nem protege as rotas. Ele é usado apenas para inicializar o autenticador e compartilhá-lo com o restante da solicitação. Você deve usar o middleware [auth](./session_guard.md#protecting-routes) para proteger rotas.
 
-Also, the same authenticator instance is shared with Edge templates (if your app is using Edge), and you can access it using the `auth` property. For example:
+Além disso, a mesma instância do autenticador é compartilhada com modelos do Edge (se seu aplicativo estiver usando o Edge), e você pode acessá-la usando a propriedade `auth`. Por exemplo:
 
 ```edge
 @if(auth.isAuthenticated)
@@ -135,10 +122,10 @@ Also, the same authenticator instance is shared with Edge templates (if your app
 @end
 ```
 
-## Creating the users table
-The `configure` command creates a database migration for the `users` table inside the `database/migrations` directory. Feel free to open this file and make changes per your application requirements.
+## Criando a tabela de usuários
+O comando `configure` cria uma migração de banco de dados para a tabela `users` dentro do diretório `database/migrations`. Sinta-se à vontade para abrir este arquivo e fazer alterações de acordo com os requisitos do seu aplicativo.
 
-By default, the following columns are created.
+Por padrão, as seguintes colunas são criadas.
 
 ```ts
 import { BaseSchema } from '@adonisjs/lucid/schema'
@@ -164,10 +151,10 @@ export default class extends BaseSchema {
 }
 ```
 
-Also, update the `User` model if you define, rename, or remove columns from the `users` table.
+Além disso, atualize o modelo `User` se você definir, renomear ou remover colunas da tabela `users`.
 
-## Next steps
+## Próximas etapas
 
-- Learn how to [verify user credentials](./verifying_user_credentials.md) without compromising the security of your application.
-- Use [session guard](./session_guard.md) for stateful authentication.
-- Use [access tokens guard](./access_tokens_guard.md) for tokens based authentication.
+[Verificar credenciais do usuário](./verifying_user_credentials.md) sem comprometer a segurança do seu aplicativo.
+[Session guard](./session_guard.md) para autenticação com estado.
+[Access tokens guard](./access_tokens_guard.md) para autenticação baseada em tokens.

@@ -1,13 +1,13 @@
 ---
-summary: Learn how to use the basic auth guard to authenticate users using the HTTP authentication framework.
+resumo: Aprenda a usar o auth guard básico para autenticar usuários usando a estrutura de autenticação HTTP.
 ---
 
 # Basic authentication guard
 
-The basic auth guard is an implementation of the [HTTP authentication framework](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication), in which the client must pass the user credentials as a base64 encoded string via the `Authorization` header. The server allows the request if the credentials are valid. Otherwise, a web-native prompt is displayed to re-enter the credentials.
+O auth guard básico é uma implementação da [estrutura de autenticação HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication), na qual o cliente deve passar as credenciais do usuário como uma string codificada em base64 por meio do cabeçalho `Authorization`. O servidor permite a solicitação se as credenciais forem válidas. Caso contrário, um prompt nativo da Web é exibido para inserir novamente as credenciais.
 
-## Configuring the guard
-The authentication guards are defined inside the `config/auth.ts` file. You can configure multiple guards inside this file under the `guards` object.
+## Configurando o guard
+Os guards de autenticação são definidos dentro do arquivo `config/auth.ts`. Você pode configurar vários guards dentro deste arquivo sob o objeto `guards`.
 
 ```ts
 import { defineConfig } from '@adonisjs/auth'
@@ -31,13 +31,12 @@ const authConfig = defineConfig({
 export default authConfig
 ```
 
-The `basicAuthGuard` method creates an instance of the [BasicAuthGuard](https://github.com/adonisjs/auth/blob/main/modules/basic_auth_guard/guard.ts) class. It accepts a user provider that can be used to find users during authentication.
+O método `basicAuthGuard` cria uma instância da classe [BasicAuthGuard](https://github.com/adonisjs/auth/blob/main/modules/basic_auth_guard/guard.ts). Ele aceita um provedor de usuário que pode ser usado para encontrar usuários durante a autenticação.
 
-The `basicAuthUserProvider` method creates an instance of the [BasicAuthLucidUserProvider](https://github.com/adonisjs/auth/blob/main/modules/basic_auth_guard/user_providers/lucid.ts) class. It accepts a reference to the model to use for verifying user credentials.
+O método `basicAuthUserProvider` cria uma instância da classe [BasicAuthLucidUserProvider](https://github.com/adonisjs/auth/blob/main/modules/basic_auth_guard/user_providers/lucid.ts). Ele aceita uma referência ao modelo a ser usado para verificar as credenciais do usuário.
 
-
-## Preparing the User model
-The model (`User` model in this example) configured with the `basicAuthUserProvider` must use the [AuthFinder](./verifying_user_credentials.md#using-the-auth-finder-mixin) mixin to verify the user credentials during authentication.
+## Preparando o modelo User
+O modelo (modelo `User` neste exemplo) configurado com o `basicAuthUserProvider` deve usar o mixin [AuthFinder](./verifying_user_credentials.md#using-the-auth-finder-mixin) para verificar as credenciais do usuário durante a autenticação.
 
 ```ts
 import { DateTime } from 'luxon'
@@ -78,8 +77,8 @@ export default class User extends compose(BaseModel, AuthFinder) {
 }
 ```
 
-## Protecting routes
-Once you have configured the guard, you can use the `auth` middleware to protect routes from unauthenticated requests. The middleware is registered inside the `start/kernel.ts` file under the named middleware collection.
+## Protegendo rotas
+Depois de configurar o guard, você pode usar o middleware `auth` para proteger rotas de solicitações não autenticadas. O middleware é registrado dentro do arquivo `start/kernel.ts` sob a coleção de middleware nomeada.
 
 ```ts
 import router from '@adonisjs/core/services/router'
@@ -106,12 +105,12 @@ router
   }))
 ```
 
-### Handling authentication exception
+### Lidando com exceção de autenticação
 
-The auth middleware throws the [E_UNAUTHORIZED_ACCESS](https://github.com/adonisjs/auth/blob/main/src/errors.ts#L21) if the user is not authenticated. The exception is automatically converted to an HTTP response with the [WWW-Authenticate](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/WWW-Authenticate) header in the response. The `WWW-Authenticate` challenges the authentication and triggers a web-native prompt to re-enter the credentials.
+O middleware auth lança o [E_UNAUTHORIZED_ACCESS](https://github.com/adonisjs/auth/blob/main/src/errors.ts#L21) se o usuário não for autenticado. A exceção é automaticamente convertida em uma resposta HTTP com o cabeçalho [WWW-Authenticate](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/WWW-Authenticate) na resposta. O `WWW-Authenticate` desafia a autenticação e aciona um prompt nativo da web para inserir novamente as credenciais.
 
-## Getting access to the authenticated user
-You may access the logged-in user instance using the `auth.user` property. Since, you are using the `auth` middleware, the `auth.user` property will always be available.
+## Obtendo acesso ao usuário autenticado
+Você pode acessar a instância do usuário conectado usando a propriedade `auth.user`. Como você está usando o middleware `auth`, a propriedade `auth.user` estará sempre disponível.
 
 ```ts
 import { middleware } from '#start/kernel'
@@ -126,8 +125,8 @@ router
   }))
 ```
 
-### Get authenticated user or fail
-If you do not like using the [non-null assertion operator](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#non-null-assertion-operator-postfix-) on the `auth.user` property, you may use the `auth.getUserOrFail` method. This method will return the user object or throw [E_UNAUTHORIZED_ACCESS](../references/exceptions.md#e_unauthorized_access) exception.
+### Obter usuário autenticado ou falhar
+Se você não gosta de usar o [operador de asserção não nulo](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#non-null-assertion-operator-postfix-) na propriedade `auth.user`, você pode usar o método `auth.getUserOrFail`. Este método retornará o objeto do usuário ou lançará a exceção [E_UNAUTHORIZED_ACCESS](../references/exceptions.md#e_unauthorized_access).
 
 ```ts
 import { middleware } from '#start/kernel'

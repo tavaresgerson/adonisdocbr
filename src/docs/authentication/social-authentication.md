@@ -1,11 +1,11 @@
 ---
-summary: Implement social authentication in your AdonisJS applications using the `@adonisjs/ally` package.
+resumo: Implemente autenticação social em seus aplicativos AdonisJS usando o pacote `@adonisjs/ally`.
 ---
 
-# Social authentication
+# Autenticação social
 
-You can implement social authentication in your AdonisJS applications using the `@adonisjs/ally` package.
-Ally comes with the following inbuilt drivers, alongside an extensible API to [register custom drivers](#creating-a-custom-social-driver).
+Você pode implementar autenticação social em seus aplicativos AdonisJS usando o pacote `@adonisjs/ally`.
+O Ally vem com os seguintes drivers integrados, juntamente com uma API extensível para [registrar drivers personalizados](#creating-a-custom-social-driver).
 
 - Twitter
 - Facebook
@@ -15,11 +15,11 @@ Ally comes with the following inbuilt drivers, alongside an extensible API to [r
 - Discord
 - LinkedIn
 
-Ally does not store any users or access tokens on your behalf. It implements the OAuth2 and OAuth1 protocols, authenticates a user with social service, and provides user details. You can store that information inside a database and use the [auth](./introduction.md) package to login the user within your application.
+O Ally não armazena nenhum usuário ou token de acesso em seu nome. Ele implementa os protocolos OAuth2 e OAuth1, autentica um usuário com serviço social e fornece detalhes do usuário. Você pode armazenar essas informações dentro de um banco de dados e usar o pacote [auth](./introduction.md) para fazer login do usuário em seu aplicativo.
 
-## Installation
+## Instalação
 
-Install and configure the package using the following command :
+Instale e configure o pacote usando o seguinte comando:
 
 ```sh
 node ace add @adonisjs/ally
@@ -28,13 +28,13 @@ node ace add @adonisjs/ally
 node ace add @adonisjs/ally --providers=github --providers=google
 ```
 
-### See steps performed by the add command
+### Veja as etapas executadas pelo comando add
 
-1. Installs the `@adonisjs/ally` package using the detected package manager.
+1. Instala o pacote `@adonisjs/ally` usando o gerenciador de pacotes detectado.
 
-2. Registers the following service provider inside the `adonisrc.ts` file.
+2. Registra o seguinte provedor de serviços dentro do arquivo `adonisrc.ts`.
 
-    ```ts
+```ts
     {
       providers: [
         // ...other providers
@@ -43,14 +43,14 @@ node ace add @adonisjs/ally --providers=github --providers=google
     }
     ```
 
-3. Create the `config/ally.ts` file. This file contains the configuration settings for selected OAuth providers.
+3. Crie o arquivo `config/ally.ts`. Este arquivo contém as configurações para provedores OAuth selecionados.
 
-4. Defines the environment variables to store `CLIENT_ID` and `CLIENT_SECRET` for selected OAuth providers. 
+4. Define as variáveis ​​de ambiente para armazenar `CLIENT_ID` e `CLIENT_SECRET` para provedores OAuth selecionados.
 
-## Configuration
-The `@adonisjs/ally` package configuration is stored inside the `config/ally.ts` file. You can define config for multiple services within a single config file.
+## Configuração
+A configuração do pacote `@adonisjs/ally` é armazenada dentro do arquivo `config/ally.ts`. Você pode definir a configuração para vários serviços em um único arquivo de configuração.
 
-See also: [Config stub](https://github.com/adonisjs/ally/blob/main/stubs/config/ally.stub)
+Veja também: [Config stub](https://github.com/adonisjs/ally/blob/main/stubs/config/ally.stub)
 
 ```ts
 import { defineConfig, services } from '@adonisjs/ally'
@@ -69,15 +69,15 @@ defineConfig({
 })
 ```
 
-### Configuring the callback URL
-OAuth providers require you to register a callback URL to handle the redirect response after the user authorizes the login request. 
+### Configurando a URL de retorno de chamada
+Os provedores OAuth exigem que você registre uma URL de retorno de chamada para manipular a resposta de redirecionamento após o usuário autorizar a solicitação de login.
 
-The callback URL must be registered with the OAuth service provider. For example: If you are using GitHub, you must log in to your GitHub account, [create a new app](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app) and define the callback URL using the GitHub interface.
+A URL de retorno de chamada deve ser registrada com o provedor de serviços OAuth. Por exemplo: se você estiver usando o GitHub, você deve fazer login na sua conta do GitHub, [criar um novo aplicativo](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app) e definir a URL de retorno de chamada usando a interface do GitHub.
 
-Also, you must register the same callback URL within the `config/ally.ts` file using the `callbackUrl` property.
+Além disso, você deve registrar a mesma URL de retorno de chamada dentro do arquivo `config/ally.ts` usando a propriedade `callbackUrl`.
 
-## Usage
-Once the package has been configured, you can interact with Ally APIs using the `ctx.ally` property. You can switch between the configured auth providers using the `ally.use()` method. For example:
+## Uso
+Depois que o pacote for configurado, você pode interagir com as APIs do Ally usando a propriedade `ctx.ally`. Você pode alternar entre os provedores de autenticação configurados usando o método `ally.use()`. Por exemplo:
 
 ```ts
 router.get('/github/redirect', ({ ally }) => {
@@ -96,10 +96,10 @@ router.get('/:provider/redirect', ({ ally, params }) => {
 }).where('provider', /github|twitter/)
 ```
 
-### Redirecting the user for authentication
-The first step in social authentication is to redirect the user to an OAuth service and wait for them to either approve or deny the authentication request.
+### Redirecionando o usuário para autenticação
+O primeiro passo na autenticação social é redirecionar o usuário para um serviço OAuth e esperar que ele aprove ou negue a solicitação de autenticação.
 
-You can perform the redirect using the `.redirect()` method.
+Você pode executar o redirecionamento usando o método `.redirect()`.
 
 ```ts
 router.get('/github/redirect', ({ ally }) => {
@@ -107,7 +107,7 @@ router.get('/github/redirect', ({ ally }) => {
 })
 ```
 
-You can pass a callback function to define custom scopes or query string values during the redirect.
+Você pode passar uma função de retorno de chamada para definir escopos personalizados ou valores de string de consulta durante o redirecionamento.
 
 ```ts
 router.get('/github/redirect', ({ ally }) => {
@@ -122,10 +122,10 @@ router.get('/github/redirect', ({ ally }) => {
 })
 ```
 
-### Handling callback response
-The user will be redirected back to your application's `callbackUrl` after they approve or deny the authentication request. 
+### Lidando com a resposta de retorno de chamada
+O usuário será redirecionado de volta para o `callbackUrl` do seu aplicativo após aprovar ou negar a solicitação de autenticação.
 
-Within this route, you can call the `.user()` method to get the logged-in user details and the access token. However, you must also check the response for possible error states.
+Nesta rota, você pode chamar o método `.user()` para obter os detalhes do usuário conectado e o token de acesso. No entanto, você também deve verificar a resposta para possíveis estados de erro.
 
 ```ts
 router.get('/github/callback', async ({ ally }) => {
@@ -162,8 +162,8 @@ router.get('/github/callback', async ({ ally }) => {
 })
 ```
 
-## User properties
-Following is the list of properties you can access from the return value of the `.user()` method call. The properties are consistent among all the underlying drivers.
+## Propriedades do usuário
+A seguir está a lista de propriedades que você pode acessar a partir do valor de retorno da chamada do método `.user()`. As propriedades são consistentes entre todos os drivers subjacentes.
 
 ```ts
 const user = await gh.user()
@@ -179,31 +179,31 @@ user.original
 ```
 
 ### `id`
-A unique ID returned by the OAuth provider.
+Um ID exclusivo retornado pelo provedor OAuth.
 
 ### `email`
-The email address returned by the OAuth provider. The value will be `null` if the OAuth request does not ask for the user's email address.
+O endereço de e-mail retornado pelo provedor OAuth. O valor será `null` se a solicitação OAuth não solicitar o endereço de e-mail do usuário.
 
 ### `emailVerificationState`
-Many OAuth providers allow users with unverified emails to log in and authenticate OAuth requests. You should use this flag to ensure only users with verified emails can log in.
+Muitos provedores OAuth permitem que usuários com e-mails não verificados façam login e autentiquem solicitações OAuth. Você deve usar este sinalizador para garantir que apenas usuários com e-mails verificados possam fazer login.
 
-Following is the list of possible values.
+A seguir está a lista de valores possíveis.
 
-- `verified`: The user's email address is verified with the OAuth provider.
-- `unverified`: The user's email address is not verified.
-- `unsupported`: The OAuth provider does not share the email verification state.
+- `verified`: O endereço de e-mail do usuário é verificado com o provedor OAuth.
+- `unverified`: O endereço de e-mail do usuário não é verificado.
+- `unsupported`: O provedor OAuth não compartilha o estado de verificação de e-mail.
 
 ### `name`
-The name of the user returned by the OAuth provider.
+O nome do usuário retornado pelo provedor OAuth.
 
 ### `nickName`
-A publicly visible nick name of the user. The value of `nickName` and `name` will be the same if the OAuth provider has no concept of nicknames.
+Um apelido publicamente visível do usuário. O valor de `nickName` e `name` será o mesmo se o provedor OAuth não tiver nenhum conceito de apelidos.
 
 ### `avatarUrl`
-The HTTP(s) URL to the user's public profile picture.
+A URL HTTP(s) para a foto do perfil público do usuário.
 
 ### `token`
-The token property is the reference to the underlying access token object. The token object has the following sub-properties.
+A propriedade token é a referência ao objeto de token de acesso subjacente. O objeto token tem as seguintes subpropriedades.
 
 ```ts
 user.token.token
@@ -215,27 +215,27 @@ user.token.expiresIn
 
 | Property        | Protocol        | Description |
 |-----------------|-----------------|-------------|
-| `token`         | OAuth2 / OAuth1 | The value of the access token. The value is available for the `OAuth2` and the `OAuth1` protocols. |
-| `secret`        | OAuth1          | The token secret applicable only for `OAuth1` protocol. Currently, Twitter is the only official driver using OAuth1. |
-| `type`          | OAuth2          | The token type. Usually, it will be a [bearer token](https://oauth.net/2/bearer-tokens/).
-| `refreshToken`  | OAuth2          | You can use the refresh token to create a new access token. The value will be `undefined` if the OAuth provider does not support refresh tokens |
-| `expiresAt`     | OAuth2          | An instance of the luxon DateTime class representing the absolute time when the access token will expire. |
-| `expiresIn`     | OAuth2          | Value in seconds, after which the token will expire. It is a static value and does not change as time passes by. |
+| `token`         | OAuth2 / OAuth1 | O valor do token de acesso. O valor está disponível para os protocolos `OAuth2` e `OAuth1`. |
+| `secret`        | OAuth1          | O segredo do token aplicável somente para o protocolo `OAuth1`. Atualmente, o Twitter é o único driver oficial usando OAuth1. |
+| `type`          | OAuth2          | O tipo de token. Normalmente, será um [token portador](https://oauth.net/2/bearer-tokens/). |
+| `refreshToken`  | OAuth2          | Você pode usar o token de atualização para criar um novo token de acesso. O valor será `undefined` se o provedor OAuth não suportar tokens de atualização |
+| `expiresAt`     | OAuth2          | Uma instância da classe luxon DateTime representando o tempo absoluto em que o token de acesso irá expirar. |
+| `expiresIn`     | OAuth2          | Valor em segundos, após o qual o token irá expirar. É um valor estático e não muda com o passar do tempo. |
 
 ### `original`
-Reference to the original response from the OAuth provider. You might want to reference the original response if the normalized set of user properties does not have all the information you need.
+Referência à resposta original do provedor OAuth. Você pode querer referenciar a resposta original se o conjunto normalizado de propriedades do usuário não tiver todas as informações que você precisa.
 
 ```ts
 const user = await github.user()
 console.log(user.original)
 ```
 
-## Defining scopes
-Scopes refers to the data you want to access after the user approves the authentication request. The name of scopes and the data you can access varies between the OAuth providers; therefore, you must read their documentation.
+## Definindo escopos
+Escopos referem-se aos dados que você deseja acessar após o usuário aprovar a solicitação de autenticação. O nome dos escopos e os dados que você pode acessar variam entre os provedores OAuth; portanto, você deve ler a documentação deles.
 
-The scopes can be defined within the `config/ally.ts` file, or you can define them when redirecting the user.
+Os escopos podem ser definidos dentro do arquivo `config/ally.ts`, ou você pode defini-los ao redirecionar o usuário.
 
-Thanks to TypeScript, you will get autocomplete suggestions for all the available scopes.
+Graças ao TypeScript, você obterá sugestões de preenchimento automático para todos os escopos disponíveis.
 
 ![](../digging_deeper/ally_autocomplete.png)
 
@@ -263,8 +263,8 @@ ally
   })
 ```
 
-## Defining redirect query params
-You can customize the query parameters for the redirect request alongside the scopes. In the following example, we define the `prompt` and the `access_type` params applicable with the [Google provider](https://developers.google.com/identity/protocols/oauth2/web-server#httprest).
+## Definindo parâmetros de consulta de redirecionamento
+Você pode personalizar os parâmetros de consulta para a solicitação de redirecionamento junto com os escopos. No exemplo a seguir, definimos os parâmetros `prompt` e `access_type` aplicáveis ​​com o [provedor do Google](https://developers.google.com/identity/protocols/oauth2/web-server#httprest).
 
 ```ts
 router.get('/google/redirect', async ({ ally }) => {
@@ -280,7 +280,7 @@ router.get('/google/redirect', async ({ ally }) => {
 })
 ```
 
-You can clear any existing parameters using the `.clearParam()` method on the request. This can be helpful if parameter defaults are defined in the config and you need to redefine them for a separate custom auth flow.
+Você pode limpar quaisquer parâmetros existentes usando o método `.clearParam()` na solicitação. Isso pode ser útil se os padrões de parâmetros forem definidos na configuração e você precisar redefini-los para um fluxo de autenticação personalizado separado.
 
 ```ts
 router.get('/google/redirect', async ({ ally }) => {
@@ -296,10 +296,10 @@ router.get('/google/redirect', async ({ ally }) => {
 })
 ```
 
-## Fetching user details from an access token
-Sometimes, you might want to fetch user details from an access token stored in the database or provided via another OAuth flow. For example, you used the Native OAuth flow via a mobile app and received an access token back.
+## Obtendo detalhes do usuário de um token de acesso
+Às vezes, você pode querer buscar detalhes do usuário de um token de acesso armazenado no banco de dados ou fornecido por outro fluxo OAuth. Por exemplo, você usou o fluxo Native OAuth por meio de um aplicativo móvel e recebeu um token de acesso de volta.
 
-You can fetch the user details using the `.userFromToken()` method.
+Você pode buscar os detalhes do usuário usando o método `.userFromToken()`.
 
 ```ts
 const user = await ally
@@ -307,7 +307,7 @@ const user = await ally
   .userFromToken(accessToken)
 ```
 
-You can fetch the user details for an OAuth1 driver using the `.userFromTokenAndSecret` method.
+Você pode buscar os detalhes do usuário para um driver OAuth1 usando o método `.userFromTokenAndSecret`.
 
 ```ts
 const user = await ally
@@ -315,12 +315,12 @@ const user = await ally
   .userFromTokenAndSecret(token, secret)
 ```
 
-## Stateless authentication
-Many OAuth providers [recommend using a CSRF state token](https://developers.google.com/identity/openid-connect/openid-connect?hl=en#createxsrftoken) to prevent your application from request forgery attacks.
+## Autenticação sem estado
+Muitos provedores OAuth [recomendam usar um token de estado CSRF](https://developers.google.com/identity/openid-connect/openid-connect?hl=en#createxsrftoken) para evitar que seu aplicativo sofra ataques de falsificação de solicitação.
 
-Ally creates a CSRF token and saves it inside an encrypted cookie, which is later verified after the user approves the authentication request.
+O Ally cria um token CSRF e o salva dentro de um cookie criptografado, que é verificado depois que o usuário aprova a solicitação de autenticação.
 
-However, if you cannot use cookies for some reason, you can enable the stateless mode in which no state verification will take place, and hence, no CSRF cookie will be generated.
+No entanto, se você não puder usar cookies por algum motivo, você pode habilitar o modo sem estado no qual nenhuma verificação de estado ocorrerá e, portanto, nenhum cookie CSRF será gerado.
 
 ```ts
 // title: Redirecting
@@ -333,10 +333,10 @@ const gh = ally.use('github').stateless()
 await gh.user()
 ```
 
-## Complete config reference
-The following is the complete configuration reference for all the drivers. You can copy-paste the following objects directly to `config/ally.ts` file.
+## Referência de configuração completa
+A seguir está a referência de configuração completa para todos os drivers. Você pode copiar e colar os seguintes objetos diretamente no arquivo `config/ally.ts`.
 
-::: details GitHub config
+::: details Configuração do GitHub
 ```ts
 {
   github: services.github({
@@ -353,7 +353,7 @@ The following is the complete configuration reference for all the drivers. You c
 ```
 :::
 
-::: details Google config
+::: details Configuração do Google
 ```ts
 {
   google: services.google({
@@ -372,7 +372,7 @@ The following is the complete configuration reference for all the drivers. You c
 ```
 :::
 
-::: details Twitter config
+::: details Configuração do Twitter
 ```ts
 {
   twitter: services.twitter({
@@ -384,7 +384,7 @@ The following is the complete configuration reference for all the drivers. You c
 ```
 :::
 
-::: details Discord config
+::: details Configuração do Discord
 ```ts
 {
   discord: services.discord({
@@ -403,7 +403,7 @@ The following is the complete configuration reference for all the drivers. You c
 ```
 :::
 
-::: details LinkedIn config
+::: details Configuração do LinkedIn
 
 ```ts
 {
@@ -419,7 +419,7 @@ The following is the complete configuration reference for all the drivers. You c
 ```
 :::
 
-::: details Facebook config
+::: details Configuração do Facebook
 ```ts
 {
   facebook: services.facebook({
@@ -437,7 +437,7 @@ The following is the complete configuration reference for all the drivers. You c
 ```
 :::
 
-::: details Spotify config
+::: details Configuração do Spotify
 
 ```ts
 {
@@ -454,5 +454,5 @@ The following is the complete configuration reference for all the drivers. You c
 ```
 :::
 
-## Creating a custom social driver
-We have created a [starter kit](https://github.com/adonisjs-community/ally-driver-boilerplate) to implement and publish a custom social driver on npm. Please go through the README of the starter kit for further instructions.
+## Criando um driver social personalizado
+Criamos um [kit inicial](https://github.com/adonisjs-community/ally-driver-boilerplate) para implementar e publicar um driver social personalizado no npm. Leia o README do kit inicial para obter mais instruções.

@@ -1,22 +1,22 @@
 ---
-summary: 'The `adonisrc.ts` file is used to configure the workspace settings of your application.'
+summary: 'O arquivo `adonisrc.ts` é usado para configurar as configurações do espaço de trabalho do seu aplicativo.'
 ---
 
-# AdonisRC file
+# Arquivo AdonisRC
 
-The `adonisrc.ts` file is used to configure the workspace settings of your application. In this file, you can [register providers](#providers), define [command aliases](#commandsaliases), specify the [files to copy](#metafiles) to the production build, and much more.
+O arquivo `adonisrc.ts` é usado para configurar as configurações do espaço de trabalho do seu aplicativo. Neste arquivo, você pode [registrar provedores](#providers), definir [aliases de comando](#commandsaliases), especificar os [arquivos a serem copiados](#metafiles) para a compilação de produção e muito mais.
 
 :::warning
-The `adonisrc.ts` file is imported by tools other than your AdonisJS application. Therefore, you must not write any application specific code or environment specific conditionals in this file.
+O arquivo `adonisrc.ts` é importado por ferramentas diferentes do seu aplicativo AdonisJS. Portanto, você não deve escrever nenhum código específico do aplicativo ou condicionais específicos do ambiente neste arquivo.
 :::
 
-The file contains the minimum required configuration to run your application. However, you can view the complete file contents by running the `node ace inspect:rcfile` command.
+O arquivo contém a configuração mínima necessária para executar seu aplicativo. No entanto, você pode visualizar o conteúdo completo do arquivo executando o comando `node ace inspect:rcfile`.
 
 ```sh
 node ace inspect:rcfile
 ```
 
-You can access the parsed RCFile contents using the `app` service.
+Você pode acessar o conteúdo RCFile analisado usando o serviço `app`.
 
 ```ts
 import app from '@adonisjs/core/services/app'
@@ -26,11 +26,11 @@ console.log(app.rcFile)
 
 ## `typescript`
 
-The `typescript` property informs the framework and the Ace commands that your application uses TypeScript. Currently, this value is always set to `true`. However, we will later allow applications to be written in JavaScript.
+A propriedade `typescript` informa ao framework e aos comandos Ace que seu aplicativo usa TypeScript. Atualmente, esse valor é sempre definido como `true`. No entanto, mais tarde permitiremos que os aplicativos sejam escritos em JavaScript.
 
 ## `directories`
 
-A set of directories and their paths used by the scaffolding commands. If you decide to rename specific directories, update their new path inside the `directories` object to notify scaffolding commands.
+Um conjunto de diretórios e seus caminhos usados ​​pelos comandos de scaffolding. Se você decidir renomear diretórios específicos, atualize seu novo caminho dentro do objeto `directories` para notificar os comandos de scaffolding.
 
 ```ts
 {
@@ -64,20 +64,18 @@ A set of directories and their paths used by the scaffolding commands. If you de
 ```
 
 ## `preloads`
-An array of files to import at the time of booting the application. The files are imported immediately after booting the service providers.
+Uma matriz de arquivos para importar no momento da inicialização do aplicativo. Os arquivos são importados imediatamente após a inicialização dos provedores de serviço.
 
-You can define the environment in which to import the file. The valid options are:
+Você pode definir o ambiente no qual importar o arquivo. As opções válidas são:
 
-- `web` environment refers to the process started for the HTTP server.
-- `console` environment refers to the Ace commands except for the `repl` command.
-- `repl` environment refers to the process started using the `node ace repl` command.
-- Finally, the `test` environment refers to the process started for running the tests.
-
+- O ambiente `web` se refere ao processo iniciado para o servidor HTTP.
+- O ambiente `console` se refere aos comandos Ace, exceto o comando `repl`.
+- O ambiente `repl` se refere ao processo iniciado usando o comando `node ace repl`.
+- Finalmente, o ambiente `test` se refere ao processo iniciado para executar os testes.
 
 :::note
-You can create and register a preload file using the `node ace make:preload` command.
+Você pode criar e registrar um arquivo de pré-carregamento usando o comando `node ace make:preload`.
 :::
-
 
 ```ts
 {
@@ -104,12 +102,12 @@ You can create and register a preload file using the `node ace make:preload` com
 
 ## `metaFiles`
 
-The `metaFiles` array is a collection of files you want to copy to the `build` folder when creating the production build.
+A matriz `metaFiles` é uma coleção de arquivos que você deseja copiar para a pasta `build` ao criar a compilação de produção.
 
-These are non-TypeScript/JavaScript files that must exist in the production build for your application to work. For example, the Edge templates, i18n language files, etc.
+Esses são arquivos não TypeScript/JavaScript que devem existir na compilação de produção para que seu aplicativo funcione. Por exemplo, os modelos Edge, arquivos de idioma i18n, etc.
 
-- `pattern`: The [glob pattern](https://github.com/sindresorhus/globby#globbing-patterns) to find matching files. 
-- `reloadServer`: Reload the development server when matching files change.
+[padrão glob](https://github.com/sindresorhus/globby#globbing-patterns) para encontrar arquivos correspondentes.
+- `reloadServer`: Recarrega o servidor de desenvolvimento quando os arquivos correspondentes mudam.
 
 ```ts
 {
@@ -127,9 +125,9 @@ These are non-TypeScript/JavaScript files that must exist in the production buil
 ```
 
 ## `commands`
-An array of functions to lazy import ace commands from installed packages. Your applications commands will be imported automatically and hence you do not have to register them explicitly.
+Uma matriz de funções para importar comandos ace de pacotes instalados. Os comandos dos seus aplicativos serão importados automaticamente e, portanto, você não precisa registrá-los explicitamente.
 
-See also: [Creating ace commands](../ace/creating_commands.md)
+Veja também: [Criando comandos ace](../ace/creating_commands.md)
 
 ```ts
 {
@@ -141,9 +139,9 @@ See also: [Creating ace commands](../ace/creating_commands.md)
 ```
 
 ## `commandsAliases`
-A key-value pair of command aliases. This is usually to help you create memorable aliases for the commands that are harder to type or remember.
+Um par de aliases de comando de chave-valor. Isso geralmente ajuda a criar aliases memoráveis ​​para os comandos que são mais difíceis de digitar ou lembrar.
 
-See also: [Creating command aliases](../ace/introduction.md#creating-command-aliases)
+Veja também: [Criando aliases de comando](../ace/introduction.md#creating-command-aliases)
 
 ```ts
 {
@@ -153,7 +151,7 @@ See also: [Creating command aliases](../ace/introduction.md#creating-command-ali
 }
 ```
 
-You can also define multiple aliases for the same command.
+Você também pode definir vários aliases para o mesmo comando.
 
 ```ts
 {
@@ -166,9 +164,9 @@ You can also define multiple aliases for the same command.
 
 ## `tests`
 
-The `tests` object registers the test suites and some of the global settings for the test runner.
+O objeto `tests` registra os conjuntos de testes e algumas das configurações globais para o executor de testes.
 
-See also: [Introduction to testing](../testing/introduction.md)
+Veja também: [Introdução aos testes](../testing/introduction.md)
 
 ```ts
 {
@@ -188,27 +186,27 @@ See also: [Introduction to testing](../testing/introduction.md)
 }
 ```
 
-- `timeout`: Define the default timeout for all the tests.
-- `forceExit`:  Forcefully exit the application process as soon as the tests are complete. Usually, it is good practice to perform a graceful exit.
-- `suite.name`: A unique name for the test suite.
-- `suite.files`: An array of glob patterns to import the test files.
-- `suite.timeout`: The default timeout for all the tests inside the suite.
+- `timeout`: define o tempo limite padrão para todos os testes.
+- `forceExit`: sai à força do processo do aplicativo assim que os testes forem concluídos. Normalmente, é uma boa prática executar uma saída elegante.
+- `suite.name`: um nome exclusivo para o conjunto de testes.
+- `suite.files`: Uma matriz de padrões glob para importar os arquivos de teste.
+- `suite.timeout`: O tempo limite padrão para todos os testes dentro da suíte.
 
 ## `providers`
-An array of service providers to load during the application boot phase.
+Uma matriz de provedores de serviço para carregar durante a fase de inicialização do aplicativo.
 
-By default, the providers are loaded in all the environments. However, you can also define an explicit array of environments to import the provider.
+Por padrão, os provedores são carregados em todos os ambientes. No entanto, você também pode definir uma matriz explícita de ambientes para importar o provedor.
 
-- `web` environment refers to the process started for the HTTP server.
-- `console` environment refers to the Ace commands except for the `repl` command.
-- `repl` environment refers to the process started using the `node ace repl` command.
-- Finally, the `test` environment refers to the process started for running the tests.
+- O ambiente `web` se refere ao processo iniciado para o servidor HTTP.
+- O ambiente `console` se refere aos comandos Ace, exceto o comando `repl`.
+- O ambiente `repl` se refere ao processo iniciado usando o comando `node ace repl`.
+- Finalmente, o ambiente `test` se refere ao processo iniciado para executar os testes.
 
 :::note
-Providers are loaded in the same order as registered inside the `providers` array.
+Os provedores são carregados na mesma ordem em que são registrados dentro da matriz `providers`.
 :::
 
-See also: [Service providers](./service_providers.md)
+[Provedores de serviço](./service_providers.md)
 
 ```ts
 {
@@ -246,11 +244,11 @@ See also: [Service providers](./service_providers.md)
 
 ## `assetsBundler`
 
-The `serve` and `build` command attempts to detect the assets used by your application to compile the frontend assets.
+Os comandos `serve` e `build` tentam detectar os ativos usados ​​pelo seu aplicativo para compilar os ativos do frontend.
 
-The detection is performed for [vite](https://vitejs.dev) by searching for the `vite.config.js` file and [Webpack encore](https://github.com/symfony/webpack-encore) by searching for the `webpack.config.js` file.
+A detecção é realizada para [vite](https://vitejs.dev) pesquisando o arquivo `vite.config.js` e [Webpack encore](https://github.com/symfony/webpack-encore) pesquisando o arquivo `webpack.config.js`.
 
-However, if you use a different assets bundler, you can configure it inside the `adonisrc.ts` file as follows.
+No entanto, se você usar um empacotador de ativos diferente, poderá configurá-lo dentro do arquivo `adonisrc.ts` da seguinte forma.
 
 ```ts
 {
@@ -268,6 +266,6 @@ However, if you use a different assets bundler, you can configure it inside the 
 }
 ```
 
-- `name` - The name of the asset bundler you use. It is required for display purposes.
-- `devServer.*` - The command and its arguments to start the development server.
-- `build.*` - The command and its arguments to to create the production build.
+- `name` - O nome do empacotador de ativos que você usa. É necessário para fins de exibição.
+- `devServer.*` - O comando e seus argumentos para iniciar o servidor de desenvolvimento.
+- `build.*` - O comando e seus argumentos para criar a compilação de produção.

@@ -1,10 +1,10 @@
 ---
-summary: Prompts are terminal widgets for user input, using the @poppinss/prompts package. They support various types like input, password, and select, and are designed for easy testing integration.
+Resumo: Prompts são widgets de terminal para entrada do usuário, usando o pacote @poppinss/prompts. Eles suportam vários tipos como entrada, senha e seleção, e são projetados para fácil integração de testes.
 ---
 
 # Prompts
 
-Prompts are interactive terminal widgets you can use to accept user input. Ace prompts are powered by the [@poppinss/prompts](https://github.com/poppinss/prompts) package, which supports the following prompt types.
+Prompts são widgets de terminal interativos que você pode usar para aceitar a entrada do usuário. Os prompts Ace são alimentados pelo pacote [@poppinss/prompts](https://github.com/poppinss/prompts), que suporta os seguintes tipos de prompt.
 
 - input
 - list
@@ -15,13 +15,13 @@ Prompts are interactive terminal widgets you can use to accept user input. Ace p
 - multi-select
 - autocomplete
 
-Ace prompts are built with testing in mind. When writing tests, you may trap prompts and respond to them programmatically.
+Os prompts Ace são criados com testes em mente. Ao escrever testes, você pode capturar prompts e responder a eles programaticamente.
 
-See also: [Testing ace commands](../testing/console_tests.md)
+Veja também: [Testando comandos ace](../testing/console_tests.md)
 
-## Displaying a prompt
+## Exibindo um prompt
 
-You may display prompts using the `this.prompt` property available on all Ace commands.
+Você pode exibir prompts usando a propriedade `this.prompt` disponível em todos os comandos Ace.
 
 ```ts
 import { BaseCommand } from '@adonisjs/core/ace'
@@ -35,16 +35,15 @@ export default class GreetCommand extends BaseCommand {
 }
 ```
 
-## Prompt options
+## Opções de prompt
 
-Following is the list of options accepted by prompts. You may reference this table as the single source of truth.
-
+A seguir está a lista de opções aceitas por prompts. Você pode consultar esta tabela como a única fonte da verdade.
 
 <table>
 <tr>
-<td width="110px">Option</td>
-<td width="120px">Accepted by</td>
-<td>Description</td>
+<td width="110px">Opção</td>
+<td width="120px">Aceito por</td>
+<td>Descrição</td>
 </tr>
 <tr>
 <td>
@@ -55,7 +54,7 @@ Following is the list of options accepted by prompts. You may reference this tab
 
 <td>
 
-All prompts
+Todos os prompts
 
 </td>
 
@@ -75,7 +74,7 @@ The default value to use when no value is entered. In the case of `select`, `mul
 
 <td>
 
-All prompts
+Todos os prompts
 
 </td>
 
@@ -95,7 +94,7 @@ The unique name for the prompt
 
 <td>
 
-All prompts
+Todos os prompts
 
 </td>
 
@@ -112,10 +111,10 @@ The hint text to display next to the prompt
 
 </td>
 
-<td>All prompts</td>
+<td>Todos os prompts</td>
 <td>
 
-Transform the prompt return value. The input value of the `result` method depends on the prompt. For example, the `multiselect` prompt value will be an array of selected choices.
+Transforme o valor de retorno do prompt. O valor de entrada do método `result` depende do prompt. Por exemplo, o valor do prompt `multiselect` será um array de escolhas selecionadas.
 
 ```ts
 {
@@ -135,11 +134,11 @@ Transform the prompt return value. The input value of the `result` method depend
 
 </td>
 
-<td>All prompts</td>
+<td>Todos os prompts</td>
 
 <td>
 
-Live format the input value as the user types. The formatting is only applied to the CLI output, not the return value.
+Formate ao vivo o valor de entrada conforme o usuário digita. A formatação é aplicada somente à saída CLI, não ao valor de retorno.
 
 ```ts
 {
@@ -159,11 +158,11 @@ Live format the input value as the user types. The formatting is only applied to
 
 </td>
 
-<td>All prompts</td>
+<td>Todos os prompts</td>
 
 <td>
 
-Validate the user input. Returning `true` from the method will pass the validation. Returning `false` or an error message string will be considered a failure.
+Valide a entrada do usuário. Retornar `true` do método passará na validação. Retornar `false` ou uma string de mensagem de erro será considerado uma falha.
 
 ```ts
 {
@@ -192,16 +191,16 @@ Validate the user input. Returning `true` from the method will pass the validati
 
 <td>
 
-Limit the number of options to display. You will have to scroll to see the rest of the options.
+Limite o número de opções a serem exibidas. Você terá que rolar para ver o restante das opções.
 
 </td>
 </tr>
 </table>
 
 
-## Text input
+## Entrada de texto
 
-You may render the prompt to accept text input using the `prompt.ask` method. The method accepts the prompt message as the first parameter and the [options object](#prompt-options) as the second parameter.
+Você pode renderizar o prompt para aceitar entrada de texto usando o método `prompt.ask`. O método aceita a mensagem do prompt como o primeiro parâmetro e o [objeto de opções](#prompt-options) como o segundo parâmetro.
 
 ```ts
 await this.prompt.ask('Enter the model name')
@@ -223,11 +222,11 @@ await this.prompt.ask('Enter the model name', {
 })
 ```
 
-## Masked input
+## Entrada mascarada
 
-As the name suggests, the masked input prompt masks the user input in the terminal. You may display the masked prompt using the `prompt.secure` method.
+Como o nome sugere, o prompt de entrada mascarado mascara a entrada do usuário no terminal. Você pode exibir o prompt mascarado usando o método `prompt.secure`.
 
-The method accepts the prompt message as the first parameter and the [options object](#prompt-options) as the second parameter.
+O método aceita a mensagem do prompt como o primeiro parâmetro e o [objeto de opções](#prompt-options) como o segundo parâmetro.
 
 ```ts
 await this.prompt.secure('Enter account password')
@@ -243,13 +242,13 @@ await this.prompt.secure('Enter account password', {
 })
 ```
 
-## List of choices
+## Lista de escolhas
 
-You may display a list of choices for a single selection using the `prompt.choice` method. The method accepts the following parameters.
+Você pode exibir uma lista de escolhas para uma única seleção usando o método `prompt.choice`. O método aceita os seguintes parâmetros.
 
-1. Prompt message.
-2. An array of choices.
-3. Optional [options object](#prompt-options).
+1. Mensagem de prompt.
+2. Uma matriz de escolhas.
+3. [Objeto de opções](#prompt-options) opcional.
 
 ```ts
 await this.prompt.choice('Select package manager', [
@@ -259,7 +258,7 @@ await this.prompt.choice('Select package manager', [
 ])
 ```
 
-To mention a different display value, you can define options as objects. The `name` property is returned as the prompt result, and the `message` property is displayed in the terminal.
+Para mencionar um valor de exibição diferente, você pode definir opções como objetos. A propriedade `name` é retornada como o resultado do prompt, e a propriedade `message` é exibida no terminal.
 
 ```ts
 await this.prompt.choice('Select database driver', [
@@ -278,9 +277,9 @@ await this.prompt.choice('Select database driver', [
 ])
 ```
 
-## Multi-select choices
+## Escolhas de seleção múltipla
 
-You may use the `prompt.multiple` method to allow multiple selections in the choices list. The accepted parameters are the same as the `choice` prompt.
+Você pode usar o método `prompt.multiple` para permitir seleções múltiplas na lista de escolhas. Os parâmetros aceitos são os mesmos do prompt `choice`.
 
 ```ts
 await this.prompt.multiple('Select database drivers', [
@@ -299,11 +298,11 @@ await this.prompt.multiple('Select database drivers', [
 ])
 ```
 
-## Confirm action
+## Confirmar ação
 
-You can display a confirmation prompt with `Yes/No` options using the `prompt.confirm` method. The method accepts the prompt message as the first parameter and the [options object](#prompt-options) as the second parameter.
+Você pode exibir um prompt de confirmação com opções `Sim/Não` usando o método `prompt.confirm`. O método aceita a mensagem de prompt como o primeiro parâmetro e o [objeto de opções](#prompt-options) como o segundo parâmetro.
 
-The `confirm` prompt returns a boolean value.
+O prompt `confirm` retorna um valor booleano.
 
 ```ts
 const deleteFiles = await this.prompt.confirm(
@@ -314,7 +313,7 @@ if (deleteFiles) {
 }
 ```
 
-To customize the `Yes/No` options display value, you may use the `prompt.toggle` method. 
+Para personalizar o valor de exibição das opções `Sim/Não`, você pode usar o método `prompt.toggle`.
 
 ```ts
 const deleteFiles = await this.prompt.toggle(
@@ -326,9 +325,9 @@ if (deleteFiles) {
 }
 ```
 
-## Autocomplete
+## Preenchimento automático
 
-The `autocomplete` prompt is a combination of the select and the multi-select prompt, but with the ability to fuzzy search the choices.
+O prompt `autocomplete` é uma combinação do prompt de seleção e do prompt de seleção múltipla, mas com a capacidade de fazer uma busca difusa das opções.
 
 ```ts
 const selectedCity = await this.prompt.autocomplete(

@@ -1,29 +1,28 @@
 ---
-summary: Serve static files from a given directory using the @adonisjs/static package.
+resumo: Sirva arquivos estáticos de um diretório fornecido usando o pacote @adonisjs/static.
 ---
 
-# Static files server
+# Servidor de arquivos estáticos
 
-You can serve static files from a given directory using the `@adonisjs/static` package. The package ships with a middleware that you must register in the [server middleware stack](./middleware.md#server-middleware-stack) to intercept the HTTP requests and serve files.
+Você pode servir arquivos estáticos de um diretório fornecido usando o pacote `@adonisjs/static`. O pacote é fornecido com um middleware que você deve registrar na [pilha de middleware do servidor](./middleware.md#server-middleware-stack) para interceptar as solicitações HTTP e servir arquivos.
 
-## Installation
+## Instalação
 
-The package comes pre-configured with the `web` starter kit. However, you can install and configure it as follows with other starter kits.
+O pacote vem pré-configurado com o kit inicial `web`. No entanto, você pode instalá-lo e configurá-lo da seguinte forma com outros kits iniciais.
 
-
-Install and configure the package using the following command :
+Instale e configure o pacote usando o seguinte comando:
 
 ```sh
 node ace add @adonisjs/static
 ```
 
-::: details See steps performed by the add command
+::: details Veja os passos realizados pelo comando add
 
-1. Installs the `@adonisjs/static` package using the detected package manager.
+1. Instala o pacote `@adonisjs/static` usando o gerenciador de pacotes detectado.
 
-2. Registers the following service provider inside the `adonisrc.ts` file.
+2. Registra o seguinte provedor de serviços dentro do arquivo `adonisrc.ts`.
 
-    ```ts
+```ts
     {
       providers: [
         // ...other providers
@@ -32,11 +31,11 @@ node ace add @adonisjs/static
     }
     ```
 
-3. Create the `config/static.ts` file.
+3. Crie o arquivo `config/static.ts`.
 
-4. Registers the following middleware inside the `start/kernel.ts` file.
+4. Registra o seguinte middleware dentro do arquivo `start/kernel.ts`.
 
-    ```ts
+```ts
     server.use([
       () => import('@adonisjs/static/static_middleware')
     ])
@@ -44,9 +43,9 @@ node ace add @adonisjs/static
 
 :::
 
-## Configuration
+## Configuração
 
-The configuration for the static middleware is stored inside the `config/static.ts` file.
+A configuração do middleware estático é armazenada dentro do arquivo `config/static.ts`.
 
 ```ts
 import { defineConfig } from '@adonisjs/static'
@@ -63,17 +62,17 @@ export default staticServerConfig
 
 ### `enabled`
 
-Enable or disable the middleware temporarily without removing it from the middleware stack.
+Habilite ou desabilite o middleware temporariamente sem removê-lo da pilha de middleware.
 
 ### `acceptRanges`
 
-The `Accept-Range` header allows browsers to resume an interrupted file download instead of trying to restart the download. You can disable resumable downloads by setting `acceptsRanges` to `false`.
+O cabeçalho `Accept-Range` permite que os navegadores retomem um download de arquivo interrompido em vez de tentar reiniciar o download. Você pode desabilitar downloads retomáveis ​​definindo `acceptsRanges` como `false`.
 
-Defaults to `true`.
+O padrão é `true`.
 
 ### `cacheControl`
 
-Enable or disable the [Cache-Control](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control) header. The `immutable` and `maxAge` properties will be ignored when `cacheControl` is disabled.
+Habilite ou desabilite o cabeçalho [Cache-Control](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control). As propriedades `immutable` e `maxAge` serão ignoradas quando `cacheControl` estiver desabilitado.
 
 ```ts
 {
@@ -83,11 +82,11 @@ Enable or disable the [Cache-Control](https://developer.mozilla.org/en-US/docs/W
 
 ### `dotFiles`
 
-Define how to treat requests for dot files inside the `public` directory. You can set one of the following options.
+Defina como tratar solicitações para arquivos dot dentro do diretório `public`. Você pode definir uma das seguintes opções.
 
-- `allow`: Serve the dot-file same as the other files.
-- `deny`: Deny the request with the `403` status code.
-- `ignore`: Pretend the file does not exist and respond with a `404` status code.
+- `allow`: Servir o arquivo dot da mesma forma que os outros arquivos.
+- `deny`: Negar a solicitação com o código de status `403`.
+- `ignore`: Fingir que o arquivo não existe e responder com um código de status `404`.
 
 ```ts
 {
@@ -97,7 +96,7 @@ Define how to treat requests for dot files inside the `public` directory. You ca
 
 ### `etag`
 
-Enable or disable [etag](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag) generation.
+Habilitar ou desabilitar a geração de [etag](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag).
 
 ```ts
 {
@@ -107,7 +106,7 @@ Enable or disable [etag](https://developer.mozilla.org/en-US/docs/Web/HTTP/Heade
 
 ### `lastModified`
 
-Enable or disable the [Last-Modified](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Last-Modified) header. The file [stat.mtime](https://nodejs.org/api/fs.html#statsmtime) property is used as the value for the header.
+Habilite ou desabilite o cabeçalho [Last-Modified](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Last-Modified). A propriedade do arquivo [stat.mtime](https://nodejs.org/api/fs.html#statsmtime) é usada como valor para o cabeçalho.
 
 ```ts
 {
@@ -117,9 +116,9 @@ Enable or disable the [Last-Modified](https://developer.mozilla.org/en-US/docs/W
 
 ### `immutable`
 
-Enable or disable the [immutable](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#immutable) directive for the `Cache-Control` header. By default, the `immutable` property is disabled.
+Habilite ou desabilite a diretiva [immutable](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#immutable) para o cabeçalho `Cache-Control`. Por padrão, a propriedade `immutable` é desabilitada.
 
-If the `immutable` property is enabled, you must define the `maxAge` property to enable caching.
+Se a propriedade `immutable` estiver habilitada, você deve definir a propriedade `maxAge` para habilitar o cache.
 
 ```ts
 {
@@ -129,7 +128,7 @@ If the `immutable` property is enabled, you must define the `maxAge` property to
 
 ### `maxAge`
 
-Define the [max-age](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#max-age) directive for the `Cache-Control` header. The value should be either in milliseconds or a time expression string.
+Defina a diretiva [max-age](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#max-age) para o cabeçalho `Cache-Control`. O valor deve estar em milissegundos ou uma string de expressão de tempo.
 
 ```ts
 {
@@ -139,7 +138,7 @@ Define the [max-age](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/C
 
 ### `headers`
 
-A function that returns an object of headers to set on the response. The function receives the file path as the first argument and the [file stats](https://nodejs.org/api/fs.html#class-fsstats) object as the second argument.
+Uma função que retorna um objeto de cabeçalhos para definir na resposta. A função recebe o caminho do arquivo como o primeiro argumento e o objeto [file stats](https://nodejs.org/api/fs.html#class-fsstats) como o segundo argumento.
 
 ```ts
 {
@@ -153,16 +152,16 @@ A function that returns an object of headers to set on the response. The functio
 }
 ```
 
-## Serving static files
+## Servindo arquivos estáticos
 
-Once the middleware is registered, you may create files inside the `public` directory and access them in the browser using the file path. For example, the `./public/css/style.css` file can be accessed using the `http://localhost:3333/css/style.css` URL.
+Depois que o middleware for registrado, você pode criar arquivos dentro do diretório `public` e acessá-los no navegador usando o caminho do arquivo. Por exemplo, o arquivo `./public/css/style.css` pode ser acessado usando a URL `http://localhost:3333/css/style.css`.
 
-The files in the `public` directory are not compiled or built using an assets bundler. If you want to compile frontend assets, you must place them inside the `resources` directory and use the [assets bundler](../basics/vite.md).
+Os arquivos no diretório `public` não são compilados ou construídos usando um empacotador de ativos. Se você quiser compilar ativos de frontend, você deve colocá-los dentro do diretório `resources` e usar o [agrupador de ativos](../basics/vite.md).
 
-## Copying static files to production build
-The static files stored inside the `/public` directory are automatically copied to the `build` folder when you run `node ace build` command.
+## Copiando arquivos estáticos para a compilação de produção
+Os arquivos estáticos armazenados dentro do diretório `/public` são automaticamente copiados para a pasta `build` quando você executa o comando `node ace build`.
 
-The rule for copying public files is defined inside the `adonisrc.ts` file.
+A regra para copiar arquivos públicos é definida dentro do arquivo `adonisrc.ts`.
 
 ```ts
 {
