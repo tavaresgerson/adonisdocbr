@@ -1,35 +1,35 @@
 ---
-summary: Available options for SQL libraries and ORMs in AdonisJS applications.
+resumo: Opções disponíveis para bibliotecas SQL e ORMs em aplicativos AdonisJS.
 ---
 
-# SQL and ORMs
+# SQL e ORMs
 
-SQL databases are popular for storing the application's data in persistent storage. You can use any libraries and ORMs to make SQL queries inside an AdonisJS application.
+Bancos de dados SQL são populares para armazenar os dados do aplicativo em armazenamento persistente. Você pode usar quaisquer bibliotecas e ORMs para fazer consultas SQL dentro de um aplicativo AdonisJS.
 
 :::note
-The AdonisJS core team built the [Lucid ORM](./lucid.md) but does not force you to use it. You can use any other SQL libraries and ORMs you would like inside an AdonisJS application.
+A equipe principal do AdonisJS construiu o [Lucid ORM](./lucid.md), mas não o força a usá-lo. Você pode usar quaisquer outras bibliotecas SQL e ORMs que desejar dentro de um aplicativo AdonisJS.
 :::
 
-## Popular options
+## Opções populares
 
-Following is the list of other popular SQL libraries and ORMs you can use inside an AdonisJS application (just like any other Node.js application).
+A seguir está a lista de outras bibliotecas SQL e ORMs populares que você pode usar dentro de um aplicativo AdonisJS (assim como qualquer outro aplicativo Node.js).
 
-- [**Lucid**](./lucid.md) is a SQL query builder and an **Active Record ORM** built on top of [Knex](https://knexjs.org) created and maintained by the AdonisJS core team.
-- [**Prisma**](https://prisma.io/orm) Prisma ORM is another popular ORM in the Node.js ecosystem. It has a large community following. It offers intuitive data models, automated migrations, type-safety & auto-completion.
-- [**Kysely**](https://kysely.dev/docs/getting-started) is an end-to-end type safe query builder for Node.js. Kysely is a great fit if you need a lean query builder without any models. We have written an article explaining [how you can integrate Kysely inside an AdonisJS application](https://adonisjs.com/blog/kysely-with-adonisjs).
-- [**Drizzle ORM**](https://orm.drizzle.team/) is used by many AdonisJS developers in our community. We do not have any experience using this ORM, but you might want to check it out and see if it's an excellent fit for your use case.
-- [**Mikro ORM**](https://mikro-orm.io/docs/guide/first-entity) is an underrated ORM in the Node.js ecosystem. MikroORM is a little verbose in comparison to Lucid. However, it is actively maintained and also built on top of Knex.
-- [**TypeORM**](https://typeorm.io) is a popular ORM in the TypeScript ecosystem.
+[**Lucid**](./lucid.md) é um construtor de consultas SQL e um **ORM Active Record** construído sobre
+[**Prisma**](https://prisma.io/orm) O Prisma ORM é outro ORM popular no ecossistema Node.js. Ele tem uma grande comunidade de seguidores. Ele oferece modelos de dados intuitivos, migrações automatizadas, segurança de tipo e preenchimento automático.
+[**Kysely**](https://kysely.dev/docs/getting-started) é um construtor de consultas de tipo seguro de ponta a ponta para Node.js. O Kysely é uma ótima opção se você precisa de um construtor de consultas enxuto sem nenhum modelo. Escrevemos um artigo explicando
+[**Drizzle ORM**](https://orm.drizzle.team/) é usado por muitos desenvolvedores AdonisJS em nossa comunidade. Não temos experiência com este ORM, mas você pode querer dar uma olhada e ver se ele é uma excelente opção para seu caso de uso.
+[**Mikro ORM**](https://mikro-orm.io/docs/guide/first-entity) é um ORM subestimado no ecossistema Node.js. O MikroORM é um pouco prolixo em comparação ao Lucid. No entanto, ele é mantido ativamente e também construído sobre o Knex.
+[**TypeORM**](https://typeorm.io) é um ORM popular no ecossistema TypeScript.
 
-## Using other SQL libraries and ORMs
+## Usando outras bibliotecas SQL e ORMs
 
-When using another SQL library or ORM, you will have to change the configuration of some packages manually.
+Ao usar outra biblioteca SQL ou ORM, você terá que alterar a configuração de alguns pacotes manualmente.
 
-### Authentication
+### Autenticação
 
-The [AdonisJS authentication module](../authentication/introduction.md) comes with built-in support for Lucid to fetch the authenticated user. When using another SQL library or ORM, you will have to implement the `SessionUserProviderContract` or the `AccessTokensProviderContract` interface to fetch the user.
+O [módulo de autenticação AdonisJS](../authentication/introduction.md) vem com suporte integrado para o Lucid buscar o usuário autenticado. Ao usar outra biblioteca SQL ou ORM, você terá que implementar a interface `SessionUserProviderContract` ou `AccessTokensProviderContract` para buscar o usuário.
 
-Here is an example of how you can implement the `SessionUserProviderContract` interface when using `Kysely`.
+Aqui está um exemplo de como você pode implementar a interface `SessionUserProviderContract` ao usar `Kysely`.
 
 ```ts
 import { symbols } from '@adonisjs/auth'
@@ -75,7 +75,7 @@ export class SessionKyselyUserProvider implements SessionUserProviderContract<Us
 }
 ```
 
-Once you have implemented the `UserProvider` interface, you can use it inside your configuration.
+Depois de implementar a interface `UserProvider`, você pode usá-la dentro da sua configuração.
 
 ```ts
 const authConfig = defineConfig({

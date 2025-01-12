@@ -1,8 +1,8 @@
-# Table builder
+# Construtor de tabelas
 
-The table builder allows you to **create**, **drop**, or **rename** columns on a selected database table.
+O construtor de tabelas permite que você **crie**, **remova** ou **renomeie** colunas em uma tabela de banco de dados selecionada.
 
-You get access to the table builder instance by calling one of the following schema builder methods.
+Você obtém acesso à instância do construtor de tabelas chamando um dos seguintes métodos do construtor de esquemas.
 
 ```ts
 class UserSchema extends BaseSchema {
@@ -21,7 +21,7 @@ class UserSchema extends BaseSchema {
 ```
 
 ## `dropColumn`
-Drop a column by its name.
+Remova uma coluna pelo seu nome.
 
 ```ts
 this.schema.table('users', (table) => {
@@ -30,7 +30,7 @@ this.schema.table('users', (table) => {
 ```
 
 ## `dropColumns`
-Drop more than one column by providing multiple arguments.
+Remova mais de uma coluna fornecendo vários argumentos.
 
 ```ts
 this.schema.table('users', (table) => {
@@ -39,7 +39,7 @@ this.schema.table('users', (table) => {
 ```
 
 ## `renameColumn`
-Rename a column. The method accepts the existing column name as the first argument and the new name as the second argument.
+Renomeie uma coluna. O método aceita o nome da coluna existente como o primeiro argumento e o novo nome como o segundo argumento.
 
 ```ts
 this.schema.table('users', (table) => {
@@ -49,10 +49,10 @@ this.schema.table('users', (table) => {
 
 ## `increments`
 
-Adds an auto-incrementing column. The column is also marked as the primary key unless disabled explicitly.
+Adiciona uma coluna de incremento automático. A coluna também é marcada como a chave primária, a menos que seja desabilitada explicitamente.
 
-- In PostgreSQL, the column has the `serial` data type.
-- In Amazon Redshift, it is an `integer indentity (1,1)`.
+- No PostgreSQL, a coluna tem o tipo de dados `serial`.
+- No Amazon Redshift, é um `integer indentity (1,1)`.
 
 ```ts
 this.schema.createTable('users', (table) => {
@@ -60,7 +60,7 @@ this.schema.createTable('users', (table) => {
 })
 ```
 
-Define an incrementing column, but do not mark it as the primary key.
+Defina uma coluna de incremento, mas não a marque como a chave primária.
 
 ```ts
 this.schema.createTable('users', (table) => {
@@ -70,7 +70,7 @@ this.schema.createTable('users', (table) => {
 
 ## `integer`
 
-Add an integer column.
+Adicione uma coluna de inteiros.
 
 ```ts
 this.schema.createTable('users', (table) => {
@@ -79,10 +79,10 @@ this.schema.createTable('users', (table) => {
 ```
 
 ## `bigInteger`
-Adds a `bigint` column in MYSQL and PostgreSQL. For all other database drivers, it defaults to a normal integer.
+Adiciona uma coluna `bigint` no MYSQL e no PostgreSQL. Para todos os outros drivers de banco de dados, o padrão é um inteiro normal.
 
 :::note
-BigInt column values are returned as a string in query results.
+Os valores da coluna BigInt são retornados como uma string nos resultados da consulta.
 :::
 
 ```ts
@@ -93,7 +93,7 @@ this.schema.createTable('users', (table) => {
 
 ## `text`
 
-Adds a text column to the database. You can optionally define the text datatype to be `mediumtext` or `longtext`. The data type is ignored if the underlying driver is not MySQL.
+Adiciona uma coluna de texto ao banco de dados. Opcionalmente, você pode definir o tipo de dados de texto como `mediumtext` ou `longtext`. O tipo de dados será ignorado se o driver subjacente não for MySQL.
 
 ```ts
 this.schema.createTable('posts', (table) => {
@@ -103,7 +103,7 @@ this.schema.createTable('posts', (table) => {
 
 ## `string`
 
-Add a string column with an optional length. The length defaults to `255`, if not specified.
+Adicione uma coluna de string com um comprimento opcional. O comprimento padrão é `255`, se não for especificado.
 
 ```ts
 this.schema.createTable('posts', (table) => {
@@ -116,7 +116,7 @@ this.schema.createTable('posts', (table) => {
 
 ## `float`
 
-Adds a float column, with **optional precision (defaults to 8)** and **scale (defaults to 2)**.
+Adiciona uma coluna float, com **precisão opcional (padrão 8)** e **escala (padrão 2)**.
 
 ```ts
 this.schema.createTable('products', (table) => {
@@ -131,9 +131,9 @@ this.schema.createTable('products', (table) => {
 
 ## `decimal`
 
-Adds a decimal column, with **optional precision (defaults to 8)** and **scale (defaults to 2)**.
+Adiciona uma coluna decimal, com **precisão opcional (padrão 8)** e **escala (padrão 2)**.
 
-Specifying `null` as precision creates a decimal column that can store numbers of precision and scale. (Only supported for Oracle, SQLite, Postgres)
+Especificar `null` como precisão cria uma coluna decimal que pode armazenar números de precisão e escala. (Suportado apenas para Oracle, SQLite, Postgres)
 
 ```ts
 this.schema.createTable('products', (table) => {
@@ -148,7 +148,7 @@ this.schema.createTable('products', (table) => {
 
 ## `boolean`
 
-Adds a boolean column. Many databases represent `true` and `false` as `1` and `0` and return the same value during SQL queries.
+Adiciona uma coluna booleana. Muitos bancos de dados representam `true` e `false` como `1` e `0` e retornam o mesmo valor durante consultas SQL.
 
 ```ts
 this.schema.createTable('posts', (table) => {
@@ -157,7 +157,7 @@ this.schema.createTable('posts', (table) => {
 ```
 
 ## `date`
-Adds a date column to the database table.
+Adiciona uma coluna de data à tabela do banco de dados.
 
 ```ts
 this.schema.createTable('users', (table) => {
@@ -166,10 +166,10 @@ this.schema.createTable('users', (table) => {
 ```
 
 ## `dateTime`
-Adds a DateTime column to the database table. The method accepts the column name as the first argument, alongside the options object to configure the `precision` and use the `timestampz` data type.
+Adiciona uma coluna DateTime à tabela do banco de dados. O método aceita o nome da coluna como o primeiro argumento, junto com o objeto options para configurar a `precision` e usar o tipo de dados `timestampz`.
 
-- You can enable/disable the `timestampz` data type for PostgreSQL. It is enabled by default.
-- You can define the column precision for **MySQL 5.6+**.
+- Você pode habilitar/desabilitar o tipo de dados `timestampz` para PostgreSQL. Ele é habilitado por padrão.
+- Você pode definir a precisão da coluna para **MySQL 5.6+**.
 
 ```ts
 this.schema.createTable('users', (table) => {
@@ -185,7 +185,7 @@ this.schema.createTable('users', (table) => {
 ```
 
 ## `time`
-Adds a time column with optional precision for MySQL. It is not supported on Amazon Redshift.
+Adiciona uma coluna de tempo com precisão opcional para MySQL. Não é compatível com Amazon Redshift.
 
 ```ts
 this.schema.createTable('users', (table) => {
@@ -194,11 +194,11 @@ this.schema.createTable('users', (table) => {
 ```
 
 ## `timestamp`
-Adds a timestamp column to the database table. The method accepts the column name as the first argument, alongside the options object to configure the `precision` and use the `timestampz` data type.
+Adiciona uma coluna de timestamp à tabela do banco de dados. O método aceita o nome da coluna como o primeiro argumento, junto com o objeto options para configurar a `precision` e usar o tipo de dados `timestampz`.
 
-- You can enable/disable the `timestampz` data type for PostgreSQL. It is enabled by default.
-- Setting `useTz = true` will use the `DATETIME2` data type for MSSQL. It is disabled by default.
-- You can define the column precision for **MySQL 5.6+**.
+- Você pode habilitar/desabilitar o tipo de dados `timestampz` para PostgreSQL. Ele é habilitado por padrão.
+- Definir `useTz = true` usará o tipo de dados `DATETIME2` para MSSQL. Ele é desabilitado por padrão.
+- Você pode definir a precisão da coluna para **MySQL 5.6+**.
 
 ```ts
 this.schema.createTable('users', (table) => {
@@ -213,15 +213,15 @@ this.schema.createTable('users', (table) => {
 ```
 
 ## `timestamps`
-Adds `created_at` and `updated_at` columns to the database table.
+Adiciona colunas `created_at` e `updated_at` à tabela do banco de dados.
 
 :::warning
-Since AdonisJS uses Knex.js under the hood, your editor autocomplete feature will list the `timestamps` method in list of available methods.
+Como o AdonisJS usa o Knex.js por baixo dos panos, o recurso de preenchimento automático do seu editor listará o método `timestamps` na lista de métodos disponíveis.
 
-However, we recommend not using this method and instead use the `timestamp` method for following reasons.
+No entanto, recomendamos não usar esse método e, em vez disso, usar o método `timestamp` pelos seguintes motivos.
 
-- The `timestamps` method is not chainable. Meaning you cannot add additional constraints like `index` or `nullable` to the column.
-- You can create columns of type `timestampz` or `Datetime2`.
+- O método `timestamps` não é encadeável. O que significa que você não pode adicionar restrições adicionais como `index` ou `nullable` à coluna.
+- Você pode criar colunas do tipo `timestampz` ou `Datetime2`.
 :::
 
 ```ts
@@ -230,7 +230,7 @@ this.schema.createTable('users', (table) => {
 })
 ```
 
-By default, the `timestamps` method creates a **DATETIME** column. However, you can change it to a **TIMESTAMP** column by passing `true` as the first argument.
+Por padrão, o método `timestamps` cria uma coluna **DATETIME**. No entanto, você pode alterá-lo para uma coluna **TIMESTAMP** passando `true` como o primeiro argumento.
 
 ```ts
 this.schema.createTable('users', (table) => {
@@ -253,7 +253,7 @@ this.schema.createTable('users', (table) => {
 ```
 
 ## `binary`
-Adds a binary column. The method accepts the column name as the first argument, with an optional length as the second argument (applicable for MySQL only).
+Adiciona uma coluna binária. O método aceita o nome da coluna como o primeiro argumento, com um comprimento opcional como o segundo argumento (aplicável somente para MySQL).
 
 ```ts
 this.schema.createTable('users', (table) => {
@@ -263,11 +263,11 @@ this.schema.createTable('users', (table) => {
 
 ## `enum` / `enu`
 
-Adds an enum column to the database. The method accepts the column name as the first argument, an array of enum options as the second argument, and an optional object of options as the third argument.
+Adiciona uma coluna enum ao banco de dados. O método aceita o nome da coluna como o primeiro argumento, uma matriz de opções enum como o segundo argumento e um objeto opcional de opções como o terceiro argumento.
 
-- In PostgreSQL, you can use the native enum type by setting the `options.useNative` value to true. Also, make sure to provide a unique name enum name via `options.enumName`.
-- In PostgreSQL, we will create the enum before the column. If the enum type already exists, then you must set `options.existingType` to true.
-- In Amazon Redshift, unchecked varchar(255) data type is used.
+- No PostgreSQL, você pode usar o tipo enum nativo definindo o valor `options.useNative` como true. Além disso, certifique-se de fornecer um nome enum exclusivo via `options.enumName`.
+- No PostgreSQL, criaremos o enum antes da coluna. Se o tipo enum já existir, você deve definir `options.existingType` como true.
+- No Amazon Redshift, o tipo de dados varchar(255) não verificado é usado.
 
 ```ts
 this.schema.createTable('users', (table) => {
@@ -279,7 +279,7 @@ this.schema.createTable('users', (table) => {
 })
 ```
 
-You can also specify the PostgreSQL schema for the enum type.
+Você também pode especificar o esquema PostgreSQL para o tipo enum.
 
 ```ts
 table.enu('account_status', ['PENDING', 'ACTIVE', 'SUSPENDED'], {
@@ -290,7 +290,7 @@ table.enu('account_status', ['PENDING', 'ACTIVE', 'SUSPENDED'], {
   })
 ```
 
-Make sure to drop the enum when dropping the table.
+Certifique-se de remover o enum ao remover a tabela.
 
 ```ts
 this.schema.raw('DROP TYPE IF EXISTS "user_account_status"')
@@ -298,7 +298,7 @@ this.schema.dropTable('users')
 ```
 
 ## json
-Adds a JSON column, using the built-in JSON type in **PostgreSQL**, **MySQL** and **SQLite**, defaulting to a text column in older versions or in unsupported databases.
+Adiciona uma coluna JSON, usando o tipo JSON integrado no **PostgreSQL**, **MySQL** e **SQLite**, assumindo como padrão uma coluna de texto em versões mais antigas ou em bancos de dados não suportados.
 
 ```ts
 this.schema.createTable('projects', (table) => {
@@ -307,7 +307,7 @@ this.schema.createTable('projects', (table) => {
 ```
 
 ## `jsonb`
-Same as the `json` method but uses the native `jsonb` data type (if possible).
+O mesmo que o método `json`, mas usa o tipo de dados `jsonb` nativo (se possível).
 
 ```ts
 this.schema.createTable('projects', (table) => {
@@ -316,10 +316,10 @@ this.schema.createTable('projects', (table) => {
 ```
 
 ## `uuid`
-Adds a UUID column. The method accepts the column name as the only argument.
+Adiciona uma coluna UUID. O método aceita o nome da coluna como o único argumento.
 
-- Uses the built-in UUID type in PostgreSQL
-- Uses the `char(36)` for all other databases
+- Usa o tipo UUID integrado no PostgreSQL
+- Usa o `char(36)` para todos os outros bancos de dados
 
 ```ts
 this.schema.createTable('users', (table) => {
@@ -327,7 +327,7 @@ this.schema.createTable('users', (table) => {
 })
 ```
 
-Make sure also to create the UUID extension for PostgreSQL. You can also do it inside a dedicated migration file as follows:
+Certifique-se também de criar a extensão UUID para o PostgreSQL. Você também pode fazer isso dentro de um arquivo de migração dedicado da seguinte forma:
 
 ```ts
 import { BaseSchema } from '@adonisjs/lucid/schema'
@@ -344,7 +344,7 @@ export default class SetupExtensions extends BaseSchema {
 ```
 
 ## `comment`
-Sets the comment for the table. Accepts the comment value as the only argument.
+Define o comentário para a tabela. Aceita o valor do comentário como o único argumento.
 
 ```ts
 this.schema.createTable('users', (table) => {
@@ -354,10 +354,10 @@ this.schema.createTable('users', (table) => {
 
 ## `engine`
 
-Sets the engine for the database table. The method accepts the engine name as the only argument.
+Define o mecanismo para a tabela do banco de dados. O método aceita o nome do mecanismo como o único argumento.
 
-- The method is only available within a `createTable` call.
-- The engine is only applicable to **MySQL** and ignored for other databases.
+- O método só está disponível dentro de uma chamada `createTable`.
+- O mecanismo é aplicável somente ao **MySQL** e ignorado para outros bancos de dados.
 
 ```ts
 this.schema.createTable('users', (table) => {
@@ -367,10 +367,10 @@ this.schema.createTable('users', (table) => {
 
 ## `charset`
 
-Sets the charset for the database table. The method accepts the charset value as the only argument.
+Define o conjunto de caracteres para a tabela do banco de dados. O método aceita o valor do conjunto de caracteres como o único argumento.
 
-- The method is only available within a `createTable` call.
-- The charset is only applicable to **MySQL** and ignored for other databases.
+- O método só está disponível dentro de uma chamada `createTable`.
+- O conjunto de caracteres é aplicável somente ao **MySQL** e ignorado para outros bancos de dados.
 
 ```ts
 this.schema.createTable('users', (table) => {
@@ -380,10 +380,10 @@ this.schema.createTable('users', (table) => {
 
 ## `collate`
 
-Sets the collation for the database table. The method accepts the collation value as the only argument.
+Define a ordenação para a tabela do banco de dados. O método aceita o valor da ordenação como o único argumento.
 
-- The method is only available within a `createTable` call.
-- The collation is only applicable to **MySQL** and ignored for other databases.
+- O método só está disponível em uma chamada `createTable`.
+- A ordenação é aplicável apenas ao **MySQL** e ignorada para outros bancos de dados.
 
 ```ts
 this.schema.createTable('users', (table) => {
@@ -392,10 +392,10 @@ this.schema.createTable('users', (table) => {
 ```
 
 ## `inherits`
-Set the parent table for inheritance. The method accepts the parent table name as the only argument.
+Define a tabela pai para herança. O método aceita o nome da tabela pai como o único argumento.
 
-- The method is only available within a `createTable` call.
-- The `inherits` is only applicable to **PostgreSQL** and ignored for other databases.
+- O método só está disponível em uma chamada `createTable`.
+- `inherits` é aplicável apenas ao **PostgreSQL** e ignorado para outros bancos de dados.
 
 ```ts
 this.schema.createTable('capitals', (table) => {
@@ -404,9 +404,9 @@ this.schema.createTable('capitals', (table) => {
 ```
 
 ## `specificType`
-Create a column by defining its type as a raw string. The method allows you to create a database column, which is not covered by the standard table builder API.
+Cria uma coluna definindo seu tipo como uma string bruta. O método permite que você crie uma coluna de banco de dados, que não é coberta pela API padrão do construtor de tabelas.
 
-The first argument is the column name, and the second argument is column type.
+O primeiro argumento é o nome da coluna, e o segundo argumento é o tipo de coluna.
 
 ```ts
 this.schema.createTable('users', (table) => {
@@ -415,11 +415,11 @@ this.schema.createTable('users', (table) => {
 ```
 
 ## `index`
-Adds an index to a table over the given columns. You must create the table before defining the index.
+Adiciona um índice a uma tabela sobre as colunas fornecidas. Você deve criar a tabela antes de definir o índice.
 
-- The method accepts an array of columns as the first argument.
-- An optional index name as the second argument
-- And an optional index type as the third argument. The index type is only applicable for PostgreSQL and MySQL databases.
+- O método aceita uma matriz de colunas como o primeiro argumento.
+- Um nome de índice opcional como o segundo argumento
+- E um tipo de índice opcional como o terceiro argumento. O tipo de índice é aplicável somente para bancos de dados PostgreSQL e MySQL.
 
 ```ts
 this.schema.alterTable('users', (table) => {
@@ -429,7 +429,7 @@ this.schema.alterTable('users', (table) => {
 
 ## `dropIndex`
 
-Drop an existing index from the table columns. The method accepts columns as the first argument and an optional index name as the second argument.
+Remove um índice existente das colunas da tabela. O método aceita colunas como o primeiro argumento e um nome de índice opcional como o segundo argumento.
 
 ```ts
 this.schema.alterTable('users', (table) => {
@@ -439,7 +439,7 @@ this.schema.alterTable('users', (table) => {
 
 ## `unique`
 
-Adds a unique index to a table over the given columns. A default index name using the columns is used unless `indexName` is specified.
+Adiciona um índice exclusivo a uma tabela sobre as colunas fornecidas. Um nome de índice padrão usando as colunas é usado, a menos que `indexName` seja especificado.
 
 ```ts
 this.schema.alterTable('posts', (table) => {
@@ -449,10 +449,10 @@ this.schema.alterTable('posts', (table) => {
 
 ## `foreign`
 
-Adds a foreign key constraint to a table for existing columns. Make sure the table already exists when using the `foreign` method.
+Adiciona uma restrição de chave estrangeira a uma tabela para colunas existentes. Certifique-se de que a tabela já exista ao usar o método `foreign`.
 
-- The methods accepts one or more column names as the first argument.
-- You can define a custom `foreignKeyName` as the second argument. If not specified, the column names are used to generate it.
+- Os métodos aceitam um ou mais nomes de coluna como o primeiro argumento.
+- Você pode definir um `foreignKeyName` personalizado como o segundo argumento. Se não for especificado, os nomes das colunas serão usados ​​para gerá-lo.
 
 ```ts
 this.schema.alterTable('posts', (table) => {
@@ -460,7 +460,7 @@ this.schema.alterTable('posts', (table) => {
 })
 ```
 
-You can also chain the `onDelete` and `onUpdate` methods to define the triggers.
+Você também pode encadear os métodos `onDelete` e `onUpdate` para definir os gatilhos.
 
 ```ts
 table
@@ -470,7 +470,7 @@ table
 ```
 
 ## `dropForeign`
-Drop a pre-existing foreign key constraint. The method accepts one or more columns as the first argument and an optional foreign key name as the second argument.
+Remove uma restrição de chave estrangeira preexistente. O método aceita uma ou mais colunas como o primeiro argumento e um nome de chave estrangeira opcional como o segundo argumento.
 
 ```ts
 this.schema.alterTable('posts', (table) => {
@@ -479,7 +479,7 @@ this.schema.alterTable('posts', (table) => {
 ```
 
 ## `dropUnique`
-Drop a pre-existing unique index. The method accepts an array of string(s) representing column names as the first argument and an optional index name as the second argument.
+Remove um índice exclusivo preexistente. O método aceita uma matriz de string(s) representando nomes de colunas como o primeiro argumento e um nome de índice opcional como o segundo argumento.
 
 ```ts
 this.schema.alterTable('posts', (table) => {
@@ -488,7 +488,7 @@ this.schema.alterTable('posts', (table) => {
 ```
 
 ## `dropPrimary`
-Drop a pre-existing primary key constraint. The method accepts an optional constraint name (defaults to `tablename_pkey`).
+Remove uma restrição de chave primária preexistente. O método aceita um nome de restrição opcional (o padrão é `tablename_pkey`).
 
 ```ts
 this.schema.alterTable('posts', (table) => {
@@ -497,7 +497,7 @@ this.schema.alterTable('posts', (table) => {
 ```
 
 ## `setNullable`
-Set the column to be nullable.
+Define a coluna para ser anulável.
 
 ```ts
 this.schema.alterTable('posts', (table) => {
@@ -506,10 +506,10 @@ this.schema.alterTable('posts', (table) => {
 ```
 
 ## `dropNullable`
-Drop the nullable constraint from the column.
+Remove a restrição anulável da coluna.
 
 :::warning
-The operation will fail, when the column already has null values.
+A operação falhará quando a coluna já tiver valores nulos.
 :::
 
 ```ts
@@ -518,16 +518,16 @@ this.schema.alterTable('posts', (table) => {
 })
 ```
 
-## Chainable methods
+## Métodos encadeáveis
 
-Following is the list of methods you can chain on the schema building methods as modifiers to the column.
+A seguir está a lista de métodos que você pode encadear nos métodos de construção de esquema como modificadores para a coluna.
 
 ### `alter`
 
-Marks the column as an alters/modify instead of the default add. The method is not supported by SQLite or Amazon Redshift drivers.
+Marca a coluna como um alters/modify em vez do add padrão. O método não é suportado pelos drivers SQLite ou Amazon Redshift.
 
 :::note
-The alter statement is not incremental. You must redefine the constraints that you want to apply to the column.
+A instrução alter não é incremental. Você deve redefinir as restrições que deseja aplicar à coluna.
 :::
 
 ```ts
@@ -539,10 +539,10 @@ this.schema.alterTable('posts', (table) => {
 
 ## `index`
 
-Define an index for the current column. The method accepts the following two optional arguments.
+Defina um índice para a coluna atual. O método aceita os dois argumentos opcionais a seguir.
 
-- An optional index name as the first argument.
-- And an optional index type as the second argument. The index type is only applicable for PostgreSQL and MySQL databases.
+- Um nome de índice opcional como o primeiro argumento.
+- E um tipo de índice opcional como o segundo argumento. O tipo de índice é aplicável apenas para bancos de dados PostgreSQL e MySQL.
 
 ```ts
 this.schema.table('posts', (table) => {
@@ -552,9 +552,9 @@ this.schema.table('posts', (table) => {
 
 ## `primary`
 
-Mark the current column as the primary key. Optionally, you can define the constraint name as the first argument.
+Marque a coluna atual como a chave primária. Opcionalmente, você pode definir o nome da restrição como o primeiro argumento.
 
-On Amazon Redshift, all columns included in a primary key must be not nullable.
+No Amazon Redshift, todas as colunas incluídas em uma chave primária não devem ser anuláveis.
 
 ```ts
 this.schema.table('posts', (table) => {
@@ -562,7 +562,7 @@ this.schema.table('posts', (table) => {
 })
 ```
 
-If you want to define a composite primary key, you must use the `table.primary` method.
+Se você quiser definir uma chave primária composta, você deve usar o método `table.primary`.
 
 ```ts
 this.schema.table('posts', (table) => {
@@ -571,7 +571,7 @@ this.schema.table('posts', (table) => {
 ```
 
 ## `unique`
-Mark the current column as unique. On Amazon Redshift, this constraint is not enforced, but the query planner uses it.
+Marque a coluna atual como única. No Amazon Redshift, essa restrição não é imposta, mas o planejador de consultas a usa.
 
 ```ts
 this.schema.table('users', (table) => {
@@ -580,7 +580,7 @@ this.schema.table('users', (table) => {
 ```
 
 ## `references`
-Define the column that the current column references as a foreign key.
+Defina a coluna que a coluna atual referencia como uma chave estrangeira.
 
 ```ts
 this.schema.table('posts', (table) => {
@@ -588,7 +588,7 @@ this.schema.table('posts', (table) => {
 })
 ```
 
-You can also define the `tableName.columnName` together and remove the `inTable` method all together.
+Você também pode definir `tableName.columnName` juntos e remover o método `inTable` completamente.
 
 ```ts
 this.schema.table('posts', (table) => {
@@ -597,7 +597,7 @@ this.schema.table('posts', (table) => {
 ```
 
 ## `inTable`
-Define the table for the foreign key referenced column.
+Defina a tabela para a coluna referenciada à chave estrangeira.
 
 ```ts
 this.schema.table('posts', (table) => {
@@ -606,7 +606,7 @@ this.schema.table('posts', (table) => {
 ```
 
 ## `onDelete`
-Define the `onDelete` command for the foreign key. The command is expressed as a string value.
+Defina o comando `onDelete` para a chave estrangeira. O comando é expresso como um valor de string.
 
 ```ts
 this.schema.table('posts', (table) => {
@@ -619,7 +619,7 @@ this.schema.table('posts', (table) => {
 ```
 
 ## `onUpdate`
-Define the `onUpdate` command for the foreign key. The command is expressed as a string value.
+Defina o comando `onUpdate` para a chave estrangeira. O comando é expresso como um valor de string.
 
 ```ts
 this.schema.table('posts', (table) => {
@@ -632,9 +632,9 @@ this.schema.table('posts', (table) => {
 ```
 
 ## `defaultTo`
-Define the default value for the column to be used during the insert.
+Defina o valor padrão para a coluna a ser usada durante a inserção.
 
-In MSSQL a constraintName option may be passed to ensure a specific constraint name:
+No MSSQL, uma opção constraintName pode ser passada para garantir um nome de restrição específico:
 
 ```ts
 this.schema.table('posts', (table) => {
@@ -648,7 +648,7 @@ this.schema.table('posts', (table) => {
 ```
 
 ## `unsigned`
-Mark the current column as unsigned.
+Marque a coluna atual como não assinada.
 
 ```ts
 this.schema.table('posts', (table) => {
@@ -661,10 +661,10 @@ this.schema.table('posts', (table) => {
 ```
 
 ## `notNullable`
-Mark the current column as NOT nullable.
+Marque a coluna atual como NÃO anulável.
 
 :::note
-Consider using [dropNullable](#dropnullable) method when altering the column.
+Considere usar o método [dropNullable](#dropnullable) ao alterar a coluna.
 :::
 
 ```ts
@@ -674,10 +674,10 @@ this.schema.table('users', (table) => {
 ```
 
 ## `nullable`
-Mark the current column as nullable.
+Marque a coluna atual como anulável.
 
 :::note
-Consider using [setNullable](#setnullable) method when altering the column.
+Considere usar o método [setNullable](#setnullable) ao alterar a coluna.
 :::
 
 ```ts
@@ -687,7 +687,7 @@ this.schema.table('users', (table) => {
 ```
 
 ## `first`
-Sets the column to be inserted on the first position, only used in MySQL alter tables.
+Define a coluna a ser inserida na primeira posição, usada apenas em tabelas de alteração do MySQL.
 
 ```ts
 this.schema.alterTable('users', (table) => {
@@ -696,7 +696,7 @@ this.schema.alterTable('users', (table) => {
 ```
 
 ## `after`
-Sets the column to be inserted after another, only used in MySQL alter tables.
+Define a coluna a ser inserida após a outra, usada apenas em tabelas de alteração do MySQL.
 
 ```ts
 this.schema.alterTable('users', (table) => {
@@ -705,7 +705,7 @@ this.schema.alterTable('users', (table) => {
 ```
 
 ## `comment`
-Sets the comment for a column
+Define o comentário para uma coluna
 
 ```ts
 this.schema.alterTable('users', (table) => {
@@ -714,7 +714,7 @@ this.schema.alterTable('users', (table) => {
 ```
 
 ## `collate`
-Sets the collation for a column (only works in MySQL).
+Define a ordenação para uma coluna (funciona somente no MySQL).
 
 ```ts
 this.schema.alterTable('users', (table) => {

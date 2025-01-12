@@ -1,26 +1,26 @@
 ---
-summary: Take a tour of the important files and folders created by AdonisJS during the installation process.
+resumo: Faça um tour pelos arquivos e pastas importantes criados pelo AdonisJS durante o processo de instalação.
 ---
 
-# Folder structure
+# Estrutura de pastas
 
-In this guide, we will take a tour of the important files and folders created by AdonisJS during the installation process. 
+Neste guia, faremos um tour pelos arquivos e pastas importantes criados pelo AdonisJS durante o processo de instalação.
 
-We ship with a thoughtful default folder structure that helps you keep your projects tidy and easy to refactor. However, you have all the freedom to diverge and have a folder structure that works great for your team and project.
+Nós enviamos com uma estrutura de pasta padrão bem pensada que ajuda você a manter seus projetos organizados e fáceis de refatorar. No entanto, você tem toda a liberdade para divergir e ter uma estrutura de pastas que funciona muito bem para sua equipe e projeto.
 
-## The `adonisrc.ts` file
+## O arquivo `adonisrc.ts`
 
-The `adonisrc.ts` file is used to configure the workspace and some of the runtime settings of your application.
+O arquivo `adonisrc.ts` é usado para configurar o espaço de trabalho e algumas das configurações de tempo de execução do seu aplicativo.
 
-In this file, you can register providers, define command aliases, or specify the files to copy to the production build.
+Neste arquivo, você pode registrar provedores, definir aliases de comando ou especificar os arquivos a serem copiados para a compilação de produção.
 
-See also: [AdonisRC file reference guide](../concepts/adonisrc_file.md)
+Veja também: [Guia de referência do arquivo AdonisRC](../concepts/adonisrc_file.md)
 
-## The `tsconfig.json` file
+## O arquivo `tsconfig.json`
 
-The `tsconfig.json` file stores the TypeScript configuration for your application. Feel free to make changes to this file as per your project or team's requirements.
+O arquivo `tsconfig.json` armazena a configuração TypeScript para seu aplicativo. Sinta-se à vontade para fazer alterações neste arquivo de acordo com os requisitos do seu projeto ou equipe.
 
-The following configuration options are required for AdonisJS internals to work correctly.
+As seguintes opções de configuração são necessárias para que os internos do AdonisJS funcionem corretamente.
 
 ```json
 {
@@ -35,13 +35,13 @@ The following configuration options are required for AdonisJS internals to work 
     "skipLibCheck": true
   }
 }
-``` 
+```
 
-## The sub-path imports
+## As importações de subcaminho
 
-AdonisJS uses the [sub-path imports](https://nodejs.org/dist/latest-v19.x/docs/api/packages.html#subpath-imports) feature from Node.js to define the import aliases. 
+O AdonisJS usa o recurso [importações de subcaminho](https://nodejs.org/dist/latest-v19.x/docs/api/packages.html#subpath-imports) do Node.js para definir os aliases de importação.
 
-The following import aliases are pre-configured within the `package.json` file. Feel free to add new aliases or edit the existing ones.
+Os seguintes aliases de importação são pré-configurados no arquivo `package.json`. Sinta-se à vontade para adicionar novos aliases ou editar os existentes.
 
 ```json
 // title: package.json
@@ -67,25 +67,25 @@ The following import aliases are pre-configured within the `package.json` file. 
 }
 ```
 
-## The `bin` directory
+## O diretório `bin`
 
-The `bin` directory has the entry point files to load your application in a specific environment. For example:
+O diretório `bin` tem os arquivos de ponto de entrada para carregar seu aplicativo em um ambiente específico. Por exemplo:
 
-- The `bin/server.ts` file boots the application in the web environment to listen for HTTP requests. 
-- The `bin/console.ts` file boots the Ace commandline and executes commands.
-- The `bin/test.ts` file boots the application to run tests.
+- O arquivo `bin/server.ts` inicializa o aplicativo no ambiente da web para ouvir solicitações HTTP.
+- O arquivo `bin/console.ts` inicializa a linha de comando Ace e executa comandos.
+- O arquivo `bin/test.ts` inicializa o aplicativo para executar testes.
 
-## The `ace.js` file
+## O arquivo `ace.js`
 
-The `ace` file boots the command-line framework that is local to your app. So every time you run an ace command, it goes through this file.
+O arquivo `ace` inicializa a estrutura de linha de comando que é local para seu aplicativo. Então, toda vez que você executa um comando ace, ele passa por este arquivo.
 
-If you notice, the ace file ends with a `.js` extension. This is because we want to run this file using the `node` binary without compiling it.
+Se você notar, o arquivo ace termina com uma extensão `.js`. Isso ocorre porque queremos executar este arquivo usando o binário `node` sem compilá-lo.
 
-## The `app` directory
+## O diretório `app`
 
-The `app` directory organizes code for the domain logic of your application. For example, the controllers, models, services, etc., all live within the `app` directory.
+O diretório `app` organiza o código para a lógica de domínio do seu aplicativo. Por exemplo, os controladores, modelos, serviços, etc., todos vivem dentro do diretório `app`.
 
-Feel free to create additional directories to better organize your application code.
+Sinta-se à vontade para criar diretórios adicionais para organizar melhor o código do seu aplicativo.
 
 ```
 ├── app
@@ -96,10 +96,9 @@ Feel free to create additional directories to better organize your application c
 │  └── validators
 ```
 
+## O diretório `resources`
 
-## The `resources` directory
-
-The `resources` directory contains the Edge templates, alongside the source files of your frontend code. In other words, the code for the presentation layer of your app lives within the `resources` directory.
+O diretório `resources` contém os modelos do Edge, juntamente com os arquivos de origem do seu código frontend. Em outras palavras, o código para a camada de apresentação do seu aplicativo vive dentro do diretório `resources`.
 
 ```
 ├── resources
@@ -110,9 +109,9 @@ The `resources` directory contains the Edge templates, alongside the source file
 │  └── images
 ```
 
-## The `start` directory
+## O diretório `start`
 
-The `start` directory contains the files you want to import during the boot lifecycle of the application. For example, the files to register routes and define event listeners should live within the `start` directory.
+O diretório `start` contém os arquivos que você deseja importar durante o ciclo de vida de inicialização do aplicativo. Por exemplo, os arquivos para registrar rotas e definir ouvintes de eventos devem viver dentro do diretório `start`.
 
 ```
 ├── start
@@ -123,23 +122,23 @@ The `start` directory contains the files you want to import during the boot life
 │  ├── events.ts
 ```
 
-AdonisJS does not auto-import files from the `start` directory. It is merely used as a convention to group similar files.
+O AdonisJS não importa automaticamente arquivos do diretório `start`. Ele é usado apenas como uma convenção para agrupar arquivos semelhantes.
 
-We recommend reading about [preload files](../concepts/adonisrc_file.md#preloads) and the [application boot lifecycle](../concepts/application_lifecycle.md) to have a better understanding of which files to keep under the `start` directory.
+Recomendamos ler sobre [arquivos de pré-carregamento](../concepts/adonisrc_file.md#preloads) e o [ciclo de vida de inicialização do aplicativo](../concepts/application_lifecycle.md) para entender melhor quais arquivos manter no diretório `start`.
 
-## The `public` directory
+## O diretório `public`
 
-The `public` directory hosts static assets like CSS files, images, fonts, or the frontend JavaScript.
+O diretório `public` hospeda ativos estáticos como arquivos CSS, imagens, fontes ou o JavaScript do frontend.
 
-Do not confuse the `public` directory with the `resources` directory. The resources directory contains the source code of your frontend application, and the public directory has the compiled output.
+Não confunda o diretório `public` com o diretório `resources`. O diretório resources contém o código-fonte do seu aplicativo frontend, e o diretório public tem a saída compilada.
 
-When using Vite, you should store the frontend assets inside the `resources/<SUB_DIR>` directories and let the Vite compiler create the output in the `public` directory.
+Ao usar o Vite, você deve armazenar os ativos do frontend dentro dos diretórios `resources/<SUB_DIR>` e deixar o compilador Vite criar a saída no diretório `public`.
 
-On the other hand, if you are not using Vite, you can create files directly inside the `public` directory and access them using the filename. For example, you can access the `./public/style.css` file from the `http://localhost:3333/style.css` URL.
+Por outro lado, se você não estiver usando o Vite, você pode criar arquivos diretamente dentro do diretório `public` e acessá-los usando o nome do arquivo. Por exemplo, você pode acessar o arquivo `./public/style.css` da URL `http://localhost:3333/style.css`.
 
-## The `database` directory
+## O diretório `database`
 
-The `database` directory contains files for database migrations and seeders. 
+O diretório `database` contém arquivos para migrações de banco de dados e seeders.
 
 ```
 ├── database
@@ -147,19 +146,17 @@ The `database` directory contains files for database migrations and seeders.
 │  └── seeders
 ```
 
+## O diretório `commands`
 
-## The `commands` directory
+Os [comandos ace](../ace/introduction.md) são armazenados dentro do diretório `commands`. Você pode criar comandos dentro desta pasta executando `node ace make:command`.
 
-The [ace commands](../ace/introduction.md) are stored within the `commands` directory. You can create commands inside this folder by running `node ace make:command`.
+## O diretório `config`
 
+O diretório `config` contém os arquivos de configuração de tempo de execução para seu aplicativo.
 
-## The `config` directory
+O núcleo do framework e outros pacotes instalados leem arquivos de configuração deste diretório. Você também pode armazenar a configuração local para seu aplicativo dentro deste diretório.
 
-The `config` directory contains the runtime configuration files for your application.
-
-The framework's core and other installed packages read configuration files from this directory. You can also store config local to your application inside this directory.
-
-Learn more about [configuration management](./configuration.md).
+Saiba mais sobre [gerenciamento de configuração](./configuration.md).
 
 ```
 ├── config
@@ -174,12 +171,11 @@ Learn more about [configuration management](./configuration.md).
 │  ├── static.ts
 ```
 
+## O diretório `types`
 
-## The `types` directory
+O diretório `types` é o lar das interfaces ou tipos TypeScript usados ​​em seu aplicativo.
 
-The `types` directory is the house for the TypeScript interfaces or types used within your application. 
-
-The directory is empty by default, however, you can create files and folders within the `types` directory to define custom types and interfaces.
+O diretório está vazio por padrão, no entanto, você pode criar arquivos e pastas dentro do diretório `types` para definir tipos e interfaces personalizados.
 
 ```
 ├── types
@@ -187,11 +183,11 @@ The directory is empty by default, however, you can create files and folders wit
 │  ├── container.ts
 ```
 
-## The `providers` directory
+## O diretório `providers`
 
-The `providers` directory is used to store the [service providers](../concepts/service_providers.md) used by your application. You can create new providers using the `node ace make:provider` command.
+O diretório `providers` é usado para armazenar os [provedores de serviço](../concepts/service_providers.md) usados ​​por seu aplicativo. Você pode criar novos provedores usando o comando `node ace make:provider`.
 
-Learn more about [service providers](../concepts/service_providers.md)
+Saiba mais sobre [provedores de serviço](../concepts/service_providers.md)
 
 ```
 ├── providers
@@ -199,17 +195,17 @@ Learn more about [service providers](../concepts/service_providers.md)
 │  └── http_server_provider.ts
 ```
 
-## The `tmp` directory
+## O diretório `tmp`
 
-The temporary files generated by your application are stored within the `tmp` directory. For example, these could be user-uploaded files (generated during development) or logs written to the disk.
+Os arquivos temporários gerados por seu aplicativo são armazenados dentro do diretório `tmp`. Por exemplo, estes podem ser arquivos enviados pelo usuário (gerados durante o desenvolvimento) ou logs gravados no disco.
 
-The `tmp` directory must be ignored by the `.gitignore` rules, and you should not copy it to the production server either.
+O diretório `tmp` deve ser ignorado pelas regras `.gitignore`, e você também não deve copiá-lo para o servidor de produção.
 
-## The `tests` directory
+## O diretório `tests`
 
-The `tests` directory organizes your application tests. Further, sub-directories are created for `unit` and `functional` tests.
+O diretório `tests` organiza seus testes de aplicativo. Além disso, subdiretórios são criados para testes `unitários` e `funcionais`.
 
-See also: [Testing](../testing/introduction.md)
+Veja também: [Testes](../testing/introduction.md)
 
 ```
 ├── tests

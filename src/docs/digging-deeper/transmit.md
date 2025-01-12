@@ -1,44 +1,44 @@
 ---
-summary: Learn how to send real-time updates with SSE from your AdonisJS server using the Transmit package
+resumo: Aprenda a enviar atualizações em tempo real com SSE do seu servidor AdonisJS usando o pacote Transmit
 ---
 
 # Transmit
 
-Transmit is a native opinionated Server-Sent-Event (SSE) module built for AdonisJS. It is a simple and efficient way to send real-time updates to the client, such as notifications, live chat messages, or any other type of real-time data.
+Transmit é um módulo nativo Server-Sent-Event (SSE) opinativo criado para AdonisJS. É uma maneira simples e eficiente de enviar atualizações em tempo real para o cliente, como notificações, mensagens de chat ao vivo ou qualquer outro tipo de dados em tempo real.
 
 :::note
-The data transmission occurs only from server to client, not the other way around. You have to use a form or a fetch request to achieve client to server communication.
+A transmissão de dados ocorre apenas do servidor para o cliente, não o contrário. Você precisa usar um formulário ou uma solicitação de busca para obter a comunicação do cliente para o servidor.
 :::
 
-## Installation
+## Instalação
 
-Install and configure the package using the following command :
+Instale e configure o pacote usando o seguinte comando :
 
 ```sh
 node ace add @adonisjs/transmit
 ```
 
-:::disclosure{title="See steps performed by the add command"}
+::: details Veja as etapas executadas pelo comando add
 
-1. Installs the `@adonisjs/transmit` package using the detected package manager.
+1. Instala o pacote `@adonisjs/transmit` usando o gerenciador de pacotes detectado.
  
-2. Registers the `@adonisjs/transmit/transmit_provider` service provider inside the `adonisrc.ts` file.
+2. Registra o provedor de serviços `@adonisjs/transmit/transmit_provider` dentro do arquivo `adonisrc.ts`.
  
-3. Creates a new `transmit.ts` file inside the `config` directory.
+3. Cria um novo arquivo `transmit.ts` dentro do diretório `config`.
  
 :::
 
-You will also have to install the Transmit client package to listen for events on the client-side.
+Você também terá que instalar o pacote do cliente Transmit para escutar eventos no lado do cliente.
 
 ```sh
 npm install @adonisjs/transmit-client
 ```
 
-## Configuration
+## Configuração
 
-The configuration for the transmit package is stored within the `config/transmit.ts` file.
+A configuração do pacote de transmissão é armazenada no arquivo `config/transmit.ts`.
 
-See also: [Config stub](https://github.com/adonisjs/transmit/blob/main/stubs/config/transmit.stub)
+Veja também: [Config stub](https://github.com/adonisjs/transmit/blob/main/stubs/config/transmit.stub)
 
 ```ts
 import { defineConfig } from '@adonisjs/transmit'
@@ -51,11 +51,11 @@ export default defineConfig({
 
 ### `pingInterval`
 
-The interval used to send ping messages to the client. The value is in milliseconds or using a string `Duration` format (i.e: `10s`). Set to `false` to disable ping messages.
+O intervalo usado para enviar mensagens de ping para o cliente. O valor está em milissegundos ou usando um formato de string `Duration` (por exemplo: `10s`). Defina como `false` para desabilitar mensagens de ping.
 
 ### `transport`
 
-Transmit supports syncing events across multiple servers or instances. You can enable the feature by referencing the wanted transport layer (only `redis` is supported for now). Set to `null` to disable syncing.
+O Transmit suporta sincronização de eventos em vários servidores ou instâncias. Você pode habilitar o recurso referenciando a camada de transporte desejada (somente `redis` é suportado por enquanto). Defina como `null` para desabilitar a sincronização.
 
 ```ts
 import env from '#start/env'
@@ -75,21 +75,21 @@ export default defineConfig({
 ```
 
 :::note
-Ensure you have `ioredis` installed when using the `redis` transport.
+Certifique-se de ter `ioredis` instalado ao usar o transporte `redis`.
 :::
 
-## Register Routes
+## Registrar rotas
 
-You have to register the transmit routes to allow the client to connect to the server. The routes are registered manually.
+Você precisa registrar as rotas de transmissão para permitir que o cliente se conecte ao servidor. As rotas são registradas manualmente.
 
 ```ts
 // title: start/routes.ts
 import transmit from '@adonisjs/transmit/services/main'
 
 transmit.registerRoutes()
-````
+```
 
-You can also register each route manually by binding the controller by hand.
+Você também pode registrar cada rota manualmente vinculando o controlador manualmente.
 
 ```ts
 // title: start/routes.ts
@@ -102,7 +102,7 @@ router.post('/__transmit/subscribe', [SubscribeController])
 router.post('/__transmit/unsubscribe', [UnsubscribeController])
 ```
 
-If you want to modify the route definition, for example, to use the [`Rate Limiter`](../security/rate_limiting.md) and auth middleware to avoid abuse of some transmit routes, you can either change the route definition or pass a callback to the `transmit.registerRoutes` method.
+Se você quiser modificar a definição da rota, por exemplo, para usar o [`Rate Limiter`](../security/rate_limiting.md) e o middleware auth para evitar abuso de algumas rotas de transmissão, você pode alterar a definição da rota ou passar um retorno de chamada para o método `transmit.registerRoutes`.
 
 ```ts
 // title: start/routes.ts
@@ -120,14 +120,14 @@ transmit.registerRoutes((route) => {
 })
 ```
 
-## Channels
+## Canais
 
-Channels are used to group events. For example, you can have a channel for notifications, another for chat messages, and so on.
-They are created on the fly when the client subscribes to them.
+Os canais são usados ​​para agrupar eventos. Por exemplo, você pode ter um canal para notificações, outro para mensagens de bate-papo e assim por diante.
+Eles são criados na hora quando o cliente os assina.
 
-### Channel Names
+### Nomes de canais
 
-Channel names are used to identify the channel. They are case-sensitive and must be a string. You cannot use any special characters or spaces in the channel name except `/`. The following are some examples of valid channel names:
+Os nomes de canais são usados ​​para identificar o canal. Eles diferenciam maiúsculas de minúsculas e devem ser uma string. Você não pode usar caracteres especiais ou espaços no nome do canal, exceto `/`. A seguir estão alguns exemplos de nomes de canais válidos:
 
 ```ts
 import transmit from '@adonisjs/transmit/services/main'
@@ -138,12 +138,12 @@ transmit.broadcast('users/1', { message: 'Hello' })
 ```
 
 :::tip
-Channel names use the same syntax as route in AdonisJS but are not related to them. You can freely define a http route and a channel with the same key.
+Os nomes de canais usam a mesma sintaxe que route no AdonisJS, mas não estão relacionados a eles. Você pode definir livremente uma rota http e um canal com a mesma chave.
 :::
 
-### Channel Authorization
+### Autorização de canal
 
-You can authorize or reject a connection to a channel using the `authorize` method. The method receives the channel name and the `HttpContext`. It must return a boolean value.
+Você pode autorizar ou rejeitar uma conexão a um canal usando o método `authorize`. O método recebe o nome do canal e o `HttpContext`. Ele deve retornar um valor booleano.
 
 ```ts
 // title: start/transmit.ts
@@ -163,9 +163,9 @@ transmit.authorize<{ id: string }>('chats/:id/messages', async (ctx: HttpContext
 })
 ```
 
-## Broadcasting Events
+## Transmitindo eventos
 
-You can broadcast events to a channel using the `broadcast` method. The method receives the channel name and the data to send.
+Você pode transmitir eventos para um canal usando o método `broadcast`. O método recebe o nome do canal e os dados para enviar.
 
 ```ts
 import transmit from '@adonisjs/transmit/services/main'
@@ -173,23 +173,23 @@ import transmit from '@adonisjs/transmit/services/main'
 transmit.broadcast('global', { message: 'Hello' })
 ```
 
-You can also broadcast events to any channel except one using the `broadcastExcept` method. The method receives the channel name, the data to send, and the UID you want to ignore.
+Você também pode transmitir eventos para qualquer canal, exceto um, usando o método `broadcastExcept`. O método recebe o nome do canal, os dados para enviar e o UID que você deseja ignorar.
 
 ```ts
 transmit.broadcastExcept('global', { message: 'Hello' }, 'uid-of-sender')
 ```
 
-### Syncing across multiple servers or instances
+### Sincronizando entre vários servidores ou instâncias
 
-By default, broadcasting events works only within the context of an HTTP request. However, you can broadcast events from the background using the `transmit` service if you register a `transport` in your configuration.
+Por padrão, a transmissão de eventos funciona apenas no contexto de uma solicitação HTTP. No entanto, você pode transmitir eventos em segundo plano usando o serviço `transmit` se registrar um `transport` na sua configuração.
 
-The transport layer is responsible for syncing events across multiple servers or instances. It works by broadcasting any events (like broadcasted events, subscriptions, and un-subscriptions) to all connected servers or instances using a `Message Bus`.
+A camada de transporte é responsável por sincronizar eventos entre vários servidores ou instâncias. Ele funciona transmitindo quaisquer eventos (como eventos transmitidos, assinaturas e cancelamentos de assinaturas) para todos os servidores ou instâncias conectados usando um `Message Bus`.
 
-The server or instance responsible for your client connection will receive the event and broadcast it to the client.
+O servidor ou instância responsável pela conexão do seu cliente receberá o evento e o transmitirá ao cliente.
 
 ## Transmit Client
 
-You can listen for events on the client-side using the `@adonisjs/transmit-client` package. The package provides a `Transmit` class. The client use the [`EventSource`](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) API by default to connect to the server.
+Você pode ouvir eventos no lado do cliente usando o pacote `@adonisjs/transmit-client`. O pacote fornece uma classe `Transmit`. O cliente usa a API [`EventSource`](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) por padrão para se conectar ao servidor.
 
 ```ts
 import { Transmit } from '@adonisjs/transmit-client'
@@ -200,83 +200,83 @@ export const transmit = new Transmit({
 ```
 
 :::tip
-You should create only one instance of the `Transmit` class and reuse it throughout your application.
+Você deve criar apenas uma instância da classe `Transmit` e reutilizá-la em todo o seu aplicativo.
 :::
 
-### Configuring the Transmit Instance
+### Configurando a Instância Transmit
 
-The `Transmit` class accepts an object with the following properties:
+A classe `Transmit` aceita um objeto com as seguintes propriedades:
 
 ### `baseUrl`
 
-The base URL of the server. The URL must include the protocol (http or https) and the domain name.
+A URL base do servidor. A URL deve incluir o protocolo (http ou https) e o nome do domínio.
 
 ### `uidGenerator`
 
-A function that generates a unique identifier for the client. The function must return a string. It defaults to `crypto.randomUUID`.
+Uma função que gera um identificador exclusivo para o cliente. A função deve retornar uma string. O padrão é `crypto.randomUUID`.
 
 ### `eventSourceFactory`
 
-A function that creates a new `EventSource` instance. It defaults to the WebAPI [`EventSource`](https://developer.mozilla.org/en-US/docs/Web/API/EventSource). You need to provide a custom implementation if you want to use the client on `Node.js`, `React Native` or any other environment that does not support the `EventSource` API.
+Uma função que cria uma nova instância `EventSource`. O padrão é a WebAPI [`EventSource`](https://developer.mozilla.org/en-US/docs/Web/API/EventSource). Você precisa fornecer uma implementação personalizada se quiser usar o cliente em `Node.js`, `React Native` ou qualquer outro ambiente que não suporte a API `EventSource`.
 
 ### `eventTargetFactory`
 
-A function that creates a new `EventTarget` instance. It defaults to the WebAPI [`EventTarget`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget). You need to provide a custom implementation if you want to use the client on `Node.js`, `React Native` or any other environment that does not support the `EventTarget` API. Return `null` to disable the `EventTarget` API.
+Uma função que cria uma nova instância `EventTarget`. O padrão é o WebAPI [`EventTarget`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget). Você precisa fornecer uma implementação personalizada se quiser usar o cliente em `Node.js`, `React Native` ou qualquer outro ambiente que não suporte a API `EventTarget`. Retorne `null` para desabilitar a API `EventTarget`.
 
 ### `httpClientFactory`
 
-A function that creates a new `HttpClient` instance. It is mainly used for testing purposes.
+Uma função que cria uma nova instância `HttpClient`. É usada principalmente para fins de teste.
 
 ### `beforeSubscribe`
 
-A function that is called before subscribing to a channel. It receives the channel name and the `Request` object sent to the server. Use this function to add custom headers or modify the request object.
+Uma função que é chamada antes de assinar um canal. Ela recebe o nome do canal e o objeto `Request` enviado ao servidor. Use esta função para adicionar cabeçalhos personalizados ou modificar o objeto de solicitação.
 
 ### `beforeUnsubscribe`
 
-A function that is called before unsubscribing from a channel. It receives the channel name and the `Request` object sent to the server. Use this function to add custom headers or modify the request object.
+Uma função que é chamada antes de cancelar a assinatura de um canal. Ela recebe o nome do canal e o objeto `Request` enviado ao servidor. Use esta função para adicionar cabeçalhos personalizados ou modificar o objeto de solicitação.
 
 ### `maxReconnectAttempts`
 
-The maximum number of reconnection attempts. It defaults to `5`.
+O número máximo de tentativas de reconexão. O padrão é `5`.
 
 ### `onReconnectAttempt`
 
-A function that is called before each reconnection attempt and receives the number of attempts made so far. Use this function to add custom logic.
+Uma função que é chamada antes de cada tentativa de reconexão e recebe o número de tentativas feitas até o momento. Use esta função para adicionar lógica personalizada.
 
 ### `onReconnectFailed`
 
-A function that is called when the reconnection attempts fail. Use this function to add custom logic.
+Uma função que é chamada quando as tentativas de reconexão falham. Use esta função para adicionar lógica personalizada.
 
 ### `onSubscribeFailed`
 
-A function that is called when the subscription fails. It receives the `Response` object. Use this function to add custom logic.
+Uma função que é chamada quando a assinatura falha. Ela recebe o objeto `Response`. Use esta função para adicionar lógica personalizada.
 
 ### `onSubscription`
 
-A function that is called when the subscription is successful. It receives the channel name. Use this function to add custom logic.
+Uma função que é chamada quando a assinatura é bem-sucedida. Ela recebe o nome do canal. Use esta função para adicionar lógica personalizada.
 
 ### `onUnsubscription`
 
-A function that is called when the unsubscription is successful. It receives the channel name. Use this function to add custom logic.
+Uma função que é chamada quando o cancelamento da assinatura é bem-sucedido. Ela recebe o nome do canal. Use esta função para adicionar lógica personalizada.
 
-### Creating a Subscription
+### Criando uma assinatura
 
-You can create a subscription to a channel using the `subscription` method. The method receives the channel name.
+Você pode criar uma assinatura para um canal usando o método `subscription`. O método recebe o nome do canal.
 
 ```ts
 const subscription = transmit.subscription('chats/1/messages')
 await subscription.create()
 ```
 
-The `create` method registers the subscription on the server. It returns a promise that you can `await` or `void`.
+O método `create` registra a assinatura no servidor. Ele retorna uma promessa de que você pode `await` ou `void`.
 
 :::note
-If you don't call the `create` method, the subscription will not be registered on the server, and you will not receive any events.
+Se você não chamar o método `create`, a assinatura não será registrada no servidor e você não receberá nenhum evento.
 :::
 
-### Listening for Events
+### Ouvindo eventos
 
-You can listen for events on the subscription using the `onMessage` method that receives a callback function. You can call the `onMessage` method multiple times to add different callbacks.
+Você pode ouvir eventos na assinatura usando o método `onMessage` que recebe uma função de retorno de chamada. Você pode chamar o método `onMessage` várias vezes para adicionar diferentes retornos de chamada.
 
 ```ts
 subscription.onMessage((data) => {
@@ -284,7 +284,7 @@ subscription.onMessage((data) => {
 })
 ```
 
-You can also listen to a channel only once using the `onMessageOnce` method which receives a callback function.
+Você também pode ouvir um canal apenas uma vez usando o método `onMessageOnce` que recebe uma função de retorno de chamada.
 
 ```ts
 subscription.onMessageOnce(() => {
@@ -292,9 +292,9 @@ subscription.onMessageOnce(() => {
 })
 ```
 
-### Stop Listening for Events
+### Parar de ouvir eventos
 
-The `onMessage` and `onMessageOnce` methods return a function that you can call to stop listening for a specific callback.
+Os métodos `onMessage` e `onMessageOnce` retornam uma função que você pode chamar para parar de ouvir um retorno de chamada específico.
 
 ```ts
 const stopListening = subscription.onMessage((data) => {
@@ -305,21 +305,21 @@ const stopListening = subscription.onMessage((data) => {
 stopListening()
 ```
 
-### Deleting a Subscription
+### Excluindo uma assinatura
 
-You can delete a subscription using the `delete` method. The method returns a promise that you can `await` or `void`. This method will unregister the subscription on the server.
+Você pode excluir uma assinatura usando o método `delete`. O método retorna uma promessa que você pode `await` ou `void`. Este método cancelará o registro da assinatura no servidor.
 
 ```ts
 await subscription.delete()
 ```
 
-## Avoiding GZip Interference
+## Evitando a interferência do GZip
 
-When deploying applications that use `@adonisjs/transmit`, it’s important to ensure that GZip compression does not interfere with the `text/event-stream` content type used by Server-Sent Events (SSE). Compression applied to `text/event-stream` can cause connection issues, leading to frequent disconnects or SSE failures.
+Ao implantar aplicativos que usam `@adonisjs/transmit`, é importante garantir que a compactação do GZip não interfira no tipo de conteúdo `text/event-stream` usado por Eventos Enviados pelo Servidor (SSE). A compactação aplicada ao `text/event-stream` pode causar problemas de conexão, levando a desconexões frequentes ou falhas do SSE.
 
-If your deployment uses a reverse proxy (such as Traefik or Nginx) or other middleware that applies GZip, ensure that compression is disabled for the `text/event-stream` content type.
+Se sua implantação usar um proxy reverso (como Traefik ou Nginx) ou outro middleware que aplique GZip, certifique-se de que a compactação esteja desabilitada para o tipo de conteúdo `text/event-stream`.
 
-### Example Configuration for Traefik
+### Exemplo de configuração para o Traefik
 
 ```plaintext
 traefik.http.middlewares.gzip.compress=true

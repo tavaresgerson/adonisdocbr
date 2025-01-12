@@ -1,26 +1,26 @@
 ---
-summary: Inbuilt event emitter created on top of emittery. Dispatches events asynchronously and fixes many common issues with the Node.js default Event emitter.
+Resumo: Emissor de eventos embutido criado em cima do emittery. Despacha eventos de forma assíncrona e corrige muitos problemas comuns com o emissor de eventos padrão do Node.js.
 ---
 
-# Event Emitter
+# Emissor de eventos
 
-AdonisJS has an inbuilt event emitter created on top of [emittery](https://github.com/sindresorhus/emittery). Emittery dispatches events asynchronously and [fixes many common issues](https://github.com/sindresorhus/emittery#how-is-this-different-than-the-built-in-eventemitter-in-nodejs) with the Node.js default Event emitter.
+O AdonisJS tem um emissor de eventos embutido criado em cima do [emittery](https://github.com/sindresorhus/emittery). O Emittery despacha eventos de forma assíncrona e [corrige muitos problemas comuns](https://github.com/sindresorhus/emittery#how-is-this-different-than-the-built-in-eventemitter-in-nodejs) com o emissor de eventos padrão do Node.js.
 
-AdonisJS further enhances emittery with additional features.
+O AdonisJS aprimora ainda mais o emittery com recursos adicionais.
 
-- Provide static type safety by defining a list of events and their associated data types.
-- Support for class-based events and listeners. Moving listeners to dedicated files keep your codebase tidy and easy to test.
-- Ability to fake events during tests.
+- Fornece segurança de tipo estático definindo uma lista de eventos e seus tipos de dados associados.
+- Suporte para eventos e ouvintes baseados em classe. Mover ouvintes para arquivos dedicados mantém sua base de código organizada e fácil de testar.
+- Capacidade de falsificar eventos durante os testes.
 
-## Basic usage
+## Uso básico
 
-The event listeners are defined inside the `start/events.ts` file. You may create this file using the `make:preload` ace command.
+Os ouvintes de eventos são definidos dentro do arquivo `start/events.ts`. Você pode criar esse arquivo usando o comando ace `make:preload`.
 
 ```sh
 node ace make:preload events
 ```
 
-You must use the `emitter.on` to listen to an event. The method accepts the event's name as the first argument and the listener as the second argument.
+Você deve usar `emitter.on` para ouvir um evento. O método aceita o nome do evento como o primeiro argumento e o ouvinte como o segundo argumento.
 
 ```ts
 // title: start/events.ts
@@ -31,7 +31,7 @@ emitter.on('user:registered', function (user) {
 })
 ```
 
-Once you have defined the event listener, you can emit the `user:registered` event using the `emitter.emit` method. It takes the event name as the first argument and the event data as the second argument.
+Depois de definir o ouvinte de eventos, você pode emitir o evento `user:registered` usando o método `emitter.emit`. Ele pega o nome do evento como o primeiro argumento e os dados do evento como o segundo argumento.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -44,7 +44,7 @@ export default class UsersController {
 }
 ```
 
-You may use the `emitter.once` to listen to an event once.
+Você pode usar `emitter.once` para ouvir um evento uma vez.
 
 ```ts
 emitter.once('user:registered', function (user) {
@@ -52,17 +52,15 @@ emitter.once('user:registered', function (user) {
 })
 ```
 
-## Making events type-safe
+## Tornando os eventos seguros para o tipo
 
-AdonisJS makes it mandatory to define static types for every event you want to emit within your application. The types are registered within the `types/events.ts` file.
+O AdonisJS torna obrigatório definir tipos estáticos para cada evento que você deseja emitir em seu aplicativo. Os tipos são registrados no arquivo `types/events.ts`.
 
-In the following example, we register the `User` model as the data type for the `user:registered` event.
-
+No exemplo a seguir, registramos o modelo `User` como o tipo de dados para o evento `user:registered`.
 
 :::note
-If you find defining types for every event cumbersome, you may switch to [class-based events](#class-based-events).
+Se você achar que definir tipos para cada evento é trabalhoso, pode alternar para [eventos baseados em classe](#class-based-events).
 :::
-
 
 ```ts
 import User from '#models/User'
@@ -74,17 +72,17 @@ declare module '@adonisjs/core/types' {
 }
 ```
 
-## Class-based listeners
+## Ouvintes baseados em classe
 
-Like HTTP controllers, listener classes offer an abstraction layer to move inline event listeners inside dedicated files. Listener classes are stored inside the `app/listeners` directory and you may create a new listener using the `make:listener` command.
+Assim como os controladores HTTP, as classes ouvintes oferecem uma camada de abstração para mover ouvintes de eventos em linha dentro de arquivos dedicados. As classes ouvintes são armazenadas dentro do diretório `app/listeners` e você pode criar um novo ouvinte usando o comando `make:listener`.
 
-See also: [Make listener command](../references/commands.md#makelistener)
+Veja também: [Comando Make listener](../references/commands.md#makelistener)
 
 ```sh
 node ace make:listener sendVerificationEmail
 ```
 
-The listener file is scaffolded with the `class` declaration and `handle` method. In this class, you can define additional methods to listen to multiple events (if needed).
+O arquivo listener é estruturado com a declaração `class` e o método `handle`. Nesta classe, você pode definir métodos adicionais para escutar vários eventos (se necessário).
 
 ```ts
 import User from '#models/user'
@@ -96,7 +94,7 @@ export default class SendVerificationEmail {
 }
 ```
 
-As the final step, you must bind the listener class to an event within the `start/events.ts` file. You may import the listener using the `#listeners` alias. The aliases are defined using the [subpath imports feature of Node.js](../getting_started/folder_structure.md#the-sub-path-imports).
+Como etapa final, você deve vincular a classe listener a um evento dentro do arquivo `start/events.ts`. Você pode importar o listener usando o alias `#listeners`. Os aliases são definidos usando o [recurso de importações de subcaminho do Node.js](../getting_started/folder_structure.md#the-sub-path-imports).
 
 ```ts
 // title: start/events.ts
@@ -106,9 +104,9 @@ import SendVerificationEmail from '#listeners/send_verification_email'
 emitter.on('user:registered', [SendVerificationEmail, 'handle'])
 ```
 
-### Lazy-loading listeners
+### Ouvintes de carregamento lento
 
-It is recommended to lazy load listeners to speed up the application boot phase. Lazy loading is as simple as moving the import statement behind a function and using dynamic imports.
+É recomendado carregar lentamente os ouvintes para acelerar a fase de inicialização do aplicativo. O carregamento lento é tão simples quanto mover a instrução de importação para trás de uma função e usar importações dinâmicas.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -122,15 +120,15 @@ const SendVerificationEmail = () => import('#listeners/send_verification_email')
 emitter.on('user:registered', [SendVerificationEmail, 'handle'])
 ```
 
-### Dependency injection
+### Injeção de dependência
 
 :::warning
-You cannot inject the `HttpContext` inside a listener class. Because events are processed asynchronously, the listener might run after the HTTP request is finished.
+Você não pode injetar o `HttpContext` dentro de uma classe ouvinte. Como os eventos são processados ​​de forma assíncrona, o ouvinte pode ser executado após a conclusão da solicitação HTTP.
 :::
 
-The listener classes are instantiated using the [IoC container](../concepts/dependency_injection.md); therefore, you can type-hint dependencies inside the class constructor or the method which handles the event.
+As classes ouvintes são instanciadas usando o [contêiner IoC](../concepts/dependency_injection.md); portanto, você pode dar dicas de tipo nas dependências dentro do construtor da classe ou do método que manipula o evento.
 
-In the following example, we type-hint the `TokensService` as a constructor argument. When invoking this listener, the IoC container will inject an instance of the `TokensService` class.
+No exemplo a seguir, damos dicas de tipo no `TokensService` como um argumento do construtor. Ao invocar este ouvinte, o contêiner IoC injetará uma instância da classe `TokensService`.
 
 ```ts
 // title: Constructor injection
@@ -147,7 +145,7 @@ export default class SendVerificationEmail {
 }
 ```
 
-In the following example, we inject the `TokensService` inside the handle method. However, do remember, the first argument will always be the event payload.
+No exemplo a seguir, injetamos o `TokensService` dentro do método handle. No entanto, lembre-se, o primeiro argumento sempre será a carga útil do evento.
 
 ```ts
 // title: Method injection
@@ -163,24 +161,24 @@ export default class SendVerificationEmail {
 }
 ```
 
-## Class-based events
+## Eventos baseados em classe
 
-An event is a combination of the event identifier (usually a string-based event name) and the associated data. For example:
+Um evento é uma combinação do identificador do evento (geralmente um nome de evento baseado em string) e os dados associados. Por exemplo:
 
-- `user:registered` is the event identifier (aka the event name).
-- An instance of the User model is the event data.
+- `user:registered` é o identificador do evento (também conhecido como nome do evento).
+- Uma instância do modelo User são os dados do evento.
 
-Class-based events encapsulate the event identifier and the event data within the same class. The class constructor serves as the identifier, and an instance of the class holds the event data.
+Eventos baseados em classe encapsulam o identificador do evento e os dados do evento dentro da mesma classe. O construtor da classe serve como o identificador, e uma instância da classe contém os dados do evento.
 
-You may create an event class using the `make:event` command.
+Você pode criar uma classe de evento usando o comando `make:event`.
 
-See also: [Make event command](../references/commands.md#makeevent)
+Veja também: [Comando Make event](../references/commands.md#makeevent)
 
 ```sh
 node ace make:event UserRegistered
 ```
 
-The event class has no behavior. Instead, it is a data container for the event. You may accept event data via the class constructor and make it available as an instance property.
+A classe event não tem comportamento. Em vez disso, é um contêiner de dados para o evento. Você pode aceitar dados de evento por meio do construtor de classe e disponibilizá-los como uma propriedade de instância.
  
 ```ts
 // title: app/events/user_registered.ts
@@ -194,9 +192,9 @@ export default class UserRegistered extends BaseEvent {
 }
 ```
 
-### Listening to class-based events
+### Ouvindo eventos baseados em classe
 
-You may attach listeners for class-based events using the `emitter.on` method. The first argument is the event class reference, followed by the listener.
+Você pode anexar ouvintes para eventos baseados em classe usando o método `emitter.on`. O primeiro argumento é a referência de classe do evento, seguido pelo ouvinte.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -207,7 +205,7 @@ emitter.on(UserRegistered, function (event) {
 })
 ```
 
-In the following example, we use both class-based events and listeners.
+No exemplo a seguir, usamos eventos baseados em classe e ouvintes.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -218,9 +216,9 @@ const SendVerificationEmail = () => import('#listeners/send_verification_email')
 emitter.on(UserRegistered, [SendVerificationEmail])
 ```
 
-### Emitting class-based events
+### Emitindo eventos baseados em classe
 
-You may emit a class-based event using the `static dispatch` method. The `dispatch` method takes arguments accepted by the event class constructor.
+Você pode emitir um evento baseado em classe usando o método `static dispatch`. O método `dispatch` aceita argumentos aceitos pelo construtor de classe de evento.
 
 ```ts
 import User from '#models/user'
@@ -238,11 +236,11 @@ export default class UsersController {
 }
 ```
 
-## Simplifying events listening experience
+## Simplificando a experiência de ouvir eventos
 
-If you decide to use class-based events and listeners, you may use the `emitter.listen` method to simplify the process of binding listeners. 
+Se você decidir usar eventos e ouvintes baseados em classe, poderá usar o método `emitter.listen` para simplificar o processo de vinculação de ouvintes.
 
-The `emitter.listen` method accepts the event class as the first argument and an array of class-based listeners as the second argument. In addition, the registered listener must have a `handle` method to handle the event.
+O método `emitter.listen` aceita a classe de evento como o primeiro argumento e uma matriz de ouvintes baseados em classe como o segundo argumento. Além disso, o ouvinte registrado deve ter um método `handle` para manipular o evento.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -255,10 +253,10 @@ emitter.listen(UserRegistered, [
 ])
 ```
 
-## Handling errors
-By default, the exceptions raised by the listeners will result in [unhandledRejection](https://nodejs.org/api/process.html#event-unhandledrejection). Therefore, it is recommended to self capture and handle the error using the `emitter.onError` method.
+## Manipulando erros
+Por padrão, as exceções geradas pelos ouvintes resultarão em [unhandledRejection](https://nodejs.org/api/process.html#event-unhandledrejection). Portanto, é recomendável autocapturar e manipular o erro usando o método `emitter.onError`.
 
-The `emitter.onError` method accepts a callback which receives the event name, error, and event data.
+O método `emitter.onError` aceita um retorno de chamada que recebe o nome do evento, o erro e os dados do evento.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -267,9 +265,9 @@ emitter.onError((event, error, eventData) => {
 })
 ```
 
-## Listening to all events
+## Ouvindo todos os eventos
 
-You can listen to all the events using the `emitter.onAny` method. The method accepts the listener callback as the only parameter.
+Você pode ouvir todos os eventos usando o método `emitter.onAny`. O método aceita o retorno de chamada do ouvinte como o único parâmetro.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -280,9 +278,9 @@ emitter.onAny((name, event) => {
 })
 ```
 
-## Unsubscribing from events
+## Cancelando inscrição de eventos
 
-The `emitter.on` method returns an unsubscribe function you may call to remove the event listener subscription.
+O método `emitter.on` retorna uma função de cancelamento de inscrição que você pode chamar para remover a inscrição do ouvinte de evento.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -293,7 +291,7 @@ const unsubscribe = emitter.on('user:registered', () => {})
 unsubscribe()
 ```
 
-You may also use the `emitter.off` method to remove the event listener subscription. The method accepts the event name/class as the first argument and a reference to the listener as the second argument.
+Você também pode usar o método `emitter.off` para remover a inscrição do ouvinte de evento. O método aceita o nome/classe do evento como o primeiro argumento e uma referência ao ouvinte como o segundo argumento.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -309,7 +307,7 @@ emitter.off('user:registered', sendEmail)
 
 ### `emitter.offAny`
 
-The `emitter.offAny` removes a wildcard listener, listening for all the events.
+O `emitter.offAny` remove um ouvinte curinga, ouvindo todos os eventos.
 
 ```ts
 emitter.offAny(callback)
@@ -317,7 +315,7 @@ emitter.offAny(callback)
 
 ### `emitter.clearListeners`
 
-The `emitter.clearListeners` method removes all the listeners for a given event.
+O método `emitter.clearListeners` remove todos os ouvintes de um determinado evento.
 
 ```ts
 //String-based event
@@ -329,22 +327,22 @@ emitter.clearListeners(UserRegistered)
 
 ### `emitter.clearAllListeners`
 
-The `emitter.clearAllListeners` method removes all the listeners for all the events.
+O método `emitter.clearAllListeners` remove todos os ouvintes de todos os eventos.
 
 ```ts
 emitter.clearAllListeners()
 ```
 
-## List of available events
-Please check the [events reference guide](../references/events.md) to view the list of available events.
+## Lista de eventos disponíveis
+Consulte o [guia de referência de eventos](../references/events.md) para visualizar a lista de eventos disponíveis.
 
-## Faking events during tests
+## Falsificando eventos durante os testes
 
-Event listeners are often used for performing side effects after a given action. For example: Send an email to a newly registered user, or send a notification after an order status update.
+Os ouvintes de eventos são frequentemente usados ​​para executar efeitos colaterais após uma determinada ação. Por exemplo: envie um e-mail para um usuário recém-registrado ou envie uma notificação após uma atualização de status do pedido.
 
-When writing tests, you might want to avoid sending emails to the user created during the test.
+Ao escrever testes, você pode querer evitar enviar e-mails para o usuário criado durante o teste.
 
-You may disable event listeners by faking the event emitter. In the following example, we call `emitter.fake` before making an HTTP request to signup a user. After the request, we use the `events.assertEmitted` method to ensure that the `SignupController` emits a specific event.
+Você pode desabilitar os ouvintes de eventos falsificando o emissor do evento. No exemplo a seguir, chamamos `emitter.fake` antes de fazer uma solicitação HTTP para inscrever um usuário. Após a solicitação, usamos o método `events.assertEmitted` para garantir que o `SignupController` emita um evento específico.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -374,12 +372,12 @@ test.group('User signup', () => {
 })
 ```
 
-- The `event.fake` method returns an instance of the [EventBuffer](https://github.com/adonisjs/events/blob/main/src/events_buffer.ts) class, and you may use it for assertions and finding emitted events.
-- The `emitter.restore` method restores the fake. After restoring the fake, the events will be emitted normally.
+[EventBuffer](https://github.com/adonisjs/events/blob/main/src/events_buffer.ts) classe, e você pode usá-lo para asserções e encontrar eventos emitidos.
+- O método `emitter.restore` restaura o fake. Após restaurar o fake, os eventos serão emitidos normalmente.
 
-### Faking specific events
+### Falsificando eventos específicos
 
-The `emitter.fake` method fakes all the events if you invoke the method without any arguments. If you want to fake a specific event, pass the event name or the class as the first argument.
+O método `emitter.fake` falsifica todos os eventos se você invocar o método sem nenhum argumento. Se você quiser falsificar um evento específico, passe o nome do evento ou a classe como o primeiro argumento.
 
 ```ts
 // Fakes only the user:registered event
@@ -389,12 +387,12 @@ emitter.fake('user:registered')
 emitter.fake([UserRegistered, OrderUpdated])
 ```
 
-Calling the `emitter.fake` method multiple times will remove the old fakes.
+Chamar o método `emitter.fake` várias vezes removerá os fakes antigos.
 
-### Events assertions
-You may use `assertEmitted`, `assertNotEmitted`, `assertNoneEmitted` and the `assertEmittedCount` methods to write assertions for faked events.
+### Eventos asserções
+Você pode usar os métodos `assertEmitted`, `assertNotEmitted`, `assertNoneEmitted` e `assertEmittedCount` para escrever asserções para eventos falsificados.
 
-The `assertEmitted` and `assertNotEmitted` methods accepts either the event name or the class constructor as the first argument and an optional finder function that must return a boolean to mark the event as emitted.
+Os métodos `assertEmitted` e `assertNotEmitted` aceitam o nome do evento ou o construtor da classe como o primeiro argumento e uma função finder opcional que deve retornar um booleano para marcar o evento como emitido.
 
 ```ts
 const events = emitter.fake()

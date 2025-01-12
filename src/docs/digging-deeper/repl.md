@@ -1,9 +1,9 @@
 ---
-summary: AdonisJS offers an application-aware REPL to interact with your application from the command line. 
+resumo: AdonisJS oferece um REPL com reconhecimento de aplicativo para interagir com seu aplicativo a partir da linha de comando.
 ---
 
 # REPL
-Like the [Node.js REPL](https://nodejs.org/api/repl.html), AdonisJS offers an application-aware REPL to interact with your application from the command line. You can start the REPL session using the `node ace repl` command.
+Assim como o [Node.js REPL](https://nodejs.org/api/repl.html), AdonisJS oferece um REPL com reconhecimento de aplicativo para interagir com seu aplicativo a partir da linha de comando. Você pode iniciar a sessão REPL usando o comando `node ace repl`.
 
 ```sh
 node ace repl
@@ -11,25 +11,25 @@ node ace repl
 
 ![](../ace/ace_repl.png)
 
-On top of a standard Node.js REPL, AdonisJS provides the following features.
+Além de um REPL Node.js padrão, AdonisJS fornece os seguintes recursos.
 
-- Import and execute TypeScript files.
-- Shorthand methods to import container services like the `router`, `helpers`, `hash` service, and so on.
-- Shorthand method to make class instances using the [IoC container](../concepts/dependency_injection.md#constructing-a-tree-of-dependencies).
-- Extensible API to add custom methods and REPL commands.
+- Importar e executar arquivos TypeScript.
+- Métodos abreviados para importar serviços de contêiner como o serviço `router`, `helpers`, `hash` e assim por diante.
+[Contêiner IoC](../concepts/dependency_injection.md#constructing-a-tree-of-dependencies).
+- API extensível para adicionar métodos personalizados e comandos REPL.
 
-## Interacting with REPL
-Once you start the REPL session, you will see an interactive prompt in which you can write valid JavaScript code and press enter to execute it. The output of the code will be printed on the following line.
+## Interagindo com REPL
+Depois de iniciar a sessão REPL, você verá um prompt interativo no qual pode escrever um código JavaScript válido e pressionar Enter para executá-lo. A saída do código será impressa na linha a seguir.
 
-If you want to type multiple lines of code, you can enter into the editor mode by typing the `.editor` command. Press `Ctrl+D` to execute a multiline statement or `Ctrl+C` to cancel and exit the editor mode.
+Se quiser digitar várias linhas de código, você pode entrar no modo editor digitando o comando `.editor`. Pressione `Ctrl+D` para executar uma instrução multilinha ou `Ctrl+C` para cancelar e sair do modo editor.
 
 ```sh
 > (js) .editor
 # // Entering editor mode (Ctrl+D to finish, Ctrl+C to cancel)
 ```
 
-### Accessing the result of the last executed command
-If you forget to assign the value of a statement to a variable, you can access it using the `_` variable. For example:
+### Acessando o resultado do último comando executado
+Se você esquecer de atribuir o valor de uma instrução a uma variável, poderá acessá-la usando a variável `_`. Por exemplo:
 
 ```sh
 > (js) helpers.string.generateRandom(32)
@@ -41,8 +41,8 @@ If you forget to assign the value of a statement to a variable, you can access i
 > (js)
 ```
 
-### Accessing error raised by last executed command
-You can access the exception raised by the previous command using the `_error` variable. For example:
+### Acessando o erro gerado pelo último comando executado
+Você pode acessar a exceção gerada pelo comando anterior usando a variável `_error`. Por exemplo:
 
 ```sh
 > (js) helpers.string.generateRandom()
@@ -50,31 +50,31 @@ You can access the exception raised by the previous command using the `_error` v
 # 'The value of "size" is out of range. It must be >= 0 && <= 2147483647. Received NaN'
 ```
 
-### Searching through history
-The REPL history is saved in the `.adonisjs_v6_repl_history` file in the user's home directory. 
+### Pesquisando no histórico
+O histórico do REPL é salvo no arquivo `.adonisjs_v6_repl_history` no diretório inicial do usuário.
 
-You can loop through the commands from the history by pressing the up arrow `↑` key or pressing `Ctrl+R` to search within the history.
+Você pode percorrer os comandos do histórico pressionando a tecla de seta para cima `↑` ou pressionando `Ctrl+R` para pesquisar no histórico.
 
-### Exiting from REPL session
-You can exit the REPL session by typing `.exit` or press the `Ctrl+C` twice. AdonisJS will perform a graceful shutdown before closing the REPL session.
+### Saindo da sessão REPL
+Você pode sair da sessão REPL digitando `.exit` ou pressionando `Ctrl+C` duas vezes. O AdonisJS executará um desligamento normal antes de fechar a sessão REPL.
 
-Also, if you modify your codebase, you must exit and restart the REPL session for new changes to pick up.
+Além disso, se você modificar sua base de código, deverá sair e reiniciar a sessão REPL para que novas alterações sejam aplicadas.
 
-## Importing modules
-Node.js does not allow using the `import` statements inside the REPL session. Therefore, you must use the dynamic `import` function and assign the output to a variable. For example:
+## Importando módulos
+O Node.js não permite usar as instruções `import` dentro da sessão REPL. Portanto, você deve usar a função dinâmica `import` e atribuir a saída a uma variável. Por exemplo:
 
 ```ts
 const { default: User } = await import('#models/user')
 ```
 
-You can use the `importDefault` method to access default export without destructuring the exports.
+Você pode usar o método `importDefault` para acessar a exportação padrão sem desestruturar as exportações.
 
 ```ts
 const User = await importDefault('#models/user')
 ```
 
-## Helpers methods
-Helper methods are shortcut functions you can execute to perform specific actions. You can view the list of available methods using the `.ls` command.
+## Métodos auxiliares
+Os métodos auxiliares são funções de atalho que você pode executar para realizar ações específicas. Você pode visualizar a lista de métodos disponíveis usando o comando `.ls`.
 
 ```sh
 > (js) .ls
@@ -93,10 +93,10 @@ clear                 Clear a property from the REPL context
 p                     Promisify a function. Similar to Node.js "util.promisify"
 ```
 
-## Adding custom methods to REPL
-You can add custom methods to the REPL using `repl.addMethod`. The method accepts the name as the first argument and the implementation callback as the second argument.
+## Adicionando métodos personalizados ao REPL
+Você pode adicionar métodos personalizados ao REPL usando `repl.addMethod`. O método aceita o nome como o primeiro argumento e o retorno de chamada de implementação como o segundo argumento.
 
-For demonstration, let's create a [preload file](../concepts/adonisrc_file.md#preloads) file and define a method to import all models from the `./app/models` directory.
+Para demonstração, vamos criar um arquivo [preload file](../concepts/adonisrc_file.md#preloads) e definir um método para importar todos os modelos do diretório `./app/models`.
 
 ```sh
 node ace make:preload repl -e=repl
@@ -117,12 +117,12 @@ repl.addMethod('loadModels', async () => {
 })
 ```
 
-You can pass the following options to the `repl.addMethod` method as the third argument.
+Você pode passar as seguintes opções para o método `repl.addMethod` como o terceiro argumento.
 
-- `description`: Human-readable description to display in the help output.
-- `usage`: Define the method usage code snippet. If not set, the method name will be used.
+- `description`: Descrição legível para exibir na saída de ajuda.
+- `usage`: Defina o snippet de código de uso do método. Se não for definido, o nome do método será usado.
 
-Once done, you can restart the REPL session and execute the `loadModels` method to import all the models.
+Uma vez feito, você pode reiniciar a sessão REPL e executar o método `loadModels` para importar todos os modelos.
 
 ```sh
 node ace repl

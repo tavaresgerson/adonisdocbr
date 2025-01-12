@@ -1,8 +1,8 @@
 # Schema builder
 
-The schema builder allows you **create**, **alter**, **drop**, and perform other SQL DDL operations.
+O schema builder permite que você **crie**, **altere**, **descarte** e execute outras operações SQL DDL.
 
-You can access the schema builder instance using the `this.schema` property in your migration files.
+Você pode acessar a instância do schema builder usando a propriedade `this.schema` em seus arquivos de migração.
 
 ```ts
 import { BaseSchema } from '@adonisjs/lucid/schema'
@@ -15,7 +15,7 @@ class UserSchema extends BaseSchema {
 ```
 
 ## `createTable`
-Creates a new database table. The method accepts the table name and a callback that receives the [table builder](./table_builder.md) instance to create table columns.
+Cria uma nova tabela de banco de dados. O método aceita o nome da tabela e um retorno de chamada que recebe a instância [table builder](./table_builder.md) para criar colunas de tabela.
 
 ```ts
 class UserSchema extends BaseSchema {
@@ -33,7 +33,7 @@ class UserSchema extends BaseSchema {
 ```
 
 ## `createSchema`
-Create the PostgreSQL schema. It accepts the schema name.
+Cria o esquema PostgreSQL. Ele aceita o nome do esquema.
 
 ```ts
 class FoundationSchema extends BaseSchema {
@@ -46,7 +46,7 @@ class FoundationSchema extends BaseSchema {
 ```
 
 ## `table` / `alterTable`
-Select a SQL table to alter its columns. The method accepts the table name and a callback that receives the [table builder](./table_builder.md) instance to modify the table columns.
+Selecione uma tabela SQL para alterar suas colunas. O método aceita o nome da tabela e um retorno de chamada que recebe a instância [table builder](./table_builder.md) para modificar as colunas da tabela.
 
 ```ts
 class UserSchema extends BaseSchema {
@@ -70,7 +70,7 @@ class UserSchema extends BaseSchema {
 ```
 
 ## `renameTable`
-Rename a table. The method accepts the existing table name as the first argument and the new name as the second argument.
+Renomeia uma tabela. O método aceita o nome da tabela existente como o primeiro argumento e o novo nome como o segundo argumento.
 
 ```ts
 class UserSchema extends BaseSchema {
@@ -83,7 +83,7 @@ class UserSchema extends BaseSchema {
 ```
 
 ## `dropTable`
-Drop an existing SQL table. The method accepts the table name as the only argument.
+Remove uma tabela SQL existente. O método aceita o nome da tabela como o único argumento.
 
 ```ts
 class UserSchema extends BaseSchema {
@@ -96,7 +96,7 @@ class UserSchema extends BaseSchema {
 ```
 
 ## `dropTableIfExists`
-Similar to the `dropTable` method, but conditionally drop the table if it exists.
+Semelhante ao método `dropTable`, mas remove condicionalmente a tabela se ela existir.
 
 ```ts
 class UserSchema extends BaseSchema {
@@ -109,7 +109,7 @@ class UserSchema extends BaseSchema {
 ```
 
 ## `dropSchema`
-Drop an existing PostgreSQL schema. The method accepts the schema name as the only argument.
+Remove um esquema PostgreSQL existente. O método aceita o nome do esquema como o único argumento.
 
 ```ts
 class FoundationSchema extends BaseSchema {
@@ -122,7 +122,7 @@ class FoundationSchema extends BaseSchema {
 ```
 
 ## `dropSchemaIfExists`
-Similar to the `dropSchema` method, but conditionally drop the schema if it exists.
+Semelhante ao método `dropSchema`, mas condicionalmente descarta o esquema se ele existir.
 
 ```ts
 class FoundationSchema extends BaseSchema {
@@ -135,7 +135,7 @@ class FoundationSchema extends BaseSchema {
 ```
 
 ## `raw`
-Run a SQL query from the raw string. Unlike the [raw query builder](../query_builders/raw.md), the `schema.raw` method does not accept bindings separately.
+Execute uma consulta SQL a partir da string bruta. Ao contrário do [construtor de consultas brutas](../query_builders/raw.md), o método `schema.raw` não aceita vinculações separadamente.
 
 ```ts
 class UserSchema extends BaseSchema {
@@ -154,7 +154,7 @@ class UserSchema extends BaseSchema {
 ```
 
 ## `withSchema`
-Specify the schema to select when running the SQL DDL statements. The method accepts the schema name as the only argument.
+Especifique o esquema a ser selecionado ao executar as instruções SQL DDL. O método aceita o nome do esquema como o único argumento.
 
 ```ts
 class UserSchema extends BaseSchema {

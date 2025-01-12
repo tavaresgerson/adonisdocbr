@@ -1,27 +1,27 @@
 ---
-summary: Use the `@adonisjs/lock` package to manage atomic locks in your AdonisJS application. 
+resumo: Use o pacote `@adonisjs/lock` para gerenciar bloqueios atômicos em seu aplicativo AdonisJS.
 ---
 
-# tomic Locks
+# Bloqueios tomic
 
-An atomic lock, otherwise known as a `mutex`, is used for synchronizing access to a shared resource. In other words, it prevents several processes, or concurrent code, from executing a section of code at the same time.
+Um bloqueio atômico, também conhecido como `mutex`, é usado para sincronizar o acesso a um recurso compartilhado. Em outras palavras, ele impede que vários processos, ou código simultâneo, executem uma seção de código ao mesmo tempo.
 
-The AdonisJS team has created a framework-agnostic package called [Verrou](https://github.com/Julien-R44/verrou). The `@adonisjs/lock` package is based on this package, **so make sure to also read [the Verrou documentation](https://verrou.dev/docs/introduction) which is more detailed.**
+A equipe do AdonisJS criou um pacote independente de framework chamado [Verrou](https://github.com/Julien-R44/verrou). O pacote `@adonisjs/lock` é baseado neste pacote, **então certifique-se de ler também [a documentação do Verrou](https://verrou.dev/docs/introduction) que é mais detalhada.**
 
-## Installation
+## Instalação
 
-Install and configure the package using the following command:
+Instale e configure o pacote usando o seguinte comando:
 
 ```sh
 node ace add @adonisjs/lock
 ```
 
-::: details See steps performed by the add command
+::: details Veja os passos realizados pelo comando add
 
-1. Install the `@adonisjs/lock` package using the detected package manager.
+1. Instale o pacote `@adonisjs/lock` usando o gerenciador de pacotes detectado.
 
-2. Registers the following service provider inside the `adonisrc.ts` file.
-    ```ts
+2. Registra o seguinte provedor de serviços dentro do arquivo `adonisrc.ts`.
+```ts
     {
       providers: [
         // ...other providers
@@ -30,19 +30,19 @@ node ace add @adonisjs/lock
     }
     ```
 
-3. Create the `config/lock.ts` file.
+3. Crie o arquivo `config/lock.ts`.
 
-4. Define the following environment variable alongside its validation inside the `start/env.ts` file.
-   ```ts
+4. Defina a seguinte variável de ambiente junto com sua validação dentro do arquivo `start/env.ts`.
+```ts
    LOCK_STORE=redis
    ```
 
-5. Optionally, create the database migration for the `locks` table if using the `database` store.
+5. Opcionalmente, crie a migração do banco de dados para a tabela `locks` se estiver usando o armazenamento `database`.
 
 :::
 
-## Configuration
-The configuration for the locks is stored inside the `config/lock.ts` file.
+## Configuração
+A configuração dos bloqueios é armazenada dentro do arquivo `config/lock.ts`.
 
 ```ts
 import env from '#start/env'
@@ -70,18 +70,18 @@ declare module '@adonisjs/lock/types' {
 
 ### `default`
 
-The `default` store to use for managing locks. The store is defined within the same config file under the `stores` object.
+O armazenamento `default` a ser usado para gerenciar bloqueios. O armazenamento é definido dentro do mesmo arquivo de configuração sob o objeto `stores`.
 
 ### `stores`
 
-A collection of stores you plan to use within your application. We recommend always configuring the `memory` store that could be used during testing.
+Uma coleção de armazenamentos que você planeja usar em seu aplicativo. Recomendamos sempre configurar o armazenamento `memory` que pode ser usado durante o teste.
 
 ---
 
-### Environment variables
-The default lock store is defined using the `LOCK_STORE` environment variable, and therefore, you can switch between different stores in different environments. For example, use the `memory` store during testing and the `redis` store for development and production.
+### Variáveis ​​de ambiente
+O armazenamento de bloqueio padrão é definido usando a variável de ambiente `LOCK_STORE` e, portanto, você pode alternar entre diferentes armazenamentos em diferentes ambientes. Por exemplo, use o armazenamento `memory` durante o teste e o armazenamento `redis` para desenvolvimento e produção.
 
-Also, the environment variable must be validated to allow one of the pre-configured stores. The validation is defined inside the `start/env.ts` file using the `Env.schema.enum` rule.
+Além disso, a variável de ambiente deve ser validada para permitir um dos armazenamentos pré-configurados. A validação é definida dentro do arquivo `start/env.ts` usando a regra `Env.schema.enum`.
 
 ```ts
 {
@@ -89,10 +89,10 @@ Also, the environment variable must be validated to allow one of the pre-configu
 }
 ```
 
-### Redis store
-The `redis` store has a peer dependency on the `@adonisjs/redis` package; therefore, you must configure this package before using the Redis store.
+### Loja Redis
+A loja `redis` tem uma dependência de peer no pacote `@adonisjs/redis`; portanto, você deve configurar este pacote antes de usar a loja Redis.
 
-Following is the list of options the Redis store accepts:
+A seguir está a lista de opções que a loja Redis aceita:
 
 ```ts
 {
@@ -104,13 +104,13 @@ Following is the list of options the Redis store accepts:
 
 #### `connectionName`
 
-The `connectionName` property refers to a connection defined within the `config/redis.ts` file.
+A propriedade `connectionName` se refere a uma conexão definida dentro do arquivo `config/redis.ts`.
 
-### Database store
+### Loja de banco de dados
 
-The `database` store has a peer dependency on the `@adonisjs/lucid` package, and therefore, you must configure this package before using the database store.
+A loja `database` tem uma dependência de peer no pacote `@adonisjs/lucid` e, portanto, você deve configurar este pacote antes de usar a loja de banco de dados.
 
-Following is the list of options the database store accepts:
+A seguir está a lista de opções que o armazenamento de banco de dados aceita:
 
 ```ts
 {
@@ -123,17 +123,17 @@ Following is the list of options the database store accepts:
 
 #### `connectionName`
 
-Reference to the database connection defined within the `config/database.ts` file. If not defined, we will use the default database connection.
+Referência à conexão de banco de dados definida no arquivo `config/database.ts`. Se não estiver definida, usaremos a conexão de banco de dados padrão.
 
 #### `tableName`
 
-The database table to use to store rate limits. 
+A tabela de banco de dados a ser usada para armazenar limites de taxa.
 
-### Memory store
+### Armazenamento de memória
 
-The `memory` store is a simple in-memory store that can be useful for testing purposes but not only. Sometimes, for some use cases, you might want to have a lock that is only valid for the current process and not shared across multiple ones.
+O armazenamento `memory` é um armazenamento simples na memória que pode ser útil para fins de teste, mas não apenas. Às vezes, para alguns casos de uso, você pode querer ter um bloqueio que seja válido apenas para o processo atual e não compartilhado entre vários.
 
-The memory store is built on top of the [`async-mutex`](https://www.npmjs.com/package/async-mutex) package.
+O armazenamento de memória é construído sobre o pacote [`async-mutex`](https://www.npmjs.com/package/async-mutex).
 
 ```ts
 {
@@ -141,11 +141,11 @@ The memory store is built on top of the [`async-mutex`](https://www.npmjs.com/pa
 }
 ```
 
-## Locking a resource
+## Bloqueando um recurso
 
-Once you have configured your lock store, you can start using locks to protect your resources anywhere within your application.
+Depois de configurar seu armazenamento de bloqueio, você pode começar a usar bloqueios para proteger seus recursos em qualquer lugar dentro do seu aplicativo.
 
-Here is a simple example of how to use locks to protect a resource.
+Aqui está um exemplo simples de como usar bloqueios para proteger um recurso.
 
 :::codegroup
 
@@ -223,15 +223,15 @@ export default class OrderController {
 
 :::
 
-This is a quick example of how to use locks within your application. 
+Este é um exemplo rápido de como usar bloqueios dentro do seu aplicativo.
 
-They are many other methods available to manage locks, such as `extend` for extending the lock duration, `getRemainingTime` to get the remaining time before the lock expires, options to configure the lock, and more.
+Existem muitos outros métodos disponíveis para gerenciar bloqueios, como `extend` para estender a duração do bloqueio, `getRemainingTime` para obter o tempo restante antes que o bloqueio expire, opções para configurar o bloqueio e muito mais.
 
-**For that, make sure to read the [Verrou documentation](https://verrou.dev/docs/introduction) for more details**. As a reminder, the `@adonisjs/lock` package is based on the `Verrou` package, so everything you read in the Verrou documentation is also applicable to the `@adonisjs/lock` package.
+**Para isso, certifique-se de ler a [documentação do Verrou](https://verrou.dev/docs/introduction) para mais detalhes**. Como lembrete, o pacote `@adonisjs/lock` é baseado no pacote `Verrou`, então tudo o que você lê na documentação do Verrou também é aplicável ao pacote `@adonisjs/lock`.
 
-## Using another store
+## Usando outro armazenamento
 
-If you defined multiple stores inside the `config/lock.ts` file, you can use a different store for a specific lock by using the `use` method.
+Se você definiu vários armazenamentos dentro do arquivo `config/lock.ts`, você pode usar um armazenamento diferente para um bloqueio específico usando o método `use`.
 
 ```ts
 import locks from '@adonisjs/lock/services/main'
@@ -239,7 +239,7 @@ import locks from '@adonisjs/lock/services/main'
 const lock = locks.use('redis').createLock('order.processing.1')
 ```
 
-Otherwise, if using only the `default` store, you can omit the `use` method.
+Caso contrário, se estiver usando apenas o armazenamento `default`, você pode omitir o método `use`.
 
 ```ts
 import locks from '@adonisjs/lock/services/main'
@@ -247,9 +247,9 @@ import locks from '@adonisjs/lock/services/main'
 const lock = locks.createLock('order.processing.1')
 ```
 
-## Managing locks across multiple processes
+## Gerenciando bloqueios em vários processos
 
-Sometimes, you might want to have one process creating and acquiring a lock, and another process releasing it. For example, you might want to acquire a lock inside a web request and release it inside a background job. This is possible using the `restoreLock` method.
+Às vezes, você pode querer ter um processo criando e adquirindo um bloqueio, e outro processo liberando-o. Por exemplo, você pode querer adquirir um bloqueio dentro de uma solicitação da web e liberá-lo dentro de um trabalho em segundo plano. Isso é possível usando o método `restoreLock`.
 
 ```ts
 // title: Your main server
@@ -299,20 +299,20 @@ export class ProcessOrder {
 }
 ```
 
-## Testing 
+## Testes
 
-During testing, you can use the `memory` store to avoid making real network requests to acquire locks. You can do this by setting the `LOCK_STORE` environment variable to `memory` inside the `.env.testing` file.
+Durante os testes, você pode usar o armazenamento `memory` para evitar fazer solicitações de rede reais para adquirir bloqueios. Você pode fazer isso definindo a variável de ambiente `LOCK_STORE` como `memory` dentro do arquivo `.env.testing`.
 
 ```env
 // title: .env.test
 LOCK_STORE=memory
 ```
 
-## Create a custom lock store
+## Crie um armazenamento de bloqueio personalizado
 
-First, make sure to consult the [Verrou documentation](https://verrou.dev/docs/custom-lock-store) that goes deeper into the creation of a custom lock store. In AdonisJS, it will be pretty much the same. 
+Primeiro, certifique-se de consultar a [documentação do Verrou](https://verrou.dev/docs/custom-lock-store) que se aprofunda na criação de um armazenamento de bloqueio personalizado. No AdonisJS, será praticamente o mesmo.
 
-Let's create a simple Noop store that does not do anything. First, we must create a class that will implement the `LockStore` interface.
+Vamos criar um armazenamento Noop simples que não faz nada. Primeiro, devemos criar uma classe que implementará a interface `LockStore`.
 
 ```ts
 import type { LockStore } from '@adonisjs/lock/types'
@@ -368,9 +368,9 @@ class NoopStore implements LockStore {
 }
 ```
 
-### Defining the store factory
+### Definindo a fábrica da loja
 
-Once you have created your store, you must define a simple factory function that will be used by `@adonisjs/lock` to create an instance of you store.
+Depois de criar sua loja, você deve definir uma função de fábrica simples que será usada por `@adonisjs/lock` para criar uma instância da sua loja.
 
 ```ts
 function noopStore(options: MyNoopStoreConfig) {
@@ -378,9 +378,9 @@ function noopStore(options: MyNoopStoreConfig) {
 }
 ```
 
-### Using the custom store
+### Usando a loja personalizada
 
-Once done, you may use the `noopStore` function as follows:
+Depois de feito, você pode usar a função `noopStore` da seguinte forma:
 
 ```ts
 import { defineConfig } from '@adonisjs/lock'

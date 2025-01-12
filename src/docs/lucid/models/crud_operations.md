@@ -1,10 +1,10 @@
-# CRUD operations
+# Operações CRUD
 
-Lucid models make it very easy to perform CRUD operations and also define lifecycle hooks around each operation.
+Os modelos Lucid facilitam muito a execução de operações CRUD e também definem ganchos de ciclo de vida em torno de cada operação.
 
-## Create
+## Criar
 
-You can create and persist new records to the database by using the static `create` method.
+Você pode criar e persistir novos registros no banco de dados usando o método estático `create`.
 
 ```ts
 import User from '#models/user'
@@ -17,9 +17,9 @@ const user = await User.create({
 console.log(user.$isPersisted) // true
 ```
 
-Additionally, you can create and persist new records to the database by first assigning values to the model instance and then calling the `save` method.
+Além disso, você pode criar e persistir novos registros no banco de dados atribuindo valores à instância do modelo e, em seguida, chamando o método `save`.
 
-The `save` method performs the **INSERT** query when persisting the model instance for the first time and performs the **UPDATE** query when the model has persisted.
+O método `save` executa a consulta **INSERT** ao persistir a instância do modelo pela primeira vez e executa a consulta **UPDATE** quando o modelo persiste.
 
 ```ts
 import User from '#models/user'
@@ -35,7 +35,7 @@ await user.save()
 console.log(user.$isPersisted) // true
 ```
 
-Also, you can use the `fill` method to define all the attributes as once and then call the `save` method.
+Além disso, você pode usar o método `fill` para definir todos os atributos como uma vez e, em seguida, chamar o método `save`.
 
 ```ts
 import User from '#models/user'
@@ -51,10 +51,10 @@ console.log(user.$isPersisted) // true
 
 ### `createMany`
 
-Create multiple instances of a model and persist them to the database. The `createMany` method accepts the same options as the `create` method.
+Criar várias instâncias de um modelo e persisti-las no banco de dados. O método `createMany` aceita as mesmas opções que o método `create`.
 
 :::note
-One insert query is issued for each model instance to execute the lifecycle hooks for every instance.
+Uma consulta de inserção é emitida para cada instância do modelo para executar os ganchos do ciclo de vida para cada instância.
 :::
 
 ```ts
@@ -70,13 +70,13 @@ const user = await User.createMany([
 ])
 ```
 
-## Read
+## Ler
 
-You can query the database table using one of the following static methods.
+Você pode consultar a tabela do banco de dados usando um dos seguintes métodos estáticos.
 
 ### `all`
 
-Fetch all the users from the database. The method returns an array of model instances.
+Buscar todos os usuários do banco de dados. O método retorna uma matriz de instâncias do modelo.
 
 ```ts
 const user = await User.all()
@@ -85,7 +85,7 @@ const user = await User.all()
 
 ### `find`
 
-Find a record using the primary key. The method returns a model instance or null (when no records are found).
+Encontrar um registro usando a chave primária. O método retorna uma instância do modelo ou nulo (quando nenhum registro é encontrado).
 
 ```ts
 const user = await User.find(1)
@@ -94,7 +94,7 @@ const user = await User.find(1)
 
 ### `findBy`
 
-Find a record by a column name and its value. Similar to the `find` method, this method also returns a model instance or `null`.
+Encontrar um registro por um nome de coluna e seu valor. Semelhante ao método `find`, este método também retorna uma instância do modelo ou `null`.
 
 ```ts
 const user = await User.findBy('email', 'virk@adonisjs.com')
@@ -103,7 +103,7 @@ const user = await User.findBy('email', 'virk@adonisjs.com')
 
 ### `findManyBy`
 
-Find multiple record by one or multiple column name and its value. This method returns an array of model instance or an empty array (`[]`).
+Encontre vários registros por um ou vários nomes de coluna e seu valor. Este método retorna uma matriz de instância de modelo ou uma matriz vazia (`[]`).
 
 ```ts
 const users = await User.findManyBy('status', 'active')
@@ -115,16 +115,16 @@ const posts = await Post.findManyBy({ status: 'published', userId: 1 })
 
 ### `first`
 
-Fetch the first record from the database. Returns `null` when there are no records.
+Busca o primeiro registro do banco de dados. Retorna `null` quando não há registros.
 
 ```ts
 const user = await User.first()
 // SQL: SELECT * from "users" LIMIT 1;
 ```
 
-### `orFail` variation
+### Variação `orFail`
 
-You can also use the `orFail` variation for the find methods. It raises an exception when no row is found.
+Você também pode usar a variação `orFail` para os métodos find. Ela gera uma exceção quando nenhuma linha é encontrada.
 
 ```ts
 const user = await User.findOrFail(1)
@@ -132,17 +132,17 @@ const user = await User.firstOrFail()
 const user = await User.findByOrFail('email', 'virk@adonisjs.com')
 ```
 
-The `orFail` variation will raise an `E_ROW_NOT_FOUND` exception with `404` statusCode.
+A variação `orFail` gerará uma exceção `E_ROW_NOT_FOUND` com statusCode `404`.
 
-### Using the query builder
+### Usando o construtor de consultas
 
-The above-mentioned static methods cover the common use cases for querying the database. However, you are not only limited to these methods and can also leverage the query builder API for making advanced SQL queries.
+Os métodos estáticos mencionados acima abrangem os casos de uso comuns para consultar o banco de dados. No entanto, você não está limitado apenas a esses métodos e também pode aproveitar a API do construtor de consultas para fazer consultas SQL avançadas.
 
 :::note
-The [ModelQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/orm/query_builder/index.ts) returns an array of model instances and not the plain JavaScript object(s).
+O [ModelQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/orm/query_builder/index.ts) retorna uma matriz de instâncias de modelo e não os objetos JavaScript simples.
 :::
 
-You can get an instance of a query builder for your model using the `.query` method.
+Você pode obter uma instância de um construtor de consultas para seu modelo usando o método `.query`.
 
 ```ts
 const users = await User
@@ -151,7 +151,7 @@ const users = await User
   .orWhereNull('countryCode')
 ```
 
-To fetch a single row, you can make use of the `.first` method. There is also a `firstOrFail` method.
+Para buscar uma única linha, você pode usar o método `.first`. Há também um método `firstOrFail`.
 
 ```ts
 const users = await User
@@ -161,9 +161,9 @@ const users = await User
   .first()
 ```
 
-## Update
+## Atualizar
 
-The standard way to perform updates using the model is to look up the record and then update/persist it to the database.
+A maneira padrão de executar atualizações usando o modelo é consultar o registro e, em seguida, atualizá-lo/persisti-lo no banco de dados.
 
 ```ts
 const user = await User.findOrFail(1)
@@ -173,50 +173,50 @@ user.lastLoginAt = DateTime.local() // Luxon dateTime is used
 await user.save()
 ```
 
-Also, you can use the `merge` method to define all the attributes at once and then call the `save` method.
+Além disso, você pode usar o método `merge` para definir todos os atributos de uma vez e então chamar o método `save`.
 
 ```ts
 await user.merge({ lastLoginAt: DateTime.local() }).save()
 ```
 
-### Why not use the update query directly?
+### Por que não usar a consulta de atualização diretamente?
 
-Another way to update the records is to perform an update using the query builder manually. For example
+Outra maneira de atualizar os registros é executar uma atualização usando o construtor de consultas manualmente. Por exemplo
 
 ```ts
 await User.query().where('id', 1).update({ lastLoginAt: new Date() })
 ```
 
-However, updating records directly does not trigger any model hooks and neither auto-update the timestamps.
+No entanto, atualizar registros diretamente não aciona nenhum gancho de modelo e nem atualiza automaticamente os carimbos de data/hora.
 
-We recommend not stressing much on the extra `select` query unless dealing with millions of updates per second and happy leaving the model's features.
+Recomendamos não enfatizar muito a consulta extra `select`, a menos que esteja lidando com milhões de atualizações por segundo e esteja feliz em deixar os recursos do modelo.
 
-## Delete
+## Excluir
 
-Like the `update` operation, you first fetch it from the database and delete the row. For example
+Como a operação `update`, você primeiro busca no banco de dados e exclui a linha. Por exemplo
 
 ```ts
 const user = await User.findOrFail(1)
 await user.delete()
 ```
 
-Again, for hooks to work, Lucid needs the instance of the model first. If you decide to use the query builder directly, then the model will not fire any hooks.
+Novamente, para que os ganchos funcionem, o Lucid precisa da instância do modelo primeiro. Se você decidir usar o construtor de consultas diretamente, o modelo não disparará nenhum hook.
 
-However, the direct query builder approach can help perform bulk deletes.
+No entanto, a abordagem do construtor de consultas diretas pode ajudar a executar exclusões em massa.
 
 ```ts
 await User.query().where('isVerified', false).delete()
 ```
 
-## Idempotent methods
+## Métodos idempotentes
 
-Models come with many helpful methods to simplify the record creation by first finding them inside the database and running the create/update queries only when the record doesn't exist.
+Os modelos vêm com muitos métodos úteis para simplificar a criação de registros, encontrando-os primeiro dentro do banco de dados e executando as consultas de criação/atualização somente quando o registro não existir.
 
 ### `firstOrCreate`
 
-Search for a record inside the database or create a new one (only when the lookup fails).
+Pesquise um registro dentro do banco de dados ou crie um novo (somente quando a pesquisa falhar).
 
-In the following example, we attempt to search a user with an email but persist both the `email` and the `password`, when the initial lookup fails. In other words, the `searchPayload` and the `savePayload` are merged during the create call.
+No exemplo a seguir, tentamos pesquisar um usuário com um e-mail, mas persistimos tanto o `email` quanto a `password`, quando a pesquisa inicial falha. Em outras palavras, o `searchPayload` e o `savePayload` são mesclados durante a chamada de criação.
 
 ```ts
 import User from '#models/user'
@@ -230,7 +230,7 @@ await User.firstOrCreate(
 
 ### `fetchOrCreateMany`
 
-The `fetchOrCreateMany` is similar to the `firstOrCreate` method, but instead, you can create more than one row. The method needs a unique key for finding the duplicate rows and an array of objects to persist (if missing inside the database).
+O `fetchOrCreateMany` é semelhante ao método `firstOrCreate`, mas, em vez disso, você pode criar mais de uma linha. O método precisa de uma chave exclusiva para encontrar as linhas duplicadas e uma matriz de objetos para persistir (se ausentes dentro do banco de dados).
 
 ```ts
 import User from '#models/user'
@@ -254,7 +254,7 @@ await User.fetchOrCreateMany('email', [
 
 ### `updateOrCreate`
 
-The `updateOrCreate` either creates a new record or updates the existing record. Like the `firstOrCreate` method, you need to define a search payload and the attributes to insert/update.
+O `updateOrCreate` cria um novo registro ou atualiza o registro existente. Como o método `firstOrCreate`, você precisa definir uma carga útil de pesquisa e os atributos para inserir/atualizar.
 
 ```ts
 import User from '#models/user'
@@ -268,7 +268,7 @@ await User.updateOrCreate(
 
 ### `updateOrCreateMany`
 
-The `updateOrCreateMany` method allows syncing rows by avoiding duplicate entries. The method needs a unique key for finding the duplicate rows and an array of objects to persist/update.
+O método `updateOrCreateMany` permite sincronizar linhas evitando entradas duplicadas. O método precisa de uma chave exclusiva para encontrar as linhas duplicadas e uma matriz de objetos para persistir/atualizar.
 
 ```ts
 import User from '#models/user'
@@ -290,8 +290,8 @@ await User.updateOrCreateMany('email', [
 ])
 ```
 
-In this example, we use both the email and username as keys to find duplicates. If a row already exists with the same combination of email and username, it will be updated with the new provided values. 
-Otherwise, a new row will be created with the provided values.
+Neste exemplo, usamos o e-mail e o nome de usuário como chaves para encontrar duplicatas. Se uma linha já existir com a mesma combinação de e-mail e nome de usuário, ela será atualizada com os novos valores fornecidos.
+Caso contrário, uma nova linha será criada com os valores fornecidos.
 
 ```ts
 import User from '#models/user'

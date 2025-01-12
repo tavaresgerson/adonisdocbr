@@ -1,15 +1,15 @@
 ---
-summary: Using database seeders to add seed database with dummy or initial data
+resumo: Usando seeders de banco de dados para adicionar banco de dados de seed com dados fictícios ou iniciais
 ---
 
-# Database seeders
+# Seeders de banco de dados
 
-Database seeding is a way to set up your application with some initial data required to run and use the application. For example:
+O seeding de banco de dados é uma maneira de configurar seu aplicativo com alguns dados iniciais necessários para executar e usar o aplicativo. Por exemplo:
 
-- Creating a seeder to insert **countries**, **states**, and **cities** before deploying and running your application.
-- Or a seeder to insert users inside the database for local development.
+- Criar um seeder para inserir **países**, **estados** e **cidades** antes de implantar e executar seu aplicativo.
+- Ou um seeder para inserir usuários dentro do banco de dados para desenvolvimento local.
 
-The seeders are stored inside the `database/seeders` directory. You can create a new seeder file by running the following Ace command.
+Os seeders são armazenados dentro do diretório `database/seeders`. Você pode criar um novo arquivo seeder executando o seguinte comando Ace.
 
 ```sh
 node ace make:seeder User
@@ -17,9 +17,9 @@ node ace make:seeder User
 # CREATE: database/seeders/user_seeder.ts
 ```
 
-Every seeder file must extend the `BaseSeeder` class and implement the `run` method.
+Cada arquivo seeder deve estender a classe `BaseSeeder` e implementar o método `run`.
 
-The following example uses a Lucid model to create multiple users. However, you can also use the Database query builder directly. **In other words, seeders don't care what you write inside the `run` method**.
+O exemplo a seguir usa um modelo Lucid para criar vários usuários. No entanto, você também pode usar o construtor de consultas do banco de dados diretamente. **Em outras palavras, os seeders não se importam com o que você escreve dentro do método `run`**.
 
 ```ts
 // title: database/seeders/user.ts
@@ -42,34 +42,34 @@ export default class UserSeeder extends BaseSeeder {
 }
 ```
 
-## Running seeders
+## Executando seeders
 
-You can execute all or selected database seeders by running the following Ace command.
+Você pode executar todos ou alguns seeders de banco de dados executando o seguinte comando Ace.
 
 ```sh
 # runs all
 node ace db:seed
 ```
 
-You can define the `--files` flag multiple times to run more than one file. Also, you will have to define the complete path to the seeder file. **We opted for the complete path because your terminal shell can autocomplete the path for you.**
+Você pode definir o sinalizador `--files` várias vezes para executar mais de um arquivo. Além disso, você terá que definir o caminho completo para o arquivo do seeder. **Optamos pelo caminho completo porque o shell do seu terminal pode completar o caminho automaticamente para você.**
 
 ```sh
 node ace db:seed --files "./database/seeders/user_seeder.ts"
 ```
 
-You can also select the seeder files interactively by running the `db:seed` command in interactive mode.
+Você também pode selecionar os arquivos do seeder interativamente executando o comando `db:seed` no modo interativo.
 
 ```sh
 node ace db:seed -i
 ```
 
-::video{url="https://res.cloudinary.com/adonis-js/video/upload/q_auto/v1618896667/v5/db-seed-interactive.mp4" controls}
+::video{url="https://res.cloudinary.com/adonis-js/video/upload/q_auto/v1618896667/v5/db-seed-interactive.mp4" controles}
 
-## Environment specific seeders
+## Semeadores específicos do ambiente
 
-Lucid allows you to mark a seeder file to run only in a specific environment by changing the `environment` property. This ensures you don't seed your production, testing, or development database with data you don't want by mistake.
+O Lucid permite que você marque um arquivo de semeador para ser executado somente em um ambiente específico alterando a propriedade `environment`. Isso garante que você não semeie seu banco de dados de produção, teste ou desenvolvimento com dados que não deseja por engano.
 
-The seeders using the `environment` flag will only run when the `NODE_ENV` environment variable is set to their respective value.
+Os semeadores que usam o sinalizador `environment` serão executados somente quando a variável de ambiente `NODE_ENV` estiver definida para seu respectivo valor.
 
 ```ts
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
@@ -81,16 +81,16 @@ export default class UserSeeder extends BaseSeeder {
 }
 ```
 
-## Idempotent operations
+## Operações idempotentes
 
-**Unlike migrations, there is no tracking system in place for the database seeders**. In other words, executing a seeder multiple times will perform the inserts multiple times as well.
+**Ao contrário das migrações, não há um sistema de rastreamento em vigor para os semeadores do banco de dados**. Em outras palavras, executar um semeador várias vezes executará as inserções várias vezes também.
 
-Based upon the nature of a seeder, you may or may not want this behavior. For example:
+Com base na natureza de um seeder, você pode ou não querer esse comportamento. Por exemplo:
 
-- It is okay to run a `PostSeeder` multiple times and increase the number of posts you have in the database.
-- On the other hand, you would want the `CountrySeeder` to perform inserts only once. These kinds of seeders are idempotent.
+- Não tem problema executar um `PostSeeder` várias vezes e aumentar o número de postagens que você tem no banco de dados.
+- Por outro lado, você desejaria que o `CountrySeeder` realizasse inserções apenas uma vez. Esses tipos de seeders são idempotentes.
 
-Fortunately, Lucid models have inbuilt support for idempotent operations using `updateOrCreate` or `fetchOrCreateMany`. Continuing with the `CountrySeeder`, the following is an example of creating countries only once.
+Felizmente, os modelos Lucid têm suporte integrado para operações idempotentes usando `updateOrCreate` ou `fetchOrCreateMany`. Continuando com o `CountrySeeder`, o seguinte é um exemplo de criação de países apenas uma vez.
 
 ```ts
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
@@ -118,11 +118,11 @@ export default class CountrySeeder extends BaseSeeder {
 }
 ```
 
-In the above example, the `updateOrCreateMany` method will look for existing rows inside the database using the `isoCode` code and only inserts the missing ones and hence running the `CountrySeeder` for multiple times will not insert duplicate rows.
+No exemplo acima, o método `updateOrCreateMany` procurará por linhas existentes dentro do banco de dados usando o código `isoCode` e inserirá apenas as que faltam e, portanto, executar o `CountrySeeder` várias vezes não inserirá linhas duplicadas.
 
-## Customizing database connection
+## Personalizando a conexão do banco de dados
 
-The `db:seed` command accepts an optional `--connection` flag and forwards it to the seeder files as a `connection` property. From there on, you can use this property to set the appropriate connection during your model interactions. For example:
+O comando `db:seed` aceita um sinalizador opcional `--connection` e o encaminha para os arquivos do seeder como uma propriedade `connection`. A partir daí, você pode usar essa propriedade para definir a conexão apropriada durante suas interações de modelo. Por exemplo:
 
 ```ts
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
@@ -143,19 +143,19 @@ export default class UserSeeder extends BaseSeeder {
 }
 ```
 
-Now you can specify the `--connection` flag on your `db:seed` command, and the `UserSeeder` will use it.
+Agora você pode especificar o sinalizador `--connection` no seu comando `db:seed`, e o `UserSeeder` o usará.
 
 ```sh
 node ace db:seed --connection=tenant-1
 ```
 
-## Seeders config
+## Configuração dos seeders
 
-The configuration for seeders is stored inside the `config/database.ts` file under the connection config object.
+A configuração dos seeders é armazenada dentro do arquivo `config/database.ts` sob o objeto de configuração da conexão.
 
-#### paths
+#### caminhos
 
-Define the paths for loading the database seeder files. You can also define a path to an installed package.
+Defina os caminhos para carregar os arquivos do seeder do banco de dados. Você também pode definir um caminho para um pacote instalado.
 
 ```ts
 {
@@ -168,15 +168,15 @@ Define the paths for loading the database seeder files. You can also define a pa
 }
 ```
 
-## Customizing seeders order
+## Personalizando a ordem dos seeders
 
-The `db:seed` command runs all the seeders in the order they are stored on the filesystem.
+O comando `db:seed` executa todos os seeders na ordem em que estão armazenados no sistema de arquivos.
 
-If you want certain seeders to run before the other seeders, then either you can **prefix a counter to file names** or **you can create a Main seeder directory** as follows.
+Se você quiser que certos seeders sejam executados antes dos outros, você pode **prefixar um contador aos nomes dos arquivos** ou **criar um diretório do seeder principal** da seguinte forma.
 
-#### Step 1. Create the main seeder
+#### Etapa 1. Crie o seeder principal
 
-Create the main seeder file by running the following Ace command.
+Crie o arquivo do seeder principal executando o seguinte comando Ace.
 
 ```sh
 node ace make:seeder main/index
@@ -186,11 +186,11 @@ node ace make:seeder main/index
 
 ---
 
-#### Step 2. Register its path inside the `seeders` config
+#### Etapa 2. Registre seu caminho dentro da configuração `seeders`
 
-Open the `config/database.ts` file and register the path to the **main** directory inside the connection config.
+Abra o arquivo `config/database.ts` e registre o caminho para o diretório **main** dentro da configuração de conexão.
 
-After the following change, the `db:seed` command will scan the `./database/seeders/main` directory.
+Após a seguinte alteração, o comando `db:seed` escaneará o diretório `./database/seeders/main`.
 
 ```ts
 {
@@ -206,12 +206,12 @@ After the following change, the `db:seed` command will scan the `./database/seed
 
 ---
 
-#### Step 3. Import other seeders inside the main seeder
+#### Etapa 3. Importe outros seeders dentro do seeder principal
 
-Now, you can manually import all the seeders inside the **index_seeder** file and execute them in any order you want.
+Agora, você pode importar manualmente todos os seeders dentro do arquivo **index_seeder** e executá-los em qualquer ordem que desejar.
 
 :::note
-Following is an example implementation of the Main seeder. Feel free to customize it as per your requirements.
+A seguir está um exemplo de implementação do seeder principal. Sinta-se à vontade para personalizá-lo conforme suas necessidades.
 :::
 
 ```ts
@@ -245,7 +245,7 @@ export default class IndexSeeder extends BaseSeeder {
 
 ---
 
-#### Step 4. Run the `db:seed` command
+#### Etapa 4. Execute o comando `db:seed`
 
 ```sh
 node ace db:seed

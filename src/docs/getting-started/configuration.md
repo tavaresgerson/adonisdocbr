@@ -1,21 +1,20 @@
 ---
-summary: Learn how to read and update configuration values in AdonisJS.
+resumo: Aprenda a ler e atualizar valores de configuração no AdonisJS.
 ---
 
-# Configuration
+# Configuração
 
-The configuration files of your AdonisJS application are stored inside the `config` directory. A brand new AdonisJS application comes with a handful of pre-existing files used by the framework core and installed packages.
+Os arquivos de configuração do seu aplicativo AdonisJS são armazenados dentro do diretório `config`. Um aplicativo AdonisJS totalmente novo vem com um punhado de arquivos pré-existentes usados ​​pelo núcleo do framework e pacotes instalados.
 
-Feel free to create additional files your application requires inside the `config` directory.
-
+Sinta-se à vontade para criar arquivos adicionais que seu aplicativo requer dentro do diretório `config`.
 
 :::note
-We recommend using [environment variables](./environment_variables.md) for storing secrets and environment-specific configuration.
+Recomendamos usar [variáveis ​​de ambiente](./environment_variables.md) para armazenar segredos e configuração específica do ambiente.
 :::
 
-## Importing config files
+## Importando arquivos de configuração
 
-You may import the configuration files within your application codebase using the standard JavaScript `import` statement. For example:
+Você pode importar os arquivos de configuração dentro da base de código do seu aplicativo usando a instrução `import` padrão do JavaScript. Por exemplo:
 
 ```ts
 import { appKey } from '#config/app'
@@ -25,9 +24,9 @@ import { appKey } from '#config/app'
 import databaseConfig from '#config/database'
 ```
 
-## Using the config service
+## Usando o serviço de configuração
 
-The config service offers an alternate API for reading the configuration values. In the following example, we use the config service to read the `appKey` value stored within the `config/app.ts` file.
+O serviço de configuração oferece uma API alternativa para ler os valores de configuração. No exemplo a seguir, usamos o serviço de configuração para ler o valor `appKey` armazenado no arquivo `config/app.ts`.
 
 ```ts
 import config from '@adonisjs/core/services/config'
@@ -36,20 +35,20 @@ config.get('app.appKey')
 config.get('app.http.cookie') // read nested values
 ```
 
-The `config.get` method accepts a dot-separated key and parses it as follows.
+O método `config.get` aceita uma chave separada por pontos e a analisa da seguinte forma.
 
-- The first part is the filename from which you want to read the values. I.e., `app.ts` file.
-- The rest of the string fragment is the key you want to access from the exported values. I.e., `appKey` in this case.
+- A primeira parte é o nome do arquivo do qual você deseja ler os valores. Ou seja, arquivo `app.ts`.
+- O restante do fragmento de string é a chave que você deseja acessar dos valores exportados. Ou seja, `appKey` neste caso.
 
-## Config service vs. directly importing config files
+## Serviço de configuração vs. importação direta de arquivos de configuração
 
-Using the config service over directly importing the config files has no direct benefits. However, the config service is the only choice to read the configuration in external packages and edge templates.
+Usar o serviço de configuração em vez de importar diretamente os arquivos de configuração não tem benefícios diretos. No entanto, o serviço de configuração é a única opção para ler a configuração em pacotes externos e modelos de ponta.
 
-### Reading config inside external packages
+### Lendo a configuração dentro de pacotes externos
 
-If you are creating a third-party package, you should not directly import the config files from the user application because it will make your package tightly coupled with the folder structure of the host application.
+Se você estiver criando um pacote de terceiros, não deve importar diretamente os arquivos de configuração do aplicativo do usuário porque isso tornará seu pacote fortemente acoplado à estrutura de pastas do aplicativo host.
 
-Instead, you should use the config service to access the config values inside a service provider. For example:
+Em vez disso, você deve usar o serviço de configuração para acessar os valores de configuração dentro de um provedor de serviços. Por exemplo:
 
 ```ts
 import { ApplicationService } from '@adonisjs/core/types'
@@ -68,15 +67,15 @@ export default class DriveServiceProvider {
 }
 ```
 
-### Reading config inside Edge templates
+### Lendo a configuração dentro de modelos Edge
 
-You may access configuration values inside edge templates using the `config` global method.
+Você pode acessar valores de configuração dentro de modelos Edge usando o método global `config`.
 
 ```edge
 <a href="{{ config('app.appUrl') }}"> Home </a>
 ```
 
-You can use the `config.has` method to check if a configuration value exists for a given key. The method returns `false` if the value is `undefined`.
+Você pode usar o método `config.has` para verificar se um valor de configuração existe para uma determinada chave. O método retorna `false` se o valor for `undefined`.
 
 ```edge
 @if(config.has('app.appUrl'))
@@ -86,9 +85,9 @@ You can use the `config.has` method to check if a configuration value exists for
 @end
 ```
 
-## Changing the config location
+## Alterando o local da configuração
 
-You can update the location for the config directory by modifying the `adonisrc.ts` file. After the change, the config files will be imported from the new location.
+Você pode atualizar o local do diretório de configuração modificando o arquivo `adonisrc.ts`. Após a alteração, os arquivos de configuração serão importados do novo local.
 
 ```ts
 directories: {
@@ -96,7 +95,7 @@ directories: {
 }
 ```
 
-Make sure to update the import alias within the `package.json` file.
+Certifique-se de atualizar o alias de importação no arquivo `package.json`.
 
 ```json
 {
@@ -106,20 +105,20 @@ Make sure to update the import alias within the `package.json` file.
 }
 ```
 
-## Config files limitations
+## Limitações dos arquivos de configuração
 
-The config files stored within the `config` directory are imported during the boot phase of the application. As a result, the config files cannot rely on the application code.
+Os arquivos de configuração armazenados no diretório `config` são importados durante a fase de inicialização do aplicativo. Como resultado, os arquivos de configuração não podem depender do código do aplicativo.
 
-For example, if you try to import and use the router service inside the `config/app.ts` file, the application will fail to start. This is because the router service is not configured until the app is in a `booted` state.
+Por exemplo, se você tentar importar e usar o serviço de roteador dentro do arquivo `config/app.ts`, o aplicativo falhará ao iniciar. Isso ocorre porque o serviço de roteador não é configurado até que o aplicativo esteja em um estado `inicializado`.
 
-Fundamentally, this limitation positively impacts your codebase because the application code should rely on the config, not vice versa.
+Fundamentalmente, essa limitação impacta positivamente sua base de código porque o código do aplicativo deve depender da configuração, e não vice-versa.
 
-## Updating config at runtime
+## Atualizando a configuração em tempo de execução
 
-You can mutate the config values at runtime using the config service. The `config.set` updates the value within the memory, and no changes are made to the files on the disk.
+Você pode alterar os valores de configuração em tempo de execução usando o serviço de configuração. O `config.set` atualiza o valor dentro da memória, e nenhuma alteração é feita nos arquivos no disco.
 
 :::note
-The config value is mutated for the entire application, not just for a single HTTP request. This is because Node.js is not a threaded runtime, and the memory in Node.js is shared between multiple HTTP requests.
+O valor config é mutado para todo o aplicativo, não apenas para uma única solicitação HTTP. Isso ocorre porque o Node.js não é um tempo de execução encadeado, e a memória no Node.js é compartilhada entre várias solicitações HTTP.
 :::
 
 ```ts

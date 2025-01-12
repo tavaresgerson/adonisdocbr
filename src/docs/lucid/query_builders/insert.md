@@ -1,8 +1,8 @@
-# Insert query builder
+# Inserir construtor de consulta
 
-The insert query builder allows you to insert new rows into the database. You must use the [select query builder](./select.md) for **selecting**, **deleting** or **updating** rows.
+O construtor de consulta de inserção permite que você insira novas linhas no banco de dados. Você deve usar o [select query builder](./select.md) para **selecionar**, **excluir** ou **atualizar** linhas.
 
-You can get access to the insert query builder as shown in the following example:
+Você pode obter acesso ao construtor de consulta de inserção conforme mostrado no exemplo a seguir:
 
 ```ts
 import db from '@adonisjs/lucid/services/db'
@@ -13,17 +13,17 @@ db.insertQuery()
 db.table('users')
 ```
 
-## Methods/Properties
-Following is the list of methods and properties available on the Insert query builder class.
+## Métodos/Propriedades
+A seguir está a lista de métodos e propriedades disponíveis na classe do construtor de consulta de inserção.
 
 ### `insert`
-The `insert` method accepts an object of key-value pair to insert.
+O método `insert` aceita um objeto de par chave-valor para inserir.
 
-The return value of the insert query is highly dependent on the underlying driver.
+O valor de retorno da consulta de inserção é altamente dependente do driver subjacente.
 
-- MySQL returns the id of the last inserted row.
-- SQLite returns the id of the last inserted row.
-- For PostgreSQL, MSSQL, and Oracle, you must use the `returning` method to fetch the value of the id.
+- O MySQL retorna o id da última linha inserida.
+- O SQLite retorna o id da última linha inserida.
+- Para PostgreSQL, MSSQL e Oracle, você deve usar o método `returning` para buscar o valor do id.
 
 ```ts
 db
@@ -37,7 +37,7 @@ db
 ```
 
 ### `multiInsert`
-The `multiInsert` method accepts an array of objects and inserts multiple rows at once.
+O método `multiInsert` aceita uma matriz de objetos e insere várias linhas de uma vez.
 
 ```ts
 db
@@ -65,7 +65,7 @@ values
 ```
 
 ### `returning`
-You can use the `returning` method with PostgreSQL, MSSQL, and Oracle databases to retrieve one or more columns' values.
+Você pode usar o método `returning` com bancos de dados PostgreSQL, MSSQL e Oracle para recuperar valores de uma ou mais colunas.
 
 ```ts
 const rows = db
@@ -81,7 +81,7 @@ console.log(rows[0].id, rows[0].username)
 ```
 
 ### `debug`
-The `debug` method allows enabling or disabling debugging at an individual query level. Here's a [complete guide](../guides/debugging.md) on debugging queries.
+O método `debug` permite habilitar ou desabilitar a depuração em um nível de consulta individual. Aqui está um [guia completo](../guides/debugging.md) sobre consultas de depuração.
 
 ```ts
 const rows = db
@@ -97,9 +97,9 @@ const rows = db
 ```
 
 ### `timeout`
-Define the `timeout` for the query. An exception is raised after the timeout has been exceeded.
+Defina o `timeout` para a consulta. Uma exceção é gerada após o tempo limite ter sido excedido.
 
-The value of timeout is always in milliseconds.
+O valor do tempo limite é sempre em milissegundos.
 
 ```ts
 db
@@ -114,7 +114,7 @@ db
   })
 ```
 
-You can also cancel the query when using timeouts with MySQL and PostgreSQL.
+Você também pode cancelar a consulta ao usar tempos limite com MySQL e PostgreSQL.
 
 ```ts
 db
@@ -128,7 +128,7 @@ db
 ```
 
 ### `toSQL`
-The `toSQL` method returns the query SQL and bindings as an object.
+O método `toSQL` retorna o SQL da consulta e as ligações como um objeto.
 
 ```ts
 const output = db
@@ -145,7 +145,7 @@ const output = db
 console.log(output)
 ```
 
-The `toSQL` object also has the `toNative` method to format the SQL query as per the database dialect in use.
+O objeto `toSQL` também tem o método `toNative` para formatar a consulta SQL de acordo com o dialeto do banco de dados em uso.
 
 ```ts
 const output = db
@@ -162,7 +162,7 @@ console.log(output)
 ```
 
 ### `toQuery`
-Returns the SQL query as a string with bindings applied to the placeholders.
+Retorna a consulta SQL como uma string com ligações aplicadas aos espaços reservados.
 
 ```ts
 const output = db
@@ -183,11 +183,11 @@ values
 */
 ```
 
-## Helpful properties and methods
-Following is the list of properties and methods you may occasionally need when building something on top of the query builder.
+## Propriedades e métodos úteis
+A seguir está a lista de propriedades e métodos que você pode precisar ocasionalmente ao construir algo em cima do construtor de consultas.
 
 ### `client`
-Reference to the instance of the underlying [database query client](https://github.com/adonisjs/lucid/blob/develop/src/query_client/index.ts).
+Referência à instância do [cliente de consulta de banco de dados](https://github.com/adonisjs/lucid/blob/develop/src/query_client/index.ts) subjacente.
 
 ```ts
 const query = db.insertQuery()
@@ -195,7 +195,7 @@ console.log(query.client)
 ```
 
 ### `knexQuery`
-Reference to the instance of the underlying KnexJS query.
+Referência à instância da consulta KnexJS subjacente.
 
 ```ts
 const query = db.insertQuery()
@@ -203,9 +203,9 @@ console.log(query.knexQuery)
 ```
 
 ### `reporterData`
-The query builder emits the `db:query` event and reports the query's execution time with the framework profiler.
+O construtor de consultas emite o evento `db:query` e relata o tempo de execução da consulta com o profiler do framework.
 
-Using the `reporterData` method, you can pass additional details to the event and the profiler.
+Usando o método `reporterData`, você pode passar detalhes adicionais para o evento e o profiler.
 
 ```ts
 const query = db.table('users')
@@ -219,7 +219,7 @@ await query
   })
 ```
 
-Within the `db:query` event, you can access the value of `userId` as follows.
+Dentro do evento `db:query`, você pode acessar o valor de `userId` da seguinte forma.
 
 ```ts
 import emitter from '@adonisjs/lucid/services/emitter'

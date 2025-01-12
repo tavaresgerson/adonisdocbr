@@ -1,107 +1,107 @@
 ---
-summary: Contributing to AdonisJS projects is a great way to give back to the community. This guide provides a general overview of how you can contribute to any AdonisJS project.
+Resumo: Contribuir para projetos AdonisJS é uma ótima maneira de retribuir à comunidade. Este guia fornece uma visão geral de como você pode contribuir para qualquer projeto AdonisJS.
 ---
 
-# Contributing
-This is a general contribution guide for all of the [AdonisJS](https://github.com/adonisjs) repos. Please read this guide thoroughly before contributing to any of the repos 🙏
+# Contribuindo
+Este é um guia geral de contribuição para todos os repositórios [AdonisJS](https://github.com/adonisjs). Leia este guia cuidadosamente antes de contribuir para qualquer um dos repositórios 🙏
 
-Code is not the only way to contribute. Following are also some ways to contribute and become part of the community.
+O código não é a única maneira de contribuir. A seguir estão algumas maneiras de contribuir e se tornar parte da comunidade.
 
-- Fixing typos in the documentation
-- Improving existing docs
-- Writing cookbooks or blog posts to educate others in the community
-- Triaging issues
-- Sharing your opinion on existing issues
-- Help the community in discord and the discussions forum
+- Corrigindo erros de digitação na documentação
+- Melhorando documentos existentes
+- Escrevendo livros de receitas ou postagens de blog para educar outras pessoas na comunidade
+- Triagem de problemas
+- Compartilhando sua opinião sobre problemas existentes
+- Ajude a comunidade no Discord e no fórum de discussões
 
-## Reporting bugs
-Many issues reported on open source projects are usually questions or misconfiguration at the reporter's end. Therefore, we highly recommend you properly troubleshoot your issues before reporting them.
+## Relatando bugs
+Muitos problemas relatados em projetos de código aberto geralmente são perguntas ou configurações incorretas do lado do relator. Portanto, recomendamos fortemente que você solucione seus problemas adequadamente antes de relatá-los.
 
-If you're reporting a bug, include as much information as possible with the code samples you have written. The scale of good to bad issues looks as follows.
+Se você estiver relatando um bug, inclua o máximo de informações possível com os exemplos de código que você escreveu. A escala de problemas bons para ruins é a seguinte.
 
-- **PERFECT ISSUE**: You isolate the underlying bug. Create a failing test in the repo and open a Github issue around it.
-- **GOOD ISSUE**: You isolate the underlying bug and provide a minimal reproduction of it as a Github repo. Antfu has written a great article on [Why Reproductions are Required](https://antfu.me/posts/why-reproductions-are-required).
-- **DECENT ISSUE**: You correctly state your issue. Share the code that produces the issue in the first place. Also, include the related configuration files and the package version you use.
+- **PROBLEMA PERFEITO**: Você isola o bug subjacente. Cria um teste com falha no repositório e abre um problema do Github em torno dele.
+[Por que as reproduções são necessárias](https://antfu.me/posts/why-reproductions-are-required).
+- **PROBLEMA DECENTE**: Você declara corretamente seu problema. Compartilhe o código que produz o problema em primeiro lugar. Além disso, inclua os arquivos de configuração relacionados e a versão do pacote que você usa.
 
-  Last but not least is to format every code block properly by following the [Github markdown syntax guide](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+Por último, mas não menos importante, é formatar cada bloco de código corretamente seguindo o [guia de sintaxe de markdown do Github](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
 
-- **POOR ISSUE**: You dump the question you have with the hope that the other person will ask the relevant questions and help you. These kinds of issues are closed automatically without any explanation.
+- **PROBLEMA RUIM**: Você descarta a pergunta que tem na esperança de que a outra pessoa faça as perguntas relevantes e o ajude. Esses tipos de problemas são fechados automaticamente sem nenhuma explicação.
 
-## Having a discussion
-You often want to discuss a topic or maybe share some ideas. In that case, create a discussion in the discussions forum under the **💡Ideas** category.
+## Tendo uma discussão
+Você geralmente quer discutir um tópico ou talvez compartilhar algumas ideias. Nesse caso, crie uma discussão no fórum de discussões na categoria **💡Ideias**.
 
-## Educating others
-Educating others is one of the best ways to contribute to any community and earn recognition.
+## Educando outros
+Educar outros é uma das melhores maneiras de contribuir para qualquer comunidade e ganhar reconhecimento.
 
-You can use the **📚 Cookbooks** category on our discussion forum to share an article with others. The cookbooks section is NOT strictly moderated, except the shared knowledge should be relevant to the project.
+Você pode usar a categoria **📚 Cookbooks** em nosso fórum de discussão para compartilhar um artigo com outras pessoas. A seção de cookbooks NÃO é estritamente moderada, exceto que o conhecimento compartilhado deve ser relevante para o projeto.
 
-## Creating pull requests
-It is never a good experience to have your pull request declined after investing a lot of time and effort in writing the code. Therefore, we highly recommend you to [kick off a discussion](https://github.com/orgs/adonisjs/discussions) before starting any new work on your side.
+## Criando solicitações de pull
+Nunca é uma boa experiência ter sua solicitação de pull recusada depois de investir muito tempo e esforço escrevendo o código. Portanto, recomendamos fortemente que você [inicie uma discussão](https://github.com/orgs/adonisjs/discussions) antes de começar qualquer novo trabalho do seu lado.
 
-Just start a discussion and explain what are you planning to contribute?
+Basta iniciar uma discussão e explicar o que você está planejando contribuir?
 
-- **Are you trying to create a PR to fix a bug**: PRs for bugs are mostly accepted once the bug has been confirmed.
-- **Are you planning to add a new feature**: Please thoroughly explain why this feature is required and share links to the learning material we can read to educate ourselves.
+- **Você está tentando criar um PR para corrigir um bug**: PRs para bugs são aceitos principalmente depois que o bug foi confirmado.
+- **Você está planejando adicionar um novo recurso**: Explique detalhadamente por que esse recurso é necessário e compartilhe links para o material de aprendizagem que podemos ler para nos educar.
 
-  For example: If you are adding support for snapshot testing to Japa or AdonisJS. Then share the links I can use to learn more about snapshot testing in general.
+  Por exemplo: Se você estiver adicionando suporte para testes de snapshot para Japa ou AdonisJS. Então compartilhe os links que eu posso usar para aprender mais sobre testes de snapshot em geral.
 
-> Note: You should also be available to open additional PRs for documenting the contributed feature or improvement.
+> Nota: Você também deve estar disponível para abrir PRs adicionais para documentar o recurso ou melhoria contribuídos.
 
-## Repository setup
+## Configuração do repositório
 
-1. Start by cloning the repo on your local machine.
+1. Comece clonando o repositório em sua máquina local.
 
-    ```sh
+```sh
     git clone <REPO_URL>
     ```
 
-2. Install dependencies on your local. Please do not update any dependencies along with a feature request. If you find stale dependencies, create a separate PR to update them.
+2. Instale dependências no seu local. Não atualize nenhuma dependência junto com uma solicitação de recurso. Se você encontrar dependências obsoletas, crie um PR separado para atualizá-las.
 
-   We use `npm` for managing dependencies, therefore do not use `yarn` or any other tool.
+   Usamos `npm` para gerenciar dependências, portanto não use `yarn` ou qualquer outra ferramenta.
 
-    ```sh
+```sh
     npm install
     ```
 
-3. Run tests by executing the following command.
+3. Execute os testes executando o seguinte comando.
 
-    ```sh
+```sh
     npm test
     ```
 
-## Tools in use
-Following is the list of tools in use.
+## Ferramentas em uso
+A seguir está a lista de ferramentas em uso.
 
-| Tool                   | Usage                                                                                                                                                                                                                                                                  |
+| Ferramenta             | Uso                                                                                                                                                                                                                                                                  |
 |------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| TypeScript             | All of the repos are authored in TypeScript. The compiled JavaScript and Type-definitions are published on npm.                                                                                                                                                        |
-| TS Node                | We use [ts-node](https://typestrong.org/ts-node/) to run tests or scripts without compiling TypeScript. The main goal of ts-node is to have a faster feedback loop during development                                                                                  |
-| SWC                    | [SWC](https://swc.rs/) is a Rust based TypeScript compiler. TS Node ships with first-class support for using SWC over the TypeScript official compiler. The main reason for using SWC is the speed gain.                                                               |
-| Release-It             | We use [release-it](https://github.com/release-it/release-it) to publish our packages on npm. It does all the heavy lifting of creating a release and publishes it on npm and Github. Its config is defined within the `package.json` file.                            |
-| ESLint                 | ESLint helps us enforce a consistent coding style across all the repos with multiple contributors. All our ESLint rules are published under the [eslint-plugin-adonis](https://github.com/adonisjs-community/eslint-plugin-adonis) package.                            |
-| Prettier               | We use prettier to format the codebase for consistent visual output. If you are confused about why we are using ESLint and Prettier both, then please read [Prettier vs. Linters](https://prettier.io/docs/en/comparison.html) doc on the Prettier website.            |
-| EditorConfig           | The `.editorconfig` file in the root of every project configures your Code editor to use a set of rules for indentation and whitespace management. Again, Prettier is used for post formatting your code, and Editorconfig is used to configure the editor in advance. |
-| Conventional Changelog | All of the commits across all the repos uses [commitlint](https://github.com/conventional-changelog/commitlint/#what-is-commitlint) to enforce consistent commit messages.                                                                                             |
-| Husky                  | We use [husky](https://typicode.github.io/husky/#/) to enforce commit conventions when committing the code. Husky is a git hooks system written in Node                                                                                                                |
+| TypeScript             | Todos os repositórios são criados em TypeScript. O JavaScript compilado e as definições de tipo são publicados no npm. |
+| TS Node                | Usamos [ts-node](https://typestrong.org/ts-node/) para executar testes ou scripts sem compilar TypeScript. O objetivo principal do ts-node é ter um loop de feedback mais rápido durante o desenvolvimento |
+| SWC                    | [SWC](https://swc.rs/) é um compilador TypeScript baseado em Rust. O TS Node vem com suporte de primeira classe para usar SWC em vez do compilador oficial TypeScript. O principal motivo para usar SWC é o ganho de velocidade. |
+| Release-It             | Usamos [release-it](https://github.com/release-it/release-it) para publicar nossos pacotes no npm. Ele faz todo o trabalho pesado de criar uma versão e publica no npm e no Github. Sua configuração é definida no arquivo `package.json`. |
+| ESLint                 | O ESLint nos ajuda a impor um estilo de codificação consistente em todos os repositórios com vários colaboradores. Todas as nossas regras ESLint são publicadas no pacote [eslint-plugin-adonis](https://github.com/adonisjs-community/eslint-plugin-adonis). |
+| Prettier               | Usamos o prettier para formatar a base de código para uma saída visual consistente. Se você está confuso sobre o motivo de usarmos o ESLint e o Prettier, leia o documento [Prettier vs. Linters](https://prettier.io/docs/en/comparison.html) no site do Prettier. |
+| EditorConfig           | O arquivo `.editorconfig` na raiz de cada projeto configura seu editor de código para usar um conjunto de regras para recuo e gerenciamento de espaços em branco. Novamente, o Prettier é usado para pós-formatar seu código, e o Editorconfig é usado para configurar o editor com antecedência. |
+| Conventional Changelog | Todos os commits em todos os repositórios usam [commitlint](https://github.com/conventional-changelog/commitlint/#what-is-commitlint) para impor mensagens de commit consistentes. |
+| Husky                  | Usamos [husky](https://typicode.github.io/husky/#/) para impor convenções de commit ao fazer commit do código. Husky é um sistema de hooks git escrito em Node |
 
-## Commands
+## Comandos
 
-| Command | Description |
-|-------|--------|
-| `npm run test` | Run project tests using `ts-node` |
-| `npm run compile` | Compile the TypeScript project to JavaScript. The compiled output is written inside the `build` directory |
-| `npm run release` | Start the release process using `np` |
-| `npm run lint` | Lint the codebase using ESlint |
-| `npm run format` | Format the codebase using Prettier | 
-| `npm run sync-labels` | Sync the labels defined inside the `.github/labels.json` file with Github. This command is for the project admin only. |
+| Comando               | Descrição                         |
+|-----------------------|-----------------------------------|
+| `npm run test`        | Execute testes de projeto usando `ts-node` |
+| `npm run compile`     | Compile o projeto TypeScript para JavaScript. A saída compilada é escrita dentro do diretório `build` |
+| `npm run release`     | Inicie o processo de lançamento usando `np` |
+| `npm run lint`        | Lint a base de código usando ESlint |
+| `npm run format`      | Formate a base de código usando Prettier| 
+| `npm run sync-labels` | Sincronize os rótulos definidos dentro do arquivo `.github/labels.json` com o Github. Este comando é somente para o administrador do projeto. |
 
-## Coding style
-All of our projects are written in TypeScript and are moving to pure ESM.
+## Estilo de codificação
+Todos os nossos projetos são escritos em TypeScript e estão migrando para ESM puro.
 
-- You can learn more about [my coding style here](https://github.com/thetutlage/meta/discussions/3)
-- Check out the setup I follow for [ESM and TypeScript here](https://github.com/thetutlage/meta/discussions/2)
+[meu estilo de codificação aqui](https://github.com/thetutlage/meta/discussions/3)
+[ESM e TypeScript aqui](https://github.com/thetutlage/meta/discussions/2)
 
-Also, make sure to run the following commands before pushing the code.
+Além disso, certifique-se de executar os seguintes comandos antes de enviar o código.
 
 ```sh
 # Formats using prettier
@@ -111,7 +111,7 @@ npm run format
 npm run lint
 ```
 
-## Getting recognized as a contributor
-We rely on GitHub to list all the repo contributors in the right-side panel of the repo. Following is an example of the same.
+## Sendo reconhecido como um colaborador
+Contamos com o GitHub para listar todos os colaboradores do repositório no painel do lado direito do repositório. A seguir, um exemplo do mesmo.
 
-Also, we use the [auto generate release notes](https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes#about-automatically-generated-release-notes) feature of Github, which adds a reference to the contributor profile within the release notes.
+Além disso, usamos o recurso [geração automática de notas de versão](https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes#about-automatically-generated-release-notes) do Github, que adiciona uma referência ao perfil do colaborador nas notas de versão.

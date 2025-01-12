@@ -1,14 +1,14 @@
-# Model query builder
+# Construtor de consultas de modelo
 
-The [ModelQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/orm/query_builder/index.ts) extends the standard [SelectQueryBuilder](../query_builders/select.md) and hence all of the methods are available to the model query builder as well.
+O [ModelQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/orm/query_builder/index.ts) estende o [SelectQueryBuilder](../query_builders/select.md) padrão e, portanto, todos os métodos também estão disponíveis para o construtor de consultas de modelo.
 
 :::note
-This document just covers the additional methods/properties exclusive to the model query builder only.
+Este documento abrange apenas os métodos/propriedades adicionais exclusivos do construtor de consultas de modelo.
 :::
 
-The model query builder always returns an array of models instances and not plain objects.
+O construtor de consultas de modelo sempre retorna uma matriz de instâncias de modelos e não objetos simples.
 
-Also, the model query builder is aware of the model and its relationships and hence provides an easy to use API to work with relationships.
+Além disso, o construtor de consultas de modelo está ciente do modelo e de seus relacionamentos e, portanto, fornece uma API fácil de usar para trabalhar com relacionamentos.
 
 ```ts
 class User extends BaseModel {}
@@ -18,15 +18,15 @@ User.query()
 ```
 
 ## `preload`
-Pre-load/Eager-load relationships for the model.
+Relacionamentos de pré-carregamento/carregamento rápido para o modelo.
 
 ```ts
 const users = await User.query().preload('posts')
 ```
 
-The `preload` method will perform the required queries to load the posts for all the users and then set them on the user instance.
+O método `preload` executará as consultas necessárias para carregar as postagens de todos os usuários e, em seguida, defini-las na instância do usuário.
 
-Optionally, you can pass a callback to modify the relationship query. The callback receives the model query builder for the related model.
+Opcionalmente, você pode passar um retorno de chamada para modificar a consulta de relacionamento. O retorno de chamada recebe o construtor de consulta de modelo para o modelo relacionado.
 
 ```ts
 User.query().preload('posts', (postsQuery) => {
@@ -34,13 +34,13 @@ User.query().preload('posts', (postsQuery) => {
 })
 ```
 
-You can also preload multiple relationships by calling the `preload` method.
+Você também pode pré-carregar vários relacionamentos chamando o método `preload`.
 
 ```ts
 User.query().preload('posts').preload('profile')
 ```
 
-The nested relationships can be loaded by the calling the `preload` method on the related model query builder. The following example fetches a tree of `users -> posts -> comments -> user`
+Os relacionamentos aninhados podem ser carregados chamando o método `preload` no construtor de consulta de modelo relacionado. O exemplo a seguir busca uma árvore de `usuários -> postagens -> comentários -> usuário`
 
 ```ts
 const users = await User
@@ -53,7 +53,7 @@ const users = await User
 ```
 
 ## `withCount`
-The `withCount` method performs a sub query to count the total number of rows for a relationship.
+O método `withCount` executa uma subconsulta para contar o número total de linhas para um relacionamento.
 
 ```ts
 const users = await User.query().withCount('posts')
@@ -63,9 +63,9 @@ users.forEach((user) => {
 })
 ```
 
-The count is added to the model `$extras` object, since it is not a regular model attribute and created on the fly for just one query.
+A contagem é adicionada ao objeto `$extras` do modelo, pois não é um atributo de modelo regular e é criado em tempo real para apenas uma consulta.
 
-Also, `withCount` and `preload` are not related to each other. If you want to load relationship rows and also get the count, then you need to call both the methods.
+Além disso, `withCount` e `preload` não estão relacionados entre si. Se você quiser carregar linhas de relacionamento e também obter a contagem, precisará chamar ambos os métodos.
 
 ```ts
 await User
@@ -74,7 +74,7 @@ await User
   .preload('posts')
 ```
 
-You can also define a custom attribute name for the count value.
+Você também pode definir um nome de atributo personalizado para o valor da contagem.
 
 ```ts
 const user = await User
@@ -88,7 +88,7 @@ console.log(user.$extras.totalPosts)
 ```
 
 ## `withAggregate`
-The `withAggregate` method allows you define a custom aggregate function. For example: `sum` the account balance.
+O método `withAggregate` permite que você defina uma função de agregação personalizada. Por exemplo: `sum` o saldo da conta.
 
 ```ts
 const user = await User
@@ -102,34 +102,34 @@ console.log(user.$extras.accountsBalance)
 ```
 
 ## `has`
-The `has` method allows you to limit the parent model rows by checking for the existence of a given relationship.
+O método `has` permite que você limite as linhas do modelo pai verificando a existência de um determinado relacionamento.
 
-For example: Get a list of users who have one or more posts.
+Por exemplo: Obtenha uma lista de usuários que têm uma ou mais postagens.
 
 ```ts
 const users = await User.query().has('posts')
 ```
 
-You can also define a custom count.
+Você também pode definir uma contagem personalizada.
 
 ```ts
 await User.query().has('posts', '>=', 2)
 ```
 
-The `has` method has following variants.
+O método `has` tem as seguintes variantes.
 
-| Method | Description |
+| Método | Descrição |
 |--------|-------------|
-| `orHas` | Adds a or has clause for a given relationship. | 
-| `andHas` | Alias for the `has` method. | 
-| `doesntHave` | Opposite of the `has` method. | 
-| `orDoesntHave` | Opposite of the `orHas` method. | 
-| `andDoesntHave` | Alias for the `doesntHave` method. | 
+| `orHas` | Adiciona uma cláusula or has para um determinado relacionamento. |
+| `andHas` | Alias ​​para o método `has`. |
+| `doesntHave` | Oposto do método `has`. |
+| `orDoesntHave` | Oposto do método `orHas`. |
+| `andDoesntHave` | Alias ​​para o método `doesntHave`. |
 
 ## `whereHas`
-Similar to the `has` method. However, the `whereHas` method allows defining additional constraints by passing a callback as the 2nd argument.
+Semelhante ao método `has`. No entanto, o método `whereHas` permite definir restrições adicionais passando um retorno de chamada como o 2º argumento.
 
-For example: Get a list of users who have one or more posts **published** posts.
+Por exemplo: Obtenha uma lista de usuários que têm uma ou mais postagens **publicadas**.
 
 ```ts
 await User.query().whereHas('posts', (postsQuery) => {
@@ -137,20 +137,20 @@ await User.query().whereHas('posts', (postsQuery) => {
 })
 ```
 
-The `whereHas` method has following variants
+O método `whereHas` tem as seguintes variantes
 
-| Method | Description |
+| Método | Descrição |
 |--------|-------------|
-| `orWhereHas`  | Adds a or has clause for a given relationship. |
-| `andWhereHas`  | Alias for the `whereHas` method. |
-| `whereDoesntHave`  | Opposite of the `whereHas` method. |
-| `orWhereDoesntHave`  | Opposite of the `orWhereHas` method. |
-| `andWhereDoesntHave`  | Alias for the `whereDoesntHave` method. |
+| `orWhereHas` | Adiciona uma cláusula or has para um determinado relacionamento. |
+| `andWhereHas` | Alias ​​para o método `whereHas`. |
+| `whereDoesntHave` | Oposto do método `whereHas`. |
+| `orWhereDoesntHave` | Oposto do método `orWhereHas`. |
+| `andWhereDoesntHave` | Alias ​​para o método `whereDoesntHave`. |
 
 ## `sideload`
-The `sideload` method works as a pipeline for passing an arbitrary object to the model instance(s) created after executing the query.
+O método `sideload` funciona como um pipeline para passar um objeto arbitrário para a(s) instância(s) do modelo criada(s) após a execução da consulta.
 
-For example: Passing the currently logged in user.
+Por exemplo: Passando o usuário atualmente conectado.
 
 ```ts
 const users = await User.query().sideload(auth.user)
@@ -160,12 +160,12 @@ users.forEach((user) => {
 })
 ```
 
-The `sideloaded` value is passed down to the preloaded relationships as well.
+O valor `sideloaded` também é passado para os relacionamentos pré-carregados.
 
 ## `withScopes`
-The `withScopes` method allows you to leverage the query scopes defined on the model.
+O método `withScopes` permite que você aproveite os escopos de consulta definidos no modelo.
 
-Begin by defining a query scope.
+Comece definindo um escopo de consulta.
 
 ```ts
 import { BaseSchema } from '@adonisjs/lucid/schema'
@@ -185,9 +185,9 @@ export default class Team extends BaseModel {
 }
 ```
 
-The `forUser` property is a query scope that accepts the `user` object to fetch the teams of the currently logged in user.
+A propriedade `forUser` é um escopo de consulta que aceita o objeto `user` para buscar as equipes do usuário conectado no momento.
 
-Now you can use the query scope as follows
+Agora você pode usar o escopo de consulta da seguinte forma
 
 ```ts
 Team
@@ -197,7 +197,7 @@ Team
 
 ## `apply`
 
-Alias for the [`withScopes`](#withscopes) method.
+Alias ​​para o método [`withScopes`](#withscopes).
 
 ```ts
 Team
@@ -206,9 +206,9 @@ Team
 ```
 
 ## `pojo`
-The `pojo` method returns the model results as an **array of plain JavaScript objects** and not an array of model instances.
+O método `pojo` retorna os resultados do modelo como uma **matriz de objetos JavaScript simples** e não uma matriz de instâncias de modelo.
 
-Also, no lifecycle hooks are executed when using the `pojo` method, since hooks needs model instances to work.
+Além disso, nenhum gancho de ciclo de vida é executado ao usar o método `pojo`, pois os ganchos precisam de instâncias de modelo para funcionar.
 
 ```ts
 const posts = await Post.query().pojo()
@@ -217,7 +217,7 @@ console.log(posts[0] instanceof Post) // false
 ```
 
 ## `paginate`
-The `paginate` method on the ORM query builder returns an instancer of the [ModelPaginator](https://github.com/adonisjs/lucid/blob/develop/src/orm/paginator/index.ts). The Model paginator class has an additional `.serialize` method to serialize the models.
+O método `paginate` no construtor de consultas ORM retorna um instanciador do [ModelPaginator](https://github.com/adonisjs/lucid/blob/develop/src/orm/paginator/index.ts). A classe do paginador Model tem um método `.serialize` adicional para serializar os modelos.
 
 ```ts
 const posts = await Post.query().paginate(1)
@@ -227,7 +227,7 @@ const paginationJSON = posts.serialize({
 ```
 
 ## `model`
-Reference to the `model` from which the query instance was created.
+Referência ao `model` do qual a instância de consulta foi criada.
 
 ```ts
 console.log(User.query().model === User) // true

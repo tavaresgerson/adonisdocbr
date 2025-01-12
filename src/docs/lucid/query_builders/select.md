@@ -1,8 +1,8 @@
 # Select query builder
 
-The select query builder is used to construct **SELECT**, **UPDATE**, and **DELETE** SQL queries. For inserting new rows you must use the [insert query builder](./insert.md) and use [raw query builder](./raw.md) for running raw SQL queries.
+O select query builder é usado para construir consultas SQL **SELECT**, **UPDATE** e **DELETE**. Para inserir novas linhas, você deve usar o [insert query builder](./insert.md) e usar o [raw query builder](./raw.md) para executar consultas SQL raw.
 
-You can get an instance of the [select query builder](https://github.com/adonisjs/lucid/blob/develop/src/database/query_builder/database.ts) using one of the following methods.
+Você pode obter uma instância do [select query builder](https://github.com/adonisjs/lucid/blob/develop/src/database/query_builder/database.ts) usando um dos seguintes métodos.
 
 ```ts
 import db from '@adonisjs/lucid/services/db'
@@ -19,11 +19,11 @@ const query = db.query()
 const queryWithTableSelection = db.from('users')
 ```
 
-## Methods/properties
-Following is the list of available methods/properties available on the Query builder instance.
+## Métodos/propriedades
+A seguir está a lista de métodos/propriedades disponíveis na instância do Query builder.
 
 ### `select`
-The `select` method allows selecting columns from the database table. You can either pass an array of columns or pass them as multiple arguments.
+O método `select` permite selecionar colunas da tabela do banco de dados. Você pode passar uma matriz de colunas ou passá-las como vários argumentos.
 
 ```ts
 import db from '@adonisjs/lucid/services/db'
@@ -33,7 +33,7 @@ db
   .select('id', 'username', 'email')
 ```
 
-You can define aliases for the columns using the `as` expression or passing an object of key-value pair.
+Você pode definir aliases para as colunas usando a expressão `as` ou passando um objeto de par chave-valor.
 
 ```ts
 db
@@ -52,7 +52,7 @@ db
   })
 ```
 
-Also, you can make use of sub-queries and raw-queries for generating columns at runtime, for example, selecting the last login IP address for a user from the `user_logins` table.
+Além disso, você pode usar subconsultas e consultas brutas para gerar colunas em tempo de execução, por exemplo, selecionando o último endereço IP de login para um usuário na tabela `user_logins`.
 
 ```ts
 db
@@ -68,7 +68,7 @@ db
   )
 ```
 
-Similar to a sub-query, you can pass an instance of the raw query as well.
+Semelhante a uma subconsulta, você também pode passar uma instância da consulta bruta.
 
 ```ts
 db
@@ -81,7 +81,7 @@ db
 ```
 
 ### `from`
-The `from` method is used to define the database table for the query.
+O método `from` é usado para definir a tabela de banco de dados para a consulta.
 
 ```ts
 import db from '@adonisjs/lucid/services/db'
@@ -89,7 +89,7 @@ import db from '@adonisjs/lucid/services/db'
 db.from('users')
 ```
 
-The query builder also allows using derived tables by passing a sub-query or a closure (which acts like a sub-query).
+O construtor de consultas também permite usar tabelas derivadas passando uma subconsulta ou um fechamento (que atua como uma subconsulta).
 
 ```ts
 import db from '@adonisjs/lucid/services/db'
@@ -106,9 +106,9 @@ db
 ```
 
 ### `where`
-The `where` method is used to define the where clause in your SQL queries. The query builder accepts a wide range of arguments types to let you leverage the complete power of SQL.
+O método `where` é usado para definir a cláusula where em suas consultas SQL. O construtor de consultas aceita uma ampla variedade de tipos de argumentos para permitir que você aproveite todo o poder do SQL.
 
-The following example accepts the column name as the first argument and its value as the second argument.
+O exemplo a seguir aceita o nome da coluna como o primeiro argumento e seu valor como o segundo argumento.
 
 ```ts
 import db from '@adonisjs/lucid/services/db'
@@ -118,7 +118,7 @@ db
   .where('username', 'virk')
 ```
 
-You can also define SQL operators, as shown below.
+Você também pode definir operadores SQL, conforme mostrado abaixo.
 
 ```ts
 db
@@ -140,7 +140,7 @@ db
   .where('title', 'like', '%Adonis 101%')
 ```
 
-You can create `where` groups by passing a callback to the `where` method. For example:
+Você pode criar grupos `where` passando um retorno de chamada para o método `where`. Por exemplo:
 
 ```ts
 // title: where groups
@@ -158,7 +158,7 @@ db
   })
 ```
 
-Generated SQL
+SQL gerado
 
 ```sql
 SELECT * FROM "users"
@@ -170,7 +170,7 @@ SELECT * FROM "users"
   )
 ```
 
-The `where` method value can also be a sub-query.
+O valor do método `where` também pode ser uma subconsulta.
 
 ```ts
 // title: With subqueries
@@ -185,7 +185,7 @@ db
   )
 ```
 
-Similarly, you can also define a raw query.
+Da mesma forma, você também pode definir uma consulta bruta.
 
 ```ts
 // title: With raw queries
@@ -199,19 +199,19 @@ db
   )
 ```
 
-### where method variants
-Following is the list of the `where` method variations and shares the same API.
+### variantes do método where
+A seguir está a lista das variações do método `where` e compartilha a mesma API.
 
-| Method | Description |
-|--------|-------------|
-| `andWhere` | Alias for the `where` method |
-| `orWhere` | Adds an **or where** clause |
-| `whereNot` | Adds a **where not** clause |
-| `orWhereNot` | Adds an **or where not** clause |
-| `andWhereNot` | Alias for `whereNot` |
+| Método        | Descrição   |
+|---------------|-------------|
+| `andWhere`    | Alias ​​para o método `where` |
+| `orWhere`     | Adiciona uma cláusula **or where** |
+| `whereNot`    | Adiciona uma cláusula **where not** |
+| `orWhereNot`  | Adiciona uma cláusula **or where not** |
+| `andWhereNot` | Alias ​​para `whereNot` |
 
 ### `whereColumn`
-The `whereColumn` method allows you to define a column as the value for the where clause. The method is usually helpful with queries and joins. For example:
+O método `whereColumn` permite que você defina uma coluna como o valor para a cláusula where. O método geralmente é útil com consultas e junções. Por exemplo:
 
 ```ts
 db
@@ -233,19 +233,19 @@ db
   )
 ```
 
-### `whereColumn` method variants
-Following is the list of the `whereColumn` method variations and shares the same API.
+### Variantes do método `whereColumn`
+A seguir está a lista de variações do método `whereColumn` e compartilha a mesma API.
 
-| Method | Description |
-|--------|-------------|
-| `andWhereColumn` | Alias for the `whereColumn` method |
-| `orWhereColumn` | Adds an **or where** clause |
-| `whereNotColumn` | Adds a **where not** clause |
-| `orWhereNotColumn` | Adds an **or where not** clause |
-| `andWhereNotColumn` | Alias for `whereNotColumn` |
+| Método              | Descrição                               |
+|---------------------|-----------------------------------------|
+| `andWhereColumn`    | Alias ​​para o método `whereColumn`       |
+| `orWhereColumn`     | Adiciona uma cláusula **or where**      |
+| `whereNotColumn`    | Adiciona uma cláusula **where not**     |
+| `orWhereNotColumn`  | Adiciona uma cláusula **or where not**  |
+| `andWhereNotColumn` | Alias ​​para `whereNotColumn`             |
 
 ### `whereLike`
-Adds a where clause with case-sensitive substring comparison on a given column with a given value.
+Adiciona uma cláusula where com comparação de substring sensível a maiúsculas e minúsculas em uma coluna específica com um valor específico.
 
 ```ts
 db
@@ -254,7 +254,7 @@ db
 ```
 
 ### `whereILike`
-Adds a where clause with case-insensitive substring comparison on a given column with a given value. The method generates a slightly different for each dialect to achieve the case insensitive comparison.
+Adiciona uma cláusula where com comparação de substring insensível a maiúsculas e minúsculas em uma coluna específica com um valor específico. O método gera um ligeiramente diferente para cada dialeto para obter a comparação insensível a maiúsculas e minúsculas.
 
 ```ts
 db
@@ -263,7 +263,7 @@ db
 ```
 
 ### `whereIn`
-The `whereIn` method is used to define the **wherein** SQL clause. The method accepts the column name as the first argument and an array of values as the second argument.
+O método `whereIn` é usado para definir a cláusula SQL **wherein**. O método aceita o nome da coluna como o primeiro argumento e uma matriz de valores como o segundo argumento.
 
 ```ts
 db
@@ -271,7 +271,7 @@ db
   .whereIn('id', [1, 2, 3])
 ```
 
-The values can also be defined for more than column. For example:
+Os valores também podem ser definidos para mais de uma coluna. Por exemplo:
 
 ```ts
 db
@@ -283,7 +283,7 @@ db
 // SQL: select * from "users" where ("id", "email") in ((?, ?))
 ```
 
-You can also compute the `whereIn` values using a subquery.
+Você também pode calcular os valores `whereIn` usando uma subconsulta.
 
 ```ts
 // title: With subqueries
@@ -298,7 +298,7 @@ db
   )
 ```
 
-For multiple columns
+Para várias colunas
 
 ```ts
 db
@@ -311,7 +311,7 @@ db
   )
 ```
 
-The `whereIn` method also accepts a callback as the 2nd argument. The callback receives an instance of the subquery that you can use to compute values as runtime.
+O método `whereIn` também aceita um retorno de chamada como o 2º argumento. O retorno de chamada recebe uma instância da subconsulta que você pode usar para calcular valores como tempo de execução.
 
 ```ts
 db
@@ -322,19 +322,19 @@ db
   )
 ```
 
-### `whereIn` method variants
-Following is the list of the `whereIn` method variations and shares the same API.
+### Variantes do método `whereIn`
+A seguir está a lista das variações do método `whereIn` e compartilha a mesma API.
 
-| Method | Description |
-|--------|-------------|
-| `andWhereIn` | Alias for the `whereIn` method |
-| `orWhereIn` | Adds an **or where in** clause |
-| `whereNotIn` | Adds a **where not in** clause |
-| `orWhereNotIn` | Adds an **or where not in** clause |
-| `andWhereNotIn` | Alias for `whereNotIn` |
+| Método | Descrição |
+|-----------------|-------------------------------|
+| `andWhereIn`    | Alias ​​para o método `whereIn`  |
+| `orWhereIn`     | Adiciona uma cláusula **or where in**  |
+| `whereNotIn`    | Adiciona uma cláusula **where not in**  |
+| `orWhereNotIn`  | Adiciona uma cláusula **or where not in**  |
+| `andWhereNotIn` | Alias ​​para `whereNotIn`  |
 
 ### `whereNull`
-The `whereNull` method adds a where null clause to the query.
+O método `whereNull` adiciona uma cláusula where null à consulta.
 
 ```ts
 db
@@ -342,19 +342,19 @@ db
   .whereNull('deleted_at')
 ```
 
-### `whereNull` method variants
-Following is the list of the `whereNull` method variations and shares the same API.
+### Variantes do método `whereNull`
+A seguir está a lista de variações do método `whereNull` e compartilha a mesma API.
 
-| Method | Description |
+| Método | Descrição |
 |--------|-------------|
-| `andWhereNull` | Alias for the `whereNull` method |
-| `orWhereNull` | Adds an **or where null** clause |
-| `whereNotNull` | Adds a **where not null** clause |
-| `orWhereNotNull` | Adds an **or where not null** clause |
-| `andWhereNotNull` | Alias for `whereNotNull` |
+| `andWhereNull`    | Alias ​​para o método `whereNull` |
+| `orWhereNull`     | Adiciona uma cláusula **or where null** |
+| `whereNotNull`    | Adiciona uma cláusula **where not null** |
+| `orWhereNotNull`  | Adiciona uma cláusula **or where not null** |
+| `andWhereNotNull` | Alias ​​para `whereNotNull` |
 
 ### `whereExists`
-The `whereExists` method allows adding where constraints by checking for the existence of results on a subquery. For example: Select all users who have at least logged in once.
+O método `whereExists` permite adicionar restrições where verificando a existência de resultados em uma subconsulta. Por exemplo: Selecione todos os usuários que fizeram login pelo menos uma vez.
 
 ```ts
 db
@@ -367,7 +367,7 @@ db
   })
 ```
 
-You can also pass in a sub-query or a raw query as the first argument.
+Você também pode passar uma subconsulta ou uma consulta bruta como o primeiro argumento.
 
 ```ts
 db
@@ -390,20 +390,20 @@ db
   )
 ```
 
-### `whereExists` method variants
+### Variantes do método `whereExists`
 
-Following is the list of the `whereExists` method variations and shares the same API.
+A seguir está a lista de variações do método `whereExists` e compartilha a mesma API.
 
-| Method | Description |
+| Método | Descrição |
 |--------|-------------|
-| `andWhereExists` |  Alias for the `whereExists` method | 
-| `orWhereExists` |  Adds an **or where exists** clause | 
-| `whereNotExists` |  Adds a **where not exists** clause | 
-| `orWhereNotExists` |  Adds an **or where not exists** clause | 
-| `andWhereNotExists` |  Alias for the `whereNotExists` method | 
+| `andWhereExists` | Alias ​​para o método `whereExists` |
+| `orWhereExists` | Adiciona uma cláusula **or where exists** |
+| `whereNotExists` | Adiciona uma cláusula **where not exists** |
+| `orWhereNotExists` | Adiciona uma cláusula **or where not exists** |
+| `andWhereNotExists` | Alias ​​para o método `whereNotExists` |
 
 ### `whereBetween`
-The `whereBetween` method adds the **where between** clause. It accepts the column name as the first argument and an array of values as the second argument.
+O método `whereBetween` adiciona a cláusula **where between**. Ele aceita o nome da coluna como o primeiro argumento e uma matriz de valores como o segundo argumento.
 
 ```ts
 db
@@ -411,8 +411,7 @@ db
   .whereBetween('age', [18, 60])
 ```
 
-
-You can also use subqueries to derive the values from a different database table.
+Você também pode usar subconsultas para derivar os valores de uma tabela de banco de dados diferente.
 
 ```ts
 // title: With sub queries
@@ -424,7 +423,7 @@ db
   ])
 ```
 
-You can also make use of raw queries for deriving values from another database table.
+Você também pode usar consultas brutas para derivar valores de outra tabela de banco de dados.
 
 ```ts
 // title: With raw queries
@@ -436,23 +435,22 @@ db
   ])
 ```
 
-### `whereBetween` method variants
-Following is the list of the `whereBetween` method variations and shares the same API.
+### Variantes do método `whereBetween`
+A seguir está a lista das variações do método `whereBetween` e compartilha a mesma API.
 
-| Method | Description |
+| Método | Descrição |
 |--------|-------------|
-| `andWhereBetween` | Alias for the `whereBetween` method |
-| `orWhereBetween` | Adds an **or where between** clause |
-| `whereNotBetween` | Adds a **where not between** clause |
-| `orWhereNotBetween` | Adds an **or where not between** clause |
-| `andWhereNotBetween` | Alias for the `whereNotBetween` method |
+| `andWhereBetween` | Alias ​​para o método `whereBetween` |
+| `orWhereBetween` | Adiciona uma cláusula **or where between** |
+| `whereNotBetween` | Adiciona uma cláusula **where not between** |
+| `orWhereNotBetween` | Adiciona uma cláusula **or where not between** |
+| `andWhereNotBetween` | Alias ​​para o método `whereNotBetween` |
 
 ### `whereRaw`
-You can use the `whereRaw` method to express conditions not covered by the existing query builder methods. Always make sure to use bind parameters to define query values.
-
+Você pode usar o método `whereRaw` para expressar condições não cobertas pelos métodos existentes do construtor de consultas. Certifique-se sempre de usar parâmetros de vinculação para definir valores de consulta.
 
 :::caption{for="error"}
-**Encoding values within the query**
+**Codificação de valores dentro da consulta**
 :::
 
 ```ts
@@ -462,7 +460,7 @@ db
 ```
 
 :::caption{for="success"}
-**Using bind params**
+**Usando parâmetros de vinculação**
 :::
 
 ```ts
@@ -471,7 +469,7 @@ db
   .whereRaw('username = ?', [username])
 ```
 
-You can also define the column names dynamically using `??`.
+Você também pode definir os nomes das colunas dinamicamente usando `??`.
 
 ```ts
 db
@@ -479,16 +477,16 @@ db
   .whereRaw('?? = ?', ['users.username', username])
 ```
 
-### `whereRaw` method variants
-Following is the list of the `whereRaw` method variations and shares the same API.
+### Variantes do método `whereRaw`
+A seguir está a lista das variações do método `whereRaw` e compartilha a mesma API.
 
-| Method | Description |
+| Método | Descrição |
 |--------|-------------|
-| `andWhereRaw` | Alias for the `whereRaw` method |
-| `orWhereRaw` | Adds an **or where raw** clause |
+| `andWhereRaw` | Alias ​​para o método `whereRaw` |
+| `orWhereRaw` | Adiciona uma cláusula **or where raw** |
 
 ### `whereJson`
-Add a where clause with an object to match the value of a JSON column inside the database.
+Adicione uma cláusula where com um objeto para corresponder ao valor de uma coluna JSON dentro do banco de dados.
 
 ```ts
 db
@@ -496,7 +494,7 @@ db
   .whereJson('address', { city: 'XYZ', pincode: '110001' })
 ```
 
-The column value can also be computed using a sub-query.
+O valor da coluna também pode ser computado usando uma subconsulta.
 
 ```ts
 db
@@ -510,19 +508,19 @@ db
   )
 ```
 
-### `whereJson` method variants
-Following is the list of the `whereJson` method variations and shares the same API.
+### Variantes do método `whereJson`
+A seguir está a lista das variações do método `whereJson` e compartilha a mesma API.
 
-| Method | Description |
+| Método | Descrição |
 |--------|-------------|
-| `orWhereJson` | Add a **or where** clause matching the value of a JSON column |
-| `andWhereJson` | Alias for `whereJson` |
-| `whereNotJson` | Add a **where not** clause against a JSON column |
-| `orWhereNotJson` | Add a **or where not** clause against a JSON column |
-| `andWhereNotJson` | Alias for `whereNotJson` |
+| `orWhereJson` | Adicione uma cláusula **or where** correspondente ao valor de uma coluna JSON |
+| `andWhereJson` | Alias ​​para `whereJson` |
+| `whereNotJson` | Adicione uma cláusula **where not** em uma coluna JSON |
+| `orWhereNotJson` | Adicionar uma cláusula **or where not** em uma coluna JSON |
+| `andWhereNotJson` | Alias ​​para `whereNotJson` |
 
 ### `whereJsonSuperset`
-Add a clause where the value of the JSON column is the superset of the defined object. In the following example, the user address is stored as JSON and we find by the user by their pincode.
+Adicionar uma cláusula onde o valor da coluna JSON é o superconjunto do objeto definido. No exemplo a seguir, o endereço do usuário é armazenado como JSON e encontramos pelo usuário pelo seu código PIN.
 
 ```ts
 db
@@ -530,19 +528,19 @@ db
   .whereJsonSuperset('address', { pincode: '110001' })
 ```
 
-### `whereJsonSuperset` method variants
-Following is the list of the `whereJsonSuperset` method variations and shares the same API.
+### Variantes do método `whereJsonSuperset`
+A seguir está a lista das variações do método `whereJsonSuperset` e compartilha a mesma API.
 
-| Method | Description |
+| Método | Descrição |
 |--------|-------------|
-| `orWhereJsonSuperset` | Add a **or where** clause matching the value of a JSON column |
-| `andWhereJsonSuperset` | Alias for `whereJsonSuperset` |
-| `whereNotJsonSuperset` | Add a **where not** clause against a JSON column |
-| `orWhereNotJsonSuperset` | Add a **or where not** clause against a JSON column |
-| `andWhereNotJsonSuperset` | Alias for `whereNotJsonSuperset` |
+| `orWhereJsonSuperset` | Adicionar uma cláusula **or where** correspondente ao valor de uma coluna JSON |
+| `andWhereJsonSuperset` | Alias ​​para `whereJsonSuperset` |
+| `whereNotJsonSuperset` | Adicionar uma cláusula **where not** em uma coluna JSON |
+| `orWhereNotJsonSuperset` | Adicione uma cláusula **or where not** em uma coluna JSON |
+| `andWhereNotJsonSuperset` | Alias ​​para `whereNotJsonSuperset` |
 
 ### `whereJsonSubset`
-Add a clause where the value of the JSON column is the subset of the defined object. In the following example, the user address is stored as JSON and we find by the user by their pincode or the city name.
+Adicione uma cláusula onde o valor da coluna JSON é o subconjunto do objeto definido. No exemplo a seguir, o endereço do usuário é armazenado como JSON e encontramos o usuário pelo código PIN ou pelo nome da cidade.
 
 ```ts
 db
@@ -550,19 +548,19 @@ db
   .whereJsonSubset('address', { pincode: '110001', city: 'XYZ' })
 ```
 
-### `whereJsonSubset` method variants
-Following is the list of the `whereJsonSubset` method variations and shares the same API.
+### Variantes do método `whereJsonSubset`
+A seguir está a lista das variações do método `whereJsonSubset` e compartilha a mesma API.
 
-| Method | Description |
+| Método | Descrição |
 |--------|-------------|
-| `orWhereJsonSubset` | Add a **or where** clause matching the value of a JSON column |
-| `andWhereJsonSubset` | Alias for `whereJsonSubset` |
-| `whereNotJsonSubset` | Add a **where not** clause against a JSON column |
-| `orWhereNotJsonSubset` | Add a **or where not** clause against a JSON column |
-| `andWhereNotJsonSubset` | Alias for `whereNotJsonSubset` |
+| `orWhereJsonSubset` | Adicione uma cláusula **or where** correspondente ao valor de uma coluna JSON |
+| `andWhereJsonSubset` | Alias ​​para `whereJsonSubset` |
+| `whereNotJsonSubset` | Adicionar uma cláusula **where not** em uma coluna JSON |
+| `orWhereNotJsonSubset` | Adicionar uma cláusula **or where not** em uma coluna JSON |
+| `andWhereNotJsonSubset` | Alias ​​para `whereNotJsonSubset` |
 
 ### `join`
-The `join` method allows specifying SQL joins between two tables. For example: Select the `ip_address` and the `country` columns by joining the `user_logins` table.
+O método `join` permite especificar junções SQL entre duas tabelas. Por exemplo: Selecione as colunas `ip_address` e `country` unindo a tabela `user_logins`.
 
 ```ts
 db
@@ -573,7 +571,7 @@ db
   .select('user_logins.country')
 ```
 
-You can pass a callback as the 2nd argument to define more join constraints.
+Você pode passar um retorno de chamada como o 2º argumento para definir mais restrições de junção.
 
 ```ts
 db
@@ -590,7 +588,7 @@ db
   .select('user_logins.country')
 ```
 
-To group join constraints, you can pass a callback to the `on` method.
+Para agrupar restrições de junção, você pode passar um retorno de chamada para o método `on`.
 
 ```ts
 db
@@ -615,7 +613,7 @@ db
   .select('user_logins.country')
 ```
 
-Output SQL
+SQL de saída
 
 ```sql
 SELECT
@@ -631,7 +629,7 @@ FROM "users"
   )
 ```
 
-The `join` method uses the **inner join** by default, and you can use a different join using one of the following available methods.
+O método `join` usa a **junção interna** por padrão, e você pode usar uma junção diferente usando um dos seguintes métodos disponíveis.
 
 - `leftJoin`
 - `leftOuterJoin`
@@ -641,7 +639,7 @@ The `join` method uses the **inner join** by default, and you can use a differen
 - `crossJoin`
 
 ### `joinRaw`
-You can use the `joinRaw` method to express conditions not covered by the query builder standard API.
+Você pode usar o método `joinRaw` para expressar condições não cobertas pela API padrão do construtor de consultas.
 
 ```ts
 db
@@ -741,7 +739,7 @@ db
 
 ### `having`
 
-The `having` method adds the **having** clause. It accepts the column name as the first argument, followed by the optional operator and the value.
+O método `having` adiciona a cláusula **having**. Ele aceita o nome da coluna como o primeiro argumento, seguido pelo operador opcional e o valor.
 
 ```ts
 db
@@ -752,7 +750,7 @@ db
 ```
 
 ### `havingRaw`
-Most of the time, you will find yourself using the `havingRaw` method, as you can define the aggregates for the having clause.
+Na maioria das vezes, você se verá usando o método `havingRaw`, pois pode definir os agregados para a cláusula having.
 
 ```ts
 db
@@ -762,23 +760,23 @@ db
   .havingRaw('SUM(score) > ?', [200])
 ```
 
-### `having` method variants 
+### Variantes do método `having`
 
-Following is the list of all the available **having methods**.
+A seguir está a lista de todos os métodos **having** disponíveis.
 
-| Method | Description |
+| Método | Descrição |
 |--------|-------------|
-| `havingIn` | Adds a having in clause to the query. It accepts an array of values. |
-| `havingNotIn` | Adds a having not in clause to the query. It accepts an array of values. |
-| `havingNull` |  Adds a having null clause to the query. |
-| `havingNotNull` | Adds a having not null clause to the query. |
-| `havingExists` | Adds a having exists clause to the query. |
-| `havingNotExists` | Adds a having not exists clause to the query. |
-| `havingBetween` | Adds a having between clause to the query. It accepts an array of values. |
-| `havingNotBetween` | Adds a having not between clause to the query. It accepts an array of values |
+| `havingIn` | Adiciona uma cláusula having in à consulta. Ele aceita uma matriz de valores. |
+| `havingNotIn` | Adiciona uma cláusula having not in à consulta. Ele aceita uma matriz de valores. |
+| `havingNull` | Adiciona uma cláusula having null à consulta. |
+| `havingNotNull` | Adiciona uma cláusula having not null à consulta. |
+| `havingExists` | Adiciona uma cláusula having exists à consulta. |
+| `havingNotExists` | Adiciona uma cláusula having not exists à consulta. |
+| `havingBetween` | Adiciona uma cláusula having between à consulta. Ela aceita uma matriz de valores. |
+| `havingNotBetween` | Adiciona uma cláusula having not between à consulta. Ela aceita uma matriz de valores |
 
 ### `distinct`
-The `distinct` method applies the **distinct** clause to the select statement. You can define one or more column names as multiple arguments.
+O método `distinct` aplica a cláusula **distinct** à instrução select. Você pode definir um ou mais nomes de colunas como vários argumentos.
 
 ```ts
 db
@@ -790,13 +788,13 @@ db
   .distinct('country', 'locale')
 ```
 
-You can call the `distinct` method without any parameters to eliminate duplicate rows.
+Você pode chamar o método `distinct` sem nenhum parâmetro para eliminar linhas duplicadas.
 
 ```ts
 db.from('users').distinct()
 ```
 
-There is another PostgreSQL-only method, `distinctOn`. Here's an article explaining [SELECT DISTINCT ON](https://www.geekytidbits.com/postgres-distinct-on/).
+Há outro método somente para PostgreSQL, `distinctOn`. Aqui está um artigo explicando [SELECT DISTINCT ON](https://www.geekytidbits.com/postgres-distinct-on/).
 
 ```ts
 db
@@ -806,7 +804,7 @@ db
 ```
 
 ### `groupBy`
-The `groupBy` method applies the **group by** clause to the query.
+O método `groupBy` aplica a cláusula **group by** à consulta.
 
 ```ts
 db
@@ -816,7 +814,7 @@ db
 ```
 
 ### `groupByRaw`
-The `groupByRaw` method allows writing a SQL query to define the group by statement.
+O método `groupByRaw` permite escrever uma consulta SQL para definir a instrução group by.
 
 ```ts
 db
@@ -826,7 +824,7 @@ db
 ```
 
 ### `orderBy`
-The `orderBy` method applies the **order by** clause to the query.
+O método `orderBy` aplica a cláusula **order by** à consulta.
 
 ```ts
 db
@@ -834,7 +832,7 @@ db
   .orderBy('created_at', 'desc')
 ```
 
-You can sort by multiple columns by calling the `orderBy` method multiple times.
+Você pode classificar por várias colunas chamando o método `orderBy` várias vezes.
 
 ```ts
 db
@@ -843,7 +841,7 @@ db
   .orderBy('created_at', 'desc')
 ```
 
-Or pass an array of objects.
+Ou passe uma matriz de objetos.
 
 ```ts
 db
@@ -860,7 +858,7 @@ db
   ])
 ```
 
-You can also pass a sub-query instance to the `orderBy` method — for example, Order posts by the number of comments they have received.
+Você também pode passar uma instância de subconsulta para o método `orderBy` — por exemplo, Classificar postagens pelo número de comentários que receberam.
 
 ```ts
 const commentsCountQuery = db
@@ -874,7 +872,7 @@ db
 ```
 
 ### `orderByRaw`
-Use the `orderByRaw` method to define the sort order from a SQL string.
+Use o método `orderByRaw` para definir a ordem de classificação de uma string SQL.
 
 ```ts
 const commentsCountQuery = db
@@ -889,24 +887,24 @@ db
 ```
 
 ### `offset`
-Apply offset to the SQL query
+Aplicar offset à consulta SQL
 
 ```ts
 db.from('posts').offset(11)
 ```
 
 ### `limit`
-Apply a limit to the SQL query
+Aplicar um limite à consulta SQL
 
 ```ts
 db.from('posts').limit(20)
 ```
 
 ### `forPage`
-The `forPage` is a convenient method to apply `offset` and `limit` using the page number. It accepts a total of two arguments.
+O `forPage` é um método conveniente para aplicar `offset` e `limit` usando o número da página. Ele aceita um total de dois argumentos.
 
-- The first argument is the page number **(not the offset)**.
-- The second argument is the number of rows to fetch. Defaults to 20
+- O primeiro argumento é o número da página **(não o offset)**.
+- O segundo argumento é o número de linhas a serem buscadas. O padrão é 20
 
 ```ts
 db
@@ -915,14 +913,14 @@ db
 ```
 
 ### `count`
-The `count` method allows you to use the **count aggregate** in your SQL queries.
+O método `count` permite que você use o **count agregado** em suas consultas SQL.
 
 :::note
-The keys for the aggregate values are dialect-specific, and hence we recommend you always define aliases for predictable output.
+As chaves para os valores agregados são específicas do dialeto e, portanto, recomendamos que você sempre defina aliases para saída previsível.
 :::
 
 :::note
-In PostgreSQL, the count method returns a string representation of a bigint data type.
+No PostgreSQL, o método count retorna uma representação de string de um tipo de dados bigint.
 :::
 
 ```ts
@@ -933,7 +931,7 @@ const users = await db
 console.log(users[0].total)
 ```
 
-You can also define the aggregate as follows:
+Você também pode definir o agregado da seguinte forma:
 
 ```ts
 const users = await db
@@ -943,7 +941,7 @@ const users = await db
 console.log(users[0].total)
 ```
 
-You can count multiple columns as follows:
+Você pode contar várias colunas da seguinte forma:
 
 ```ts
 const users = await db
@@ -957,21 +955,21 @@ console.log(users[0].total)
 console.log(users[0].active)
 ```
 
-### Other aggregate methods
-The API for all the following aggregate methods is identical to the `count` method.
+### Outros métodos agregados
+A API para todos os métodos agregados a seguir é idêntica ao método `count`.
 
-| Method | Description |
+| Método | Descrição |
 |--------|-------------|
-| `countDistinct` | Count only the distinct rows |
-| `min` | Aggregate values using the **min function** |
-| `max` | Aggregate values using the **max function** |
-| `sum` | Aggregate values using the **sum function** |
-| `sumDistinct` | Aggregate values for only distinct rows using the **sum function** |
-| `avg` | Aggregate values using the **avg function** |
-| `avgDistinct` | Aggregate values for only distinct rows using the **avg function** |
+| `countDistinct` | Conta apenas as linhas distintas |
+| `min` | Agrega valores usando a função **min** |
+| `max` | Agrega valores usando a função **max** |
+| `sum` | Agrega valores usando a função **sum** |
+| `sumDistinct` | Agrega valores apenas para linhas distintas usando a função **sum** |
+| `avg` | Agregar valores usando a **função avg** |
+| `avgDistinct` | Agregar valores somente para linhas distintas usando a **função avg** |
 
 ### `union`
-The `union` method allows to you build up a union query by using multiple instances of the query builder. For example:
+O método `union` permite que você crie uma consulta de união usando várias instâncias do construtor de consultas. Por exemplo:
 
 ```ts
 db
@@ -988,7 +986,7 @@ SELECT * FROM "users" WHERE "first_name" IS NULL
 */
 ```
 
-You can also wrap your union queries by passing a boolean flag as the 2nd argument.
+Você também pode encapsular suas consultas de união passando um sinalizador booleano como o segundo argumento.
 
 ```ts
 db
@@ -1005,7 +1003,7 @@ UNION
 */
 ```
 
-You can pass an array of callbacks to define multiple union queries.
+Você pode passar uma matriz de retornos de chamada para definir várias consultas de união.
 
 ```ts
 db
@@ -1033,7 +1031,7 @@ UNION
 // highlight-end
 ```
 
-You can also define union queries by passing an instance of a query builder.
+Você também pode definir consultas de união passando uma instância de um construtor de consultas.
 
 ```ts
 db
@@ -1047,13 +1045,13 @@ db
   // highlight-end
 ```
 
-The following methods have the same API as the `union` method.
+Os métodos a seguir têm a mesma API que o método `union`.
 
 - `unionAll`
 - `intersect`
 
 ### `with`
-The `with` method allows you to use CTE (Common table expression) in **PostgreSQL**, **Oracle**, **SQLite3** and the **MSSQL** databases.
+O método `with` permite que você use CTE (Common table expression) em **PostgreSQL**, **Oracle**, **SQLite3** e os bancos de dados **MSSQL**.
 
 ```ts
 db
@@ -1072,7 +1070,7 @@ SELECT * FROM "aliased_table"
 */
 ```
 
-The method also accepts an optional third parameter which is an array of column names. The number of column names specified must match the number of columns in the result set of the CTE query.
+O método também aceita um terceiro parâmetro opcional que é uma matriz de nomes de colunas. O número de nomes de colunas especificado deve corresponder ao número de colunas no conjunto de resultados da consulta CTE.
 
 ```ts
 db
@@ -1092,7 +1090,7 @@ SELECT * FROM "aliased_table"
 ```
 
 ### `withMaterialized` / `withNotMaterialized`
-The `withMaterialized` and the `withNotMaterialized` methods allows you to use CTE (Common table expression) as materialized views in **PostgreSQL** and **SQLite3** database.
+Os métodos `withMaterialized` e `withNotMaterialized` permitem que você use CTE (Common table expression) como visualizações materializadas nos bancos de dados **PostgreSQL** e **SQLite3**.
 
 ```ts
 db
@@ -1112,9 +1110,9 @@ SELECT * FROM "aliased_table"
 ```
 
 ### `withRecursive`
-The `withRecursive` method creates a recursive CTE (Common table expression) in **PostgreSQL**, **Oracle**, **SQLite3** and the **MSSQL** databases.
+O método `withRecursive` cria uma CTE (Common table expression) recursiva nos bancos de dados **PostgreSQL**, **Oracle**, **SQLite3** e **MSSQL**.
 
-In the following example, we calculate the sum of all children accounts of a parent account. Also, we assume the following table structure.
+No exemplo a seguir, calculamos a soma de todas as contas filhas de uma conta pai. Além disso, assumimos a seguinte estrutura de tabela.
 
 | id | name              | parent_id | amount |
 |----|-------------------|-----------|--------|
@@ -1145,9 +1143,9 @@ db
   .from('tree')
 ```
 
-The above example is not meant to simplify the complexity of SQL. Instead, it demonstrates the power of the query builder to construct such SQL queries without writing them as a SQL string.
+O exemplo acima não pretende simplificar a complexidade do SQL. Em vez disso, ele demonstra o poder do construtor de consultas para construir tais consultas SQL sem escrevê-las como uma string SQL.
 
-The method also accepts an optional third parameter which is an array of column names. The number of column names specified must match the number of columns in the result set of the CTE query.
+O método também aceita um terceiro parâmetro opcional que é uma matriz de nomes de colunas. O número de nomes de colunas especificado deve corresponder ao número de colunas no conjunto de resultados da consulta CTE.
 
 ```ts
 db
@@ -1168,10 +1166,10 @@ db
   .from('tree')
 ```
 
-Here's a great article explaining the [PostgreSQL Recursive Query](https://www.postgresqltutorial.com/postgresql-recursive-query/)
+Aqui está um ótimo artigo explicando a [Consulta Recursiva PostgreSQL](https://www.postgresqltutorial.com/postgresql-recursive-query/)
 
 ### `update`
-The `update` method allows updating one or more database rows. You can make use of the query builder to add additional constraints when performing the update.
+O método `update` permite atualizar uma ou mais linhas do banco de dados. Você pode usar o construtor de consultas para adicionar restrições adicionais ao executar a atualização.
 
 ```ts
 const affectedRows = db
@@ -1180,7 +1178,7 @@ const affectedRows = db
   .update({ email: 'virk@adonisjs.com' })
 ```
 
-The return value is the number of affected rows. However, when using `PostgreSQL`, `Oracle`, or `MSSQL`, you can specify the return columns as well.
+O valor de retorno é o número de linhas afetadas. No entanto, ao usar `PostgreSQL`, `Oracle` ou `MSSQL`, você também pode especificar as colunas de retorno.
 
 ```ts
 const rows = db
@@ -1196,7 +1194,7 @@ console.log(rows[0].email)
 ```
 
 ### `increment`
-The `increment` method allows incrementing the value for one or more columns.
+O método `increment` permite incrementar o valor de uma ou mais colunas.
 
 ```ts
 db
@@ -1213,7 +1211,7 @@ WHERE
 */
 ```
 
-You can also increment multiple columns by passing an object.
+Você também pode incrementar várias colunas passando um objeto.
 
 ```ts
 db
@@ -1235,7 +1233,7 @@ WHERE
 ```
 
 ### `decrement`
-The `decrement` method is the opposite of the `increment` method. However, the API is the same.
+O método `decrement` é o oposto do método `increment`. No entanto, a API é a mesma.
 
 ```ts
 db
@@ -1245,7 +1243,7 @@ db
 ```
 
 ### `delete`
-The `delete` method issues a **delete** SQL query. You can make use of the query builder to add additional constraints when performing the delete.
+O método `delete` emite uma consulta SQL **delete**. Você pode usar o construtor de consultas para adicionar restrições adicionais ao executar a exclusão.
 
 ```ts
 db
@@ -1254,10 +1252,10 @@ db
   .delete()
 ```
 
-The `delete` method also has an alias called `del`.
+O método `delete` também tem um alias chamado `del`.
 
 ### `useTransaction`
-The `useTransaction` method instructs the query builder to wrap the query inside a transaction. The guide on [database transactions](../guides/transactions.md) covers different ways to create and use transactions in your application.
+O método `useTransaction` instrui o construtor de consultas a encapsular a consulta dentro de uma transação. O guia em [transações de banco de dados](../guides/transactions.md) abrange diferentes maneiras de criar e usar transações em seu aplicativo.
 
 ```ts
 const trx = await db.transaction()
@@ -1272,10 +1270,10 @@ await trx.commit()
 ```
 
 ### `forUpdate`
-The `forUpdate` method acquires an update lock on the selected rows in PostgreSQL and MySQL.
+O método `forUpdate` adquire um bloqueio de atualização nas linhas selecionadas no PostgreSQL e MySQL.
 
 :::note
-Make sure always to supply the transaction object using the `useTransaction` method before using `forUpdate` or similar locks.
+Certifique-se de sempre fornecer o objeto de transação usando o método `useTransaction` antes de usar `forUpdate` ou bloqueios semelhantes.
 :::
 
 ```ts
@@ -1288,7 +1286,7 @@ const user = db
 ```
 
 ### `forShare`
-The `forShare` adds a **FOR SHARE in PostgreSQL** and a **LOCK IN SHARE MODE for MySQL** during a select statement.
+O `forShare` adiciona um **FOR SHARE no PostgreSQL** e um **LOCK IN SHARE MODE para MySQL** durante uma instrução select.
 
 ```ts
 const user = db
@@ -1300,7 +1298,7 @@ const user = db
 ```
 
 ### `skipLocked`
-The `skipLocked` method skips the rows locked by another transaction. The method is only supported by MySQL 8.0+ and PostgreSQL 9.5+.
+O método `skipLocked` ignora as linhas bloqueadas por outra transação. O método é suportado apenas pelo MySQL 8.0+ e PostgreSQL 9.5+.
 
 ```ts
 db
@@ -1318,7 +1316,7 @@ FOR UPDATE SKIP LOCKED
 ```
 
 ### `noWait`
-The `noWait` method fails if any of the selected rows are locked by another transaction. The method is only supported by MySQL 8.0+ and PostgreSQL 9.5+.
+O método `noWait` falha se qualquer uma das linhas selecionadas estiver bloqueada por outra transação. O método é suportado apenas pelo MySQL 8.0+ e PostgreSQL 9.5+.
 
 ```ts
 db
@@ -1336,7 +1334,7 @@ FOR UPDATE NOWAIT
 ```
 
 ### `clone`
-The `clone` method returns a new query builder object with all constraints applied from the original query.
+O método `clone` retorna um novo objeto construtor de consultas com todas as restrições aplicadas da consulta original.
 
 ```ts
 const query = db.from('users').select('id', 'email')
@@ -1347,7 +1345,7 @@ await clonedQuery // select * from "users"
 ```
 
 ### `debug`
-The `debug` method allows enabling or disabling debugging at an individual query level. Here's a [complete guide](../guides/debugging.md) on debugging queries.
+O método `debug` permite habilitar ou desabilitar a depuração em um nível de consulta individual. Aqui está um [guia completo](../guides/debugging.md) sobre consultas de depuração.
 
 ```ts
 db
@@ -1356,9 +1354,9 @@ db
 ```
 
 ### `timeout`
-Define the `timeout` for the query. An exception is raised after the timeout has been exceeded.
+Defina o `timeout` para a consulta. Uma exceção é gerada após o tempo limite ter sido excedido.
 
-The value of timeout is always in milliseconds.
+O valor do tempo limite é sempre em milissegundos.
 
 ```ts
 db
@@ -1366,7 +1364,7 @@ db
   .timeout(2000)
 ```
 
-You can also cancel the query when using timeouts with MySQL and PostgreSQL.
+Você também pode cancelar a consulta ao usar tempos limite com MySQL e PostgreSQL.
 
 ```ts
 db
@@ -1375,7 +1373,7 @@ db
 ```
 
 ### `toSQL`
-The `toSQL` method returns the query SQL and bindings as an object.
+O método `toSQL` retorna o SQL de consulta e as ligações como um objeto.
 
 ```ts
 const output = db
@@ -1386,7 +1384,7 @@ const output = db
 console.log(output)
 ```
 
-The `toSQL` object also has the `toNative` method to format the SQL query as per the database dialect in use.
+O objeto `toSQL` também tem o método `toNative` para formatar a consulta SQL de acordo com o dialeto do banco de dados em uso.
 
 ```ts
 const output = db
@@ -1399,7 +1397,7 @@ console.log(output)
 ```
 
 ### `toQuery`
-Returns the SQL query after applying the bind params.
+Retorna a consulta SQL após aplicar os parâmetros de ligação.
 
 ```ts
 const output = db
@@ -1411,8 +1409,8 @@ console.log(output)
 // select * from "users" where "id" = 1
 ```
 
-## Executing queries
-The query builder extends the native `Promise` class. You can execute the queries using the `await` keyword or chaining the `then/catch` methods.
+## Executando consultas
+O construtor de consultas estende a classe nativa `Promise`. Você pode executar as consultas usando a palavra-chave `await` ou encadeando os métodos `then/catch`.
 
 ```ts
 db
@@ -1423,23 +1421,23 @@ db
   })
 ```
 
-Using async/await
+Usando async/await
 
 ```ts
 const users = await db.from('users')
 ```
 
-Also, you can execute a query by explicitly calling the `exec` method.
+Além disso, você pode executar uma consulta chamando explicitamente o método `exec`.
 
 ```ts
 const users = await db.from('users').exec()
 ```
 
 ### `first`
-The select queries always return an array of objects, even when the query is intended to fetch a single row. However, using the `first` method will give you the first row or null (when there are no rows).
+As consultas select sempre retornam uma matriz de objetos, mesmo quando a consulta tem a intenção de buscar uma única linha. No entanto, usar o método `first` fornecerá a primeira linha ou nulo (quando não houver linhas).
 
 :::note
-First does NOT mean the first row in the table. It means the first row from the results array in whatever order you fetched it from the database.
+First NÃO significa a primeira linha na tabela. Significa a primeira linha da matriz results em qualquer ordem em que você a buscou do banco de dados.
 :::
 
 ```ts
@@ -1454,7 +1452,7 @@ if (user) {
 ```
 
 ### `firstOrFail`
-The `firstOrFail` method is similar to the `first` method except, it raises an exception when no rows are found.
+O método `firstOrFail` é semelhante ao método `first`, exceto que ele gera uma exceção quando nenhuma linha é encontrada.
 
 ```ts
 const user = await db
@@ -1463,8 +1461,8 @@ const user = await db
   .firstOrFail()
 ```
 
-## Pagination
-The query builder has first-class support for offset-based pagination. It also automatically counts the number of total rows by running a separate query behind the scenes.
+## Paginação
+O construtor de consultas tem suporte de primeira classe para paginação baseada em deslocamento. Ele também conta automaticamente o número de linhas totais executando uma consulta separada nos bastidores.
 
 ```ts
 const page = request.input('page', 1)
@@ -1475,47 +1473,47 @@ const results = await db
   .paginate(page, limit)
 ```
 
-The `paginate` method returns an instance of the [SimplePaginator](https://github.com/adonisjs/lucid/blob/efed38908680cca3b288d9b2a123586fab155b1d/src/Database/Paginator/SimplePaginator.ts#L20) class. The class has the following properties and methods.
+O método `paginate` retorna uma instância da classe [SimplePaginator](https://github.com/adonisjs/lucid/blob/efed38908680cca3b288d9b2a123586fab155b1d/src/Database/Paginator/SimplePaginator.ts#L20). A classe tem as seguintes propriedades e métodos.
 
 ### `firstPage`
-Returns the number for the first page. It is always `1`.
+Retorna o número da primeira página. É sempre `1`.
 
 ```ts
 results.firstPage
 ```
 
 ### `perPage`
-Returns the value for the limit passed to the `paginate` method.
+Retorna o valor para o limite passado para o método `paginate`.
 
 ```ts
 results.perPage
 ```
 
 ### `currentPage`
-Returns the value of the current page.
+Retorna o valor da página atual.
 
 ```ts
 results.currentPage
 ```
 
 ### `lastPage`
-Returns the value for the last page by taking the total of rows into account.
+Retorna o valor da última página considerando o total de linhas.
 
 ```ts
 results.lastPage
 ```
 
 ### `total`
-Holds the value for the total number of rows in the database.
+Mantém o valor do número total de linhas no banco de dados.
 
 ```ts
 results.total
 ```
 
 ### `hasPages`
-A boolean to know if there are pages for pagination. You can rely on this value to decide when or when not to show the pagination links.
+Um booleano para saber se há páginas para paginação. Você pode confiar neste valor para decidir quando ou não mostrar os links de paginação.
 
-Following is an example of the Edge view.
+A seguir, um exemplo da visualização Edge.
 
 ```edge
 @if(results.hasPages)
@@ -1526,28 +1524,28 @@ Following is an example of the Edge view.
 ```
 
 ### `hasMorePages`
-A boolean to know if there are more pages to go after the current page.
+Um booleano para saber se há mais páginas para ir depois da página atual.
 
 ```ts
 results.hasMorePages
 ```
 
 ### `all()`
-Returns an array of rows returned by the SQL queries.
+Retorna uma matriz de linhas retornadas pelas consultas SQL.
 
 ```ts
 results.all()
 ```
 
 ### `getUrl`
-Returns the URL for a given page number.
+Retorna a URL para um determinado número de página.
 
 ```ts
 result.getUrl(1) // /?page=1
 ```
 
 ### `getNextPageUrl`
-Returns the URL for the next page
+Retorna a URL para a próxima página
 
 ```ts
 // Assuming the current page is 2
@@ -1556,7 +1554,7 @@ result.getNextPageUrl() // /?page=3
 ```
 
 ### `getPreviousPageUrl`
-Returns the URL for the previous page
+Retorna a URL para a página anterior
 
 ```ts
 // Assuming the current page is 2
@@ -1565,9 +1563,9 @@ result.getPreviousPageUrl() // /?page=1
 ```
 
 ### `getUrlsForRange`
-Returns URLs for a given range. Helpful when you want to render links for a given range.
+Retorna URLs para um determinado intervalo. Útil quando você deseja renderizar links para um determinado intervalo.
 
-Following is an example of using `getUrlsForRange` inside an Edge template.
+A seguir, um exemplo de uso de `getUrlsForRange` dentro de um modelo do Edge.
 
 ```edge
 @each(
@@ -1583,7 +1581,7 @@ Following is an example of using `getUrlsForRange` inside an Edge template.
 ```
 
 ### `toJSON`
-The `toJSON` method returns an object with `meta` and `data` properties. The output of the method is suitable for JSON API responses.
+O método `toJSON` retorna um objeto com propriedades `meta` e `data`. A saída do método é adequada para respostas da API JSON.
 
 ```ts
 results.toJSON()
@@ -1607,7 +1605,7 @@ results.toJSON()
 ```
 
 ### `baseUrl`
-All of the URLs generated by the paginator class use the `/` (root) URL. However, you can change this by defining a custom base URL.
+Todos os URLs gerados pela classe paginadora usam o URL `/` (raiz). No entanto, você pode alterar isso definindo um URL base personalizado.
 
 ```ts
 results.baseUrl('/posts')
@@ -1616,8 +1614,7 @@ results.getUrl(2) // /posts?page=2
 ```
 
 ### `queryString`
-Define query string to be appended to the URLs generated by the paginator class.
-
+Defina a string de consulta a ser anexada aos URLs gerados pela classe paginadora.
 
 ```ts
 results.queryString({ limit: 20, sort: 'top' })
@@ -1625,11 +1622,11 @@ results.queryString({ limit: 20, sort: 'top' })
 results.getUrl(2) // /?page=2&limit=20&sort=top
 ```
 
-## Helpful properties and methods
-Following is the list of properties and methods you may occasionally need when building something on top of the query builder.
+## Propriedades e métodos úteis
+A seguir está a lista de propriedades e métodos que você pode precisar ocasionalmente ao construir algo em cima do construtor de consultas.
 
 ### `client`
-Reference to the instance of the underlying [database query client](https://github.com/adonisjs/lucid/blob/develop/src/query_client/index.ts).
+Referência à instância do [cliente de consulta de banco de dados](https://github.com/adonisjs/lucid/blob/develop/src/query_client/index.ts) subjacente.
 
 ```ts
 const query = db.query()
@@ -1637,7 +1634,7 @@ console.log(query.client)
 ```
 
 ### `knexQuery`
-Reference to the instance of the underlying KnexJS query.
+Referência à instância da consulta KnexJS subjacente.
 
 ```ts
 const query = db.query()
@@ -1645,7 +1642,7 @@ console.log(query.knexQuery)
 ```
 
 ### `hasAggregates`
-A boolean to know if the query is using any of the aggregate methods.
+Um booleano para saber se a consulta está usando algum dos métodos de agregação.
 
 ```ts
 const query = db.from('posts').count('* as total')
@@ -1653,7 +1650,7 @@ console.log(query.hasAggregates) // true
 ```
 
 ### `hasGroupBy`
-A boolean to know if the query is using a group by clause.
+Um booleano para saber se a consulta está usando uma cláusula group by.
 
 ```ts
 const query = db.from('posts').groupBy('tenant_id')
@@ -1661,7 +1658,7 @@ console.log(query.hasGroupBy) // true
 ```
 
 ### `hasUnion`
-A boolean to know if the query is using a union.
+Um booleano para saber se a consulta está usando uma união.
 
 ```ts
 const query = db
@@ -1675,7 +1672,7 @@ console.log(query.hasUnion) // true
 ```
 
 ### `clearSelect`
-Call this method to clear selected columns.
+Chame este método para limpar colunas selecionadas.
 
 ```ts
 const query = db.query().select('id', 'title')
@@ -1683,7 +1680,7 @@ query.clone().clearSelect()
 ```
 
 ### `clearWhere`
-Call this method to clear where clauses.
+Chame este método para limpar cláusulas where.
 
 ```ts
 const query = db.query().where('id', 1)
@@ -1691,7 +1688,7 @@ query.clone().clearWhere()
 ```
 
 ### `clearOrder`
-Call this method to clear the order by constraint.
+Chame este método para limpar a ordem por restrição.
 
 ```ts
 const query = db.query().orderBy('id', 'desc')
@@ -1699,7 +1696,7 @@ query.clone().clearOrder()
 ```
 
 ### `clearHaving`
-Call this method to clear the having clause.
+Chame este método para limpar a cláusula having.
 
 ```ts
 const query = db.query().having('total', '>', 100)
@@ -1707,7 +1704,7 @@ query.clone().clearHaving()
 ```
 
 ### `clearLimit`
-Call this method to clear the applied limit.
+Chame este método para limpar o limite aplicado.
 
 ```ts
 const query = db.query().limit(20)
@@ -1715,7 +1712,7 @@ query.clone().clearLimit()
 ```
 
 ### `clearOffset`
-Call this method to clear the applied offset.
+Chame este método para limpar o deslocamento aplicado.
 
 ```ts
 const query = db.query().offset(20)
@@ -1723,9 +1720,9 @@ query.clone().clearOffset()
 ```
 
 ### `reporterData`
-The query builder emits the `db:query` event and reports the query's execution time with the framework profiler.
+O construtor de consultas emite o evento `db:query` e relata o tempo de execução da consulta com o profiler do framework.
 
-Using the `reporterData` method, you can pass additional details to the event and the profiler.
+Usando o método `reporterData`, você pode passar detalhes adicionais para o evento e o profiler.
 
 ```ts
 const query = db.from('users')
@@ -1735,7 +1732,7 @@ await query
   .select('*')
 ```
 
-Within the `db:query` event, you can access the value of `userId` as follows.
+Dentro do evento `db:query`, você pode acessar o valor de `userId` da seguinte forma.
 
 ```ts
 Event.on('db:query', (query) => {
@@ -1744,7 +1741,7 @@ Event.on('db:query', (query) => {
 ```
 
 ### `withSchema`
-Specify the PostgreSQL schema to use when executing the query.
+Especifique o esquema PostgreSQL a ser usado ao executar a consulta.
 
 ```ts
 db
@@ -1754,7 +1751,7 @@ db
 ```
 
 ### `as`
-Specify the alias for a given query. Usually helpful when passing the query builder instance as a subquery. For example:
+Especifique o alias para uma determinada consulta. Geralmente útil ao passar a instância do construtor de consultas como uma subconsulta. Por exemplo:
 
 ```ts
 db
@@ -1772,7 +1769,7 @@ db
 
 ### `if`
 
-The `if` helper allows you to conditionally add constraints to the query builder. For example:
+O auxiliar `if` permite que você adicione restrições condicionalmente ao construtor de consultas. Por exemplo:
 
 ```ts
 db
@@ -1781,9 +1778,9 @@ db
     query.where('first_name', 'like', `%${searchQuery}%`)
     query.where('last_name', 'like', `%${searchQuery}%`)
   })
-``` 
+```
 
-You can define the `else` method by passing another callback as the second argument.
+Você pode definir o método `else` passando outro retorno de chamada como o segundo argumento.
 
 ```ts
 db
@@ -1796,7 +1793,7 @@ db
 ```
 
 ### `unless`
-The `unless` method is opposite of the `if` helper.
+O método `unless` é o oposto do auxiliar `if`.
 
 ```ts
 db
@@ -1808,9 +1805,9 @@ db
      */
     query.where('status', 'active')
   })
-``` 
+```
 
-You can pass another callback which gets executed when the `unless` statement isn't true.
+Você pode passar outro retorno de chamada que é executado quando a declaração `unless` não é verdadeira.
 
 ```ts
 db
@@ -1823,9 +1820,9 @@ db
 ```
 
 ### `match`
-The `match` helper allows you define an array of conditional blocks to match from and execute the corresponding callback.
+O auxiliar `match` permite que você defina uma matriz de blocos condicionais para corresponder e executar o retorno de chamada correspondente.
 
-In the following example, the query builder will go through all the conditional blocks and executes the first matching one and discards the other. **Think of it as a `switch` statement in JavaScript**.
+No exemplo a seguir, o construtor de consultas percorrerá todos os blocos condicionais e executará o primeiro correspondente e descartará o outro. **Pense nisso como uma instrução `switch` em JavaScript**.
 
 ```ts
 db
@@ -1845,7 +1842,7 @@ db
 ```
 
 ### `ifDialect`
-The `ifDialect` helper allows you to conditionally add constraints to the query builder when dialect matches one of the mentioned dialects.
+O auxiliar `ifDialect` permite que você adicione restrições condicionalmente ao construtor de consultas quando o dialeto corresponde a um dos dialetos mencionados.
 
 ```ts
 db
@@ -1857,7 +1854,7 @@ db
   )
 ```
 
-You can define the else method by passing another callback as the second argument.
+Você pode definir o método else passando outro retorno de chamada como o segundo argumento.
 
 ```ts
 db
@@ -1869,7 +1866,7 @@ db
 ```
 
 ### `unlessDialect`
-The `unlessDialect` method is opposite of the `ifDialect` helper.
+O método `unlessDialect` é o oposto do auxiliar `ifDialect`.
 
 ```ts
 db
@@ -1880,7 +1877,7 @@ db
   )
 ```
 
-You can pass another callback which gets executed when the `unlessDialect` statement isn't true.
+Você pode passar outro retorno de chamada que é executado quando a instrução `unlessDialect` não é verdadeira.
 ```ts
 db
   .from('users')

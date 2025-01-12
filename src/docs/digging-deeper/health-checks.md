@@ -1,19 +1,19 @@
 ---
-summary: Learn how to monitor your application in production and ensure it is running smoothly
+resumo: Aprenda a monitorar seu aplicativo em produção e garantir que ele esteja funcionando perfeitamente
 ---
 
-# Health checks
+# Verificações de integridade
 
-Health checks are performed to ensure that your application is in a healthy state while running in production. This may include monitoring the **available disk space** on the server, the **memory consumed by your application**, or **testing the database connection**.
+As verificações de integridade são realizadas para garantir que seu aplicativo esteja em um estado íntegro durante a execução em produção. Isso pode incluir o monitoramento do **espaço em disco disponível** no servidor, a **memória consumida pelo seu aplicativo** ou **testar a conexão do banco de dados**.
 
-AdonisJS provides a handful of built-in [health checks](#available-health-checks) and the ability to create and register [custom health checks](#creating-a-custom-health-check).
+O AdonisJS fornece um punhado de [verificações de integridade](#available-health-checks) integradas e a capacidade de criar e registrar [verificações de integridade personalizadas](#creating-a-custom-health-check).
 
-## Configuring health checks
+## Configurando verificações de integridade
 
-You may configure health checks in your application by executing the following command. The command will create a `start/health.ts` file and configures health checks for **memory usage** and **used disk space**. Feel free to modify this file and remove/add additional health checks.
+Você pode configurar verificações de integridade em seu aplicativo executando o seguinte comando. O comando criará um arquivo `start/health.ts` e configurará verificações de integridade para **uso de memória** e **espaço em disco usado**. Sinta-se à vontade para modificar este arquivo e remover/adicionar verificações de integridade adicionais.
 
 :::note
-Make sure you have installed `@adonisjs/core@6.12.1` before using the following command.
+Certifique-se de ter instalado `@adonisjs/core@6.12.1` antes de usar o comando a seguir.
 :::
 
 ```sh
@@ -30,11 +30,11 @@ export const healthChecks = new HealthChecks().register([
 ])
 ```
 
-## Exposing an endpoint
+## Expondo um endpoint
 
-A common approach for performing health checks is to expose an HTTP endpoint that an external monitoring service can ping to collect the health check results.
+Uma abordagem comum para executar verificações de integridade é expor um endpoint HTTP que um serviço de monitoramento externo pode executar ping para coletar os resultados da verificação de integridade.
 
-So, let's define a route within the `start/routes.ts` file and bind the `HealthChecksController` to it. The `health_checks_controller.ts` file is created during the initial setup and lives inside the `app/controllers` directory.
+Então, vamos definir uma rota dentro do arquivo `start/routes.ts` e vincular o `HealthChecksController` a ele. O arquivo `health_checks_controller.ts` é criado durante a configuração inicial e fica dentro do diretório `app/controllers`.
 
 ```ts
 // title: start/routes.ts
@@ -44,9 +44,9 @@ const HealthChecksController = () => import('#controllers/health_checks_controll
 router.get('/health', [HealthChecksController])
 ```
 
-### Sample report
+### Relatório de exemplo
 
-The `healthChecks.run` method will execute all the checks and return a detailed [report as a JSON object](https://github.com/adonisjs/health/blob/develop/src/types.ts#L36). The report has the following properties:
+O método `healthChecks.run` executará todas as verificações e retornará um [relatório detalhado como um objeto JSON](https://github.com/adonisjs/health/blob/develop/src/types.ts#L36). O relatório tem as seguintes propriedades:
 
 ```json
 {
@@ -95,36 +95,36 @@ The `healthChecks.run` method will execute all the checks and return a detailed 
 
 ### `isHealthy`
 
-A boolean to know if all the checks have passed. The value will be set to `false` if one or more checks fail.
+Um booleano para saber se todas as verificações foram aprovadas. O valor será definido como `false` se uma ou mais verificações falharem.
 
 ### `status`
 
-Report status after performing all the checks. It will be one of the following.
+Relata o status após executar todas as verificações. Será um dos seguintes.
 
-- `ok`: All checks have passed successfully.
-- `warning`: One or more checks have reported a warning.
-- `error`: One or more checks have failed.
+- `ok`: todas as verificações foram aprovadas com sucesso.
+- `warning`: uma ou mais verificações relataram um aviso.
+- `error`: uma ou mais verificações falharam.
 
 ### `finishedAt`
 
-The DateTime at which the tests were completed.
+A data e hora em que os testes foram concluídos.
 
 ### `checks`
 
-An array of objects containing the detailed report of all the performed checks.
+Uma matriz de objetos contendo o relatório detalhado de todas as verificações realizadas.
 
 ### `debugInfo`
 
-Debug info can be used to identify the process and the duration for which it has been running. It includes the following properties.
+As informações de depuração podem ser usadas para identificar o processo e a duração em que ele está em execução. Elas incluem as seguintes propriedades.
 
-- `pid`: The process ID.
-- `ppid`: The process ID of the parent process managing your AdonisJS app process.
-- `platform`: The platform on which the application is running.
-- `uptime`: The duration (in seconds) for which the application is running.
-- `version`: Node.js version.
+- `pid`: O ID do processo.
+- `ppid`: O ID do processo do processo pai que gerencia seu processo de aplicativo AdonisJS.
+- `platform`: A plataforma na qual o aplicativo está em execução.
+- `uptime`: A duração (em segundos) em que o aplicativo está em execução.
+- `version`: Versão do Node.js.
 
-### Protecting the endpoint
-You may protect the `/health` endpoint from public access using either the auth middleware or creating a custom middleware that checks for a particular API secret inside the request header. For example:
+### Protegendo o endpoint
+Você pode proteger o endpoint `/health` do acesso público usando o middleware auth ou criando um middleware personalizado que verifica um segredo de API específico dentro do cabeçalho da solicitação. Por exemplo:
 
 ```ts
 import router from '@adonisjs/core/services/router'
@@ -142,13 +142,13 @@ router
   // insert-end
 ```
 
-## Available health checks
+## Verificações de integridade disponíveis
 
-Following is the list of available health checks you can configure within the `start/health.ts` file.
+A seguir está a lista de verificações de integridade disponíveis que você pode configurar no arquivo `start/health.ts`.
 
 ### `DiskSpaceCheck`
 
-The `DiskSpaceCheck` calculates the used disk space on your server and reports a warning/error when a certain threshold has been exceeded.
+O `DiskSpaceCheck` calcula o espaço em disco usado no seu servidor e relata um aviso/erro quando um certo limite é excedido.
 
 ```ts
 import { HealthChecks, DiskSpaceCheck } from '@adonisjs/core/health'
@@ -158,7 +158,7 @@ export const healthChecks = new HealthChecks().register([
 ])
 ```
 
-By default, the warning threshold is set to 75%, and the failure threshold is set to 80%. However, you may also define custom thresholds.
+Por padrão, o limite de aviso é definido como 75% e o limite de falha é definido como 80%. No entanto, você também pode definir limites personalizados.
 
 ```ts
 export const healthChecks = new HealthChecks().register([
@@ -172,7 +172,7 @@ export const healthChecks = new HealthChecks().register([
 
 ### `MemoryHeapCheck`
 
-The `MemoryHeapCheck` monitors the heap size reported by the [process.memoryUsage()](https://nodejs.org/api/process.html#processmemoryusage) method and reports a warning/error when a certain threshold has been exceeded.
+O `MemoryHeapCheck` monitora o tamanho do heap relatado pelo método [process.memoryUsage()](https://nodejs.org/api/process.html#processmemoryusage) e relata um aviso/erro quando um certo limite é excedido.
 
 ```ts
 import { HealthChecks, MemoryHeapCheck } from '@adonisjs/core/health'
@@ -182,7 +182,7 @@ export const healthChecks = new HealthChecks().register([
 ])
 ```
 
-By default, the warning threshold is set to **250MB** and the failure threshold is set to **300MB**. However, you may define custom thresholds as well.
+Por padrão, o limite de aviso é definido como **250 MB** e o limite de falha é definido como **300 MB**. No entanto, você também pode definir limites personalizados.
 
 ```ts
 export const healthChecks = new HealthChecks().register([
@@ -196,7 +196,7 @@ export const healthChecks = new HealthChecks().register([
 
 ### `MemoryRSSCheck`
 
-The `MemoryRSSCheck` monitors the Resident Set Size reported by the [process.memoryUsage()](https://nodejs.org/api/process.html#processmemoryusage) method and reports a warning/error when a certain threshold has been exceeded.
+O `MemoryRSSCheck` monitora o tamanho do conjunto residente relatado pelo método [process.memoryUsage()](https://nodejs.org/api/process.html#processmemoryusage) e relata um aviso/erro quando um certo limite é excedido.
 
 ```ts
 import { HealthChecks, MemoryRSSCheck } from '@adonisjs/core/health'
@@ -206,7 +206,7 @@ export const healthChecks = new HealthChecks().register([
 ])
 ```
 
-By default, the warning threshold is set to **320MB**, and the failure threshold is set to **350MB**. However, you may also define custom thresholds.
+Por padrão, o limite de aviso é definido como **320 MB** e o limite de falha é definido como **350 MB**. No entanto, você também pode definir limites personalizados.
 
 ```ts
 export const healthChecks = new HealthChecks().register([
@@ -219,7 +219,7 @@ export const healthChecks = new HealthChecks().register([
 ```
 
 ### `DbCheck`
-The `DbCheck` is provided by the `@adonisjs/lucid` package to monitor the connection with a SQL database. You can import and use it as follows.
+O `DbCheck` é fornecido pelo pacote `@adonisjs/lucid` para monitorar a conexão com um banco de dados SQL. Você pode importá-lo e usá-lo da seguinte maneira.
 
 ```ts
 // insert-start
@@ -237,7 +237,7 @@ export const healthChecks = new HealthChecks().register([
 ])
 ```
 
-Following is an example report from the database health check.
+A seguir está um relatório de exemplo da verificação de integridade do banco de dados.
 
 ```json
 // title: Report sample
@@ -256,7 +256,7 @@ Following is an example report from the database health check.
 }
 ```
 
-The `DbCheck` class accepts a database connection for monitoring. Register this check multiple times for each connection if you want to monitor multiple connections. For example:
+A classe `DbCheck` aceita uma conexão de banco de dados para monitoramento. Registre esta verificação várias vezes para cada conexão se quiser monitorar várias conexões. Por exemplo:
 
 ```ts
 // title: Monitoring multiple connections
@@ -272,7 +272,7 @@ export const healthChecks = new HealthChecks().register([
 ```
 
 ### `DbConnectionCountCheck`
-The `DbConnectionCountCheck` monitors the active connections on the database server and reports a warning/error when a certain threshold has been exceeded. This check is only supported for **PostgreSQL** and **MySQL** databases.
+O `DbConnectionCountCheck` monitora as conexões ativas no servidor de banco de dados e relata um aviso/erro quando um determinado limite é excedido. Esta verificação é suportada apenas para bancos de dados **PostgreSQL** e **MySQL**.
 
 ```ts
 import db from '@adonisjs/lucid/services/db'
@@ -291,7 +291,7 @@ export const healthChecks = new HealthChecks().register([
 ])
 ```
 
-Following is an example report from the database connection count health check.
+A seguir está um relatório de exemplo da verificação de integridade da contagem de conexões do banco de dados.
 
 ```json
 // title: Report sample
@@ -315,7 +315,7 @@ Following is an example report from the database connection count health check.
 }
 ```
 
-By default, the warning threshold is set to **10 connections**, and the failure threshold is set to **15 connections**. However, you may also define custom thresholds.
+Por padrão, o limite de aviso é definido como **10 conexões** e o limite de falha é definido como **15 conexões**. No entanto, você também pode definir limites personalizados.
 
 ```ts
 new DbConnectionCountCheck(db.connection())
@@ -324,7 +324,7 @@ new DbConnectionCountCheck(db.connection())
 ```
 
 ### `RedisCheck`
-The `RedisCheck` is provided by the `@adonisjs/redis` package to monitor the connection with a Redis database (including Cluster). You can import and use it as follows.
+O `RedisCheck` é fornecido pelo pacote `@adonisjs/redis` para monitorar a conexão com um banco de dados Redis (incluindo Cluster). Você pode importar e usar da seguinte forma.
 
 ```ts
 // insert-start
@@ -342,7 +342,7 @@ export const healthChecks = new HealthChecks().register([
 ])
 ```
 
-Following is an example report from the database health check.
+A seguir está um exemplo de relatório da verificação de integridade do banco de dados.
 
 ```json
 // title: Report sample
@@ -361,7 +361,7 @@ Following is an example report from the database health check.
 }
 ```
 
-The `RedisCheck` class accepts a redis connection to monitor. Register this check multiple times for each connection if you want to monitor multiple connections. For example:
+A classe `RedisCheck` aceita uma conexão redis para monitorar. Registre esta verificação várias vezes para cada conexão se quiser monitorar várias conexões. Por exemplo:
 
 ```ts
 // title: Monitoring multiple connections
@@ -377,7 +377,7 @@ export const healthChecks = new HealthChecks().register([
 ```
 
 ### `RedisMemoryUsageCheck`
-The `RedisMemoryUsageCheck` monitors the memory consumption of the redis server and reports a warning/error when a certain threshold has been exceeded.
+O `RedisMemoryUsageCheck` monitora o consumo de memória do servidor redis e relata um aviso/erro quando um determinado limite é excedido.
 
 ```ts
 import redis from '@adonisjs/redis/services/main'
@@ -396,7 +396,7 @@ export const healthChecks = new HealthChecks().register([
 ])
 ```
 
-Following is an example report from the redis memory usage health check.
+A seguir está um exemplo de relatório da verificação de integridade do uso de memória redis.
 
 ```json
 // title: Report sample
@@ -420,7 +420,7 @@ Following is an example report from the redis memory usage health check.
 }
 ```
 
-By default, the warning threshold is set to **100MB**, and the failure threshold is set to **120MB**. However, you may also define custom thresholds.
+Por padrão, o limite de aviso é definido como **100 MB** e o limite de falha é definido como **120 MB**. No entanto, você também pode definir limites personalizados.
 
 ```ts
 new RedisMemoryUsageCheck(db.connection())
@@ -428,13 +428,13 @@ new RedisMemoryUsageCheck(db.connection())
   .failWhenExceeds('240MB')
 ```
 
-## Caching results
+## Resultados de cache
 
-Health checks are performed every time you call the `healthChecks.run` method (aka visit the `/health` endpoint). You might want to ping the `/health` endpoint frequently, but avoid performing certain checks on every visit.
+As verificações de integridade são executadas sempre que você chama o método `healthChecks.run` (também conhecido como visita o endpoint `/health`). Você pode querer executar ping no endpoint `/health` com frequência, mas evite executar determinadas verificações em cada visita.
 
-For example, monitoring disk space every minute is not very useful, but tracking memory every minute can be helpful.
+Por exemplo, monitorar o espaço em disco a cada minuto não é muito útil, mas rastrear a memória a cada minuto pode ser útil.
 
-Therefore, we allow you to cache the results of individual health checks when you register them. For example:
+Portanto, permitimos que você armazene em cache os resultados de verificações de integridade individuais ao registrá-las. Por exemplo:
 
 ```ts
 import {
@@ -453,9 +453,9 @@ export const healthChecks = new HealthChecks().register([
 ])
 ```
 
-## Creating a custom health check
+## Criando uma verificação de integridade personalizada
 
-You may create a custom health check as a JavaScript class that adheres to the [HealthCheckContract](https://github.com/adonisjs/health/blob/develop/src/types.ts#L98) interface. You can define a health check anywhere inside your project or package and import it within the `start/health.ts` file to register it.
+Você pode criar uma verificação de integridade personalizada como uma classe JavaScript que adere à interface [HealthCheckContract](https://github.com/adonisjs/health/blob/develop/src/types.ts#L98). Você pode definir uma verificação de integridade em qualquer lugar dentro do seu projeto ou pacote e importá-la dentro do arquivo `start/health.ts` para registrá-la.
 
 ```ts
 import { Result, BaseCheck } from '@adonisjs/core/health'
@@ -479,7 +479,7 @@ export class ExampleCheck extends BaseCheck {
 }
 ```
 
-As shown in the above example, you may use the [Result](https://github.com/adonisjs/health/blob/develop/src/result.ts) class to create Health check results. Optionally, you may merge meta-data for the result as follows.
+Conforme mostrado no exemplo acima, você pode usar a classe [Result](https://github.com/adonisjs/health/blob/develop/src/result.ts) para criar resultados de verificação de integridade. Opcionalmente, você pode mesclar metadados para o resultado da seguinte forma.
 
 ```ts
 Result.ok('Database connection is healthy').mergeMetaData({
@@ -490,8 +490,8 @@ Result.ok('Database connection is healthy').mergeMetaData({
 })
 ```
 
-### Registering custom health check
-You may import your custom health check class within the `start/health.ts` file and register it by creating a new class instance.
+### Registrando verificação de integridade personalizada
+Você pode importar sua classe de verificação de integridade personalizada dentro do arquivo `start/health.ts` e registrá-la criando uma nova instância de classe.
 
 ```ts
 // highlight-start

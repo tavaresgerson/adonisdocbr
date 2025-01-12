@@ -1,13 +1,13 @@
 ---
-summary: Validation rules added to VineJS through AdonisJS container
+resumo: Regras de validação adicionadas ao VineJS por meio do contêiner AdonisJS
 ---
 
-# Validation rules
+# Regras de validação
 
-Lucid adds validation rules to VineJS to use in your schemas. Under the hood, it registers a provider in your AdonisJS application that extends VineJS rules.
-You can read more in the [AdonisJS docs](https://docs.adonisjs.com/guides/concepts/service-providers#service-providers) and [VineJS docs](https://vinejs.dev/docs/extend/custom_rules).
+O Lucid adiciona regras de validação ao VineJS para usar em seus esquemas. Por baixo dos panos, ele registra um provedor em seu aplicativo AdonisJS que estende as regras do VineJS.
+Você pode ler mais nos [documentos do AdonisJS](https://docs.adonisjs.com/guides/concepts/service-providers#service-providers) e [documentos do VineJS](https://vinejs.dev/docs/extend/custom_rules).
 
-You can use these rules directly from your VineJS schema. For example, the `unique` rule:
+Você pode usar essas regras diretamente do seu esquema VineJS. Por exemplo, a regra `unique`:
 
 ```ts
 import vine from '@vinejs/vine'
@@ -26,16 +26,16 @@ const schema = vine.object({
 
 ## Unique
 
-Ensure the value is unique (does not exists) inside a given database table and column.
+Garanta que o valor seja exclusivo (não exista) dentro de uma determinada tabela e coluna do banco de dados.
 
 :::note
-The rule is a macro for `VineString` and `VineNumber`, so you can use it after `vine.string()` or `vine.number()`.
+A regra é uma macro para `VineString` e `VineNumber`, então você pode usá-la depois de `vine.string()` ou `vine.number()`.
 :::
 
-You may either pass a callback to query the database directly, or an object:
+Você pode passar um retorno de chamada para consultar o banco de dados diretamente ou um objeto:
 
-- The [callback](https://github.com/adonisjs/lucid/blob/21.x/src/types/vine.ts#L61-L65) must return `true` if the value is unique (does not exist), or `false` if the value already exists.
-- You may also pass an [options object](https://github.com/adonisjs/lucid/blob/21.x/src/types/vine.ts#L17-L55) to specify the table and column.
+[callback](https://github.com/adonisjs/lucid/blob/21.x/src/types/vine.ts#L61-L65) deve retornar `true` se o valor for único (não existir) ou `false` se o valor já existir.
+[objeto de opções](https://github.com/adonisjs/lucid/blob/21.x/src/types/vine.ts#L17-L55) para especificar a tabela e a coluna.
 
 ```ts
 // Usage with callback
@@ -60,7 +60,7 @@ const schema = vine.object({
 })
 ```
 
-You may also use your Lucid model directly inside the callback:
+Você também pode usar seu modelo Lucid diretamente dentro do retorno de chamada:
 
 ```ts
 const schema = vine.object({
@@ -77,16 +77,16 @@ const schema = vine.object({
 
 ## Exists
 
-Ensure the value exists inside a given database table and column. This is the inverse of the unique rule.
+Garanta que o valor exista dentro de uma determinada tabela e coluna do banco de dados. Este é o inverso da regra exclusiva.
 
 :::note
-The rule is also a macro for `VineString` and `VineNumber`, so you can use it after `vine.string()` or `vine.number()`.
+A regra também é uma macro para `VineString` e `VineNumber`, então você pode usá-la depois de `vine.string()` ou `vine.number()`.
 :::
 
-You may either pass a callback to query the database directly, or an object:
+Você pode passar um retorno de chamada para consultar o banco de dados diretamente ou um objeto:
 
-- The [callback](https://github.com/adonisjs/lucid/blob/21.x/src/types/vine.ts#L61-L65) must return `true` if the value exists, `false` otherwise.
-- You may also pass an [options object](https://github.com/adonisjs/lucid/blob/21.x/src/types/vine.ts#L17-L55) to specify the table and column.
+[retorno de chamada](https://github.com/adonisjs/lucid/blob/21.x/src/types/vine.ts#L61-L65) deve retornar `true` se o valor existir, `false` caso contrário.
+[objeto de opções](https://github.com/adonisjs/lucid/blob/21.x/src/types/vine.ts#L17-L55) para especificar a tabela e a coluna.
 
 ```ts
 // Usage with callback

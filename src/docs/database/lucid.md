@@ -1,51 +1,51 @@
 ---
-summary: Quick overview of Lucid ORM, a SQL query builder and Active Record ORM built on top of Knex.
+resumo: Visão geral rápida do Lucid ORM, um construtor de consultas SQL e um ORM Active Record construído sobre o Knex.
 ---
 
 # Lucid ORM
 
-Lucid is a SQL query builder, and an Active Record ORM built on top of [Knex](https://knexjs.org) created and maintained by the AdonisJS core team. Lucid strives to leverage SQL to its full potential and offers clean API for many advanced SQL operations.
+O Lucid é um construtor de consultas SQL e um ORM Active Record construído sobre o [Knex](https://knexjs.org) criado e mantido pela equipe principal do AdonisJS. O Lucid se esforça para alavancar o SQL em seu potencial máximo e oferece uma API limpa para muitas operações SQL avançadas.
 
 :::note
-The documentation for Lucid is available on [https://lucid.adonisjs.com](https://lucid.adonisjs.com)
+A documentação do Lucid está disponível em [https://lucid.adonisjs.com](https://lucid.adonisjs.com)
 :::
 
-## Why Lucid
+## Por que o Lucid
 
-Following are some of the hand-picked Lucid features.
+A seguir estão alguns dos recursos selecionados do Lucid.
 
-- A fluent query builder built on top of Knex.
-- Support for read-write replicas and multiple connection management.
-- Class-based models that adhere to the active record pattern (handling relations, serialization and hooks).
-- Migration system to modify database schema using incremental changesets.
-- Model factories to generate fake data for testing.
-- Database seeders to insert initial/dummy data into the database.
+- Um construtor de consultas fluente construído sobre o Knex.
+- Suporte para réplicas de leitura e gravação e gerenciamento de múltiplas conexões.
+- Modelos baseados em classes que aderem ao padrão do registro ativo (manipulando relações, serialização e ganchos).
+- Sistema de migração para modificar o esquema do banco de dados usando conjuntos de alterações incrementais.
+- Fábricas de modelos para gerar dados falsos para teste.
+- Semeadores de banco de dados para inserir dados iniciais/fictícios no banco de dados.
 
-Apart from those, the following are additional reasons for using Lucid inside an AdonisJS application.
+Além disso, os seguintes são motivos adicionais para usar o Lucid dentro de um aplicativo AdonisJS.
 
-- We ship first-class integrations for Lucid with the Auth package and validator. Therefore, you do not have to write these integrations yourself.
+- Nós enviamos integrações de primeira classe para o Lucid com o pacote Auth e validador. Portanto, você não precisa escrever essas integrações sozinho.
 
-- Lucid comes pre-configured with the `api` and the `web` starter kits, providing a head start to your applications.
+- O Lucid vem pré-configurado com os kits iniciais `api` e `web`, fornecendo uma vantagem inicial para seus aplicativos.
 
-- One of the primary goals of Lucid is to leverage SQL to its full potential and support many advanced SQL operations like **window functions**, **recursive CTEs**, **JSON operations**, **row-based locks**, and much more.
+- Um dos principais objetivos do Lucid é alavancar o SQL em seu potencial máximo e oferecer suporte a muitas operações SQL avançadas, como **funções de janela**, **CTEs recursivos**, **operações JSON**, **bloqueios baseados em linha** e muito mais.
 
-- Both Lucid and Knex have been around for many years. Hence, they are mature and battle-tested compared to many other new ORMs.
+- Tanto o Lucid quanto o Knex existem há muitos anos. Portanto, eles são maduros e testados em batalha em comparação com muitos outros novos ORMs.
 
-With that said, AdonisJS does not force you to use Lucid. Just uninstall the package and install the ORM of your choice.
+Dito isso, o AdonisJS não força você a usar o Lucid. Basta desinstalar o pacote e instalar o ORM de sua escolha.
 
-## Installation
+## Instalação
 
-Install and configure Lucid using the following command.
+Instale e configure o Lucid usando o seguinte comando.
 
 ```sh
 node ace add @adonisjs/lucid
 ```
 
-::: details See steps performed by the configure command
+::: detalhes Veja as etapas executadas pelo comando configure
 
-1. Registers the following service provider inside the `adonisrc.ts` file.
+1. Registra o seguinte provedor de serviços dentro do arquivo `adonisrc.ts`.
 
-   ```ts
+```ts
    {
      providers: [
        // ...other providers
@@ -54,9 +54,9 @@ node ace add @adonisjs/lucid
    }
    ```
 
-2. Register the following command inside the `adonisrc.ts` file.
+2. Registre o seguinte comando dentro do arquivo `adonisrc.ts`.
 
-   ```ts
+```ts
    {
      commands: [
        // ...other commands
@@ -65,24 +65,23 @@ node ace add @adonisjs/lucid
    }
    ```
 
-3. Create the `config/database.ts` file.
+3. Crie o arquivo `config/database.ts`.
 
-4. Define the environment variables and their validations for the selected dialect.
+4. Defina as variáveis ​​de ambiente e suas validações para o dialeto selecionado.
 
-5. Install required peer dependencies.
+5. Instale as dependências de peer necessárias.
 
 :::
 
+## Criando seu primeiro modelo
 
-## Creating your first model
-
-Once the configuration is completed, you can create your first model using the following command.
+Depois que a configuração for concluída, você pode criar seu primeiro modelo usando o seguinte comando.
 
 ```sh
 node ace make:model User
 ```
 
-This command creates a new file inside the `app/models` directory with the following content.
+Este comando cria um novo arquivo dentro do diretório `app/models` com o seguinte conteúdo.
 
 ```ts
 import { DateTime } from 'luxon'
@@ -100,17 +99,17 @@ export default class User extends BaseModel {
 }
 ```
 
-Learn more about models by visiting the [official documentation](https://lucid.adonisjs.com/docs/models).
+Saiba mais sobre modelos visitando a [documentação oficial](https://lucid.adonisjs.com/docs/models).
 
-## Migrations
+## Migrações
 
-Migrations are a way to modify the database schema and data using incremental changesets. You can create a new migration using the following command.
+As migrações são uma maneira de modificar o esquema e os dados do banco de dados usando conjuntos de alterações incrementais. Você pode criar uma nova migração usando o seguinte comando.
 
 ```sh
 node ace make:migration users
 ```
 
-This command creates a new file inside the `database/migrations` directory with the following content.
+Este comando cria um novo arquivo dentro do diretório `database/migrations` com o seguinte conteúdo.
 
 ```ts
 import { BaseSchema } from '@adonisjs/lucid/schema'
@@ -132,17 +131,17 @@ export default class extends BaseSchema {
 }
 ```
 
-You can run all the pending migrations using the following command.
+Você pode executar todas as migrações pendentes usando o seguinte comando.
 
 ```sh
 node ace migration:run
 ```
 
-Learn more about migrations by visiting the [official documentation](https://lucid.adonisjs.com/docs/migrations).
+Saiba mais sobre migrações visitando a [documentação oficial](https://lucid.adonisjs.com/docs/migrations).
 
 ## Query Builder
 
-Lucid ships with a fluent query builder built on top of Knex. You can use the query builder to perform CRUD operations on your database.
+O Lucid vem com um Query Builder fluente criado sobre o Knex. Você pode usar o Query Builder para executar operações CRUD no seu banco de dados.
 
 ```ts
 import db from '@adonisjs/lucid/services/db'
@@ -159,7 +158,7 @@ const query = db.query()
 const queryWithTableSelection = db.from('users')
 ```
 
-The query builder can also be scoped to a model instance.
+O Query Builder também pode ter como escopo uma instância de modelo.
 
 ```ts
 import User from '#models/user'
@@ -167,11 +166,11 @@ import User from '#models/user'
 const user = await User.query().where('username', 'rlanz').first()
 ```
 
-Learn more about the query builder by visiting the [official documentation](https://lucid.adonisjs.com/docs/select-query-builder).
+Saiba mais sobre o Query Builder visitando a [documentação oficial](https://lucid.adonisjs.com/docs/select-query-builder).
 
-## CRUD operations
+## Operações CRUD
 
-Lucid models have built-in methods to perform CRUD operations on the database.
+Os modelos Lucid têm métodos integrados para executar operações CRUD no banco de dados.
 
 ```ts
 import User from '#models/user'
@@ -204,13 +203,13 @@ const user = await User.find(1)
 await user.delete()
 ```
 
-Learn more about CRUD operations by visiting the [official documentation](https://lucid.adonisjs.com/docs/crud-operations).
+Saiba mais sobre as operações CRUD visitando a [documentação oficial](https://lucid.adonisjs.com/docs/crud-operations).
 
-## Learn more
+## Saiba mais
 
-- [Lucid documentation](https://lucid.adonisjs.com)
-- [Installation & Usage](https://lucid.adonisjs.com/docs/installation)
-- [CRUD Operations](https://lucid.adonisjs.com/docs/crud-operations)
-- [Model Hooks](https://lucid.adonisjs.com/docs/model-hooks)
-- [Relations](https://lucid.adonisjs.com/docs/relationships)
-- [Adocasts Lucid Series](https://adocasts.com/topics/lucid)
+[Documentação do Lucid](https://lucid.adonisjs.com)
+[Instalação e uso](https://lucid.adonisjs.com/docs/installation)
+[Operações CRUD](https://lucid.adonisjs.com/docs/crud-operations)
+[Ganchos de modelo](https://lucid.adonisjs.com/docs/model-hooks)
+[Relações](https://lucid.adonisjs.com/docs/relationships)
+[Série Lucid do Adocasts](https://adocasts.com/topics/lucid)

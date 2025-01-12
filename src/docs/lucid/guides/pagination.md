@@ -1,8 +1,8 @@
-# Pagination
+# Paginação
 
-Lucid has inbuilt support for **offset-based pagination**. You can paginate the results of a query by chaining the `.paginate` method.
+O Lucid tem suporte interno para **paginação baseada em deslocamento**. Você pode paginar os resultados de uma consulta encadeando o método `.paginate`.
 
-The `paginate` method accepts the page number as the first argument and the rows to fetch as the second argument. Internally, we execute an additional query to count the total number of rows.
+O método `paginate` aceita o número da página como o primeiro argumento e as linhas a serem buscadas como o segundo argumento. Internamente, executamos uma consulta adicional para contar o número total de linhas.
 
 ```ts
 const page = request.input('page', 1)
@@ -12,7 +12,7 @@ const posts = await db.from('posts').paginate(page, limit)
 console.log(posts)
 ```
 
-The `paginate` method returns an instance of the [SimplePaginatorClass](https://github.com/adonisjs/lucid/blob/develop/src/database/paginator/simple_paginator.ts). It holds the meta data for the pagination, alongside the fetched `rows`.
+O método `paginate` retorna uma instância da [SimplePaginatorClass](https://github.com/adonisjs/lucid/blob/develop/src/database/paginator/simple_paginator.ts). Ele contém os metadados para a paginação, juntamente com as `rows` buscadas.
 
 ```ts
 SimplePaginator {
@@ -29,12 +29,12 @@ SimplePaginator {
 ```
 
 :::note
-It is recommended to use the `orderBy` method when using pagination to avoid a different order every time you query the data.
+É recomendável usar o método `orderBy` ao usar paginação para evitar uma ordem diferente toda vez que você consultar os dados.
 :::
 
-## Displaying pagination links
+## Exibindo links de paginação
 
-Following is a complete example of displaying the pagination links inside an Edge template.
+A seguir está um exemplo completo de exibição de links de paginação dentro de um modelo Edge.
 
 ```ts
 import { HttpContext } from '@adonisjs/core/http'
@@ -55,7 +55,7 @@ class PostsController {
 }
 ```
 
-Open the `posts/index.edge` file and paste the following code snippet inside it.
+Abra o arquivo `posts/index.edge` e cole o seguinte trecho de código dentro dele.
 
 ```edge
 <div>
@@ -78,7 +78,7 @@ Open the `posts/index.edge` file and paste the following code snippet inside it.
 // highlight-end
 ```
 
-The `getUrlsForRange` method accepts a range of pages and returns an array of objects with the following properties.
+O método `getUrlsForRange` aceita um intervalo de páginas e retorna uma matriz de objetos com as seguintes propriedades.
 
 ```ts
 [
@@ -100,9 +100,9 @@ The `getUrlsForRange` method accepts a range of pages and returns an array of ob
 
 ![](https://res.cloudinary.com/adonis-js/image/upload/v1596970976/adonisjs.com/lucid-pagination.png)
 
-## Serializing to JSON
+## Serializando para JSON
 
-You can also serialize the paginator results to JSON by calling the `toJSON` method. It returns the key names in `camelCase` by default. However, you can pass a [naming strategy](../models/naming_strategy.md#paginationmetakeys) to override the default convention.
+Você também pode serializar os resultados do paginador para JSON chamando o método `toJSON`. Ele retorna os nomes das chaves em `camelCase` por padrão. No entanto, você pode passar uma [estratégia de nomenclatura](../models/naming_strategy.md#paginationmetakeys) para substituir a convenção padrão.
 
 ```ts
 const posts = await db.from('posts').paginate(page, limit)
@@ -126,7 +126,7 @@ return posts.toJSON()
 }
 ```
 
-In the following example, we override the naming strategy to return keys in `snake_case`.
+No exemplo a seguir, substituímos a estratégia de nomenclatura para retornar chaves em `snake_case`.
 
 ```ts
 const posts = await db.from('posts').paginate(page, limit)
@@ -150,7 +150,7 @@ posts.namingStrategy = {
 return posts.toJSON()
 ```
 
-You can also assign a custom naming strategy to the `SimplePaginator` class constructor to override it globally inside a [service provider](https://docs.adonisjs.com/guides/service-providers)
+Você também pode atribuir uma estratégia de nomenclatura personalizada ao construtor de classe `SimplePaginator` para substituí-lo globalmente dentro de um [provedor de serviços](https://docs.adonisjs.com/guides/service-providers)
 
 ```ts
 import db from '@adonisjs/lucid/services/db'

@@ -1,65 +1,65 @@
-# Introduction
+# Introdução
 
-Lucid is a SQL query builder, and an Active Record ORM built on top of [Knex](https://knexjs.org/). Lucid strives to leverage SQL to its full potential and offers clean API for many advanced SQL operations.
+O Lucid é um construtor de consultas SQL e um ORM do Active Record construído sobre o [Knex](https://knexjs.org/). O Lucid se esforça para alavancar o SQL em seu potencial máximo e oferece uma API limpa para muitas operações SQL avançadas.
 
-Following are some of the hand-picked Lucid features.
+A seguir estão alguns dos recursos selecionados do Lucid.
 
-- A fluent query builder built on top of Knex.
-- Support for read-write replicas and multiple connection management.
-- Class-based models that adhere to the active record pattern.
-- Migration system to modify database schema using incremental changesets.
-- Model factories to generate fake data for testing.
-- Database seeders to insert initial/dummy data into the database.
+- Um construtor de consultas fluente construído sobre o Knex.
+- Suporte para réplicas de leitura e gravação e gerenciamento de múltiplas conexões.
+- Modelos baseados em classe que aderem ao padrão do Active Record.
+- Sistema de migração para modificar o esquema do banco de dados usando conjuntos de alterações incrementais.
+- Fábricas de modelos para gerar dados falsos para teste.
+- Semeadores de banco de dados para inserir dados iniciais/fictícios no banco de dados.
 
-## A fluent query builder
+## Um construtor de consultas fluente
 
-The base layer of Lucid is a fluent query builder you can use to construct SQL queries using a JavaScript API. The query builder uses [Knex](https://knexjs.org/) under the hood, and therefore, it supports many advanced SQL operations like **window functions**, **recursive CTEs**, **JSON operations**, **row-based locks**, and much more.
+A camada base do Lucid é um construtor de consultas fluente que você pode usar para construir consultas SQL usando uma API JavaScript. O construtor de consultas usa [Knex](https://knexjs.org/) por baixo dos panos e, portanto, ele suporta muitas operações SQL avançadas como **funções de janela**, **CTEs recursivas**, **operações JSON**, **bloqueios baseados em linha** e muito mais.
 
-Knex might not be the trendiest query builder in the Node.js ecosystem. However, it is mature and battle-tested.
+O Knex pode não ser o construtor de consultas mais moderno no ecossistema Node.js. No entanto, ele é maduro e testado em batalha.
 
-See also: [Using query builder](./installation.md#basic-usage)
+Veja também: [Usando o construtor de consultas](./installation.md#basic-usage)
 
-## Migration system
+## Sistema de migração
 
-Inspired by frameworks like Laravel, Rails, and Elixir Ecto, AdonisJS does not infer schema changes from models. Instead, it makes you write the incremental changesets to modify the database schema. Manual migrations might feel like too much typing. However, the flexibility and the control they provide are unmatched.
+Inspirado em frameworks como Laravel, Rails e Elixir Ecto, o AdonisJS não infere alterações de esquema de modelos. Em vez disso, ele faz você escrever os conjuntos de alterações incrementais para modificar o esquema do banco de dados. As migrações manuais podem parecer muita digitação. No entanto, a flexibilidade e o controle que elas fornecem são incomparáveis.
 
-We have experienced that in real-world applications, a schema change is not only adding new columns. The changes sometimes involve renaming columns, preserving data, creating a new table, and copying data from an old table. All this must be done without locking the tables for a long duration.
+Temos experimentado que em aplicativos do mundo real, uma alteração de esquema não é apenas adicionar novas colunas. Às vezes, as alterações envolvem renomear colunas, preservar dados, criar uma nova tabela e copiar dados de uma tabela antiga. Tudo isso deve ser feito sem bloquear as tabelas por um longo período.
 
-Manual migrations ensure that you can express schema changes per your application requirements.
+As migrações manuais garantem que você possa expressar alterações de esquema de acordo com os requisitos do seu aplicativo.
 
-See also: [Creating migrations](../migrations/introduction.md)
+Veja também: [Criando migrações](../migrations/introduction.md)
 
-## Active record ORM
+## ORM de registro ativo
 
-The ORM layer of AdonisJS uses JavaScript Classes to define data models. Classes can define lifecycle hooks, create custom properties and methods to encapsulate domain logic, and control the model's serialization behavior.
+A camada ORM do AdonisJS usa classes JavaScript para definir modelos de dados. As classes podem definir ganchos de ciclo de vida, criar propriedades e métodos personalizados para encapsular a lógica de domínio e controlar o comportamento de serialização do modelo.
 
-You create one model for every database table inside your application and use the APIs the models offer to interact with it.
+Você cria um modelo para cada tabela de banco de dados dentro do seu aplicativo e usa as APIs que os modelos oferecem para interagir com ele.
 
-* See also: [Using models](../models/introduction.md)
+[Usando modelos](../models/introduction.md)
 
-## Model factories and database seeders
+## Fábricas de modelos e seeders de banco de dados
 
-Model factories are used to generate/persist model instances with fake data. They are helpful during tests since you can encapsulate the logic of generating dummy data in one place and reuse factories across the tests.
+As fábricas de modelos são usadas para gerar/persistir instâncias de modelo com dados falsos. Eles são úteis durante os testes, pois você pode encapsular a lógica de geração de dados fictícios em um só lugar e reutilizar fábricas nos testes.
 
-On the other hand, the database seeders are used to seed the database with some initial values. These values can be dummy data you want to use during development. Or, you can use seeders to set up the initial state of your production application with a list of countries, admin users, and so on.
+Por outro lado, os seeders de banco de dados são usados ​​para semear o banco de dados com alguns valores iniciais. Esses valores podem ser dados fictícios que você deseja usar durante o desenvolvimento. Ou você pode usar seeders para configurar o estado inicial do seu aplicativo de produção com uma lista de países, usuários administradores e assim por diante.
 
-* See also: [Model factories](../models/model_factories.md)
-* See also: [Database seeders](./seeders.md)
+[Fábricas de modelos](../models/model_factories.md)
+[Seeders de banco de dados](./seeders.md)
 
-## Lucid is not type-safe
+## Lucid não é seguro para tipos
 
-Lucid is not type-safe. Let's discuss why.
+Lucid não é seguro para tipos. Vamos discutir o porquê.
 
-Type safety with SQL ORMs is a complex topic since it must be applied on multiple layers, such as query construction and output.
+A segurança de tipos com ORMs SQL é um tópico complexo, pois deve ser aplicado em várias camadas, como construção e saída de consultas.
 
-Many query builders and ORMs are only type-safe with the query output (sometimes they also limit the SQL features), and only a few are type-safe with query construction as well. Kysely is one of them.
+Muitos construtores de consultas e ORMs são seguros para tipos apenas com a saída da consulta (às vezes, eles também limitam os recursos SQL), e apenas alguns são seguros para tipos com construção de consultas também. Kysely é um deles.
 
-I have [written a few hundred words](https://github.com/thetutlage/meta/discussions/8) comparing Kysely and Drizzle ORM that might help you properly understand the type safety layers.
+Eu [escrevi algumas centenas de palavras](https://github.com/thetutlage/meta/discussions/8) comparando Kysely e Drizzle ORM que podem ajudar você a entender corretamente as camadas de segurança de tipo.
 
-If we take Kysely as the gold standard of type-safety, we lose a lot of flexibility with it. Especially, in ways, we extend and use Lucid across the AdonisJS codebase.
+Se tomarmos Kysely como o padrão ouro de segurança de tipo, perdemos muita flexibilidade com ele. Especialmente, de certa forma, estendemos e usamos Lucid em toda a base de código AdonisJS.
 
-In fact, I used it to create an extension for our Auth module and the helpers Lucid models can use. And I failed both times. The [creators of Kysely also confirmed](https://www.answeroverflow.com/m/1179612569774870548) that creating generic abstractions of Kysely is impossible.
+Na verdade, eu o usei para criar uma extensão para nosso módulo Auth e os auxiliares que os modelos Lucid podem usar. E falhei nas duas vezes. Os [criadores do Kysely também confirmaram](https://www.answeroverflow.com/m/1179612569774870548) que criar abstrações genéricas do Kysely é impossível.
 
-This is not to say that Kysely is limiting in the first place. It is limiting how we want to use, i.e., build generic abstractions and integrate them seamlessly with the rest of the framework. Kysely is an excellent tool for direct usage.
+Isso não quer dizer que Kysely seja limitante em primeiro lugar. Ele está limitando como queremos usar, ou seja, construir abstrações genéricas e integrá-las perfeitamente com o resto da estrutura. Kysely é uma ferramenta excelente para uso direto.
 
-With that said, looking at the resources at our disposal and our goals, Lucid will not be as type-safe as Kysely in the near future. However, we might invest some time in making certain parts of the ORM type safe.
+Dito isso, olhando para os recursos à nossa disposição e nossos objetivos, o Lucid não será tão seguro para tipos quanto o Kysely no futuro próximo. No entanto, podemos investir algum tempo para tornar certas partes do ORM seguras para tipos.

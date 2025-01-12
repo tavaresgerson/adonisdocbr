@@ -1,26 +1,26 @@
 ---
-summary: Use migrations to create and modify SQL tables
+resumo: Use migrações para criar e modificar tabelas SQL
 ---
 
-# Schema migrations
+# Migrações de esquema
 
-Schema migrations are the version control for your database. Think of them as independent scripts written in TypeScript to alter your database schema over time.
+Migrações de esquema são o controle de versão para seu banco de dados. Pense nelas como scripts independentes escritos em TypeScript para alterar seu esquema de banco de dados ao longo do tempo.
 
-Here's how migrations work in a nutshell.
+Veja como as migrações funcionam em poucas palavras.
 
-You make a new migration file for every database schema change (i.e., create or alter table).
+Você cria um novo arquivo de migração para cada alteração de esquema de banco de dados (por exemplo, criar ou alterar tabela).
 
-- Within the migration file, you will write the statements to perform the required actions.
-- Run migrations using the AdonisJS command-line tool.
-- AdonisJS will keep track of executed migrations. This ensures that every migration runs only once.
-- During development, you can also roll back migrations to edit them.
+- Dentro do arquivo de migração, você escreverá as instruções para executar as ações necessárias.
+- Execute migrações usando a ferramenta de linha de comando AdonisJS.
+- O AdonisJS manterá o controle das migrações executadas. Isso garante que cada migração seja executada apenas uma vez.
+- Durante o desenvolvimento, você também pode reverter migrações para editá-las.
 
-## Creating your first migration
+## Criando sua primeira migração
 
-You can create a new migration by running the following Ace command. The migration files are stored inside the `database/migrations` directory.
+Você pode criar uma nova migração executando o seguinte comando Ace. Os arquivos de migração são armazenados dentro do diretório `database/migrations`.
 
 :::note
-You can also create a Lucid model and the migration together by running the `node ace make:model -m` flag.
+Você também pode criar um modelo Lucid e a migração juntos executando o sinalizador `node ace make:model -m`.
 :::
 
 ```sh
@@ -29,16 +29,16 @@ node ace make:migration users
 # CREATE: database/migrations/1630981615472_create_users_table.ts
 ```
 
-If you will notice, the migration filename is prefixed with some numeric value. We add the current timestamp to the filename so that the migration files are sorted in the order created.
+Se você notar, o nome do arquivo de migração é prefixado com algum valor numérico. Adicionamos o registro de data e hora atual ao nome do arquivo para que os arquivos de migração sejam classificados na ordem de criação.
 
-### Migration class structure
+### Estrutura da classe de migração
 
-A migration class always extends the [BaseSchema](https://github.com/adonisjs/lucid/blob/develop/src/schema/main.ts) class and must implement the `up` and the `down` methods.
+Uma classe de migração sempre estende a classe [BaseSchema](https://github.com/adonisjs/lucid/blob/develop/src/schema/main.ts) e deve implementar os métodos `up` e `down`.
 
-- The `up` method is used to evolve the database schema further. Usually, you will create new tables/indexes or alter existing tables inside this method.
-- The `down` method is used to roll back the actions executed by the `up` method. For example, if the up method creates a table, the down method should drop the same table.
+- O método `up` é usado para evoluir ainda mais o esquema do banco de dados. Normalmente, você criará novas tabelas/índices ou alterará tabelas existentes dentro deste método.
+- O método `down` é usado para reverter as ações executadas pelo método `up`. Por exemplo, se o método up cria uma tabela, o método down deve remover a mesma tabela.
 
-Both methods have access to the [Schema builder](./schema_builder.md) that you can use to construct SQL DDL queries.
+Ambos os métodos têm acesso ao [Schema builder](./schema_builder.md) que você pode usar para construir consultas SQL DDL.
 
 ```ts
 import { BaseSchema } from '@adonisjs/lucid/schema'
@@ -60,23 +60,23 @@ export default class extends BaseSchema {
 }
 ```
 
-## Run & rollback migrations
+## Executar e reverter migrações
 
-Once you have created the migration files you need, you can run the following Ace command to process migrations. For example, the `migration:run` command executes the `up` method on all the migration files.
+Depois de criar os arquivos de migração necessários, você pode executar o seguinte comando Ace para processar migrações. Por exemplo, o comando `migration:run` executa o método `up` em todos os arquivos de migração.
 
 ```sh
 node ace migration:run
 ```
 
-SQL statements for every migration file are wrapped inside a transaction. So if one statement fails, all other statements within the same file will roll back.
+As instruções SQL para cada arquivo de migração são encapsuladas dentro de uma transação. Portanto, se uma instrução falhar, todas as outras instruções dentro do mesmo arquivo serão revertidas.
 
-Also, in case of failure, the subsequent migrations will be aborted. However, the migrations before the failed migration stay in the completed state.
+Além disso, em caso de falha, as migrações subsequentes serão abortadas. No entanto, as migrações antes da migração com falha permanecem no estado concluído.
 
-### Tracking completed migrations
+### Rastreando migrações concluídas
 
-AdonisJS tracks the file path of executed migrations inside the `adonis_schema` database table. This is done to avoid re-running the same migration files.
+O AdonisJS rastreia o caminho do arquivo de migrações executadas dentro da tabela de banco de dados `adonis_schema`. Isso é feito para evitar a reexecução dos mesmos arquivos de migração.
 
-Following are the columns inside the `adonis_schema` table.
+A seguir estão as colunas dentro da tabela `adonis_schema`.
 
 ```sql
 +----+----------------------------------------------+-------+----------------------------------+
@@ -87,13 +87,13 @@ Following are the columns inside the `adonis_schema` table.
 +----+----------------------------------------------+-------+----------------------------------+
 ```
 
-- **name**: Path to the migration file. It is always relative to the project root.
-- **batch**: The batch under which the migration was executed. The batch number is incremented every time you run the `migration:run` command.
-- **migration_time**: Migration execution timestamp.
+- **name**: Caminho para o arquivo de migração. É sempre relativo à raiz do projeto.
+- **batch**: O lote sob o qual a migração foi executada. O número do lote é incrementado toda vez que você executa o comando `migration:run`.
+- **migration_time**: Carimbo de data/hora da execução da migração.
 
-### Rollback migrations
+### Migrações de reversão
 
-You can roll back migrations by running the `migration:rollback` command. The rollback action is performed on the migrations from the most recent batch. However, you can also specify a custom batch number until which you want to roll back.
+Você pode reverter migrações executando o comando `migration:rollback`. A ação de reversão é realizada nas migrações do lote mais recente. No entanto, você também pode especificar um número de lote personalizado até o qual deseja reverter.
 
 ```sh
 # Rollback the latest batch
@@ -106,24 +106,24 @@ node ace migration:rollback --batch=0
 node ace migration:rollback --batch=1
 ```
 
-The `migration:reset` command is basically an alias for `migration:rollback --batch=0`. This will rollback all of your application's migrations :
+O comando `migration:reset` é basicamente um alias para `migration:rollback --batch=0`. Isso reverterá todas as migrações do seu aplicativo:
 
 ```sh
 node ace migration:reset
 ```
 
-To rollback a specific number of migrations, you can use the `--step` flag.
+Para reverter um número específico de migrações, você pode usar o sinalizador `--step`.
 
 ```sh
 # Rollback the last 3 migrations
 node ace migration:rollback --step=3
 ```
 
-The rollback command executes the `down` method of the migration class. Like the `up` method, the SQL statements of the `down` method are also wrapped inside a database transaction.
+O comando rollback executa o método `down` da classe de migração. Assim como o método `up`, as instruções SQL do método `down` também são encapsuladas dentro de uma transação de banco de dados.
 
-### Rollback and migrate using a single command
+### Reverter e migrar usando um único comando
 
-The `migration:refresh` command will rollback all of your migrations and then execute the `migration:run` command. This command effectively re-creates your entire database:
+O comando `migration:refresh` reverterá todas as suas migrações e, em seguida, executará o comando `migration:run`. Este comando efetivamente recria todo o seu banco de dados:
 
 ```sh
 node ace migration:refresh
@@ -132,9 +132,9 @@ node ace migration:refresh
 node ace migration:refresh --seed
 ```
 
-### Drop tables and migrate
+### Exclua tabelas e migre
 
-Unlike the `migration:refresh` command, the `migration:fresh` command will not run the `down` method of the migration files. Instead, it will drop all the tables using the `db:wipe` command and then run the `migration:run` command.
+Ao contrário do comando `migration:refresh`, o comando `migration:fresh` não executará o método `down` dos arquivos de migração. Em vez disso, ele excluirá todas as tabelas usando o comando `db:wipe` e, em seguida, executará o comando `migration:run`.
 
 ```sh
 node ace migration:fresh
@@ -144,24 +144,24 @@ node ace migration:fresh --seed
 ```
 
 :::warning
-`migration:fresh` and `db:wipe` commands will drop all database tables. These command should be used with caution when developing on a database that is shared with other applications.
+Os comandos `migration:fresh` e `db:wipe` excluirão todas as tabelas do banco de dados. Esses comandos devem ser usados ​​com cautela ao desenvolver em um banco de dados compartilhado com outros aplicativos.
 :::
 
-### Avoid rollback in production
+### Evite rollback na produção
 
-Performing a rollback during development is perfectly fine since there is no fear of data loss. However, performing a rollback in production is not an option in the majority of cases. Consider the following example:
+Executar um rollback durante o desenvolvimento é perfeitamente aceitável, pois não há medo de perda de dados. No entanto, executar um rollback na produção não é uma opção na maioria dos casos. Considere o seguinte exemplo:
 
-- You create and run a migration to set up the `users` table.
-- Over time, this table has received data since the app is running in production.
-- Your product has evolved, and now you want to add a new column to the `users` table.
+- Você cria e executa uma migração para configurar a tabela `users`.
+- Com o tempo, esta tabela recebeu dados desde que o aplicativo está em execução na produção.
+- Seu produto evoluiu e agora você deseja adicionar uma nova coluna à tabela `users`.
 
-You cannot simply roll back, edit the existing migration, and re-run it because the rollback will drop the `users` table.
+Você não pode simplesmente reverter, editar a migração existente e executá-la novamente porque o rollback removerá a tabela `users`.
 
-Instead, you should create a new migration file to alter the existing `users` table by adding the required column. In other words, migrations should always move forward.
+Em vez disso, você deve criar um novo arquivo de migração para alterar a tabela `users` existente adicionando a coluna necessária. Em outras palavras, as migrações devem sempre avançar.
 
-## Create a table
+## Crie uma tabela
 
-You can use the `schema.createTable` method to create a new database table. The method accepts the table name as the first argument and a callback function to define the table columns.
+Você pode usar o método `schema.createTable` para criar uma nova tabela de banco de dados. O método aceita o nome da tabela como o primeiro argumento e uma função de retorno de chamada para definir as colunas da tabela.
 
 ```ts
 import { BaseSchema } from '@adonisjs/lucid/schema'
@@ -185,11 +185,11 @@ export default class extends BaseSchema {
 }
 ```
 
-* [Schema builder reference guide →](./schema_builder.md)
+[Guia de referência do construtor de esquemas →](./schema_builder.md)
 
-## Alter table
+## Alterar tabela
 
-You can alter an existing database table using the `schema.alterTable` method. The method accepts the table name as the first argument and a callback function to alter/add the table columns.
+Você pode alterar uma tabela de banco de dados existente usando o método `schema.alterTable`. O método aceita o nome da tabela como o primeiro argumento e uma função de retorno de chamada para alterar/adicionar as colunas da tabela.
 
 ```ts
 export default class extends BaseSchema {
@@ -205,9 +205,9 @@ export default class extends BaseSchema {
 }
 ```
 
-## Rename/drop table
+## Renomear/remover tabela
 
-You can rename the table using the `schema.renameTable`. The method accepts the existing table name as the first argument and the new name as the second argument.
+Você pode renomear a tabela usando `schema.renameTable`. O método aceita o nome da tabela existente como o primeiro argumento e o novo nome como o segundo argumento.
 
 ```ts
 export default class extends BaseSchema {
@@ -219,7 +219,7 @@ export default class extends BaseSchema {
 }
 ```
 
-You can drop the table using the `schema.dropTable`. The method accepts the table name as the only argument.
+Você pode remover a tabela usando `schema.dropTable`. O método aceita o nome da tabela como o único argumento.
 
 ```ts
 export default class extends BaseSchema {
@@ -231,9 +231,9 @@ export default class extends BaseSchema {
 }
 ```
 
-## Dry run
+## Execução a seco
 
-The dry run mode of migrations lets you view the SQL queries in the console instead of executing them. Just pass the `--dry-run` flag to the migration commands to turn on the dry run mode.
+O modo de execução a seco das migrações permite que você visualize as consultas SQL no console em vez de executá-las. Basta passar o sinalizador `--dry-run` para os comandos de migração para ativar o modo de execução a seco.
 
 ```sh
 # Run
@@ -243,14 +243,14 @@ node ace migration:run --dry-run
 node ace migration:rollback --dry-run
 ```
 
-## Performing other database operations
+## Executando outras operações de banco de dados
 
-Quite often, you will have requirements to run SQL queries other than just creating/altering tables. For example: Migrating data to a newly created table before deleting the old table.
+Muitas vezes, você terá requisitos para executar consultas SQL além de apenas criar/alterar tabelas. Por exemplo: migrar dados para uma tabela recém-criada antes de excluir a tabela antiga.
 
-You should define these operations using the `this.defer` method, as shown below.
+Você deve definir essas operações usando o método `this.defer`, conforme mostrado abaixo.
 
 :::note
-We migrate the emails from the `users` table to the `user_emails` table in the following example.
+Migramos os e-mails da tabela `users` para a tabela `user_emails` no exemplo a seguir.
 :::
 
 ```ts
@@ -278,17 +278,17 @@ export default class extends BaseSchema {
 }
 ```
 
-Wrapping your database queries inside the `this.defer` method makes sure they are not executed when running migrations in **dry run** mode.
+Envolver suas consultas de banco de dados dentro do método `this.defer` garante que elas não sejam executadas ao executar migrações no modo **dry run**.
 
-## Changing migrations database connection
+## Alterando a conexão do banco de dados de migrações
 
-You can manage the database connection for migrations in a couple of different ways.
+Você pode gerenciar a conexão do banco de dados para migrações de algumas maneiras diferentes.
 
-### Separate migration source
+### Origem de migração separada
 
-The first option is to keep migrations separate for each database connection. This is usually helpful when each database connection queries different tables. For example, you are using a different database for users data and a different database for products data.
+A primeira opção é manter as migrações separadas para cada conexão de banco de dados. Isso geralmente é útil quando cada conexão de banco de dados consulta tabelas diferentes. Por exemplo, você está usando um banco de dados diferente para dados de usuários e um banco de dados diferente para dados de produtos.
 
-Define the migrations path next to the database connection config.
+Defina o caminho das migrações ao lado da configuração da conexão do banco de dados.
 
 ```ts
 {
@@ -311,31 +311,31 @@ Define the migrations path next to the database connection config.
 }
 ```
 
-When creating a new migration, define the `--connection` flag, and the command will create the file in the correct directory.
+Ao criar uma nova migração, defina o sinalizador `--connection`, e o comando criará o arquivo no diretório correto.
 
 ```sh
 node ace make:migration --connection=products
 ```
 
-When running the migrations, the `--connection` flag will run migrations only from the selected connection directory.
+Ao executar as migrações, o sinalizador `--connection` executará migrações apenas do diretório de conexão selecionado.
 
 ```sh
 node ace migration:run --connection=products
 ```
 
-### Shared migrations
+### Migrações compartilhadas
 
-If you want to run the same migrations under a different database connection, you can use the `--connection` flag. The migrations will use the config from the selected connection to run the migrations.
+Se você quiser executar as mesmas migrações em uma conexão de banco de dados diferente, você pode usar o sinalizador `--connection`. As migrações usarão a configuração da conexão selecionada para executar as migrações.
 
-This option is helpful for multi-tenant applications, where you want to switch connections every time you run the migration.
+Esta opção é útil para aplicativos multilocatários, onde você deseja alternar as conexões toda vez que executar a migração.
 
 ```sh
 node ace migration:run --connection=tenantA
 ```
 
-## A note on advisory locks
+## Uma observação sobre bloqueios consultivos
 
-We obtain an advisory lock with the database server to ensure that only one process is running migrations at a time. The advisory locks are supported only by `pg` and `mysql` drivers and you can disable locking system using the `--disable-locks` command-line flag.
+Obtemos um bloqueio consultivo com o servidor de banco de dados para garantir que apenas um processo esteja executando migrações por vez. Os bloqueios consultivos são suportados apenas pelos drivers `pg` e `mysql` e você pode desabilitar o sistema de bloqueio usando o sinalizador de linha de comando `--disable-locks`.
 
 ```sh
 node ace migration:run --disable-locks
@@ -343,11 +343,11 @@ node ace migration:refresh --disable-locks
 node ace migration:rollback --disable-locks
 ```
 
-## Running migrations programmatically
+## Executando migrações programaticamente
 
-Using the `MigrationRunner` module, you can run migrations programmatically. This is usually helpful when running migrations from a web interface and not the command line.
+Usando o módulo `MigrationRunner`, você pode executar migrações programaticamente. Isso geralmente é útil ao executar migrações de uma interface da web e não da linha de comando.
 
-Following is an example of running the migrations from a route and returning a list of migrated files in the response.
+A seguir, um exemplo de execução de migrações de uma rota e retorno de uma lista de arquivos migrados na resposta.
 
 ```ts
 import db from '@adonisjs/lucid/services/db'
@@ -367,15 +367,15 @@ router.get('/', async () => {
 })
 ```
 
-- The `direction = up` means to run the `up` method inside the migration files. You can set the `direction = down` to roll back the migrations.
+- `direction = up` significa executar o método `up` dentro dos arquivos de migração. Você pode definir `direction = down` para reverter as migrações.
 
-- Enabling the `dryRun` will not execute the queries but instead collect them inside the `queries` array.
+- Habilitar `dryRun` não executará as consultas, mas as coletará dentro do array `queries`.
 
-- You can also optionally define the `connectionName` property to execute the migrations against a specific database connection.
+- Você também pode definir opcionalmente a propriedade `connectionName` para executar as migrações em uma conexão de banco de dados específica.
 
 ### `migratedFiles`
 
-The `migrator.migratedFiles` is an object. The key is the unique name (derived from the file path), and the value is another object of migration file properties.
+O `migrator.migratedFiles` é um objeto. A chave é o nome exclusivo (derivado do caminho do arquivo) e o valor é outro objeto das propriedades do arquivo de migração.
 
 ```json
 {
@@ -392,14 +392,14 @@ The `migrator.migratedFiles` is an object. The key is the unique name (derived f
 }
 ```
 
-- The `status` will be one of **"pending"**, **"completed"**, or **"error"**.
-- The `queries` array contains an array of executed queries. Only when `dryRun` is enabled.
-- The `file` property holds the information for the migration file.
-- The `batch` property tells the batch in which the migration was executed.
+- O `status` será um dos **"pending"**, **"completed"** ou **"error"**.
+- A matriz `queries` contém uma matriz de consultas executadas. Somente quando `dryRun` estiver habilitado.
+- A propriedade `file` contém as informações do arquivo de migração.
+- A propriedade `batch` informa o lote no qual a migração foi executada.
 
 ### `getList`
 
-The `migrator.getList` method returns a list of all the migrations, including the completed and the pending ones. This is the same list you see when running the `node ace migration:status` command.
+O método `migrator.getList` retorna uma lista de todas as migrações, incluindo as concluídas e as pendentes. Esta é a mesma lista que você vê ao executar o comando `node ace migration:status`.
 
 ```ts
 await migrator.getList()
@@ -416,16 +416,16 @@ await migrator.getList()
 
 ### `status`
 
-Returns the current `status` of the migrator. It will always be one of the following.
+Retorna o `status` atual do migrador. Ele sempre será um dos seguintes.
 
-- The `pending` status means no the `migrator.run` method has not been called yet.
-- The `completed` status means the migrations were successfully executed.
-- The `error` status means there was an error in the migration process. You can read the actual error from the `migrator.error` property in case of error status.
-- The `skipped` status means there were no migrations to run or rollback.
+- O status `pending` significa que o método `migrator.run` ainda não foi chamado.
+- O status `completed` significa que as migrações foram executadas com sucesso.
+- O status `error` significa que houve um erro no processo de migração. Você pode ler o erro real na propriedade `migrator.error` em caso de status de erro.
+- O status `skiped` significa que não houve migrações para executar ou reverter.
 
-## Migrations config
+## Configuração de migrações
 
-The `migration` object defined on every database connection is used to configuration the migration system of Lucid. Following is the list of available options.
+O objeto `migration` definido em cada conexão de banco de dados é usado para configurar o sistema de migração do Lucid. A seguir está a lista de opções disponíveis.
 
 ```ts
 {
@@ -441,20 +441,20 @@ The `migration` object defined on every database connection is used to configura
 
 ### `naturalSort`
 
-Use natural sort to sort the files inside the migrations directory.
+Use a classificação natural para classificar os arquivos dentro do diretório de migrações.
 
 ### `paths`
 
-An array of directories to scan and load migration files. All files ending with `.ts` or `.js` are imported and executed as migration files.
+Uma matriz de diretórios para escanear e carregar arquivos de migração. Todos os arquivos que terminam com `.ts` ou `.js` são importados e executados como arquivos de migração.
 
 ### `disableRollbacksInProduction`
 
-A security flag to disable accidental rollbacks in production environment. Rollback actions defined inside a migration file are usually destructive like **dropping a table**, **removing a column**, and so on. Therefore, we recommend disabling rollbacks in production.
+Um sinalizador de segurança para desabilitar reversões acidentais no ambiente de produção. As ações de reversão definidas dentro de um arquivo de migração são geralmente destrutivas, como **remover uma tabela**, **remover uma coluna** e assim por diante. Portanto, recomendamos desabilitar reversões na produção.
 
 ### `disableTransactions`
 
-Disable use of transactions when executing migration files. By default, we start one transaction for every migration file.
+Desabilite o uso de transações ao executar arquivos de migração. Por padrão, iniciamos uma transação para cada arquivo de migração.
 
 ### `tableName`
 
-The table name for tracking state of executed migration files. Defaults to `adonis_schema`.
+O nome da tabela para rastrear o estado dos arquivos de migração executados. O padrão é `adonis_schema`.

@@ -1,12 +1,12 @@
 ---
-summary: Learn, how to use query scopes to define reusable query builder functions.
+resumo: Aprenda como usar escopos de consulta para definir funções de construtor de consulta reutilizáveis.
 ---
 
-# Query scopes
+# Escopos de consulta
 
-Query scopes are the reusable function to apply to a query builder instance to modify the query.
+Os escopos de consulta são a função reutilizável para aplicar a uma instância do construtor de consulta para modificar a consulta.
 
-The methods are defined as static properties on the model class and receive the current query as the first argument. For example:
+Os métodos são definidos como propriedades estáticas na classe de modelo e recebem a consulta atual como o primeiro argumento. Por exemplo:
 
 ```ts
 // title: app/models/post.ts
@@ -27,15 +27,15 @@ export default class Post extends BaseModel {
 }
 ```
 
-You can apply the `published` scope on a query using the `withScopes` method. It accepts a callback and gives you access to all the scopes as methods.
+Você pode aplicar o escopo `published` em uma consulta usando o método `withScopes`. Ele aceita um retorno de chamada e dá acesso a todos os escopos como métodos.
 
 ```ts
 Post.query().withScopes((scopes) => scopes.published())
 ```
 
-## Passing arguments to the scopes
+## Passando argumentos para os escopos
 
-The query scopes can also accept arguments. For example: Creating a scope that accepts a user object to scope the projects they can view.
+Os escopos de consulta também podem aceitar argumentos. Por exemplo: Criando um escopo que aceita um objeto de usuário para definir o escopo dos projetos que eles podem visualizar.
 
 ```ts
 import { DateTime } from 'luxon'
@@ -56,19 +56,19 @@ export default class Project extends BaseModel {
 }
 ```
 
-Now, you can call the `scopes.visibleTo` method and pass it the required arguments.
+Agora, você pode chamar o método `scopes.visibleTo` e passar os argumentos necessários.
 
 ```ts
 Project.query().withScopes((scopes) => scopes.visibleTo(auth.user))
 ```
 
-## Calling scopes within the scopes
+## Chamando escopos dentro dos escopos
 
-Since the scope method receives an instance of the [Model query builder](./query_builder.md), you can reference other model scopes within the scope callback.
+Como o método de escopo recebe uma instância do [Model query builder](./query_builder.md), você pode referenciar outros escopos de modelo dentro do retorno de chamada do escopo.
 
-However, the scope method is static so it is not aware of the model in which it is used (a TypeScript limitation). Consequently, it cannot infer the Query builder type for the model.
+No entanto, o método de escopo é estático, então ele não está ciente do modelo no qual é usado (uma limitação do TypeScript). Consequentemente, ele não pode inferir o tipo de construtor de consulta para o modelo.
 
-Therefore, we need to create a `Builder` type as follows:
+Portanto, precisamos criar um tipo `Builder` da seguinte forma:
 
 ```ts
 import { ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
@@ -78,7 +78,7 @@ type Builder = ModelQueryBuilderContract<typeof Post>
 // highlight-end
 ```
 
-Then, you can hint the `builder` property as follow:
+Então, você pode sugerir a propriedade `builder` da seguinte forma:
 
 ```ts
 export default class Post extends BaseModel {
@@ -94,7 +94,7 @@ export default class Post extends BaseModel {
 }
 ```
 
-If you also want to pass arguments, you need to cast the `query` within the method:
+Se você também quiser passar argumentos, você precisa converter a `query` dentro do método:
 
 ```ts
 export default class Post extends BaseModel {

@@ -1,9 +1,9 @@
 # Raw query builder
 
-The raw query builder allows you execute queries from a SQL string. Even though you are directly executing raw SQL strings, you can still keep your queries safe from SQL injection by using placeholders for values.
+O raw query builder permite que você execute consultas de uma string SQL. Mesmo que você esteja executando diretamente strings SQL brutas, você ainda pode manter suas consultas seguras de injeção de SQL usando marcadores de posição para valores.
 
 :::note
-When executing raw queries, the results from the underlying driver are return as it is.
+Ao executar consultas brutas, os resultados do driver subjacente são retornados como estão.
 :::
 
 ```ts
@@ -11,8 +11,8 @@ import db from '@adonisjs/lucid/services/db'
 await db.rawQuery('select * from users')
 ```
 
-## Using bindings
-To prevent your queries from SQL injection. You should never hard code the user input into the queries directly and instead rely on placeholders and bindings. For example:
+## Usando ligações
+Para evitar que suas consultas sejam injetadas em SQL. Você nunca deve codificar a entrada do usuário diretamente nas consultas e, em vez disso, confiar em marcadores de posição e ligações. Por exemplo:
 
 ```ts
 await db.rawQuery(
@@ -23,7 +23,7 @@ await db.rawQuery(
 // SELECT * FROM "users" WHERE "id" = 1
 ```
 
-You can also pass in a dynamic column name using bindings. The `??` is parsed as a column name and `?` is parsed as a value.
+Você também pode passar um nome de coluna dinâmico usando ligações. O `??` é analisado como um nome de coluna e `?` é analisado como um valor.
 
 ```ts
 db.rawQuery(
@@ -34,9 +34,9 @@ db.rawQuery(
 // SELECT * FROM "users" WHERE "users"."id" = 1
 ```
 
-## Named placeholders
+## Espaços reservados nomeados
 
-You can also name placeholders and then use objects for defining bindings. For example:
+Você também pode nomear espaços reservados e então usar objetos para definir ligações. Por exemplo:
 
 ```ts
 db.rawQuery(
@@ -47,7 +47,7 @@ db.rawQuery(
 )
 ```
 
-You need to use also append the colon `:` after the placeholder when using a dynamic column name.
+Você precisa usar também anexar os dois pontos `:` após o espaço reservado ao usar um nome de coluna dinâmico.
 
 ```ts
 db.rawQuery(
@@ -59,7 +59,7 @@ db.rawQuery(
 )
 ```
 
-Another example comparing two columns with each other.
+Outro exemplo comparando duas colunas entre si.
 
 ```ts
 db.rawQuery(
@@ -80,10 +80,10 @@ ON
 */
 ```
 
-## Raw query vs raw
-There are two ways to create raw queries using the `db` service, ie `db.rawQuery` and `db.raw`.
+## Consulta bruta vs bruta
+Há duas maneiras de criar consultas brutas usando o serviço `db`, ou seja, `db.rawQuery` e `db.raw`.
 
-The queries created using the `db.rawQuery` method can be executed as standalone queries. Whereas, the queries created using the `db.raw` method are method to passed by reference to other queries. For example:
+As consultas criadas usando o método `db.rawQuery` podem ser executadas como consultas autônomas. Enquanto isso, as consultas criadas usando o método `db.raw` são métodos para passar por referência a outras consultas. Por exemplo:
 
 ```ts
 // title: Self executable raw query
@@ -98,11 +98,11 @@ await db.select(
 )
 ```
 
-## Methods/Properties
-Following is the list of methods and properties available on the raw query builder.
+## Métodos/Propriedades
+A seguir está a lista de métodos e propriedades disponíveis no construtor de consultas brutas.
 
 ### wrap
-Wrap the raw query with a prefix and a suffix. Usually helpful when passing the raw query as a reference.
+Envolva a consulta bruta com um prefixo e um sufixo. Geralmente útil ao passar a consulta bruta como referência.
 
 ```ts
 await db.select(
@@ -114,7 +114,7 @@ await db.select(
 ```
 
 ### `debug`
-The `debug` method allows enabling or disabling debugging at an individual query level. Here's a [complete guide](../guides/debugging.md) on debugging queries.
+O método `debug` permite habilitar ou desabilitar a depuração em um nível de consulta individual. Aqui está um [guia completo](../guides/debugging.md) sobre consultas de depuração.
 
 ```ts
 await db
@@ -123,9 +123,9 @@ await db
 ```
 
 ### `timeout`
-Define the `timeout` for the query. An exception is raised after the timeout has been exceeded.
+Defina o `timeout` para a consulta. Uma exceção é gerada após o tempo limite ter sido excedido.
 
-The value of timeout is always in milliseconds.
+O valor do tempo limite é sempre em milissegundos.
 
 ```ts
 await db
@@ -133,7 +133,7 @@ await db
   .timeout(2000)
 ```
 
-You can also cancel the query when using timeouts with MySQL and PostgreSQL.
+Você também pode cancelar a consulta ao usar timeouts com MySQL e PostgreSQL.
 
 ```ts
 await db
@@ -142,7 +142,7 @@ await db
 ```
 
 ### `client`
-Reference to the instance of the underlying [database query client](https://github.com/adonisjs/lucid/blob/develop/src/query_client/index.ts).
+Referência à instância do [cliente de consulta de banco de dados](https://github.com/adonisjs/lucid/blob/develop/src/query_client/index.ts) subjacente.
 
 ```ts
 const query = db.rawQuery(sql, bindings)
@@ -150,7 +150,7 @@ console.log(query.client)
 ```
 
 ### `knexQuery`
-Reference to the instance of the underlying KnexJS query.
+Referência à instância da consulta KnexJS subjacente.
 
 ```ts
 const query = db.rawQuery(sql, bindings)
@@ -158,9 +158,9 @@ console.log(query.knexQuery)
 ```
 
 ### `reporterData`
-The query builder emits the `db:query` event and also reports the queries execution time with the framework profiler.
+O construtor de consultas emite o evento `db:query` e também relata o tempo de execução das consultas com o profiler do framework.
 
-Using the `reporterData` method, you can pass additional details to the event and the profiler.
+Usando o método `reporterData`, você pode passar detalhes adicionais para o evento e o profiler.
 
 ```ts
 db
@@ -168,7 +168,7 @@ db
   .reporterData({ userId: auth.user.id })
 ```
 
-Now within the `db:query` event, you can access the value of `userId` as follows.
+Agora, dentro do evento `db:query`, você pode acessar o valor de `userId` da seguinte forma.
 
 ```ts
 import emitter from '@adonisjs/lucid/services/emitter'

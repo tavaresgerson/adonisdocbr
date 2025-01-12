@@ -1,14 +1,14 @@
 ---
-summary: Learn how to use the AdonisJS logger to write logs to the console, files, and external services. Built on top of Pino, the logger is fast and supports multiple targets.
+Resumo: Aprenda a usar o logger AdonisJS para gravar logs no console, arquivos e serviços externos. Construído sobre o Pino, o logger é rápido e suporta múltiplos alvos.
 ---
 
 # Logger
 
-AdonisJS has an inbuilt logger that supports writing logs to a **file**, **standard output**, and **external logging services**. Under the hood, we use [pino](https://getpino.io/#/). Pino is one of the fastest logging libraries in the Node.js ecosystem that generates logs in the [NDJSON format](https://github.com/ndjson/ndjson-spec).
+O AdonisJS tem um logger embutido que suporta a gravação de logs em um **arquivo**, **saída padrão** e **serviços de registro externo**. Por baixo dos panos, usamos [pino](https://getpino.io/#/). O Pino é uma das bibliotecas de registro mais rápidas no ecossistema Node.js que gera logs no [formato NDJSON](https://github.com/ndjson/ndjson-spec).
 
-## Usage
+## Uso
 
-To begin, you may import the Logger service to write logs from anywhere inside your application.  The logs are written to `stdout` and will appear on the terminal.
+Para começar, você pode importar o serviço Logger para gravar logs de qualquer lugar dentro do seu aplicativo. Os logs são gravados em `stdout` e aparecerão no terminal.
 
 ```ts
 import logger from '@adonisjs/core/services/logger'
@@ -17,7 +17,7 @@ logger.info('this is an info message')
 logger.error({ err: error }, 'Something went wrong')
 ```
 
-It is recommended to use the `ctx.logger` property during HTTP requests. The HTTP context holds an instance of a request-aware logger that adds the current request ID to every log statement.
+É recomendável usar a propriedade `ctx.logger` durante solicitações HTTP. O contexto HTTP contém uma instância de um registrador com reconhecimento de solicitação que adiciona o ID da solicitação atual a cada instrução de log.
 
 ```ts
 import router from '@adonisjs/core/services/router'
@@ -29,10 +29,9 @@ router.get('/users/:id', async ({ logger, params }) => {
 })
 ```
 
-## Configuration
+## Configuração
 
-The config for the logger is stored within the `config/logger.ts` file. By default, only one logger is configured. However, you can define config for multiple loggers if you want to use more than one in your application.
-
+A configuração do registrador é armazenada no arquivo `config/logger.ts`. Por padrão, apenas um registrador é configurado. No entanto, você pode definir a configuração para vários registradores se quiser usar mais de um em seu aplicativo.
 
 ```ts
 // title: config/logger.ts
@@ -54,21 +53,21 @@ export default defineConfig({
 
 ### `default`
 
-The `default` property is a reference to one of the configured loggers within the same file under the `loggers` object. 
+A propriedade `default` é uma referência a um dos registradores configurados no mesmo arquivo sob o objeto `loggers`.
 
-The default logger is used to write logs unless you select a specific logger when using the logger API.
+O registrador padrão é usado para gravar logs, a menos que você selecione um registrador específico ao usar a API do registrador.
 
 ### `loggers`
 
-The `loggers` object is a key-value pair to configure multiple loggers. The key is the name of the logger, and the value is the config object accepted by [pino](https://getpino.io/#/docs/api?id=options)
+O objeto `loggers` é um par de chave-valor para configurar vários loggers. A chave é o nome do logger e o valor é o objeto de configuração aceito pelo [pino](https://getpino.io/#/docs/api?id=options)
 
-## Transport targets
-Transports in pino play an essential role as they write logs to a destination. You can configure [multiple targets](https://getpino.io/#/docs/api?id=transport-object) within your config file, and pino will deliver logs to all of them. Each target can also specify a level from which it wants to receive the logs.
+## Alvos de transporte
+Os transportes no pino desempenham um papel essencial, pois gravam logs em um destino. Você pode configurar [vários alvos](https://getpino.io/#/docs/api?id=transport-object) dentro do seu arquivo de configuração, e o pino entregará logs para todos eles. Cada alvo também pode especificar um nível do qual deseja receber os logs.
 
 :::note
-If you have not defined the `level` within the target configuration, the configured targets will inherit it from the parent logger.
+Se você não definiu o `level` dentro da configuração do alvo, os alvos configurados o herdarão do logger pai.
 
-This behavior is different from pino. In Pino, targets do not inherit levels from the parent logger.
+Esse comportamento é diferente do pino. No Pino, os alvos não herdam níveis do logger pai.
 :::
 
 ```ts
@@ -102,19 +101,19 @@ This behavior is different from pino. In Pino, targets do not inherit levels fro
 }
 ```
 
-### File target
+### Destino do arquivo
 
-The `pino/file` target writes logs to a file descriptor. The `destination = 1` means write logs to `stdout` (this is a standard [unix convention for file descriptors](https://en.wikipedia.org/wiki/File_descriptor)).
+O destino `pino/file` grava logs em um descritor de arquivo. O `destination = 1` significa gravar logs em `stdout` (esta é uma [convenção unix padrão para descritores de arquivo](https://en.wikipedia.org/wiki/File_descriptor)).
 
-### Pretty target
+### Destino bonito
 
-The `pino-pretty` target uses the [pino-pretty npm module](http://npmjs.com/package/pino-pretty) to pretty-print logs to a file descriptor.
+O destino `pino-pretty` usa o [módulo npm pino-pretty](http://npmjs.com/package/pino-pretty) para imprimir logs em um descritor de arquivo.
 
-## Defining targets conditionally
+## Definindo destinos condicionalmente
 
-It is common to register targets based on the environment in which the code is running. For example, using the `pino-pretty` target in development and the `pino/file` target in production.
+É comum registrar destinos com base no ambiente em que o código está sendo executado. Por exemplo, usando o destino `pino-pretty` em desenvolvimento e o destino `pino/file` em produção.
 
-As shown below, constructing the `targets` array with conditionals makes the config file look untidy.
+Conforme mostrado abaixo, construir o array `targets` com condicionais faz o arquivo de configuração parecer desorganizado.
 
 ```ts
 import app from '@adonisjs/core/services/app'
@@ -137,7 +136,7 @@ loggers: {
 }
 ```
 
-Therefore, you can use the `targets` helper to define conditional array items using a fluent API. We express the same conditionals in the following example using the `targets.pushIf` method.
+Portanto, você pode usar o auxiliar `targets` para definir itens de array condicional usando uma API fluente. Expressamos os mesmos condicionais no exemplo a seguir usando o método `targets.pushIf`.
 
 ```ts
 import { targets, defineConfig } from '@adonisjs/core/logger'
@@ -160,8 +159,6 @@ loggers: {
 }
 ```
 
-To further simplify the code, you can define the config object for the `pino/file` and `pino-pretty` targets using the `targets.pretty` and `targets.file` methods.
-
 ```ts
 import { targets, defineConfig } from '@adonisjs/core/logger'
 
@@ -177,9 +174,9 @@ loggers: {
 }
 ```
 
-## Using multiple loggers
+## Usando vários registradores
 
-AdonisJS has first-class support for configuring multiple loggers. The logger's unique name and config are defined within the `config/logger.ts` file.
+O AdonisJS tem suporte de primeira classe para configurar vários registradores. O nome exclusivo e a configuração do registrador são definidos no arquivo `config/logger.ts`.
 
 ```ts
 export default defineConfig({
@@ -202,7 +199,7 @@ export default defineConfig({
 })
 ```
 
-Once configured, you can access a named logger using the `logger.use` method.
+Uma vez configurado, você pode acessar um logger nomeado usando o método `logger.use`.
 
 ```ts
 import logger from '@adonisjs/core/services/logger'
@@ -214,11 +211,11 @@ logger.use('app')
 logger.use()
 ```
 
-## Dependency injection
+## Injeção de dependência
 
-When using Dependency injection, you can type-hint the `Logger` class as a dependency, and the IoC container will resolve an instance of the default logger defined inside the config file.
+Ao usar injeção de dependência, você pode dar uma dica de tipo na classe `Logger` como uma dependência, e o contêiner IoC resolverá uma instância do logger padrão definido dentro do arquivo de configuração.
 
-If the class is constructed during an HTTP request, then the container will inject the request-aware instance of the Logger.
+Se a classe for construída durante uma solicitação HTTP, o contêiner injetará a instância do Logger com reconhecimento de solicitação.
 
 ```ts
 import { inject } from '@adonisjs/core'
@@ -239,9 +236,9 @@ class UserService {
 }
 ```
 
-## Logging methods
+## Métodos de registro
 
-The Logger API is nearly identical to Pino, except the AdonisJS logger is not an instance of an Event emitter (whereas Pino is). Apart from that, the logging methods have the same API as pino.
+A API do Logger é quase idêntica à do Pino, exceto que o logger AdonisJS não é uma instância de um emissor de eventos (enquanto o Pino é). Além disso, os métodos de registro têm a mesma API que o pino.
 
 ```ts
 import logger from '@adonisjs/core/services/logger'
@@ -254,23 +251,23 @@ logger.error({ err: Error }, 'Something went wrong')
 logger.fatal({ err: Error }, 'Something went wrong')
 ```
 
-An additional merging object can be passed as the first argument. Then, the object properties are added to the output JSON.
+Um objeto de mesclagem adicional pode ser passado como o primeiro argumento. Em seguida, as propriedades do objeto são adicionadas ao JSON de saída.
 
 ```ts
 logger.info({ user: user }, 'Fetched user by id %s', user.id)
 ```
 
-To display errors, you can [use the `err` key](https://getpino.io/#/docs/api?id=serializers-object) to specify the error value.
+Para exibir erros, você pode [usar a chave `err`](https://getpino.io/#/docs/api?id=serializers-object) para especificar o valor do erro.
 
 ```ts
 logger.error({ err: error }, 'Unable to lookup user')
 ```
 
-## Logging conditionally
+## Registro condicional
 
-The logger produces logs for and above the level configured in the config file. For example, if the level is set to `warn`, the logs for the `info`, `debug`, and the `trace` levels will be ignored.
+O logger produz registros para e acima do nível configurado no arquivo de configuração. Por exemplo, se o nível for definido como `warn`, os logs para os níveis `info`, `debug` e `trace` serão ignorados.
 
-If computing data for a log message is expensive, you should check if a given log level is enabled before computing the data.
+Se a computação de dados para uma mensagem de log for cara, você deve verificar se um determinado nível de log está habilitado antes de computar os dados.
 
 ```ts
 import logger from '@adonisjs/core/services/logger'
@@ -281,7 +278,7 @@ if (logger.isLevelEnabled('debug')) {
 }
 ```
 
-You may express the same conditional using the `ifLevelEnabled` method. The method accepts a callback as the 2nd argument, which gets executed when the specified logging level is enabled.
+Você pode expressar a mesma condicional usando o método `ifLevelEnabled`. O método aceita um retorno de chamada como o segundo argumento, que é executado quando o nível de log especificado é habilitado.
 
 ```ts
 logger.ifLevelEnabled('debug', async () => {
@@ -290,11 +287,11 @@ logger.ifLevelEnabled('debug', async () => {
 })
 ```
 
-## Child logger
+## Registrador filho
 
-A child logger is an isolated instance that inherits the config and bindings from the parent logger.
+Um registrador filho é uma instância isolada que herda a configuração e as ligações do registrador pai.
 
-An instance of the child logger can be created using the `logger.child` method. The method accepts bindings as the first argument and an optional config object as the second argument.
+Uma instância do registrador filho pode ser criada usando o método `logger.child`. O método aceita ligações como o primeiro argumento e um objeto de configuração opcional como o segundo argumento.
 
 ```ts
 import logger from '@adonisjs/core/services/logger'
@@ -302,15 +299,15 @@ import logger from '@adonisjs/core/services/logger'
 const requestLogger = logger.child({ requestId: ctx.request.id() })
 ```
 
-The child logger can also log under a different logging level.
+O registrador filho também pode registrar em um nível de registro diferente.
 
 ```ts
 logger.child({}, { level: 'warn' })
 ```
 
-## Pino statics
+## Estáticas do Pino
 
-[Pino static](https://getpino.io/#/docs/api?id=statics) methods and properties are exported by the `@adonisjs/core/logger` module.
+Os métodos e propriedades [estáticos do Pino](https://getpino.io/#/docs/api?id=statics) são exportados pelo módulo `@adonisjs/core/logger`.
 
 ```ts
 import { 
@@ -324,9 +321,9 @@ import {
 } from '@adonisjs/core/logger'
 ```
 
-## Writing logs to a file
+## Escrevendo registros em um arquivo
 
-Pino ships with a `pino/file` target, which you can use to write logs to a file. Within the target options, you can specify the log file destination path.
+O Pino é fornecido com um destino `pino/file`, que você pode usar para gravar registros em um arquivo. Dentro das opções de destino, você pode especificar o caminho de destino do arquivo de registro.
 
 ```ts
 app: {
@@ -348,8 +345,8 @@ app: {
 }
 ```
 
-### File rotation
-Pino does not have inbuilt support for file rotation, and therefore, you either have to use a system-level tool like [logrotate](https://getpino.io/#/docs/help?id=rotate) or make use of a third-party package like [pino-roll](https://github.com/feugy/pino-roll).
+### Rotação de arquivos
+O Pino não tem suporte interno para rotação de arquivos e, portanto, você precisa usar uma ferramenta de nível de sistema como [logrotate](https://getpino.io/#/docs/help?id=rotate) ou usar um pacote de terceiros como [pino-roll](https://github.com/feugy/pino-roll).
 
 ```sh
 npm i pino-roll
@@ -379,11 +376,11 @@ app: {
 }
 ```
 
-## Hiding sensitive values
+## Ocultando valores sensíveis
 
-Logs can become the source for leaking sensitive data. Therefore, it is recommended to observe your logs and remove/hide sensitive values from the output.
+Os logs podem se tornar a fonte de vazamento de dados sensíveis. Portanto, é recomendável observar seus logs e remover/ocultar valores sensíveis da saída.
 
-In Pino, you can use the `redact` option to hide/remove sensitive key-value pairs from the logs. Under the hood, the [fast-redact](https://github.com/davidmarkclements/fast-redact) package is used, and you can consult its documentation to view available expressions.
+No Pino, você pode usar a opção `redact` para ocultar/remover pares de chave-valor sensíveis dos logs. Por baixo do capô, o pacote [fast-redact](https://github.com/davidmarkclements/fast-redact) é usado, e você pode consultar sua documentação para visualizar as expressões disponíveis.
 
 ```ts
 // title: config/logger.ts
@@ -410,7 +407,7 @@ logger.info({ username, password }, 'user signup')
 // output: {"username":"virk","password":"[Redacted]","msg":"user signup"}
 ```
 
-By default, the value is replaced with the `[Redacted]` placeholder. You can define a custom placeholder or remove the key-value pair.
+Por padrão, o valor é substituído pelo espaço reservado `[Redacted]`. Você pode definir um espaço reservado personalizado ou remover o par chave-valor.
 
 ```ts
 redact: {
@@ -425,10 +422,10 @@ redact: {
 }
 ```
 
-### Using the Secret data type
-An alternative to redaction is to wrap sensitive values inside the Secret class. For example:
+### Usando o tipo de dados Secret
+Uma alternativa à redação é encapsular valores sensíveis dentro da classe Secret. Por exemplo:
 
-See also: [Secret class usage docs](../references/helpers.md#secret)
+[Documentos de uso da classe Secret](../references/helpers.md#secret)
 
 ```ts
 import { Secret } from '@adonisjs/core/helpers'

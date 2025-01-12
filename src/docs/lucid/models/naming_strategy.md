@@ -1,12 +1,12 @@
 ---
-summary: Reference guide to naming strategies in Lucid ORM
+resumo: Guia de referência para estratégias de nomenclatura no Lucid ORM
 ---
 
-# Naming Strategy
+# Estratégia de nomenclatura
 
-The [NamingStrategy](https://github.com/adonisjs/lucid/blob/develop/src/orm/naming_strategies/camel_case.ts) class allows you to override the conventional names used by the ORM. For example: Instead of using `snake_case` for your column names, you can provide your own custom `camelCase` naming strategy.
+A classe [NamingStrategy](https://github.com/adonisjs/lucid/blob/develop/src/orm/naming_strategies/camel_case.ts) permite que você substitua os nomes convencionais usados ​​pelo ORM. Por exemplo: em vez de usar `snake_case` para seus nomes de coluna, você pode fornecer sua própria estratégia de nomenclatura `camelCase` personalizada.
 
-Every naming strategy must implement the `NamingStrategyContract` contract and define all the required methods.
+Toda estratégia de nomenclatura deve implementar o contrato `NamingStrategyContract` e definir todos os métodos necessários.
 
 ```ts
 import { CamelCaseNamingStrategy } from '@adonisjs/lucid/orm'
@@ -16,7 +16,7 @@ class MyCustomNamingStrategy extends CamelCaseNamingStrategy {
 }
 ```
 
-Assign it to a model
+Atribua a um modelo
 
 ```ts
 class User extends BaseModel {
@@ -24,20 +24,20 @@ class User extends BaseModel {
 }
 ```
 
-Or assign it to the Base model directly. Make sure to **do it only once** and import the file when booting the framework.
+Ou atribua diretamente ao modelo Base. Certifique-se de **fazer isso apenas uma vez** e importar o arquivo ao inicializar o framework.
 
 ```ts
 import { BaseModel } from '@adonisjs/lucid/orm'
 BaseModel.namingStrategy = new CamelCaseNamingStrategy()
 ```
 
-## Methods/Properties
+## Métodos/Propriedades
 
-Following is the list of methods/properties you must define in the naming strategy class.
+A seguir está a lista de métodos/propriedades que você deve definir na classe de estratégia de nomenclatura.
 
 ### `tableName`
 
-Return the default table name for the model. The default naming strategy converts the model name to `snake_case` and `pluralizes` it.
+Retorna o nome da tabela padrão para o modelo. A estratégia de nomenclatura padrão converte o nome do modelo para `snake_case` e ​​o `pluraliza`.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -52,7 +52,7 @@ class MyCustomNamingStrategy extends CamelCaseNamingStrategy {
 
 ### `columnName`
 
-Return the database column name for a given model property. The default naming strategy converts the model property to `snake_case`.
+Retorna o nome da coluna do banco de dados para uma determinada propriedade do modelo. A estratégia de nomenclatura padrão converte a propriedade do modelo para `snake_case`.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -67,7 +67,7 @@ class MyCustomNamingStrategy extends CamelCaseNamingStrategy {
 
 ### `serializedName`
 
-Return name to be used when serializing the model properties to JSON. The default naming strategy converts the model property to `snake_case`.
+Retorna o nome a ser usado ao serializar as propriedades do modelo para JSON. A estratégia de nomenclatura padrão converte a propriedade do modelo para `snake_case`.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -82,7 +82,7 @@ class MyCustomNamingStrategy extends CamelCaseNamingStrategy {
 
 ### `relationLocalKey`
 
-Return the local key for a given relationship. The default behavior is to use the `primaryKey` as the local key for all the relationships except `belongsTo`.
+Retorna a chave local para um determinado relacionamento. O comportamento padrão é usar `primaryKey` como a chave local para todos os relacionamentos, exceto `belongsTo`.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -104,10 +104,10 @@ class MyCustomNamingStrategy extends CamelCaseNamingStrategy {
 ```
 
 ### `relationForeignKey`
-Return the foreign key for a given relationship. The default naming strategy combines the `modelName` and the `primaryKey` column name and converts them to camelCase.
+Retorna a chave estrangeira para um determinado relacionamento. A estratégia de nomenclatura padrão combina os nomes de coluna `modelName` e `primaryKey` e os converte para camelCase.
 
 :::note
-The foreignKey points to the model property and not the database column name. We derive the database column name from the model property name.
+A foreignKey aponta para a propriedade do modelo e não para o nome da coluna do banco de dados. Derivamos o nome da coluna do banco de dados do nome da propriedade do modelo.
 :::
 
 ```ts
@@ -130,7 +130,7 @@ class MyCustomNamingStrategy extends CamelCaseNamingStrategy {
 ```
 
 ### `relationPivotTable`
-Return the pivot table name for the `manyToMany` relationship. The default naming strategy concatenates the model names together and sorts them alphabetically.
+Retorna o nome da tabela dinâmica para o relacionamento `manyToMany`. A estratégia de nomenclatura padrão concatena os nomes do modelo e os classifica em ordem alfabética.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -152,7 +152,7 @@ class MyCustomNamingStrategy extends CamelCaseNamingStrategy {
 ```
 
 ### `relationPivotForeignKey`
-Return the foreign key name inside the pivot table. The method is invoked for both the models involved in a `manyToMany` relationship.
+Retorna o nome da chave estrangeira dentro da tabela dinâmica. O método é invocado para ambos os modelos envolvidos em um relacionamento `manyToMany`.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -169,7 +169,7 @@ class MyCustomNamingStrategy extends CamelCaseNamingStrategy {
 ```
 
 ### `paginationMetaKeys`
-Return the keys to generate the metadata for the paginator. The default naming strategy uses `snake_case` names.
+Retorna as chaves para gerar os metadados para o paginador. A estratégia de nomenclatura padrão usa nomes `snake_case`.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -192,7 +192,7 @@ class MyCustomNamingStrategy extends CamelCaseNamingStrategy {
 }
 ```
 
-If you are paginating results using the `db` service directly, you must register the naming strategy with the `SimplePaginator` class.
+Se você estiver paginando resultados usando o serviço `db` diretamente, deverá registrar a estratégia de nomenclatura com a classe `SimplePaginator`.
 
 ```ts
 import db from '@adonisjs/lucid/services/db'
@@ -200,7 +200,7 @@ import db from '@adonisjs/lucid/services/db'
 db.SimplePaginator.namingStrategy = new MyCustomNamingStrategy()
 ```
 
-The above example will configure the naming strategy for the paginator globally. However, you can also define the naming strategy for a given `.paginate` method call.
+O exemplo acima configurará a estratégia de nomenclatura para o paginador globalmente. No entanto, você também pode definir a estratégia de nomenclatura para uma determinada chamada de método `.paginate`.
 
 ```ts
 import db from '@adonisjs/lucid/services/db'

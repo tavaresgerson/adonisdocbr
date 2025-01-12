@@ -1,12 +1,12 @@
 ---
-summary: A guide on debugging Lucid database queries.
+resumo: Um guia sobre depuração de consultas de banco de dados Lucid.
 ---
 
-# Debugging
+# Depuração
 
-You can debug SQL queries by first enabling the `debug` mode and then listen for the `db:query` event to get notified as SQL queries are executed.
+Você pode depurar consultas SQL primeiro habilitando o modo `debug` e então escutar o evento `db:query` para ser notificado conforme as consultas SQL são executadas.
 
-The debug mode can be enabled globally for a database connection by setting  the `debug` flag to `true` inside the `config/database.ts` file. For example:
+O modo de depuração pode ser habilitado globalmente para uma conexão de banco de dados definindo o sinalizador `debug` como `true` dentro do arquivo `config/database.ts`. Por exemplo:
 
 ```ts
 // title: config/database.ts
@@ -33,7 +33,7 @@ const dbConfig = defineConfig({
 })
 ```
 
-Or, you can enable it for an individual query using the `debug` method on the query builder.
+Ou você pode habilitá-lo para uma consulta individual usando o método `debug` no construtor de consultas.
 
 :::codegroup
 
@@ -68,10 +68,10 @@ db
 
 :::
 
-## Pretty printing debug queries
-Once the debugging has been enabled you can set the `prettyPrintDebugQueries` flag to `true` within the `config/database.ts` file.
+## Impressão bonita de consultas de depuração
+Depois que a depuração for habilitada, você pode definir o sinalizador `prettyPrintDebugQueries` como `true` no arquivo `config/database.ts`.
 
-This flag will register an event listener for the `db:query` event and will print the SQL queries to the console.
+Este sinalizador registrará um ouvinte de eventos para o evento `db:query` e imprimirá as consultas SQL no console.
 
 ```ts
 // title: config/database.ts
@@ -95,10 +95,10 @@ const dbConfig = defineConfig({
 })
 ```
 
-## Manually listening for the event
-If you do not want to pretty print SQL queries and write them to the console, then you can self listen for the `db:query` event and self handle the treatment of debug logs.
+## Escutando manualmente o evento
+Se você não quiser imprimir consultas SQL e gravá-las no console, poderá autoescutar o evento `db:query` e autogerenciar o tratamento dos logs de depuração.
 
-In the following example, we use the application logger to log the queries.
+No exemplo a seguir, usamos o registrador de aplicativos para registrar as consultas.
 
 ```ts
 // title: start/events.ts

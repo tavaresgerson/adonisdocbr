@@ -1,28 +1,28 @@
 ---
-summary: Manage user-uploaded files on local filesystem and cloud storage services like S3, GCS, R2 and Digital Ocean spaces. Without any Vendor lock-in.
+resumo: Gerencie arquivos enviados pelo usuário em sistemas de arquivos locais e serviços de armazenamento em nuvem como S3, GCS, R2 e Digital Ocean Spaces. Sem qualquer bloqueio de fornecedor.
 ---
 
 # Drive
 
-AdonisJS Drive (`@adonisjs/drive`) is a lightweight wrapper on top of [flydrive.dev](https://flydrive.dev/). FlyDrive is a file storage library for Node.js. It provides a unified API to interact with the local file system and cloud storage solutions like S3, R2, and GCS.
+AdonisJS Drive (`@adonisjs/drive`) é um wrapper leve sobre [flydrive.dev](https://flydrive.dev/). FlyDrive é uma biblioteca de armazenamento de arquivos para Node.js. Ela fornece uma API unificada para interagir com o sistema de arquivos local e soluções de armazenamento em nuvem como S3, R2 e GCS.
 
-Using FlyDrive, you can manage user-uploaded files on various cloud storage services (including the local filesystem) without changing a single line of code.
+Usando FlyDrive, você pode gerenciar arquivos enviados pelo usuário em vários serviços de armazenamento em nuvem (incluindo o sistema de arquivos local) sem alterar uma única linha de código.
 
-## Installation
+## Instalação
 
-Install and configure the `@adonisjs/drive` package using the following command:
+Instale e configure o pacote `@adonisjs/drive` usando o seguinte comando:
 
 ```sh
 node ace add @adonisjs/drive
 ```
 
-::: details See steps performed by the add command
+::: detalhes Veja as etapas executadas pelo comando add
 
-1. Installs the `@adonisjs/drive` package using the detected package manager.
+1. Instala o pacote `@adonisjs/drive` usando o gerenciador de pacotes detectado.
 
-2. Registers the following service provider inside the `adonisrc.ts` file.
+2. Registra o seguinte provedor de serviços dentro do arquivo `adonisrc.ts`.
 
-   ```ts
+```ts
    {
      providers: [
        // ...other providers
@@ -31,19 +31,19 @@ node ace add @adonisjs/drive
    }
    ```
 
-3. Creates the `config/drive.ts` file.
+3. Cria o arquivo `config/drive.ts`.
 
-4. Defines the environment variables for the selected storage services.
+4. Define as variáveis ​​de ambiente para os serviços de armazenamento selecionados.
 
-5. Install the required peer dependencies for the selected storage services.
+5. Instala as dependências de peer necessárias para os serviços de armazenamento selecionados.
 
 :::
 
-## Configuration
+## Configuração
 
-The `@adonisjs/drive` package configuration is stored inside the `config/drive.ts` file. You can define config for multiple services within a single config file.
+A configuração do pacote `@adonisjs/drive` é armazenada dentro do arquivo `config/drive.ts`. Você pode definir a configuração para vários serviços em um único arquivo de configuração.
 
-See also: [Config stub](https://github.com/adonisjs/drive/blob/main/stubs/config/drive.stub)
+Veja também: [Config stub](https://github.com/adonisjs/drive/blob/main/stubs/config/drive.stub)
 
 ```ts
 import env from '#start/env'
@@ -83,18 +83,18 @@ const driveConfig = defineConfig({
 export default driveConfig
 ```
 
-### Environment variables
+### Variáveis ​​de ambiente
 
-The credentials/settings for the storage services are stored as environment variables within the `.env` file. Make sure to update the values before you can use Drive.
+As credenciais/configurações para os serviços de armazenamento são armazenadas como variáveis ​​de ambiente dentro do arquivo `.env`. Certifique-se de atualizar os valores antes de poder usar o Drive.
 
-Also, the `DRIVE_DISK` environment variable defines the default disk/service for managing files. For example, you may want to use the `fs` disk in development and the `spaces` disk in production.
+Além disso, a variável de ambiente `DRIVE_DISK` define o disco/serviço padrão para gerenciar arquivos. Por exemplo, você pode querer usar o disco `fs` em desenvolvimento e o disco `spaces` em produção.
 
-## Usage
+## Uso
 
-Once you have configured Drive, you can import the `drive` service to interact with its APIs. In the following example, we handle a file upload operation using Drive.
+Depois de configurar o Drive, você pode importar o serviço `drive` para interagir com suas APIs. No exemplo a seguir, lidamos com uma operação de upload de arquivo usando o Drive.
 
 :::note
-Since AdonisJS integration is a thin wrapper on top of FlyDrive. To better understand its APIs, you should read [FlyDrive docs](https://flydrive.dev).
+Já que a integração do AdonisJS é um wrapper fino sobre o FlyDrive. Para entender melhor suas APIs, você deve ler [FlyDrive docs](https://flydrive.dev).
 :::
 
 ```ts
@@ -135,15 +135,15 @@ router.put('/me', async ({ request, response }) => {
 })
 ```
 
-- The Drive package adds the `moveToDisk` method to the [MultipartFile](https://github.com/adonisjs/drive/blob/develop/providers/drive_provider.ts#L110). This method copies the file from its `tmpPath` to the configured storage provider.
+[MultipartFile](https://github.com/adonisjs/drive/blob/develop/providers/drive_provider.ts#L110). Este método copia o arquivo de seu `tmpPath` para o provedor de armazenamento configurado.
 
-- The `drive.use().getUrl()` method returns the public URL for the file. For private files, you must use the `getSignedUrl` method.
+- O método `drive.use().getUrl()` retorna a URL pública do arquivo. Para arquivos privados, você deve usar o método `getSignedUrl`.
 
-## Drive service
+## Serviço Drive
 
-Drive service exported by the `@adonisjs/drive/services/main` path is a singleton instance of the [DriveManager](https://flydrive.dev/docs/drive_manager) class created using the config exported from the `config/drive.ts` file.
+O serviço Drive exportado pelo caminho `@adonisjs/drive/services/main` é uma instância singleton da classe [DriveManager](https://flydrive.dev/docs/drive_manager) criada usando a configuração exportada do arquivo `config/drive.ts`.
 
-You can import this service to interact with the DriveManager and the configured file storage services. For example:
+Você pode importar este serviço para interagir com o DriveManager e os serviços de armazenamento de arquivos configurados. Por exemplo:
 
 ```ts
 import drive from '@adonisjs/drive/services/main'
@@ -166,9 +166,9 @@ const disk = drive.use('r2')
 const disk = drive.use('spaces')
 ```
 
-Once you have access to an instance of a Disk, you can use it to manage files.
+Depois de ter acesso a uma instância de um disco, você pode usá-lo para gerenciar arquivos.
 
-See also: [Disk API](https://flydrive.dev/docs/disk_api)
+Veja também: [API de disco](https://flydrive.dev/docs/disk_api)
 
 ```ts
 await disk.put(key, value)
@@ -188,11 +188,11 @@ await disk.copyFromFs(source, destination)
 await disk.moveFromFs(source, destination)
 ```
 
-## Local filesystem driver
+## Driver do sistema de arquivos local
 
-AdonisJS integration enhances the FlyDrive's local filesystem driver and adds support for URL generation and ability to serve files using the AdonisJS HTTP server.
+A integração com o AdonisJS aprimora o driver do sistema de arquivos local do FlyDrive e adiciona suporte para geração de URL e capacidade de servir arquivos usando o servidor HTTP do AdonisJS.
 
-Following is the list of options you may use configure the filesystem driver.
+A seguir está a lista de opções que você pode usar para configurar o driver do sistema de arquivos.
 
 ```ts
 {
@@ -211,26 +211,26 @@ Following is the list of options you may use configure the filesystem driver.
 
 ### `location`
 
-The `location` property defines the stores inside which the files should be stored. This directory should be added to `.gitignore` so that you do not push files uploaded during development to the production server.
+A propriedade `location` define os armazenamentos dentro dos quais os arquivos devem ser armazenados. Este diretório deve ser adicionado ao `.gitignore` para que você não envie arquivos carregados durante o desenvolvimento para o servidor de produção.
 
 ### `visibility`
 
-The `visibility` property is used to mark files public or private. Private files can only be accessed using signed URLs. [Learn more](https://flydrive.dev/docs/disk_api#getsignedurl)
+A propriedade `visibility` é usada para marcar arquivos como públicos ou privados. Arquivos privados só podem ser acessados ​​usando URLs assinadas. [Saiba mais](https://flydrive.dev/docs/disk_api#getsignedurl)
 
 ### `serveFiles`
 
-The `serveFiles` option auto registers a route to serve the files from the local filesystem. You can view this route using the [list\:routes](../references/commands.md#listroutes) ace command.
+A opção `serveFiles` registra automaticamente uma rota para servir os arquivos do sistema de arquivos local. Você pode visualizar essa rota usando o comando ace [list\:routes](../references/commands.md#listroutes).
 
 ### `routeBasePath`
 
-The `routeBasePath` option defines the base prefix for the route to serve files. Make sure the base prefix is unique.
+A opção `routeBasePath` define o prefixo base para a rota para servir arquivos. Certifique-se de que o prefixo base seja exclusivo.
 
 ### `appUrl`
 
-You may optionally define the `appUrl` property to create URLs with the complete domain name of your application. Otherwise relative URLs will be created.
+Opcionalmente, você pode definir a propriedade `appUrl` para criar URLs com o nome de domínio completo do seu aplicativo. Caso contrário, URLs relativas serão criadas.
 
-## Edge helpers
-Within the Edge templates, you may use one the following helper methods to generate URLs. Both the methods are async, so make sure to `await` them.
+## Auxiliares do Edge
+Dentro dos modelos do Edge, você pode usar um dos seguintes métodos auxiliares para gerar URLs. Ambos os métodos são assíncronos, então certifique-se de `await` eles.
 
 ```edge
 <img src="{{ await driveUrl(user.avatar) }}" />
@@ -258,8 +258,8 @@ Within the Edge templates, you may use one the following helper methods to gener
 </a>
 ```
 
-## MultipartFile helper
-Drive extends the Bodyparser [MultipartFile](https://github.com/adonisjs/drive/blob/develop/providers/drive_provider.ts#L110) class and adds the `moveToDisk` method. This method copies the file from its `tmpPath` to the configured storage provider.
+## Auxiliar MultipartFile
+O Drive estende a classe Bodyparser [MultipartFile](https://github.com/adonisjs/drive/blob/develop/providers/drive_provider.ts#L110) e adiciona o método `moveToDisk`. Este método copia o arquivo de seu `tmpPath` para o provedor de armazenamento configurado.
 
 ```ts
 const image = request.file('image')!
@@ -285,12 +285,12 @@ await image.moveToDisk(key, 's3', {
 })
 ```
 
-## Faking Disks during tests
-The fakes API of Drive can be used during testing to prevent interacting with a remote storage. In the fakes mode, the `drive.use()` method will return a fake disk (backed by local filesystem) and all files will be written inside the `./tmp/drive-fakes` directory of your application root.
+## Discos falsos durante os testes
+A API de falsificações do Drive pode ser usada durante os testes para evitar a interação com um armazenamento remoto. No modo de falsificações, o método `drive.use()` retornará um disco falso (apoiado pelo sistema de arquivos local) e todos os arquivos serão gravados dentro do diretório `./tmp/drive-fakes` da raiz do seu aplicativo.
 
-These files are deleted automatically after you restore a fake using the `drive.restore` method.
+Esses arquivos são excluídos automaticamente após você restaurar uma falsificação usando o método `drive.restore`.
 
-See also: [FlyDrive fakes documentation](https://flydrive.dev/docs/drive_manager#using-fakes)
+Veja também: [Documentação de falsificações do FlyDrive](https://flydrive.dev/docs/drive_manager#using-fakes)
 
 ```ts
 // title: tests/functional/users/update.spec.ts

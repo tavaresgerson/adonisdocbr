@@ -1,17 +1,17 @@
 ---
-summary: Reference to SQL transactions and save points with Lucid ORM
+resumo: Referência a transações SQL e pontos de salvamento com Lucid ORM
 ---
 
-# Transactions
+# Transações
 
-Lucid has first-class support for transactions and save points. You can create a new transaction by calling the `db.transaction` method.
+O Lucid tem suporte de primeira classe para transações e pontos de salvamento. Você pode criar uma nova transação chamando o método `db.transaction`.
 
 ```ts
 import db from '@adonisjs/lucid/services/db'
 const trx = await db.transaction()
 ```
 
-Just like the `db` module. You can also use the `trx` object to create a query builder instance.
+Assim como o módulo `db`. Você também pode usar o objeto `trx` para criar uma instância do construtor de consultas.
 
 ```ts
 // title: Insert
@@ -23,9 +23,9 @@ await trx.insertQuery().table('users').insert({ username: 'virk' })
 await trx.query().select('*').from('users')
 ```
 
-Once done executing the query, you must `commit` or `rollback` the transaction. Otherwise, the queries will hang until timeout.
+Depois de executar a consulta, você deve `commit` ou `rollback` a transação. Caso contrário, as consultas ficarão travadas até o tempo limite.
 
-Following is a complete example of using transactions with an insert query.
+A seguir, um exemplo completo do uso de transações com uma consulta de inserção.
 
 ```ts
 const trx = await db.transaction()
@@ -39,14 +39,14 @@ try {
 }
 ```
 
-## Managed transactions
+## Transações gerenciadas
 
-The above example expects you have to manually `commit` or `rollback` transactions by wrapping your code inside a `try/catch` block. A managed transaction does this automatically for you.
+O exemplo acima espera que você tenha que `commit` ou `rollback` manualmente transações ao envolver seu código dentro de um bloco `try/catch`. Uma transação gerenciada faz isso automaticamente para você.
 
-You can create a managed transaction by passing a callback to the `transaction` method.
+Você pode criar uma transação gerenciada passando um retorno de chamada para o método `transaction`.
 
-- The transaction auto commits after executing the callback.
-- If a callback raises an exception, the transaction will be rolled back automatically and re-throws the exception.
+- A transação é confirmada automaticamente após executar o retorno de chamada.
+- Se um retorno de chamada gerar uma exceção, a transação será revertida automaticamente e relançar a exceção.
 
 ```ts
 await db.transaction(async (trx) => {
@@ -54,7 +54,7 @@ await db.transaction(async (trx) => {
 })
 ```
 
-You can also return a value from the callback and then access it at the top-level scope. For example:
+Você também pode retornar um valor do retorno de chamada e acessá-lo no escopo de nível superior. Por exemplo:
 
 ```ts
 const userId = await db.transaction(async (trx) => {
@@ -64,9 +64,9 @@ const userId = await db.transaction(async (trx) => {
 })
 ```
 
-## Isolation levels
+## Níveis de isolamento
 
-You can define the isolation level of a transaction when calling the `db.transaction` method.
+Você pode definir o nível de isolamento de uma transação ao chamar o método `db.transaction`.
 
 ```ts
 await db.transaction({
@@ -74,7 +74,7 @@ await db.transaction({
 })
 ```
 
-Following is an example of defining the isolation level with a managed transaction.
+A seguir está um exemplo de definição do nível de isolamento com uma transação gerenciada.
 
 ```ts
 await db.transaction(
@@ -87,7 +87,7 @@ await db.transaction(
 )
 ```
 
-Following is the list of available isolation levels.
+A seguir está a lista de níveis de isolamento disponíveis.
 
 - `read uncommitted`
 - `read committed`
@@ -97,7 +97,7 @@ Following is the list of available isolation levels.
 
 ## Savepoints
 
-Every time you create a nested transaction, Lucid behind the scenes creates a new [savepoint](https://en.wikipedia.org/wiki/Savepoint). Since transactions need a dedicated connection, using savepoints reduces the number of required connections.
+Toda vez que você cria uma transação aninhada, o Lucid cria nos bastidores um novo [savepoint](https://en.wikipedia.org/wiki/Savepoint). Como as transações precisam de uma conexão dedicada, usar savepoints reduz o número de conexões necessárias.
 
 ```ts
 import db from '@adonisjs/lucid/services/db'
@@ -112,9 +112,9 @@ const savepoint = await trx.transaction()
 await trx.rollback()
 ```
 
-## Using transaction with database query builder
+## Usando transação com o construtor de consultas de banco de dados
 
-The transactions API is not only limited to creating a query builder instance from a transaction object. You can also pass it around to existing query builder instances or models.
+A API de transações não se limita apenas a criar uma instância do construtor de consultas a partir de um objeto de transação. Você também pode passá-la para instâncias ou modelos existentes do construtor de consultas.
 
 ```ts
 // title: During inserts
@@ -149,11 +149,11 @@ await db
 await trx.commit()
 ```
 
-## Using transactions with Lucid models
+## Usando transações com modelos Lucid
 
-You can pass the transaction to a model instance using the `useTransaction` method.
+Você pode passar a transação para uma instância de modelo usando o método `useTransaction`.
 
-In the model class, you can access the transaction object using the `this.$trx` property. The property is only available during an ongoing transaction. After `commit` or `rollback`, it will be reset to `undefined`.
+Na classe de modelo, você pode acessar o objeto de transação usando a propriedade `this.$trx`. A propriedade só está disponível durante uma transação em andamento. Após ``commit` ou `rollback`, ela será redefinida para `undefined`.
 
 ```ts
 import User from '#models/user'
@@ -170,9 +170,9 @@ await db.transaction(async (trx) => {
 // highlight-end
 ```
 
-### Model query builder
+### Construtor de consulta de modelo
 
-Just like the standard query builder, you can also pass the transaction to the model query builder.
+Assim como o construtor de consulta padrão, você também pode passar a transação para o construtor de consulta de modelo.
 
 ```ts
 import db from '@adonisjs/lucid/services/db'
@@ -187,9 +187,9 @@ const users = await User
   .where('is_active', true)
 ```
 
-### Persisting relationships inside a transaction
+### Persistindo relacionamentos dentro de uma transação
 
-The most common use case for transactions is to persist relationships. Consider the following example of **creating a new user** and **their profile** by wrapping them inside a single transaction.
+O caso de uso mais comum para transações é persistir relacionamentos. Considere o seguinte exemplo de **criação de um novo usuário** e **seu perfil** envolvendo-os dentro de uma única transação.
 
 ```ts
 import db from '@adonisjs/lucid/services/db'
@@ -215,7 +215,7 @@ await db.transaction(async (trx) => {
 // highlight-end
 ```
 
-In the following example we fetch an existing user and create a new profile for them.
+No exemplo a seguir, buscamos um usuário existente e criamos um novo perfil para ele.
 
 ```ts
 import db from '@adonisjs/lucid/services/db'

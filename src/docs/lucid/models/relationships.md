@@ -1,16 +1,16 @@
-# Relationships
+# Relacionamentos
 
-The Lucid data models have out of box support for working with relationships. You have to define the relationships on your models, and Lucid will do all the heavy lifting of constructing the underlying SQL queries.
+Os modelos de dados Lucid têm suporte pronto para uso para trabalhar com relacionamentos. Você precisa definir os relacionamentos em seus modelos, e o Lucid fará todo o trabalho pesado de construir as consultas SQL subjacentes.
 
 ## HasOne
 
-HasOne creates a `one-to-one` relationship between two models. For example, **A user has a profile**. The has one relationship needs a foreign key in the related table.
+HasOne cria um relacionamento `um-para-um` entre dois modelos. Por exemplo, **Um usuário tem um perfil**. O relacionamento `has one` precisa de uma chave estrangeira na tabela relacionada.
 
-Following is an example table structure for the has one relationship. The `profiles.user_id` is the foreign key and forms the relationship with the `users.id` column.
+A seguir está um exemplo de estrutura de tabela para o relacionamento `has one`. `profiles.user_id` é a chave estrangeira e forma o relacionamento com a coluna `users.id`.
 
 ![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1619882378/v5/has-one.png)
 
-Following are the example migrations for the `users` and the `profiles` tables.
+A seguir estão os exemplos de migrações para as tabelas `users` e `profiles`.
 
 :::codegroup
 
@@ -55,11 +55,11 @@ export default class Profiles extends BaseSchema {
 
 :::
 
-### Defining relationship on the model
+### Definindo relacionamento no modelo
 
-Once you have created the tables with the required columns, you will also have to define the relationship on the Lucid model.
+Depois de criar as tabelas com as colunas necessárias, você também terá que definir o relacionamento no modelo Lucid.
 
-The has one relationship is defined using the [@hasOne](https://github.com/adonisjs/lucid/blob/develop/src/orm/decorators/index.ts#L80) decorator on a model property.
+O relacionamento has one é definido usando o decorador [@hasOne](https://github.com/adonisjs/lucid/blob/develop/src/orm/decorators/index.ts#L80) em uma propriedade do modelo.
 
 ```ts
 import Profile from '#models/profile'
@@ -74,9 +74,9 @@ export default class User extends BaseModel {
 }
 ```
 
-### Custom relationship keys
+### Chaves de relacionamento personalizadas
 
-By default, the `foreignKey` is the **snake_case representation of the parent model name and its primary key**. However, you can also define a custom foreign key.
+Por padrão, `foreignKey` é a **representação snake_case do nome do modelo pai e sua chave primária**. No entanto, você também pode definir uma chave estrangeira personalizada.
 
 ```ts
 @hasOne(() => Profile, {
@@ -86,10 +86,10 @@ declare profile: HasOne<typeof Profile>
 ```
 
 :::note
-Remember, if you intend to use camelCase for your foreign key definition, keep in mind that the default [naming strategy](./naming_strategy.md) will automatically convert it to snake_case.
+Lembre-se, se você pretende usar camelCase para sua definição de chave estrangeira, tenha em mente que a [estratégia de nomenclatura](./naming_strategy.md) padrão irá convertê-la automaticamente para snake_case.
 :::
 
-The local key is always the **primary key of the parent model** but can also be defined explicitly.
+A chave local é sempre a **chave primária do modelo pai**, mas também pode ser definida explicitamente.
 
 ```ts
 @hasOne(() => Profile, {
@@ -100,13 +100,13 @@ declare profile: HasOne<typeof Profile>
 
 ## HasMany
 
-HasMany creates a `one-to-many` relationship between two models. For example, **A user has many posts**. The hasMany relationship needs a foreign key in the related table.
+HasMany cria um relacionamento `um-para-muitos` entre dois modelos. Por exemplo, **Um usuário tem muitas postagens**. O relacionamento hasMany precisa de uma chave estrangeira na tabela relacionada.
 
-Following is an example table structure for the hasMany relationship. The `posts.user_id` is the foreign key and forms the relationship with the `users.id` column.
+A seguir está um exemplo de estrutura de tabela para o relacionamento hasMany. `posts.user_id` é a chave estrangeira e forma o relacionamento com a coluna `users.id`.
 
 ![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1619885223/v5/has-many.png)
 
-Following are the example migrations for the `users` and the `posts` tables.
+A seguir estão os exemplos de migrações para as tabelas `users` e `posts`.
 
 :::codegroup
 
@@ -151,11 +151,11 @@ export default class Posts extends BaseSchema {
 
 :::
 
-### Defining relationship on the model
+### Definindo relacionamento no modelo
 
-Once you have created the tables with the required columns, you will also have to define the relationship on the Lucid model.
+Depois de criar as tabelas com as colunas necessárias, você também terá que definir o relacionamento no modelo Lucid.
 
-The has many relationship is defined using the [@hasMany](https://github.com/adonisjs/lucid/blob/develop/src/orm/decorators/index.ts#L91) decorator on a model property.
+O relacionamento has many é definido usando o decorador [@hasMany](https://github.com/adonisjs/lucid/blob/develop/src/orm/decorators/index.ts#L91) em uma propriedade do modelo.
 
 ```ts
 import Post from '#models/post'
@@ -170,9 +170,9 @@ export default class User extends BaseModel {
 }
 ```
 
-### Custom relationship keys
+### Chaves de relacionamento personalizadas
 
-By default, the `foreignKey` is the **camelCase representation of the parent model name and its primary key**. However, you can also define a custom foreign key.
+Por padrão, `foreignKey` é a **representação camelCase do nome do modelo pai e sua chave primária**. No entanto, você também pode definir uma chave estrangeira personalizada.
 
 ```ts
 @hasMany(() => Post, {
@@ -182,10 +182,10 @@ declare posts: HasMany<typeof Post>
 ```
 
 :::note
-Remember, if you intend to use camelCase for your foreign key definition, keep in mind that the default [naming strategy](./naming_strategy.md) will automatically convert it to snake_case.
+Lembre-se, se você pretende usar camelCase para sua definição de chave estrangeira, tenha em mente que a [estratégia de nomenclatura](./naming_strategy.md) padrão irá convertê-la automaticamente para snake_case.
 :::
 
-The local key is always the **primary key of the parent model** but can also be defined explicitly.
+A chave local é sempre a **chave primária do modelo pai**, mas também pode ser definida explicitamente.
 
 ```ts
 @hasMany(() => Post, {
@@ -196,11 +196,11 @@ declare posts: HasMany<typeof Post>
 
 ## BelongsTo
 
-BelongsTo is the inverse of the `hasOne` and the `hasMany` relationship. So, for example, **profile belongs to a user** and **a post belongs to a user**.
+BelongsTo é o inverso do relacionamento `hasOne` e `hasMany`. Então, por exemplo, **profile pertence a um usuário** e **a post pertence a um usuário**.
 
-You can leverage the same table structure and the same foreign key conventions to define a belongsTo relationship.
+Você pode aproveitar a mesma estrutura de tabela e as mesmas convenções de chave estrangeira para definir um relacionamento belongTo.
 
-The belongs to relationship is defined using the [@belongsTo](https://github.com/adonisjs/lucid/blob/develop/src/orm/decorators/index.ts#L64) decorator on a model property.
+O relacionamento pertence a é definido usando o decorador [@belongsTo](https://github.com/adonisjs/lucid/blob/develop/src/orm/decorators/index.ts#L64) em uma propriedade de modelo.
 
 ```ts
 import User from '#models/user'
@@ -221,15 +221,15 @@ export default class Profile extends BaseModel {
 
 ## ManyToMany
 
-A many-to-many relationship is slightly complex, as it allows both sides to have more than one relationship with each other. For example: **A user can have many skills**, and **a skill can also belong to many users**.
+Um relacionamento muitos-para-muitos é um pouco complexo, pois permite que ambos os lados tenham mais de um relacionamento entre si. Por exemplo: **Um usuário pode ter muitas habilidades**, e **uma habilidade também pode pertencer a muitos usuários**.
 
-You need a third table (usually known as a pivot table) for this relationship to work. The pivot table holds the foreign keys for both the other tables.
+Você precisa de uma terceira tabela (geralmente conhecida como tabela dinâmica) para que esse relacionamento funcione. A tabela dinâmica contém as chaves estrangeiras para as outras duas tabelas.
 
-In the following example, the `skill_user` table has the foreign keys for both the `users` and the `skills` table, allowing each user to have many skills and vice versa.
+No exemplo a seguir, a tabela `skill_user` tem as chaves estrangeiras para as tabelas `users` e `skills`, permitindo que cada usuário tenha muitas habilidades e vice-versa.
 
 ![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,f_auto/v1619890917/v5/many-to-many.png)
 
-Following are the example migrations for the `users`, `skills`, and the `skill_user` tables.
+A seguir estão os exemplos de migrações para as tabelas `users`, `skills` e `skill_user`.
 
 :::codegroup
 
@@ -295,14 +295,14 @@ export default class SkillUsers extends BaseSchema {
 
 :::
 
-### Defining relationship on the model
+### Definindo relacionamento no modelo
 
-Once you have created the tables with the required columns, you will also have to define the relationship on the Lucid model.
+Depois de criar as tabelas com as colunas necessárias, você também terá que definir o relacionamento no modelo Lucid.
 
-The many to many relationship is defined using the [@manyToMany](https://github.com/adonisjs/lucid/blob/develop/src/orm/decorators/index.ts#L102) decorator on a model property.
+O relacionamento muitos para muitos é definido usando o decorador [@manyToMany](https://github.com/adonisjs/lucid/blob/develop/src/orm/decorators/index.ts#L102) em uma propriedade do modelo.
 
 :::note
-There is no need to create a model for the pivot table.
+Não há necessidade de criar um modelo para a tabela dinâmica.
 :::
 
 ```ts
@@ -321,17 +321,17 @@ export default class User extends BaseModel {
 }
 ```
 
-### Custom relationship keys
+### Chaves de relacionamento personalizadas
 
-A manyToMany relation relies on many different keys to properly set up the relationship. All of these keys are computed using standard conventions. However, you are free to override them.
+Um relacionamento manyToMany depende de muitas chaves diferentes para configurar o relacionamento corretamente. Todas essas chaves são computadas usando convenções padrão. No entanto, você tem a liberdade de substituí-las.
 
-- `localKey` is the primary key of the parent model (i.e., User)
+- `localKey` é a chave primária do modelo pai (ou seja, Usuário)
 
-- `relatedKey` is the primary key of the related model (i.e., Skill)
+- `relatedKey` é a chave primária do modelo relacionado (ou seja, Habilidade)
 
-- `pivotForeignKey` is the foreign key for establishing the relationship with the parent model. The default value is the `snake_case` version of the parent model name and its primary key.
+- `pivotForeignKey` é a chave estrangeira para estabelecer o relacionamento com o modelo pai. O valor padrão é a versão `snake_case` do nome do modelo pai e sua chave primária.
 
-- `pivotRelatedForeignKey` is the foreign key for establishing the relationship with the related model. The default value is the `snake_case` version of the related model name and its primary key.
+- `pivotRelatedForeignKey` é a chave estrangeira para estabelecer o relacionamento com o modelo relacionado. O valor padrão é a versão `snake_case` do nome do modelo relacionado e sua chave primária.
 
 ```ts
 @manyToMany(() => Skill, {
@@ -344,12 +344,12 @@ declare skills: ManyToMany<typeof Skill>
 ```
 
 :::note
-Remember, if you intend to use camelCase for your foreign key definition, keep in mind that the default [naming strategy](./naming_strategy.md) will automatically convert it to snake_case.
+Lembre-se, se você pretende usar camelCase para sua definição de chave estrangeira, tenha em mente que a [estratégia de nomenclatura](./naming_strategy.md) padrão irá convertê-la automaticamente para snake_case.
 :::
 
-### Custom pivot table
+### Tabela dinâmica personalizada
 
-The default value for the pivot table name is computed by [sorting, then combining](https://github.com/adonisjs/lucid/blob/develop/src/orm/naming_strategies/camel_case.ts#L74) the **parent model name** and the **related model name**. However, you can also define a custom pivot table.
+O valor padrão para o nome da tabela dinâmica é calculado pela [classificação e, em seguida, pela combinação](https://github.com/adonisjs/lucid/blob/develop/src/orm/naming_strategies/camel_case.ts#L74) do **nome do modelo pai** e do **nome do modelo relacionado**. No entanto, você também pode definir uma tabela dinâmica personalizada.
 
 ```ts
 @manyToMany(() => Skill, {
@@ -358,11 +358,11 @@ The default value for the pivot table name is computed by [sorting, then combini
 declare skills: ManyToMany<typeof Skill>
 ```
 
-### Additional pivot columns
+### Colunas dinâmicas adicionais
 
-At times your pivot table will have additional columns. For example, you are storing the `proficiency` alongside the user skill.
+Às vezes, sua tabela dinâmica terá colunas adicionais. Por exemplo, você está armazenando a `proficiência` junto com a habilidade do usuário.
 
-You will have to inform a manyToMany relationship about this extra column. Otherwise, Lucid will not select it during the fetch queries.
+Você terá que informar um relacionamento manyToMany sobre essa coluna extra. Caso contrário, o Lucid não a selecionará durante as consultas de busca.
 
 ```ts
 @manyToMany(() => Skill, {
@@ -371,12 +371,12 @@ You will have to inform a manyToMany relationship about this extra column. Other
 declare skills: ManyToMany<typeof Skill>
 ```
 
-### Pivot table timestamps
+### Carimbos de data/hora da tabela dinâmica
 
-You can enable the support for **created at** and **updated at** timestamps for your pivot tables using the `pivotTimestamps` property.
+Você pode habilitar o suporte para carimbos de data/hora **criado em** e **atualizado em** para suas tabelas dinâmicas usando a propriedade `pivotTimestamps`.
 
-- Once defined, Lucid will automatically set/update these timestamps on insert and update queries.
-- Converts them to an instance of [Luxon Datetime](https://moment.github.io/luxon/api-docs/index.html#datetime) class during fetch.
+- Uma vez definido, o Lucid definirá/atualizará automaticamente esses carimbos de data/hora em consultas de inserção e atualização.
+[Luxon Datetime](https://moment.github.io/luxon/api-docs/index.html#datetime) classe durante a busca.
 
 ```ts
 @manyToMany(() => Skill, {
@@ -385,7 +385,7 @@ You can enable the support for **created at** and **updated at** timestamps for 
 declare skills: ManyToMany<typeof Skill>
 ```
 
-Settings `pivotTimestamps = true` assumes the column names are defined as `created_at` and `updated_at`. However, you can define custom column names as well.
+As configurações `pivotTimestamps = true` pressupõem que os nomes das colunas sejam definidos como `created_at` e `updated_at`. No entanto, você também pode definir nomes de colunas personalizados.
 
 ```ts
 @manyToMany(() => Skill, {
@@ -397,7 +397,7 @@ Settings `pivotTimestamps = true` assumes the column names are defined as `creat
 declare skills: ManyToMany<typeof Skill>
 ```
 
-To disable a particular timestamp, you can set its value to `false`.
+Para desabilitar um carimbo de data/hora específico, você pode definir seu valor como `false`.
 
 ```ts
 @manyToMany(() => Skill, {
@@ -411,14 +411,14 @@ skills: ManyToMany<typeof Skill>
 
 ## HasManyThrough
 
-The HasManyThrough relationship is similar to the `HasMany` relationship but creates the relationship through an intermediate model. For example, **A country has many posts through users**.
+O relacionamento HasManyThrough é semelhante ao relacionamento `HasMany`, mas cria o relacionamento por meio de um modelo intermediário. Por exemplo, **Um país tem muitos posts por meio de usuários**.
 
-- This relationship needs the through model (i.e., User) to have a foreign key reference with the current model (i.e., Country).
-  The related model (i.e., Post) has a foreign key reference with the through model (i.e., User).
+- Este relacionamento precisa que o modelo through (ou seja, Usuário) tenha uma referência de chave estrangeira com o modelo atual (ou seja, País).
+O modelo relacionado (ou seja, Post) tem uma referência de chave estrangeira com o modelo through (ou seja, Usuário).
 
 ![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1619899020/v5/has-many-through.png)
 
-Following are the example migrations for the `countries`, `users`, and the `posts` tables.
+A seguir estão os exemplos de migrações para as tabelas `countries`, `users` e `posts`.
 
 :::codegroup
 
@@ -483,11 +483,11 @@ export default class Posts extends BaseSchema {
 
 :::
 
-### Defining relationship on the model
+### Definindo relacionamento no modelo
 
-Once you have created the tables with the required columns, you will also have to define the relationship on the Lucid model.
+Depois de criar as tabelas com as colunas necessárias, você também terá que definir o relacionamento no modelo Lucid.
 
-The has many through relationship is defined using the [@hasManyThrough](https://github.com/adonisjs/lucid/blob/develop/src/orm/decorators/index.ts#L118) decorator on a model property.
+O relacionamento has many through é definido usando o decorador [@hasManyThrough](https://github.com/adonisjs/lucid/blob/develop/src/orm/decorators/index.ts#L118) em uma propriedade do modelo.
 
 ```ts
 import Post from '#models/post'
@@ -506,13 +506,13 @@ export default class Country extends BaseModel {
 }
 ```
 
-## Preload relationship
+## Relacionamento de pré-carregamento
 
-Preloading allows you to fetch the relationship data alongside the main query. For example: Select all the users and `preload` their profiles at the same time.
+O pré-carregamento permite que você busque os dados do relacionamento junto com a consulta principal. Por exemplo: selecione todos os usuários e `preload` seus perfis ao mesmo tempo.
 
-- The `preload` method accepts the name of the relationship defined on the model.
-- The relationship property value for the `hasOne` and the `belongsTo` relationship is either set to the related model instance or `null` when no records are found.
-  The relationship property value is an array of the related model instance for all other relationship types.
+- O método `preload` aceita o nome do relacionamento definido no modelo.
+- O valor da propriedade do relacionamento para o relacionamento `hasOne` e `belongsTo` é definido como a instância do modelo relacionada ou `null` quando nenhum registro é encontrado.
+O valor da propriedade de relacionamento é uma matriz da instância do modelo relacionado para todos os outros tipos de relacionamento.
 
 ```ts
 const users = await User.query().preload('profile')
@@ -522,7 +522,7 @@ users.forEach((user) => {
 })
 ```
 
-You can modify the relationship query by passing an optional callback to the `preload` method.
+Você pode modificar a consulta de relacionamento passando um retorno de chamada opcional para o método `preload`.
 
 ```ts
 const users = await User.query().preload('profile', (profileQuery) => {
@@ -530,19 +530,19 @@ const users = await User.query().preload('profile', (profileQuery) => {
 })
 ```
 
-### Preload multiple relationships
+### Pré-carregar vários relacionamentos
 
-You can `preload` multiple relationships together by calling the `preload` method for multiple times. For example:
+Você pode ``pré-carregar` vários relacionamentos juntos chamando o método `preload` várias vezes. Por exemplo:
 
 ```ts
 const users = await User.query().preload('profile').preload('posts')
 ```
 
-### Preload nested relationships
+### Pré-carregar relacionamentos aninhados
 
-You can preload nested relationships using the relationship query builder accessible via the optional callback.
+Você pode pré-carregar relacionamentos aninhados usando o construtor de consulta de relacionamento acessível por meio do retorno de chamada opcional.
 
-In the following example, we fetch all the users, preload their posts, and then fetch all the comments for each post, along with the comment user.
+No exemplo a seguir, buscamos todos os usuários, pré-carregamos suas postagens e, em seguida, buscamos todos os comentários para cada postagem, junto com o usuário do comentário.
 
 ```ts
 const users = await User.query().preload('posts', (postsQuery) => {
@@ -552,11 +552,11 @@ const users = await User.query().preload('posts', (postsQuery) => {
 })
 ```
 
-### Many to many pivot columns
+### Colunas pivot de muitos para muitos
 
-When preloading a manyToMany relationship, the pivot table columns are moved to the `$extras` object on the relationship instance.
+Ao pré-carregar um relacionamento manyToMany, as colunas da tabela dinâmica são movidas para o objeto `$extras` na instância do relacionamento.
 
-By default, we only select the foreign keys from the pivot table. However, you can define additional pivot columns to select at [defining the relationship](#additional-pivot-columns) or runtime.
+Por padrão, selecionamos apenas as chaves estrangeiras da tabela dinâmica. No entanto, você pode definir colunas pivot adicionais para selecionar em [definindo o relacionamento](#additional-pivot-columns) ou em tempo de execução.
 
 ```ts
 const users = await User.query().preload('skills', (query) => {
@@ -573,9 +573,9 @@ users.forEach((user) => {
 })
 ```
 
-### Lazy load relationships
+### Relacionamentos de carregamento lento
 
-Along with preloading, you can also load relationships directly from a model instance.
+Junto com o pré-carregamento, você também pode carregar relacionamentos diretamente de uma instância de modelo.
 
 ```ts
 const user = await User.find(1)
@@ -589,7 +589,7 @@ await user.load('posts')
 console.log(user.posts) // Post[]
 ```
 
-Like the `preload` method, the `load` method also accepts an optional callback to modify the relationship query.
+Assim como o método `preload`, o método `load` também aceita um retorno de chamada opcional para modificar a consulta de relacionamento.
 
 ```ts
 await user.load('profile', (profileQuery) => {
@@ -597,7 +597,7 @@ await user.load('profile', (profileQuery) => {
 })
 ```
 
-You can load multiple relationships by calling the `load` method multiple times or grabbing an instance of the underlying relationship loader.
+Você pode carregar vários relacionamentos chamando o método `load` várias vezes ou pegando uma instância do carregador de relacionamento subjacente.
 
 ```ts
 // Calling "load" method multiple times
@@ -612,13 +612,13 @@ await user.load((loader) => {
 })
 ```
 
-### Limit preloaded relationships
+### Limitar relacionamentos pré-carregados
 
-Let's say you want to load all the posts and fetch the recent three comments for each post.
+Digamos que você queira carregar todas as postagens e buscar os três comentários recentes para cada postagem.
 
-Using the query builder `limit` method will not give you the desired output since the limit is applied to the entire data set and not on the comments of an individual post.
+Usar o método `limit` do construtor de consultas não fornecerá a saída desejada, pois o limite é aplicado a todo o conjunto de dados e não aos comentários de uma postagem individual.
 
-Therefore, you must use the `groupLimit` method that uses [SQL window functions](https://drill.apache.org/docs/sql-window-functions-introduction/) to apply a limit on each parent record separately.
+Portanto, você deve usar o método `groupLimit` que usa [funções de janela SQL](https://drill.apache.org/docs/sql-window-functions-introduction/) para aplicar um limite em cada registro pai separadamente.
 
 ```ts
 const posts = await Post.query().preload('comments', (query) => {
@@ -626,30 +626,30 @@ const posts = await Post.query().preload('comments', (query) => {
 })
 ```
 
-## Relationship query builder
+## Construtor de consultas de relacionamento
 
-You can also access the query builder for a relationship using the `related` method. The relationship queries are always scoped to a given parent model instance.
+Você também pode acessar o construtor de consultas para um relacionamento usando o método `related`. As consultas de relacionamento sempre têm como escopo uma determinada instância do modelo pai.
 
-Lucid will automatically add the `where` clause for limiting the posts to the given user in the following example.
+O Lucid adicionará automaticamente a cláusula `where` para limitar as postagens ao usuário fornecido no exemplo a seguir.
 
 ```ts
 const user = await User.find(1)
 const posts = await user.related('posts').query()
 ```
 
-The `query` method returns a standard query builder instance, and you can chain any methods to it to add additional constraints.
+O método `query` retorna uma instância padrão do construtor de consultas, e você pode encadear quaisquer métodos a ele para adicionar restrições adicionais.
 
 ```ts
 const posts = await user.related('posts').query().where('isPublished', true).paginate(1)
 ```
 
-You can also use the relationship query builder to `update` and `delete` related rows. However, doing so [will not execute](./crud_operations.md#why-not-use-the-update-query-directly) any of the model hooks.
+Você também pode usar o construtor de consultas de relacionamento para `atualizar` e `excluir` linhas relacionadas. No entanto, fazer isso [não executará](./crud_operations.md#why-not-use-the-update-query-directly) nenhum dos ganchos do modelo.
 
-## Filter by relationships
+## Filtrar por relacionamentos
 
-You can also filter the records of the main query by checking for the existence or absence of a relationship. For example, **select all posts that have received one or more comments**.
+Você também pode filtrar os registros da consulta principal verificando a existência ou ausência de um relacionamento. Por exemplo, **selecione todas as postagens que receberam um ou mais comentários**.
 
-You can filter by relationship using the `has` or the `whereHas` methods. They accept the relationship name as the first argument. Optionally you can also pass an operator and number of expected rows.
+Você pode filtrar por relacionamento usando os métodos `has` ou `whereHas`. Eles aceitam o nome do relacionamento como o primeiro argumento. Opcionalmente, você também pode passar um operador e o número de linhas esperadas.
 
 ```ts
 // Get posts with one or more comments
@@ -659,7 +659,7 @@ const posts = await Post.query().has('comments')
 const posts = await Post.query().has('comments', '>', 2)
 ```
 
-You can make use of the `whereHas` method to add additional constraints for the relationship query. In the following example, we only fetch posts that have one or more approved comments.
+Você pode usar o método `whereHas` para adicionar restrições adicionais para a consulta de relacionamento. No exemplo a seguir, buscamos apenas postagens que tenham um ou mais comentários aprovados.
 
 ```ts
 const posts = await Post.query().whereHas('comments', (query) => {
@@ -667,7 +667,7 @@ const posts = await Post.query().whereHas('comments', (query) => {
 })
 ```
 
-Similar to the `has` method, the `whereHas` also accepts an optional operator and the count of expected rows.
+Semelhante ao método `has`, o `whereHas` também aceita um operador opcional e a contagem de linhas esperadas.
 
 ```ts
 const posts = await Post.query().whereHas(
@@ -680,22 +680,22 @@ const posts = await Post.query().whereHas(
 )
 ```
 
-Following is the list of `has` and `whereHas` variations.
+A seguir está a lista de variações de `has` e `whereHas`.
 
-- `orHas | orWhereHas` adds an **OR** clause for the relationship existence.
-- `doesntHave | whereDoesntHave` checks for the absence of the relationship.
-- `orDoesntHave | orWhereDoesntHave` adds an **OR** clause for the relationship absence.
+- `orHas | orWhereHas` adiciona uma cláusula **OR** para a existência do relacionamento.
+- `doesntHave | whereDoesntHave` verifica a ausência do relacionamento.
+- `orDoesntHave | orWhereDoesntHave` adiciona uma cláusula **OR** para a ausência do relacionamento.
 
-## Relationship aggregates
+## Agregados de relacionamento
 
-The relationships API of Lucid also allows you to load the aggregates for relationships. For example, You can fetch a list of **posts with a count of comments for each post**.
+A API de relacionamentos do Lucid também permite que você carregue os agregados para relacionamentos. Por exemplo, você pode buscar uma lista de **postagens com uma contagem de comentários para cada postagem**.
 
 #### `withAggregate`
 
-The `withAggregate` method accepts the relationship as the first argument and a mandatory callback to define the value's aggregate function and property name.
+O método `withAggregate` aceita o relacionamento como o primeiro argumento e um retorno de chamada obrigatório para definir a função de agregação do valor e o nome da propriedade.
 
 :::note
-In the following example, the `comments_count` property is moved to the `$extras` object because it is not defined as a property on the model.
+No exemplo a seguir, a propriedade `comments_count` é movida para o objeto `$extras` porque não está definida como uma propriedade no modelo.
 :::
 
 ```ts
@@ -712,7 +712,7 @@ posts.forEach((post) => {
 
 #### `withCount`
 
-Since counting relationship rows is a very common requirement, you can instead use the `withCount` method.
+Como a contagem de linhas de relacionamento é um requisito muito comum, você pode usar o método `withCount`.
 
 ```ts
 const posts = await Post.query().withCount('comments')
@@ -722,7 +722,7 @@ posts.forEach((post) => {
 })
 ```
 
-You can also provide a custom name for the count property using the `as` method.
+Você também pode fornecer um nome personalizado para a propriedade count usando o método `as`.
 
 ```ts
 const posts = await Post.query()
@@ -739,7 +739,7 @@ posts.forEach((post) => {
 })
 ```
 
-You can define constraints to the count query by passing an optional callback to the `withCount` method.
+Você pode definir restrições para a consulta de contagem passando um retorno de chamada opcional para o método `withCount`.
 
 ```ts
 const posts = await Post.query().withCount('comments', (query) => {
@@ -747,9 +747,9 @@ const posts = await Post.query().withCount('comments', (query) => {
 })
 ```
 
-### Lazy load relationship aggregates
+### Agregados de relacionamento de carregamento lento
 
-Similar to the `withCount` and the `withAggregate` methods, you can also lazy load the aggregates from a model instance using `loadCount` and the `loadAggregate` methods.
+Semelhante aos métodos `withCount` e `withAggregate`, você também pode carregar lentamente os agregados de uma instância de modelo usando os métodos `loadCount` e `loadAggregate`.
 
 ```ts
 const post = await Post.findOrFail()
@@ -767,13 +767,13 @@ await post.loadAggregate('comments', (query) => {
 console.log(post.$extras.commentsCount)
 ```
 
-Make sure you are using the `loadCount` method only when working with a single model instance. If there are multiple model instances, it is better to use the query builder `withCount` method.
+Certifique-se de usar o método `loadCount` somente ao trabalhar com uma única instância de modelo. Se houver várias instâncias de modelo, é melhor usar o método `withCount` do construtor de consultas.
 
-## Relationship query hook
+## Gancho de consulta de relacionamento
 
-You can define an `onQuery` relationship hook at the time of defining a relationship. Then, the query hooks get executed for all the **select**, **update**, and **delete** queries executed by the relationship query builder.
+Você pode definir um gancho de relacionamento `onQuery` no momento de definir um relacionamento. Em seguida, os ganchos de consulta são executados para todas as consultas **select**, **update** e **delete** executadas pelo construtor de consultas de relacionamento.
 
-The `onQuery` method is usually helpful when you always apply certain constraints to the relationship query.
+O método `onQuery` geralmente é útil quando você sempre aplica certas restrições à consulta de relacionamento.
 
 ```ts
 import UserEmail from '#models/user_email'
@@ -795,13 +795,13 @@ export default class User extends BaseModel {
 }
 ```
 
-## Create relationships
+## Criar relacionamentos
 
-You can create relationships between two models using the relationships persistence API.
+Você pode criar relacionamentos entre dois modelos usando a API de persistência de relacionamentos.
 
 ### `create`
 
-In the following example, we create a new comment and link it to the post at the same time. The `create` method accepts a plain JavaScript object to persist. The foreign key value is defined automatically.
+No exemplo a seguir, criamos um novo comentário e o vinculamos à postagem ao mesmo tempo. O método `create` aceita um objeto JavaScript simples para persistir. O valor da chave estrangeira é definido automaticamente.
 
 ```ts
 const post = await Post.findOrFail(1)
@@ -814,7 +814,7 @@ console.log(comment.postId === post.id) // true
 
 ### `save`
 
-Following is an example using the `save` method. The `save` method needs an instance of the related model. The foreign key value is defined automatically.
+A seguir está um exemplo usando o método `save`. O método `save` precisa de uma instância do modelo relacionado. O valor da chave estrangeira é definido automaticamente.
 
 ```ts
 const post = await Post.findOrFail(1)
@@ -829,9 +829,9 @@ console.log(comment.postId === post.id) // true
 
 ### `createMany`
 
-You can also create multiple relationships using the `createMany` method. The method is only available for `hasMany` and `manyToMany` relationships.
+Você também pode criar vários relacionamentos usando o método `createMany`. O método está disponível apenas para relacionamentos `hasMany` e `manyToMany`.
 
-The `createMany` method returns an array of persisted model instances.
+O método `createMany` retorna uma matriz de instâncias de modelo persistentes.
 
 ```ts
 const comments = await Post.related('comments').createMany([
@@ -846,7 +846,7 @@ const comments = await Post.related('comments').createMany([
 
 ### `saveMany`
 
-Similar to the `save` method. The `saveMany` method allows persisting multiple relationships together.
+Semelhante ao método `save`. O método `saveMany` permite persistir vários relacionamentos juntos.
 
 ```ts
 const comment1 = new Comment()
@@ -860,7 +860,7 @@ await Post.related('comments').saveMany([comment1, comment2])
 
 ### `associate`
 
-The `associate` method is exclusive to the `belongsTo` relationship. It let you associate two models with each other.
+O método `associate` é exclusivo para o relacionamento `belongsTo`. Ele permite que você associe dois modelos um ao outro.
 
 ```ts
 const user = await User.findOrFail(1)
@@ -872,7 +872,7 @@ await profile.related('user').associate(user)
 
 ### `dissociate`
 
-The `dissociate` removes the relationship by setting the foreign key to `null`. Thus, the method is exclusive to the `belongsTo` relationship.
+O `dissociate` remove o relacionamento definindo a chave estrangeira como `null`. Portanto, o método é exclusivo para o relacionamento `belongsTo`.
 
 ```ts
 await profile = await Profile.findOrFail(1)
@@ -881,9 +881,9 @@ await profile.related('user').dissociate()
 
 ### `attach`
 
-The `attach` method is exclusive to a `manyToMany` relationship. It allows you to create a relationship between two persisted models inside the pivot table.
+O método `attach` é exclusivo para um relacionamento `manyToMany`. Ele permite que você crie um relacionamento entre dois modelos persistentes dentro da tabela dinâmica.
 
-The `attach` method just needs the `id` of the related model to form the relationship inside the pivot table.
+O método `attach` precisa apenas do `id` do modelo relacionado para formar o relacionamento dentro da tabela dinâmica.
 
 ```ts
 const user = await User.find(1)
@@ -893,7 +893,7 @@ const skill = await Skill.find(1)
 await user.related('skills').attach([skill.id])
 ```
 
-You can define additional pivot columns by passing an object of key-value pair. The key is the related model id, and the value is an object of additional columns.
+Você pode definir colunas dinâmicas adicionais passando um objeto de par chave-valor. A chave é o id do modelo relacionado e o valor é um objeto de colunas adicionais.
 
 ```ts
 await user.related('skills').attach({
@@ -905,9 +905,9 @@ await user.related('skills').attach({
 
 ### `detach`
 
-The `detach` method is the opposite of the `attach` method and allows you to remove the relationship **from the pivot table**.
+O método `detach` é o oposto do método `attach` e permite que você remova o relacionamento **da tabela dinâmica**.
 
-It optionally accepts an array of `ids` to remove. Calling the method without any arguments will remove all the relationships from the pivot table.
+Ele aceita opcionalmente uma matriz de `ids` para remover. Chamar o método sem argumentos removerá todos os relacionamentos da tabela dinâmica.
 
 ```ts
 const user = await User.find(1)
@@ -921,12 +921,12 @@ await user.related('skills').detach()
 
 ### `sync`
 
-The `sync` method allows you to sync the pivot rows. The payload provided to the `sync` method is considered the source of truth, and we compute a diff internally to execute the following SQL queries.
+O método `sync` permite que você sincronize as linhas dinâmicas. A carga útil fornecida ao método `sync` é considerada a fonte da verdade, e calculamos um diff internamente para executar as seguintes consultas SQL.
 
-- Insert the rows missing in the pivot table but present in the sync payload.
-- Update the rows present in the pivot table and the sync payload but has one or more changed arguments.
-- Remove the rows present in the pivot table but missing in the sync payload.
-- Ignore rows present in both the pivot table and the sync payload.
+- Insira as linhas ausentes na tabela dinâmica, mas presentes na carga útil de sincronização.
+- Atualize as linhas presentes na tabela dinâmica e na carga útil de sincronização, mas tenha um ou mais argumentos alterados.
+- Remova as linhas presentes na tabela dinâmica, mas ausentes na carga útil de sincronização.
+- Ignore as linhas presentes na tabela dinâmica e na carga útil de sincronização.
 
 ```ts
 const user = await User.find(1)
@@ -935,7 +935,7 @@ const user = await User.find(1)
 await user.related('skills').sync([1, 2, 3])
 ```
 
-You can also define additional pivot columns as an object of key-value pair.
+Você também pode definir colunas de pivô adicionais como um objeto de par de chave-valor.
 
 ```ts
 const user = await User.find(1)
@@ -953,7 +953,7 @@ await user.related('skills').sync({
 })
 ```
 
-You can disable the `detach` option to sync rows without removing any rows from the pivot table.
+Você pode desabilitar a opção `detach` para sincronizar linhas sem remover nenhuma linha da tabela dinâmica.
 
 ```ts
 await user
@@ -963,18 +963,18 @@ await user
   .sync([1, 2, 3], false)
 ```
 
-## Delete relationship
+## Excluir relacionamento
 
-For the most part, you can delete related rows directly from its model. For example: **You can delete a comment by its id, directly using the Comment model**, there is no need to trigger the comment deletion via post.
+Na maioria das vezes, você pode excluir linhas relacionadas diretamente do modelo. Por exemplo: **Você pode excluir um comentário pelo seu id, diretamente usando o modelo Comment**, não há necessidade de acionar a exclusão do comentário via post.
 
-- For a `manyToMany` relationship, you can use the `detach` method to remove the row from the pivot table.
-- Use the `dissociate` method to remove a belongsTo relationship without deleting the row from the database table.
+- Para um relacionamento `manyToMany`, você pode usar o método `detach` para remover a linha da tabela dinâmica.
+- Use o método `dissociate` para remover um relacionamento belongTo sem excluir a linha da tabela do banco de dados.
 
-### Using the onDelete action
+### Usando a ação onDelete
 
-You can also use the database `onDelete` action to remove the related data from the database. For example: Delete the posts of a user when the user itself is deleted.
+Você também pode usar a ação `onDelete` do banco de dados para remover os dados relacionados do banco de dados. Por exemplo: Exclua as postagens de um usuário quando o próprio usuário for excluído.
 
-Following is an example migration for setting the `onDelete` action.
+A seguir, um exemplo de migração para definir a ação `onDelete`.
 
 ```ts
 this.schema.createTable(this.tableName, (table) => {

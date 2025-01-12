@@ -1,48 +1,48 @@
 ---
-summary: Learn how to serialize model instances to plain JavaScript objects.
+resumo: Aprenda a serializar instâncias de modelo para objetos JavaScript simples.
 ---
 
-# Serializing models
+# Serializando modelos
 
-If you create an API server, you may want to convert the model instances to plain JSON objects before sending them to the client in response.
+Se você criar um servidor de API, talvez queira converter as instâncias de modelo para objetos JSON simples antes de enviá-las ao cliente em resposta.
 
-The process of transforming class instances to plain JSON objects is known as serialization. During the serialization process, you may also want to:
+O processo de transformar instâncias de classe para objetos JSON simples é conhecido como serialização. Durante o processo de serialização, você também pode querer:
 
-- Convert the `camelCase` model property names to `snake_case`.
+- Converter os nomes de propriedade do modelo `camelCase` para `snake_case`.
 
-- Hide/remove some of the properties from the API responses. For example: Removing the `password` property from the User model.
+- Ocultar/remover algumas das propriedades das respostas da API. Por exemplo: Remover a propriedade `password` do modelo User.
 
-- Convert/mutate values. For example: Converting the timestamps to an ISO string.
+- Converter/mutar valores. Por exemplo: Converter os timestamps para uma string ISO.
 
-- Add additional computed properties. For example: Compute the `fullName` from the user's first and the last name.
+- Adicionar propriedades computadas adicionais. Por exemplo: Calcular o `fullName` do primeiro e último nome do usuário.
 
-You can perform all these transformations within your models without creating any separate transformers or resource classes.
+Você pode executar todas essas transformações dentro de seus modelos sem criar quaisquer transformadores ou classes de recursos separados.
 
 :::note
-There is no need to serialize your models to JSON when using them inside the Edge templates. Serialization is only required for API servers returning JSON responses.
+Não há necessidade de serializar seus modelos para JSON ao usá-los dentro dos modelos do Edge. A serialização é necessária apenas para servidores de API que retornam respostas JSON.
 :::
 
-## Basic example
+## Exemplo básico
 
-You can serialize a model by calling either the `serialize` or the `toJSON` method. For example:
+Você pode serializar um modelo chamando o método `serialize` ou `toJSON`. Por exemplo:
 
 ```ts
 const post = await Post.find(1)
 const postJSON = post.serialize()
 ```
 
-You can serialize an array of model instances by calling the `Array.map` method.
+Você pode serializar uma matriz de instâncias de modelo chamando o método `Array.map`.
 
 ```ts
 const posts = await Post.all()
 const postsJSON = posts.map((post) => post.serialize())
 ```
 
-### Serializing paginated results
+### Serializando resultados paginados
 
-When working with paginated results, you can serialize the models by calling the `.serialize` method on the paginator instance.
+Ao trabalhar com resultados paginados, você pode serializar os modelos chamando o método `.serialize` na instância do paginador.
 
-The `paginator.serialize` method returns an object with `meta` and `data` properties. The `meta` is the [pagination metadata](../guides/pagination.md#serializing-to-json) and `data` is an array of serialized models.
+O método `paginator.serialize` retorna um objeto com as propriedades `meta` e `data`. `meta` é o [metadado de paginação](../guides/pagination.md#serializing-to-json) e `data` é uma matriz de modelos serializados.
 
 ```ts
 const posts = await Post.query().paginate(1)
@@ -56,9 +56,9 @@ const paginationJSON = posts.serialize()
  */
 ```
 
-### Computed properties
+### Propriedades computadas
 
-During the serialization process, the model returns an object with properties using the `@column` decorator. If you want to serialize any additional properties, then make use of the `@computed` decorator.
+Durante o processo de serialização, o modelo retorna um objeto com propriedades usando o decorador `@column`. Se você quiser serializar quaisquer propriedades adicionais, use o decorador `@computed`.
 
 ```ts
 import { DateTime } from 'luxon'
@@ -81,12 +81,12 @@ export default class Post extends BaseModel {
 }
 ```
 
-### Re-naming properties
+### Renomeando propriedades
 
-You can rename the serialized property names by using the `serializeAs` option. You will still access the property by its actual name on the model, but the serialized output will use the `serializeAs` name. For example:
+Você pode renomear os nomes de propriedades serializadas usando a opção `serializeAs`. Você ainda acessará a propriedade pelo seu nome real no modelo, mas a saída serializada usará o nome `serializeAs`. Por exemplo:
 
 :::note
-Make use of [Model naming strategy](./naming_strategy.md) if you want to overwrite the naming convention for all serialized properties.
+Use [Estratégia de nomenclatura de modelo](./naming_strategy.md) se quiser substituir a convenção de nomenclatura para todas as propriedades serializadas.
 :::
 
 ```ts
@@ -116,9 +116,9 @@ post.serialize()
  */
 ```
 
-### Hiding properties
+### Ocultando propriedades
 
-You can remove the model properties from the serialized output by setting the `serializeAs` value to `null`. For example:
+Você pode remover as propriedades do modelo da saída serializada definindo o valor `serializeAs` como `null`. Por exemplo:
 
 ```ts
 import { DateTime } from 'luxon'
@@ -150,12 +150,12 @@ user.serialize()
  */
 ```
 
-### Mutating/transforming values
+### Mutando/transformando valores
 
-You can also transform a property value during serialization by defining the `serialize` method. It receives the property's current value, and the return value is passed to the serialized output.
+Você também pode transformar um valor de propriedade durante a serialização definindo o método `serialize`. Ele recebe o valor atual da propriedade e o valor de retorno é passado para a saída serializada.
 
 :::note
-Do make sure to guard the method implementation against the `null` values.
+Certifique-se de proteger a implementação do método contra os valores `null`.
 :::
 
 ```ts
@@ -178,9 +178,9 @@ export default class Post extends BaseModel {
 }
 ```
 
-## Serializing relationships
+## Serializando relacionamentos
 
-The `preloaded` relationships are automatically serialized every time you serialize a model instance. For example:
+Os relacionamentos `preloaded` são serializados automaticamente toda vez que você serializa uma instância de modelo. Por exemplo:
 
 ```ts
 const posts = await Post.query().preload('comments')
@@ -188,7 +188,7 @@ const posts = await Post.query().preload('comments')
 const postsJSON = posts.map((post) => post.serialize())
 ```
 
-In the above example, the `comments` for all the posts will be serialized to the post object. For example:
+No exemplo acima, os `comentários` para todas as postagens serão serializados para o objeto de postagem. Por exemplo:
 
 ```ts
 {
@@ -201,7 +201,7 @@ In the above example, the `comments` for all the posts will be serialized to the
 }
 ```
 
-You can change the relationship property name by defining the `serializeAs` option on the relationship definition.
+Você pode alterar o nome da propriedade do relacionamento definindo a opção `serializeAs` na definição do relacionamento.
 
 ```ts
 import { DateTime } from 'luxon'
@@ -239,13 +239,13 @@ const postsJSON = posts.map((post) => post.serialize())
 */
 ```
 
-If you don't want to serialize a relationship, you can set the `serializeAs = null`.
+Se você não quiser serializar um relacionamento, você pode definir `serializeAs = null`.
 
-## Serializing `$extras` object
+## Serializando objeto `$extras`
 
-The query result values which are not defined as columns on the model are moved to the `$extras` object.
+Os valores de resultado da consulta que não são definidos como colunas no modelo são movidos para o objeto `$extras`.
 
-For example, in the following query, we fetch the `category_name` using a subquery. However, your model has no knowledge about this on the fly `category_name` column, and hence we will move its value to the `$extras` object.
+Por exemplo, na consulta a seguir, buscamos o `category_name` usando uma subconsulta. No entanto, seu modelo não tem conhecimento sobre isso na coluna `category_name` em tempo real e, portanto, moveremos seu valor para o objeto `$extras`.
 
 ```ts
 const post = await Post.query()
@@ -261,13 +261,13 @@ const post = await Post.query()
   .first()
 ```
 
-You can access the extras object from the model instance as follows:
+Você pode acessar o objeto extras da instância do modelo da seguinte forma:
 
 ```ts
 post.$extras.category_name
 ```
 
-You can also serialize the `$extras` object by defining the following property on the model.
+Você também pode serializar o objeto `$extras` definindo a seguinte propriedade no modelo.
 
 ```ts
 class Post extends BaseModel {
@@ -278,7 +278,7 @@ class Post extends BaseModel {
 }
 ```
 
-Also, you can customize the properties you want to pick from the extras object by declaring the `serializeExtras` property as a function.
+Além disso, você pode personalizar as propriedades que deseja escolher do objeto extras declarando a propriedade `serializeExtras` como uma função.
 
 ```ts
 class Post extends BaseModel {
@@ -292,15 +292,15 @@ class Post extends BaseModel {
 }
 ```
 
-## Cherry picking fields/relationships
+## Seleção seletiva de campos/relacionamentos
 
-The cherry-picking API is designed by keeping the consumer of the API in mind. Some of the options may look verbose or less intuitive, but once you look at it from the perspective of the API consumer, things will start to make more sense.
+A API de seleção seletiva foi projetada tendo o consumidor da API em mente. Algumas das opções podem parecer prolixas ou menos intuitivas, mas quando você olha para elas da perspectiva do consumidor da API, as coisas começam a fazer mais sentido.
 
 ---
 
-### Picking/omitting fields
+### Seleção/omissão de campos
 
-You can pass a tree of fields/relationships to pick or omit from the final results during the serialization process. For example:
+Você pode passar uma árvore de campos/relacionamentos para selecionar ou omitir dos resultados finais durante o processo de serialização. Por exemplo:
 
 ```ts
 const post = await Post.find(1)
@@ -312,7 +312,7 @@ posts.serialize({
 })
 ```
 
-Instead of picking fields, you can also define the fields to `omit`. When both are specified, the `omit` will win over the `pick` array.
+Em vez de selecionar campos, você também pode definir os campos para `omitir`. Quando ambos são especificados, `omit` vencerá o array `pick`.
 
 ```ts
 const post = await Post.find(1)
@@ -326,9 +326,9 @@ posts.serialize({
 
 ---
 
-### Picking relationships and their fields
+### Seleção de relacionamentos e seus campos
 
-You can also cherry-pick the complete relation nodes or pick/omit fields from the relationships.
+Você também pode selecionar seletivamente os nós de relação completos ou selecionar/omitir campos dos relacionamentos.
 
 ```ts
 const post = await Post.query().preload('comments').preload('category').preload('author').first()
@@ -348,12 +348,12 @@ post.serialize({
 })
 ```
 
-The serialization tree may look verbose at first. However, most API servers do not define the fields or pick/omit by hand and usually compute it from the URL query string.
+A árvore de serialização pode parecer prolixa a princípio. No entanto, a maioria dos servidores de API não define os campos ou seleciona/omite manualmente e geralmente os calcula a partir da sequência de consulta de URL.
 
 ---
 
-### Points to note
+### Pontos a serem observados
 
-- The cherry-picking API **uses the serialization property names** and **not the model property names**.
-- Again, from the API consumer point of view, they don't know the property name you have defined on the model. They can only see the JSON response and cherry-pick using the same property names.
-- The cherry-picking API cannot override the `serializeAs = null` option. Otherwise, someone can define the `password` field in the URL query string to view all the hashed passwords.
+- A API de seleção seletiva **usa os nomes de propriedade de serialização** e **não os nomes de propriedade do modelo**.
+- Novamente, do ponto de vista do consumidor da API, eles não sabem o nome da propriedade que você definiu no modelo. Eles só podem ver a resposta JSON e selecionar seletivamente usando os mesmos nomes de propriedade.
+- A API de seleção seletiva não pode substituir a opção `serializeAs = null`. Caso contrário, alguém pode definir o campo `password` na sequência de consulta de URL para visualizar todas as senhas com hash.

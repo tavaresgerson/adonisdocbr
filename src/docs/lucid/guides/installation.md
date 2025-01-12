@@ -1,8 +1,8 @@
-# Installation and usage
+# Instalação e uso
 
-Lucid comes pre-configured with the `web` and the `api` starter kits. However, you can install and manually configure it as follows inside an AdonisJS project.
+O Lucid vem pré-configurado com os kits iniciais `web` e `api`. No entanto, você pode instalá-lo e configurá-lo manualmente da seguinte forma dentro de um projeto AdonisJS.
 
-Install the package from the npm packages registry using one of the following commands.
+Instale o pacote do registro de pacotes npm usando um dos seguintes comandos.
 
 :::codegroup
 
@@ -23,7 +23,7 @@ pnpm add @adonisjs/lucid
 
 :::
 
-Once done, you must run the following command to configure Lucid. You can optionally specify the database dialect you want to use using the `--db` flag. Following is the list of valid options.
+Uma vez feito isso, você deve executar o seguinte comando para configurar o Lucid. Opcionalmente, você pode especificar o dialeto do banco de dados que deseja usar usando o sinalizador `--db`. A seguir está a lista de opções válidas.
 
 - `sqlite`
 - `postgres`
@@ -37,11 +37,11 @@ node ace configure @adonisjs/lucid
 node ace configure @adonisjs/lucid --db=mysql
 ```
 
-:::disclosure{title="See steps performed by the configure command"}
+:::disclosure{title="Veja as etapas executadas pelo comando configure"}
 
-1. Registers the following service provider inside the `adonisrc.ts` file.
+1. Registra o seguinte provedor de serviços dentro do arquivo `adonisrc.ts`.
 
-   ```ts
+```ts
    {
      providers: [
        // ...other providers
@@ -50,9 +50,9 @@ node ace configure @adonisjs/lucid --db=mysql
    }
    ```
 
-2. Register the following command inside the `adonisrc.ts` file.
+2. Registra o seguinte comando dentro do arquivo `adonisrc.ts`.
 
-   ```ts
+```ts
    {
      commands: [
        // ...other commands
@@ -61,19 +61,19 @@ node ace configure @adonisjs/lucid --db=mysql
    }
    ```
 
-3. Create the `config/database.ts` file.
+3. Crie o arquivo `config/database.ts`.
 
-4. Define the environment variables and their validations for the selected dialect.
+4. Defina as variáveis ​​de ambiente e suas validações para o dialeto selecionado.
 
-5. Install required peer dependencies.
+5. Instale as dependências de peer necessárias.
 
 :::
 
-## Configuration
+## Configuração
 
-The configuration for Lucid is stored inside the `config/database.ts` file.
+A configuração do Lucid é armazenada dentro do arquivo `config/database.ts`.
 
-See also: [Lucid config stubs](https://github.com/adonisjs/presets/tree/develop/src/lucid/stubs/config/database)
+Veja também: [Stubs de configuração do Lucid](https://github.com/adonisjs/presets/tree/develop/src/lucid/stubs/config/database)
 
 ```ts
 import env from '#start/env'
@@ -104,25 +104,25 @@ export default dbConfig
 
 ### `connection`
 
-The default connection to use for making queries. The value must be a reference to one of the `connections` defined in the same config file.
+A conexão padrão a ser usada para fazer consultas. O valor deve ser uma referência a uma das `connections` definidas no mesmo arquivo de configuração.
 
 ### `connections`
 
-The `connections` object is a collection of named database connections you want to use. Connections are initialized lazily when you execute a query for the first time.
+O objeto `connections` é uma coleção de conexões de banco de dados nomeadas que você deseja usar. As conexões são inicializadas lentamente quando você executa uma consulta pela primeira vez.
 
 ### connections.`name`.connection
 
-The value of the `connection` property is same as the [configuration object](https://knexjs.org/guide/#configuration-options) accepted by Knex.
+O valor da propriedade `connection` é o mesmo que o [objeto de configuração](https://knexjs.org/guide/#configuration-options) aceito pelo Knex.
 
-## Configuring read-write replicas
+## Configurando réplicas de leitura e gravação
 
-Lucid supports read-write replicas as a first-class citizen. You may configure one write database server, along with multiple read servers. All read queries are sent to the read servers in round-robin fashion, and write queries are sent to the write server.
+O Lucid oferece suporte a réplicas de leitura e gravação como um cidadão de primeira classe. Você pode configurar um servidor de banco de dados de gravação, juntamente com vários servidores de leitura. Todas as consultas de leitura são enviadas para os servidores de leitura em rodízio, e as consultas de gravação são enviadas para o servidor de gravação.
 
 :::note
-Lucid does not perform any data replication for you. Therefore, you still have to rely on your database server for that.
+O Lucid não executa nenhuma replicação de dados para você. Portanto, você ainda precisa confiar no seu servidor de banco de dados para isso.
 :::
 
-In the following example, we define one write server and two read replicas. Since, Lucid will merge the properties from the `connection` object with every node of read-write connection objects, you do not have to repeat `username` and `password` properties.
+No exemplo a seguir, definimos um servidor de gravação e duas réplicas de leitura. Como o Lucid mesclará as propriedades do objeto `connection` com cada nó de objetos de conexão de leitura-gravação, você não precisa repetir as propriedades `username` e `password`.
 
 ```ts
 const dbConfig = defineConfig({
@@ -167,9 +167,9 @@ const dbConfig = defineConfig({
 })
 ```
 
-## Basic usage
+## Uso básico
 
-Once you have configured Lucid, you can start using the Database query builder to create and execute SQL queries. In the following code examples, we perform CRUD operations on the `posts` table.
+Depois de configurar o Lucid, você pode começar a usar o construtor de consultas do banco de dados para criar e executar consultas SQL. Nos exemplos de código a seguir, realizamos operações CRUD na tabela `posts`.
 
 ```ts
 // title: Select query with pagination
@@ -272,8 +272,8 @@ export default class PostsController {
 }
 ```
 
-## Switching between connections
-Since, you can define multiple connections within the `config/database.ts` file. You may switch between them at runtime using the `db.connection` method. It accepts the connection name (as defined inside the config file) as a parameter and return an instance of [QueryClient](https://github.com/adonisjs/lucid/blob/develop/src/query_client/index.ts) class for the mentioned connection.
+## Alternando entre conexões
+Desde que você pode definir várias conexões dentro do arquivo `config/database.ts`. Você pode alternar entre elas em tempo de execução usando o método `db.connection`. Ele aceita o nome da conexão (conforme definido dentro do arquivo de configuração) como um parâmetro e retorna uma instância da classe [QueryClient](https://github.com/adonisjs/lucid/blob/develop/src/query_client/index.ts) para a conexão mencionada.
 
 ```ts
 import db from '@adonisjs/lucid/services/db'
@@ -289,10 +289,10 @@ const pg = db.connection('pg')
 await pg.query().select('*').from('posts')
 ```
 
-## Closing connections
-You may close open connections using the `db.manager.close` method. The method accepts the connection name (as defined inside the config file) as a parameter and calls the [disconnection method](https://github.com/adonisjs/lucid/blob/develop/src/connection/index.ts#L365) on the underlying connection class.
+## Fechando conexões
+Você pode fechar conexões abertas usando o método `db.manager.close`. O método aceita o nome da conexão (conforme definido dentro do arquivo de configuração) como um parâmetro e chama o [método de desconexão](https://github.com/adonisjs/lucid/blob/develop/src/connection/index.ts#L365) na classe de conexão subjacente.
 
-It is recommend to not close connections, unless you know that you will not use making more queries using the given connection.
+É recomendável não fechar conexões, a menos que você saiba que não fará mais consultas usando a conexão fornecida.
 
 ```ts
 import db from '@adonisjs/lucid/services/db'
