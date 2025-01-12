@@ -1,31 +1,31 @@
 ---
-summary: Available options for rendering views and templates in AdonisJS
+resumo: Opções disponíveis para renderizar visualizações e modelos no AdonisJS
 ---
 
-# Views and Templates
+# Visualizações e modelos
 
-AdonisJS is an excellent fit for creating traditional server-rendered applications in Node.js. If you enjoy the simplicity of using a backend template engine that outputs HTML without any overhead of Virtual DOM and build tools, then this guide is for you.
+O AdonisJS é uma excelente opção para criar aplicativos tradicionais renderizados por servidor no Node.js. Se você gosta da simplicidade de usar um mecanismo de modelo de backend que gera HTML sem nenhuma sobrecarga de Virtual DOM e ferramentas de construção, então este guia é para você.
 
-The typical workflow of a server-rendered application in AdonisJS looks as follows.
+O fluxo de trabalho típico de um aplicativo renderizado por servidor no AdonisJS é o seguinte.
 
-- Choose a template engine to render HTML dynamically.
-- Use [Vite](../basics/vite.md) for bundling CSS and frontend JavaScript.
-- Optionally, you can opt for libraries like [HTMX](https://htmx.org/) or [Unpoly](https://unpoly.com/) to progressively enhance your application and navigate like an SPA.
+* Escolha um mecanismo de modelo para renderizar HTML dinamicamente.
+[Vite](../basics/vite.md) para agrupar CSS e JavaScript de frontend.
+[HTMX](https://htmx.org/) ou
 
 :::note
-The AdonisJS core team has created a framework-agnostic template engine called [Edge.js](https://edgejs.dev) but does not force you to use it. You can use any other template engine you would like inside an AdonisJS application.
+A equipe principal do AdonisJS criou um mecanismo de modelo independente de framework chamado [Edge.js](https://edgejs.dev), mas não o força a usá-lo. Você pode usar qualquer outro mecanismo de modelo que desejar dentro de um aplicativo AdonisJS.
 :::
 
-## Popular options
+## Opções populares
 
-Following is the list of popular template engines you can use inside an AdonisJS application (just like any other Node.js application).
+A seguir está a lista de mecanismos de modelo populares que você pode usar dentro de um aplicativo AdonisJS (assim como qualquer outro aplicativo Node.js).
 
-- [**EdgeJS**](https://edgejs.dev) is a simple, modern, and batteries included template engine created and maintained by the AdonisJS core team for Node.js.
-- [**Pug**](https://pugjs.org) is a template engine heavily influenced by Haml.
-- [**Nunjucks**](https://mozilla.github.io/nunjucks) is a rich feature template engine inspired by Jinja2.
+[**EdgeJS**](https://edgejs.dev) é um mecanismo de modelo simples, moderno e com baterias incluídas, criado e mantido pela equipe principal do AdonisJS para Node.js.
+[**Pug**](https://pugjs.org) é um mecanismo de modelo fortemente influenciado por Haml.
+[**Nunjucks**](https://mozilla.github.io/nunjucks) é um mecanismo de modelo rico em recursos inspirado no Jinja2.
 
-## Hybrid applications
+## Aplicativos híbridos
 
-AdonisJS is also a great fit for creating hybrid applications that render HTML on the server and then hydrate your JavaScript on the client. This approach is popular among developers who want to use `Vue`, `React`, `Svelte`, `Solid`, or others for building interactive user interfaces but still want a full backend stack to handle server-side concerns.
+O AdonisJS também é uma ótima opção para criar aplicativos híbridos que renderizam HTML no servidor e, em seguida, hidratam seu JavaScript no cliente. Essa abordagem é popular entre desenvolvedores que querem usar `Vue`, `React`, `Svelte`, `Solid` ou outros para construir interfaces de usuário interativas, mas ainda querem uma pilha de backend completa para lidar com preocupações do lado do servidor.
 
-In this case, AdonisJS provide a first-class support for using [InertiaJS](./inertia.md) to bridge the gap between your frontend and backend.
+Nesse caso, o AdonisJS fornece um suporte de primeira classe para usar [InertiaJS](./inertia.md) para preencher a lacuna entre seu frontend e backend.

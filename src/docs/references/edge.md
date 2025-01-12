@@ -1,13 +1,13 @@
 ---
-summary: Learn about the helpers and tags contributed by the AdonisJS official packages to the Edge templating engine.
+resumo: Aprenda sobre os auxiliares e tags contribuídos pelos pacotes oficiais do AdonisJS para o mecanismo de modelagem do Edge.
 ---
 
-# Edge helpers and tags
+# Auxiliares e tags do Edge
 
-In this guide, we will learn about the **helpers and the tags** contributed to Edge by the AdonisJS official packages. The helpers shipped with Edge are not covered in this guide and must reference [Edge](https://edgejs.dev/docs/helpers) documentation for the same.
+Neste guia, aprenderemos sobre os **auxiliares e as tags** contribuídos para o Edge pelos pacotes oficiais do AdonisJS. Os auxiliares enviados com o Edge não são abordados neste guia e devem fazer referência à documentação do [Edge](https://edgejs.dev/docs/helpers) para o mesmo.
 
 ## `request`
-Reference to the instance of ongoing [HTTP request](../basics/request.md). The property is only available when a template is rendered using the `ctx.view.render` method.
+Referência à instância da [solicitação HTTP](../basics/request.md) em andamento. A propriedade só está disponível quando um modelo é renderizado usando o método `ctx.view.render`.
 
 ```edge
 {{ request.url() }}
@@ -15,30 +15,30 @@ Reference to the instance of ongoing [HTTP request](../basics/request.md). The p
 ```
 
 ## `route` / `signedRoute`
-Helper functions to create URL for a route using the [URL builder](../basics/routing.md#url-builder). Unlike the URL builder, the view helpers do not have a fluent API and accept the following parameters.
+Funções auxiliares para criar URL para uma rota usando o [construtor de URL](../basics/routing.md#url-builder). Ao contrário do construtor de URL, os auxiliares de visualização não têm uma API fluente e aceitam os seguintes parâmetros.
 
 <table>
     <tr>
-        <td>Position</td>
-        <td>Description</td>
+        <td>Posição</td>
+        <td>Descrição</td>
     </tr>
     <tr>
         <td>1st</td>
-        <td>The route identifier or the route pattern</td>
+        <td>O identificador de rota ou o padrão de rota</td>
     </tr>
     <tr>
         <td>2nd</td>
-        <td>Route params are defined as an array or an object.</td>
+        <td>Os parâmetros de rota são definidos como uma matriz ou um objeto.</td>
     </tr>
     <tr>
         <td>3rd</td>
         <td>
-          <p>The options object with the following properties.</p>
+          <p>O objeto options com as seguintes propriedades.</p>
           <ul>
-            <li><code>qs</code>: Define query string parameters as an object.</li>
-            <li><code>domain</code>: Search for routes under a specific domain.</li>
-            <li><code>prefixUrl</code>: Prefix a URL to the output.</li>
-            <li><code>disableRouteLookup</code>: Enable/disable routes lookup.</li>
+          <li><code>qs</code>: Defina parâmetros de string de consulta como um objeto.</li>
+          <li><code>domain</code>: Pesquise rotas em um domínio específico.</li>
+          <li><code>prefixUrl</code>: Prefixe uma URL para a saída.</li>
+          <li><code>disableRouteLookup</code>: Habilita/desabilita a pesquisa de rotas.</li>
           </ul>
         </td>
     </tr>
@@ -62,14 +62,14 @@ Helper functions to create URL for a route using the [URL builder](../basics/rou
 ```
 
 ## `app`
-Reference to the [Application instance](../concepts/application.md).
+Referência à [instância do aplicativo](../concepts/application.md).
 
 ```edge
 {{ app.getEnvironment() }}
 ```
 
 ## `config`
-A [helper function](../getting_started/configuration.md#reading-config-inside-edge-templates) to reference configuration values inside Edge templates. You may use the `config.has` method to check if the value for a key exists.
+Uma [função auxiliar](../getting_started/configuration.md#reading-config-inside-edge-templates) para referenciar valores de configuração dentro de modelos do Edge. Você pode usar o método `config.has` para verificar se o valor de uma chave existe.
 
 ```edge
 @if(config.has('app.appUrl'))
@@ -80,14 +80,14 @@ A [helper function](../getting_started/configuration.md#reading-config-inside-ed
 ```
 
 ## `session`
-A read-only copy of the [session object](../basics/session.md#reading-and-writing-data). You cannot mutate session data within Edge templates. The `session` property is only available when the template is rendered using the `ctx.view.render` method.
+Uma cópia somente leitura do [objeto de sessão](../basics/session.md#reading-and-writing-data). Você não pode alterar dados de sessão dentro de modelos do Edge. A propriedade `session` só está disponível quando o modelo é renderizado usando o método `ctx.view.render`.
 
 ```edge
 Post views: {{ session.get(`post.${post.id}.visits`) }}
 ```
 
 ## `flashMessages`
-A read-only copy of [session flash messages](../basics/session.md#flash-messages). The `flashMessages` property is only available when the template is rendered using the `ctx.view.render` method.
+Uma cópia somente leitura de [session flash messages](../basics/session.md#flash-messages). A propriedade `flashMessages` só está disponível quando o modelo é renderizado usando o método `ctx.view.render`.
 
 ```edge
 @if(flashMessages.has('inputErrorsBag.title'))
@@ -102,7 +102,7 @@ A read-only copy of [session flash messages](../basics/session.md#flash-messages
 ```
 
 ## `old`
-The `old` method is a shorthand for the `flashMessages.get` method.
+O método `old` é uma abreviação para o método `flashMessages.get`.
 
 ```edge
 <input
@@ -113,21 +113,21 @@ The `old` method is a shorthand for the `flashMessages.get` method.
 ```
 
 ## `t`
-The `t` method is contributed by the `@adonisjs/i18n` package to display translations using the [i18n class](../digging_deeper/i18n.md#resolving-translations). The method accepts the translation key identifier, message data and a fallback message as the parameters.
+O método `t` é contribuído pelo pacote `@adonisjs/i18n` para exibir traduções usando a [classe i18n](../digging_deeper/i18n.md#resolving-translations). O método aceita o identificador da chave de tradução, dados da mensagem e uma mensagem de fallback como parâmetros.
 
 ```edge
 <h1> {{ t('messages.greeting') }} </h1>
 ```
 
 ## `i18n`
-Reference to an instance of the I18n class configured using the application's default locale. However, the [`DetectUserLocaleMiddleware`](../digging_deeper/i18n.md#detecting-user-locale-during-an-http-request) overrides this property with an instance created for the current HTTP request locale.
+Referência a uma instância da classe I18n configurada usando o locale padrão do aplicativo. No entanto, o [`DetectUserLocaleMiddleware`](../digging_deeper/i18n.md#detecting-user-locale-during-an-http-request) substitui essa propriedade por uma instância criada para o locale atual da solicitação HTTP.
 
 ```edge
 {{ i18n.formatCurrency(200, { currency: 'USD' }) }}
 ```
 
 ## `auth`
-Reference to the [ctx.auth](../concepts/http_context.md#http-context-properties) property shared by the [InitializeAuthMiddleware](https://github.com/adonisjs/auth/blob/main/src/auth/middleware/initialize_auth_middleware.ts#L14). You may use this property to access information about the logged-in user.
+Referência à propriedade [ctx.auth](../concepts/http_context.md#http-context-properties) compartilhada pelo [InitializeAuthMiddleware](https://github.com/adonisjs/auth/blob/main/src/auth/middleware/initialize_auth_middleware.ts#L14). Você pode usar esta propriedade para acessar informações sobre o usuário conectado.
 
 ```edge
 @if(auth.isAuthenticated)
@@ -135,7 +135,7 @@ Reference to the [ctx.auth](../concepts/http_context.md#http-context-properties)
 @end
 ```
 
-If you are displaying the logged-in user info on a public page (not protected by the auth middleware), then you may want to first silently check if the user is logged-in or not.
+Se você estiver exibindo as informações do usuário conectado em uma página pública (não protegida pelo middleware auth), talvez você queira primeiro verificar silenciosamente se o usuário está conectado ou não.
 
 ```edge
 {{-- Check if user is logged-in --}}
@@ -147,14 +147,14 @@ If you are displaying the logged-in user info on a public page (not protected by
 ```
 
 ## `asset`
-Resolve the URL of an asset processed by Vite. Learn more about [referencing assets inside Edge templates](../basics/vite.md#referencing-assets-inside-edge-templates).
+Resolva a URL de um ativo processado pelo Vite. Saiba mais sobre [referenciar ativos dentro de modelos Edge](../basics/vite.md#referencing-assets-inside-edge-templates).
 
 ```edge
 <img src="{{ asset('resources/images/hero.jpg') }}" />
 ```
 
 ## `embedImage` / `embedImageData`
-The `embedImage` and the `embedImageData` helpers are added by the [mail](../digging_deeper/mail.md#embedding-images) package and are only available when rendering a template to send an email.
+Os auxiliares `embedImage` e `embedImageData` são adicionados pelo pacote [mail](../digging_deeper/mail.md#embedding-images) e estão disponíveis somente ao renderizar um modelo para enviar um e-mail.
 
 ```edge
 <img src="{{
@@ -163,10 +163,10 @@ The `embedImage` and the `embedImageData` helpers are added by the [mail](../dig
 ```
 
 ## `@flashMessage`
-The `@flashMessage` tag provides a better DX for reading flash messages for a given key conditionally.
+A tag `@flashMessage` fornece um DX melhor para ler mensagens flash para uma determinada chave condicionalmente.
 
 :::caption{for="error"}
-**Instead of writing conditionals**
+**Em vez de escrever condicionais**
 :::
 
 ```edge
@@ -178,7 +178,7 @@ The `@flashMessage` tag provides a better DX for reading flash messages for a gi
 ```
 
 :::caption{for="success"}
-**You may prefer using the tag**
+**Você pode preferir usar a tag**
 :::
 
 ```edge
@@ -190,10 +190,10 @@ The `@flashMessage` tag provides a better DX for reading flash messages for a gi
 ```
 
 ## `@error`
-The `@error` tag provides a better DX for reading error messages stored inside the `errorsBag` key in `flashMessages`.
+A tag `@error` fornece um DX melhor para ler mensagens de erro armazenadas dentro da chave `errorsBag` em `flashMessages`.
 
 :::caption{for="error"}
-**Instead of writing conditionals**
+**Em vez de escrever condicionais**
 :::
 
 ```edge
@@ -203,7 +203,7 @@ The `@error` tag provides a better DX for reading error messages stored inside t
 ```
 
 :::caption{for="success"}
-**You may prefer using the tag**
+**Você pode preferir usar a tag**
 :::
 
 ```edge
@@ -213,10 +213,10 @@ The `@error` tag provides a better DX for reading error messages stored inside t
 ```
 
 ## `@inputError`
-The `@inputError` tag provides a better DX for reading validation error messages stored inside the `inputErrorsBag` key in `flashMessages`.
+A tag `@inputError` fornece um DX melhor para ler mensagens de erro de validação armazenadas dentro da chave `inputErrorsBag` em `flashMessages`.
 
 :::caption{for="error"}
-**Instead of writing conditionals**
+**Em vez de escrever condicionais**
 :::
 
 ```edge
@@ -228,7 +228,7 @@ The `@inputError` tag provides a better DX for reading validation error messages
 ```
 
 :::caption{for="success"}
-**You may prefer using the tag**
+**Você pode preferir usar a tag**
 :::
 
 ```edge
@@ -240,7 +240,7 @@ The `@inputError` tag provides a better DX for reading validation error messages
 ```
 
 ## `@vite`
-The `@vite` tag accepts an array of entry point paths and returns the `script` and the `link` tags for the same. The path you provide to the `@vite` tag should match exactly the path registered inside the `vite.config.js` file.
+A tag `@vite` aceita uma matriz de caminhos de ponto de entrada e retorna as tags `script` e `link` para o mesmo. O caminho que você fornece para a tag `@vite` deve corresponder exatamente ao caminho registrado dentro do arquivo `vite.config.js`.
 
 ```ts
 export default defineConfig({
@@ -258,7 +258,7 @@ export default defineConfig({
 @vite(['resources/js/app.js'])
 ```
 
-You can define the script tag attributes as the 2nd argument. For example:
+Você pode definir os atributos da tag script como o segundo argumento. Por exemplo:
 
 ```edge
 @vite(['resources/js/app.js'], {
@@ -267,13 +267,13 @@ You can define the script tag attributes as the 2nd argument. For example:
 ```
 
 ## `@viteReactRefresh`
-The `@viteReactRefresh` tag returns a [script tag to enable React HMR](https://vitejs.dev/guide/backend-integration.html#:~:text=you%27ll%20also%20need%20to%20add%20this%20before%20the%20above%20scripts) for project using the [@vitejs/plugin-react](https://www.npmjs.com/package/@vitejs/plugin-react) package.
+A tag `@viteReactRefresh` retorna uma [tag de script para habilitar o React HMR](https://vitejs.dev/guide/backend-integration.html#:~:text=you%27ll%20also%20need%20to%20add%20this%20before%20the%20above%20scripts) para o projeto usando o pacote [@vitejs/plugin-react](https://www.npmjs.com/package/@vitejs/plugin-react).
 
 ```edge
 @viteReactRefresh()
 ```
 
-Output HTML
+HTML de saída
 
 ```html
 <script type="module">
@@ -286,11 +286,11 @@ Output HTML
 ```
 
 ## `@can` / `@cannot`
-The `@can` and `@cannot` tags allows you write authorization checks in Edge templates by referencing the ability name or the policy name as a string.
+As tags `@can` e `@cannot` permitem que você escreva verificações de autorização em modelos do Edge referenciando o nome da habilidade ou o nome da política como uma string.
 
-The first argument is the ability or the policy reference followed by the arguments accepted by the check.
+O primeiro argumento é a habilidade ou a referência da política seguida pelos argumentos aceitos pela verificação.
 
-See also: [Pre-registering abilities and policies](../security/authorization.md#pre-registering-abilities-and-policies)
+Veja também: [Pré-registro de habilidades e políticas](../security/authorization.md#pre-registering-abilities-and-policies)
 
 ```edge
 @can('editPost', post)

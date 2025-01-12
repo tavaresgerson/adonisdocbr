@@ -1,30 +1,30 @@
 ---
-summary: Learn how to use Edge.js for templating in AdonisJS
+resumo: Aprenda a usar o Edge.js para criação de modelos no AdonisJS
 ---
 
 # EdgeJS
 
-Edge is a **simple**, **Modern**, and **batteries included** template engine created and maintained by the AdonisJS core team for Node.js. Edge is similar to writing JavaScript. If you know JavaScript, you know Edge.
+O Edge é um mecanismo de modelo **simples**, **moderno** e com **baterias incluídas** criado e mantido pela equipe principal do AdonisJS para Node.js. O Edge é semelhante a escrever JavaScript. Se você conhece JavaScript, conhece o Edge.
 
 :::note
-The documentation for Edge is available on [https://edgejs.dev](https://edgejs.dev)
+A documentação do Edge está disponível em [https://edgejs.dev](https://edgejs.dev)
 :::
 
-## Installation
+## Instalação
 
-Install and configure Edge using the following command.
+Instale e configure o Edge usando o seguinte comando.
 
 ```sh
 node ace add edge
 ```
 
-:::disclosure{title="See steps performed by the add command"}
+::: details Veja as etapas executadas pelo comando add
 
-1. Installs the `edge.js` package using the detected package manager.
+1. Instala o pacote `edge.js` usando o gerenciador de pacotes detectado.
 
-2. Registers the following service provider inside the `adonisrc.ts` file.
+2. Registra o seguinte provedor de serviços dentro do arquivo `adonisrc.ts`.
 
-    ```ts
+```ts
     {
       providers: [
         // ...other providers
@@ -35,15 +35,15 @@ node ace add edge
 
 :::
 
-## Rendering your first template
+## Renderizando seu primeiro modelo
 
-Once the configuration is completed, you can use Edge to render templates. Let's create a `welcome.edge` file inside the `resources/views` directory.
+Depois que a configuração for concluída, você pode usar o Edge para renderizar modelos. Vamos criar um arquivo `welcome.edge` dentro do diretório `resources/views`.
 
 ```sh
 node ace make:view welcome
 ```
 
-Open the newly created file and write the following markup inside it.
+Abra o arquivo recém-criado e escreva a seguinte marcação dentro dele.
 
 ```edge
 <!DOCTYPE html>
@@ -59,7 +59,7 @@ Open the newly created file and write the following markup inside it.
 </html>
 ```
 
-Finally, let's register a route to render the template.
+Finalmente, vamos registrar uma rota para renderizar o modelo.
 
 ```ts
 import router from '@adonisjs/core/services/router'
@@ -69,15 +69,15 @@ router.get('/', async ({ view }) => {
 })
 ```
 
-You can also use the `router.on().render` method to render a template without assigning a callback to the route.
+Você também pode usar o método `router.on().render` para renderizar um modelo sem atribuir um retorno de chamada à rota.
 
 ```ts
 router.on('/').render('welcome')
 ```
 
-### Passing data to the template
+### Passando dados para o modelo
 
-You can pass data to the template by passing an object as the second argument to the `view.render` method.
+Você pode passar dados para o modelo passando um objeto como o segundo argumento para o método `view.render`.
 
 ```ts
 router.get('/', async ({ view }) => {
@@ -85,8 +85,8 @@ router.get('/', async ({ view }) => {
 })
 ```
 
-## Configuring Edge
-You can use Edge plugins or add global helpers to Edge by creating a [preload file](../concepts/adonisrc_file.md#preloads) inside the `start` directory.
+## Configurando o Edge
+Você pode usar plugins do Edge ou adicionar ajudantes globais ao Edge criando um [arquivo de pré-carregamento](../concepts/adonisrc_file.md#preloads) dentro do diretório `start`.
 
 ```sh
 node ace make:preload view
@@ -109,13 +109,13 @@ edge.use(edgeIconify)
 edge.global('appUrl', env.get('APP_URL'))
 ```
 
-## Global helpers
+## Ajudantes globais
 
-Please check the [Edge helpers reference guide](../references/edge.md) to view the list of helpers contributed by AdonisJS.
+Consulte o [guia de referência de ajudantes do Edge](../references/edge.md) para ver a lista de ajudantes contribuídos pelo AdonisJS.
 
-## Learn more
+## Saiba mais
 
-- [Edge.js documentation](https://edgejs.dev)
-- [Components](https://edgejs.dev/docs/components/introduction)
-- [SVG icons](https://edgejs.dev/docs/edge-iconify)
-- [Adocasts Edge Series](https://adocasts.com/topics/edge)
+[Documentação do Edge.js](https://edgejs.dev)
+[Componentes](https://edgejs.dev/docs/components/introduction)
+[Ícones SVG](https://edgejs.dev/docs/edge-iconify)
+[Série Edge do Adocasts](https://adocasts.com/topics/edge)

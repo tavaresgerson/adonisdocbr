@@ -1,16 +1,16 @@
 ---
-summary: Command-line testing in AdonisJS using the Ace command framework.
+resumo: Testes de linha de comando no AdonisJS usando o framework de comando Ace.
 ---
 
-# Console tests
+# Testes de console
 
-Command-line tests refer to testing custom Ace commands that are part of your application or the package codebase.
+Testes de linha de comando referem-se a testar comandos Ace personalizados que fazem parte do seu aplicativo ou da base de código do pacote.
 
-In this guide, we will learn how to write tests for a command, mock the logger output, and trap CLI prompts.
+Neste guia, aprenderemos como escrever testes para um comando, simular a saída do logger e capturar prompts CLI.
 
-## Basic example
+## Exemplo básico
 
-Let's start by creating a new command named `greet`.
+Vamos começar criando um novo comando chamado `greet`.
 
 ```sh
 node ace make:command greet
@@ -32,7 +32,7 @@ export default class Greet extends BaseCommand {
 }
 ```
 
-Let's create a **unit** test inside the `tests/unit` directory. Feel free to [define the unit test suite](./introduction.md#suites) if it is not already defined.
+Vamos criar um teste de **unidade** dentro do diretório `tests/unit`. Sinta-se à vontade para [definir o conjunto de testes de unidade](./introduction.md#suites) se ele ainda não estiver definido.
 
 ```sh
 node ace make:test commands/greet --suite=unit
@@ -40,7 +40,7 @@ node ace make:test commands/greet --suite=unit
 # DONE:    create tests/unit/commands/greet.spec.ts
 ```
 
-Let's open the newly created file and write the following test. We will use the `ace` service to create an instance of the `Greet` command and assert that it exits successfully.
+Vamos abrir o arquivo recém-criado e escrever o teste a seguir. Usaremos o serviço `ace` para criar uma instância do comando `Greet` e afirmar que ele sai com sucesso.
 
 ```ts
 import { test } from '@japa/runner'
@@ -67,19 +67,19 @@ test.group('Commands greet', () => {
 })
 ```
 
-Let's run the test using the following ace command.
+Vamos executar o teste usando o seguinte comando ace.
 
 ```sh
 node ace test --files=commands/greet
 ```
 
-## Testing logger output
+## Testando a saída do logger
 
-The `Greet` command currently writes the log message to the terminal. To capture this message and write an assertion for it, we will have to switch the UI library of ace into `raw` mode.
+O comando `Greet` atualmente grava a mensagem de log no terminal. Para capturar esta mensagem e escrever uma asserção para ela, teremos que alternar a biblioteca de UI do ace para o modo `raw`.
 
-In `raw` mode, the ace will not write any logs to the terminal. Instead, keep them within memory for writing assertions.
+No modo `raw`, o ace não gravará nenhum log no terminal. Em vez disso, os manterá na memória para escrever asserções.
 
-We will use the Japa `each.setup` hook to switch into and out of the `raw` mode.
+Usaremos o gancho Japa `each.setup` para alternar para dentro e para fora do modo `raw`.
 
 ```ts
 test.group('Commands greet', (group) => {
@@ -94,7 +94,7 @@ test.group('Commands greet', (group) => {
 })
 ```
 
-Once the hook has been defined, you can update your test as follows.
+Depois que o gancho for definido, você pode atualizar seu teste da seguinte forma.
 
 ```ts
 test('should greet the user and finish with exit code 1', async () => {
@@ -122,9 +122,9 @@ test('should greet the user and finish with exit code 1', async () => {
 })
 ```
 
-## Testing tables output
+## Testando a saída das tabelas
 
-Similar to testing the log messages, you can write assertions for the table output by switching the UI library into `raw` mode.
+Semelhante ao teste das mensagens de log, você pode escrever asserções para a saída da tabela alternando a biblioteca da IU para o modo `raw`.
 
 ```ts
 async run() {
@@ -140,7 +140,7 @@ async run() {
 }
 ```
 
-Given the above table, you can write an assertion for it as follows.
+Dada a tabela acima, você pode escrever uma asserção para ela da seguinte forma.
 
 ```ts
 const command = await ace.create(Greet, [])
@@ -156,13 +156,13 @@ command.assertTableRows([
 
 ## Trapping prompts
 
-Since [prompts](../ace/prompts.md) blocks the terminal waiting for manual input, you must trap and respond to them programmatically when writing tests.
+Como [prompts](../ace/prompts.md) bloqueia o terminal aguardando entrada manual, você deve capturar e responder a eles programaticamente ao escrever testes.
 
-Prompts are trapped using the `prompt.trap` method. The method accepts the prompt title (case sensitive) and offers a chainable API for configuring additional behavior.
+Os prompts são capturados usando o método `prompt.trap`. O método aceita o título do prompt (sensível a maiúsculas e minúsculas) e oferece uma API encadeável para configurar comportamento adicional.
 
-The traps are removed automatically after the prompt gets triggered. An error will be thrown if the test finishes without triggering the prompt with a trap.
+Os traps são removidos automaticamente após o prompt ser acionado. Um erro será gerado se o teste terminar sem acionar o prompt com um trap.
 
-In the following example, we place a trap on a prompt titled `"What is your name?"` and answer it using the `replyWith` method.
+No exemplo a seguir, colocamos uma armadilha em um prompt intitulado `"Qual é seu nome?"` e respondemos usando o método `replyWith`.
 
 ```ts
 const command = await ace.create(Greet, [])
@@ -178,9 +178,9 @@ await command.exec()
 command.assertSucceeded()
 ```
 
-### Choosing options
+### Escolhendo opções
 
-You can choose options with a select or a multi-select prompt using the `chooseOption` and `chooseOptions` methods.
+Você pode escolher opções com um prompt select ou multi-select usando os métodos `chooseOption` e `chooseOptions`.
 
 ```ts
 command.prompt
@@ -194,9 +194,9 @@ command.prompt
   .chooseOptions([1, 2])
 ```
 
-### Accepting or rejecting confirmation prompts
+### Aceitando ou rejeitando prompts de confirmação
 
-You can accept or reject prompts displayed using the `toggle` and the `confirm` methods.
+Você pode aceitar ou rejeitar prompts exibidos usando os métodos `toggle` e `confirm`.
 
 ```ts
 command.prompt
@@ -210,9 +210,9 @@ command.prompt
   .reject()
 ```
 
-### Asserting against validations
+### Afirmando contra validações
 
-To test the validation behavior of a prompt, you can use the `assertPasses` and `assertFails` methods. These methods accept the value of the prompt and test it against the [prompt's validate](../ace/prompts.md#prompt-options) method.
+Para testar o comportamento de validação de um prompt, você pode usar os métodos `assertPasses` e `assertFails`. Esses métodos aceitam o valor do prompt e o testam em relação ao método [prompt's validate](../ace/prompts.md#prompt-options).
 
 ```ts
 command.prompt
@@ -225,7 +225,7 @@ command.prompt
   .assertPasses('Virk')
 ```
 
-Following is an example of using assertions and replying to a prompt together.
+A seguir, um exemplo de uso de asserções e resposta a um prompt juntos.
 
 ```ts
 command.prompt
@@ -235,13 +235,13 @@ command.prompt
   .replyWith('Romain')
 ```
 
-## Available assertions
+## Asserções disponíveis
 
-Following is the list of assertion methods available on a command instance.
+A seguir, a lista de métodos de asserção disponíveis em uma instância de comando.
 
 ### `assertSucceeded`
 
-Assert the command exited with `exitCode=0`.
+Declara que o comando saiu com `exitCode=0`.
 
 ```ts
 await command.exec()
@@ -250,7 +250,7 @@ command.assertSucceeded()
 
 ### `assertFailed`
 
-Assert the command exited with non-zero `exitCode`.
+Declara que o comando saiu com `exitCode` diferente de zero.
 
 ```ts
 await command.exec()
@@ -259,7 +259,7 @@ command.assertSucceeded()
 
 ### `assertExitCode`
 
-Assert the command exited with a specific `exitCode`.
+Declara que o comando saiu com um `exitCode` específico.
 
 ```ts
 await command.exec()
@@ -268,7 +268,7 @@ command.assertExitCode(2)
 
 ### `assertNotExitCode`
 
-Assert the command exited with any `exitCode`, but not the given exit code.
+Declara que o comando saiu com qualquer `exitCode`, mas não o código de saída fornecido.
 
 ```ts
 await command.exec()
@@ -277,7 +277,7 @@ command.assertNotExitCode(0)
 
 ### `assertLog`
 
-Assert the command writes a log message using the `this.logger` property. You can optionally assert the output stream as `stdout` or `stderr`.
+Declara que o comando grava uma mensagem de log usando a propriedade `this.logger`. Opcionalmente, você pode declarar o fluxo de saída como `stdout` ou `stderr`.
 
 ```ts
 await command.exec()
@@ -288,7 +288,7 @@ command.assertLog('Hello world from "Greet"', 'stdout')
 
 ### `assertLogMatches`
 
-Assert the command writes a log message that matches the given regular expression.
+Declara que o comando grava uma mensagem de log que corresponde à expressão regular fornecida.
 
 ```ts
 await command.exec()
@@ -298,7 +298,7 @@ command.assertLogMatches(/Hello world/)
 
 ### `assertTableRows`
 
-Assert the command prints a table to the `stdout`. You can provide the table rows as an array of columns. The columns are represented as an array of cells.
+O comando Assert imprime uma tabela no `stdout`. Você pode fornecer as linhas da tabela como uma matriz de colunas. As colunas são representadas como uma matriz de células.
 
 ```ts
 await command.exec()

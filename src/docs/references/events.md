@@ -1,14 +1,14 @@
 ---
-summary: Learn about the events dispatched by the AdonisJS framework core and official packages.
+resumo: Aprenda sobre os eventos despachados pelo núcleo do framework AdonisJS e pacotes oficiais.
 ---
 
-# Events reference
+# Referência de eventos
 
-In this guide, we look at the list of events dispatched by the framework core and the official packages. Check out the [emitter](../digging_deeper/emitter.md) documentation to learn more about its usage.
+Neste guia, olhamos para a lista de eventos despachados pelo núcleo do framework e pelos pacotes oficiais. Confira a documentação do [emitter](../digging_deeper/emitter.md) para saber mais sobre seu uso.
 
 ## `http:request_completed`
 
-The [`http:request_completed`](https://github.com/adonisjs/http-server/blob/main/src/types/server.ts#L65) event is dispatched after an HTTP request is completed. The event contains an instance of the [HttpContext](../concepts/http_context.md) and the request duration. The `duration` value is the output of the `process.hrtime` method.
+O evento [`http:request_completed`](https://github.com/adonisjs/http-server/blob/main/src/types/server.ts#L65) é despachado após uma solicitação HTTP ser concluída. O evento contém uma instância do [HttpContext](../concepts/http_context.md) e a duração da solicitação. O valor `duration` é a saída do método `process.hrtime`.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -24,7 +24,7 @@ emitter.on('http:request_completed', (event) => {
 ```
 
 ## `http:server_ready`
-The event is dispatched once the AdonisJS HTTP server is ready to accept incoming requests.
+O evento é despachado quando o servidor HTTP AdonisJS está pronto para aceitar solicitações de entrada.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -43,7 +43,7 @@ emitter.on('http:server_ready', (event) => {
 
 ## `container_binding:resolved`
 
-The event is dispatched after the IoC container resolves a binding or constructs a class instance. The `event.binding` property will be a string (binding name) or a class constructor, and the `event.value` property is the resolved value.
+O evento é despachado após o contêiner IoC resolver uma vinculação ou construir uma instância de classe. A propriedade `event.binding` será uma string (nome da vinculação) ou um construtor de classe, e a propriedade `event.value` é o valor resolvido.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -55,7 +55,7 @@ emitter.on('container_binding:resolved', (event) => {
 ```
 
 ## `session:initiated`
-The `@adonisjs/session` package emits the event when the session store is initiated during an HTTP request. The `event.session` property is an instance of the [Session class](https://github.com/adonisjs/session/blob/main/src/session.ts).
+O pacote `@adonisjs/session` emite o evento quando o armazenamento de sessão é iniciado durante uma solicitação HTTP. A propriedade `event.session` é uma instância da [classe Session](https://github.com/adonisjs/session/blob/main/src/session.ts).
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -66,7 +66,7 @@ emitter.on('session:initiated', (event) => {
 ```
 
 ## `session:committed`
-The `@adonisjs/session` package emits the event when the session data is written to the session store during an HTTP request.
+O pacote `@adonisjs/session` emite o evento quando os dados da sessão são gravados no armazenamento de sessão durante uma solicitação HTTP.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -77,7 +77,7 @@ emitter.on('session:committed', (event) => {
 ```
 
 ## `session:migrated`
-The `@adonisjs/session` package emits the event when a new session ID is generated using the `session.regenerate()` method.
+O pacote `@adonisjs/session` emite o evento quando um novo ID de sessão é gerado usando o método `session.regenerate()`.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -89,7 +89,7 @@ emitter.on('session:migrated', (event) => {
 ```
 
 ## `i18n:missing:translation`
-The event is dispatched by the `@adonisjs/i18n` package when a translation for a specific key and locale is missing. You may listen to this event to find the missing translations for a given locale.
+O evento é despachado pelo pacote `@adonisjs/i18n` quando uma tradução para uma chave e localidade específica está faltando. Você pode ouvir este evento para encontrar as traduções faltantes para uma determinada localidade.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -102,7 +102,7 @@ emitter.on('i18n:missing:translation', function (event) {
 ```
 
 ## `mail:sending`
-The `@adonisjs/mail` package emits the event before sending an email. In the case of the `mail.sendLater` method call, the event will be emitted when the mail queue processes the job.
+O pacote `@adonisjs/mail` emite o evento antes de enviar um e-mail. No caso da chamada do método `mail.sendLater`, o evento será emitido quando a fila de e-mail processar o trabalho.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -115,7 +115,7 @@ emitter.on('mail:sending', (event) => {
 ```
 
 ## `mail:sent`
-After sending the email, the event is dispatched by the `@adonisjs/mail` package.
+Após enviar o e-mail, o evento é despachado pelo pacote `@adonisjs/mail`.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -130,7 +130,7 @@ emitter.on('mail:sent', (event) => {
 ```
 
 ## `mail:queueing`
-The `@adonisjs/mail` package emits the event before queueing the job to send the email.
+O pacote `@adonisjs/mail` emite o evento antes de enfileirar o trabalho para enviar o e-mail.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -143,7 +143,7 @@ emitter.on('mail:queueing', (event) => {
 ```
 
 ## `mail:queued`
-After the email has been queued, the event is dispatched by the `@adonisjs/mail` package.
+Após o e-mail ter sido enfileirado, o evento é despachado pelo pacote `@adonisjs/mail`.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -156,9 +156,9 @@ emitter.on('mail:queued', (event) => {
 ```
 
 ## `queued:mail:error`
-The event is dispatched when the [MemoryQueue](https://github.com/adonisjs/mail/blob/main/src/messengers/memory_queue.ts) implementation of the `@adonisjs/mail` package is unable to send the email queued using the `mail.sendLater` method.
+O evento é despachado quando a implementação [MemoryQueue](https://github.com/adonisjs/mail/blob/main/src/messengers/memory_queue.ts) do pacote `@adonisjs/mail` não consegue enviar o e-mail enfileirado usando o método `mail.sendLater`.
 
-If you are using a custom queue implementation, you must capture the job errors and emit this event.
+Se você estiver usando uma implementação de fila personalizada, você deve capturar os erros de trabalho e emitir este evento.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -171,7 +171,7 @@ emitter.on('queued:mail:error', (event) => {
 
 ## `session_auth:login_attempted`
 
-The event is dispatched by the [SessionGuard](https://github.com/adonisjs/auth/blob/main/src/guards/session/guard.ts) implementation of the `@adonisjs/auth` package when the `auth.login` method is called either directly or internally by the session guard.
+O evento é despachado pela implementação [SessionGuard](https://github.com/adonisjs/auth/blob/main/src/guards/session/guard.ts) do pacote `@adonisjs/auth` quando o método `auth.login` é chamado direta ou internamente pelo guarda de sessão.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -184,9 +184,9 @@ emitter.on('session_auth:login_attempted', (event) => {
 
 ## `session_auth:login_succeeded`
 
-The event is dispatched by the [SessionGuard](https://github.com/adonisjs/auth/blob/main/src/guards/session/guard.ts) implementation of the `@adonisjs/auth` package after a user has been logged in successfully. 
+O evento é despachado pela implementação [SessionGuard](https://github.com/adonisjs/auth/blob/main/src/guards/session/guard.ts) do pacote `@adonisjs/auth` após um usuário ter efetuado login com sucesso.
 
-You may use this event to track sessions associated with a given user.
+Você pode usar este evento para rastrear sessões associadas a um determinado usuário.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -200,7 +200,7 @@ emitter.on('session_auth:login_succeeded', (event) => {
 ```
 
 ## `session_auth:authentication_attempted`
-The event is dispatched by the `@adonisjs/auth` package when an attempt is made to validate the request session and check for a logged-in user.
+O evento é despachado pelo pacote `@adonisjs/auth` quando uma tentativa é feita para validar a sessão de solicitação e verificar se há um usuário conectado.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -212,7 +212,7 @@ emitter.on('session_auth:authentication_attempted', (event) => {
 ```
 
 ## `session_auth:authentication_succeeded`
-The event is dispatched by the `@adonisjs/auth` package after the request session has been validated and the user is logged in. You may access the logged-in user using the `event.user` property.
+O evento é despachado pelo pacote `@adonisjs/auth` após a sessão de solicitação ter sido validada e o usuário estar conectado. Você pode acessar o usuário conectado usando a propriedade `event.user`.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -227,7 +227,7 @@ emitter.on('session_auth:authentication_succeeded', (event) => {
 ```
 
 ## `session_auth:authentication_failed`
-The event is dispatched by the `@adonisjs/auth` package when the authentication check fails, and the user is not logged in during the current HTTP request.
+O evento é despachado pelo pacote `@adonisjs/auth` quando a verificação de autenticação falha e o usuário não está conectado durante a solicitação HTTP atual.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -241,7 +241,7 @@ emitter.on('session_auth:authentication_failed', (event) => {
 ```
 
 ## `session_auth:logged_out`
-The event is dispatched by the `@adonisjs/auth` package after the user has been logged out.
+O evento é despachado pelo pacote `@adonisjs/auth` após o usuário ter sido desconectado.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -259,7 +259,7 @@ emitter.on('session_auth:logged_out', (event) => {
 ```
 
 ## `access_tokens_auth:authentication_attempted`
-The event is dispatched by the `@adonisjs/auth` package when an attempt is made to validate the access token during an HTTP request.
+O evento é despachado pelo pacote `@adonisjs/auth` quando uma tentativa é feita para validar o token de acesso durante uma solicitação HTTP.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -270,7 +270,7 @@ emitter.on('access_tokens_auth:authentication_attempted', (event) => {
 ```
 
 ## `access_tokens_auth:authentication_succeeded`
-The event is dispatched by the `@adonisjs/auth` package after the access token has been verified. You may access the authenticated user using the `event.user` property.
+O evento é despachado pelo pacote `@adonisjs/auth` após o token de acesso ter sido verificado. Você pode acessar o usuário autenticado usando a propriedade `event.user`.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -283,7 +283,7 @@ emitter.on('access_tokens_auth:authentication_succeeded', (event) => {
 ```
 
 ## `access_tokens_auth:authentication_failed`
-The event is dispatched by the `@adonisjs/auth` package when the authentication check fails.
+O evento é despachado pelo pacote `@adonisjs/auth` quando a verificação de autenticação falha.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -295,7 +295,7 @@ emitter.on('access_tokens_auth:authentication_failed', (event) => {
 ```
 
 ## `authorization:finished`
-The event is dispatched by the `@adonisjs/bouncer` package after the authorization check has been performed. The event payload includes the final response you may inspect to know the status of the check.
+O evento é despachado pelo pacote `@adonisjs/bouncer` após a verificação de autorização ter sido realizada. A carga útil do evento inclui a resposta final que você pode inspecionar para saber o status da verificação.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'

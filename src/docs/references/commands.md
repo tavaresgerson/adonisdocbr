@@ -1,10 +1,10 @@
 ---
-summary: Learn about the commands shipped with the AdonisJS framework core and official packages.
+resumo: Aprenda sobre os comandos enviados com o núcleo do framework AdonisJS e pacotes oficiais.
 ---
 
-# Commands reference
+# Referência de comandos
 
-In this guide, we cover the usage of all the commands shipped with the framework core and the official packages. You may also view the commands help using the `node ace list` command or the `node ace <command-name> --help` command.
+Neste guia, abordamos o uso de todos os comandos enviados com o núcleo do framework e os pacotes oficiais. Você também pode visualizar a ajuda dos comandos usando o comando `node ace list` ou o comando `node ace <command-name> --help`.
 
 ```sh
 node ace list
@@ -13,80 +13,80 @@ node ace list
 ![](../ace/ace_help_screen.jpeg)
 
 :::note
-The output of the help screen is formatted as per the [docopt](http://docopt.org/) standard.
+A saída da tela de ajuda é formatada de acordo com o padrão [docopt](http://docopt.org/).
 :::
 
 ## `serve`
-The `serve` uses the [@adonisjs/assembler](https://github.com/adonisjs/assembler?tab=readme-ov-file#dev-server) package to start the AdonisJS application in development environment. You can optionally watch for file changes and restart the HTTP server on every file change.
+O `serve` usa o pacote [@adonisjs/assembler](https://github.com/adonisjs/assembler?tab=readme-ov-file#dev-server) para iniciar o aplicativo AdonisJS no ambiente de desenvolvimento. Opcionalmente, você pode observar as alterações de arquivo e reiniciar o servidor HTTP em cada alteração de arquivo.
 
 ```sh
 node ace serve --hmr
 ```
 
-The `serve` command starts the development server (via the `bin/server.ts` file) as a child process. If you want to pass [node arguments](https://nodejs.org/api/cli.html#options) to the child process, you can define them before the command name.
+O comando `serve` inicia o servidor de desenvolvimento (por meio do arquivo `bin/server.ts`) como um processo filho. Se você quiser passar [argumentos do nó](https://nodejs.org/api/cli.html#options) para o processo filho, você pode defini-los antes do nome do comando.
 
 ```sh
 node ace --no-warnings --inspect serve --hmr
 ```
 
-Following is the list of available options you can pass to the `serve` command. Alternatively, use the `--help` flag to view the command's help.
+A seguir está a lista de opções disponíveis que você pode passar para o comando `serve`. Como alternativa, use o sinalizador `--help` para visualizar a ajuda do comando.
 
 ### `--hmr`
 
-Watch the filesystem and reload the server in HMR mode.
+Observe o sistema de arquivos e recarregue o servidor no modo HMR.
 
 ### `--watch`
 
-Watch the filesystem and always restart the process on file change.
+Observe o sistema de arquivos e sempre reinicie o processo na alteração do arquivo.
 
 ### `--poll`
 
-Use polling to detect filesystem changes. You might want to use polling when using a Docker container for development.
+Use a pesquisa para detectar alterações no sistema de arquivos. Você pode querer usar polling ao usar um contêiner Docker para desenvolvimento.
 
 ### `--clear` | `--no-clear`
 
-Clear the terminal after every file change and before displaying the new logs. Use the `--no-clear` flag to retain old logs.
+Limpe o terminal após cada alteração de arquivo e antes de exibir os novos logs. Use o sinalizador `--no-clear` para reter logs antigos.
 
 ### `--assets` | `--no-assets`
 
-Start the assets bundle development server alongside the AdonisJS HTTP server. Use the `--no-assets` flag to turn off the assets bundler dev server.
+Inicie o servidor de desenvolvimento do pacote de ativos junto com o servidor HTTP AdonisJS. Use o sinalizador `--no-assets` para desligar o servidor de desenvolvimento do pacote de ativos.
 
 ### `--assets-args`
 
-Pass commandline arguments to the asset manager child process. For example, if you use vite, you can define its options as follows.
+Passe argumentos de linha de comando para o processo filho do gerenciador de ativos. Por exemplo, se você usar o vite, poderá definir suas opções da seguinte forma.
 
 ```sh
 node ace serve --hmr --assets-args="--cors --open"
 ```
 
 ## `build`
-The `build` command uses the [@adonisjs/assembler](https://github.com/adonisjs/assembler?tab=readme-ov-file#bundler) package to create the production build of your AdonisJS application. The following steps are performed to generate the build.
+O comando `build` usa o pacote [@adonisjs/assembler](https://github.com/adonisjs/assembler?tab=readme-ov-file#bundler) para criar a compilação de produção do seu aplicativo AdonisJS. As etapas a seguir são executadas para gerar a compilação.
 
-See also: [TypeScript build process](../concepts/typescript_build_process.md).
+Veja também: [Processo de compilação TypeScript](../concepts/typescript_build_process.md).
 
 ```sh
 node ace build
 ```
 
-Following is the list of available options you can pass to the `build` command. Alternatively, use the `--help` flag to view the command's help.
+A seguir está a lista de opções disponíveis que você pode passar para o comando `build`. Como alternativa, use o sinalizador `--help` para visualizar a ajuda do comando.
 
 ### `--ignore-ts-errors`
 
-The build command terminates the build process when your project has TypeScript errors. However, you can ignore those errors and finish the build using the `--ignore-ts-errors` flag.
+O comando build encerra o processo de compilação quando seu projeto tem erros TypeScript. No entanto, você pode ignorar esses erros e finalizar a compilação usando o sinalizador `--ignore-ts-errors`.
 
 ### `--package-manager`
 
-The build command copies the `package.json` file alongside the lock file of the package manager your application is using. 
+O comando build copia o arquivo `package.json` junto com o arquivo de bloqueio do gerenciador de pacotes que seu aplicativo está usando.
 
-We detect the package manager using the [@antfu/install-pkg](https://github.com/antfu/install-pkg) package. However, you can turn off detection by explicitly providing the package manager's name.
+Detectamos o gerenciador de pacotes usando o pacote [@antfu/install-pkg](https://github.com/antfu/install-pkg). No entanto, você pode desativar a detecção fornecendo explicitamente o nome do gerenciador de pacotes.
 
 ### `--assets` | `--no-assets`
 
-Bundle frontend assets alongside your backend application. Use the `--no-assets` flag to turn off the assets bundler dev server.
+Agrupe os ativos de front-end junto com seu aplicativo de back-end. Use o sinalizador `--no-assets` para desativar o servidor de desenvolvimento do bundler de ativos.
 
 ### `--assets-args`
 
-Pass commandline arguments to the asset manager child process. For example, if you use vite, you can define its options as follows.
+Passe argumentos de linha de comando para o processo filho do gerenciador de ativos. Por exemplo, se você usar o vite, poderá definir suas opções da seguinte forma.
 
 ```sh
 node ace build --assets-args="--sourcemap --debug"
@@ -94,9 +94,9 @@ node ace build --assets-args="--sourcemap --debug"
 
 ## `add`
 
-The `add` command combines the `npm install <package-name>` and `node ace configure` commands. So, instead of running two separate commands, you can install and configure the package in one go using the `add` command.
+O comando `add` combina os comandos `npm install <package-name>` e `node ace configure`. Então, em vez de executar dois comandos separados, você pode instalar e configurar o pacote de uma só vez usando o comando `add`.
 
-The `add` command will automatically detect the package manager used by your application and use that to install the package. However, you can always opt for a specific package manager using the `--package-manager` CLI flag.
+O comando `add` detectará automaticamente o gerenciador de pacotes usado pelo seu aplicativo e o usará para instalar o pacote. No entanto, você sempre pode optar por um gerenciador de pacotes específico usando o sinalizador CLI `--package-manager`.
 
 ```sh
 # Install and configure the @adonisjs/lucid package
@@ -106,7 +106,7 @@ node ace add @adonisjs/lucid
 node ace add my-dev-package --dev
 ```
 
-If the package can be configured using flags, you can pass them directly to the `add` command. Every unknown flag will be passed down to the `configure` command.
+Se o pacote puder ser configurado usando sinalizadores, você pode passá-los diretamente para o comando `add`. Cada sinalizador desconhecido será passado para o comando `configure`.
 
 ```sh
 node ace add @adonisjs/lucid --db=sqlite
@@ -114,22 +114,22 @@ node ace add @adonisjs/lucid --db=sqlite
 
 ### `--verbose`
 
-Enable verbose mode to display the package installation and configuration logs.
+Habilite o modo detalhado para exibir os logs de instalação e configuração do pacote.
 
 ### `--force`
 
-Passed down to the `configure` command. Force overwrite files when configuring the package. See the `configure` command for more information.
+Passado para o comando `configure`. Força a substituição de arquivos ao configurar o pacote. Veja o comando `configure` para mais informações.
 
 ### `--package-manager`
 
-Define the package manager to use for installing the package. The value must be `npm`, `pnpm`, `bun` or `yarn`.
+Defina o gerenciador de pacotes a ser usado para instalar o pacote. O valor deve ser `npm`, `pnpm`, `bun` ou `yarn`.
 
 ### `--dev`
 
-Install the package as a development dependency.
+Instale o pacote como uma dependência de desenvolvimento.
 
 ## `configure`
-Configure a package after it has been installed. The command accepts the package name as the first argument.
+Configure um pacote após ele ter sido instalado. O comando aceita o nome do pacote como o primeiro argumento.
 
 ```sh
 node ace configure @adonisjs/lucid
@@ -137,19 +137,19 @@ node ace configure @adonisjs/lucid
 
 ### `--verbose`
 
-Enable verbose mode to display the package installation logs.
+Habilite o modo detalhado para exibir os logs de instalação do pacote.
 
 ### `--force`
 
-The stubs system of AdonisJS does not overwrite existing files. For example, if you configure the `@adonisjs/lucid` package and your application already has a `config/database.ts` file, the configure process will not overwrite the existing config file.
+O sistema stubs do AdonisJS não sobrescreve arquivos existentes. Por exemplo, se você configurar o pacote `@adonisjs/lucid` e seu aplicativo já tiver um arquivo `config/database.ts`, o processo de configuração não sobrescreverá o arquivo de configuração existente.
 
-However, you can force overwrite files using the `--force` flag.
+No entanto, você pode forçar a sobreposição de arquivos usando o sinalizador `--force`.
 
 ## `eject`
 
-Eject stubs from a given package to your application `stubs` directory. In the following example, we copy the `make/controller` stubs to our application for modification.
+Ejeta stubs de um determinado pacote para o diretório `stubs` do seu aplicativo. No exemplo a seguir, copiamos os stubs `make/controller` para nosso aplicativo para modificação.
 
-See also: [Customizing stubs](../concepts/scaffolding.md#ejecting-stubs)
+Veja também: [Personalizando stubs](../concepts/scaffolding.md#ejecting-stubs)
 
 ```sh
 # Copy stub from @adonisjs/core package
@@ -160,9 +160,9 @@ node ace eject make/policy --pkg=@adonisjs/bouncer
 ```
 
 ## `generate:key`
-Generate a cryptographically secure random key and write to the `.env` file as the `APP_KEY` environment variable.
+Gere uma chave aleatória criptograficamente segura e grave no arquivo `.env` como a variável de ambiente `APP_KEY`.
 
-See also: [App key](../security/encryption.md)
+Veja também: [Chave do aplicativo](../security/encryption.md)
 
 ```sh
 node ace generate:key
@@ -170,26 +170,26 @@ node ace generate:key
 
 ### `--show`
 
-Display the key on the terminal instead of writing it to the `.env` file. By default, the key is written to the env file.
+Exiba a chave no terminal em vez de gravá-la no arquivo `.env`. Por padrão, a chave é gravada no arquivo env.
 
 ### `--force`
 
-The `generate:key` command does not write the key to the `.env` file when running your application in production. However, you can use the `--force` flag to override this behavior.
+O comando `generate:key` não grava a chave no arquivo `.env` ao executar seu aplicativo em produção. No entanto, você pode usar o sinalizador `--force` para substituir esse comportamento.
 
 ## `make:controller`
 
-Create a new HTTP controller class. Controllers are created inside the `app/controllers` directory and use the following naming conventions.
+Cria uma nova classe de controlador HTTP. Os controladores são criados dentro do diretório `app/controllers` e usam as seguintes convenções de nomenclatura.
 
-- Form: `plural`
-- Suffix: `controller`
-- Class name example: `UsersController`
-- File name example: `users_controller.ts`
+- Forma: `plural`
+- Sufixo: `controller`
+- Exemplo de nome de classe: `UsersController`
+- Exemplo de nome de arquivo: `users_controller.ts`
 
 ```sh
 node ace make:controller users
 ```
 
-You also generate a controller with custom action names, as shown in the following example.
+Você também gera um controlador com nomes de ação personalizados, conforme mostrado no exemplo a seguir.
 
 ```sh
 # Generates controller with "index", "show", and "store" methods
@@ -198,23 +198,23 @@ node ace make:controller users index show store
 
 ### `--singular`
 
-Force the controller name to be in singular form.
+Força o nome do controlador a estar no formato singular.
 
 ### `--resource`
 
-Generate a controller with methods to perform CRUD operations on a resource.
+Gera um controlador com métodos para executar operações CRUD em um recurso.
 
 ### `--api`
 
-The `--api` flag is similar to the `--resource` flag. However, it does not define the `create` and the `edit` methods since they are used to display forms.
+O sinalizador `--api` é semelhante ao sinalizador `--resource`. No entanto, ele não define os métodos `create` e `edit`, pois eles são usados ​​para exibir formulários.
 
 ## `make:middleware`
-Create a new middleware for HTTP requests. Middleware are stored inside the `app/middleware` directory and uses the following naming conventions.
+Cria um novo middleware para solicitações HTTP. Middleware é armazenado dentro do diretório `app/middleware` e usa as seguintes convenções de nomenclatura.
 
-- Form: `singular`
-- Suffix: `middleware`
-- Class name example: `BodyParserMiddleware`
-- File name example: `body_parser_middleware.ts`
+- Formulário: `singular`
+- Sufixo: `middleware`
+- Exemplo de nome de classe: `BodyParserMiddleware`
+- Exemplo de nome de arquivo: `body_parser_middleware.ts`
 
 ```sh
 node ace make:middleware bodyparser
@@ -222,32 +222,32 @@ node ace make:middleware bodyparser
 
 ### `--stack`
 
-Skip the [middleware stack](../basics/middleware.md#middleware-stacks) selection prompt by defining the stack explicitly. The value must be `server`, `named`, or `router`.
+Pule o prompt de seleção [middleware stack](../basics/middleware.md#middleware-stacks) definindo a pilha explicitamente. O valor deve ser `server`, `named` ou `router`.
 
 ```sh
 node ace make:middleware bodyparser --stack=router
 ```
 
 ## `make:event`
-Create a new event class. Events are stored inside the `app/events` directory and use the following naming conventions.
+Crie uma nova classe de evento. Os eventos são armazenados dentro do diretório `app/events` e usam as seguintes convenções de nomenclatura.
 
-- Form: `NA`
-- Suffix: `NA`
-- Class name example: `OrderShipped`
-- File name example: `order_shipped.ts`
-- Recommendation: You must name your events around the lifecycle of an action. For example: `MailSending`, `MailSent`, `RequestCompleted`, and so on.
+- Forma: `NA`
+- Sufixo: `NA`
+- Exemplo de nome de classe: `OrderShipped`
+- Exemplo de nome de arquivo: `order_shipped.ts`
+- Recomendação: Você deve nomear seus eventos em torno do ciclo de vida de uma ação. Por exemplo: `MailSending`, `MailSent`, `RequestCompleted` e assim por diante.
 
 ```sh
 node ace make:event orderShipped
 ```
 
 ## `make:validator`
-Create a new VineJS validator file. The validators are stored inside the `app/validators` directory, and each file may export multiple validators.
+Crie um novo arquivo validador VineJS. Os validadores são armazenados dentro do diretório `app/validators` e cada arquivo pode exportar vários validadores.
 
-- Form: `singular`
-- Suffix: `NA`
-- File name example: `user.ts`
-- Recommendation: You must create validator files around the resources of your application.
+- Formulário: `singular`
+- Sufixo: `NA`
+- Exemplo de nome de arquivo: `user.ts`
+- Recomendação: você deve criar arquivos validadores em torno dos recursos do seu aplicativo.
 
 ```sh
 # A validator for managing a user
@@ -259,7 +259,7 @@ node ace make:validator post
 
 ### `--resource`
 
-Create a validator file with pre-defined validators for `create` and `update` actions.
+Crie um arquivo validador com validadores predefinidos para ações `create` e `update`.
 
 ```sh
 node ace make:validator post --resource
@@ -267,13 +267,13 @@ node ace make:validator post --resource
 
 ## `make:listener`
 
-Create a new event listener class. The listener classes are stored inside the `app/listeners` directory and use the following naming conventions.
+Crie uma nova classe de ouvinte de evento. As classes de ouvinte são armazenadas dentro do diretório `app/listeners` e usam as seguintes convenções de nomenclatura.
 
-- Form: `NA`
-- Suffix: `NA`
-- Class name example: `SendShipmentNotification`
-- File name example: `send_shipment_notification.ts`
-- Recommendation: The event listeners must be named after the action they perform. For example, a listener that sends the shipment notification email should be called `SendShipmentNotification`.
+- Formulário: `NA`
+- Sufixo: `NA`
+- Exemplo de nome de classe: `SendShipmentNotification`
+- Exemplo de nome de arquivo: `send_shipment_notification.ts`
+- Recomendação: os ouvintes de evento devem ser nomeados após a ação que realizam. Por exemplo, um ouvinte que envia o e-mail de notificação de remessa deve ser chamado de `SendShipmentNotification`.
 
 ```sh
 node ace make:listener sendShipmentNotification
@@ -281,7 +281,7 @@ node ace make:listener sendShipmentNotification
 
 ### `--event`
 
-Generate an event class alongside the event listener.
+Gere uma classe de evento junto com o ouvinte de evento.
 
 ```sh
 node ace make:listener sendShipmentNotification --event=shipment_received
@@ -289,16 +289,16 @@ node ace make:listener sendShipmentNotification --event=shipment_received
 
 ## `make:service`
 
-Create a new service class. Service classes are stored inside the `app/services` directory and use the following naming conventions.
+Crie uma nova classe de serviço. As classes de serviço são armazenadas dentro do diretório `app/services` e usam as seguintes convenções de nomenclatura.
 
 :::note
-A service has no pre-defined meaning, and you can use it to extract the business logic inside your application. For example, if your application generates a lot of PDFs, you may create a service called `PdfGeneratorService` and reuse it in multiple places.
+Um serviço não tem significado predefinido, e você pode usá-lo para extrair a lógica de negócios dentro do seu aplicativo. Por exemplo, se seu aplicativo gera muitos PDFs, você pode criar um serviço chamado `PdfGeneratorService` e reutilizá-lo em vários lugares.
 :::
 
-- Form: `singular`
-- Suffix: `service`
-- Class name example: `InvoiceService`
-- File name example: `invoice_service.ts`
+- Formulário: `singular`
+- Sufixo: `service`
+- Exemplo de nome de classe: `InvoiceService`
+- Exemplo de nome de arquivo: `invoice_service.ts`
 
 ```sh
 node ace make:service invoice
@@ -306,12 +306,12 @@ node ace make:service invoice
 
 ## `make:exception`
 
-Create a new [custom exception class](../basics/exception_handling.md#custom-exceptions). Exceptions are stored inside the `app/exceptions` directory.
+Cria uma nova [classe de exceção personalizada](../basics/exception_handling.md#custom-exceptions). As exceções são armazenadas dentro do diretório `app/exceptions`.
 
-- Form: `NA`
-- Suffix: `exception`
-- Class name example: `CommandValidationException`
-- File name example: `command_validation_exception.ts`
+- Forma: `NA`
+- Sufixo: `exception`
+- Exemplo de nome de classe: `CommandValidationException`
+- Exemplo de nome de arquivo: `command_validation_exception.ts`
 
 ```sh
 node ace make:exception commandValidation
@@ -319,27 +319,27 @@ node ace make:exception commandValidation
 
 ## `make:command`
 
-Create a new Ace command. By default, the commands are stored inside the `commands` directory at the root of your application.
+Cria um novo comando Ace. Por padrão, os comandos são armazenados dentro do diretório `commands` na raiz do seu aplicativo.
 
-Commands from this directory are imported automatically by AdonisJS when you try to execute any Ace command. You may prefix the filename with an `_` to store additional files that are not Ace commands in this directory.
+Os comandos deste diretório são importados automaticamente pelo AdonisJS quando você tenta executar qualquer comando Ace. Você pode prefixar o nome do arquivo com um `_` para armazenar arquivos adicionais que não sejam comandos Ace neste diretório.
 
-- Form: `NA`
-- Suffix: `NA`
-- Class name example: `ListRoutes`
-- File name example: `list_routes.ts`
-- Recommendation: Commands must be named after the action they perform. For example, `ListRoutes`, `MakeController`, and `Build`.
+- Formulário: `NA`
+- Sufixo: `NA`
+- Exemplo de nome de classe: `ListRoutes`
+- Exemplo de nome de arquivo: `list_routes.ts`
+- Recomendação: os comandos devem ser nomeados após a ação que eles executam. Por exemplo, `ListRoutes`, `MakeController` e `Build`.
 
 ```sh
 node ace make:command listRoutes
 ```
 
 ## `make:view`
-Create a new Edge.js template file. The templates are created inside the `resources/views` directory.
+Crie um novo arquivo de modelo Edge.js. Os modelos são criados dentro do diretório `resources/views`.
 
-- Form: `NA`
-- Suffix: `NA`
-- File name example: `posts/view.edge`
-- Recommendation: You must group templates for a resource inside a subdirectory. For example: `posts/list.edge`, `posts/create.edge`, and so on.
+- Formulário: `NA`
+- Sufixo: `NA`
+- Exemplo de nome de arquivo: `posts/view.edge`
+- Recomendação: você deve agrupar modelos para um recurso dentro de um subdiretório. Por exemplo: `posts/list.edge`, `posts/create.edge` e assim por diante.
 
 ```sh
 node ace make:view posts/create
@@ -348,12 +348,12 @@ node ace make:view posts/list
 
 ## `make:provider`
 
-Create a [service provider file](../concepts/service_providers.md). Providers are stored inside the `providers` directory at the root of your application and use the following naming conventions.
+Crie um [arquivo de provedor de serviço](../concepts/service_providers.md). Os provedores são armazenados dentro do diretório `providers` na raiz do seu aplicativo e usam as seguintes convenções de nomenclatura.
 
-- Form: `singular`
-- Suffix: `provider`
-- Class name example: `AppProvider`
-- File name example: `app_provider.ts`
+- Forma: `singular`
+- Sufixo: `provider`
+- Exemplo de nome de classe: `AppProvider`
+- Exemplo de nome de arquivo: `app_provider.ts`
 
 ```sh
 node ace make:provider app
@@ -361,7 +361,7 @@ node ace make:provider app
 
 ### `--environments`
 
-Define environments in which the provider should get imported. [Learn more about app environments](../concepts/application.md#environment)
+Defina ambientes nos quais o provedor deve ser importado. [Saiba mais sobre ambientes de aplicativos](../concepts/application.md#environment)
 
 ```sh
 node ace make:provider app -e=web -e=console
@@ -369,7 +369,7 @@ node ace make:provider app -e=web -e=console
 
 ## `make:preload`
 
-Create a new [preload file](../concepts/adonisrc_file.md#preloads). Preload files are stored inside the `start` directory.
+Crie um novo [arquivo de pré-carregamento](../concepts/adonisrc_file.md#preloads). Os arquivos de pré-carregamento são armazenados dentro do diretório `start`.
 
 ```sh
 node ace make:preload view
@@ -377,18 +377,18 @@ node ace make:preload view
 
 ### `--environments`
 
-Define environments in which the preload file should get imported. [Learn more about app environments](../concepts/application.md#environment)
+Defina ambientes nos quais o arquivo de pré-carregamento deve ser importado. [Saiba mais sobre ambientes de aplicativos](../concepts/application.md#environment)
 
 ```sh
 node ace make:preload view app -e=web -e=console
 ```
 
 ## `make:test`
-Create a new test file inside the `tests/<suite>` directory.
+Crie um novo arquivo de teste dentro do diretório `tests/<suite>`.
 
-- Form: NA
-- Suffix: `.spec`
-- File name example: `posts/list.spec.ts`, `posts/update.spec.ts`
+- Formulário: NA
+- Sufixo: `.spec`
+- Exemplo de nome de arquivo: `posts/list.spec.ts`, `posts/update.spec.ts`
 
 ```sh
 node ace make:test --suite=unit
@@ -396,16 +396,16 @@ node ace make:test --suite=unit
 
 ### `--suite`
 
-Define the suite for which you want to create the test file. Otherwise, the command will display a prompt for suite selection.
+Defina o conjunto para o qual você deseja criar o arquivo de teste. Caso contrário, o comando exibirá um prompt para seleção do conjunto.
 
 ## `make:mail`
 
-Create a new mail class inside the `app/mails` directory. The mail classes are suffixed with the `Notification` keyword. However, you may define a custom suffix using the `--intent` CLI flag.
+Crie uma nova classe de e-mail dentro do diretório `app/mails`. As classes de e-mail são sufixadas com a palavra-chave `Notification`. No entanto, você pode definir um sufixo personalizado usando o sinalizador CLI `--intent`.
 
-- Form: NA
-- Suffix: `Intent`
-- Class name example: ShipmentNotification
-- File name example: shipment_notification.ts
+- Formulário: NA
+- Sufixo: `Intent`
+- Exemplo de nome de classe: ShipmentNotification
+- Exemplo de nome de arquivo: shipping_notification.ts
 
 ```sh
 node ace make:mail shipment
@@ -414,7 +414,7 @@ node ace make:mail shipment
 
 ### `--intent`
 
-Define a custom intent for the mail.
+Defina uma intenção personalizada para o e-mail.
 
 ```sh
 node ace make:mail shipment --intent=confirmation
@@ -426,58 +426,58 @@ node ace make:mail storage --intent=warning
 
 ## `make:policy`
 
-Create a new Bouncer policy class. The policies are stored inside the `app/policies` folder and use the following naming conventions.
+Cria uma nova classe de política Bouncer. As políticas são armazenadas dentro da pasta `app/policies` e usam as seguintes convenções de nomenclatura.
 
-- Form: `singular`
-- Suffix: `policy`
-- Class name example: `PostPolicy`
-- File name example: `post_policy.ts`
+- Forma: `singular`
+- Sufixo: `policy`
+- Exemplo de nome de classe: `PostPolicy`
+- Exemplo de nome de arquivo: `post_policy.ts`
 
 ```sh
 node ace make:policy post
 ```
 
 ## `inspect:rcfile`
-View the contents of the `adonisrc.ts` file after merging the defaults. You may use this command to inspect the available configuration options and override them per your application requirements.
+Visualize o conteúdo do arquivo `adonisrc.ts` após mesclar os padrões. Você pode usar este comando para inspecionar as opções de configuração disponíveis e substituí-las de acordo com os requisitos do seu aplicativo.
 
-See also: [AdonisRC file](../concepts/adonisrc_file.md)
+Veja também: [arquivo AdonisRC](../concepts/adonisrc_file.md)
 
 ```sh
 node ace inspect:rcfile
 ```
 
 ## `list:routes`
-View list of routes registered by your application. This command will boot your AdonisJS application in the `console` environment.
+Visualize a lista de rotas registradas pelo seu aplicativo. Este comando inicializará seu aplicativo AdonisJS no ambiente `console`.
 
 ```sh
 node ace list:routes
 ```
 
-Also, you can see the routes list from the VSCode activity bar if you are using our [official VSCode extension](https://marketplace.visualstudio.com/items?itemName=jripouteau.adonis-vscode-extension).
+Além disso, você pode ver a lista de rotas na barra de atividades do VSCode se estiver usando nossa [extensão oficial do VSCode](https://marketplace.visualstudio.com/items?itemName=jripouteau.adonis-vscode-extension).
 
 ![](../basics/vscode_routes_list.png)
 
 ### `--json`
 
-View routes as a JSON string. The output will be an array of object.
+Visualize as rotas como uma string JSON. A saída será uma matriz de objetos.
 
 ### `--table`
 
-View routes inside a CLI table. By default, we display routes inside a compact, pretty list.
+Visualize as rotas dentro de uma tabela CLI. Por padrão, exibimos as rotas dentro de uma lista compacta e bonita.
 
 ### `--middleware`
 
-Filter routes list and include the ones using the mentioned middleware. You may use the `*` keyword to include routes using one or more middleware.
+Filtre a lista de rotas e inclua aquelas que usam o middleware mencionado. Você pode usar a palavra-chave `*` para incluir rotas que usam um ou mais middlewares.
 
 ### `--ignore-middleware`
 
-Filter routes list and include the ones NOT using the mentioned middleware. You may use the `*` keyword to include routes that do not use any middleware.
+Filtre a lista de rotas e inclua aquelas que NÃO usam o middleware mencionado. Você pode usar a palavra-chave `*` para incluir rotas que não usam nenhum middleware.
 
 ## `env:add`
 
-The `env:add` command allows you to add a new environment variables to the `.env`, `.env.example` files and will also define the validation rules in the `start/env.ts` file. 
+O comando `env:add` permite que você adicione novas variáveis ​​de ambiente aos arquivos `.env`, `.env.example` e também definirá as regras de validação no arquivo `start/env.ts`.
 
-You can just run the command and it will prompt you for the variable name, value, and validation rules. Or you can pass them as arguments.
+Você pode simplesmente executar o comando e ele solicitará o nome da variável, o valor e as regras de validação. Ou você pode passá-los como argumentos.
 
 ```sh
 # Will prompt for the variable name, value, and validation rules
@@ -489,11 +489,11 @@ node ace env:add MY_VARIABLE value --type=string
 
 ### `--type`
 
-Define the type of the environment variable. The value must be one of the following: `string`, `boolean`, `number`, `enum`.
+Defina o tipo da variável de ambiente. O valor deve ser um dos seguintes: `string`, `boolean`, `number`, `enum`.
 
 ### `--enum-values`
 
-Define the allowed values for the environment variable when the type is `enum`. 
+Defina os valores permitidos para a variável de ambiente quando o tipo for `enum`.
 
 ```sh
 node ace env:add MY_VARIABLE foo --type=enum --enum-values=foo --enum-values=bar

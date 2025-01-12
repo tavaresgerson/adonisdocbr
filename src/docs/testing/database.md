@@ -1,18 +1,18 @@
 ---
-summary: "Learn how to test code that interacts with your databases in AdonisJS: simple steps for setting up, resetting, and keeping databases clean during tests."
+resumo: "Aprenda a testar código que interage com seus bancos de dados no AdonisJS: etapas simples para configurar, redefinir e manter bancos de dados limpos durante os testes."
 ---
 
-# Database tests
+# Testes de banco de dados
 
-Database tests refer to testing how your application interacts with the database. This includes testing what is written to the database, how to run migrations before the tests, and how to keep the database clean between tests.
+Testes de banco de dados referem-se a testar como seu aplicativo interage com o banco de dados. Isso inclui testar o que é escrito no banco de dados, como executar migrações antes dos testes e como manter o banco de dados limpo entre os testes.
 
-## Migrating the database
+## Migrando o banco de dados
 
-Before executing your tests that interact with the database, you would want to run your migrations first. We have two hooks available in the `testUtils` service for that, which you can configure inside the `tests/bootstrap.ts` file.
+Antes de executar seus testes que interagem com o banco de dados, você deve executar suas migrações primeiro. Temos dois ganchos disponíveis no serviço `testUtils` para isso, que você pode configurar dentro do arquivo `tests/bootstrap.ts`.
 
-### Reset database after each run cycle
+### Redefinir banco de dados após cada ciclo de execução
 
-The first option we have is `testUtils.db().migrate()`. This hook will first run all your migrations, and then rollback everything.
+A primeira opção que temos é `testUtils.db().migrate()`. Este gancho executará primeiro todas as suas migrações e, em seguida, reverterá tudo.
 
 ```ts
 // title: tests/bootstrap.ts
@@ -26,19 +26,18 @@ export const runnerHooks: Required<Pick<Config, 'setup' | 'teardown'>> = {
 }
 ```
 
-By configuring the hook here, what will happen is:
+Ao configurar o gancho aqui, o que vai acontecer é:
 
-- Before running our tests, the migrations will be executed.
-- At the end of our tests, the database will be rolled back.
+- Antes de executar nossos testes, as migrações serão executadas.
+- No final de nossos testes, o banco de dados será revertido.
 
-So, each time we run our tests, we will have a fresh and empty database.
+Então, cada vez que executarmos nossos testes, teremos um banco de dados novo e vazio.
 
-### Truncate tables after each run cycle
+### Truncar tabelas após cada ciclo de execução
 
-Resetting the database after each run cycle is a good option, but it can be slow if you have a lot of migrations. Another option is to truncate the tables after each run cycle. This option will be faster, as the migrations will only be executed once : the very first time you run your tests on a fresh database.
+Redefinir o banco de dados após cada ciclo de execução é uma boa opção, mas pode ser lento se você tiver muitas migrações. Outra opção é truncar as tabelas após cada ciclo de execução. Esta opção será mais rápida, pois as migrações serão executadas apenas uma vez: a primeira vez que você executar seus testes em um banco de dados novo.
 
-
-At the end of each run cycle, the tables will just be truncated, but our schema will be kept. So, the next time we run our tests, we will have an empty database, but the schema will already be in place, so there's no need to run every migration again.
+No final de cada ciclo de execução, as tabelas serão apenas truncadas, mas nosso esquema será mantido. Então, na próxima vez que executarmos nossos testes, teremos um banco de dados vazio, mas o esquema já estará em vigor, então não há necessidade de executar cada migração novamente.
 
 ```ts
 // title: tests/bootstrap.ts
@@ -51,9 +50,9 @@ export const runnerHooks: Required<Pick<Config, 'setup' | 'teardown'>> = {
 }
 ```
 
-## Seeding the database
+## Semeando o banco de dados
 
-If you need to seed your database, you can use the `testUtils.db().seed()` hook. This hook will run all your seeds before running your tests.
+Se você precisar semear seu banco de dados, você pode usar o gancho `testUtils.db().seed()`. Este gancho executará todas as suas sementes antes de executar seus testes.
 
 ```ts
 // title: tests/bootstrap.ts
@@ -66,11 +65,11 @@ export const runnerHooks: Required<Pick<Config, 'setup' | 'teardown'>> = {
 }
 ```
 
-## Keeping the database clean between tests
+## Mantendo o banco de dados limpo entre os testes
 
-### Global transaction
+### Transação global
 
-When running tests, you may want to keep your database clean between each test. For that, you can use the `testUtils.db().withGlobalTransaction()` hook. This hook will start a transaction before each test and roll it back at the end of the test.
+Ao executar testes, você pode querer manter seu banco de dados limpo entre cada teste. Para isso, você pode usar o gancho `testUtils.db().withGlobalTransaction()`. Este gancho iniciará uma transação antes de cada teste e a reverterá no final do teste.
 
 ```ts
 // title: tests/unit/user.spec.ts
@@ -82,11 +81,11 @@ test.group('User', (group) => {
 })
 ```
 
-Note that if you are using any transactions in your tested code, this will not work as transactions cannot be nested. In this case, you can use the `testUtils.db().migrate()` or `testUtils.db().truncate()` hook instead.
+Observe que se você estiver usando qualquer transação em seu código testado, isso não funcionará, pois as transações não podem ser aninhadas. Neste caso, você pode usar o gancho `testUtils.db().migrate()` ou `testUtils.db().truncate()`.
 
-### Truncate tables
+### Truncar tabelas
 
-As mentioned above, the global transaction will not work if you are using transactions in your tested code. In this case, you can use the `testUtils.db().truncate()` hook. This hook will truncate all your tables after each test.
+Como mencionado acima, a transação global não funcionará se você estiver usando transações no seu código testado. Neste caso, você pode usar o hook `testUtils.db().truncate()`. Este hook truncará todas as suas tabelas após cada teste.
 
 ```ts
 // title: tests/unit/user.spec.ts

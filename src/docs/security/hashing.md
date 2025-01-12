@@ -1,17 +1,16 @@
 ---
-summary: Learn how to hash values using the AdonisJS hash service.
+resumo: Aprenda como fazer hash de valores usando o serviço de hash AdonisJS.
 ---
 
 # Hashing
 
-You may hash user passwords in your application using the `hash` service. AdonisJS has first-class support for `bcrypt`, `scrypt`, and `argon2` hashing algorithms and the ability to [add custom drivers](#creating-a-custom-hash-driver).
+Você pode fazer hash de senhas de usuários em seu aplicativo usando o serviço `hash`. O AdonisJS tem suporte de primeira classe para algoritmos de hash `bcrypt`, `scrypt` e `argon2` e a capacidade de [adicionar drivers personalizados](#creating-a-custom-hash-driver).
 
-The hashed values are stored in [PHC string format](https://github.com/P-H-C/phc-string-format/blob/master/phc-sf-spec.md). PHC is a deterministic encoding specification for formatting hashes.
+Os valores com hash são armazenados no [formato de string PHC](https://github.com/P-H-C/phc-string-format/blob/master/phc-sf-spec.md). O PHC é uma especificação de codificação determinística para formatar hashes.
 
+## Uso
 
-## Usage
-
-The `hash.make` method accepts a plain string value (the user password input) and returns a hash output.
+O método `hash.make` aceita um valor de string simples (a entrada de senha do usuário) e retorna uma saída de hash.
 
 ```ts
 import hash from '@adonisjs/core/services/hash'
@@ -20,9 +19,9 @@ const hash = await hash.make('user_password')
 // $scrypt$n=16384,r=8,p=1$iILKD1gVSx6bqualYqyLBQ$DNzIISdmTQS6sFdQ1tJ3UCZ7Uun4uGHNjj0x8FHOqB0pf2LYsu9Xaj5MFhHg21qBz8l5q/oxpeV+ZkgTAj+OzQ
 ```
 
-You [cannot convert a hash value to plain text](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html#hashing-vs-encryption), hashing is a one-way process, and there is no way to retrieve the original value after a hash has been generated.
+Você [não pode converter um valor de hash em texto simples](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html#hashing-vs-encryption), o hash é um processo unidirecional e não há como recuperar o valor original após um hash ter sido gerado.
 
-However, hashing provides a way to verify if a given plain text value matches against an existing hash, and you can perform this check using the `hash.verify` method.
+No entanto, o hash fornece uma maneira de verificar se um determinado valor de texto simples corresponde a um hash existente, e você pode executar essa verificação usando o método `hash.verify`.
 
 ```ts
 import hash from '@adonisjs/core/services/hash'
@@ -32,9 +31,9 @@ if (await hash.verify(existingHash, plainTextValue)) {
 }
 ```
 
-## Configuration
+## Configuração
 
-The configuration for hashing is stored inside the `config/hash.ts` file. The default driver is set to `scrypt` because scrypt uses the Node.js native crypto module and does not require any third-party packages.
+A configuração para hash é armazenada dentro do arquivo `config/hash.ts`. O driver padrão é definido como `scrypt` porque o scrypt usa o módulo de criptografia nativo do Node.js e não requer nenhum pacote de terceiros.
 
 ```ts
 // title: config/hash.ts
@@ -61,13 +60,13 @@ export default defineConfig({
 
 ### Argon
 
-Argon is the recommended hashing algorithm to hash user passwords. To use argon with the AdonisJS hash service, you must install the [argon2](https://npmjs.com/argon2) npm package.
+Argon é o algoritmo de hash recomendado para fazer hash de senhas de usuários. Para usar o Argon com o serviço de hash AdonisJS, você deve instalar o pacote npm [argon2](https://npmjs.com/argon2).
 
 ```sh
 npm i argon2
 ```
 
-We configure the argon driver with secure defaults but feel free to tweak the configuration options per your application requirements. Following is the list of available options.
+Configuramos o driver Argon com padrões seguros, mas sinta-se à vontade para ajustar as opções de configuração de acordo com os requisitos do seu aplicativo. A seguir está a lista de opções disponíveis.
 
 ```ts
 export default defineConfig({
@@ -92,55 +91,55 @@ export default defineConfig({
 
 ### `variant`
 
-The argon hash variant to use.
+A variante de hash Argon a ser usada.
 
-- `d` is faster and highly resistant against GPU attacks, which is useful for cryptocurrency
-- `i` is slower and resistant against tradeoff attacks, which is preferred for password hashing and key derivation.
-- `id` *(default)* is a hybrid combination of the above, resistant against GPU and tradeoff attacks.
+- `d` é mais rápido e altamente resistente a ataques de GPU, o que é útil para criptomoeda
+- `i` é mais lento e resistente a ataques de tradeoff, o que é preferível para hash de senha e derivação de chave.
+- `id` *(default)* é uma combinação híbrida dos itens acima, resistente a ataques de GPU e tradeoff.
 
-### 'version'
+### `version`
 
-The argon version to use. The available options are `0x10 (1.0)` and `0x13 (1.3)`. The latest version should be used by default.
+A versão do Argon a ser usada. As opções disponíveis são `0x10 (1.0)` e `0x13 (1.3)`. A versão mais recente deve ser usada por padrão.
 
 ### `iterations`
 
-The `iterations` count increases the hash strength but takes more time to compute. 
+A contagem de `iterations` aumenta a força do hash, mas leva mais tempo para calcular.
 
-The default value is `3`.
+O valor padrão é `3`.
 
 ### `memory`
 
-The amount of memory to be used for hashing the value. Each parallel thread will have a memory pool of this size. 
+A quantidade de memória a ser usada para fazer o hash do valor. Cada thread paralela terá um pool de memória desse tamanho.
 
-The default value is `65536 (KiB)`.
+O valor padrão é `65536 (KiB)`.
 
 ### `parallelism`
 
-The number of threads to use for computing the hash. 
+O número de threads a serem usadas para calcular o hash.
 
-The default value is `4`.
+O valor padrão é `4`.
 
 ### `saltSize`
 
-The length of salt (in bytes). Argon generates a cryptographically secure random salt of this size when computing the hash.
+O comprimento do salt (em bytes). O Argon gera um salt aleatório criptograficamente seguro desse tamanho ao calcular o hash.
 
-The default and recommended value for password hashing is `16`.
+O valor padrão e recomendado para hash de senha é `16`.
 
 ### `hashLength`
 
-Maximum length for the raw hash (in bytes). The output value will be longer than the mentioned hash length because the raw hash output is further encoded to PHC format.
+Comprimento máximo para o hash bruto (em bytes). O valor de saída será maior que o comprimento do hash mencionado porque a saída do hash bruto é codificada para o formato PHC.
 
-The default value is `32`
+O valor padrão é `32`
 
 ### Bcrypt
 
-To use Bcrypt with the AdonisJS hash service, you must install the [bcrypt](http://npmjs.com/bcrypt) npm package.
+Para usar o Bcrypt com o serviço de hash AdonisJS, você deve instalar o pacote npm [bcrypt](http://npmjs.com/bcrypt).
 
 ```sh
 npm i bcrypt
 ```
 
-Following is the list of available configuration options.
+A seguir está a lista de opções de configuração disponíveis.
 
 ```ts
 export default defineConfig({
@@ -161,23 +160,23 @@ export default defineConfig({
 
 ### `rounds`
 
-The cost for computing the hash. We recommend reading the [A Note on Rounds](https://github.com/kelektiv/node.bcrypt.js#a-note-on-rounds) section from Bcrypt docs to learn how the `rounds` value has an impact on the time it takes to compute the hash.
+O custo para calcular o hash. Recomendamos ler a seção [Uma nota sobre rounds](https://github.com/kelektiv/node.bcrypt.js#a-note-on-rounds) da documentação do Bcrypt para saber como o valor `rounds` tem impacto no tempo que leva para calcular o hash.
 
-The default value is `10`.
+O valor padrão é `10`.
 
 ### `saltSize`
 
-The length of salt (in bytes). When computing the hash, we generate a cryptographically secure random salt of this size.
+O comprimento do salt (em bytes). Ao calcular o hash, geramos um salt aleatório criptograficamente seguro deste tamanho.
 
-The default value is `16`.
+O valor padrão é `16`.
 
 ### `version`
 
-The version for the hashing algorithm. The supported values are `2a` and `2b`. Using the latest version, i.e., `2b` is recommended.
+A versão do algoritmo de hash. Os valores suportados são `2a` e `2b`. Usar a versão mais recente, ou seja, `2b` é recomendado.
 
 ### Scrypt
 
-The scrypt driver uses the Node.js crypto module for computing the password hash. The configuration options are the same as those accepted by the [Node.js `scrypt` method](https://nodejs.org/dist/latest-v19.x/docs/api/crypto.html#cryptoscryptpassword-salt-keylen-options-callback).
+O driver scrypt usa o módulo crypto do Node.js para calcular o hash da senha. As opções de configuração são as mesmas aceitas pelo [método `scrypt` do Node.js](https://nodejs.org/dist/latest-v19.x/docs/api/crypto.html#cryptoscryptpassword-salt-keylen-options-callback).
 
 ```ts
 export default defineConfig({
@@ -199,12 +198,12 @@ export default defineConfig({
 })
 ```
 
-## Using model hooks to hash password
+## Usando ganchos de modelo para fazer hash de senha
 
-Since you will be using the `hash` service to hash user passwords, you may find placing the logic inside the `beforeSave` model hook helpful.
+Como você usará o serviço `hash` para fazer hash de senhas de usuários, pode ser útil colocar a lógica dentro do gancho de modelo `beforeSave`.
 
 :::note
-If you are using the `@adonisjs/auth` module, hashing passwords within your model is unnecessary. The `AuthFinder` automatically handles password hashing, ensuring your user credentials are securely processed. Learn more about this process [here](../authentication/verifying_user_credentials.md#hashing-user-password).
+Se você estiver usando o módulo `@adonisjs/auth`, o hash de senhas dentro do seu modelo é desnecessário. O `AuthFinder` manipula automaticamente o hash de senha, garantindo que suas credenciais de usuário sejam processadas com segurança. Saiba mais sobre esse processo [aqui](../authentication/verifying_user_credentials.md#hashing-user-password).
 :::
 
 ```ts
@@ -221,11 +220,11 @@ export default class User extends BaseModel {
 }
 ```
 
-## Switching between drivers
+## Alternando entre drivers
 
-If your application uses multiple hashing drivers, you can switch between them using the `hash.use` method. 
+Se seu aplicativo usa vários drivers de hash, você pode alternar entre eles usando o método `hash.use`.
 
-The `hash.use` method accepts the mapping name from the config file and returns an instance of the matching driver.
+O método `hash.use` aceita o nome de mapeamento do arquivo de configuração e retorna uma instância do driver correspondente.
 
 ```ts
 import hash from '@adonisjs/core/services/hash'
@@ -240,13 +239,13 @@ await hash.use('bcrypt').make('secret')
 await hash.use('argon').make('secret')
 ```
 
-## Checking if a password needs to be rehashed
+## Verificando se uma senha precisa ser refeita
 
-The latest configuration options are recommended to keep passwords secure, especially when a vulnerability is reported with an older version of the hashing algorithm.
+As opções de configuração mais recentes são recomendadas para manter as senhas seguras, especialmente quando uma vulnerabilidade é relatada com uma versão mais antiga do algoritmo de hash.
 
-After you update the config with the latest options, you can use the `hash.needsReHash` method to check if a password hash uses old options and perform a re-hash.
+Depois de atualizar a configuração com as opções mais recentes, você pode usar o método `hash.needsReHash` para verificar se um hash de senha usa opções antigas e executar um re-hash.
 
-The check must be performed during user login because that is the only time you can access the plain text password.
+A verificação deve ser realizada durante o login do usuário porque esse é o único momento em que você pode acessar a senha em texto simples.
 
 ```ts
 import hash from '@adonisjs/core/services/hash'
@@ -257,7 +256,7 @@ if (await hash.needsReHash(user.password)) {
 }
 ```
 
-You can assign a plain text value to `user.password` if you use model hooks to compute the hash.
+Você pode atribuir um valor de texto simples para `user.password` se usar ganchos de modelo para calcular o hash.
 
 ```ts
 if (await hash.needsReHash(user.password)) {
@@ -267,11 +266,11 @@ if (await hash.needsReHash(user.password)) {
 }
 ```
 
-## Faking hash service during tests
+## Falsificando serviço de hash durante testes
 
-Hashing a value is usually a slow process, and it will make your tests slow. Therefore, you might consider faking the hash service using the `hash.fake` method to disable password hashing.
+Fazer hash de um valor geralmente é um processo lento e tornará seus testes lentos. Portanto, você pode considerar falsificar o serviço de hash usando o método `hash.fake` para desabilitar o hash de senha.
 
-We create 20 users using the `UserFactory` in the following example. Since you are using a model hook to hash passwords, it might take 5-7 seconds (depending on the configuration).
+Criamos 20 usuários usando `UserFactory` no exemplo a seguir. Como você está usando um gancho de modelo para fazer hash de senhas, pode levar de 5 a 7 segundos (dependendo da configuração).
 
 ```ts
 import hash from '@adonisjs/core/services/hash'
@@ -282,7 +281,7 @@ test('get users list', async ({ client }) => {
 })
 ```
 
-However, once you fake the hash service, the same test will run in order of magnitude faster.
+No entanto, depois que você falsificar o serviço de hash, o mesmo teste será executado em ordem de magnitude mais rápido.
 
 ```ts
 import hash from '@adonisjs/core/services/hash'
@@ -301,8 +300,8 @@ test('get users list', async ({ client }) => {
 })
 ```
 
-## Creating a custom hash driver
-A hash driver must implement the [HashDriverContract](https://github.com/adonisjs/hash/blob/main/src/types.ts#L13) interface. Also, the official Hash drivers use [PHC format](https://github.com/P-H-C/phc-string-format/blob/master/phc-sf-spec.md) to serialize the hash output for storage. You can check the existing driver's implementation to see how they use the [PHC formatter](https://github.com/adonisjs/hash/blob/main/src/drivers/bcrypt.ts) to make and verify hashes.
+## Criando um driver de hash personalizado
+Um driver de hash deve implementar a interface [HashDriverContract](https://github.com/adonisjs/hash/blob/main/src/types.ts#L13). Além disso, os drivers Hash oficiais usam o [formato PHC](https://github.com/P-H-C/phc-string-format/blob/master/phc-sf-spec.md) para serializar a saída do hash para armazenamento. Você pode verificar a implementação do driver existente para ver como eles usam o [formatador PHC](https://github.com/adonisjs/hash/blob/main/src/drivers/bcrypt.ts) para criar e verificar hashes.
 
 ```ts
 import {
@@ -365,17 +364,17 @@ export function pbkdf2Driver (config: PbkdfConfig): ManagerDriverFactory {
 }
 ```
 
-In the above code example, we export the following values.
+No exemplo de código acima, exportamos os seguintes valores.
 
-- `PbkdfConfig`: TypeScript type for the configuration you want to accept.
+- `PbkdfConfig`: Tipo TypeScript para a configuração que você deseja aceitar.
 
-- `Pbkdf2Driver`: Driver's implementation. It must adhere to the `HashDriverContract` interface.
+- `Pbkdf2Driver`: Implementação do driver. Ele deve aderir à interface `HashDriverContract`.
 
-- `pbkdf2Driver`: Finally, a factory function to lazily create an instance of the driver.
+- `pbkdf2Driver`: Finalmente, uma função de fábrica para criar preguiçosamente uma instância do driver.
 
-### Using the driver
+### Usando o driver
 
-Once the implementation is completed, you can reference the driver inside the config file using the `pbkdf2Driver` factory function.
+Depois que a implementação for concluída, você pode referenciar o driver dentro do arquivo de configuração usando a função de fábrica `pbkdf2Driver`.
 
 ```ts
 // title: config/hash.ts

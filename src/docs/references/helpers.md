@@ -1,12 +1,12 @@
 ---
-summary: AdonisJS bundles its utilities into the `helpers` module and makes them available to your application code. 
+resumo: O AdonisJS agrupa seus utilitários no módulo `helpers` e os disponibiliza para o código do seu aplicativo.
 ---
 
-# Helpers reference
+# Referência de Helpers
 
-AdonisJS bundles its utilities into the `helpers` module and makes them available to your application code. Since these utilities are already installed and used by the framework, the `helpers` module does not add any additional bloat to your `node_modules`.
+O AdonisJS agrupa seus utilitários no módulo `helpers` e os disponibiliza para o código do seu aplicativo. Como esses utilitários já estão instalados e são usados ​​pelo framework, o módulo `helpers` não adiciona nenhum bloat adicional ao seu `node_modules`.
 
-The helper methods are exported from the following modules.
+Os métodos helper são exportados dos seguintes módulos.
 
 ```ts
 import is from '@adonisjs/core/helpers/is'
@@ -16,7 +16,7 @@ import string from '@adonisjs/core/helpers/string'
 
 ## `escapeHTML`
 
-Escape HTML entities in a string value. Under the hood, we use the [he](https://www.npmjs.com/package/he#heescapetext) package.
+Escape de entidades HTML em um valor de string. Por baixo dos panos, usamos o pacote [he](https://www.npmjs.com/package/he#heescapetext).
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -25,7 +25,7 @@ string.escapeHTML('<p> foo © bar </p>')
 // &lt;p&gt; foo © bar &lt;/p&gt;
 ```
 
-Optionally, you can encode non-ASCII symbols using the `encodeSymbols` option.
+Opcionalmente, você pode codificar símbolos não ASCII usando a opção `encodeSymbols`.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -38,7 +38,7 @@ string.escapeHTML('<p> foo © bar </p>', {
 
 ## `encodeSymbols`
 
-You may encode non-ASCII symbols in a string value using the `encodeSymbols` helper. Under the hood, we use [he.encode](https://www.npmjs.com/package/he#heencodetext-options) method.
+Você pode codificar símbolos não ASCII em um valor de string usando o auxiliar `encodeSymbols`. Por baixo dos panos, usamos o método [he.encode](https://www.npmjs.com/package/he#heencodetext-options).
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -49,7 +49,7 @@ string.encodeSymbols('foo © bar ≠ baz 𝌆 qux')
 
 ## `prettyHrTime`
 
-Pretty print the diff of [process.hrtime](https://nodejs.org/api/process.html#processhrtimetime) method.
+Imprima de forma bonita o diff do método [process.hrtime](https://nodejs.org/api/process.html#processhrtimetime).
 
 ```ts
 import { hrtime } from 'node:process'
@@ -64,7 +64,7 @@ console.log(string.prettyHrTime(endTime))
 
 ## `isEmpty`
 
-Check if a string value is empty.
+Verifique se um valor de string está vazio.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -75,7 +75,7 @@ string.isEmpty('      ') // true
 
 ## `truncate`
 
-Truncate a string at a given number of characters.
+Trunque uma string em um determinado número de caracteres.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -84,7 +84,7 @@ string.truncate('This is a very long, maybe not that long title', 12)
 // Output: This is a ve...
 ```
 
-By default, the string is truncated exactly at the given index. However, you can instruct the method to wait for the words to complete.
+Por padrão, a string é truncada exatamente no índice fornecido. No entanto, você pode instruir o método a esperar que as palavras sejam concluídas.
 
 ```ts
 string.truncate('This is a very long, maybe not that long title', 12, {
@@ -93,7 +93,7 @@ string.truncate('This is a very long, maybe not that long title', 12, {
 // Output: This is a very...
 ```
 
-You can customize the suffix using the `suffix` option.
+Você pode personalizar o sufixo usando a opção `suffix`.
 
 ```ts
 string.truncate('This is a very long, maybe not that long title', 12, {
@@ -105,7 +105,7 @@ string.truncate('This is a very long, maybe not that long title', 12, {
 
 ## `excerpt`
 
-The `excerpt` method is identical to the `truncate` method. However, it strips the HTML tags from the string.
+O método `excerpt` é idêntico ao método `truncate`. No entanto, ele remove as tags HTML da string.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -118,7 +118,7 @@ string.excerpt('<p>This is a <strong>very long</strong>, maybe not that long tit
 
 ## `slug`
 
-Generate slug for a string value. The method is exported from the [slugify package](https://www.npmjs.com/package/slugify); therefore, consult its documentation for available options.
+Gere slug para um valor de string. O método é exportado do [pacote slugify](https://www.npmjs.com/package/slugify); portanto, consulte sua documentação para opções disponíveis.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -127,7 +127,7 @@ console.log(string.slug('hello ♥ world'))
 // hello-love-world
 ```
 
-You can add custom replacements for Unicode values as follows.
+Você pode adicionar substituições personalizadas para valores Unicode da seguinte forma.
 
 ```ts
 string.slug.extend({ '☢': 'radioactive' })
@@ -138,7 +138,7 @@ console.log(string.slug('unicode ♥ is ☢'))
 
 ## `interpolate`
 
-Interpolate variables inside a string. The variables must be inside double curly braces.
+Interpolar variáveis ​​dentro de uma string. As variáveis ​​devem estar entre chaves duplas.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -151,7 +151,7 @@ string.interpolate('hello {{ user.username }}', {
 // hello virk
 ```
 
-Curly braces can be escaped using the `\\` prefix.
+As chaves podem ser escapadas usando o prefixo `\\`.
 
 ```ts
 string.interpolate('hello \\{{ users.0 }}', {})
@@ -160,7 +160,7 @@ string.interpolate('hello \\{{ users.0 }}', {})
 
 ## `plural`
 
-Convert a word to its plural form. The method is exported from the [pluralize package](https://www.npmjs.com/package/pluralize).
+Converter uma palavra para sua forma plural. O método é exportado do [pacote pluralize](https://www.npmjs.com/package/pluralize).
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -171,7 +171,7 @@ string.plural('test')
 
 ## `isPlural`
 
-Find if a word already is in plural form.
+Descubra se uma palavra já está na forma plural.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -181,7 +181,7 @@ string.isPlural('tests') // true
 
 ## `pluralize`
 
-This method combines the `singular` and the `plural` methods and uses one or the other based on the count. For example:
+Este método combina os métodos `singular` e `plural` e usa um ou outro com base na contagem. Por exemplo:
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -195,7 +195,7 @@ string.pluralize('boxes', 2) // boxes
 string.pluralize('boxes', 0) // boxes
 ```
 
-The `pluralize` property exports [additional methods](https://www.npmjs.com/package/pluralize) to register custom uncountable, irregular, plural, and singular rules.
+A propriedade `pluralize` exporta [métodos adicionais](https://www.npmjs.com/package/pluralize) para registrar regras personalizadas incontáveis, irregulares, plurais e singulares.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -206,7 +206,7 @@ string.pluralize.addSingularRule(/singles$/i, 'singular')
 
 ## `singular`
 
-Convert a word to its singular form. The method is exported from the [pluralize package](https://www.npmjs.com/package/pluralize).
+Converte uma palavra para sua forma singular. O método é exportado do [pacote pluralize](https://www.npmjs.com/package/pluralize).
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -217,7 +217,7 @@ string.singular('tests')
 
 ## `isSingular`
 
-Find if a word is already in a singular form.
+Descubra se uma palavra já está em uma forma singular.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -227,7 +227,7 @@ string.isSingular('test') // true
 
 ## `camelCase`
 
-Convert a string value to camelcase.
+Converte um valor de string para camelcase.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -235,10 +235,10 @@ import string from '@adonisjs/core/helpers/string'
 string.camelCase('user_name') // userName
 ```
 
-Following are some of the conversion examples.
+A seguir estão alguns exemplos de conversão.
 
 | Input            | Output        |
-| ---------------- | ------------- |
+|----------------|-------------|
 | 'test'           | 'test'        |
 | 'test string'    | 'testString'  |
 | 'Test String'    | 'testString'  |
@@ -249,7 +249,7 @@ Following are some of the conversion examples.
 
 ## `capitalCase`
 
-Convert a string value to a capital case.
+Converte um valor de string para maiúsculas.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -257,10 +257,10 @@ import string from '@adonisjs/core/helpers/string'
 string.capitalCase('helloWorld') // Hello World
 ```
 
-Following are some of the conversion examples.
+A seguir estão alguns exemplos de conversão.
 
 | Input            | Output           |
-| ---------------- | ---------------- |
+|----------------|----------------|
 | 'test'           | 'Test'           |
 | 'test string'    | 'Test String'    |
 | 'Test String'    | 'Test String'    |
@@ -270,7 +270,7 @@ Following are some of the conversion examples.
 
 ## `dashCase`
 
-Convert a string value to a dash case.
+Converta um valor de string para uma caixa de traço.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -278,7 +278,7 @@ import string from '@adonisjs/core/helpers/string'
 string.dashCase('helloWorld') // hello-world
 ```
 
-Optionally, you can capitalize the first letter of each word.
+Opcionalmente, você pode colocar a primeira letra de cada palavra em maiúscula.
 
 ```ts
 string.dashCase('helloWorld', { capitalize: true }) // Hello-World
@@ -287,7 +287,7 @@ string.dashCase('helloWorld', { capitalize: true }) // Hello-World
 Following are some of the conversion examples.
 
 | Input            | Output         |
-| ---------------- | -------------- |
+|----------------|--------------|
 | 'test'           | 'test'         |
 | 'test string'    | 'test-string'  |
 | 'Test String'    | 'test-string'  |
@@ -298,7 +298,7 @@ Following are some of the conversion examples.
 
 ## `dotCase`
 
-Convert a string value to a dot case.
+Converta um valor de string para uma caixa de ponto.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -306,7 +306,7 @@ import string from '@adonisjs/core/helpers/string'
 string.dotCase('helloWorld') // hello.World
 ```
 
-Optionally, you can convert the first letter of all the words to lowercase.
+Opcionalmente, você pode converter a primeira letra de todas as palavras para minúsculas.
 
 ```ts
 string.dotCase('helloWorld', { lowerCase: true }) // hello.world
@@ -315,7 +315,7 @@ string.dotCase('helloWorld', { lowerCase: true }) // hello.world
 Following are some of the conversion examples.
 
 | Input            | Output         |
-| ---------------- | -------------- |
+|----------------|--------------|
 | 'test'           | 'test'         |
 | 'test string'    | 'test.string'  |
 | 'Test String'    | 'Test.String'  |
@@ -327,7 +327,7 @@ Following are some of the conversion examples.
 
 ## `noCase`
 
-Remove all sorts of casing from a string value.
+Remova todos os tipos de caixa de um valor de string.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -335,10 +335,10 @@ import string from '@adonisjs/core/helpers/string'
 string.noCase('helloWorld') // hello world
 ```
 
-Following are some of the conversion examples.
+A seguir estão alguns exemplos de conversão.
 
 | Input                  | Output                 |
-| ---------------------- | ---------------------- |
+|----------------------|----------------------|
 | 'test'                 | 'test'                 |
 | 'TEST'                 | 'test'                 |
 | 'testString'           | 'test string'          |
@@ -368,7 +368,7 @@ Following are some of the conversion examples.
 
 ## `pascalCase`
 
-Convert a string value to a Pascal case. Great for generating JavaScript class names.
+Converta um valor de string para um caso Pascal. Ótimo para gerar nomes de classes JavaScript.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -376,10 +376,10 @@ import string from '@adonisjs/core/helpers/string'
 string.pascalCase('user team') // UserTeam
 ```
 
-Following are some of the conversion examples.
+A seguir estão alguns exemplos de conversão.
 
 | Input            | Output        |
-| ---------------- | ------------- |
+|----------------|-------------|
 | 'test'           | 'Test'        |
 | 'test string'    | 'TestString'  |
 | 'Test String'    | 'TestString'  |
@@ -389,7 +389,7 @@ Following are some of the conversion examples.
 
 ## `sentenceCase`
 
-Convert a value to a sentence.
+Converta um valor para uma frase.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -398,10 +398,10 @@ string.sentenceCase('getting_started-with-adonisjs')
 // Getting started with adonisjs
 ```
 
-Following are some of the conversion examples.
+A seguir estão alguns exemplos de conversão.
 
 | Input            | Output           |
-| ---------------- | ---------------- |
+|----------------|----------------|
 | 'test'           | 'Test'           |
 | 'test string'    | 'Test string'    |
 | 'Test String'    | 'Test string'    |
@@ -411,7 +411,7 @@ Following are some of the conversion examples.
 
 ## `snakeCase`
 
-Convert value to snake case.
+Converta valor para snake case.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -419,10 +419,10 @@ import string from '@adonisjs/core/helpers/string'
 string.snakeCase('user team') // user_team
 ```
 
-Following are some of the conversion examples.
+A seguir estão alguns exemplos de conversão.
 
 | Input            | Output         |
-| ---------------- | -------------- |
+|----------------|--------------|
 | '\_id'           | 'id'           |
 | 'test'           | 'test'         |
 | 'test string'    | 'test_string'  |
@@ -434,7 +434,7 @@ Following are some of the conversion examples.
 
 ## `titleCase`
 
-Convert a string value to the title case.
+Converta um valor de string para o caso de título.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -443,10 +443,10 @@ string.titleCase('small word ends on')
 // Small Word Ends On
 ```
 
-Following are some of the conversion examples.
+A seguir estão alguns exemplos de conversão.
 
 | Input                              | Output                             |
-| ---------------------------------- | ---------------------------------- |
+|----------------------------------|----------------------------------|
 | 'one. two.'                        | 'One. Two.'                        |
 | 'a small word starts'              | 'A Small Word Starts'              |
 | 'small word ends on'               | 'Small Word Ends On'               |
@@ -460,7 +460,7 @@ Following are some of the conversion examples.
 
 ## `random`
 
-Generate a cryptographically secure random string of a given length. The output value is a URL-safe base64 encoded string.
+Gere uma string aleatória criptograficamente segura de um determinado comprimento. O valor de saída é uma string codificada em base64 segura para URL.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -471,7 +471,7 @@ string.random(32)
 
 ## `sentence`
 
-Convert an array of words to a comma-separated sentence.
+Converta uma matriz de palavras para uma frase separada por vírgulas.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -480,7 +480,7 @@ string.sentence(['routes', 'controllers', 'middleware'])
 // routes, controllers, and middleware
 ```
 
-You can replace the `and` with an `or` by specifying the `options.lastSeparator` property.
+Você pode substituir o `and` por um `or` especificando a propriedade `options.lastSeparator`.
 
 ```ts
 string.sentence(['routes', 'controllers', 'middleware'], {
@@ -488,7 +488,7 @@ string.sentence(['routes', 'controllers', 'middleware'], {
 })
 ```
 
-In the following example, the two words are combined using the `and` separator, not the comma (usually advocated in English). However, you can use a custom separator for a pair of words.
+No exemplo a seguir, as duas palavras são combinadas usando o separador `and`, não a vírgula (geralmente defendida em inglês). No entanto, você pode usar um separador personalizado para um par de palavras.
 
 ```ts
 string.sentence(['routes', 'controllers'])
@@ -502,7 +502,7 @@ string.sentence(['routes', 'controllers'], {
 
 ## `condenseWhitespace`
 
-Remove multiple whitespaces from a string to a single whitespace.
+Remova vários espaços em branco de uma string para um único espaço em branco.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -516,7 +516,7 @@ string.condenseWhitespace('  hello  world  ')
 
 ## `seconds`
 
-Parse a string-based time expression to seconds.
+Analisa uma expressão de tempo baseada em string para segundos.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -525,22 +525,22 @@ string.seconds.parse('10h') // 36000
 string.seconds.parse('1 day') // 86400
 ```
 
-Passing a numeric value to the `parse` method is returned as it is, assuming the value is already in seconds.
+A passagem de um valor numérico para o método `parse` é retornada como está, assumindo que o valor já esteja em segundos.
 
 ```ts
 string.seconds.parse(180) // 180
 ```
 
-You can format seconds to a pretty string using the `format` method.
+Você pode formatar segundos para uma string bonita usando o método `format`.
 
 ```ts
 string.seconds.format(36000) // 10h
 string.seconds.format(36000, true) // 10 hours
 ```
 
-## `milliseconds`
+## `milissegundos`
 
-Parse a string-based time expression to milliseconds.
+Analisar uma expressão de tempo baseada em string para milissegundos.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -549,13 +549,13 @@ string.milliseconds.parse('1 h') // 3.6e6
 string.milliseconds.parse('1 day') // 8.64e7
 ```
 
-Passing a numeric value to the `parse` method is returned as it is, assuming the value is already in milliseconds.
+A passagem de um valor numérico para o método `parse` é retornada como está, assumindo que o valor já esteja em milissegundos.
 
 ```ts
 string.milliseconds.parse(180) // 180
 ```
 
-Using the `format` method, you can format milliseconds to a pretty string.
+Usando o método `format`, você pode formatar milissegundos para uma string bonita.
 
 ```ts
 string.milliseconds.format(3.6e6) // 1h
@@ -564,7 +564,7 @@ string.milliseconds.format(3.6e6, true) // 1 hour
 
 ## `bytes`
 
-Parse a string-based unit expression to bytes.
+Analisar uma expressão de unidade baseada em string para bytes.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -573,13 +573,13 @@ string.bytes.parse('1KB') // 1024
 string.bytes.parse('1MB') // 1048576
 ```
 
-Passing a numeric value to the `parse` method is returned as it is, assuming the value is already in bytes.
+A passagem de um valor numérico para o método `parse` é retornada como está, assumindo que o valor já esteja em bytes.
 
 ```ts
 string.bytes.parse(1024) // 1024
 ```
 
-Using the `format` method, you can format bytes to a pretty string. The method is exported directly from the [bytes](https://www.npmjs.com/package/bytes) package. Please reference the package README for available options.
+Usando o método `format`, você pode formatar bytes para uma string bonita. O método é exportado diretamente do pacote [bytes](https://www.npmjs.com/package/bytes). Consulte o pacote README para opções disponíveis.
 
 ```ts
 string.bytes.format(1048576) // 1MB
@@ -589,7 +589,7 @@ string.bytes.format(1024 * 1024 * 1000, { thousandsSeparator: ',' }) // 1,000MB
 
 ## `ordinal`
 
-Get the ordinal letter for a given number.
+Obtenha a letra ordinal para um número fornecido.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -605,9 +605,9 @@ string.ordinal(24) // '24th'
 
 ## `safeEqual`
 
-Check if two buffer or string values are the same. This method does not leak any timing information and prevents [timing attack](https://javascript.plainenglish.io/what-are-timing-attacks-and-how-to-prevent-them-using-nodejs-158cc7e2d70c).
+Verifique se dois valores de buffer ou string são iguais. Este método não vaza nenhuma informação de tempo e previne [ataque de tempo](https://javascript.plainenglish.io/what-are-timing-attacks-and-how-to-prevent-them-using-nodejs-158cc7e2d70c).
 
-Under the hood, this method uses Node.js [crypto.timeSafeEqual](https://nodejs.org/api/crypto.html#cryptotimingsafeequala-b) method, with support for comparing string values. _(crypto.timeSafeEqual does not support string comparison)_
+Nos bastidores, esse método usa o método Node.js [crypto.timeSafeEqual](https://nodejs.org/api/crypto.html#cryptotimingsafeequala-b), com suporte para comparar valores de string. _(crypto.timeSafeEqual não oferece suporte para comparação de strings)_
 
 ```ts
 import { safeEqual } from '@adonisjs/core/helpers'
@@ -630,7 +630,7 @@ if (safeEqual(trustedValue, userInput)) {
 ```
 
 ## `cuid`
-Create a secure, collision-resistant ID optimized for horizontal scaling and performance. This method uses the [@paralleldrive/cuid2](https://github.com/paralleldrive/cuid2) package under the hood.
+Cria um ID seguro e resistente a colisões, otimizado para escala horizontal e desempenho. Esse método usa o pacote [@paralleldrive/cuid2](https://github.com/paralleldrive/cuid2) nos bastidores.
 
 ```ts
 import { cuid } from '@adonisjs/core/helpers'
@@ -639,7 +639,7 @@ const id = cuid()
 // tz4a98xxat96iws9zmbrgj3a
 ```
 
-You can use the `isCuid` method to check if a value is a valid CUID.
+Você pode usar o método `isCuid` para verificar se um valor é um CUID válido.
 
 ```ts
 import { cuid, isCuid } from '@adonisjs/core/helpers'
@@ -650,16 +650,16 @@ isCuid(id) // true
 
 ## `compose`
 
-The `compose` helper allows you to use TypeScript class mixins with a cleaner API. Following is an example of mixin usage without the `compose` helper.
+O auxiliar `compose` permite que você use mixins de classe TypeScript com uma API mais limpa. A seguir, um exemplo de uso de mixin sem o auxiliar `compose`.
 
 ```ts
 class User extends UserWithAttributes(UserWithAge(UserWithPassword(UserWithEmail(BaseModel)))) {}
 ```
 
-Following is an example with the `compose` helper.
+A seguir, um exemplo com o auxiliar `compose`.
 
-- There is no nesting.
-- The order of mixins is from (left to right/top to bottom). Whereas earlier, it was inside out.
+- Não há aninhamento.
+- A ordem dos mixins é de (da esquerda para a direita/de cima para baixo). Enquanto antes, era de dentro para fora.
 
 ```ts
 import { compose } from '@adonisjs/core/helpers'
@@ -675,7 +675,7 @@ class User extends compose(
 
 ## `base64`
 
-Utility methods to base64 encode and decode values.
+Métodos utilitários para codificar e decodificar valores em base64.
 
 ```ts
 import { base64 } from '@adonisjs/core/helpers'
@@ -684,20 +684,20 @@ base64.encode('hello world')
 // aGVsbG8gd29ybGQ=
 ```
 
-Like the `encode` method, you can use the `urlEncode` to generate a base64 string safe to pass in a URL.
+Assim como o método `encode`, você pode usar o `urlEncode` para gerar uma string base64 segura para passar em uma URL.
 
-The `urlEncode` method performs the following replacements.
+O método `urlEncode` realiza as seguintes substituições.
 
-- Replace `+` with `-`.
-- Replace `/` with `_`.
-- And remove the `=` sign from the end of the string.
+- Substitua `+` por `-`.
+- Substitua `/` por `_`.
+- E remova o sinal `=` do final da string.
 
 ```ts
 base64.urlEncode('hello world')
 // aGVsbG8gd29ybGQ
 ```
 
-You can use the `decode` and the `urlDecode` methods to decode a previously encoded base64 string.
+Você pode usar os métodos `decode` e `urlDecode` para decodificar uma string base64 codificada anteriormente.
 
 ```ts
 base64.decode(base64.encode('hello world'))
@@ -707,7 +707,7 @@ base64.urlDecode(base64.urlEncode('hello world'))
 // hello world
 ```
 
-The `decode` and the `urlDecode` methods return `null` when the input value is an invalid base64 string. You can turn on the `strict` mode to raise an exception instead.
+Os métodos `decode` e `urlDecode` retornam `null` quando o valor de entrada é uma string base64 inválida. Você pode ativar o modo `strict` para gerar uma exceção.
 
 ```ts
 base64.decode('hello world') // null
@@ -716,7 +716,7 @@ base64.decode('hello world', 'utf-8', true) // raises exception
 
 ## `fsReadAll`
 
-Get a list of all the files from a directory. The method recursively fetches files from the main and the sub-folders. The dotfiles are ignored implicitly.
+Obtenha uma lista de todos os arquivos de um diretório. O método busca recursivamente arquivos da pasta principal e das subpastas. Os dotfiles são ignorados implicitamente.
 
 ```ts
 import { fsReadAll } from '@adonisjs/core/helpers'
@@ -725,7 +725,7 @@ const files = await fsReadAll(new URL('./config', import.meta.url), { pathType: 
 await Promise.all(files.map((file) => import(file)))
 ```
 
-You can also pass the options along with the directory path as the second argument.
+Você também pode passar as opções junto com o caminho do diretório como o segundo argumento.
 
 ```ts
 type Options = {
@@ -739,16 +739,16 @@ const options: Partial<Options> = {}
 await fsReadAll(location, options)
 ```
 
-| Argument | Description |
+| Argumento   | Descrição |
 |------------|------------|
-| `ignoreMissingRoot` | By default, an exception is raised when the root directory is missing. Setting `ignoreMissingRoot` to true will not result in an error, and an empty array is returned. |
-| `filter` | Define a filter to ignore certain paths. The method is called on the final list of files. |
-| `sort` | Define a custom method to sort file paths. By default, the files are sorted using natural sort. |
-| `pathType` | Define how to return the collected paths. By default, OS-specific relative paths are returned. If you want to import the collected files, you must set the`pathType = 'url'` |
+| `ignoreMissingRoot` | Por padrão, uma exceção é gerada quando o diretório raiz está ausente. Definir `ignoreMissingRoot` como true não resultará em erro, e uma matriz vazia será retornada. |
+| `filter`            | Defina um filtro para ignorar certos caminhos. O método é chamado na lista final de arquivos. |
+| `sort`              | Defina um método personalizado para classificar caminhos de arquivo. Por padrão, os arquivos são classificados usando classificação natural. |
+| `pathType`          | Defina como retornar os caminhos coletados. Por padrão, os caminhos relativos específicos do SO são retornados. Se você quiser importar os arquivos coletados, você deve definir o `pathType = 'url'` |
 
 ## `fsImportAll`
 
-The `fsImportAll` method imports all the files recursively from a given directory and sets the exported value from each module on an object.
+O método `fsImportAll` importa todos os arquivos recursivamente de um diretório fornecido e define o valor exportado de cada módulo em um objeto.
 
 ```ts
 import { fsImportAll } from '@adonisjs/core/helpers'
@@ -757,11 +757,11 @@ const collection = await fsImportAll(new URL('./config', import.meta.url))
 console.log(collection)
 ```
 
-- Collection is an object with a tree of key-value pairs.
-- The key is the nested object created from the file path.
-- Value is the exported values from the module. Only the default export is used if a module has both `default` and `named` exports.
+- Collection é um objeto com uma árvore de pares de chave-valor.
+- A chave é o objeto aninhado criado a partir do caminho do arquivo.
+- Value são os valores exportados do módulo. Somente a exportação padrão é usada se um módulo tiver exportações `default` e `named`.
 
-The second param is the option to customize the import behavior.
+O segundo parâmetro é a opção para personalizar o comportamento de importação.
 
 ```ts
 type Options = {
@@ -775,16 +775,16 @@ const options: Partial<Options> = {}
 await fsImportAll(location, options)
 ```
 
-| Argument | Description |
+| Argumento | Descrição |
 |------------|------------|
-| `ignoreMissingRoot` | By default, an exception is raised when the root directory is missing. Setting `ignoreMissingRoot` to true will not result in an error, and an empty object will be returned. |
-| `filter` | Define a filter to ignore certain paths. By default, only files ending with `.js`, `.ts`, `.json`, `.cjs`, and `.mjs` are imported. |
-| `sort` | Define a custom method to sort file paths. By default, the files are sorted using natural sort. |
-| `transformKeys` | Define a callback method to transform the keys for the final object. The method receives an array of nested keys and must return an array. |
+| `ignoreMissingRoot` | Por padrão, uma exceção é gerada quando o diretório raiz está ausente. Definir `ignoreMissingRoot` como true não resultará em erro e um objeto vazio será retornado. |
+| `filter` | Defina um filtro para ignorar certos caminhos. Por padrão, apenas arquivos terminados com `.js`, `.ts`, `.json`, `.cjs` e `.mjs` são importados. |
+| `sort` | Defina um método personalizado para classificar caminhos de arquivo. Por padrão, os arquivos são classificados usando classificação natural. |
+| `transformKeys` | Defina um método de retorno de chamada para transformar as chaves para o objeto final. O método recebe uma matriz de chaves aninhadas e deve retornar uma matriz. |
 
-## String builder
+## Construtor de strings
 
-The `StringBuilder` class offers a fluent API to perform transformations on a string value. You may get an instance of string builder using the `string.create` method.
+A classe `StringBuilder` oferece uma API fluente para executar transformações em um valor de string. Você pode obter uma instância do construtor de strings usando o método `string.create`.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -799,11 +799,11 @@ const value = string
   .toString()
 ```
 
-## Message builder
+## Construtor de mensagens
 
-The `MessageBuilder` class offers an API to serialize JavaScript data types with an expiry and purpose. You can either store the serialized output in safe storage like your application database or encrypt it (to avoid tampering) and share it publicly.
+A classe `MessageBuilder` oferece uma API para serializar tipos de dados JavaScript com uma expiração e propósito. Você pode armazenar a saída serializada em um armazenamento seguro, como o banco de dados do seu aplicativo, ou criptografá-la (para evitar adulteração) e compartilhá-la publicamente.
 
-In the following example, we serialize an object with the `token` property and set its expiry to be `1 hour`.
+No exemplo a seguir, serializamos um objeto com a propriedade `token` e definimos sua expiração como `1 hora`.
 
 ```ts
 import { MessageBuilder } from '@adonisjs/core/helpers'
@@ -828,9 +828,9 @@ const encoded = builder.build(
  */
 ```
 
-Once you have the JSON string with the expiry and the purpose, you can encrypt it (to prevent tampering) and share it with the client.
+Depois de ter a string JSON com a expiração e a finalidade, você pode criptografá-la (para evitar adulteração) e compartilhá-la com o cliente.
 
-During the token verification, you can decrypt the previously encrypted value and use the `MessageBuilder` to verify the payload and convert it to a JavaScript object.
+Durante a verificação do token, você pode descriptografar o valor criptografado anteriormente e usar o `MessageBuilder` para verificar a carga útil e convertê-la em um objeto JavaScript.
 
 ```ts
 import { MessageBuilder } from '@adonisjs/core/helpers'
@@ -845,11 +845,11 @@ console.log(decoded.token)
 ```
 
 ## `Secret`
-The `Secret` class lets you hold sensitive values within your application without accidentally leaking them inside logs and console statements.
+A classe `Secret` permite que você mantenha valores confidenciais em seu aplicativo sem vazá-los acidentalmente dentro de logs e instruções do console.
 
-For example, the `appKey` value defined inside the `config/app.ts` file is an instance of the `Secret` class. If you try to log this value to the console, you will see `[redacted]` and not the original value.
+Por exemplo, o valor `appKey` definido dentro do arquivo `config/app.ts` é uma instância da classe `Secret`. Se você tentar registrar esse valor no console, verá `[redacted]` e não o valor original.
 
-For demonstration, let's fire up a REPL session and try it.
+Para demonstração, vamos iniciar uma sessão REPL e tentar.
 
 ```sh
 node ace repl
@@ -873,10 +873,10 @@ node ace repl
 # [redacted]
 ```
 
-You can call the `config.appKey.release` method to read the original value. The purpose of the Secret class is not to prevent your code from accessing the original value. Instead, it provides a safety net from exposing sensitive data inside logs.
+Você pode chamar o método `config.appKey.release` para ler o valor original. O objetivo da classe Secret não é impedir que seu código acesse o valor original. Em vez disso, ele fornece uma rede de segurança para não expor dados confidenciais dentro de logs.
 
-### Using the Secret class
-You can wrap custom values inside the Secret class as follows.
+### Usando a classe Secret
+Você pode encapsular valores personalizados dentro da classe Secret da seguinte forma.
 
 ```ts
 import { Secret } from '@adonisjs/core/helpers'
@@ -886,9 +886,9 @@ console.log(value) // [redacted]
 console.log(value.release()) // some-secret-value
 ```
 
-## Types detection
+## Detecção de tipos
 
-We export the [@sindresorhus/is](https://github.com/sindresorhus/is) module from the `helpers/is` import path, and you may use it to perform the type detection in your apps.
+Exportamos o módulo [@sindresorhus/is](https://github.com/sindresorhus/is) do caminho de importação `helpers/is`, e você pode usá-lo para executar a detecção de tipos em seus aplicativos.
 
 ```ts
 import is from '@adonisjs/core/helpers/is'

@@ -1,17 +1,17 @@
 ---
-summary: Browser testing with Playwright and Japa inside AdonisJS applications.
+Resumo: Testes de navegador com Playwright e Japa dentro de aplicativos AdonisJS.
 ---
 
-# Browser tests
+# Testes de navegador
 
-Browser tests are executed inside real browsers like Chrome, Firefox, or Safari. We make use of [Playwright](https://playwright.dev/) (a browser automation tool) for interacting with webpages programmatically.
+Os testes de navegador são executados dentro de navegadores reais como Chrome, Firefox ou Safari. Usamos o [Playwright](https://playwright.dev/) (uma ferramenta de automação de navegador) para interagir com páginas da web programaticamente.
 
-Playwright is both a testing framework and a library that exposes JavaScript APIs to interact with the browser. We **do not use the Playwright testing framework** because we are already using Japa, and using multiple testing frameworks inside a single project will only lead to confusion and config bloat.
+O Playwright é uma estrutura de teste e uma biblioteca que expõe APIs JavaScript para interagir com o navegador. **Não usamos a estrutura de teste do Playwright** porque já estamos usando o Japa, e usar várias estruturas de teste dentro de um único projeto só levará à confusão e ao inchaço da configuração.
 
-Instead, we will use the [Browser Client](https://japa.dev/docs/plugins/browser-client) plugin from Japa, which integrates nicely with Playwright and offers a great testing experience.
+Em vez disso, usaremos o plug-in [Cliente do navegador](https://japa.dev/docs/plugins/browser-client) do Japa, que se integra bem com o Playwright e oferece uma ótima experiência de teste.
 
-## Setup
-The first step is to install the following packages from the npm packages registry.
+## Configuração
+O primeiro passo é instalar os seguintes pacotes do registro de pacotes npm.
 
 :::codegroup
 
@@ -22,8 +22,8 @@ npm i -D playwright @japa/browser-client
 
 :::
 
-### Registering browser suite
-Let's start by creating a new test suite for browser tests inside the `adonisrc.ts` file. The test files for the browser suite will be stored inside the `tests/browser` directory.
+### Registrando o conjunto de navegadores
+Vamos começar criando um novo conjunto de testes para testes de navegadores dentro do arquivo `adonisrc.ts`. Os arquivos de teste para o conjunto de navegadores serão armazenados dentro do diretório `tests/browser`.
 
 ```ts
 {
@@ -43,8 +43,8 @@ Let's start by creating a new test suite for browser tests inside the `adonisrc.
 }
 ```
 
-### Configuring the plugin
-Before you can start writing tests, you must register the `browserClient` plugin within the `tests/bootstrap.ts` file.
+### Configurando o plugin
+Antes de começar a escrever testes, você deve registrar o plugin `browserClient` dentro do arquivo `tests/bootstrap.ts`.
 
 ```ts
 import { browserClient } from '@japa/browser-client'
@@ -61,10 +61,10 @@ export const plugins: Config['plugins'] = [
 ]
 ```
 
-## Basic example
-Let's create an example test that will open the home page of your AdonisJS application and verify the contents of the page. The [`visit`](https://japa.dev/docs/plugins/browser-client#browser-api) helper opens a new page and visits a URL. The return value is the [page object](https://playwright.dev/docs/api/class-page).
+## Exemplo básico
+Vamos criar um teste de exemplo que abrirá a página inicial do seu aplicativo AdonisJS e verificará o conteúdo da página. O auxiliar [`visit`](https://japa.dev/docs/plugins/browser-client#browser-api) abre uma nova página e visita uma URL. O valor de retorno é o [objeto de página](https://playwright.dev/docs/api/class-page).
 
-See also: [List of assertions methods](https://japa.dev/docs/plugins/browser-client#assertions)
+Veja também: [Lista de métodos de asserções](https://japa.dev/docs/plugins/browser-client#assertions)
 
 ```sh
 node ace make:test pages/home --suite=browser
@@ -83,7 +83,7 @@ test.group('Home page', () => {
 })
 ```
 
-Finally, let's run the above test using the `test` command. You may use the `--watch` flag to create a file watcher and re-run tests on every file change.
+Por fim, vamos executar o teste acima usando o comando `test`. Você pode usar o sinalizador `--watch` para criar um observador de arquivo e executar novamente os testes em cada alteração de arquivo.
 
 ```sh
 node ace test browser
@@ -91,10 +91,10 @@ node ace test browser
 
 ![](./browser_tests_output.jpeg)
 
-## Reading/writing cookies
-When testing inside a real browser, the cookies are persisted throughout the lifecycle of a [browser context](https://playwright.dev/docs/api/class-browsercontext). 
+## Leitura/gravação de cookies
+Ao testar dentro de um navegador real, os cookies são persistidos durante todo o ciclo de vida de um [contexto do navegador](https://playwright.dev/docs/api/class-browsercontext).
 
-Japa creates a fresh browser context for each test. Therefore, the cookies from one test will not leak onto other tests. However, multiple page visits inside a single test will share the cookies because they use the same `browserContext`.
+O Japa cria um novo contexto do navegador para cada teste. Portanto, os cookies de um teste não vazarão para outros testes. No entanto, várias visitas de página dentro de um único teste compartilharão os cookies porque usam o mesmo `browserContext`.
 
 ```ts
 test.group('Home page', () => {
@@ -112,7 +112,7 @@ test.group('Home page', () => {
 })
 ```
 
-Similarly, the cookies set by the server can be accessed using the `browserContext.getCookie` method.
+Da mesma forma, os cookies definidos pelo servidor podem ser acessados ​​usando o método `browserContext.getCookie`.
 
 ```ts
 import router from '@adonisjs/core/services/router'
@@ -137,7 +137,7 @@ test.group('Home page', () => {
 })
 ```
 
-You may use the following methods to read/write encrypted and plain cookies.
+Você pode usar os seguintes métodos para ler/gravar cookies criptografados e simples.
 
 ```ts
 // Write
@@ -149,11 +149,11 @@ await browserContext.getEncryptedCookie('cartTotal')
 await browserContext.getPlainCookie('cartTotal')
 ```
 
-## Populating session store
-If you are using the [`@adonisjs/session`](../basics/session.md) package to read/write session data in your application, you may also want to use the `sessionBrowserClient` plugin to populate the session store when writing tests.
+## Preenchendo o armazenamento de sessão
+Se você estiver usando o pacote [`@adonisjs/session`](../basics/session.md) para ler/escrever dados de sessão em seu aplicativo, você também pode querer usar o plugin `sessionBrowserClient` para preencher o armazenamento de sessão ao escrever testes.
 
-### Setup
-The first step is registering the plugin inside the `tests/bootstrap.ts` file.
+### Configuração
+O primeiro passo é registrar o plugin dentro do arquivo `tests/bootstrap.ts`.
 
 ```ts
 // insert-start
@@ -169,17 +169,17 @@ export const plugins: Config['plugins'] = [
 ]
 ```
 
-And then, update the `.env.test` file (create one if it is missing) and set the `SESSON_DRIVER` to `memory`.
+E então, atualize o arquivo `.env.test` (crie um se estiver faltando) e defina o `SESSON_DRIVER` para `memory`.
 
 ```dotenv
 // title: .env.test
 SESSION_DRIVER=memory
 ```
 
-### Writing session data
-You may use the `browserContext.setSession` method to define the session data for the current browser context. 
+### Escrevendo dados de sessão
+Você pode usar o método `browserContext.setSession` para definir os dados de sessão para o contexto atual do navegador.
 
-All page visits using the same browser context will have access to the same session data. However, the session data will be removed when the browser or the context is closed.
+Todas as visitas de página usando o mesmo contexto do navegador terão acesso aos mesmos dados da sessão. No entanto, os dados da sessão serão removidos quando o navegador ou o contexto for fechado.
 
 ```ts
 test('checkout with cart items', async ({ browserContext, visit }) => {
@@ -202,7 +202,7 @@ test('checkout with cart items', async ({ browserContext, visit }) => {
 })
 ```
 
-Like the `setSession` method, you may use the `browser.setFlashMessages` method to define flash messages.
+Assim como o método `setSession`, você pode usar o método `browser.setFlashMessages` para definir mensagens flash.
 
 ```ts
 /**
@@ -224,18 +224,18 @@ await page.assertExists(page.locator(
 ))
 ```
 
-### Reading session data
-You may read the data inside a session store using the `browserContext.getSession` and `browser.getFlashMessages` methods. These methods will return all the data for the session ID associated with a specific browser context instance.
+### Lendo dados da sessão
+Você pode ler os dados dentro de um armazenamento de sessão usando os métodos `browserContext.getSession` e `browser.getFlashMessages`. Esses métodos retornarão todos os dados para o ID da sessão associado a uma instância específica do contexto do navegador.
 
 ```ts
 const session = await browserContext.getSession()
 const flashMessages = await browserContext.getFlashMessages()
 ```
 
-## Authenticating users
-If you are using the `@adonisjs/auth` package to authenticate users in your application, you may use the `authBrowserClient` Japa plugin to authenticate users when making HTTP requests to your application.
+## Autenticando usuários
+Se você estiver usando o pacote `@adonisjs/auth` para autenticar usuários em seu aplicativo, você pode usar o plugin `authBrowserClient` Japa para autenticar usuários ao fazer solicitações HTTP para seu aplicativo.
 
-The first step is registering the plugin inside the `tests/bootstrap.ts` file.
+O primeiro passo é registrar o plugin dentro do arquivo `tests/bootstrap.ts`.
 
 ```ts
 // title: tests/bootstrap.ts
@@ -252,11 +252,11 @@ export const plugins: Config['plugins'] = [
 ]
 ```
 
-If you are using session-based authentication, make sure to also set up the session plugin. See [Populating session store - Setup](#setup-1).
+Se você estiver usando autenticação baseada em sessão, certifique-se de também configurar o plugin de sessão. Veja [Preenchendo o armazenamento de sessão - Configuração](#setup-1).
 
-That's all. Now, you may login users using the `loginAs` method. The method accepts the user object as the only argument and marks the user as logged in the current browser context.
+Isso é tudo. Agora, você pode fazer login de usuários usando o método `loginAs`. O método aceita o objeto do usuário como o único argumento e marca o usuário como conectado no contexto atual do navegador.
 
-All page visits using the same browser context will have access to the logged-in user. However, the user session will be destroyed when the browser or the context is closed.
+Todas as visitas de página usando o mesmo contexto do navegador terão acesso ao usuário conectado. No entanto, a sessão do usuário será destruída quando o navegador ou o contexto for fechado.
 
 ```ts
 import User from '#models/user'
@@ -271,7 +271,7 @@ test('get payments list', async ({ browserContext, visit }) => {
 })
 ```
 
-The `loginAs` method uses the default guard configured inside the `config/auth.ts` file for authentication. However, you may specify a custom guard using the `withGuard` method. For example:
+O método `loginAs` usa o guard padrão configurado dentro do arquivo `config/auth.ts` para autenticação. No entanto, você pode especificar um guard personalizado usando o método `withGuard`. Por exemplo:
 
 ```ts
 const user = await User.create(payload)
@@ -280,11 +280,10 @@ await browserContext
   .loginAs(user)
 ```
 
+## O auxiliar de rota
+Você pode usar o auxiliar `route` do TestContext para criar uma URL para uma rota. Usar o auxiliar de rota garante que sempre que você atualizar suas rotas, não precise voltar e corrigir todas as URLs dentro de seus testes.
 
-## The route helper
-You may use the `route` helper from the TestContext to create a URL for a route. Using the route helper ensures that whenever you update your routes, you do not have to come back and fix all the URLs inside your tests.
-
-The `route` helper accepts the same set of arguments accepted by the global template method [route](../basics/routing.md#url-builder).
+O auxiliar `route` aceita o mesmo conjunto de argumentos aceitos pelo método de modelo global [route](../basics/routing.md#url-builder).
 
 ```ts
 test('see list of users', async ({ visit, route }) => {

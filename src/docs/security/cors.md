@@ -1,30 +1,30 @@
 ---
-summary: Learn how to implement CORS in AdonisJS to protect your application..
+resumo: Aprenda a implementar CORS no AdonisJS para proteger seu aplicativo.
 ---
 
 # CORS
 
-[CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) helps you protect your application from malicious requests triggered using scripts in a browser environment. 
+[CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) ajuda você a proteger seu aplicativo de solicitações maliciosas acionadas usando scripts em um ambiente de navegador.
 
-For example, if an AJAX or a fetch request is sent to your server from a different domain, the browser will block that request with a CORS error and expect you to implement a CORS policy if you think the request should be allowed.
+Por exemplo, se uma solicitação AJAX ou de busca for enviada ao seu servidor de um domínio diferente, o navegador bloqueará essa solicitação com um erro CORS e esperará que você implemente uma política CORS se achar que a solicitação deve ser permitida.
 
-In AdonisJS, you can implement the CORS policy using the `@adonisjs/cors` package. The package ships with an HTTP middleware that intercepts incoming requests and responds with correct CORS headers.
+No AdonisJS, você pode implementar a política CORS usando o pacote `@adonisjs/cors`. O pacote é fornecido com um middleware HTTP que intercepta solicitações de entrada e responde com cabeçalhos CORS corretos.
 
-## Installation
+## Instalação
 
-Install and configure the package using the following command :
+Instale e configure o pacote usando o seguinte comando:
 
 ```sh
 node ace add @adonisjs/cors
 ```
 
-:::disclosure{title="See steps performed by the add command"}
+::: details Veja os passos realizados pelo comando add
 
-1. Installs the `@adonisjs/cors` package using the detected package manager.
+1. Instala o pacote `@adonisjs/cors` usando o gerenciador de pacotes detectado.
 
-2. Registers the following service provider inside the `adonisrc.ts` file.
+2. Registra o seguinte provedor de serviços dentro do arquivo `adonisrc.ts`.
 
-    ```ts
+```ts
     {
       providers: [
         // ...other providers
@@ -33,11 +33,11 @@ node ace add @adonisjs/cors
     }
     ```
 
-3. Creates the `config/cors.ts` file. This file contains the configuration settings for CORS.
+3. Cria o arquivo `config/cors.ts`. Este arquivo contém as definições de configuração para CORS.
 
-4. Registers the following middleware inside the `start/kernel.ts` file.
+4. Registra o seguinte middleware dentro do arquivo `start/kernel.ts`.
 
-    ```ts
+```ts
     server.use([
       () => import('@adonisjs/cors/cors_middleware')
     ])
@@ -45,9 +45,9 @@ node ace add @adonisjs/cors
 
 :::
 
-## Configuration
+## Configuração
 
-The configuration for the CORS middleware is stored inside the `config/cors.ts` file. 
+A configuração do middleware CORS é armazenada dentro do arquivo `config/cors.ts`.
 
 ```ts
 import { defineConfig } from '@adonisjs/cors'
@@ -67,13 +67,13 @@ export default corsConfig
 
 ### `enabled`
 
-Turn the middleware on or off temporarily without removing it from the middleware stack.
+Ative ou desative o middleware temporariamente sem removê-lo da pilha de middleware.
 
 ### `origin`
 
-The `origin` property controls the value for the [Access-Control-Allow-Origin](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin) header.
+A propriedade `origin` controla o valor do cabeçalho [Access-Control-Allow-Origin](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin).
 
-You can allow the request's current origin by setting the value to `true` or disallow the request's current origin by setting it to `false`.
+Você pode permitir a origem atual da solicitação definindo o valor como `true` ou proibir a origem atual da solicitação definindo-o como `false`.
 
 ```ts
 {
@@ -81,7 +81,7 @@ You can allow the request's current origin by setting the value to `true` or dis
 }
 ```
 
-You may specify a list of hardcoded origins to allow an array of domain names.
+Você pode especificar uma lista de origens codificadas para permitir uma matriz de nomes de domínio.
 
 ```ts
 {
@@ -89,9 +89,9 @@ You may specify a list of hardcoded origins to allow an array of domain names.
 }
 ```
 
-Use the wildcard expression `*` to allow all the origins. Read the [MDN documentation](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin#directives) to understand how the wildcard expression works.
+Use a expressão curinga `*` para permitir todas as origens. Leia a [documentação do MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin#directives) para entender como a expressão curinga funciona.
 
-When the `credentials` property is set to `true`, we will automatically make the wildcard expression behave like a `boolean (true)`. 
+Quando a propriedade `credentials` é definida como `true`, faremos automaticamente a expressão curinga se comportar como um `boolean (true)`.
 
 ```ts
 {
@@ -99,7 +99,7 @@ When the `credentials` property is set to `true`, we will automatically make the
 }
 ```
 
-You can compute the `origin` value during the HTTP request using a function. For example:
+Você pode calcular o valor `origin` durante a solicitação HTTP usando uma função. Por exemplo:
 
 ```ts
 {
@@ -111,7 +111,7 @@ You can compute the `origin` value during the HTTP request using a function. For
 
 ### `methods`
 
-The `methods` property controls the method to allow during the preflight request. The [Access-Control-Request-Method](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Request-Method) header value is checked against the allowed methods.
+A propriedade `methods` controla o método a ser permitido durante a solicitação de pré-voo. O valor do cabeçalho [Access-Control-Request-Method](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Request-Method) é verificado em relação aos métodos permitidos.
 
 ```sh
 {
@@ -121,9 +121,9 @@ The `methods` property controls the method to allow during the preflight request
 
 ### `headers`
 
-The `headers` property controls the request headers to allow during the preflight request. The [Access-Control-Request-Headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Request-Headers) header value is checked against the headers property.
+A propriedade `headers` controla os cabeçalhos de solicitação a serem permitidos durante a solicitação de pré-voo. O valor do cabeçalho [Access-Control-Request-Headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Request-Headers) é verificado em relação à propriedade headers.
 
-Setting the value to `true` will allow all the headers. Whereas setting the value to `false` will disallow all the headers.
+Definir o valor como `true` permitirá todos os cabeçalhos. Enquanto definir o valor como `false` não permitirá todos os cabeçalhos.
 
 ```ts
 {
@@ -131,7 +131,7 @@ Setting the value to `true` will allow all the headers. Whereas setting the valu
 }
 ```
 
-You can specify a list of headers to allow by defining them as an array of strings.
+Você pode especificar uma lista de cabeçalhos para permitir definindo-os como uma matriz de strings.
 
 ```ts
 {
@@ -143,7 +143,7 @@ You can specify a list of headers to allow by defining them as an array of strin
 }
 ```
 
-You can compute the `headers` config value using a function during the HTTP request. For example:
+Você pode calcular o valor de configuração `headers` usando uma função durante a solicitação HTTP. Por exemplo:
 
 ```ts
 {
@@ -155,7 +155,7 @@ You can compute the `headers` config value using a function during the HTTP requ
 
 ### `exposeHeaders`
 
-The `exposeHeaders` property controls the headers to expose via [Access-Control-Expose-Headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Expose-Headers) header during the preflight request.
+A propriedade `exposeHeaders` controla os cabeçalhos a serem expostos via [Access-Control-Expose-Headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Expose-Headers) cabeçalho durante a solicitação de pré-voo.
 
 ```ts
 {
@@ -172,7 +172,7 @@ The `exposeHeaders` property controls the headers to expose via [Access-Control-
 
 ### `credentials`
 
-The `credentials` property controls whether to set the [Access-Control-Allow-Credentials](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Credentials) header during the preflight request.
+A propriedade `credentials` controla se o cabeçalho [Access-Control-Allow-Credentials](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Credentials) deve ser definido durante a solicitação de pré-voo.
 
 ```ts
 {
@@ -182,10 +182,10 @@ The `credentials` property controls whether to set the [Access-Control-Allow-Cre
 
 ### `maxAge`
 
-The `maxAge` property controls the [Access-Control-Max-Age](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Max-Age) response header. The value is in seconds.
+A propriedade `maxAge` controla o cabeçalho de resposta [Access-Control-Max-Age](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Max-Age). O valor está em segundos.
 
-- Setting the value to `null` will not set the header.
-- Whereas setting it to `-1 `does set the header but disables the cache.
+- Definir o valor como `null` não definirá o cabeçalho.
+- Enquanto defini-lo como `-1 `define o cabeçalho, mas desabilita o cache.
 
 ```ts
 {
@@ -193,11 +193,11 @@ The `maxAge` property controls the [Access-Control-Max-Age](https://developer.mo
 }
 ```
 
-## Debugging CORS errors
-Debugging CORS issues is a challenging experience. However, there are no shortcuts other than understanding the rules of CORS and debugging the response headers to ensure everything is in place.
+## Depurando erros de CORS
+Depurar problemas de CORS é uma experiência desafiadora. No entanto, não há atalhos além de entender as regras do CORS e depurar os cabeçalhos de resposta para garantir que tudo esteja no lugar.
 
-Following are some links to the articles you may read to understand better how CORS works.
+A seguir estão alguns links para os artigos que você pode ler para entender melhor como o CORS funciona.
 
-- [How to Debug Any CORS Error](https://httptoolkit.com/blog/how-to-debug-cors-errors/)
-- [Will it CORS?](https://httptoolkit.com/will-it-cors/)
-- [MDN in-depth explanation of CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)
+[Como depurar qualquer erro de CORS](https://httptoolkit.com/blog/how-to-debug-cors-errors/)
+[Será que é CORS?](https://httptoolkit.com/will-it-cors/)
+[Explicação detalhada do MDN sobre CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)

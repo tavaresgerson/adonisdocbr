@@ -1,28 +1,28 @@
 ---
-summary: Learn how to protect your server-rendered applications using the @adonisjs/shield package.
+resumo: Aprenda a proteger seus aplicativos renderizados pelo servidor usando o pacote @adonisjs/shield.
 ---
 
-# Securing server-rendered applications
+# Protegendo aplicativos renderizados pelo servidor
 
-If you are creating a server-rendered application using AdonisJS, then you must use the `@adonisjs/shield` package to protect your applications from common web attacks like **CSRF**, **XSS**, **Content sniffing**, and so on.
+Se você estiver criando um aplicativo renderizado pelo servidor usando o AdonisJS, então você deve usar o pacote `@adonisjs/shield` para proteger seus aplicativos de ataques comuns da web como **CSRF**, **XSS**, **Content sniffing**, e assim por diante.
 
-The package comes pre-configured with the **web starter kit**. However, you can manually install and configure the package as follows.
+O pacote vem pré-configurado com o **web starter kit**. No entanto, você pode instalar e configurar manualmente o pacote da seguinte forma.
 
 :::note
-The `@adonisjs/shield` package has a peer dependency on the `@adonisjs/session` package, so make sure to [configure the session package](../basics/session.md) first.
+O pacote `@adonisjs/shield` tem uma dependência de peer no pacote `@adonisjs/session`, então certifique-se de [configurar o pacote de sessão](../basics/session.md) primeiro.
 :::
 
 ```sh
 node ace add @adonisjs/shield
 ```
 
-:::disclosure{title="See steps performed by the add command"}
+::: details Veja os passos realizados pelo comando add
 
-1. Installs the `@adonisjs/shield` package using the detected package manager.
+1. Instala o pacote `@adonisjs/shield` usando o gerenciador de pacotes detectado.
 
-2. Registers the following service provider inside the `adonisrc.ts` file.
+2. Registra o seguinte provedor de serviços dentro do arquivo `adonisrc.ts`.
 
-   ```ts
+```ts
    {
      providers: [
        // ...other providers
@@ -31,25 +31,25 @@ node ace add @adonisjs/shield
    }
    ```
 
-3. Creates the `config/shield.ts` file.
+3. Cria o arquivo `config/shield.ts`.
 
-4. Registers the following middleware inside the `start/kernel.ts` file.
+4. Registra o seguinte middleware dentro do arquivo `start/kernel.ts`.
 
-   ```ts
+```ts
    router.use([() => import('@adonisjs/shield/shield_middleware')])
    ```
 
 :::
 
-## CSRF protection
+## Proteção CSRF
 
-[CSRF (Cross-Site Request Forgery)](https://owasp.org/www-community/attacks/csrf) is an attack in which a malicious website tricks the users of your web app to perform form submissions without their explicit consent.
+[CSRF (Cross-Site Request Forgery)](https://owasp.org/www-community/attacks/csrf) é um ataque no qual um site malicioso engana os usuários do seu aplicativo da web para executar envios de formulários sem seu consentimento explícito.
 
-To protect against CSRF attacks, you should define a hidden input field holding the CSRF token value that only your website can generate and verify. Hence, the form submissions triggered by the malicious website will fail.
+Para se proteger contra ataques CSRF, você deve definir um campo de entrada oculto contendo o valor do token CSRF que somente seu site pode gerar e verificar. Portanto, os envios de formulários acionados pelo site malicioso falharão.
 
-### Protecting forms
+### Protegendo formulários
 
-Once you configure the `@adonisjs/shield` package, all form submissions without a CSRF token will automatically fail. Therefore, you must use the `csrfField` edge helper to define a hidden input field with the CSRF token.
+Depois de configurar o pacote `@adonisjs/shield`, todos os envios de formulários sem um token CSRF falharão automaticamente. Portanto, você deve usar o auxiliar de borda `csrfField` para definir um campo de entrada oculto com o token CSRF.
 
 :::caption{for="info"}
 **Edge helper**
@@ -66,7 +66,7 @@ Once you configure the `@adonisjs/shield` package, all form submissions without 
 ```
 
 :::caption{for="info"}
-**Output HTML**
+**Saída HTML**
 :::
 
 ```html
@@ -80,13 +80,13 @@ Once you configure the `@adonisjs/shield` package, all form submissions without 
 </form>
 ```
 
-During the form submission, the `shield_middleware` will automatically verify the `_csrf` token, only allowing the form submissions with a valid CSRF token.
+Durante o envio do formulário, o ``shield_middleware` verificará automaticamente o token `_csrf`, permitindo apenas os envios do formulário com um token CSRF válido.
 
-### Handling exceptions
+### Lidando com exceções
 
-Shield raises an `E_BAD_CSRF_TOKEN` exception when the CSRF token is missing or invalid. By default, AdonisJS will capture the exception and redirect the user back to the form with an error flash message.
+O Shield gera uma exceção `E_BAD_CSRF_TOKEN` quando o token CSRF está ausente ou é inválido. Por padrão, o AdonisJS capturará a exceção e redirecionará o usuário de volta ao formulário com uma mensagem de erro flash.
 
-You can access the flash message as follows inside an edge template.
+Você pode acessar a mensagem flash da seguinte forma dentro de um modelo edge.
 
 ```edge
 // highlight-start
@@ -102,7 +102,7 @@ You can access the flash message as follows inside an edge template.
 </form>
 ```
 
-You can also self-handle the `E_BAD_CSRF_TOKEN` exception inside the [global exception handler](../basics/exception_handling.md#handling-exceptions) as follows.
+Você também pode automanipular a exceção `E_BAD_CSRF_TOKEN` dentro do [manipulador de exceção global](../basics/exception_handling.md#handling-exceptions) da seguinte forma.
 
 ```ts
 import app from '@adonisjs/core/services/app'
@@ -123,9 +123,9 @@ export default class HttpExceptionHandler extends ExceptionHandler {
 }
 ```
 
-### Config reference
+### Referência de configuração
 
-The configuration for the CSRF guard is stored inside the `config/shield.ts` file.
+A configuração para a proteção CSRF é armazenada dentro do arquivo `config/shield.ts`.
 
 ```ts
 import { defineConfig } from '@adonisjs/shield'
@@ -144,13 +144,13 @@ export default shieldConfig
 
 ### `enabled`
 
-Turn the CSRF guard on or off.
+Ative ou desative a proteção CSRF.
 
 ### `exceptRoutes`
 
-An array of route patterns to exempt from the CSRF protection. If your application has routes that accept form submissions via an API, you might want to exempt them.
+Uma matriz de padrões de rota para isentar da proteção CSRF. Se seu aplicativo tiver rotas que aceitam envios de formulário por meio de uma API, você pode isentá-las.
 
-For more advanced use cases, you may register a function to exempt specific routes dynamically.
+Para casos de uso mais avançados, você pode registrar uma função para isentar rotas específicas dinamicamente.
 
 ```ts
 {
@@ -163,24 +163,24 @@ For more advanced use cases, you may register a function to exempt specific rout
 
 ### `enableXsrfCookie`
 
-When enabled, Shield will store the CSRF token inside an encrypted cookie named `XSRF-TOKEN`, which can be read by the frontend JavaScript code.
+Quando habilitado, o Shield armazenará o token CSRF dentro de um cookie criptografado chamado `XSRF-TOKEN`, que pode ser lido pelo código JavaScript do frontend.
 
-This allows frontend request libraries like Axios to read the `XSRF-TOKEN` automatically and set it as a `X-XSRF-TOKEN` header when making Ajax requests without server-rendered forms.
+Isso permite que bibliotecas de solicitação de frontend como o Axios leiam o `XSRF-TOKEN` automaticamente e o definam como um cabeçalho `X-XSRF-TOKEN` ao fazer solicitações Ajax sem formulários renderizados pelo servidor.
 
-You must keep the `enableXsrfCookie` disabled if you are not triggering Ajax requests programmatically.
+Você deve manter o `enableXsrfCookie` desabilitado se não estiver acionando solicitações Ajax programaticamente.
 
 ### `methods`
 
-An array of HTTP methods to protect. All incoming requests for the mentioned methods must present a valid CSRF token.
+Uma matriz de métodos HTTP para proteger. Todas as solicitações recebidas para os métodos mencionados devem apresentar um token CSRF válido.
 
 ### `cookieOptions`
 
-Configuration for the `XSRF-TOKEN` cookie. [See cookies configuration](../basics/cookies.md#configuration) for available options.
+Configuração para o cookie `XSRF-TOKEN`. [Consulte a configuração de cookies](../basics/cookies.md#configuration) para opções disponíveis.
 
-## Defining CSP policy
-[CSP (Content security policy)](https://web.dev/csp/) protects your applications from XSS attacks by defining trusted sources for loading JavaScript, CSS, fonts, images, and so on.
+## Definindo a política CSP
+[CSP (Content security policy)](https://web.dev/csp/) protege seus aplicativos de ataques XSS definindo fontes confiáveis ​​para carregar JavaScript, CSS, fontes, imagens e assim por diante.
 
-The CSP guard is disabled by default. However, we recommend you enable it and configure the policy directives inside the `config/shield.ts` file.
+A proteção CSP é desabilitada por padrão. No entanto, recomendamos que você a habilite e configure as diretivas de política dentro do arquivo `config/shield.ts`.
 
 ```ts
 import { defineConfig } from '@adonisjs/shield'
@@ -200,11 +200,11 @@ export default shieldConfig
 
 ### `enabled`
 
-Turn the CSP guard on or off.
+Ative ou desative a proteção CSP.
 
 ### `directives`
 
-Configure the CSP directives. You can view the list of available directives on [https://content-security-policy.com/](https://content-security-policy.com/#directive)
+Configure as diretivas CSP. Você pode visualizar a lista de diretivas disponíveis em [https://content-security-policy.com/](https://content-security-policy.com/#directive)
 
 ```ts
 const shieldConfig = defineConfig({
@@ -226,7 +226,7 @@ export default shieldConfig
 
 ### `reportOnly`
 
-The CSP policy will not block the resources when the `reportOnly` flag is enabled. Instead, it will report the violations on an endpoint configured using the `reportUri` directive.
+A política CSP não bloqueará os recursos quando o sinalizador `reportOnly` estiver habilitado. Em vez disso, ele relatará as violações em um endpoint configurado usando a diretiva `reportUri`.
 
 ```ts
 const shieldConfig = defineConfig({
@@ -245,7 +245,7 @@ const shieldConfig = defineConfig({
 })
 ```
 
-Also, register the `csp-report` endpoint to collect the violation reports.
+Além disso, registre o endpoint `csp-report` para coletar os relatórios de violação.
 
 ```ts
 router.post('/csp-report', async ({ request }) => {
@@ -253,8 +253,8 @@ router.post('/csp-report', async ({ request }) => {
 })
 ```
 
-### Using Nonce
-You may allow inline `script` and `style` tags by defining the [nonce attribute](https://content-security-policy.com/nonce/) on them. The value of the nonce attribute can be accessed inside Edge templates using the `cspNonce` property.
+### Usando Nonce
+Você pode permitir tags `script` e `style` inline definindo o [atributo nonce](https://content-security-policy.com/nonce/) nelas. O valor do atributo nonce pode ser acessado dentro dos modelos Edge usando a propriedade `cspNonce`.
 
 ```edge
 <script nonce="{{ cspNonce }}">
@@ -265,7 +265,7 @@ You may allow inline `script` and `style` tags by defining the [nonce attribute]
 </style>
 ```
 
-Also, use the `@nonce` keyword inside the directives config to allow nonce-based inline scripts and styles.
+Além disso, use a palavra-chave `@nonce` dentro da configuração de diretivas para permitir scripts e estilos inline baseados em nonce.
 
 ```ts
 const shieldConfig = defineConfig({
@@ -277,11 +277,11 @@ const shieldConfig = defineConfig({
 })
 ```
 
-### Loading assets from the Vite Dev server
-If you are using the [Vite integration](../basics/vite.md), you can use the following CSP keywords to allow assets served by the Vite Dev server.
+### Carregando ativos do servidor Vite Dev
+Se você estiver usando a [integração Vite](../basics/vite.md), você pode usar as seguintes palavras-chave CSP para permitir ativos servidos pelo servidor Vite Dev.
 
-- The `@viteDevUrl` adds the Vite dev server URL to the allowed list.
-- The `@viteHmrUrl` adds the Vite HMR websocket server URL to the allowed list.
+- O `@viteDevUrl` adiciona a URL do servidor Vite dev à lista permitida.
+- O `@viteHmrUrl` adiciona a URL do servidor websocket Vite HMR à lista permitida.
 
 ```ts
 const shieldConfig = defineConfig({
@@ -294,7 +294,7 @@ const shieldConfig = defineConfig({
 })
 ```
 
-If you are deploying the Vite bundled output to a CDN server, you must replace `@viteDevUrl` with the `@viteUrl` keyword to allow assets from both the development server and the CDN server.
+Se você estiver implantando a saída empacotada Vite em um servidor CDN, você deve substituir `@viteDevUrl` pela palavra-chave `@viteUrl` para permitir ativos do servidor de desenvolvimento e do servidor CDN.
 
 ```ts
 directives: {
@@ -308,13 +308,13 @@ directives: {
 },
 ```
 
-### Adding Nonce to styles injected by Vite
-Currently, Vite does not allow defining a `nonce` attribute to the `style` tags injected by it inside the DOM. There is an [open PR](https://github.com/vitejs/vite/pull/11864) for the same, and we are hoping it will be resolved soon.
+### Adicionando Nonce aos estilos injetados pelo Vite
+Atualmente, o Vite não permite definir um atributo `nonce` para as tags `style` injetadas por ele dentro do DOM. Há um [PR aberto](https://github.com/vitejs/vite/pull/11864) para o mesmo, e esperamos que seja resolvido em breve.
 
-## Configuring HSTS
-The [**Strict-Transport-Security (HSTS)**](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security) response header informs the browsers to always load the website using HTTPS. 
+## Configurando HSTS
+O cabeçalho de resposta [**Strict-Transport-Security (HSTS)**](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security) informa aos navegadores para sempre carregar o site usando HTTPS.
 
-You can configure the header directives using the `config/shield.ts` file.
+Você pode configurar as diretivas de cabeçalho usando o arquivo `config/shield.ts`.
 
 ```ts
 import { defineConfig } from '@adonisjs/shield'
@@ -330,11 +330,11 @@ const shieldConfig = defineConfig({
 
 ### `enabled`
 
-Turn the hsts guard on or off.
+Ative ou desative a proteção hsts.
 
 ### `maxAge`
 
-Defines the `max-age` attribute. The value should either be a number in seconds or a string-based time expression.
+Define o atributo `max-age`. O valor deve ser um número em segundos ou uma expressão de tempo baseada em string.
 
 ```ts
 {
@@ -352,16 +352,16 @@ Defines the `max-age` attribute. The value should either be a number in seconds 
 
 ### `includeSubDomains`
 
-Defines the `includeSubDomains` directive to apply the setting on subdomains.
+Define a diretiva `includeSubDomains` para aplicar a configuração em subdomínios.
 
-## Configuring X-Frame protection
-The [**X-Frame-Options**](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options) header is used to indicate if a browser is allowed to render a website embedded inside an `iframe`, `frame`, `embed`, or `object` tags.
+## Configurando a proteção X-Frame
+O cabeçalho [**X-Frame-Options**](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options) é usado para indicar se um navegador tem permissão para renderizar um site incorporado dentro de uma tag `iframe`, `frame`, `embed` ou `object`.
 
 :::note
-If you have configured CSP, you may instead use the [frame-ancestors](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors) directive and disable the `xFrame` guard.
+Se você configurou o CSP, você pode usar a diretiva [frame-ancestors](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors) e desabilitar a proteção `xFrame`.
 :::
 
-You can configure the header directives using the `config/shield.ts` file.
+Você pode configurar as diretivas de cabeçalho usando o arquivo `config/shield.ts`.
 
 ```ts
 import { defineConfig } from '@adonisjs/shield'
@@ -376,11 +376,11 @@ const shieldConfig = defineConfig({
 
 ### `enabled`
 
-Turn the xFrame guard on or off.
+Ative ou desative a proteção xFrame.
 
 ### `action`
 
-The `action` property defines the header value. It could be `DENY`, `SAMEORIGIN`, or `ALLOW-FROM`.
+A propriedade `action` define o valor do cabeçalho. Pode ser `DENY`, `SAMEORIGIN` ou `ALLOW-FROM`.
 
 ```ts
 {
@@ -388,7 +388,7 @@ The `action` property defines the header value. It could be `DENY`, `SAMEORIGIN`
 }
 ```
 
-In the case of `ALLOW-FROM`, you must also define the `domain` property.
+No caso de `ALLOW-FROM`, você também deve definir a propriedade `domain`.
 
 ```ts
 {
@@ -397,10 +397,10 @@ In the case of `ALLOW-FROM`, you must also define the `domain` property.
 }
 ```
 
-## Disabling MIME sniffing
-The [**X-Content-Type-Options**](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options) header instructs browsers to follow the `content-type` header and not perform MIME sniffing by inspecting the content of an HTTP response.
+## Desabilitando o MIME sniffing
+O cabeçalho [**X-Content-Type-Options**](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options) instrui os navegadores a seguir o cabeçalho `content-type` e não executar o MIME sniffing inspecionando o conteúdo de uma resposta HTTP.
 
-Once you enable this guard, Shield will define the `X-Content-Type-Options: nosniff` header for all HTTP responses.
+Depois que você habilitar essa proteção, o Shield definirá o cabeçalho `X-Content-Type-Options: nosniff` para todas as respostas HTTP.
 
 ```ts
 import { defineConfig } from '@adonisjs/shield'

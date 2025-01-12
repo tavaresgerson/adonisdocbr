@@ -1,27 +1,27 @@
 ---
-summary: Protect your web application or API server from abuse by implementing rate limits using the @adonisjs/limiter package.
+resumo: Proteja seu aplicativo da web ou servidor de API contra abuso implementando limites de taxa usando o pacote @adonisjs/limiter.
 ---
 
-# Rate limiting
+# Limitação de taxa
 
-AdonisJS provides a first-party package for implementing rate limits in your web application or the API server. The rate limiter provides `redis`, `mysql`, `postgresql` and `memory` as the storage options, with the ability to [create custom storage providers](#creating-a-custom-storage-provider).
+O AdonisJS fornece um pacote próprio para implementar limites de taxa em seu aplicativo da web ou servidor de API. O limitador de taxa fornece `redis`, `mysql`, `postgresql` e `memory` como opções de armazenamento, com a capacidade de [criar provedores de armazenamento personalizados](#creating-a-custom-storage-provider).
 
-The `@adonisjs/limiter` package is built on top of the [node-rate-limiter-flexible](https://github.com/animir/node-rate-limiter-flexible) package, which provides one of the fastest rate-limiting API and uses atomic increments to avoid race conditions.
+O pacote `@adonisjs/limiter` é criado sobre o pacote [node-rate-limiter-flexible](https://github.com/animir/node-rate-limiter-flexible), que fornece uma das APIs de limitação de taxa mais rápidas e usa incrementos atômicos para evitar condições de corrida.
 
-## Installation
+## Instalação
 
-Install and configure the package using the following command :
+Instale e configure o pacote usando o seguinte comando:
 
 ```sh
 node ace add @adonisjs/limiter
 ```
 
-:::disclosure{title="See steps performed by the add command"}
+::: details Veja os passos realizados pelo comando add
 
-1. Installs the `@adonisjs/limiter` package using the detected package manager.
+1. Instala o pacote `@adonisjs/limiter` usando o gerenciador de pacotes detectado.
 
-2. Registers the following service provider inside the `adonisrc.ts` file.
-    ```ts
+2. Registra o seguinte provedor de serviços dentro do arquivo `adonisrc.ts`.
+```ts
     {
       providers: [
         // ...other providers
@@ -30,23 +30,23 @@ node ace add @adonisjs/limiter
     }
     ```
 
-3. Create the `config/limiter.ts` file.
+3. Crie o arquivo `config/limiter.ts`.
 
-4. Create the `start/limiter.ts` file. This file is used to define HTTP throttle middleware.
+4. Crie o arquivo `start/limiter.ts`. Este arquivo é usado para definir o middleware HTTP throttle.
 
-5. Define the following environment variable alongside its validation inside the `start/env.ts` file.
-   ```ts
+5. Defina a seguinte variável de ambiente junto com sua validação dentro do arquivo `start/env.ts`.
+```ts
    LIMITER_STORE=redis
    ```
 
-6. Optionally, create the database migration for the `rate_limits` table if using the `database` store.
+6. Opcionalmente, crie a migração do banco de dados para a tabela `rate_limits` se estiver usando o armazenamento `database`.
 
 :::
 
-## Configuration
-The configuration for the rate limiter is stored within the `config/limiter.ts` file. 
+## Configuração
+A configuração do limitador de taxa é armazenada no arquivo `config/limiter.ts`.
 
-See also: [Rate limiter config stub](https://github.com/adonisjs/limiter/blob/main/stubs/config/limiter.stub)
+Veja também: [Stub de configuração do limitador de taxa](https://github.com/adonisjs/limiter/blob/main/stubs/config/limiter.stub)
 
 ```ts
 import env from '#start/env'
@@ -75,18 +75,18 @@ declare module '@adonisjs/limiter/types' {
 
 ### `default`
 
-The `default` store to use for applying rate limits. The store is defined within the same config file under the `stores` object.
+O armazenamento `default` a ser usado para aplicar limites de taxa. O armazenamento é definido no mesmo arquivo de configuração sob o objeto `stores`.
 
 ### `stores`
 
-A collection of stores you plan to use within your application. We recommend always configuring the `memory` store that could be used during testing.
+Uma coleção de armazenamentos que você planeja usar em seu aplicativo. Recomendamos sempre configurar o armazenamento `memory` que pode ser usado durante o teste.
 
 ---
 
-### Environment variables
-The default limiter is defined using the `LIMITER_STORE` environment variable, and therefore, you can switch between different stores in different environments. For example, use the `memory` store during testing and the `redis` store for development and production.
+### Variáveis ​​de ambiente
+O limitador padrão é definido usando a variável de ambiente `LIMITER_STORE` e, portanto, você pode alternar entre diferentes armazenamentos em diferentes ambientes. Por exemplo, use o armazenamento `memory` durante o teste e o armazenamento `redis` para desenvolvimento e produção.
 
-Also, the environment variable must be validated to allow one of the pre-configured stores. The validation is defined inside the `start/env.ts` file using the `Env.schema.enum` rule.
+Além disso, a variável de ambiente deve ser validada para permitir um dos armazenamentos pré-configurados. A validação é definida dentro do arquivo `start/env.ts` usando a regra `Env.schema.enum`.
 
 ```ts
 {
@@ -94,26 +94,26 @@ Also, the environment variable must be validated to allow one of the pre-configu
 }
 ```
 
-### Shared options
-Following is the list of options shared by all the bundled stores.
+### Opções compartilhadas
+A seguir está a lista de opções compartilhadas por todos os armazenamentos agrupados.
 
 ### `keyPrefix`
 
-Define the prefix for the keys stored inside the database store. The database store ignores the `keyPrefix` since different database tables can be used to isolate data.
+Defina o prefixo para as chaves armazenadas dentro do armazenamento do banco de dados. O armazenamento do banco de dados ignora o `keyPrefix`, pois diferentes tabelas de banco de dados podem ser usadas para isolar dados.
 
 ### `execEvenly`
 
-The `execEvenly` option adds a delay when throttling the requests so that all requests are exhausted at the end of the provided duration.
+A opção `execEvenly` adiciona um atraso ao limitar as solicitações para que todas as solicitações sejam esgotadas no final da duração fornecida.
 
-For example, if you allow a user to make **10 requests/min**, all requests will have an artificial delay, so the tenth request finishes at the end of the 1 minute. Read the [smooth out traffic peaks](https://github.com/animir/node-rate-limiter-flexible/wiki/Smooth-out-traffic-peaks) article on `rate-limiter-flexible` repo to learn more about the `execEvenly` option.
+Por exemplo, se você permitir que um usuário faça **10 solicitações/min**, todas as solicitações terão um atraso artificial, então a décima solicitação termina no final do 1 minuto. Leia o artigo [smooth out traffic peaks](https://github.com/animir/node-rate-limiter-flexible/wiki/Smooth-out-traffic-peaks) no repositório `rate-limiter-flexible` para saber mais sobre a opção `execEvenly`.
 
 `inMemoryBlockOnConsumed`
 
-Define the number of requests after which the key should be blocked within memory. For example, you allow a user to make **10 requests/min**, and they have consumed all the requests within the first 10 seconds.
+Defina o número de solicitações após as quais a chave deve ser bloqueada na memória. Por exemplo, você permite que um usuário faça **10 solicitações/min**, e ele tenha consumido todas as solicitações nos primeiros 10 segundos.
 
-However, they continue to make requests to the server, and therefore, the rate limiter has to check with the database before denying the request.
+No entanto, ele continua a fazer solicitações ao servidor e, portanto, o limitador de taxa precisa verificar com o banco de dados antes de negar a solicitação.
 
-To reduce the load on the database, you can define the number of requests, after which we should stop querying the database and block the key within the memory.
+Para reduzir a carga no banco de dados, você pode definir o número de solicitações, após as quais devemos parar de consultar o banco de dados e bloquear a chave na memória.
 
 ```ts
 {
@@ -130,7 +130,7 @@ To reduce the load on the database, you can define the number of requests, after
 
 ### `inMemoryBlockDuration`
 
-The duration for which to block the key within memory. This option will reduce the load on the database since the backend stores will first check within memory to see if a key is blocked.
+A duração para a qual bloquear a chave na memória. Esta opção reduzirá a carga no banco de dados, pois os armazenamentos de backend verificarão primeiro na memória para ver se uma chave está bloqueada.
 
 ```ts
 {
@@ -140,10 +140,10 @@ The duration for which to block the key within memory. This option will reduce t
 
 ---
 
-### Redis store
-The `redis` store has a peer dependency on the `@adonisjs/redis` package; therefore, you must configure this package before using the redis store.
+### Armazenamento Redis
+O armazenamento `redis` tem uma dependência de peer no pacote `@adonisjs/redis`; portanto, você deve configurar este pacote antes de usar o armazenamento redis.
 
-Following is the list of options the redis store accepts (alongside the shared options).
+A seguir está a lista de opções que o armazenamento redis aceita (junto com as opções compartilhadas).
 
 ```ts
 {
@@ -156,21 +156,21 @@ Following is the list of options the redis store accepts (alongside the shared o
 
 ### `connectionName`
 
-The `connectionName` property refers to a connection defined within the `config/redis.ts` file. We recommend using a separate redis database for the limiter.
+A propriedade `connectionName` se refere a uma conexão definida no arquivo `config/redis.ts`. Recomendamos usar um banco de dados redis separado para o limitador.
 
 ### `rejectIfRedisNotReady`
 
-Reject the rate-limiting requests when the status of the Redis connection is not `ready.` 
+Rejeite as solicitações de limitação de taxa quando o status da conexão Redis não for `ready.`
 
 ---
 
-### Database store
-The `database` store has a peer dependency on the `@adonisjs/lucid` package, and therefore, you must configure this package before using the Database store.
+### Armazenamento de banco de dados
+O armazenamento `database` tem uma dependência de peer no pacote `@adonisjs/lucid` e, portanto, você deve configurar este pacote antes de usar o armazenamento de banco de dados.
 
-Following is the list of options the database store accepts (alongside the shared options).
+A seguir está a lista de opções que o armazenamento de banco de dados aceita (junto com as opções compartilhadas).
 
 :::note
-Only MySQL and PostgreSQL databases can be used with the database store.
+Somente bancos de dados MySQL e PostgreSQL podem ser usados ​​com o armazenamento de banco de dados.
 :::
 
 ```ts
@@ -187,31 +187,31 @@ Only MySQL and PostgreSQL databases can be used with the database store.
 
 ### `connectionName`
 
-Reference to the database connection defined within the `config/database.ts` file. If not defined, we will use the default database connection.
+Referência à conexão do banco de dados definida no arquivo `config/database.ts`. Se não for definida, usaremos a conexão de banco de dados padrão.
 
 ### `dbName`
 
-The database to use for making SQL queries. We try to infer the value of `dbName` from the connection config defined within the `config/database.ts` file. However, if using a connection string, you must supply the database name via this property.
+O banco de dados a ser usado para fazer consultas SQL. Tentamos inferir o valor de `dbName` da configuração de conexão definida no arquivo `config/database.ts`. No entanto, se estiver usando uma string de conexão, você deve fornecer o nome do banco de dados por meio desta propriedade.
 
 ### `tableName`
 
-The database table to use to store rate limits. 
+A tabela do banco de dados a ser usada para armazenar limites de taxa.
 
 ### `schemaName`
 
-The schema to use for making SQL queries (PostgreSQL only).
+O esquema a ser usado para fazer consultas SQL (somente PostgreSQL).
 
 ### `clearExpiredByTimeout`
 
-When enabled, the database store will clear expired keys every 5 minutes. Do note that only keys that have been expired for more than 1 hour will be cleared.
+Quando habilitado, o armazenamento do banco de dados limpará as chaves expiradas a cada 5 minutos. Observe que apenas as chaves que expiraram por mais de 1 hora serão limpas.
 
 
 ## Throttling HTTP requests
-Once the limiter has been configured, you may create HTTP throttle middleware using the `limiter.define` method. The `limiter` service is a singleton instance of the [LimiterManager](https://github.com/adonisjs/limiter/blob/main/src/limiter_manager.ts) class created using the config defined within the `config/limiter.ts` file.
+Depois que o limitador for configurado, você pode criar um middleware de limitação HTTP usando o método `limiter.define`. O serviço `limiter` é uma instância singleton da classe [LimiterManager](https://github.com/adonisjs/limiter/blob/main/src/limiter_manager.ts) criada usando a configuração definida no arquivo `config/limiter.ts`.
 
-If you open the `start/limiter.ts` file, you will find a pre-defined global throttle middleware you can apply on a route or a group of routes. Similarly, you can create as many throttle middleware as you need in your application.
+Se você abrir o arquivo `start/limiter.ts`, encontrará um middleware de limitação global predefinido que pode ser aplicado em uma rota ou em um grupo de rotas. Da mesma forma, você pode criar quantos middlewares de limitação precisar em seu aplicativo.
 
-In the following example, the global throttle middleware allows users to make **10 requests/min** based on their IP address.
+No exemplo a seguir, o middleware de limitação global permite que os usuários façam **10 solicitações/min** com base em seu endereço IP.
 
 ```ts
 // title: start/limiter.ts
@@ -222,7 +222,7 @@ export const throttle = limiter.define('global', () => {
 })
 ```
 
-You can apply the `throttle` middleware to a route as follows.
+Você pode aplicar o middleware `throttle` a uma rota da seguinte maneira.
 
 ```ts
 // title: start/routes.ts
@@ -238,9 +238,9 @@ router
   // highlight-end
 ```
 
-### Dynamic rate limiting
+### Limitação de taxa dinâmica
 
-Let's create another middleware to protect an API endpoint. This time, we will apply dynamic rate limits based on the authentication status of a request.
+Vamos criar outro middleware para proteger um endpoint de API. Desta vez, aplicaremos limites de taxa dinâmicos com base no status de autenticação de uma solicitação.
 
 ```ts
 // title: start/limiter.ts
@@ -275,8 +275,8 @@ router
   .use(apiThrottle)
 ```
 
-### Switching the backend store
-You can use a specific backend store with throttle middleware using the `store` method. For example:
+### Trocando o armazenamento de backend
+Você pode usar um armazenamento de backend específico com middleware de aceleração usando o método `store`. Por exemplo:
 
 ```ts
 limiter
@@ -287,9 +287,8 @@ limiter
   // highlight-end
 ```
 
-
-### Using a custom key
-By default, the requests are rate-limited by the user's IP Address. However, you can specify a custom key using the `usingKey` method.
+### Usando uma chave personalizada
+Por padrão, as solicitações são limitadas por taxa pelo endereço IP do usuário. No entanto, você pode especificar uma chave personalizada usando o método `usingKey`.
 
 ```ts
 limiter
@@ -300,8 +299,8 @@ limiter
   // highlight-end
 ```
 
-### Blocking user
-You may block a user for a specified duration if they continue to make requests even after exhausting their quota using the `blockFor` method. The method accepts the duration in seconds or the time expression.
+### Bloqueando usuário
+Você pode bloquear um usuário por uma duração especificada se ele continuar a fazer solicitações mesmo depois de esgotar sua cota usando o método `blockFor`. O método aceita a duração em segundos ou a expressão de tempo.
 
 ```ts
 limiter
@@ -316,16 +315,16 @@ limiter
   // highlight-end
 ```
 
-## Handling ThrottleException
-The throttle middleware throws the [E_TOO_MANY_REQUESTS](../references/exceptions.md#e_too_many_requests) exception when the user has exhausted all the requests within the specified timeframe. The exception will be automatically converted to an HTTP response using the following content negotiation rules.
+## Lidando com ThrottleException
+O middleware throttle lança a exceção [E_TOO_MANY_REQUESTS](../references/exceptions.md#e_too_many_requests) quando o usuário esgota todas as solicitações dentro do período especificado. A exceção será automaticamente convertida em uma resposta HTTP usando as seguintes regras de negociação de conteúdo.
 
-- HTTP requests with the `Accept=application/json` header will receive an array of error messages. Each array element will be an object with the message property.
+- As solicitações HTTP com o cabeçalho `Accept=application/json` receberão uma matriz de mensagens de erro. Cada elemento da matriz será um objeto com a propriedade message.
 
-- HTTP requests with the `Accept=application/vnd.api+json` header will receive an array of error messages formatted per the JSON API spec.
+- As solicitações HTTP com o cabeçalho `Accept=application/vnd.api+json` receberão uma matriz de mensagens de erro formatadas de acordo com a especificação JSON API.
 
-- All other requests will receive a plain text response message. However, you may use [status pages](../basics/exception_handling.md#status-pages) to show a custom error page for limiter errors.
+[páginas de status](../basics/exception_handling.md#status-pages) para mostrar uma página de erro personalizada para erros de limitador.
 
-You may also self-handle the error within the [global exception handler](../basics/exception_handling.md#handling-exceptions).
+Você também pode autogerenciar o erro dentro do [manipulador de exceção global](../basics/exception_handling.md#handling-exceptions).
 
 ```ts
 import { errors } from '@adonisjs/limiter'
@@ -354,8 +353,8 @@ export default class HttpExceptionHandler extends ExceptionHandler {
 }
 ```
 
-### Customizing the error message
-Instead of handling the exception globally, you may customize the error message, status, and response headers using the `limitExceeded` hook.
+### Personalizando a mensagem de erro
+Em vez de manipular a exceção globalmente, você pode personalizar a mensagem de erro, o status e os cabeçalhos de resposta usando o hook ``limitExceeded`.
 
 ```ts
 import limiter from '@adonisjs/limiter/services/main'
@@ -374,8 +373,8 @@ export const throttle = limiter.define('global', () => {
 })
 ```
 
-### Using translations for the error message
-If you have configured the [@adonisjs/i18n](../digging_deeper/i18n.md) package, you may define the translation for the error message using the `errors.E_TOO_MANY_REQUESTS` key. For example:
+### Usando traduções para a mensagem de erro
+Se você configurou o pacote [@adonisjs/i18n](../digging_deeper/i18n.md), você pode definir a tradução para a mensagem de erro usando a chave `errors.E_TOO_MANY_REQUESTS`. Por exemplo:
 
 ```json
 // title: resources/lang/fr/errors.json
@@ -384,7 +383,7 @@ If you have configured the [@adonisjs/i18n](../digging_deeper/i18n.md) package, 
 }
 ```
 
-Finally, you can define a custom translation key using the `error.t` method.
+Finalmente, você pode definir uma chave de tradução personalizada usando o método `error.t`.
 
 ```ts
 limitExceeded((error) => {
@@ -395,18 +394,18 @@ limitExceeded((error) => {
 })
 ```
 
-## Direct usage
-Alongside throttling HTTP requests, you may also use the limiter to apply rate limits in other parts of your application. For example, block a user during login if they provide invalid credentials multiple times. Or limit the number of concurrent jobs a user can run.
+## Uso direto
+Além de limitar solicitações HTTP, você também pode usar o limitador para aplicar limites de taxa em outras partes do seu aplicativo. Por exemplo, bloqueie um usuário durante o login se ele fornecer credenciais inválidas várias vezes. Ou limite o número de trabalhos simultâneos que um usuário pode executar.
 
-### Creating limiter
+### Criando limitador
 
-Before you can apply rate limiting on an action, you must get an instance of the [Limiter](https://github.com/adonisjs/limiter/blob/main/src/limiter.ts) class using the `limiter.use` method. The `use` method accepts the name of the backend store and the following rate-limiting options.
+Antes de aplicar a limitação de taxa em uma ação, você deve obter uma instância da classe [Limiter](https://github.com/adonisjs/limiter/blob/main/src/limiter.ts) usando o método `limiter.use`. O método `use` aceita o nome do armazenamento de backend e as seguintes opções de limitação de taxa.
 
-- `requests`: The number of requests to allow for a given duration.
-- `duration`: The duration in seconds or a [time expression](../references/helpers.md#seconds) string.
-- `block (optional)`: The duration for which to block the key after all the requests have been exhausted.
-- `inMemoryBlockOnConsumed (optional)`: See [shared options](#shared-options)
-- `inMemoryBlockDuration (optional)`: See [shared options](#shared-options)
+- `requests`: O número de solicitações a serem permitidas para uma determinada duração.
+[expressão de tempo](../references/helpers.md#seconds) string.
+- `block (opcional)`: A duração para a qual bloquear a chave após todas as solicitações terem sido esgotadas.
+[shared options](#shared-options)
+[shared options](#shared-options)
 
 ```ts
 import limiter from '@adonisjs/limiter/services/main'
@@ -417,7 +416,7 @@ const reportsLimiter = limiter.use('redis', {
 })
 ```
 
-Omit the first parameter if you want to use the default store. For example:
+Omita o primeiro parâmetro se quiser usar o armazenamento padrão. Por exemplo:
 
 ```ts
 const reportsLimiter = limiter.use({
@@ -426,15 +425,15 @@ const reportsLimiter = limiter.use({
 })
 ```
 
-### Applying rate limit on an action
+### Aplicando limite de taxa em uma ação
 
-Once you have created a limiter instance, you can use the `attempt` method to apply rate limiting on an action. 
-The method accepts the following parameters.
+Depois de criar uma instância do limitador, você pode usar o método `attempt` para aplicar a limitação de taxa em uma ação.
+O método aceita os seguintes parâmetros.
 
-- A unique key to use for rate limiting.
-- The callback function to be executed until all the attempts have been exhausted.
+- Uma chave exclusiva para usar para limitação de taxa.
+- A função de retorno de chamada a ser executada até que todas as tentativas tenham sido esgotadas.
 
-The `attempt` method returns the result of the callback function (if it is executed). Otherwise, it returns `undefined`.
+O método `attempt` retorna o resultado da função de retorno de chamada (se for executada). Caso contrário, ele retorna `undefined`.
 
 ```ts
 const key = 'user_1_reports'
@@ -460,17 +459,17 @@ if (!executed) {
 return 'Report generated'
 ```
 
-### Preventing too many login failures
-Another example of direct usage could be to disallow an IP Address from making multiple invalid attempts on a login form.
+### Evitando muitas falhas de login
+Outro exemplo de uso direto poderia ser proibir um endereço IP de fazer várias tentativas inválidas em um formulário de login.
 
-In the following example, we use the `limiter.penalize` method to consume one request whenever the user provides invalid credentials and block them for 20 minutes after all the attempts have been exhausted.
+No exemplo a seguir, usamos o método `limiter.penalize` para consumir uma solicitação sempre que o usuário fornecer credenciais inválidas e bloqueá-las por 20 minutos após todas as tentativas terem sido esgotadas.
 
-The `limiter.penalize` method accepts the following arguments.
+O método `limiter.penalize` aceita os seguintes argumentos.
 
-- A unique key to use for rate limiting.
-- The callback function to be executed. One request will be consumed if the function throws an error.
+- Uma chave exclusiva para usar para limitação de taxa.
+- A função de retorno de chamada a ser executada. Uma solicitação será consumida se a função lançar um erro.
 
-The `penalize` method returns the result of the callback function or an instance of the `ThrottleException`. You can use the exception to find the duration remaining till the next attempt.
+O método `penalize` retorna o resultado da função de retorno de chamada ou uma instância de `ThrottleException`. Você pode usar a exceção para encontrar a duração restante até a próxima tentativa.
 
 ```ts
 import User from '#models/user'
@@ -526,10 +525,10 @@ export default class SessionController {
 }
 ```
 
-## Manually consuming requests
-Alongside the `attempt` and the `penalize` methods, you may interact with the limiter directly to check the remaining requests and manually consume them.
+## Consumindo solicitações manualmente
+Juntamente com os métodos `attempt` e `penalize`, você pode interagir com o limitador diretamente para verificar as solicitações restantes e consumi-las manualmente.
 
-In the following example, we use the `remaining` method to check if a given key has consumed all the requests. Otherwise, use the `increment` method to consume one request.
+No exemplo a seguir, usamos o método `remaining` para verificar se uma determinada chave consumiu todas as solicitações. Caso contrário, use o método `increment` para consumir uma solicitação.
 
 ```ts
 import limiter from '@adonisjs/limiter/services/main'
@@ -549,7 +548,7 @@ if (await requestsLimiter.remaining('unique_key') > 0) {
 // highlight-end
 ```
 
-You might run into a race condition in the above example between calling the `remaining` and the `increment` methods. Therefore, you may want to use the `consume` method instead. The `consume` method will increment the requests count and throw an exception if all the requests have been consumed.
+Você pode encontrar uma condição de corrida no exemplo acima entre chamar os métodos `remaining` e `increment`. Portanto, você pode querer usar o método `consume`. O método `consume` incrementará a contagem de solicitações e lançará uma exceção se todas as solicitações tiverem sido consumidas.
 
 ```ts
 import { errors } from '@adonisjs/limiter'
@@ -564,10 +563,10 @@ try {
 }
 ```
 
-## Blocking keys
-Alongside consuming requests, you may block a key for longer if a user continues to make requests after exhausting all the attempts.
+## Bloqueando chaves
+Além de consumir solicitações, você pode bloquear uma chave por mais tempo se um usuário continuar a fazer solicitações após esgotar todas as tentativas.
 
-The blocking is performed by the `consume`, `attempt`, and the `penalize` methods automatically when you create a limiter instance with `blockDuration` option. For example:
+O bloqueio é realizado pelos métodos `consume`, `attempt` e `penalize` automaticamente quando você cria uma instância de limitador com a opção `blockDuration`. Por exemplo:
 
 ```ts
 import limiter from '@adonisjs/limiter/services/main'
@@ -600,7 +599,7 @@ await requestLimiter.penalize('a_unique_key', () => {
 })
 ```
 
-Finally, you may use the `block` method to block a key for a given duration.
+Finalmente, você pode usar o método `block` para bloquear uma chave por uma duração determinada.
 
 ```ts
 const requestsLimiter = limiter.use({
@@ -611,10 +610,10 @@ const requestsLimiter = limiter.use({
 await requestsLimiter.block('a_unique_key', '30 mins')
 ```
 
-## Resetting attempts
-You may use one of the following methods to decrease the number of requests or delete the entire key from the storage.
+## Redefinindo tentativas
+Você pode usar um dos seguintes métodos para diminuir o número de solicitações ou excluir a chave inteira do armazenamento.
 
-The `decrement` method reduces the request count by 1, and the `delete` method deletes the key. Note that the `decrement` method is not atomic and might set the requests count to `-1` when concurrency is too high.
+O método `decrement` reduz a contagem de solicitações em 1, e o método `delete` exclui a chave. Observe que o método `decrement` não é atômico e pode definir a contagem de solicitações como `-1` quando a simultaneidade for muito alta.
 
 ```ts
 // title: Decrement requests count
@@ -651,17 +650,17 @@ const requestsLimiter = limiter.use({
 await requestsLimiter.delete('unique_key')
 ```
 
-## Testing
-If you use a single (i.e., default) store for rate limiting, you may want to switch to the `memory` store during testing by defining the `LIMITER_STORE` environment variable inside the `.env.test` file.
+## Testes
+Se você usar um único armazenamento (ou seja, padrão) para limitação de taxa, talvez queira alternar para o armazenamento `memory` durante o teste definindo a variável de ambiente `LIMITER_STORE` dentro do arquivo `.env.test`.
 
 ```dotenv
 // title: .env.test
 LIMITER_STORE=memory
 ```
 
-You may clear the rate-limiting storage between tests using the `limiter.clear` method. The `clear` method accepts an array of store names and flushes the database. 
+Você pode limpar o armazenamento de limitação de taxa entre os testes usando o método `limiter.clear`. O método `clear` aceita uma matriz de nomes de armazenamento e limpa o banco de dados.
 
-When using Redis, it is recommended to use a separate database for the rate limiter. Otherwise, the `clear` method will flush the entire DB, and this might impact other parts of the applications.
+Ao usar o Redis, é recomendável usar um banco de dados separado para o limitador de taxa. Caso contrário, o método `clear` limpará todo o banco de dados, e isso pode afetar outras partes dos aplicativos.
 
 ```ts
 import limiter from '@adonisjs/limiter/services/main'
@@ -675,7 +674,7 @@ test.group('Reports', (group) => {
 })
 ```
 
-Alternatively, you can call the `clear` method without any arguments, and all configured stores will be cleared.
+Alternativamente, você pode chamar o método `clear` sem nenhum argumento, e todos os armazenamentos configurados serão limpos.
 
 ```ts
 test.group('Reports', (group) => {
@@ -687,10 +686,10 @@ test.group('Reports', (group) => {
 })
 ```
 
-## Creating a custom storage provider
-A custom storage provider must implement the [LimiterStoreContract](https://github.com/adonisjs/limiter/blob/main/src/types.ts#L163) interface and define the following properties/methods.
+## Criando um provedor de armazenamento personalizado
+Um provedor de armazenamento personalizado deve implementar a interface [LimiterStoreContract](https://github.com/adonisjs/limiter/blob/main/src/types.ts#L163) e definir as seguintes propriedades/métodos.
 
-You may write the implementation inside any file/folder. A service provider is not needed to create a custom store.
+Você pode escrever a implementação dentro de qualquer arquivo/pasta. Um provedor de serviços não é necessário para criar um armazenamento personalizado.
 
 ```ts
 import string from '@adonisjs/core/helpers/string'
@@ -776,11 +775,11 @@ export class MongoDbLimiterStore implements LimiterStoreContract {
 }
 ```
 
-### Defining the config helper
+### Definindo o auxiliar de configuração
 
-Once you have written the implementation, you must create a config helper to use the provider inside the `config/limiter.ts` file. The config helper should return a `LimiterManagerStoreFactory` function.
+Depois de escrever a implementação, você deve criar um auxiliar de configuração para usar o provedor dentro do arquivo `config/limiter.ts`. O auxiliar de configuração deve retornar uma função `LimiterManagerStoreFactory`.
 
-You may write the following function within the same file as the `MongoDbLimiterStore` implementation.
+Você pode escrever a seguinte função dentro do mesmo arquivo que a implementação `MongoDbLimiterStore`.
 
 ```ts
 import { LimiterManagerStoreFactory } from '@adonisjs/limiter/types'
@@ -799,9 +798,9 @@ export function mongoDbStore(config: MongoDbLimiterConfig) {
 }
 ```
 
-### Using the config helper
+### Usando o auxiliar de configuração
 
-Once done, you may use the `mongoDbStore` helper as follows.
+Uma vez feito, você pode usar o auxiliar `mongoDbStore` da seguinte forma.
 
 ```ts
 // title: config/limiter.ts
@@ -824,10 +823,10 @@ const limiterConfig = defineConfig({
 })
 ```
 
-### Wrapping rate-limiter-flexible drivers
-If you are planning to wrap an existing driver from the [node-rate-limiter-flexible](https://github.com/animir/node-rate-limiter-flexible?tab=readme-ov-file#docs-and-examples) package, then you may use the [RateLimiterBridge](https://github.com/adonisjs/limiter/blob/main/src/stores/bridge.ts) for the implementation.
+### Encapsulando drivers rate-limiter-flexible
+Se você estiver planejando encapsular um driver existente do pacote [node-rate-limiter-flexible](https://github.com/animir/node-rate-limiter-flexible?tab=readme-ov-file#docs-and-examples), então você pode usar o [RateLimiterBridge](https://github.com/adonisjs/limiter/blob/main/src/stores/bridge.ts) para a implementação.
 
-Let's re-implement the same `MongoDbLimiterStore` using the bridge this time.
+Vamos reimplementar o mesmo `MongoDbLimiterStore` usando a ponte desta vez.
 
 ```ts
 import { RateLimiterBridge } from '@adonisjs/limiter'

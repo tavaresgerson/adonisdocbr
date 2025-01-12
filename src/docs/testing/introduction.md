@@ -1,30 +1,30 @@
 ---
-summary: Learn how to write and run tests in AdonisJS using Japa, our in-built testing framework.
+resumo: Aprenda a escrever e executar testes no AdonisJS usando o Japa, nossa estrutura de testes integrada.
 ---
 
-# Testing
+# Testes
 
-AdonisJS has in-built support for writing tests. You do not have to install additional packages or wire up your application to be ready for testing - All the hard work has already been done.
+O AdonisJS tem suporte integrado para escrever testes. Você não precisa instalar pacotes adicionais ou conectar seu aplicativo para estar pronto para testes - Todo o trabalho duro já foi feito.
 
-You can run the application tests using the following ace command.
+Você pode executar os testes do aplicativo usando o seguinte comando ace.
 
 ```sh
 node ace test
 ```
 
-The tests are stored inside the `tests` directory and we further organize tests by their type. For example, the functional tests are stored inside the `tests/functional` directory, and the unit tests are stored inside the `tests/unit` directory.
+Os testes são armazenados dentro do diretório `tests` e nós organizamos os testes por tipo. Por exemplo, os testes funcionais são armazenados dentro do diretório `tests/functional`, e os testes unitários são armazenados dentro do diretório `tests/unit`.
 
-Functional tests refer to outside-in testing in which you will make real HTTP requests to your application to test the functionality of a given flow or an endpoint. For example, you may have a collection of functional tests for creating a user.
+Os testes funcionais se referem a testes de fora para dentro nos quais você fará solicitações HTTP reais para seu aplicativo para testar a funcionalidade de um determinado fluxo ou ponto de extremidade. Por exemplo, você pode ter uma coleção de testes funcionais para criar um usuário.
 
-Some communities might refer to functional tests as feature tests or end-to-end tests. AdonisJS is flexible about what you call them. We decided to settle on the term **functional tests**.
+Algumas comunidades podem se referir aos testes funcionais como testes de recursos ou testes de ponta a ponta. O AdonisJS é flexível sobre como você os chama. Decidimos nos contentar com o termo **testes funcionais**.
 
-## Configuring the tests runner
+## Configurando o executor de testes
 
-AdonisJS uses [Japa](https://japa.dev/docs) for writing and running tests. Therefore, we recommend reading the Japa documentation to understand its APIs and configuration options better.
+O AdonisJS usa [Japa](https://japa.dev/docs) para escrever e executar testes. Portanto, recomendamos ler a documentação do Japa para entender melhor suas APIs e opções de configuração.
 
 ### Suites
 
-The test suites are defined inside the `adonisrc.ts` file. By default, we register the `functional` and the `unit` test suites. If needed, you can remove the existing suites and start from scratch.
+As suites de teste são definidas dentro do arquivo `adonisrc.ts`. Por padrão, registramos as suites de teste `functional` e `unit`. Se necessário, você pode remover as suites existentes e começar do zero.
 
 ```ts
 {
@@ -43,10 +43,10 @@ The test suites are defined inside the `adonisrc.ts` file. By default, we regist
 }
 ```
 
-- A suite combines the suite's unique name and the file's glob pattern.
-- When you run tests for a specific suite, files only related to that suite are imported.
+- Uma suite combina o nome exclusivo da suite e o padrão glob do arquivo.
+- Quando você executa testes para uma suite específica, apenas os arquivos relacionados a essa suite são importados.
 
-You can configure a suite at runtime using the `configureSuite` hook defined inside the `tests/bootstrap.ts` file. For example, when running functional tests, you can register suite-level hooks to start the HTTP server.
+Você pode configurar uma suite em tempo de execução usando o hook `configureSuite` definido dentro do arquivo `tests/bootstrap.ts`. Por exemplo, ao executar testes funcionais, você pode registrar ganchos de nível de suíte para iniciar o servidor HTTP.
 
 ```ts
 export const configureSuite: Config['configureSuite'] = (suite) => {
@@ -56,9 +56,9 @@ export const configureSuite: Config['configureSuite'] = (suite) => {
 }
 ```
 
-### Runner hooks
+### Ganchos do executor
 
-Runner hooks are global actions you can run before and after all the tests. The hooks are defined using the `runnerHooks` property inside the `tests/boostrap.ts` file.
+Os ganchos do executor são ações globais que você pode executar antes e depois de todos os testes. Os ganchos são definidos usando a propriedade `runnerHooks` dentro do arquivo `tests/boostrap.ts`.
 
 ```ts
 export const runnerHooks: Required<Pick<Config, 'setup' | 'teardown'>> = {
@@ -77,9 +77,9 @@ export const runnerHooks: Required<Pick<Config, 'setup' | 'teardown'>> = {
 
 ### Plugins
 
-Japa has a plugin system you can use to extend its functionality. Plugins are registered inside the `tests/bootstrap.ts` file.
+O Japa tem um sistema de plugins que você pode usar para estender sua funcionalidade. Os plugins são registrados dentro do arquivo `tests/bootstrap.ts`.
 
-See also: [Creating Japa plugins](https://japa.dev/docs/creating-plugins)
+Veja também: [Criando plugins Japa](https://japa.dev/docs/creating-plugins)
 
 ```ts
 export const plugins: Config['plugins'] = [
@@ -90,9 +90,9 @@ export const plugins: Config['plugins'] = [
 
 ### Reporters
 
-Reporters are used for reporting/displaying the progress of tests as they run. The reporters are registered inside the `tests/bootstrap.ts` file.
+Os reporters são usados ​​para relatar/exibir o progresso dos testes conforme eles são executados. Os repórteres são registrados dentro do arquivo `tests/bootstrap.ts`.
 
-See also: [Creating Japa reporters](https://japa.dev/docs/creating-reporters)
+Veja também: [Criando repórteres Japa](https://japa.dev/docs/creating-reporters)
 
 ```ts
 export const reporters: Config['reporters'] = {
@@ -100,23 +100,23 @@ export const reporters: Config['reporters'] = {
 }
 ```
 
-## Creating tests
+## Criando testes
 
-You may create a new test using the `make:test` command. The command needs the suite's name to create the test file.
+Você pode criar um novo teste usando o comando `make:test`. O comando precisa do nome do conjunto para criar o arquivo de teste.
 
-See also: [Make test command](../references/commands.md#maketest)
+Veja também: [Comando Make test](../references/commands.md#maketest)
 
 ```sh
 node ace make:test posts/create --suite=functional
 ```
 
-The file will be created inside the directory configured using the `files` glob property.
+O arquivo será criado dentro do diretório configurado usando a propriedade glob `files`.
 
-## Writing tests
+## Escrevendo testes
 
-The tests are defined using the `test` method imported from the `@japa/runner` package. A test accepts a title as the first parameter and the implementation callback as the second parameter.
+Os testes são definidos usando o método `test` importado do pacote `@japa/runner`. Um teste aceita um título como o primeiro parâmetro e o retorno de chamada de implementação como o segundo parâmetro.
 
-In the following example, we create a new user account and use the [`assert`](https://japa.dev/docs/plugins/assert) object to ensure the password hashed correctly.
+No exemplo a seguir, criamos uma nova conta de usuário e usamos o objeto [`assert`](https://japa.dev/docs/plugins/assert) para garantir que a senha seja hash corretamente.
 
 ```ts
 import { test } from '@japa/runner'
@@ -135,11 +135,11 @@ test('hashes user password when creating a new user', async ({ assert }) => {
 })
 ```
 
-### Using test groups
+### Usando grupos de teste
 
-Test groups are created using the `test.group` method. Groups add structure to your tests and allow you to run [lifecycle hooks](https://japa.dev/docs/lifecycle-hooks) around your tests.
+Os grupos de teste são criados usando o método `test.group`. Os grupos adicionam estrutura aos seus testes e permitem que você execute [ganchos de ciclo de vida](https://japa.dev/docs/lifecycle-hooks) em torno dos seus testes.
 
-Continuing the previous example, let's move the password hashing test inside a group. 
+Continuando o exemplo anterior, vamos mover o teste de hash de senha para dentro de um grupo.
 
 ```ts
 import { test } from '@japa/runner'
@@ -164,13 +164,13 @@ test.group('creating user', () => {
 // highlight-end
 ```
 
-If you have noticed, we remove the **"when creating a new user"** fragment from our test title. This is because the group title clarifies that all tests under this group are scoped to **creating a new user**.
+Se você notou, removemos o fragmento **"ao criar um novo usuário"** do título do nosso teste. Isso ocorre porque o título do grupo esclarece que todos os testes sob esse grupo têm como escopo **criar um novo usuário**.
 
-### Lifecycle hooks
+### Ganchos de ciclo de vida
 
-Lifecycle hooks are used to perform actions around tests. You can define hooks using the `group` object.
+Os ganchos de ciclo de vida são usados ​​para executar ações em torno dos testes. Você pode definir hooks usando o objeto `group`.
 
-See also - [Japa docs for Lifecycle hooks](https://japa.dev/docs/lifecycle-hooks)
+Veja também - [Japa docs para Lifecycle hooks](https://japa.dev/docs/lifecycle-hooks)
 
 ```ts
 test.group('creating user', (group) => {
@@ -204,17 +204,17 @@ test.group('creating user', (group) => {
 })
 ```
 
-### Next steps
+### Próximos passos
 
-Now that you know the basics of creating and writing tests. We recommend you explore the following topics in the Japa documentation.
+Agora que você conhece os conceitos básicos de criação e escrita de testes. Recomendamos que você explore os seguintes tópicos na documentação do Japa.
 
-- [Explore the `test` function API](https://japa.dev/docs/underlying-test-class)
-- [Learn how to test asynchronous code effectively](https://japa.dev/docs/testing-async-code)
-- [Using datasets to avoid repetitive tests](https://japa.dev/docs/datasets)
+[Explore a API da função `test`](https://japa.dev/docs/underlying-test-class)
+[Aprenda a testar código assíncrono de forma eficaz](https://japa.dev/docs/testing-async-code)
+[Usando conjuntos de dados para evitar testes repetitivos](https://japa.dev/docs/datasets)
 
-## Running tests
+## Executando testes
 
-You may run tests using the `test` command. By default, the tests for all the suites are executed. However, you can run tests for a specific suite by passing the name.
+Você pode executar testes usando o comando `test`. Por padrão, os testes para todos os conjuntos são executados. No entanto, você pode executar testes para um conjunto específico passando o nome.
 
 ```sh
 node ace test
@@ -225,61 +225,61 @@ node ace test functional
 node ace test unit
 ```
 
-### Watching for file changes and re-running tests
+### Observando alterações de arquivo e executando novamente os testes
 
-You may use the `--watch` command to watch the file system and re-run tests. If a test file is changed, then tests inside the changed file will run. Otherwise, all tests will be re-run.
+Você pode usar o comando `--watch` para observar o sistema de arquivos e executar novamente os testes. Se um arquivo de teste for alterado, os testes dentro do arquivo alterado serão executados. Caso contrário, todos os testes serão executados novamente.
 
 ```sh
 node ace test --watch
 ```
 
-### Filtering tests
+### Filtrando testes
 
-You can apply filters using the command-line flags when running the tests. Following is the list of available options.
+Você pode aplicar filtros usando os sinalizadores de linha de comando ao executar os testes. A seguir está a lista de opções disponíveis.
 
-See also: [Japa filtering tests guide](https://japa.dev/docs/filtering-tests)
+Veja também: [Guia de testes de filtragem Japa](https://japa.dev/docs/filtering-tests)
 
-:::tip
+:::dica
 
-**Using VSCode?** Use the [Japa extension](https://marketplace.visualstudio.com/items?itemName=jripouteau.japa-vscode) to run selected tests within your code editor using keyboard shortcuts or the activity sidebar.
+**Usando VSCode?** Use a [extensão Japa](https://marketplace.visualstudio.com/items?itemName=jripouteau.japa-vscode) para executar testes selecionados dentro do seu editor de código usando atalhos de teclado ou a barra lateral de atividades.
 
 :::
 
-| Flag         | Description                                                                                                                                                                                            |
+| Sinalizar     | Descrição                                                                                                                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `--tests`    | Filter test by the test title. This filter matches against the exact test title.                                                                                                                       |
-| `--files`    | Filter tests by subset of test file name. The match is performed against the end of the filename without `.spec.ts`. You can run tests for a complete folder using the wildcard expression. `folder/*` |
-| `--groups`   | Filter test by group name. This filter matches against the exact group name.                                                                                                                           |
-| `--tags`     | Filter tests by tags. You can prefix the tag name with tilde `~` to ignore tests with the given tag                                                                                                    |
-| `--matchAll` | By default, Japa will run tests that matches any of the mentioned tags. If you want all tags to match, then use the `--matchAll` flag                                                                  |
+| `--tests`    | Filtrar teste pelo título do teste. Este filtro corresponde ao título exato do teste. |
+| `--files`    | Filtrar testes pelo subconjunto do nome do arquivo de teste. A correspondência é realizada no final do nome do arquivo sem `.spec.ts`. Você pode executar testes para uma pasta completa usando a expressão curinga. `folder/*` |
+| `--groups`   | Filtrar teste pelo nome do grupo. Este filtro corresponde ao nome exato do grupo. |
+| `--tags`     | Filtrar testes por tags. Você pode prefixar o nome da tag com o til `~` para ignorar testes com a tag fornecida |
+| `--matchAll` | Por padrão, o Japa executará testes que correspondem a qualquer uma das tags mencionadas. Se você quiser que todas as tags correspondam, use o sinalizador `--matchAll` |
 
-### Force exiting tests
+### Forçar saída de testes
 
-Japa waits for the process to gracefully shut down after completing all the tests. The graceful shutdown process means exiting all long-lived connections and emptying the Node.js event loop.
+O Japa espera que o processo seja encerrado normalmente após concluir todos os testes. O processo de encerramento normal significa sair de todas as conexões de longa duração e esvaziar o loop de eventos do Node.js.
 
-If needed, you can force Japa to exit the process and not wait for a graceful shutdown using the `--force-exit` flag.
+Se necessário, você pode forçar o Japa a sair do processo e não esperar por um encerramento normal usando o sinalizador `--force-exit`.
 
 ```sh
 node ace test --force-exit
 ```
 
-### Retrying tests
-You can retry failing tests for multiple times using the `--retries` flag. The flag will be applied to all the tests without an explicit retries count defined at the test level.
+### Tentando novamente os testes
+Você pode tentar novamente os testes com falha várias vezes usando o sinalizador `--retries`. O sinalizador será aplicado a todos os testes sem uma contagem explícita de tentativas definida no nível do teste.
 
 ```sh
 # Retry failing tests 2 times
 node ace test --retries=2
 ```
 
-### Running failed tests from the last run
-You can re-run tests failed from the last run using the `--failed` commandline flag.
+### Executando testes com falha da última execução
+Você pode executar novamente os testes com falha da última execução usando o sinalizador de linha de comando `--failed`.
 
 ```sh
 node ace test --failed
 ```
 
-### Switching between reporters
-Japa allows you register multiple test reporters inside the config file, but does not activate them by default. You can activate reporters either inside the config file, or using the `--reporter` commandline flag.
+### Alternando entre repórteres
+O Japa permite que você registre vários repórteres de teste dentro do arquivo de configuração, mas não os ativa por padrão. Você pode ativar repórteres dentro do arquivo de configuração ou usando o sinalizador de linha de comando `--reporter`.
 
 ```sh
 # Activate spec reporter
@@ -289,7 +289,7 @@ node ace test --reporter=spec
 node ace test --reporter=spec,json
 ```
 
-You may also activate reporters inside the config file.
+Você também pode ativar repórteres dentro do arquivo de configuração.
 
 ```ts
 export const reporters: Config['reporters'] = {
@@ -297,18 +297,18 @@ export const reporters: Config['reporters'] = {
 }
 ```
 
-### Passing options to the Node.js commandline
-The `test` command runs tests `(bin/test.ts file)` as a child process. If you want to pass [node arguments](https://nodejs.org/api/cli.html#options) to the child process, you can define them before the command name.
+### Passando opções para a linha de comando do Node.js
+O comando `test` executa testes `(arquivo bin/test.ts)` como um processo filho. Se você quiser passar [argumentos do nó](https://nodejs.org/api/cli.html#options) para o processo filho, você pode defini-los antes do nome do comando.
 
 ```sh
 node ace --no-warnings --trace-exit test
 ```
 
-## Environment variables
+## Variáveis ​​de ambiente
 
-You may use the `.env.test` file to define the environment variables required during testing. The values inside the `.env.test` takes precedence over those inside the `.env` file.
+Você pode usar o arquivo `.env.test` para definir as variáveis ​​de ambiente necessárias durante o teste. Os valores dentro do `.env.test` têm precedência sobre aqueles dentro do arquivo `.env`.
 
-The `SESSION_DRIVER` during testing must be set to `memory`.
+O `SESSION_DRIVER` durante o teste deve ser definido como `memory`.
 
 ```dotenv
 // title: .env.test

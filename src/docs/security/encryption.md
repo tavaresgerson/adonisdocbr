@@ -1,22 +1,22 @@
 ---
-summary: Encrypt and decrypt values in your application using the encryption service.
+resumo: Criptografe e descriptografe valores em seu aplicativo usando o serviço de criptografia.
 ---
 
-# Encryption
+# Criptografia
 
-Using the encryption service, you may encrypt and decrypt values in your application. The encryption is based on the [aes-256-cbc algorithm](https://www.n-able.com/blog/aes-256-encryption-algorithm), and we append an integrity hash (HMAC) to the final output to prevent value tampering.
+Usando o serviço de criptografia, você pode criptografar e descriptografar valores em seu aplicativo. A criptografia é baseada no [algoritmo aes-256-cbc](https://www.n-able.com/blog/aes-256-encryption-algorithm), e anexamos um hash de integridade (HMAC) à saída final para evitar adulteração de valor.
 
-The `encryption` service uses the `appKey` stored inside the `config/app.ts` file as the secret to encrypt the values.
+O serviço de `criptografia` usa a `appKey` armazenada dentro do arquivo `config/app.ts` como o segredo para criptografar os valores.
 
-- It is recommended to keep the `appKey` secure and inject it into your application using [environment variables](../getting_started/environment_variables.md). Anyone with access to this key can decrypt values.
+[variáveis ​​de ambiente](../getting_started/environment_variables.md). Qualquer pessoa com acesso a essa chave pode descriptografar valores.
 
-- The key should be at least 16 characters long and have a cryptographically secure random value. You may generate the key using the `node ace generate:key` command.
+- A chave deve ter pelo menos 16 caracteres e ter um valor aleatório criptograficamente seguro. Você pode gerar a chave usando o comando `node ace generate:key`.
 
-- If you decide to change the key later, you will not be able to decrypt existing values. This will result in invalidating existing cookies and user sessions. 
+- Se você decidir alterar a chave mais tarde, não poderá descriptografar os valores existentes. Isso resultará na invalidação de cookies e sessões de usuário existentes.
 
-## Encrypting values
+## Criptografando valores
 
-You may encrypt values using the `encryption.encrypt` method. The method accepts the value to encrypt and an optional time duration after which to consider the value expired.
+Você pode criptografar valores usando o método `encryption.encrypt`. O método aceita o valor a ser criptografado e uma duração de tempo opcional após a qual considerar o valor expirado.
 
 ```ts
 import encryption from '@adonisjs/core/services/encryption'
@@ -24,15 +24,15 @@ import encryption from '@adonisjs/core/services/encryption'
 const encrypted = encryption.encrypt('hello world')
 ```
 
-Define a time duration after which the value will be considered expired and cannot be decrypted.
+Defina uma duração de tempo após a qual o valor será considerado expirado e não poderá ser descriptografado.
 
 ```ts
 const encrypted = encryption.encrypt('hello world', '2 hours')
 ```
 
-## Decrypting values
+## Descriptografando valores
 
-Encrypted values can be decrypted using the `encryption.decrypt` method. The method accepts the encrypted value as the first argument.
+Valores criptografados podem ser descriptografados usando o método `encryption.decrypt`. O método aceita o valor criptografado como o primeiro argumento.
 
 ```ts
 import encryption from '@adonisjs/core/services/encryption'
@@ -40,9 +40,9 @@ import encryption from '@adonisjs/core/services/encryption'
 encryption.decrypt(encryptedValue)
 ```
 
-## Supported data types
+## Tipos de dados suportados
 
-The value given to the `encrypt` method is serialized to a string using `JSON.stringify`. Therefore, you can use the following JavaScript data types.
+O valor dado ao método `encrypt` é serializado para uma string usando `JSON.stringify`. Portanto, você pode usar os seguintes tipos de dados JavaScript.
 
 - string
 - number
@@ -77,9 +77,9 @@ encryption.encrypt(BigInt(10))
 encryption.encrypt(new Date())
 ```
 
-## Using custom secret keys
+## Usando chaves secretas personalizadas
 
-You can create an [instance of the Encryption class](https://github.com/adonisjs/encryption/blob/main/src/encryption.ts) directly to use custom secret keys.
+Você pode criar uma [instância da classe Encryption](https://github.com/adonisjs/encryption/blob/main/src/encryption.ts) diretamente para usar chaves secretas personalizadas.
 
 ```ts
 import { Encryption } from '@adonisjs/core/encryption'

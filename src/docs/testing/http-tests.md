@@ -1,17 +1,17 @@
 ---
-summary: HTTP testing in AdonisJS using the Japa API client plugin.
+resumo: Testes HTTP no AdonisJS usando o plugin cliente API Japa.
 ---
 
-# HTTP tests
+# Testes HTTP
 
-HTTP tests refer to testing your application endpoints by making an actual HTTP request against them and asserting the response body, headers, cookies, session, etc.
+Testes HTTP referem-se a testar os endpoints do seu aplicativo fazendo uma solicitação HTTP real contra eles e afirmando o corpo da resposta, cabeçalhos, cookies, sessão, etc.
 
-HTTP tests are performed using the [API client plugin](https://japa.dev/docs/plugins/api-client) of Japa. The API client plugin is a stateless request library similar to `Axios` or `fetch` but more suited for testing.
+Testes HTTP são realizados usando o [plugin cliente API](https://japa.dev/docs/plugins/api-client) do Japa. O plugin cliente API é uma biblioteca de solicitação sem estado semelhante ao `Axios` ou `fetch`, mas mais adequada para testes.
 
-If you want to test your web apps inside a real browser and interact with them programmatically, we recommend using the [Browser client](./browser_tests.md) that uses Playwright for testing.
+Se você quiser testar seus aplicativos da web dentro de um navegador real e interagir com eles programaticamente, recomendamos usar o [cliente do navegador](./browser_tests.md) que usa o Playwright para testes.
 
-## Setup
-The first step is to install the following packages from the npm packages registry.
+## Configuração
+O primeiro passo é instalar os seguintes pacotes do registro de pacotes npm.
 
 :::codegroup
 
@@ -22,9 +22,9 @@ npm i -D @japa/api-client
 
 :::
 
-### Registering the plugin
+### Registrando o plugin
 
-Before moving forward, register the plugin inside the `tests/bootstrap.ts` file.
+Antes de prosseguir, registre o plugin dentro do arquivo `tests/bootstrap.ts`.
 
 ```ts
 // title: tests/bootstrap.ts
@@ -39,7 +39,7 @@ export const plugins: Config['plugins'] = [
 ]
 ```
 
-The `apiClient` method optionally accepts the `baseURL` for the server. If not provided, it will use the `HOST` and the `PORT` environment variables.
+O método `apiClient` aceita opcionalmente o `baseURL` para o servidor. Se não for fornecido, ele usará as variáveis ​​de ambiente `HOST` e `PORT`.
 
 ```ts
 import env from '#start/env'
@@ -51,11 +51,11 @@ export const plugins: Config['plugins'] = [
 ]
 ```
 
-## Basic example
+## Exemplo básico
 
-Once the `apiClient` plugin is registered, you may access the `client` object from [TestContext](https://japa.dev/docs/test-context) to make an HTTP request.
+Depois que o plugin `apiClient` for registrado, você pode acessar o objeto `client` de [TestContext](https://japa.dev/docs/test-context) para fazer uma solicitação HTTP.
 
-The HTTP tests must be written inside the folder configured for the `functional` tests suite. You may use the following command to create a new test file.
+Os testes HTTP devem ser escritos dentro da pasta configurada para o conjunto de testes `functional`. Você pode usar o seguinte comando para criar um novo arquivo de teste.
 
 ```sh
 node ace make:test users/list --suite=functional
@@ -81,17 +81,17 @@ test.group('Users list', () => {
 })
 ```
 
-To view all the available request and assertion methods, make sure to [go through the Japa documentation](https://japa.dev/docs/plugins/api-client).
+Para visualizar todos os métodos de solicitação e asserção disponíveis, certifique-se de [ler a documentação do Japa](https://japa.dev/docs/plugins/api-client).
 
-## Open API testing
-The assertion and API client plugins allow you to use Open API spec files for writing assertions. Instead of manually testing the response against a fixed payload, you may use a spec file to test the shape of the HTTP response.
+## Teste de API aberta
+Os plug-ins de asserção e cliente de API permitem que você use arquivos de especificação da API aberta para escrever asserções. Em vez de testar manualmente a resposta em relação a uma carga útil fixa, você pode usar um arquivo de especificação para testar o formato da resposta HTTP.
 
-It is a great way to keep your Open API spec and server responses in sync. Because if you remove a certain endpoint from the spec file or change the response data shape, your tests will fail.
+É uma ótima maneira de manter suas respostas de especificação e servidor da API aberta sincronizadas. Porque se você remover um determinado ponto de extremidade do arquivo de especificação ou alterar o formato dos dados de resposta, seus testes falharão.
 
-### Registering schema
-AdonisJS does not offer tooling for generating Open API schema files from code. You may write it by hand or use graphical tools to create it.
+### Registrando esquema
+O AdonisJS não oferece ferramentas para gerar arquivos de esquema da API aberta a partir do código. Você pode escrevê-lo manualmente ou usar ferramentas gráficas para criá-lo.
 
-Once you have a spec file, save it inside the `resources` directory (create the directory if missing) and register it with the `assert` plugin within the `tests/bootstrap.ts` file.
+Depois de ter um arquivo de especificação, salve-o dentro do diretório `resources` (crie o diretório se estiver faltando) e registre-o com o plugin `assert` dentro do arquivo `tests/bootstrap.ts`.
 
 ```ts
 // title: tests/bootstrap.ts
@@ -110,8 +110,8 @@ export const plugins: Config['plugins'] = [
 ]
 ```
 
-### Writing assertions
-Once the schema is registered, you can use the `response.assertAgainstApiSpec` method to assert against the API spec.
+### Escrevendo asserções
+Depois que o esquema for registrado, você pode usar o método `response.assertAgainstApiSpec` para fazer a asserção contra a especificação da API.
 
 ```ts
 test('paginate posts', async ({ client }) => {
@@ -120,10 +120,10 @@ test('paginate posts', async ({ client }) => {
 })
 ```
 
-- The `response.assertAgainstApiSpec` method will use the **request method**, the **endpoint**, and the **response status code** to find the expected response schema.
-- An exception will be raised when the response schema cannot be found. Otherwise, the response body will be validated against the schema.
+- O método `response.assertAgainstApiSpec` usará o **método de solicitação**, o **endpoint** e o **código de status de resposta** para encontrar o esquema de resposta esperado.
+- Uma exceção será gerada quando o esquema de resposta não puder ser encontrado. Caso contrário, o corpo da resposta será validado contra o esquema.
 
-Only the response's shape is tested, not the actual values. Therefore, you may have to write additional assertions. For example:
+Somente a forma da resposta é testada, não os valores reais. Portanto, você pode ter que escrever asserções adicionais. Por exemplo:
 
 ```ts
 // Assert that the response is as per the schema
@@ -135,9 +135,8 @@ response.assertBodyContains({
 })
 ```
 
-
-## Reading/writing cookies
-You may send cookies during the HTTP request using the `withCookie` method. The method accepts the cookie name as the first argument and the value as the second.
+## Lendo/escrevendo cookies
+Você pode enviar cookies durante a solicitação HTTP usando o método `withCookie`. O método aceita o nome do cookie como o primeiro argumento e o valor como o segundo.
 
 ```ts
 await client
@@ -145,7 +144,7 @@ await client
   .withCookie('user_preferences', { limit: 10 })
 ```
 
-The `withCookie` method defines a [singed cookie](../basics/cookies.md#signed-cookies). In addition, you may use the `withEncryptedCookie` or `withPlainCookie` methods to send other types of cookies to the server.
+O método `withCookie` define um [cookie assinado](../basics/cookies.md#signed-cookies). Além disso, você pode usar os métodos `withEncryptedCookie` ou `withPlainCookie` para enviar outros tipos de cookies para o servidor.
 
 ```ts
 await client
@@ -159,15 +158,15 @@ await client
   .withPlainCookie('user_preferences', { limit: 10 })
 ```
 
-### Reading cookies from the response
-You may access the cookies set by your AdonisJS server using the `response.cookies` method. The method returns an object of cookies as a key-value pair.
+### Lendo cookies da resposta
+Você pode acessar os cookies definidos pelo seu servidor AdonisJS usando o método `response.cookies`. O método retorna um objeto de cookies como um par chave-valor.
 
 ```ts
 const response = await client.get('/users')
 console.log(response.cookies())
 ```
 
-You may use the `response.cookie` method to access a single cookie value by its name. Or use the `assertCookie` method to assert the cookie value.
+Você pode usar o método `response.cookie` para acessar um único valor de cookie pelo seu nome. Ou usar o método `assertCookie` para declarar o valor do cookie.
 
 ```ts
 const response = await client.get('/users')
@@ -177,11 +176,11 @@ console.log(response.cookie('user_preferences'))
 response.assertCookie('user_preferences')
 ```
 
-## Populating session store
-If you are using the [`@adonisjs/session`](../basics/session.md) package to read/write session data in your application, you may also want to use the `sessionApiClient` plugin to populate the session store when writing tests.
+## Preenchendo o armazenamento de sessão
+Se você estiver usando o pacote [`@adonisjs/session`](../basics/session.md) para ler/escrever dados de sessão em seu aplicativo, você também pode querer usar o plugin `sessionApiClient` para preencher o armazenamento de sessão ao escrever testes.
 
-### Setup
-The first step is registering the plugin inside the `tests/bootstrap.ts` file.
+### Configuração
+O primeiro passo é registrar o plugin dentro do arquivo `tests/bootstrap.ts`.
 
 ```ts
 // title: tests/bootstrap.ts
@@ -198,19 +197,19 @@ export const plugins: Config['plugins'] = [
 ]
 ```
 
-And then, update the `.env.test` file (create one if it is missing) and set the `SESSON_DRIVER` to `memory`.
+E então, atualize o arquivo `.env.test` (crie um se estiver faltando) e defina o `SESSON_DRIVER` para `memory`.
 
 ```dotenv
 // title: .env.test
 SESSION_DRIVER=memory
 ```
 
-### Making requests with session data
-You may use the `withSession` method on the Japa API client to make an HTTP request with some pre-defined session data. 
+### Fazendo solicitações com dados de sessão
+Você pode usar o método `withSession` no cliente da API Japa para fazer uma solicitação HTTP com alguns dados de sessão predefinidos.
 
-The `withSession` method will create a new session ID and populate the memory store with the data, and your AdonisJS application code can read the session data as usual.
+O método `withSession` criará um novo ID de sessão e preencherá o armazenamento de memória com os dados, e seu código de aplicativo AdonisJS pode ler os dados da sessão normalmente.
 
-After the request finishes, the session ID and its data will be destroyed.
+Após a conclusão da solicitação, o ID da sessão e seus dados serão destruídos.
 
 ```ts
 test('checkout with cart items', async ({ client }) => {
@@ -233,7 +232,7 @@ test('checkout with cart items', async ({ client }) => {
 })
 ```
 
-Like the `withSession` method, you may use the `withFlashMessages` method to set flash messages when making an HTTP request.
+Assim como o método `withSession`, você pode usar o método `withFlashMessages` para definir mensagens flash ao fazer uma solicitação HTTP.
 
 ```ts
 const response = await client
@@ -245,8 +244,8 @@ const response = await client
 response.assertTextIncludes(`Post created successfully`)
 ```
 
-### Reading session data from the response
-You may access the session data set by your AdonisJS server using the `response.session()` method. The method returns the session data as an object of a key-value pair.
+### Lendo dados de sessão da resposta
+Você pode acessar o conjunto de dados de sessão pelo seu servidor AdonisJS usando o método `response.session()`. O método retorna os dados da sessão como um objeto de um par chave-valor.
 
 ```ts
 const response = await client
@@ -260,7 +259,7 @@ console.log(response.session()) // all session data
 console.log(response.session('post_id')) // value of post_id
 ```
 
-You may read flash messages from the response using the `response.flashMessage` or `response.flashMessages` method.
+Você pode ler mensagens flash da resposta usando o método `response.flashMessage` ou `response.flashMessages`.
 
 ```ts
 const response = await client.post('/posts')
@@ -270,7 +269,7 @@ response.flashMessage('errors')
 response.flashMessage('success')
 ```
 
-Finally, you may write assertions for the session data using one of the following methods.
+Finalmente, você pode escrever asserções para os dados da sessão usando um dos seguintes métodos.
 
 ```ts
 const response = await client.post('/posts')
@@ -316,10 +315,10 @@ response.assertValidationErrors('title', [
 response.assertDoesNotHaveValidationError('title')
 ```
 
-## Authenticating users
-If you use the `@adonisjs/auth` package to authenticate users in your application, you may use the `authApiClient` Japa plugin to authenticate users when making HTTP requests to your application.
+## Autenticando usuários
+Se você usar o pacote `@adonisjs/auth` para autenticar usuários em seu aplicativo, você pode usar o plugin `authApiClient` Japa para autenticar usuários ao fazer solicitações HTTP para seu aplicativo.
 
-The first step is registering the plugin inside the `tests/bootstrap.ts` file.
+O primeiro passo é registrar o plugin dentro do arquivo `tests/bootstrap.ts`.
 
 ```ts
 // title: tests/bootstrap.ts
@@ -336,9 +335,9 @@ export const plugins: Config['plugins'] = [
 ]
 ```
 
-If you are using session-based authentication, make sure to also set up the session plugin. See [Populating session store - Setup](#setup-1).
+Se você estiver usando autenticação baseada em sessão, certifique-se de também configurar o plugin de sessão. Veja [Preenchendo o armazenamento de sessão - Configuração](#setup-1).
 
-That's all. Now, you may login users using the `loginAs` method. The method accepts the user object as the only argument and marks the user as logged in for the current HTTP request.
+Isso é tudo. Agora, você pode fazer login de usuários usando o método `loginAs`. O método aceita o objeto do usuário como o único argumento e marca o usuário como logado para a solicitação HTTP atual.
 
 ```ts
 import User from '#models/user'
@@ -354,7 +353,7 @@ test('get payments list', async ({ client }) => {
 })
 ```
 
-The `loginAs` method uses the default guard configured inside the `config/auth.ts` file for authentication. However, you may specify a custom guard using the `withGuard` method. For example:
+O método `loginAs` usa o guard padrão configurado dentro do arquivo `config/auth.ts` para autenticação. No entanto, você pode especificar uma proteção personalizada usando o método `withGuard`. Por exemplo:
 
 ```ts
 await client
@@ -365,10 +364,10 @@ await client
     // highlight-end
 ```
 
-## Making a request with a CSRF token
-If forms in your application use [CSRF protection](../security/securing_ssr_applications.md), you may use the `withCsrfToken` method to generate a CSRF token and pass it as a header during the request.
+## Fazendo uma solicitação com um token CSRF
+Se os formulários em seu aplicativo usarem [proteção CSRF](../security/securing_ssr_applications.md), você pode usar o método `withCsrfToken` para gerar um token CSRF e passá-lo como um cabeçalho durante a solicitação.
 
-Before using the `withCsrfToken` method, register the following Japa plugins inside the `tests/bootstrap.ts` file and also make sure to [switch the `SESSION_DRIVER` env variable](#setup-1) to `memory`.
+Antes de usar o método `withCsrfToken`, registre os seguintes plug-ins Japa dentro do arquivo `tests/bootstrap.ts` e também certifique-se de [trocar a variável de ambiente `SESSION_DRIVER`](#setup-1) para `memory`.
 
 ```ts
 // title: tests/bootstrap.ts
@@ -396,10 +395,10 @@ test('create a post', async ({ client }) => {
 })
 ```
 
-## The route helper
-You may use the `route` helper from the TestContext to create a URL for a route. Using the route helper ensures that whenever you update your routes, you do not have to come back and fix all the URLs inside your tests.
+## O auxiliar de rota
+Você pode usar o auxiliar `route` do TestContext para criar uma URL para uma rota. Usar o auxiliar de rota garante que sempre que você atualizar suas rotas, não precise voltar e corrigir todas as URLs dentro de seus testes.
 
-The `route` helper accepts the same set of arguments accepted by the global template method [route](../basics/routing.md#url-builder).
+O auxiliar `route` aceita o mesmo conjunto de argumentos aceitos pelo método de modelo global [route](../basics/routing.md#url-builder).
 
 ```ts
 test('get a list of users', async ({ client, route }) => {
