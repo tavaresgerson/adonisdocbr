@@ -1,5 +1,5 @@
 ---
-resumo: Use o Redis dentro de seus aplicativos AdonisJS usando o pacote `@adonisjs/redis`.
+summary: Use o Redis dentro de seus aplicativos AdonisJS usando o pacote `@adonisjs/redis`.
 ---
 
 # Redis

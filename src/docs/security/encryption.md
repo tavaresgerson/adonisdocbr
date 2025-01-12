@@ -1,5 +1,5 @@
 ---
-resumo: Criptografe e descriptografe valores em seu aplicativo usando o serviço de criptografia.
+summary: Criptografe e descriptografe valores em seu aplicativo usando o serviço de criptografia.
 ---
 
 # Criptografia

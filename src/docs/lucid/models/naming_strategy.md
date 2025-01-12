@@ -1,5 +1,5 @@
 ---
-resumo: Guia de referência para estratégias de nomenclatura no Lucid ORM
+summary: Guia de referência para estratégias de nomenclatura no Lucid ORM
 ---
 
 # Estratégia de nomenclatura

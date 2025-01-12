@@ -1,5 +1,5 @@
 ---
-Resumo: Ace Terminal UI utiliza o pacote @poppinss/cliui, oferecendo ferramentas para exibir logs, tabelas e animações. Projetado para testes, ele inclui um modo 'raw' para simplificar a coleta de logs e asserções.
+summary: Ace Terminal UI utiliza o pacote @poppinss/cliui, oferecendo ferramentas para exibir logs, tabelas e animações. Projetado para testes, ele inclui um modo 'raw' para simplificar a coleta de logs e asserções.
 ---
 
 # Terminal UI

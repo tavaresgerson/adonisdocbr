@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda sobre o contexto HTTP no AdonisJS e como acessá-lo a partir de manipuladores de rota, middleware e manipuladores de exceção.
+summary: Aprenda sobre o contexto HTTP no AdonisJS e como acessá-lo a partir de manipuladores de rota, middleware e manipuladores de exceção.
 ---
 
 # Contexto HTTP

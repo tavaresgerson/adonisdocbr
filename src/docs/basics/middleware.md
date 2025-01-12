@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda sobre middleware no AdonisJS, como criá-los e como atribuí-los a rotas e grupos de rotas.
+summary: Aprenda sobre middleware no AdonisJS, como criá-los e como atribuí-los a rotas e grupos de rotas.
 ---
 
 # Middleware

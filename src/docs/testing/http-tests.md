@@ -1,5 +1,5 @@
 ---
-resumo: Testes HTTP no AdonisJS usando o plugin cliente API Japa.
+summary: Testes HTTP no AdonisJS usando o plugin cliente API Japa.
 ---
 
 # Testes HTTP

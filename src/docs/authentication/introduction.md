@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda sobre o sistema de autenticação no AdonisJS e como autenticar usuários em seu aplicativo.
+summary: Aprenda sobre o sistema de autenticação no AdonisJS e como autenticar usuários em seu aplicativo.
 ---
 
 # Autenticação

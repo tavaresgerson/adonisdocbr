@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda sobre injeção de dependência no AdonisJS e como usar o contêiner IoC para resolver dependências.
+summary: Aprenda sobre injeção de dependência no AdonisJS e como usar o contêiner IoC para resolver dependências.
 ---
 
 # Injeção de dependência

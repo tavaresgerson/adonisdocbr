@@ -1,5 +1,5 @@
 ---
-Resumo: Modelo de governança para o projeto AdonisJS.
+summary: Modelo de governança para o projeto AdonisJS.
 ---
 
 # Governança

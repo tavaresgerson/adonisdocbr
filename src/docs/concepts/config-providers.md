@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda sobre provedores de configuração e como eles ajudam você a calcular preguiçosamente a configuração após o aplicativo ser inicializado.
+summary: Aprenda sobre provedores de configuração e como eles ajudam você a calcular preguiçosamente a configuração após o aplicativo ser inicializado.
 ---
 
 # Provedores de configuração

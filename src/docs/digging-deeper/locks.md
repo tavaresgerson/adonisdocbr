@@ -1,5 +1,5 @@
 ---
-resumo: Use o pacote `@adonisjs/lock` para gerenciar bloqueios atômicos em seu aplicativo AdonisJS.
+summary: Use o pacote `@adonisjs/lock` para gerenciar bloqueios atômicos em seu aplicativo AdonisJS.
 ---
 
 # Bloqueios tomic

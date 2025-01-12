@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda sobre serviços de contêiner e como eles ajudam a manter sua base de código limpa e testável.
+summary: Aprenda sobre serviços de contêiner e como eles ajudam a manter sua base de código limpa e testável.
 ---
 
 # Serviços de contêiner

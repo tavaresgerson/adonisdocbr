@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda como o AdonisJS inicializa seu aplicativo e quais ganchos de ciclo de vida você pode usar para alterar o estado do aplicativo antes que ele seja considerado pronto.
+summary: Aprenda como o AdonisJS inicializa seu aplicativo e quais ganchos de ciclo de vida você pode usar para alterar o estado do aplicativo antes que ele seja considerado pronto.
 ---
 
 # Ciclo de vida do aplicativo

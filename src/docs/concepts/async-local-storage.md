@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda sobre AsyncLocalStorage e como usá-lo no AdonisJS.
+summary: Aprenda sobre AsyncLocalStorage e como usá-lo no AdonisJS.
 ---
 
 # Armazenamento local assíncrono

@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda sobre diretrizes gerais para implantar um aplicativo AdonisJS em produção.
+summary: Aprenda sobre diretrizes gerais para implantar um aplicativo AdonisJS em produção.
 ---
 
 # Implantação

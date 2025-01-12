@@ -1,5 +1,5 @@
 ---
-Resumo: A classe Response é usada para enviar respostas HTTP. Ela suporta o envio de fragmentos HTML, objetos JSON, fluxos e muito mais.
+summary: A classe Response é usada para enviar respostas HTTP. Ela suporta o envio de fragmentos HTML, objetos JSON, fluxos e muito mais.
 ---
 
 # Response

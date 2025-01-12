@@ -1,5 +1,5 @@
 ---
-resumo: Ace é uma estrutura de linha de comando usada pelo AdonisJS para criar e executar comandos de console.
+summary: Ace é uma estrutura de linha de comando usada pelo AdonisJS para criar e executar comandos de console.
 ---
 
 # Introdução

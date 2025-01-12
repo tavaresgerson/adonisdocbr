@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda a usar o Edge.js para criação de modelos no AdonisJS
+summary: Aprenda a usar o Edge.js para criação de modelos no AdonisJS
 ---
 
 # EdgeJS

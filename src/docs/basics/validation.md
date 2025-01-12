@@ -1,5 +1,5 @@
 ---
-Resumo: Aprenda a validar a entrada do usuário no AdonisJS usando o VineJS.
+summary: Aprenda a validar a entrada do usuário no AdonisJS usando o VineJS.
 ---
 
 # Validação

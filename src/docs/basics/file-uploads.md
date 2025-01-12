@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda como processar arquivos enviados pelo usuário no AdonisJS usando o método `request.file` e validá-los usando o validador.
+summary: Aprenda como processar arquivos enviados pelo usuário no AdonisJS usando o método `request.file` e validá-los usando o validador.
 ---
 
 # Uploads de arquivo

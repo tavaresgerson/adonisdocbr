@@ -1,5 +1,5 @@
 ---
-resumo: Faça um tour pelos arquivos e pastas importantes criados pelo AdonisJS durante o processo de instalação.
+summary: Faça um tour pelos arquivos e pastas importantes criados pelo AdonisJS durante o processo de instalação.
 ---
 
 # Estrutura de pastas

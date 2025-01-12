@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda a escrever e executar testes no AdonisJS usando o Japa, nossa estrutura de testes integrada.
+summary: Aprenda a escrever e executar testes no AdonisJS usando o Japa, nossa estrutura de testes integrada.
 ---
 
 # Testes

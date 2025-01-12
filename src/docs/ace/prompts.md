@@ -1,5 +1,5 @@
 ---
-Resumo: Prompts são widgets de terminal para entrada do usuário, usando o pacote @poppinss/prompts. Eles suportam vários tipos como entrada, senha e seleção, e são projetados para fácil integração de testes.
+summary: Prompts são widgets de terminal para entrada do usuário, usando o pacote @poppinss/prompts. Eles suportam vários tipos como entrada, senha e seleção, e são projetados para fácil integração de testes.
 ---
 
 # Prompts

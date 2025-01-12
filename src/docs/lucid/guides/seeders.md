@@ -1,5 +1,5 @@
 ---
-resumo: Usando seeders de banco de dados para adicionar banco de dados de seed com dados fictícios ou iniciais
+summary: Usando seeders de banco de dados para adicionar banco de dados de seed com dados fictícios ou iniciais
 ---
 
 # Seeders de banco de dados

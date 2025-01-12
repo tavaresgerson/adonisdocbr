@@ -1,5 +1,5 @@
 ---
-resumo: Provedores de serviços são classes JavaScript simples com métodos de ciclo de vida para executar ações durante diferentes fases do aplicativo.
+summary: Provedores de serviços são classes JavaScript simples com métodos de ciclo de vida para executar ações durante diferentes fases do aplicativo.
 ---
 
 # Provedores de serviços

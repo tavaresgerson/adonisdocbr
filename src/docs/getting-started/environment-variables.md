@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda a usar variáveis ​​de ambiente dentro de um aplicativo AdonisJS.
+summary: Aprenda a usar variáveis ​​de ambiente dentro de um aplicativo AdonisJS.
 ---
 
 # Variáveis ​​de ambiente

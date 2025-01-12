@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda como fazer hash de valores usando o serviço de hash AdonisJS.
+summary: Aprenda como fazer hash de valores usando o serviço de hash AdonisJS.
 ---
 
 # Hashing

@@ -1,5 +1,5 @@
 ---
-resumo: Opções disponíveis para bibliotecas SQL e ORMs em aplicativos AdonisJS.
+summary: Opções disponíveis para bibliotecas SQL e ORMs em aplicativos AdonisJS.
 ---
 
 # SQL e ORMs

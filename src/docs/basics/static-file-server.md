@@ -1,5 +1,5 @@
 ---
-resumo: Sirva arquivos estáticos de um diretório fornecido usando o pacote @adonisjs/static.
+summary: Sirva arquivos estáticos de um diretório fornecido usando o pacote @adonisjs/static.
 ---
 
 # Servidor de arquivos estáticos

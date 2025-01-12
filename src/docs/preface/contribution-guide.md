@@ -1,5 +1,5 @@
 ---
-Resumo: Contribuir para projetos AdonisJS é uma ótima maneira de retribuir à comunidade. Este guia fornece uma visão geral de como você pode contribuir para qualquer projeto AdonisJS.
+summary: Contribuir para projetos AdonisJS é uma ótima maneira de retribuir à comunidade. Este guia fornece uma visão geral de como você pode contribuir para qualquer projeto AdonisJS.
 ---
 
 # Contribuindo

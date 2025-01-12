@@ -1,5 +1,5 @@
 ---
-Resumo: Os ganchos do Assembler são uma maneira de executar código em pontos específicos do ciclo de vida do assembler.
+summary: Os ganchos do Assembler são uma maneira de executar código em pontos específicos do ciclo de vida do assembler.
 ---
 
 # Ganchos do Assembler

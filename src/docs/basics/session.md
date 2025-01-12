@@ -1,5 +1,5 @@
 ---
-resumo: gerencie sessões de usuário dentro do seu aplicativo AdonisJS usando o pacote @adonisjs/session.
+summary: gerencie sessões de usuário dentro do seu aplicativo AdonisJS usando o pacote @adonisjs/session.
 ---
 
 # Session

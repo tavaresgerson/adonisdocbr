@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda a usar o auth guard básico para autenticar usuários usando a estrutura de autenticação HTTP.
+summary: Aprenda a usar o auth guard básico para autenticar usuários usando a estrutura de autenticação HTTP.
 ---
 
 # Basic authentication guard

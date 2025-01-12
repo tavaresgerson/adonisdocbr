@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda a enviar e-mails do seu aplicativo AdonisJS usando o pacote @adonisjs/mail.
+summary: Aprenda a enviar e-mails do seu aplicativo AdonisJS usando o pacote @adonisjs/mail.
 ---
 
 # Mail

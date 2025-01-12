@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda a proteger seus aplicativos renderizados pelo servidor usando o pacote @adonisjs/shield.
+summary: Aprenda a proteger seus aplicativos renderizados pelo servidor usando o pacote @adonisjs/shield.
 ---
 
 # Protegendo aplicativos renderizados pelo servidor

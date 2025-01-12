@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda como simular ou falsificar dependências durante os testes no AdonisJS.
+summary: Aprenda como simular ou falsificar dependências durante os testes no AdonisJS.
 ---
 
 # Simulações e falsificações

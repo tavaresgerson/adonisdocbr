@@ -1,5 +1,5 @@
 ---
-resumo: Testes de linha de comando no AdonisJS usando o framework de comando Ace.
+summary: Testes de linha de comando no AdonisJS usando o framework de comando Ace.
 ---
 
 # Testes de console

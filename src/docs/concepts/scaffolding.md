@@ -1,5 +1,5 @@
 ---
-resumo: Crie andaimes de arquivos de origem a partir de modelos e atualize o código-fonte TypeScript usando codemods no AdonisJS
+summary: Crie andaimes de arquivos de origem a partir de modelos e atualize o código-fonte TypeScript usando codemods no AdonisJS
 ---
 
 # Scaffolding e codemods

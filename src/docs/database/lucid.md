@@ -1,5 +1,5 @@
 ---
-resumo: Visão geral rápida do Lucid ORM, um construtor de consultas SQL e um ORM Active Record construído sobre o Knex.
+summary: Visão geral rápida do Lucid ORM, um construtor de consultas SQL e um ORM Active Record construído sobre o Knex.
 ---
 
 # Lucid ORM

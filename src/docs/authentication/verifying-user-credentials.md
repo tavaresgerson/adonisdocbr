@@ -1,5 +1,5 @@
 ---
-resumo: Verifique as credenciais do usuário em um aplicativo AdonisJS usando o mixin AuthFinder.
+summary: Verifique as credenciais do usuário em um aplicativo AdonisJS usando o mixin AuthFinder.
 ---
 
 # Verificando as credenciais do usuário

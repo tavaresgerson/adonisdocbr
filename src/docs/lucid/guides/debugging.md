@@ -1,5 +1,5 @@
 ---
-resumo: Um guia sobre depuração de consultas de banco de dados Lucid.
+summary: Um guia sobre depuração de consultas de banco de dados Lucid.
 ---
 
 # Depuração

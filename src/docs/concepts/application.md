@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda sobre a classe Application e como acessar o ambiente, estado e criar URLs e caminhos para arquivos de projeto.
+summary: Aprenda sobre a classe Application e como acessar o ambiente, estado e criar URLs e caminhos para arquivos de projeto.
 ---
 
 # Application

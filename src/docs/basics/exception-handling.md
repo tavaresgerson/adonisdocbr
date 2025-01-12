@@ -1,5 +1,5 @@
 ---
-resumo: Exceções são erros levantados durante o ciclo de vida da solicitação HTTP. O AdonisJS fornece um mecanismo robusto de tratamento de exceções para converter exceções em respostas HTTP e relatá-las ao logger.
+summary: Exceções são erros levantados durante o ciclo de vida da solicitação HTTP. O AdonisJS fornece um mecanismo robusto de tratamento de exceções para converter exceções em respostas HTTP e relatá-las ao logger.
 ---
 
 # Tratamento de exceções

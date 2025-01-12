@@ -1,5 +1,5 @@
 ---
-resumo: "Aprenda a testar código que interage com seus bancos de dados no AdonisJS: etapas simples para configurar, redefinir e manter bancos de dados limpos durante os testes."
+summary: "Aprenda a testar código que interage com seus bancos de dados no AdonisJS: etapas simples para configurar, redefinir e manter bancos de dados limpos durante os testes."
 ---
 
 # Testes de banco de dados

@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda a estender o framework AdonisJS usando macros e getters.
+summary: Aprenda a estender o framework AdonisJS usando macros e getters.
 ---
 
 # Estendendo o framework

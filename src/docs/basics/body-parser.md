@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda a analisar corpos de solicitação usando o middleware BodyParser.
+summary: Aprenda a analisar corpos de solicitação usando o middleware BodyParser.
 ---
 
 # Middleware do analisador de corpo

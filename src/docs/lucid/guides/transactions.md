@@ -1,5 +1,5 @@
 ---
-resumo: Referência a transações SQL e pontos de salvamento com Lucid ORM
+summary: Referência a transações SQL e pontos de salvamento com Lucid ORM
 ---
 
 # Transações

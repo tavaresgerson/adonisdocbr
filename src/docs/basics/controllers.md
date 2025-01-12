@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda sobre controladores HTTP no AdonisJS e como organizar manipuladores de rota dentro de arquivos dedicados.
+summary: Aprenda sobre controladores HTTP no AdonisJS e como organizar manipuladores de rota dentro de arquivos dedicados.
 ---
 
 # Controladores

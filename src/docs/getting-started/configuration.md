@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda a ler e atualizar valores de configuração no AdonisJS.
+summary: Aprenda a ler e atualizar valores de configuração no AdonisJS.
 ---
 
 # Configuração

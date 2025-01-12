@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda a enviar atualizações em tempo real com SSE do seu servidor AdonisJS usando o pacote Transmit
+summary: Aprenda a enviar atualizações em tempo real com SSE do seu servidor AdonisJS usando o pacote Transmit
 ---
 
 # Transmit

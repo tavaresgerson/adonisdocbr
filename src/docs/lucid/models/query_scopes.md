@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda como usar escopos de consulta para definir funções de construtor de consulta reutilizáveis.
+summary: Aprenda como usar escopos de consulta para definir funções de construtor de consulta reutilizáveis.
 ---
 
 # Escopos de consulta

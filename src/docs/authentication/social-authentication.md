@@ -1,5 +1,5 @@
 ---
-resumo: Implemente autenticação social em seus aplicativos AdonisJS usando o pacote `@adonisjs/ally`.
+summary: Implemente autenticação social em seus aplicativos AdonisJS usando o pacote `@adonisjs/ally`.
 ---
 
 # Autenticação social

@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda a usar o access tokens guard para autenticar solicitações HTTP usando tokens de acesso.
+summary: Aprenda a usar o access tokens guard para autenticar solicitações HTTP usando tokens de acesso.
 ---
 
 # Access tokens guard

@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda como autenticar usuários usando o guarda de sessão no AdonisJS.
+summary: Aprenda como autenticar usuários usando o guarda de sessão no AdonisJS.
 ---
 
 # Guarda de sessão

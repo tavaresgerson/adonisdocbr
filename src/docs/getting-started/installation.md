@@ -1,5 +1,5 @@
 ---
-resumo: Como criar e configurar um novo aplicativo AdonisJS.
+summary: Como criar e configurar um novo aplicativo AdonisJS.
 ---
 
 # Instalação

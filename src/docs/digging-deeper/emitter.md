@@ -1,5 +1,5 @@
 ---
-Resumo: Emissor de eventos embutido criado em cima do emittery. Despacha eventos de forma assíncrona e corrige muitos problemas comuns com o emissor de eventos padrão do Node.js.
+summary: Emissor de eventos embutido criado em cima do emittery. Despacha eventos de forma assíncrona e corrige muitos problemas comuns com o emissor de eventos padrão do Node.js.
 ---
 
 # Emissor de eventos

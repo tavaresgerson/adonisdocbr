@@ -1,5 +1,5 @@
 ---
-resumo: Opções disponíveis para renderizar visualizações e modelos no AdonisJS
+summary: Opções disponíveis para renderizar visualizações e modelos no AdonisJS
 ---
 
 # Visualizações e modelos

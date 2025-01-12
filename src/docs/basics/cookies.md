@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda a ler, escrever e limpar cookies no AdonisJS.
+summary: Aprenda a ler, escrever e limpar cookies no AdonisJS.
 ---
 
 # Cookies

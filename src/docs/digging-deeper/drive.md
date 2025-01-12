@@ -1,5 +1,5 @@
 ---
-resumo: Gerencie arquivos enviados pelo usuário em sistemas de arquivos locais e serviços de armazenamento em nuvem como S3, GCS, R2 e Digital Ocean Spaces. Sem qualquer bloqueio de fornecedor.
+summary: Gerencie arquivos enviados pelo usuário em sistemas de arquivos locais e serviços de armazenamento em nuvem como S3, GCS, R2 e Digital Ocean Spaces. Sem qualquer bloqueio de fornecedor.
 ---
 
 # Drive

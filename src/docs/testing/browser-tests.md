@@ -1,5 +1,5 @@
 ---
-Resumo: Testes de navegador com Playwright e Japa dentro de aplicativos AdonisJS.
+summary: Testes de navegador com Playwright e Japa dentro de aplicativos AdonisJS.
 ---
 
 # Testes de navegador

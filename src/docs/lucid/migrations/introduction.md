@@ -1,5 +1,5 @@
 ---
-resumo: Use migrações para criar e modificar tabelas SQL
+summary: Use migrações para criar e modificar tabelas SQL
 ---
 
 # Migrações de esquema

@@ -1,5 +1,5 @@
 ---
-resumo: Use fábricas de modelos para gerar dados falsos em massa. Geralmente útil durante testes e semeadura de banco de dados com dados aleatórios
+summary: Use fábricas de modelos para gerar dados falsos em massa. Geralmente útil durante testes e semeadura de banco de dados com dados aleatórios
 ---
 
 # Fábricas de modelos

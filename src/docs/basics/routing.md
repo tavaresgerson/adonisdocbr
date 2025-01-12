@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda a definir rotas, parâmetros de rota e manipuladores de rota no AdonisJS.
+summary: Aprenda a definir rotas, parâmetros de rota e manipuladores de rota no AdonisJS.
 ---
 
 # Roteamento

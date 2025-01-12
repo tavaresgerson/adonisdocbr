@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda a definir e processar sinalizadores de comando em comandos Ace.
+summary: Aprenda a definir e processar sinalizadores de comando em comandos Ace.
 ---
 
 # Sinalizadores de comando

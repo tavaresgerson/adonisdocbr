@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda a usar o Inertia com o AdonisJS para criar aplicativos renderizados pelo servidor com seu framework de frontend favorito.
+summary: Aprenda a usar o Inertia com o AdonisJS para criar aplicativos renderizados pelo servidor com seu framework de frontend favorito.
 ---
 
 # Inertia

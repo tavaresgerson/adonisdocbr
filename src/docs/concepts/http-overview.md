@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda como o AdonisJS inicializa o servidor HTTP, manipula solicitações de entrada e os módulos disponíveis na camada HTTP.
+summary: Aprenda como o AdonisJS inicializa o servidor HTTP, manipula solicitações de entrada e os módulos disponíveis na camada HTTP.
 ---
 
 # Visão geral do HTTP

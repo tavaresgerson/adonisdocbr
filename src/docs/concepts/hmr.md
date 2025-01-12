@@ -1,5 +1,5 @@
 ---
-Resumo: Atualize seu aplicativo AdonisJS sem reiniciar o processo usando a substituição de módulo a quente (HMR).
+summary: Atualize seu aplicativo AdonisJS sem reiniciar o processo usando a substituição de módulo a quente (HMR).
 ---
 
 # Substituição de módulo a quente

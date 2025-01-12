@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda a escrever verificações de autorização em seu aplicativo AdonisJS usando o pacote `@adonisjs/bouncer`.
+summary: Aprenda a escrever verificações de autorização em seu aplicativo AdonisJS usando o pacote `@adonisjs/bouncer`.
 ---
 
 # Autorização

@@ -1,5 +1,5 @@
 ---
-resumo: "AdonisJS é um framework web TypeScript-first para Node.js. Você pode usá-lo para criar um aplicativo web full-stack ou um servidor JSON API."
+summary: "AdonisJS é um framework web TypeScript-first para Node.js. Você pode usá-lo para criar um aplicativo web full-stack ou um servidor JSON API."
 ---
 
 # Introdução
@@ -35,7 +35,8 @@ Além disso, o TypeScript desempenha um papel considerável ao projetar as APIs 
 O AdonisJS adota o padrão de design MVC clássico. Você começa definindo as rotas usando a API JavaScript funcional, vincula controladores a elas e escreve lógica para manipular as solicitações HTTP dentro dos controladores.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import router from '@adonisjs/core/services/router'
 const PostsController = () => import('#controllers/posts_controller')
 
@@ -45,7 +46,8 @@ router.get('posts', [PostsController, 'index'])
 Os controladores podem usar modelos para buscar dados do banco de dados e renderizar uma visualização (também conhecida como modelo) como resposta.
 
 ```ts
-// title: app/controllers/posts_controller.ts
+// app/controllers/posts_controller.ts
+
 import Post from '#models/post'
 import type { HttpContext } from '@adonisjs/core/http'
 
@@ -60,23 +62,22 @@ export default class PostsController {
 Se você estiver construindo um servidor de API, poderá substituir a camada de visualização por uma resposta JSON. Mas o fluxo de manipulação e resposta às solicitações HTTP permanece o mesmo.
 
 ```ts
-// title: app/controllers/posts_controller.ts
+// app/controllers/posts_controller.ts
+
 import Post from '#models/post'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class PostsController {
   async index({ view }: HttpContext) {
     const posts = await Post.all()
-    // delete-start
-    return view.render('pages/posts/list', { posts })
-    // delete-end
-    // insert-start
-    /**
-     * Posts array will be serialized to JSON
-     * automatically.
-     */
-    return posts
-    // insert-end
+
+    return view.render('pages/posts/list', { posts }) // [!code --]
+
+    /** // [!code ++]
+     * O array de posts será serializado para JSON // [!code ++]
+     * automaticamente. // [!code ++]
+     */ // [!code ++]
+    return posts // [!code ++]
   }
 }
 ```

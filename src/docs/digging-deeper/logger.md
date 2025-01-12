@@ -1,5 +1,5 @@
 ---
-Resumo: Aprenda a usar o logger AdonisJS para gravar logs no console, arquivos e serviços externos. Construído sobre o Pino, o logger é rápido e suporta múltiplos alvos.
+summary: Aprenda a usar o logger AdonisJS para gravar logs no console, arquivos e serviços externos. Construído sobre o Pino, o logger é rápido e suporta múltiplos alvos.
 ---
 
 # Logger

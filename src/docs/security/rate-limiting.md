@@ -1,5 +1,5 @@
 ---
-resumo: Proteja seu aplicativo da web ou servidor de API contra abuso implementando limites de taxa usando o pacote @adonisjs/limiter.
+summary: Proteja seu aplicativo da web ou servidor de API contra abuso implementando limites de taxa usando o pacote @adonisjs/limiter.
 ---
 
 # Limitação de taxa

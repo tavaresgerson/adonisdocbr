@@ -1,5 +1,5 @@
 ---
-Resumo: A classe Request contém dados para a solicitação HTTP em andamento, incluindo o corpo da solicitação, referência a arquivos enviados, cookies, cabeçalhos de solicitação e muito mais.
+summary: A classe Request contém dados para a solicitação HTTP em andamento, incluindo o corpo da solicitação, referência a arquivos enviados, cookies, cabeçalhos de solicitação e muito mais.
 ---
 
 # Request

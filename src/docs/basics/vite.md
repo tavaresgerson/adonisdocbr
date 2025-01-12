@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda a usar o Vite para agrupar ativos de front-end em aplicativos AdonisJS.
+summary: Aprenda a usar o Vite para agrupar ativos de front-end em aplicativos AdonisJS.
 ---
 
 # Vite

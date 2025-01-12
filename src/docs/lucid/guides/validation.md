@@ -1,5 +1,5 @@
 ---
-resumo: Regras de validação adicionadas ao VineJS por meio do contêiner AdonisJS
+summary: Regras de validação adicionadas ao VineJS por meio do contêiner AdonisJS
 ---
 
 # Regras de validação

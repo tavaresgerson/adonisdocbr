@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda a serializar instâncias de modelo para objetos JavaScript simples.
+summary: Aprenda a serializar instâncias de modelo para objetos JavaScript simples.
 ---
 
 # Serializando modelos

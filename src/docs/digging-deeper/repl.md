@@ -1,5 +1,5 @@
 ---
-resumo: AdonisJS oferece um REPL com reconhecimento de aplicativo para interagir com seu aplicativo a partir da linha de comando.
+summary: AdonisJS oferece um REPL com reconhecimento de aplicativo para interagir com seu aplicativo a partir da linha de comando.
 ---
 
 # REPL

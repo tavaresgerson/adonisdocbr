@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda sobre as predefinições de configuração de ferramentas usadas pelo AdonisJS para TypeScript, Prettier e ESLint.
+summary: Aprenda sobre as predefinições de configuração de ferramentas usadas pelo AdonisJS para TypeScript, Prettier e ESLint.
 ---
 
 # Configuração de ferramentas

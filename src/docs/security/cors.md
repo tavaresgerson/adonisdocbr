@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda a implementar CORS no AdonisJS para proteger seu aplicativo.
+summary: Aprenda a implementar CORS no AdonisJS para proteger seu aplicativo.
 ---
 
 # CORS

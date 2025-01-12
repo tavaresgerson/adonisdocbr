@@ -1,5 +1,5 @@
 ---
-resumo: Explore várias maneiras de depurar seus aplicativos AdonisJS, desde o uso do depurador VSCode até o uso do Dump and Die e a visualização dos logs de depuração do framework.
+summary: Explore várias maneiras de depurar seus aplicativos AdonisJS, desde o uso do depurador VSCode até o uso do Dump and Die e a visualização dos logs de depuração do framework.
 ---
 
 # Depuração

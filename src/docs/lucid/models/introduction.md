@@ -1,5 +1,5 @@
 ---
-resumo: Uma introdução aos modelos de dados Lucid ORM, construídos no padrão de registro ativo.
+summary: Uma introdução aos modelos de dados Lucid ORM, construídos no padrão de registro ativo.
 ---
 
 # Modelos

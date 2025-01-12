@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda sobre o processo de construção do TypeScript no AdonisJS
+summary: Aprenda sobre o processo de construção do TypeScript no AdonisJS
 ---
 
 # Processo de construção do TypeScript

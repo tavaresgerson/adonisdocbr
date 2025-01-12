@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda a monitorar seu aplicativo em produção e garantir que ele esteja funcionando perfeitamente
+summary: Aprenda a monitorar seu aplicativo em produção e garantir que ele esteja funcionando perfeitamente
 ---
 
 # Verificações de integridade

@@ -1,5 +1,5 @@
 ---
-resumo: Aprenda a criar um guarda de autenticação personalizado para AdonisJS.
+summary: Aprenda a criar um guarda de autenticação personalizado para AdonisJS.
 ---
 
 # Criando um guarda de autenticação personalizado

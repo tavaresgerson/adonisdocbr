@@ -1,5 +1,5 @@
 ---
-Resumo: Perguntas frequentes sobre o AdonisJS, o framework e seu ecossistema.
+summary: Perguntas frequentes sobre o AdonisJS, o framework e seu ecossistema.
 ---
 
 # FAQs
