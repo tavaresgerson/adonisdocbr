@@ -13,7 +13,7 @@ O AdonisJS usa [Vite](https://vitejs.dev/) para agrupar os ativos de front-end d
 
 O Vite é incorporado dentro do servidor de desenvolvimento AdonisJS, e cada solicitação que deve ser tratada pelo Vite é enviada por proxy para ele por meio de um middleware AdonisJS. Ele nos permite acessar diretamente a API de tempo de execução do Vite para executar a renderização do lado do servidor (SSR) e gerenciar um único servidor de desenvolvimento. Isso também significa que os ativos são servidos pelo AdonisJS diretamente e não por um processo separado.
 
-:::tip
+::: tip DICA
 Ainda está usando @adonisjs/vite 2.x? [Consulte o guia de migração](https://github.com/adonisjs/vite/releases/tag/v3.0.0) para atualizar para a versão mais recente.
 :::
 
@@ -27,7 +27,7 @@ Primeiro, certifique-se de ter pelo menos as seguintes versões do AdonisJS inst
 Em seguida, instale e configure o pacote `@adonisjs/vite`. O comando abaixo instala o pacote e o `vite` e configura o projeto criando os arquivos de configuração necessários.
 
 ```sh
-// title: npm
+# npm
 node ace add @adonisjs/vite
 ```
 
@@ -35,7 +35,7 @@ node ace add @adonisjs/vite
 
 1. Registra o seguinte provedor de serviço dentro do arquivo `adonisrc.ts`.
 
-```ts
+    ```ts
     {
       providers: [
         // ...other providers
@@ -52,16 +52,14 @@ node ace add @adonisjs/vite
 
 Uma vez feito isso, adicione o seguinte ao seu arquivo `adonisrc.ts`.
 
-```ts
+```ts {4-7}
 import { defineConfig } from '@adonisjs/core/build/standalone'
 
 export default defineConfig({
-  // highlight-start
   assetsBundler: false,
   hooks: {
     onBuildStarting: [() => import('@adonisjs/vite/build_hook')],
   },
-  // highlight-end
 })
 ```
 
@@ -78,7 +76,8 @@ O arquivo `vite.config.ts` é um arquivo de configuração regular usado pelo Vi
 Por padrão, o arquivo `vite.config.ts` usa o plugin AdonisJS, que aceita as seguintes opções.
 
 ```ts
-// title: vite.config.ts
+// vite.config.ts
+
 import { defineConfig } from 'vite'
 import adonisjs from '@adonisjs/vite/client'
 
@@ -122,7 +121,8 @@ Certifique-se de atualizar a configuração do backend para usar o mesmo valor `
 O AdonisJS usa o arquivo `config/vite.ts` no backend para saber sobre os caminhos de saída do processo de construção do Vite.
 
 ```ts
-// title: config/vite.ts
+// config/vite.ts
+
 import { defineConfig } from '@adonisjs/vite'
 
 const viteBackendConfig = defineConfig({
@@ -145,7 +145,8 @@ A URL para prefixar ao gerar links para ativos em produção. Se você carregar 
 Você pode usar a propriedade `scriptAttributes` para definir atributos nas tags de script geradas usando a tag `@vite`. Os atributos são uma coleção de pares de chave-valor.
 
 ```ts
-// title: config/vite.ts
+// config/vite.ts
+
 defineConfig({
   scriptAttributes: {
     defer: true,
@@ -159,7 +160,8 @@ defineConfig({
 Você pode usar a propriedade `styleAttributes` para definir atributos nas tags de link geradas usando a tag `@vite`. Os atributos são uma coleção de pares de chave-valor.
 
 ```ts
-// title: config/vite.ts
+// config/vite.ts
+
 defineConfig({
   styleAttributes: {
     'data-turbo-track': 'reload'
@@ -207,15 +209,13 @@ node ace serve --hmr
 ## Incluindo pontos de entrada em modelos do Edge
 Você pode renderizar o script e as tags de estilo para os pontos de entrada definidos dentro do arquivo `vite.config.ts` usando a tag Edge `@vite`. A tag aceita uma matriz de pontos de entrada e retorna as tags `script` e `link`.
 
-```edge
+```edge {6}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    // highlight-start
     @vite(['resources/js/app.js'])
-    // highlight-end
 </head>
 <body>
     
@@ -234,7 +234,8 @@ resources
 ```
 
 ```js
-// title: resources/js/app.js
+// resources/js/app.js
+
 import '../css/app.css'
 ```
 
@@ -251,12 +252,14 @@ Portanto, fornecemos um auxiliar do Edge que você pode usar para criar URLs par
 ```
 
 ```html
-// title: Output in development
+<!-- Saída em "development" -->
+
 <link rel="stylesheet" href="http://localhost:5173/resources/css/app.css">
 ```
 
 ```html
-// title: Output in production
+<!-- Saída em "production" -->
+
 <link rel="stylesheet" href="/assets/app-3bc29777.css">
 ```
 
@@ -268,7 +271,8 @@ Portanto, você terá que notificar o Vite sobre a existência desses ativos usa
 No exemplo a seguir, pedimos ao Vite para processar todos os arquivos dentro do diretório `resources/images`. Este código deve ser escrito dentro de um arquivo de ponto de entrada.
 
 ```js
-// title: resources/js/app.js
+// resources/js/app.js
+
 import.meta.glob(['../images/**'])
 ```
 
@@ -282,7 +286,8 @@ Agora, você pode referenciar as imagens dentro dos seus modelos Edge da seguint
 Se você planeja usar TypeScript na sua base de código frontend, crie um arquivo `tsconfig.json` adicional dentro do diretório `resources`. O Vite e seu editor de código usarão automaticamente este arquivo de configuração para o código-fonte TypeScript dentro do diretório `resources`.
 
 ```json
-// title: resources/tsconfig.json
+// resources/tsconfig.json
+
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
@@ -299,16 +304,14 @@ Se você planeja usar TypeScript na sua base de código frontend, crie um arquiv
 ## Habilitando HMR com React
 Para habilitar [react-refresh](https://www.npmjs.com/package/react-refresh) durante o desenvolvimento, você deve usar a tag Edge `@viteReactRefresh`. Ela deve ser escrita antes de você incluir os pontos de entrada usando a tag `@vite`.
 
-```edge
+```edge {6-7}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    // highlight-start
     @viteReactRefresh()
     @vite(['resources/js/app.js'])
-    // highlight-end
 </head>
 <body>
     
@@ -318,7 +321,7 @@ Para habilitar [react-refresh](https://www.npmjs.com/package/react-refresh) dura
 
 Uma vez feito isso, você pode configurar o plugin React como de costume em um projeto Vite regular.
 
-```ts
+```ts {10}
 import { defineConfig } from 'vite'
 import adonisjs from '@adonisjs/vite/client'
 import react from '@vitejs/plugin-react'
@@ -328,9 +331,7 @@ export default defineConfig({
     adonisjs({
       entrypoints: ["resources/js/app.js"],
     }),
-    // highlight-start
     react(),
-    // highlight-end
   ],
 })
 ```
@@ -342,8 +343,9 @@ No entanto, antes de fazer isso, você deve registrar a URL do seu servidor CDN 
 
 Você deve definir o `assetsUrl` dentro dos arquivos `vite.config.ts` e `config/vite.ts`.
 
-```ts
-// title: vite.config.ts
+```ts {11}
+// vite.config.ts
+
 import { defineConfig } from 'vite'
 import adonisjs from '@adonisjs/vite/client'
 
@@ -352,23 +354,20 @@ export default defineConfig({
     adonisjs({
       entrypoints: ['resources/js/app.js'],
       reloads: ['resources/views/**/*.edge'],
-      // highlight-start
       assetsUrl: 'https://cdn.example.com/',
-      // highlight-end
     }),
   ]
 })
 ```
 
-```ts
-// title: config/vite.ts
+```ts {7}
+// config/vite.ts
+
 import { defineConfig } from '@adonisjs/vite'
 
 const viteBackendConfig = defineConfig({
   buildDirectory: 'public/assets',
-  // highlight-start
   assetsUrl: 'https://cdn.example.com/',
-  // highlight-end
 })
 
 export default viteBackendConfig

@@ -8,11 +8,11 @@ Uma nova instância da [classe Contexto HTTP](https://github.com/adonisjs/http-s
 
 O Contexto HTTP contém todas as informações que você pode precisar relacionadas a uma solicitação HTTP. Por exemplo:
 
-Propriedade [ctx.request](../basics/request.md).
-Propriedade [ctx.response](../basics/response.md).
-Propriedade [ctx.auth](../authentication/introduction.md).
-Propriedade [ctx.bouncer](../security/authorization.md).
-- E assim por diante.
+* Propriedade [ctx.request](../basics/request.md).
+* Propriedade [ctx.response](../basics/response.md).
+* Propriedade [ctx.auth](../authentication/introduction.md).
+* Propriedade [ctx.bouncer](../security/authorization.md).
+* E assim por diante.
 
 Em poucas palavras, o contexto é um armazenamento específico de solicitação que contém todas as informações para a solicitação em andamento.
 
@@ -33,7 +33,8 @@ router.get('/', (ctx) => {
 ```
 
 ```ts
-// title: Destructure properties
+// Propriedades desestruturada
+
 import router from '@adonisjs/core/services/router'
 
 router.get('/', ({ request, response }) => {
@@ -98,14 +99,15 @@ export default class ExceptionHandler extends HttpExceptionHandler {
 
 Se você usar injeção de dependência em todo o seu aplicativo, poderá injetar o contexto HTTP em uma classe ou método por meio de dicas de tipo da classe `HttpContext`.
 
-:::warning
+::: warning ATENÇÃO
 Certifique-se de que o middleware `#middleware/container_bindings_middleware` esteja registrado dentro do arquivo `kernel/start.ts`. Este middleware é necessário para resolver valores específicos da solicitação (por exemplo, a classe HttpContext) do contêiner.
 :::
 
 [Guia do contêiner IoC](../concepts/dependency_injection.md)
 
 ```ts
-// title: app/services/user_service.ts
+// app/services/user_service.ts
+
 import { inject } from '@adonisjs/core'
 import { HttpContext } from '@adonisjs/core/http'
 
@@ -114,7 +116,7 @@ export default class UserService {
   constructor(protected ctx: HttpContext) {}
   
   all() {
-    // method implementation
+    // implementação do método
   }
 }
 ```
@@ -147,7 +149,8 @@ Temos um [guia dedicado](./async_local_storage.md) sobre como o armazenamento lo
 No exemplo a seguir, a classe `UserService` usa o método `HttpContext.getOrFail` para obter a instância do contexto HTTP para a solicitação em andamento.
 
 ```ts
-// title: app/services/user_service.ts
+// app/services/user_service.ts
+
 import { HttpContext } from '@adonisjs/core/http'
 
 export default class UserService {
@@ -245,14 +248,12 @@ Como as macros e getters são adicionados em tempo de execução, você deve inf
 ```ts
 import { HttpContext } from '@adonisjs/core/http'
 
-// insert-start
-declare module '@adonisjs/core/http' {
-  export interface HttpContext {
-    aMethod: () => ValueType
-    aProperty: ValueType
-  }
-}
-// insert-end
+declare module '@adonisjs/core/http' {  // [!code ++]
+  export interface HttpContext {        // [!code ++]
+    aMethod: () => ValueType            // [!code ++]
+    aProperty: ValueType                // [!code ++]
+  }                                     // [!code ++]
+}                                       // [!code ++]
 
 HttpContext.macro('aMethod', function (this: HttpContext) {
   return value
@@ -277,16 +278,14 @@ const ctx = testUtils.createHttpContext()
 
 Por padrão, o método `createHttpContext` usa valores falsos para os objetos `req` e `res`. No entanto, você pode definir valores personalizados para essas propriedades, conforme mostrado no exemplo a seguir.
 
-```ts
+```ts {6-7}
 import { createServer } from 'node:http'
 import testUtils from '@adonisjs/core/services/test_utils'
 
 createServer((req, res) => {
   const ctx = testUtils.createHttpContext({
-    // highlight-start
     req,
     res
-    // highlight-end
   })
 })
 ```

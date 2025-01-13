@@ -41,18 +41,17 @@ O método `codemods.makeUsingStub` cria um arquivo de origem a partir de um mode
 - Caminho relativo do diretório `STUBS_ROOT` para o arquivo stub (incluindo extensão).
 - E o objeto de dados para compartilhar com o stub.
 
-```ts
-// title: Inside a command
+```ts {9-10}
+// Inside a command
+
 import { BaseCommand } from '@adonisjs/core/ace'
 
 const STUBS_ROOT = new URL('./stubs', import.meta.url)
 
 export default class MakeApiResource extends BaseCommand {
   async run() {
-    // highlight-start
     const codemods = await this.createCodemods()
     await codemods.makeUsingStub(STUBS_ROOT, 'api_resource.stub', {})
-    // highlight-end
   }
 }
 ```
@@ -60,7 +59,7 @@ export default class MakeApiResource extends BaseCommand {
 ### Modelos de stubs
 Usamos o mecanismo de modelo [Tempura](https://github.com/lukeed/tempura) para processar os stubs com dados de tempo de execução. Tempura é um mecanismo de modelo estilo handlebars superleve para JavaScript.
 
-:::tip
+::: tip DICA
 Como a sintaxe do Tempura é compatível com handlebars, você pode configurar seus editores de código para usar o realce de sintaxe handlebar com arquivos `.stub`.
 :::
 
@@ -81,11 +80,9 @@ Se você executar o stub acima agora, ele falhará porque não fornecemos as pro
 Recomendamos calcular essas propriedades dentro do stub usando variáveis ​​inline. Dessa forma, o aplicativo host pode [ejetar o stub](#ejecting-stubs) e modificar as variáveis.
 
 ```js
-// insert-start
-{{#var entity = generators.createEntity('user')}}
-{{#var modelName = generators.modelName(entity.name)}}
-{{#var modelReference = string.toCamelCase(modelName)}}
-// insert-end
+{{#var entity = generators.createEntity('user')}}       // [!code ++]
+{{#var modelName = generators.modelName(entity.name)}}  // [!code ++]
+{{#var modelReference = string.toCamelCase(modelName)}} // [!code ++]
 
 export default class {{ modelName }}Resource {
   serialize({{ modelReference }}: {{ modelName }}) {
@@ -103,14 +100,14 @@ O caminho de destino é definido usando a função `exports`. A função aceita 
 {{#var entity = generators.createEntity('user')}}
 {{#var modelName = generators.modelName(entity.name)}}
 {{#var modelReference = string.toCamelCase(modelName)}}
-// insert-start
-{{#var resourceFileName = string(modelName).snakeCase().suffix('_resource').ext('.ts').toString()}}
-{{{
-  exports({
-    to: app.makePath('app/api_resources', entity.path, resourceFileName)
-  })
-}}}
-// insert-end
+
+{{#var resourceFileName = string(modelName).snakeCase().suffix('_resource').ext('.ts').toString()}} // [!code ++]
+{{{           // [!code ++]
+  exports({   // [!code ++]
+    to: app.makePath('app/api_resources', entity.path, resourceFileName)  // [!code ++]
+  })          // [!code ++]
+}}} // [!code ++]
+
 export default class {{ modelName }}Resource {
   serialize({{ modelReference }}: {{ modelName }}) {
     return {{ modelReference }}.toJSON()
@@ -125,31 +122,23 @@ Agora, codificamos o nome da entidade como `user` dentro do stub. No entanto, vo
 import { BaseCommand, args } from '@adonisjs/core/ace'
 
 export default class MakeApiResource extends BaseCommand {
-  // insert-start
-  @args.string({
-    description: 'The name of the resource'
-  })
-  declare name: string
-  // insert-end
+  @args.string({                                // [!code ++]
+    description: 'The name of the resource'     // [!code ++]
+  })                                            // [!code ++]
+  declare name: string                          // [!code ++]
 
   async run() {
     const codemods = await this.createCodemods()
     await codemods.makeUsingStub(STUBS_ROOT, 'api_resource.stub', {
-      // insert-start
-      name: this.name,
-      // insert-end
+      name: this.name,  // [!code ++]
     })
   }
 }
 ```
 
 ```js
-// delete-start
-{{#var entity = generators.createEntity('user')}}
-// delete-end
-// insert-start
-{{#var entity = generators.createEntity(name)}}
-// insert-end
+{{#var entity = generators.createEntity('user')}} // [!code --]
+{{#var entity = generators.createEntity(name)}}   // [!code ++]
 {{#var modelName = generators.modelName(entity.name)}}
 {{#var modelReference = string.toCamelCase(modelName)}}
 {{#var resourceFileName = string(modelName).snakeCase().suffix('_resource').ext('.ts').toString()}}
@@ -201,8 +190,8 @@ export default class {{ controllerName }} {
 }
 ```
 
-[módulo generators](https://github.com/adonisjs/application/blob/main/src/generators.ts) para gerar o nome da classe do controlador e o nome do arquivo do controlador.
-[define o caminho de destino](#using-cli-flags-to-customize-stub-output-destination)customizing-the-destination-path) para o arquivo do controlador usando a função `exports`.
+- [Módulo generators](https://github.com/adonisjs/application/blob/main/src/generators.ts) para gerar o nome da classe do controlador e o nome do arquivo do controlador.
+- [Define o caminho de destino](#using-cli-flags-to-customize-stub-output-destination)customizing-the-destination-path) para o arquivo do controlador usando a função `exports`.
 - Finalmente, definimos o conteúdo do controlador de scaffold.
 
 Sinta-se à vontade para modificar o stub. Da próxima vez, as alterações serão selecionadas quando você executar o comando `make:controller`.
@@ -212,10 +201,10 @@ Sinta-se à vontade para modificar o stub. Da próxima vez, as alterações ser�
 Você pode ejetar um diretório inteiro de stubs usando o comando `eject`. Passe o caminho para o diretório, e o comando copiará o diretório inteiro.
 
 ```sh
-# Publish all the make stubs
+# Publicar todos os stubs de make
 node ace eject make
 
-# Publish all the make:controller stubs
+# Publicar todos os stubs de make:controller
 node ace eject make/controller
 ```
 
@@ -229,20 +218,15 @@ node ace make:controller invoice --feature=billing
 ```
 
 ```js
-// title: Controller stub
+// Controller stub
+
 {{#var controllerName = generators.controllerName(entity.name)}}
-// insert-start
-{{#var featureDirectoryName = generators.makePath('features', flags.feature)}}
-// insert-end
+{{#var featureDirectoryName = generators.makePath('features', flags.feature)}} // [!code ++]
 {{#var controllerFileName = generators.controllerFileName(entity.name)}}
 {{{
   exports({
-    // delete-start
-    to: app.httpControllersPath(entity.path, controllerFileName)
-    // delete-end
-    // insert-start
-    to: app.makePath(featureDirectoryName, entity.path, controllerFileName)
-    // insert-end
+    to: app.httpControllersPath(entity.path, controllerFileName) // [!code --]
+    to: app.makePath(featureDirectoryName, entity.path, controllerFileName) // [!code ++]
   })
 }}}
 // import type { HttpContext } from '@adonisjs/core/http'
@@ -281,7 +265,7 @@ export async function configure(command: ConfigureCommand) {
 ### `defineEnvValidations`
 Defina regras de validação para variáveis ​​de ambiente. O método aceita um par de variáveis ​​chave-valor. `key` é o nome da variável env e `value` é a expressão de validação como uma string.
 
-:::note
+::: info NOTA
 Este codemod espera que o arquivo `start/env.ts` exista e deve ter a chamada de método `export default await Env.create`.
 
 Além disso, o codemod não substitui a regra de validação existente para uma determinada variável de ambiente. Isso é feito para respeitar as modificações no aplicativo.
@@ -305,12 +289,13 @@ try {
 ```
 
 ```ts
-// title: Output
+// Saída
+
 import { Env } from '@adonisjs/core/env'
 
 export default await Env.create(new URL('../', import.meta.url), {
   /**
-   * App environment variables
+   * Variáveis ​​de ambiente do aplicativo
    */
   PORT: Env.schema.number(),
   HOST: Env.schema.string(),
@@ -353,7 +338,7 @@ Registre o middleware AdonisJS em uma das pilhas de middleware conhecidas. O mé
 
 A pilha de middleware pode ser uma de `server | router | named`.
 
-:::note
+::: info NOTA
 Este codemod espera que o arquivo `start/kernel.ts` exista e deve ter uma chamada de função para a pilha de middleware para a qual você está tentando registrar um middleware.
 :::
 
@@ -373,7 +358,8 @@ try {
 ```
 
 ```ts
-// title: Output
+// Saída
+
 import router from '@adonisjs/core/services/router'
 
 router.use([
@@ -402,7 +388,7 @@ try {
 ### `updateRcFile`
 Registre `providers`, `commands`, defina `metaFiles` e `commandAliases` no arquivo `adonisrc.ts`.
 
-:::note
+::: info NOTA
 Este codemod espera que o arquivo `adonisrc.ts` exista e deve ter uma chamada de função `export default defineConfig`.
 :::
 
@@ -423,7 +409,8 @@ try {
 ```
 
 ```ts
-// title: Output
+// Saída:
+
 import { defineConfig } from '@adonisjs/core/app'
 
 export default defineConfig({
@@ -442,7 +429,7 @@ export default defineConfig({
 ### `registerJapaPlugin`
 Registre um plugin Japa no arquivo `tests/bootstrap.ts`.
 
-:::note
+::: info NOTA
 Este codemod espera que o arquivo `tests/bootstrap.ts` exista e deve ter a exportação `export const plugins: Config['plugins']`.
 :::
 
@@ -472,7 +459,8 @@ try {
 ```
 
 ```ts
-// title: Output
+// Saída:
+
 import app from '@adonisjs/core/services/app'
 import { sessionApiClient } from '@adonisjs/session/plugins/api_client'
 
@@ -484,7 +472,7 @@ export const plugins: Config['plugins'] = [
 ### `registerPolicies`
 Registre as políticas do bouncer do AdonisJS na lista de objetos `policies` exportados do arquivo `app/policies/main.ts`.
 
-:::note
+::: info NOTA
 Este codemod espera que o arquivo `app/policies/main.ts` exista e deve exportar um objeto `policies` dele.
 :::
 
@@ -505,7 +493,8 @@ try {
 ```
 
 ```ts
-// title: Output
+// Saída:
+
 export const policies = {
   PostPolicy: () => import('#policies/post_policy')
 }
@@ -515,7 +504,7 @@ export const policies = {
 
 Registre um plugin Vite no arquivo `vite.config.ts`.
 
-:::note
+::: info NOTA
 Este codemod espera que o arquivo `vite.config.ts` exista e deve ter a chamada de função `export default defineConfig`.
 :::
 
@@ -539,7 +528,8 @@ try {
 ```
 
 ```ts
-// title: Output
+// Saída:
+
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 

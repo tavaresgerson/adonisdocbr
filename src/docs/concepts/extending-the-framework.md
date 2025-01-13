@@ -17,7 +17,8 @@ Como macros e getters são adicionados em tempo de execução, você terá que i
 Você pode escrever o código para adicionar macros dentro de um arquivo dedicado (como o `extensions.ts`) e importá-lo dentro do método `boot` do provedor de serviços.
 
 ```ts
-// title: providers/app_provider.ts
+// providers/app_provider.ts
+
 export default class AppProvider {
   async boot() {
     await import('../src/extensions.js')
@@ -28,7 +29,8 @@ export default class AppProvider {
 No exemplo a seguir, adicionamos o método `wantsJSON` à classe [Request](../basics/request.md) e definimos seus tipos simultaneamente.
 
 ```ts
-// title: src/extensions.ts
+// src/extensions.ts
+
 import { Request } from '@adonisjs/core/http'
 
 Request.macro('wantsJSON', function (this: Request) {
@@ -42,7 +44,8 @@ Request.macro('wantsJSON', function (this: Request) {
 ```
 
 ```ts
-// title: src/extensions.ts
+// src/extensions.ts
+
 declare module '@adonisjs/core/http' {
   interface Request {
     wantsJSON(): boolean
@@ -66,7 +69,7 @@ Request.getter('hasRequestId', function (this: Request) {
   return this.header('x-request-id')
 })
 
-// you can use the property as follows.
+// você pode usar a propriedade da seguinte maneira.
 if (ctx.request.hasRequestId) {
 }
 ```
@@ -101,9 +104,9 @@ A seguir está a lista de classes que podem ser estendidas usando macros e gette
 ## Módulos de extensão
 A maioria dos módulos AdonisJS fornece APIs extensíveis para registrar implementações personalizadas. A seguir, uma lista agregada dos mesmos.
 
-[Criando driver Hash](../security/hashing.md#creating-a-custom-hash-driver)
-[Criando driver Session](../basics/session.md#creating-a-custom-session-store)
-[Criando driver Social auth](../authentication/social_authentication.md#creating-a-custom-social-driver)
-[Estendendo REPL](../digging_deeper/repl.md#adding-custom-methods-to-repl)
-[Criando carregador de traduções i18n](../digging_deeper/i18n.md#creating-a-custom-translation-loader)
-[Criando formatador de traduções i18n](../digging_deeper/i18n.md#creating-a-custom-translation-formatter)
+* [Criando driver Hash](../security/hashing.md#creating-a-custom-hash-driver)
+* [Criando driver Session](../basics/session.md#creating-a-custom-session-store)
+* [Criando driver Social auth](../authentication/social_authentication.md#creating-a-custom-social-driver)
+* [Estendendo REPL](../digging_deeper/repl.md#adding-custom-methods-to-repl)
+* [Criando carregador de traduções i18n](../digging_deeper/i18n.md#creating-a-custom-translation-loader)
+* [Criando formatador de traduções i18n](../digging_deeper/i18n.md#creating-a-custom-translation-formatter)

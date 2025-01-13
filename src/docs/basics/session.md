@@ -2,7 +2,7 @@
 summary: gerencie sessões de usuário dentro do seu aplicativo AdonisJS usando o pacote @adonisjs/session.
 ---
 
-# Session
+# Sessão
 
 Você pode gerenciar sessões de usuário dentro do seu aplicativo AdonisJS usando o pacote `@adonisjs/session`. O pacote session fornece uma API unificada para armazenar dados de sessão em diferentes provedores de armazenamento.
 
@@ -34,7 +34,7 @@ node ace add @adonisjs/session
 
 2. Registra o seguinte provedor de serviços dentro do arquivo `adonisrc.ts`.
 
-```ts
+    ```ts
     {
       providers: [
         // ...other providers
@@ -48,7 +48,7 @@ node ace add @adonisjs/session
 4. Defina as seguintes variáveis ​​de ambiente e suas validações.
 5. Registra o seguinte middleware dentro do arquivo `start/kernel.ts`.
 
-```dotenv
+    ```
     SESSION_DRIVER=cookie
     ```
 
@@ -57,7 +57,7 @@ node ace add @adonisjs/session
 4. Defina as seguintes variáveis ​​de ambiente e suas validações.
 5. Registra o seguinte middleware dentro do arquivo `start/kernel.ts`.
 
-```ts
+    ```ts
     router.use([
       () => import('@adonisjs/session/session_middleware')
     ])
@@ -127,17 +127,16 @@ A maioria dos aplicativos usará um único armazenamento. No entanto, você pode
 
 ---
 
-### Configuração de lojas
-A seguir está a lista de lojas de backend agrupadas com o pacote `@adonisjs/session`.
+### Configuração de stores
+A seguir está a lista de stores de backend agrupadas com o pacote `@adonisjs/session`.
 
-```ts
+```ts {7-21}
 import app from '@adonisjs/core/services/app'
 import { defineConfig, stores } from '@adonisjs/session'
 
 export default defineConfig({
   store: env.get('SESSION_DRIVER'),
 
-  // highlight-start
   stores: {
     cookie: stores.cookie(),
 
@@ -153,30 +152,30 @@ export default defineConfig({
       clientConfig: {}
     }),
   }
-  // highlight-end
 })
 ```
 
 ### `stores.cookie`
 
-A loja `cookie` criptografa e armazena os dados da sessão dentro de um cookie.
+A store `cookie` criptografa e armazena os dados da sessão dentro de um cookie.
 
 ### `stores.file`
 
-Defina a configuração para a loja `file`. O método aceita o caminho `location` para armazenar os arquivos da sessão.
+Defina a configuração para a store `file`. O método aceita o caminho `location` para armazenar os arquivos da sessão.
 
 ### `stores.redis`
 
-Defina a configuração para a loja `redis`. O método aceita o nome `connection` para armazenar os dados da sessão.
+Defina a configuração para a store `redis`. O método aceita o nome `connection` para armazenar os dados da sessão.
 
-Certifique-se de instalar e configurar primeiro o pacote [@adonisjs/redis](../database/redis.md) antes de usar a loja `redis`.
+Certifique-se de instalar e configurar primeiro o pacote [@adonisjs/redis](../database/redis.md) antes de usar a store `redis`.
 
 ### `stores.dynamodb`
 
-Defina a configuração para a loja `dynamodb`. Você pode passar a [configuração do DynamoDB](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/Package/-aws-sdk-client-dynamodb/Interface/DynamoDBClientConfig/) por meio da propriedade `clientConfig` ou passar uma instância do DynamoDB como a propriedade `client`.
+Defina a configuração para a store `dynamodb`. Você pode passar a [configuração do DynamoDB](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/Package/-aws-sdk-client-dynamodb/Interface/DynamoDBClientConfig/) por meio da propriedade `clientConfig` ou passar uma instância do DynamoDB como a propriedade `client`.
 
 ```ts
-// title: With client config
+// Com configuração do cliente
+
 stores.dynamodb({
   clientConfig: {
     region: 'us-east-1',
@@ -190,7 +189,8 @@ stores.dynamodb({
 ```
 
 ```ts
-// title: With client instance
+// Com instância do cliente
+
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
 const client = new DynamoDBClient({})
 
@@ -215,11 +215,10 @@ Se você decidir usar armazenamentos de sessão diferentes do padrão, certifiqu
 
 Configuramos os armazenamentos `cookie`, `redis` e `dynamodb` no exemplo a seguir. Portanto, também devemos permitir que a variável de ambiente `SESSION_DRIVER` seja uma delas.
 
-```ts
+```ts {4-11}
 import { defineConfig, stores } from '@adonisjs/session'
 
 export default defineConfig({
-  // highlight-start
   store: env.get('SESSION_DRIVER'),
 
   stores: {
@@ -228,12 +227,12 @@ export default defineConfig({
       connection: 'main'
     })
   }
-  // highlight-end
 })
 ```
 
 ```ts
-// title: start/env.ts
+// start/env.ts
+
 {
   SESSION_DRIVER: Env.schema.enum(['cookie', 'redis', 'memory'] as const)
 }
@@ -242,20 +241,16 @@ export default defineConfig({
 ## Exemplo básico
 Depois que o pacote de sessão for registrado, você pode acessar a propriedade `session` do [HTTP Context](../concepts/http_context.md). A propriedade de sessão expõe a API para ler e gravar dados no armazenamento de sessão.
 
-```ts
+```ts {4,9}
 import router from '@adonisjs/core/services/router'
 
 router.get('/theme/:color', async ({ params, session, response }) => {
-  // highlight-start
   session.put('theme', params.color)
-  // highlight-end
   response.redirect('/')
 })
 
 router.get('/', async ({ session }) => {
-  // highlight-start
   const colorTheme = session.get('theme')
-  // highlight-end
   return `You are using ${colorTheme} color theme`
 })
 ```
@@ -292,7 +287,7 @@ session.put('visits', 10)
 // BigInt
 session.put('visits', BigInt(10))
 
-// Data objects are converted to ISO string
+// Objetos de Data são convertidos em string ISO
 session.put('visited_at', new Date())
 ```
 
@@ -334,7 +329,7 @@ Adicione um par chave-valor ao armazenamento de sessão. Você pode criar objeto
 ```ts
 session.put('user', { email: 'foo@bar.com' })
 
-// Same as above
+// O mesmo que acima
 session.put('user.email', 'foo@bar.com')
 ```
 
@@ -344,7 +339,7 @@ Remove um par de chave-valor do armazenamento de sessão.
 ```ts
 session.forget('user')
 
-// Remove the email from the user object
+// Remove o e-mail do objeto do usuário
 session.forget('user.email')
 ```
 
@@ -362,7 +357,7 @@ O método `increment` incrementa o valor de uma chave. Um novo valor de chave é
 ```ts
 session.increment('visits')
 
-// Increment by 4
+// Incrementa em 4
 session.increment('visits', 4)
 ```
 
@@ -372,7 +367,7 @@ O método `decrement` decrementa o valor de uma chave. Um novo valor de chave é
 ```ts
 session.decrement('visits')
 
-// Decrement by 4
+// Decrementa em 4
 session.decrement('visits', 4)
 ```
 
@@ -401,8 +396,8 @@ O pacote `@adonisjs/auth` gera novamente o ID da sessão automaticamente, então
 
 ```ts
 /**
- * New session ID will be assigned at
- * the end of the request
+ * O novo ID de sessão será atribuído em
+ * no final da solicitação
  */
 session.regenerate()
 ```
@@ -412,19 +407,17 @@ Mensagens Flash são usadas para passar dados entre duas solicitações HTTP. El
 
 No exemplo a seguir, definimos as rotas para exibir o formulário de contato e enviar os detalhes do formulário para o banco de dados. Após o envio do formulário, redirecionamos o usuário de volta ao formulário juntamente com uma notificação de sucesso usando mensagens flash.
 
-```ts
+```ts {7-10}
 import router from '@adonisjs/core/services/router'
 
 router.post('/contact', ({ session, request, response }) => {
   const data = request.all()
-  // Save contact data
+  // Salva dados de contato
   
-  // highlight-start
   session.flash('notification', {
     type: 'success',
     message: 'Thanks for contacting. We will get back to you'
   })
-  // highlight-end
 
   response.redirect().back()
 })
@@ -444,17 +437,15 @@ Você pode acessar as mensagens flash dentro dos modelos edge usando a tag `flas
 @end
 
 <form method="POST" action="/contact">
-  <!-- Rest of the form -->
+  <!-- Resto do formulário -->
 </form>
 ```
 
 Você pode acessar as mensagens flash dentro dos controladores usando a propriedade `session.flashMessages`.
 
-```ts
+```ts {2}
 router.get('/contact', ({ view, session }) => {
-  // highlight-start
   console.log(session.flashMessages.all())
-  // highlight-end
   return view.render('contact')
 })
 ```
@@ -464,8 +455,8 @@ O middleware Session captura automaticamente as [exceções de validação](./va
 
 No exemplo a seguir:
 
-[método`old`](../references/edge.md#old).
-[tag `@inputError`](../references/edge.md#inputerror).
+* [método`old`](../references/edge.md#old).
+* [tag `@inputError`](../references/edge.md#inputerror).
 
 ```edge
 <form method="POST" action="/posts">
@@ -500,43 +491,46 @@ session.flash({
 Em vez de ler manualmente os dados da solicitação e armazená-los nas mensagens flash, você pode usar um dos seguintes métodos para fazer o flash dos dados do formulário.
 
 ```ts
-// title: flashAll
+// flashAll
+
 /**
- * Short hand for flashing request
- * data
+ * Abreviação para solicitação de flash
+ * dados
  */
 session.flashAll()
 
 /**
- * Same as "flashAll"
+ * O mesmo que "flashAll"
  */
 session.flash(request.all())
 ```
 
 ```ts
-// title: flashOnly
+// flashOnly
+
 /**
- * Short hand for flashing selected 
- * properties from request data
+ * Abreviação para propriedades selecionadas piscando
+ * de dados de solicitação
  */
 session.flashOnly(['username', 'email'])
 
 /**
- * Same as "flashOnly"
+ * O mesmo que "flashOnly"
  */
 session.flash(request.only(['username', 'email']))
 ```
 
 ```ts
-// title: flashExcept
+// flashExcept
+
 /**
- * Short hand for flashing selected 
- * properties from request data
+ * Abreviação para propriedades selecionadas piscando
+ * de dados de solicitação
  */
 session.flashExcept(['password'])
 
 /**
- * Same as "flashExcept"
+ * O mesmo que "flashOnly"
  */
 session.flash(request.except(['password']))
 ```
@@ -571,17 +565,17 @@ Veja também: [Referência de auxiliares do Edge](../references/edge.md#flashmes
 Finalmente, você pode acessar uma mensagem flash específica ou um erro de validação usando as seguintes tags do Edge.
 
 ```edge
-{{-- Read any flash message by key --}}
+{{-- Ler qualquer mensagem flash por chave --}}
 @flashMessage('key')
   {{ inspect($message) }}
 @end
 
-{{-- Read generic errors --}}
+{{-- Ler erros genéricos --}}
 @error('key')
   {{ inspect($message) }}
 @end
 
-{{-- Read validation errors --}}
+{{-- Ler erros de validação --}}
 @inputError('key')
   {{ inspect($messages) }}
 @end
@@ -601,46 +595,46 @@ import {
 } from '@adonisjs/session/types'
 
 /**
- * The config you want to accept
+ * A configuração que você deseja aceitar
  */
 export type MongoDBConfig = {}
 
 /**
- * Driver implementation
+ * Implementação do driver
  */
 export class MongoDBStore implements SessionStoreContract {
   constructor(public config: MongoDBConfig) {
   }
 
   /**
-   * Returns the session data for a session ID. The method
-   * must return null or an object of a key-value pair
+   * Retorna os dados da sessão para um ID de sessão. O método
+   * deve retornar nulo ou um objeto de um par chave-valor
    */
   async read(sessionId: string): Promise<SessionData | null> {
   }
 
   /**
-   * Save the session data against the provided session ID
+   * Salva os dados da sessão em relação ao ID de sessão fornecido
    */
   async write(sessionId: string, data: SessionData): Promise<void> {
   }
 
   /**
-   * Delete session data for the given session ID
+   * Excluir dados da sessão para o ID de sessão fornecido
    */
   async destroy(sessionId: string): Promise<void> {
   }
 
   /**
-   * Reset the session expiry
+   * Redefinir a expiração da sessão
    */
   async touch(sessionId: string): Promise<void> {
   }
 }
 
 /**
- * Factory function to reference the store
- * inside the config file.
+ * Função de fábrica para referenciar a store
+ * dentro do arquivo de configuração.
  */
 export function mongoDbStore (config: MongoDbConfig): SessionStoreFactory {
   return (ctx, sessionConfig) => {
@@ -662,14 +656,15 @@ No exemplo de código acima, exportamos os seguintes valores.
 Depois que o armazenamento for criado, você pode referenciá-lo dentro do arquivo de configuração usando a função de fábrica `mongoDbStore`.
 
 ```ts
-// title: config/session.ts
+// config/session.ts
+
 import { defineConfig } from '@adonisjs/session'
 import { mongDbStore } from 'my-custom-package'
 
 export default defineConfig({
   stores: {
     mongodb: mongoDbStore({
-      // config goes here
+      // a configuração vai aqui
     })
   }
 })

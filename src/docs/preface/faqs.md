@@ -32,8 +32,8 @@ Ao criar o framework ou adicionar novos recursos, focamos principalmente em reso
 
 No entanto, olhamos mais de perto as métricas de desempenho e ajustamos o desempenho do framework onde for importante. Por exemplo:
 
-[no mesmo nível do Fastify em desempenho](https://github.com/adonisjs/http-server/blob/main/benchmarks.md).
-[supera outras bibliotecas de validação populares](https://github.com/vinejs/vine/blob/main/benchmarks.md) no ecossistema Node.js.
+* [no mesmo nível do Fastify em desempenho](https://github.com/adonisjs/http-server/blob/main/benchmarks.md).
+* [supera outras bibliotecas de validação populares](https://github.com/vinejs/vine/blob/main/benchmarks.md) no ecossistema Node.js.
 
 ## Vocês oferecem suporte pago?
 Sim! Em nosso site, você pode aprender mais sobre o [programa de suporte prioritário](https://adonisjs.com/support_program).
@@ -41,8 +41,8 @@ Sim! Em nosso site, você pode aprender mais sobre o [programa de suporte priori
 ## Como me mantenho atualizado com o AdonisJS?
 Confira os links a seguir para se manter conectado e atualizado.
 
-[Servidor Discord](https://discord.gg/vDcEjq6)
-[X (antigo Twitter)](https://twitter.com/adonisframework)
-[Discussões do GitHub](https://github.com/orgs/adonisjs/discussions)
-[Blog e Newsletter](https://adonisjs.com/blog?referrer=adonisjs_docs_faq)
-[Adocasts](https://adocasts.com/?referrer=adonisjs_docs_faq)
+* [Servidor Discord](https://discord.gg/vDcEjq6)
+* [X (antigo Twitter)](https://twitter.com/adonisframework)
+* [Discussões do GitHub](https://github.com/orgs/adonisjs/discussions)
+* [Blog e Newsletter](https://adonisjs.com/blog?referrer=adonisjs_docs_faq)
+* [Adocasts](https://adocasts.com/?referrer=adonisjs_docs_faq)

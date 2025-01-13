@@ -81,7 +81,8 @@ O comando acima criará o arquivo `user_location_middleware.ts` no diretório mi
 Um middleware é representado como uma classe com o método `handle`. Durante a execução, o AdonisJS chamará automaticamente esse método e dará a ele o [HttpContext](../concepts/http_context.md) como o primeiro argumento.
 
 ```ts
-// title: app/middleware/user_location_middleware.ts
+// app/middleware/user_location_middleware.ts
+
 import { HttpContext } from '@adonisjs/core/http'
 import { NextFn } from '@adonisjs/core/types/http'
 
@@ -116,7 +117,7 @@ Você deve chamar o método `next` para continuar com a solicitação. Caso cont
 ```ts
 export default class UserLocationMiddleware {
   async handle(ctx: HttpContext, next: NextFn) {
-    // Call the `next` function to continue
+    // Chame a função `next` para continuar
     await next()      
   }
 }
@@ -129,7 +130,7 @@ Finalmente, você pode encerrar a solicitação enviando a resposta. Nesse caso,
 ```ts
 export default class UserLocationMiddleware {
   async handle(ctx: HttpContext, next: NextFn) {
-    // send response + do not call next
+    // envie a resposta + não chame next
     ctx.response.send('Ending request')
   }
 }
@@ -207,10 +208,11 @@ As classes de middleware são instanciadas usando o [contêiner IoC](../concepts
 Dado que você tem uma classe `GeoIpService` para procurar a localização do usuário a partir do IP da solicitação, você pode injetá-la no middleware usando o decorador `@inject`.
 
 ```ts
-// title: app/services/geoip_service.ts
+// app/services/geoip_service.ts
+
 export class GeoIpService {
   async lookup(ipAddress: string) {
-    // lookup location and return
+    // localização de pesquisa e retorne
   }
 }
 ```

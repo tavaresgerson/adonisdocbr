@@ -24,7 +24,7 @@ O líder do projeto tem a palavra final em todos os aspectos da tomada de decis�
 
 De muitas maneiras, o papel do líder do projeto é sobre diplomacia. A chave é garantir que, à medida que o projeto se expande, as pessoas certas tenham influência sobre ele, e a comunidade se una à visão do líder do projeto. O trabalho do líder é então garantir que os membros da equipe principal (veja abaixo) tomem as decisões certas em nome do projeto. Em geral, desde que os membros da equipe principal estejam alinhados com a estratégia do projeto, o líder do projeto permitirá que eles prossigam conforme desejado.
 
-:::note
+::: info NOTA
 Um líder de projeto não pode arquivar ou decidir remover o projeto do guarda-chuva do AdonisJS. Eles podem decidir parar de trabalhar no projeto e, nesse caso, encontraremos um novo líder de projeto.
 :::
 
@@ -103,6 +103,6 @@ Projetos sob o guarda-chuva AdonisJS são propriedade intelectual do Autor do Pr
 
 ---
 
-:::note
+::: info NOTA
 Este documento de governança é baseado no [Modelo de Governança do Ditador Benevolente](http://oss-watch.ac.uk/resources/benevolentdictatorgovernancemodel) por Ross Gardler e Gabriel Hanganu, licenciado sob uma [Licença Internacional Creative Commons Atribuição-Compartilhamento pela mesma Licença 4.0](https://creativecommons.org/licenses/by-sa/4.0/). Este documento em si também é licenciado sob a mesma licença.
 :::

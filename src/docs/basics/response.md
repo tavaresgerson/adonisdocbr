@@ -14,16 +14,16 @@ A maneira mais simples de enviar uma resposta é retornar um valor do manipulado
 import router from '@adonisjs/core/services/router'
 
 router.get('/', async () => {
-  /** Plain string */
+  /** String simples */
   return 'This is the homepage.'
 
-  /** Html fragment */
+  /** Fragmento HTML */
   return '<p> This is the homepage </p>'
 
-  /** JSON response */
+  /** Resposta JSON */
   return { page: 'home' }
 
-  /** Converted to ISO string */
+  /** Convertido para string ISO */
   return new Date()
 })
 ```
@@ -34,16 +34,16 @@ Além de retornar um valor do manipulador de rota, você pode usar o método `re
 import router from '@adonisjs/core/services/router'
 
 router.get('/', async ({ response }) => {
-  /** Plain string */
+  /** String simples */
   response.send('This is the homepage')
 
-  /** Html fragment */
+  /** Fragmento HTML */
   response.send('<p> This is the homepage </p>')
 
-  /** JSON response */
+  /** Resposta JSONe */
   response.send({ page: 'home' })
 
-  /** Converted to ISO string */
+  /** Convertido para string ISO */
   response.send(new Date())
 })
 ```
@@ -53,7 +53,7 @@ Um código de status personalizado para a resposta pode ser definido usando o m�
 ```ts
 response.status(200).send({ page: 'home' })
 
-// Send empty 201 response
+// Enviar resposta 201 vazia
 response.status(201).send('')
 ```
 
@@ -150,13 +150,13 @@ import router from '@adonisjs/core/services/router'
 
 router.get('/', async ({ response }) => {
   /**
-   * Sets the status to 200
+   * Define o status para 200
    */
   response.safeStatus(200)
 
   /**
-   * Does not set the status since it
-   * is already set
+   * Não define o status, pois ele
+   * já está definido
    */
   response.safeStatus(201)
 })
@@ -171,13 +171,13 @@ import router from '@adonisjs/core/services/router'
 
 router.get('/', async ({ response }) => {
   /**
-   * Defines the content-type header
+   * Define o cabeçalho do tipo de conteúdo
    */
   response.safeHeader('Content-type', 'text/html')
 
   /**
-   * Does not set the content-type header since it
-   * is already set
+   * Não define o cabeçalho content-type, pois ele
+   * já está definido
    */
   response.safeHeader('Content-type', 'text/html')
 })
@@ -195,7 +195,7 @@ O método `response.removeHeader` remove o cabeçalho existente.
 response.removeHeader('Set-cookie')
 ```
 
-### Cabeçalho X-Request-Id
+### Cabeçalho `X-Request-Id`
 
 Se o cabeçalho existir na solicitação atual ou se [Gerando IDs de solicitação](./request#generating-request-ids) estiver habilitado, o cabeçalho estará presente na resposta.
 
@@ -252,14 +252,14 @@ response.redirect().withQs({ page: 1, limit: 20 }).toRoute('articles.index')
 Para encaminhar a sequência de consulta da URL de solicitação atual, chame o método `withQs` sem nenhum parâmetro.
 
 ```ts
-// Forward current URL query string
+// Encaminhar sequência de consulta de URL atual
 response.redirect().withQs().toRoute('articles.index')
 ```
 
 Ao redirecionar de volta para a página anterior, o método `withQs` encaminhará a sequência de consulta da página anterior.
 
 ```ts
-// Forward current URL query string
+// Encaminhar sequência de consulta de URL atual
 response.redirect().withQs().back()
 ```
 
@@ -275,7 +275,7 @@ router.get('posts/:id/edit', async ({ response, auth, params }) => {
     response.abort({ message: 'Cannot edit post' })
   }
 
-  // continue with the rest of the logic
+  // continuar com o restante da lógica
 })
 ```
 
@@ -292,7 +292,7 @@ Você pode ouvir o evento quando o Node.js terminar de gravar a resposta no soqu
 ```ts
 router.get('posts', ({ response }) => {
   response.onFinish(() => {
-    // cleanup logic
+    // lógica de limpeza
   })
 })
 ```
@@ -313,7 +313,7 @@ O conjunto de corpos de resposta usando o método `response.send` é serializado
 
 A seguir está a lista de tipos de dados suportados e suas regras de serialização.
 
-[função stringify segura](https://github.com/poppinss/utils/blob/main/src/json/safe_stringify.ts). O método é semelhante a `JSON.stringify`, mas remove as referências circulares e serializa `BigInt(s)`.
+- [função stringify segura](https://github.com/poppinss/utils/blob/main/src/json/safe_stringify.ts). O método é semelhante a `JSON.stringify`, mas remove as referências circulares e serializa `BigInt(s)`.
 - Os valores numéricos e booleanos são convertidos em uma string.
 - A instância da classe Date é convertida em uma string chamando o método `toISOString`.
 - Expressões regulares e objetos de erro são convertidos em uma string chamando o método `toString`.
@@ -330,7 +330,7 @@ A seguir está a lista de regras que seguimos para definir o cabeçalho `content
 - As respostas JSONP são enviadas com o tipo de conteúdo `text/javascript`.
 - O tipo de conteúdo é definido como `text/plain` para todo o resto.
 
-## Estendendo a classe Response
+## Estendendo a classe `Response`
 
 Você pode adicionar propriedades personalizadas à classe Response usando macros ou getters. Certifique-se de ler o [guia de extensão do AdonisJS](../concepts/extending_the_framework.md) primeiro se você for novo no conceito de macros.
 

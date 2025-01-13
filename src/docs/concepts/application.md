@@ -49,12 +49,12 @@ console.log(app.nodeEnvironment)
 ```
 
 | NODE_ENV | Normalizado para |
-|----------|---------------|
-| dev      | development   |
-| develop  | development   |
-| stage    | staging       |
-| prod     | production    |
-| testing  | test          |
+|----------|------------------|
+| dev      | development      |
+| develop  | development      |
+| stage    | staging          |
+| prod     | production       |
+| testing  | test             |
 
 Além disso, você pode usar as seguintes propriedades como um atalho para saber o ambiente atual.
 
@@ -65,15 +65,15 @@ Além disso, você pode usar as seguintes propriedades como um atalho para saber
 ```ts
 import app from '@adonisjs/core/services/app'
 
-// Is in production
+// Está em produção
 app.inProduction
 app.nodeEnvironment === 'production'
 
-// Is in development
+// Está em desenvolvimento
 app.inDev
 app.nodeEnvironment === 'development'
 
-// Is in the test
+// Está em teste
 app.inTest
 app.nodeEnvironment === 'test'
 ```
@@ -105,18 +105,18 @@ Você também pode usar as seguintes propriedades abreviadas para saber se o apl
 ```ts
 import app from '@adonisjs/core/services/app'
 
-// App is booted
+// O aplicativo foi inicializado
 app.isBooted
 app.getState() !== 'created' && app.getState() !== 'initiated'
 
-// App is ready
+// O aplicativo está pronto
 app.isReady
 app.getState() === 'ready'
 
-// gracefully attempting to terminate the app
+// tentando encerrar o aplicativo graciosamente
 app.isTerminating
 
-// App has been terminated
+// O aplicativo foi encerrado
 app.isTerminated
 app.getState() === 'terminated'
 ```
@@ -128,11 +128,11 @@ Você pode ouvir [sinais POSIX](https://man7.org/linux/man-pages/man7/signal.7.h
 ```ts
 import app from '@adonisjs/core/services/app'
 
-// Listen for a SIGTERM signal
+// Ouça um sinal SIGTERM
 app.listen('SIGTERM', () => {
 })
 
-// Listen once for a SIGTERM signal
+// Ouça uma vez um sinal SIGTERM
 app.listenOnce('SIGTERM', () => {
 })
 ```
@@ -453,10 +453,10 @@ Geradores são usados ​​para criar nomes de classe e nomes de arquivo para d
 import app from '@adonisjs/core/services/app'
 
 app.generators.controllerFileName('user')
-// output - users_controller.ts
+// saída - users_controller.ts
 
 app.generators.controllerName('user')
-// output - UsersController
+// saída - UsersController
 ```
 
 Por favor, [consulte o código-fonte `generators.ts`](https://github.com/adonisjs/application/blob/main/src/generators.ts) para visualizar a lista de geradores disponíveis.

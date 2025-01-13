@@ -16,7 +16,7 @@ Neste guia, aprenderemos como aproveitar as variáveis ​​de ambiente dentro 
 
 O Node.js expõe nativamente todas as variáveis ​​de ambiente como um objeto por meio da [propriedade global `process.env`](https://nodejs.org/dist/latest-v8.x/docs/api/process.html#process_process_env), e você pode acessá-las da seguinte forma.
 
-```dotenv
+```
 process.env.NODE_ENV
 process.env.HOST
 process.env.PORT
@@ -39,7 +39,7 @@ env.get('NODE_ENV')
 env.get('HOST')
 env.get('PORT')
 
-// Returns 3333 when PORT is undefined
+// Retorna 3333 quando PORT não está definido
 env.get('PORT', 3333)
 ```
 
@@ -49,7 +49,8 @@ Se você quiser acessar variáveis ​​de ambiente dentro de modelos Edge, ent
 Você pode [criar `view.ts` como um arquivo de pré-carregamento](../concepts/adonisrc_file.md#preloads) dentro do diretório `start` e escrever as seguintes linhas de código dentro dele.
 
 ```ts
-// title: start/view.ts
+// start/view.ts
+
 import env from '#start/env'
 import edge from 'edge.js'
 
@@ -71,8 +72,8 @@ O método `Env.create` aceita o esquema de validação como um par chave-valor.
 import Env from '@adonisjs/core/env'
 
 /**
- * App root is used to locate .env files inside
- * the project root.
+ * A raiz do aplicativo é usada para localizar arquivos .env dentro
+ * da raiz do projeto.
  */
 const APP_ROOT = new URL('../', import.meta.url)
 
@@ -107,7 +108,7 @@ O método `schema.string` garante que o valor seja uma string válida. Strings v
   APP_KEY: Env.schema.string()
 }
 
-// Mark APP_KEY to be optional
+// Marque APP_KEY como opcional
 {
   APP_KEY: Env.schema.string.optional()
 }
@@ -131,10 +132,10 @@ Valida o valor para ser uma URL válida. Opcionalmente, você pode tornar a vali
 {
   S3_ENDPOINT: Env.schema.string({ format: 'url' })
 
-  // Allow URLs without protocol
+  // Permitir URLs sem protocolo
   S3_ENDPOINT: Env.schema.string({ format: 'url', protocol: false })
 
-  // Allow URLs without tld
+  // Permitir URLs sem tld
   S3_ENDPOINT: Env.schema.string({ format: 'url', tld: false })
 }
 ```
@@ -159,7 +160,7 @@ As representações de string de `'true'`, `'1'`, `'false'` e `'0'` são convert
   CACHE_VIEWS: Env.schema.boolean()
 }
 
-// Mark it as optional
+// Marque como opcional
 {
   CACHE_VIEWS: Env.schema.boolean.optional()
 }
@@ -174,7 +175,7 @@ O método `schema.number` garante que o valor seja um número válido. A represe
   PORT: Env.schema.number()
 }
 
-// Mark it as optional
+// Marque como opcional
 {
   PORT: Env.schema.number.optional()
 }
@@ -191,7 +192,7 @@ O método `schema.enum` valida a variável de ambiente em relação a um dos val
     .enum(['development', 'production'] as const)
 }
 
-// Mark it as optional
+// Marque como opcional
 {
   NODE_ENV: Env
     .schema
@@ -199,7 +200,7 @@ O método `schema.enum` valida a variável de ambiente em relação a um dos val
     .optional(['development', 'production'] as const)
 }
 
-// Using native enums
+// Usando enumerações nativas
 enum NODE_ENV {
   development = 'development',
   production = 'production'
@@ -236,8 +237,9 @@ A função recebe o nome da variável de ambiente como o primeiro argumento e o 
 ### Em desenvolvimento
 As variáveis ​​de ambiente são definidas dentro do arquivo `.env` durante o desenvolvimento. O módulo env procura esse arquivo na raiz do projeto e o analisa automaticamente (se existir).
 
-```dotenv
-// title: .env
+```
+# .env
+
 PORT=3333
 HOST=0.0.0.0
 NODE_ENV=development
@@ -254,35 +256,37 @@ Suponha que sua plataforma de implantação não forneça meios para definir var
 O AdonisJS lerá automaticamente o arquivo `.env` da raiz do projeto. No entanto, você deve definir a variável `ENV_PATH` quando o arquivo `.env` for armazenado em algum local diferente.
 
 ```sh
-# Attempts to read .env file from project root
+# Tenta ler o arquivo .env da raiz do projeto
 node server.js
 
-# Reads the .env file from the "/etc/secrets" directory
+# Lê o arquivo .env do diretório "/etc/secrets"
 ENV_PATH=/etc/secrets node server.js
 ```
 
 ### Durante os testes
 As variáveis ​​de ambiente específicas para o ambiente de teste devem ser definidas dentro do arquivo `.env.test`. Os valores deste arquivo substituem os valores do arquivo `.env`.
 
-```dotenv
-// title: .env
+```
+// .env
+
 NODE_ENV=development
 SESSION_DRIVER=cookie
 ASSETS_DRIVER=vite
 ```
 
-```dotenv
-// title: .env.test
+```
+// .env.test
+
 NODE_ENV=test
 SESSION_DRIVER=memory
 ASSETS_DRIVER=fake
 ```
 
 ```ts
-// During tests
+// Durante os testes
 import env from '#start/env'
 
-env.get('SESSION_DRIVER') // memory
+env.get('SESSION_DRIVER') // memória
 ```
 
 ## Todos os outros arquivos dot-env
@@ -333,12 +337,10 @@ Dentro dos arquivos dot-env, você pode referenciar outras variáveis ​​de a
 
 Calculamos o `APP_URL` das propriedades `HOST` e `PORT` no exemplo a seguir.
 
-```dotenv
+```txt {3}
 HOST=localhost
 PORT=3333
-// highlight-start
 URL=$HOST:$PORT
-// highlight-end
 ```
 
 Todas as **letras**, **números** e o **sublinhado (_)** após o sinal `$` são usados ​​para formar um nome de variável. Você deve envolver o nome da variável entre chaves `{}` se o nome tiver caracteres especiais diferentes de um sublinhado.

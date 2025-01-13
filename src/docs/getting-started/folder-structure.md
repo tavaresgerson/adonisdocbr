@@ -44,7 +44,8 @@ O AdonisJS usa o recurso [importações de subcaminho](https://nodejs.org/dist/l
 Os seguintes aliases de importação são pré-configurados no arquivo `package.json`. Sinta-se à vontade para adicionar novos aliases ou editar os existentes.
 
 ```json
-// title: package.json
+// package.json
+
 {
   "imports": {
     "#controllers/*": "./app/controllers/*.js",

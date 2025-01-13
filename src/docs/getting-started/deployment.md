@@ -29,26 +29,26 @@ Se você estiver usando o Docker para implantar seu aplicativo, você pode criar
 ```dockerfile
 FROM node:20.12.2-alpine3.18 AS base
 
-# All deps stage
+# Todos os estágios de deps
 FROM base AS deps
 WORKDIR /app
 ADD package.json package-lock.json ./
 RUN npm ci
 
-# Production only deps stage
+# Produção somente estágio de deps
 FROM base AS production-deps
 WORKDIR /app
 ADD package.json package-lock.json ./
 RUN npm ci --omit=dev
 
-# Build stage
+# Estágio de construção
 FROM base AS build
 WORKDIR /app
 COPY --from=deps /app/node_modules /app/node_modules
 ADD . .
 RUN node ace build
 
-# Production stage
+# Estágio de produção
 FROM base
 ENV NODE_ENV=production
 WORKDIR /app
@@ -66,7 +66,7 @@ Aplicativos Node.js são geralmente [implantados atrás de um proxy reverso](htt
 
 A seguir, um exemplo de arquivo de configuração do Nginx que você pode usar como ponto de partida.
 
-:::warning
+::: warning ATENÇÃO
 Certifique-se de substituir os valores dentro dos colchetes angulares `<>`.
 :::
 
@@ -95,7 +95,7 @@ server {
 
 Se você estiver implantando seu aplicativo em um servidor bare-bone, como um Droplet DigitalOcean ou uma instância EC2, você pode usar um arquivo `.env` para definir as variáveis ​​de ambiente. Certifique-se de que o arquivo esteja armazenado com segurança e que somente usuários autorizados possam acessá-lo.
 
-:::note
+::: info NOTA
 Se você estiver usando uma plataforma de implantação como Heroku ou Cleavr, você pode usar o painel de controle deles para definir as variáveis ​​de ambiente.
 :::
 
@@ -112,13 +112,13 @@ A variável de ambiente `ENV_PATH` instrui o AdonisJS a procurar o arquivo `.env
 Você pode iniciar o servidor de produção executando o arquivo `node server.js`. No entanto, é recomendável usar um gerenciador de processos como [pm2](https://pm2.keymetrics.io/docs/usage/quick-start).
 
 - O PM2 executará seu aplicativo em segundo plano sem bloquear a sessão de terminal atual.
-- Ele reiniciará o aplicativo, se seu aplicativo travar ao atender solicitações.
-[modo cluster](https://nodejs.org/api/cluster.html#cluster)
+- Ele reiniciará o aplicativo, se seu aplicativo travar ao atender solicitações. [modo cluster](https://nodejs.org/api/cluster.html#cluster)
 
 A seguir está um exemplo de [arquivo de ecossistema pm2](https://pm2.keymetrics.io/docs/usage/application-declaration) que você pode usar como ponto de partida.
 
 ```js
-// title: ecosystem.config.js
+// ecosystem.config.js
+
 module.exports = {
   apps: [
     {
@@ -133,7 +133,8 @@ module.exports = {
 ```
 
 ```sh
-// title: Start server
+# Iniciar servidor
+
 pm2 start ecosystem.config.js
 ```
 
@@ -214,7 +215,7 @@ Outra opção é descarregar a tarefa de servir ativos para o Nginx. Se você us
 
 Adicione o seguinte bloco ao seu arquivo de configuração do Nginx. **Certifique-se de substituir os valores dentro dos colchetes angulares `<>`**.
 
-```nginx
+```
 location ~ \.(jpg|png|css|js|gif|ico|woff|woff2) {
   root <PATH_TO_ADONISJS_APP_PUBLIC_DIRECTORY>;
   sendfile on;
@@ -230,6 +231,6 @@ Você também pode contar com o [servidor de arquivo estático embutido do Adoni
 
 Nenhuma configuração adicional é necessária. Basta implantar seu aplicativo AdonisJS como de costume, e a solicitação de ativos estáticos será atendida automaticamente.
 
-:::warning
+::: danger ATENÇÃO
 O servidor de arquivo estático não é recomendado para uso em produção. É melhor usar um CDN ou Nginx para servir ativos estáticos.
 :::

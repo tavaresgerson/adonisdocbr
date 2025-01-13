@@ -12,7 +12,7 @@ Para simplificar ainda mais a explicação, AsyncLocalStorage permite que você 
 
 Vamos ver em ação. Primeiro, criaremos um novo projeto Node.js (sem nenhuma dependência) e usaremos `AsyncLocalStorage` para compartilhar o estado entre os módulos sem passá-lo por referência.
 
-:::note
+::: info NOTA
 Você pode encontrar o código final para este exemplo no repositório GitHub [als-basic-example](https://github.com/thetutlage/als-basic-example).
 :::
 
@@ -35,7 +35,8 @@ Abra o arquivo `package.json` e defina o sistema de módulos como ESM.
 Crie um arquivo chamado `storage.js`, que cria e exporta uma instância de `AsyncLocalStorage`.
 
 ```ts
-// title: storage.js
+// storage.js
+
 import { AsyncLocalStorage } from 'async_hooks'
 export const storage = new AsyncLocalStorage()
 ```
@@ -47,7 +48,8 @@ Crie um arquivo de ponto de entrada chamado `main.js`. Dentro deste arquivo, imp
 O método `storage.run` aceita o estado que queremos compartilhar como o primeiro argumento e uma função de retorno de chamada como o segundo argumento. Todos os caminhos de código dentro deste retorno de chamada (incluindo os módulos importados) terão acesso ao mesmo estado.
 
 ```ts
-// title: main.js
+// main.js
+
 import { storage } from './storage.js'
 import UserService from './user_service.js'
 import { setTimeout } from 'node:timers/promises'
@@ -66,7 +68,8 @@ async function run(user) {
 Para demonstração, executaremos o método `run` três vezes sem aguardá-lo. Cole o seguinte código no final do arquivo `main.js`.
 
 ```ts
-// title: main.js
+// main.js
+
 run({ id: 1 })
 run({ id: 2 })
 run({ id: 3 })
@@ -77,7 +80,8 @@ run({ id: 3 })
 Por fim, vamos importar a instância de armazenamento dentro do módulo `user_service` e acessar o estado atual.
 
 ```ts
-// title: user_service.js
+// user_service.js
+
 import { storage } from './storage.js'
 
 export class UserService {
@@ -111,7 +115,8 @@ O AdonisJS usa `AsyncLocalStorage` durante solicitações HTTP e compartilha o [
 Primeiro, você deve habilitar o sinalizador `useAsyncLocalStorage` dentro do arquivo `config/app.ts`.
 
 ```ts
-// title: config/app.ts
+// config/app.ts
+
 export const http = defineConfig({
   useAsyncLocalStorage: true,
 })
@@ -146,10 +151,8 @@ No entanto, esteja ciente das seguintes situações que podem facilmente levar a
 
 Não acesse o ALS no nível superior de nenhum módulo porque os módulos no Node.js são armazenados em cache.
 
-:::caption{for="error"}
-**Uso incorreto**\
+::: danger **Uso incorreto**
 Atribuir o resultado do método `HttpContext.getOrFail()` a uma variável no nível superior manterá a referência à solicitação que importou o módulo pela primeira vez.
-:::
 
 ```ts
 import { HttpContext } from '@adonisjs/core/http'
@@ -161,11 +164,11 @@ export default class UsersController {
   }
 }
 ```
-
-:::caption[]{for="success"}
-**Uso correto**\
-Em vez disso, você deve mover a chamada do método `getOrFail` para dentro do método `index`.
 :::
+
+
+::: tip **Uso correto**
+Em vez disso, você deve mover a chamada do método `getOrFail` para dentro do método `index`.
 
 ```ts
 import { HttpContext } from '@adonisjs/core/http'
@@ -176,14 +179,13 @@ export default class UsersController {
   }
 }
 ```
+:::
+
 
 ### Dentro de propriedades estáticas
 Propriedades estáticas (não métodos) de qualquer classe são avaliadas assim que o módulo é importado; portanto, você não deve acessar o contexto HTTP dentro de propriedades estáticas.
 
-:::caption{for="error"}
-**Uso incorreto**
-:::
-
+::: danger **Uso incorreto**
 ```ts
 import { HttpContext } from '@adonisjs/core/http'
 import { BaseModel } from '@adonisjs/lucid'
@@ -192,11 +194,11 @@ export default class User extends BaseModel {
   static connection = HttpContext.getOrFail().tenant.name
 }
 ```
-
-:::caption[]{for="success"}
-**Uso correto**\
-Em vez disso, você deve mover a chamada `HttpContext.get` para dentro de um método ou converter a propriedade em um getter.
 :::
+
+
+::: tip **Uso correto**
+Em vez disso, você deve mover a chamada `HttpContext.get` para dentro de um método ou converter a propriedade em um getter.
 
 ```ts
 import { HttpContext } from '@adonisjs/core/http'
@@ -209,6 +211,8 @@ export default class User extends BaseModel {
   }
 }
 ```
+:::
+
 
 ### Manipuladores de eventos
 Os manipuladores de eventos são executados após a conclusão da solicitação HTTP. Portanto, você deve evitar tentar acessar o contexto HTTP dentro deles.
@@ -224,10 +228,7 @@ export default class UsersController {
 }
 ```
 
-:::caption[]{for="error"}
-**Evite o uso dentro de ouvintes de eventos**
-:::
-
+::: danger **Evite o uso dentro de ouvintes de eventos**
 ```ts
 import { HttpContext } from '@adonisjs/core/http'
 import emitter from '@adonisjs/core/services/emitter'
@@ -236,3 +237,5 @@ emitter.on('new:user', () => {
   const ctx = HttpContext.getOrFail()
 })
 ```
+:::
+

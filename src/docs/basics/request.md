@@ -169,7 +169,7 @@ import router from '@adonisjs/core/services/router'
 router.get('/', async ({ request }) => {
   request.header('x-request-id')
 
-  // Header name is not case sensitive
+  // O nome do cabeçalho não diferencia maiúsculas de minúsculas
   request.header('X-REQUEST-ID')
 })
 ```
@@ -183,12 +183,12 @@ import router from '@adonisjs/core/services/router'
 
 router.patch('posts', async ({ request }) => {
   /**
-   * The method that was used for route matching
+   * O método que foi usado para correspondência de rota
    */
   console.log(request.method())
 
   /**
-   * The actual request method
+   * O método de solicitação real
    */
   console.log(request.intended())
 })
@@ -198,7 +198,7 @@ router.patch('posts', async ({ request }) => {
 
 O método `request.ip` retorna o endereço IP do usuário para a solicitação HTTP atual. Este método depende do cabeçalho [`X-Forwarded-For`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For) definido por servidores proxy como Nginx ou Caddy.
 
-:::note
+::: info NOTA
 Leia a seção [trusted proxies](#configuring-trusted-proxies) para configurar os proxies em que seu aplicativo deve confiar.
 :::
 
@@ -272,7 +272,8 @@ import router from '@adonisjs/core/services/router'
 router.get('posts', async ({ request, view }) => {
   const posts = [
     {
-      title: 'Adonis 101',
+      'Adonis 101',
+
     },
   ]
 
@@ -292,13 +293,13 @@ router.get('posts', async ({ request, view }) => {
 Semelhante ao `request.accept`, os métodos a seguir podem ser usados ​​para encontrar o valor preferido para outros cabeçalhos `Accept`.
 
 ```ts
-// Preferred language
+// Idioma preferido
 const language = request.language(['fr', 'de'])
 
-// Preferred encoding
+// Codificação preferida
 const encoding = request.encoding(['gzip', 'br'])
 
-// Preferred charset
+// Charset preferido
 const charset = request.charset(['utf-8', 'hex', 'ascii'])
 ```
 
@@ -306,12 +307,13 @@ const charset = request.charset(['utf-8', 'hex', 'ascii'])
 
 IDs de solicitação ajudam você a [depurar e rastrear problemas de aplicativo](https://blog.heroku.com/http_request_id_s_improve_visibility_across_the_application_stack) de logs atribuindo um ID exclusivo a cada solicitação HTTP. Por padrão, a criação de ID de solicitação é desabilitada. No entanto, você pode habilitá-lo dentro do arquivo `config/app.ts`.
 
-:::note
+::: info NOTA
 Os IDs de solicitação são gerados usando o pacote [cuid2](https://github.com/paralleldrive/cuid2). Antes de gerar um ID, verificamos o cabeçalho de solicitação `X-Request-Id` e usamos seu valor (se existir).
 :::
 
 ```ts
-// title: config/app.ts
+// config/app.ts
+
 export const http = defineConfig({
   generateRequestId: true
 })
@@ -403,7 +405,8 @@ No entanto, o AdonisJS permite que você contorne essa limitação usando **fals
 Para que a falsificação de método funcione, você deve definir a ação do formulário como `POST` e habilitar o recurso dentro do arquivo `config/app.ts`.
 
 ```ts
-// title: config/app.ts
+// config/app.ts
+''
 export const http = defineConfig({
   allowMethodSpoofing: true,
 })
@@ -413,13 +416,13 @@ Depois de habilitado, você pode falsificar o método de formulário da seguinte
 
 ```html
 <form method="POST" action="/articles/1?_method=PUT">
-  <!-- Update form -->
+  <!-- Formulário de atualização -->
 </form>
 ```
 
 ```html
 <form method="POST" action="/articles/1?_method=DELETE">
-  <!-- Delete form -->
+  <!-- Formulário de exclusão -->
 </form>
 ```
 

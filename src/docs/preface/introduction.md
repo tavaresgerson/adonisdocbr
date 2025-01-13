@@ -26,9 +26,9 @@ O AdonisJS é construído sobre primitivos modernos do JavaScript. Usamos módul
 
 Além disso, o TypeScript desempenha um papel considerável ao projetar as APIs do framework. Por exemplo, o AdonisJS tem:
 
-[Emissor de evento seguro para tipos](../digging_deeper/emitter.md#making-events-type-safe)
-[Variáveis ​​de ambiente seguras para tipos](../getting_started/environment_variables.md)
-[Biblioteca de validação segura para tipos](../basics/validation.md)
+* [Emissor de evento seguro para tipos](../digging_deeper/emitter.md#making-events-type-safe)
+* [Variáveis ​​de ambiente seguras para tipos](../getting_started/environment_variables.md)
+* [Biblioteca de validação segura para tipos](../basics/validation.md)
 
 ### Adotando o MVC
 

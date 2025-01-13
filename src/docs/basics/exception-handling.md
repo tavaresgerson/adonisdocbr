@@ -38,7 +38,7 @@ server.errorHandler(() => import('#exceptions/handler'))
 
 As exceções são tratadas pelo método `handle` na classe do manipulador de exceções. Por padrão, as seguintes etapas são executadas durante o tratamento de um erro.
 
-[error.handle](#defining-the-handle-method) e retorna sua resposta.
+- [error.handle](#defining-the-handle-method) e retorna sua resposta.
 - Verifique se uma página de status está definida para o código `error.status`. Se sim, renderize a página de status.
 - Caso contrário, renderize a exceção usando renderizadores de negociação de conteúdo.
 
@@ -174,7 +174,7 @@ import { HttpError } from '@adonisjs/core/types/http'
 
 export default class HttpExceptionHandler extends ExceptionHandler {
   protected shouldReport(error: HttpError) {
-    // return a boolean
+    // retornar um booleano
   }
 }
 ```
@@ -258,11 +258,11 @@ try {
   router.builder().make('articles.index')
 } catch (error: unknown) {
   if (error instanceof errors.E_CANNOT_LOOKUP_ROUTE) {
-    // handle error
+    // manipular erro
   }
 }
 ```
 
 ## Erros conhecidos
 
-[guia de referência de exceções](../references/exceptions.md) para visualizar a lista de erros conhecidos.
+- [Guia de referência de exceções](../references/exceptions.md) para visualizar a lista de erros conhecidos.

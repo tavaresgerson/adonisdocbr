@@ -6,38 +6,35 @@ summary: Aprenda a ler, escrever e limpar cookies no AdonisJS.
 
 Os cookies de solicitação são analisados ​​automaticamente durante uma solicitação HTTP. Você pode ler cookies usando o objeto [request](./request.md) e definir/limpar cookies usando o objeto [response](./response.md).
 
-```ts
-// title: Read cookies
+```ts {6}
+// Ler cookies
+
 import router from '@adonisjs/core/services/router'
 
 router.get('cart', async ({ request }) => {
-  // highlight-start
   const cartItems = request.cookie('cart_items', [])
-  // highlight-end
   console.log(cartItems)
 })
 ```
 
-```ts
-// title: Set cookies
+```ts {7}
+// Definir cookies
+
 import router from '@adonisjs/core/services/router'
 
 router.post('cart', async ({ request, response }) => {
   const id = request.input('product_id')
-  // highlight-start
   response.cookie('cart_items', [{ id }])
-  // highlight-end
 })
 ```
 
-```ts
-// title: Clear cookies
+```ts {6}
+// Limpar cookies
+
 import router from '@adonisjs/core/services/router'
 
 router.delete('cart', async ({ request, response }) => {
-  // highlight-start
   response.clearCookie('cart_items')
-  // highlight-end
 })
 ```
 
@@ -55,7 +52,7 @@ http: {
     secure: true,
     sameSite: 'lax',
     /**
-     * Experimental properties
+     * Propriedades experimentais
      * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#partitioned
      */
     partitioned: false,
@@ -110,7 +107,7 @@ response.cookie('visits', 10)
 // BigInt
 response.cookie('visits', BigInt(10))
 
-// Data objects are converted to ISO string
+// Objetos Date são convertidos para string ISO
 response.cookie('visits', new Date())
 ```
 
@@ -120,7 +117,7 @@ Os cookies definidos usando o método `response.cookie` são assinados. Um cooki
 
 Os cookies são assinados usando o `appKey` definido dentro do arquivo `config/app.ts`.
 
-:::note
+::: info NOTA
 Os cookies assinados ainda são legíveis pela decodificação Base64. Você pode usar cookies criptografados se quiser que o valor do cookie seja ilegível.
 :::
 
@@ -128,10 +125,10 @@ Os cookies assinados ainda são legíveis pela decodificação Base64. Você pod
 import router from '@adonisjs/core/services/router'
 
 router.get('/', async ({ request, response }) => {
-  // set signed cookie
+  // definir cookie assinado
   response.cookie('user_id', 1)
 
-  // read signed cookie
+  // ler cookie assinado
   request.cookie('user_id')
 })
 ```
@@ -146,10 +143,10 @@ Os cookies criptografados são definidos usando o método `response.encryptedCoo
 import router from '@adonisjs/core/services/router'
 
 router.get('/', async ({ request, response }) => {
-  // set encrypted cookie
+  // definir cookie criptografado
   response.encryptedCookie('user_id', 1)
 
-  // read encrypted cookie
+  // ler cookie criptografado
   request.encryptedCookie('user_id')
 })
 ```
@@ -166,12 +163,12 @@ Os cookies simples são definidos usando o método `response.plainCookie` e pode
 import router from '@adonisjs/core/services/router'
 
 router.get('/', async ({ request, response }) => {
-  // set plain cookie
+  // definir cookie simples
   response.plainCookie('user', { id: 1 }, {
     httpOnly: true
   })
 
-  // read plain cookie
+  // ler cookie simples
   request.plainCookie('user')
 })
 ```
@@ -184,7 +181,7 @@ response.plainCookie('token', tokenValue, {
   encode: false,
 })
 
-// Read plain cookie with encoding off
+// Ler cookie simples com codificação desativada
 request.plainCookie('token', {
   encoded: false
 })
@@ -193,5 +190,5 @@ request.plainCookie('token', {
 ## Configurando cookies durante testes
 Os guias a seguir abordam o uso de cookies ao escrever testes.
 
-[Japa API client](../testing/http_tests.md#readingwriting-cookies).
-[Japa browser client](../testing/browser_tests.md#readingwriting-cookies).
+* [Japa API client](../testing/http_tests.md#readingwriting-cookies).
+* [Japa browser client](../testing/browser_tests.md#readingwriting-cookies).

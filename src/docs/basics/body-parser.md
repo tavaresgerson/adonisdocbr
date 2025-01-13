@@ -8,8 +8,8 @@ Os dados da solicitação são analisados ​​usando o middleware `BodyParser`
 
 A configuração do middleware é armazenada dentro do arquivo `config/bodyparser.ts`. Neste arquivo, você pode configurar analisadores para analisar **payloads JSON**, **formulários multipartes com uploads de arquivo** e **formulários codificados por URL**.
 
-[Lendo corpo da solicitação](./request.md#request-body)
-[Uploads de arquivo](./file_uploads.md)
+- [Lendo corpo da solicitação](./request.md#request-body)
+- [Uploads de arquivo](./file_uploads.md)
 
 ```ts
 import { defineConfig } from '@adonisjs/core/bodyparser'
@@ -18,19 +18,19 @@ export const defineConfig({
   allowedMethods: ['POST', 'PUT', 'PATCH', 'DELETE'],
 
   form: {
-    // settings for parsing HTML forms
+    // configurações para analisar formulários HTML
   },
 
   json: {
-    // Settings for parsing JSON body
+    // Configurações para analisar corpo JSON
   },
 
   multipart: {
-    // Settings for multipart parser
+    // Configurações para analisador multipartes
   },
 
   raw: {
-    // Settings for a raw text parser
+    // Configurações para um analisador de texto bruto
   },
 })
 ```
@@ -58,17 +58,17 @@ O middleware `BodyParser` pode lidar com essa inconsistência convertendo todos 
 ```ts
 {
   form: {
-    // ... rest of the config
+    // ... resto da configuração
     convertEmptyStringsToNull: true
   },
 
   json: {
-    // ... rest of the config
+    // ... resto da configuração
     convertEmptyStringsToNull: true
   },
 
   multipart: {
-    // ... rest of the config
+    // ... resto da configuração
     convertEmptyStringsToNull: true
   }
 }

@@ -16,16 +16,16 @@ Instale e configure o pacote usando o seguinte comando:
 node ace add @adonisjs/static
 ```
 
-::: details Veja os passos realizados pelo comando add
+::: details Veja os passos realizados pelo comando `add`
 
 1. Instala o pacote `@adonisjs/static` usando o gerenciador de pacotes detectado.
 
 2. Registra o seguinte provedor de serviços dentro do arquivo `adonisrc.ts`.
 
-```ts
+    ```ts
     {
       providers: [
-        // ...other providers
+        // ... outros provedores
         () => import('@adonisjs/static/static_provider')
       ]
     }
@@ -35,7 +35,7 @@ node ace add @adonisjs/static
 
 4. Registra o seguinte middleware dentro do arquivo `start/kernel.ts`.
 
-```ts
+    ```ts
     server.use([
       () => import('@adonisjs/static/static_middleware')
     ])

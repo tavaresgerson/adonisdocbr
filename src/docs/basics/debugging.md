@@ -13,7 +13,8 @@ No exemplo a seguir, definimos uma configuração para iniciar o servidor de des
 [Documentos de depuração do VSCode](https://code.visualstudio.com/docs/editor/debugging)
 
 ```json
-// title: .vscode/launch.json
+// .vscode/launch.json
+
 {
   "version": "0.2.0",
   "configurations": [
@@ -42,7 +43,8 @@ Para iniciar a depuração:
 Você pode definir outra opção de inicialização para executar testes no modo de depuração.
 
 ```json
-// title: .vscode/launch.json
+// .vscode/launch.json
+
 {
   "version": "0.2.0",
   "configurations": [
@@ -54,16 +56,14 @@ Você pode definir outra opção de inicialização para executar testes no modo
       "args": ["serve", "--hmr"],
       "skipFiles": ["<node_internals>/**"]
     },
-    // insert-start
     {
-      "type": "node",
-      "request": "launch",
-      "name": "Tests",
-      "program": "${workspaceFolder}/ace.js",
-      "args": ["test", "--watch"],
-      "skipFiles": ["<node_internals>/**"]
-    }
-    // insert-end
+      "type": "node",                           // [!code ++]
+      "request": "launch",                      // [!code ++]
+      "name": "Tests",                          // [!code ++]
+      "program": "${workspaceFolder}/ace.js",   // [!code ++]
+      "args": ["test", "--watch"],              // [!code ++]
+      "skipFiles": ["<node_internals>/**"]      // [!code ++]
+    }                                           // [!code ++]
   ]
 }
 ```
@@ -76,20 +76,19 @@ No modo `attach`, [o VSCode anexará seu depurador](https://code.visualstudio.co
 Vamos começar modificando o arquivo `.vscode/launch.json` e adicionando a seguinte configuração a ele.
 
 ```json
-// title: .vscode/launch.json
+// .vscode/launch.json
+
 {
   "version": "0.2.0",
   "configurations": [
-    // insert-start
-    {
-      "type": "node",
-      "request": "attach",
-      "name": "Attach Program",
-      "port": 9229,
-      "autoAttachChildProcesses": true,
-      "skipFiles": ["<node_internals>/**"]
-    },
-    // insert-end
+    {                                       // [!code ++]
+      "type": "node",                       // [!code ++]
+      "request": "attach",                  // [!code ++]
+      "name": "Attach Program",             // [!code ++]
+      "port": 9229,                         // [!code ++]
+      "autoAttachChildProcesses": true,     // [!code ++]
+      "skipFiles": ["<node_internals>/**"]  // [!code ++]
+    },                                      // [!code ++]
     {
       "type": "node",
       "request": "launch",
@@ -116,17 +115,17 @@ Para iniciar a depuração no modo de anexação:
 - Procure por **Depurar: Selecionar e Iniciar Depuração**. Você encontrará uma lista de opções de inicialização no arquivo `.vscode/launch.json`.
 - Selecione a opção **Attach Program**.
 - Execute um comando Ace com o sinalizador `--inspect`. Por exemplo:
-```sh
+  ```sh
   node --inspect ace migration:run
   ```
 
-::video{url="https://res.cloudinary.com/adonis-js/video/upload/v1726932262/n91xtzqavpdoro79lnza.mp4" controls="true"}
+<video src="./n91xtzqavpdoro79lnza.mp4" controls />
 
 
 ### Depurando modelos Edge
 Você pode depurar modelos Edge semelhantes ao código do seu aplicativo escrito em TypeScript. No entanto, com o Edge, você não pode usar os pontos de interrupção fornecidos pelo VSCode. Em vez disso, você deve usar a tag `@debugger` para definir um ponto de interrupção no código.
 
-:::note
+::: info NOTA
 O depurador mostrará a saída compilada para modelos Edge.
 :::
 
@@ -139,22 +138,19 @@ Dump and Die (conhecido como `dd`) é semelhante à técnica de depuração mais
 
 A saída é renderizada como um documento HTML quando você usa o auxiliar `dd` durante uma solicitação HTTP. Caso contrário, a saída é exibida dentro do terminal.
 
-```ts
-// title: start/routes.ts
+```ts {5,9-12}
+// start/routes.ts
+
 import User from '#models/user'
 import router from '@adonisjs/core/services/router'
-// highlight-start
 import { dd } from '@adonisjs/core/services/dumper'
-// highlight-end
 
 router.get('/users', async () => {
   const users = await User.all()
-  // highlight-start
   /**
    * Visit the "/users" endpoint to view the dumped values
    */
   dd(users)
-  // highlight-end
   return users
 })
 ```
@@ -174,10 +170,10 @@ A saída de `dd` difere um pouco do que você vê ao usar `console.log`.
 Você pode usar o ajudante `dd` dentro dos modelos do Edge por meio da tag `@dd`. Além disso, você pode usar o ajudante `@dump`, que não gera uma exceção e continua renderizando o restante do modelo.
 
 ```edge
-{{-- Dump template state and die --}}
+{{-- Despejar estado do modelo e morrer --}}
 @dd(state)
 
-{{-- Dump template state and continue rendering --}}
+{{-- Despejar estado do modelo e continuar renderizando --}}
 @dump(state)
 ```
 
@@ -201,30 +197,31 @@ Ao usar o auxiliar `@dump`, certifique-se de que haja uma [pilha EdgeJS](https:/
 Você pode configurar as configurações do dumper dentro do arquivo `config/app.ts`. Este arquivo deve exportar um objeto de configuração `dumper`, conforme mostrado abaixo.
 
 ```ts
-// title: config/app.ts
+// config/app.ts
+
 /**
- * The global configuration used by the "dd" helper. You can
- * separately configure the settings for both the "console"
- * and the "html" printers.
+ * A configuração global usada pelo auxiliar "dd". Você pode
+ * configurar separadamente as configurações para as impressoras "console"
+ * e "html".
  */
 export const dumper = dumperConfig({
   /**
-   * Settings for the console printer
+   * Configurações para a impressora do console
    */
   console: {
     depth: 10,
 
     /**
-     * Objects that should not be further expanded. The
-     * array accepts an array of object constructor
-     * names.
+     * Objetos que não devem ser expandidos mais. O array
+     * aceita um array de nomes de construtores
+     * de objetos.
      */
     collapse: ['DateTime', 'Date'],
     inspectStaticMembers: true,
   },
 
   /**
-   * Settings for the HTML printer
+   * Configurações para a impressora HTML
    */
   html: {
     depth: 10,

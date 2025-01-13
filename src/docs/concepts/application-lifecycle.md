@@ -14,14 +14,14 @@ Então, vamos entender o ciclo de vida do aplicativo para cada ambiente suportad
 Um aplicativo AdonisJS tem vários pontos de entrada, e cada ponto de entrada inicializa o aplicativo em um ambiente específico. Os seguintes arquivos de ponto de entrada são armazenados dentro do diretório `bin`.
 
 - O ponto de entrada `bin/server.ts` inicializa o aplicativo AdonisJS para manipular solicitações HTTP. Quando você executa o comando `node ace serve`, nos bastidores, executamos esse arquivo como um processo filho.
-[Ace](../ace/introduction.md) nos bastidores.
+- [Ace](../ace/introduction.md) nos bastidores.
 - O ponto de entrada `bin/test.ts` inicializa o aplicativo AdonisJS para executar testes usando Japa.
 
 Se você abrir qualquer um desses arquivos, nos verá usando o módulo [Ignitor](https://github.com/adonisjs/core/blob/main/src/ignitor/main.ts#L23) para conectar as coisas e, em seguida, iniciar o aplicativo.
 
 O módulo Ignitor encapsula a lógica de iniciar um aplicativo AdonisJS. Nos bastidores, ele executa as seguintes ações.
 
-Classe [Application](https://github.com/adonisjs/application/blob/main/src/application.ts).
+- Classe [Application](https://github.com/adonisjs/application/blob/main/src/application.ts).
 - Iniciar/inicializar o aplicativo.
 - Executar a ação principal para iniciar o aplicativo. Por exemplo, no caso de um servidor HTTP, a ação `main` envolve iniciar o servidor HTTP. Enquanto isso, no caso de testes, a ação `main` envolve executar os testes.
 
@@ -113,7 +113,7 @@ export default class GreetCommand extends BaseCommand {
   async run() {
     await runSomeProcess()
     
-    // Terminate the process
+    // Termina o processo
     await this.terminate()
   }
 }
@@ -131,12 +131,11 @@ Você deve registrar ganchos do ciclo de vida assim que uma instância do aplica
 
 Os arquivos de ponto de entrada `bin/server.ts`, `bin/console.ts` e `bin/test.ts` criam uma nova instância de aplicativo para diferentes ambientes, e você pode registrar retornos de chamada em linha nesses arquivos.
 
-```ts
+```ts {5-15}
 const app = new Application(new URL('../', import.meta.url))
 
 new Ignitor(APP_ROOT, { importer: IMPORTER })
   .tap((app) => {
-    // highlight-start
     app.booted(() => {
       console.log('invoked after the app is booted')
     })
@@ -148,7 +147,6 @@ new Ignitor(APP_ROOT, { importer: IMPORTER })
     app.terminating(() => {
       console.log('invoked before the termination starts')
     })
-    // highlight-end
   })
 ```
 

@@ -19,13 +19,12 @@ Muitos problemas relatados em projetos de código aberto geralmente são pergunt
 
 Se você estiver relatando um bug, inclua o máximo de informações possível com os exemplos de código que você escreveu. A escala de problemas bons para ruins é a seguinte.
 
-- **PROBLEMA PERFEITO**: Você isola o bug subjacente. Cria um teste com falha no repositório e abre um problema do Github em torno dele.
-[Por que as reproduções são necessárias](https://antfu.me/posts/why-reproductions-are-required).
-- **PROBLEMA DECENTE**: Você declara corretamente seu problema. Compartilhe o código que produz o problema em primeiro lugar. Além disso, inclua os arquivos de configuração relacionados e a versão do pacote que você usa.
+* **PROBLEMA PERFEITO**: Você isola o bug subjacente. Cria um teste com falha no repositório e abre um problema do Github em torno dele. [Por que as reproduções são necessárias](https://antfu.me/posts/why-reproductions-are-required).
+* **PROBLEMA DECENTE**: Você declara corretamente seu problema. Compartilhe o código que produz o problema em primeiro lugar. Além disso, inclua os arquivos de configuração relacionados e a versão do pacote que você usa.
 
 Por último, mas não menos importante, é formatar cada bloco de código corretamente seguindo o [guia de sintaxe de markdown do Github](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
 
-- **PROBLEMA RUIM**: Você descarta a pergunta que tem na esperança de que a outra pessoa faça as perguntas relevantes e o ajude. Esses tipos de problemas são fechados automaticamente sem nenhuma explicação.
+*-* **PROBLEMA RUIM**: Você descarta a pergunta que tem na esperança de que a outra pessoa faça as perguntas relevantes e o ajude. Esses tipos de problemas são fechados automaticamente sem nenhuma explicação.
 
 ## Tendo uma discussão
 Você geralmente quer discutir um tópico ou talvez compartilhar algumas ideias. Nesse caso, crie uma discussão no fórum de discussões na categoria **💡Ideias**.
@@ -51,7 +50,7 @@ Basta iniciar uma discussão e explicar o que você está planejando contribuir?
 
 1. Comece clonando o repositório em sua máquina local.
 
-```sh
+    ```sh
     git clone <REPO_URL>
     ```
 
@@ -59,13 +58,13 @@ Basta iniciar uma discussão e explicar o que você está planejando contribuir?
 
    Usamos `npm` para gerenciar dependências, portanto não use `yarn` ou qualquer outra ferramenta.
 
-```sh
+    ```sh
     npm install
     ```
 
 3. Execute os testes executando o seguinte comando.
 
-```sh
+    ```sh
     npm test
     ```
 
@@ -104,10 +103,10 @@ Todos os nossos projetos são escritos em TypeScript e estão migrando para ESM 
 Além disso, certifique-se de executar os seguintes comandos antes de enviar o código.
 
 ```sh
-# Formats using prettier
+# Formatos usando prettier
 npm run format
 
-# Lints using Eslint
+# Lints usando Eslint
 npm run lint
 ```
 

@@ -53,7 +53,7 @@ Como você deve ter notado, não criamos uma instância da classe do controlador
 
 Você também pode notar que estamos carregando o controlador lentamente usando uma função.
 
-:::aviso
+::: warning ATENÇÃO
 Controladores de carregamento lento são necessários quando você está usando [HMR](../concepts/hmr.md).
 :::
 
@@ -63,7 +63,7 @@ Como os controladores lidam com solicitações HTTP, eles geralmente importam ou
 
 O carregamento lento é tão simples quanto mover a instrução de importação para trás de uma função e usar importações dinâmicas.
 
-:::dica
+::: tip DICA
 Você pode usar nosso [plugin ESLint](https://github.com/adonisjs/tooling-config/tree/main/packages/eslint-plugin) para impor e converter automaticamente importações de controladores padrão em importações dinâmicas lentas.
 :::
 
@@ -136,7 +136,7 @@ Dado que você tem uma classe `UserService`, você pode injetar uma instância d
 
 export class UserService {
   all() {
-    // return users from db
+    // retornar usuários do banco de dados
   }
 }
 ```
@@ -201,7 +201,7 @@ export class UserService {
 
   all() {
     console.log(this.ctx.auth.user)
-    // return users from db
+    // retornar usuários do banco de dados
   }
 }
 ```
@@ -221,48 +221,49 @@ node ace make:controller posts --resource
 ```
 
 ```ts
-// title: app/controllers/posts_controller.ts
+// app/controllers/posts_controller.ts
+
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class PostsController {
   /**
-   * Return list of all posts or paginate through
-   * them
-   */
+  * Retorna uma lista de todas as postagens ou paginadas
+  * ou não
+  */
   async index({}: HttpContext) {}
 
   /**
-   * Render the form to create a new post.
-   *
-   * Not needed if you are creating an API server.
-   */
+  * Renderiza o formulário para criar uma nova postagem.
+  *
+  * Não é necessário se você estiver criando um servidor de API.
+  */
   async create({}: HttpContext) {}
 
   /**
-   * Handle form submission to create a new post
-   */
+  * Manipula o envio do formulário para criar uma nova postagem
+  */
   async store({ request }: HttpContext) {}
 
   /**
-   * Display a single post by id.
-   */
+  * Exibe uma única postagem por id.
+  */
   async show({ params }: HttpContext) {}
 
   /**
-   * Render the form to edit an existing post by its id.
-   *
-   * Not needed if you are creating an API server.
-   */
+  * Renderiza o formulário para editar uma postagem existente por seu id.
+  *
+  * Não é necessário se você estiver criando um servidor de API.
+  */
   async edit({ params }: HttpContext) {}
 
   /**
-   * Handle the form submission to update a specific post by id
-   */
+  * Lidar com o envio do formulário para atualizar uma postagem específica por id
+  */
   async update({ params, request }: HttpContext) {}
 
   /**
-   * Handle the form submission to delete a specific post by id.
-   */
+  * Lidar com o envio do formulário para excluir uma postagem específica por id.
+  */
   async destroy({ params }: HttpContext) {}
 }
 ```
@@ -270,7 +271,8 @@ export default class PostsController {
 Em seguida, vamos vincular o `PostsController` a uma rota com recursos usando o método `router.resource`. O método aceita o nome do recurso como o primeiro argumento e a referência do controlador como o segundo argumento.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import router from '@adonisjs/core/services/router'
 const PostsController = () => import('#controllers/posts_controller')
 
@@ -314,23 +316,25 @@ router.shallowResource('posts.comments', CommentsController)
 
 As rotas criadas usando o método `router.resource` são nomeadas após o nome do recurso e a ação do controlador. Primeiro, convertemos o nome do recurso para snake case e concatenamos o nome da ação usando o separador de ponto `.`.
 
-| Recurso          | Nome da ação | Nome da rota            |
-|------------------|-------------|--------------------------|
-| posts            | index       | `posts.index`            |
-| userPhotos       | index       | `user_photos.index`      |
-| group-attributes | show        | `group_attributes.index` |
+| Recurso          | Nome da ação | Nome da rota              |
+|------------------|--------------|--------------------------|
+| posts            | index        | `posts.index`            |
+| userPhotos       | index        | `user_photos.index`      |
+| group-attributes | show         | `group_attributes.index` |
 
 Você pode renomear o prefixo para todas as rotas usando o método `resource.as`. No exemplo a seguir, renomeamos o nome da rota `group_attributes.index` para `attributes.index`.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router.resource('group-attributes', GroupAttributesController).as('attributes')
 ```
 
 O prefixo dado ao método `resource.as` é transformado para snake\_ case. Se desejar, você pode desativar a transformação, conforme mostrado abaixo.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router.resource('group-attributes', GroupAttributesController).as('groupAttributes', false)
 ```
 
@@ -341,7 +345,8 @@ Ao criar um servidor de API, os formulários para criar e atualizar um recurso s
 Você pode usar o método `resource.apiOnly` para remover as rotas `create` e `edit`. Como resultado, apenas cinco rotas serão criadas.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router.resource('posts', PostsController).apiOnly()
 ```
 
@@ -352,7 +357,8 @@ Para registrar apenas rotas específicas, você pode usar os métodos `resource.
 O método `resource.only` aceita uma matriz de nomes de ação e remove todas as outras rotas, exceto as mencionadas. No exemplo a seguir, apenas as rotas para as ações `index`, `store` e `destroy` serão registradas.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router
   .resource('posts', PostsController)
   .only(['index', 'store', 'destroy'])
@@ -361,7 +367,8 @@ router
 O método `resource.except` é o oposto do método `only`, registrando todas as rotas, exceto as mencionadas.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router
   .resource('posts', PostsController)
   .except(['destroy'])
@@ -374,7 +381,8 @@ As rotas geradas pelo método `router.resource` usam `id` para o nome do parâme
 Você pode renomear o parâmetro de `id` para outra coisa usando o método `resource.params`.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router
   .resource('posts', PostsController)
   .params({ posts: 'post' })
@@ -382,17 +390,18 @@ router
 
 A alteração acima gerará as seguintes rotas _(mostrando lista parcial)_.
 
-| Método HTTP | Rota | Método do controlador |
-|-------------|---------------------|-------------------|
-| GET         | `/posts/:post`      | show              |
-| GET         | `/posts/:post/edit` | edit              |
-| PUT         | `/posts/:post`      | update            |
-| DELETE      | `/posts/:post`      | destroy           |
+| Método HTTP | Rota                | Método do controlador |
+|-------------|---------------------|-----------------------|
+| GET         | `/posts/:post`      | show                  |
+| GET         | `/posts/:post/edit` | edit                  |
+| PUT         | `/posts/:post`      | update                |
+| DELETE      | `/posts/:post`      | destroy               |
 
 Você também pode renomear parâmetros ao usar recursos aninhados.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router
   .resource('posts.comments', PostsController)
   .params({
@@ -405,7 +414,8 @@ router
 Você pode atribuir middleware a rotas registradas por um recurso usando o método `resource.use`. O método aceita uma matriz de nomes de ação e o middleware para atribuir a eles. Por exemplo:
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
 
@@ -420,7 +430,8 @@ router
 Você pode usar a palavra-chave curinga (*) para atribuir um middleware a todas as rotas.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router
   .resource('posts')
   .use('*', middleware.auth())
@@ -429,7 +440,8 @@ router
 Finalmente, você pode chamar o método `.use` várias vezes para atribuir vários middlewares. Por exemplo:
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router
   .resource('posts')
   .use(

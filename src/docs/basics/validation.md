@@ -30,16 +30,16 @@ Instale e configure o VineJS usando o seguinte comando.
 node ace add vinejs
 ```
 
-::: details See steps performed by the add command
+::: details Veja as etapas executadas pelo comando add
 
 1. Instala o pacote `@vinejs/vine` usando o gerenciador de pacotes detectado.
 
 2. Registra o seguinte provedor de serviços dentro do arquivo `adonisrc.ts`.
 
-```ts
+    ```ts
     {
       providers: [
-        // ...other providers
+        // ...outros provedores
         () => import('@adonisjs/core/providers/vinejs_provider')
       ]
     }
@@ -53,7 +53,8 @@ O VineJS usa o conceito de validadores. Você cria um validador para cada ação
 Usaremos um blog como exemplo e definiremos validadores para criar/atualizar uma postagem. Vamos começar registrando algumas rotas e o `PostsController`.
 
 ```ts
-// title: Define routes
+// Define as rotas
+
 import router from '@adonisjs/core/services/router'
 
 const PostsController = () => import('#controllers/posts_controller')
@@ -63,12 +64,13 @@ router.put('posts/:id', [PostsController, 'update'])
 ```
 
 ```sh
-// title: Create controller
+# Crie o controlador
 node ace make:controller post store update
 ```
 
 ```ts
-// title: Scaffold controller
+// Scaffold controller
+
 import { HttpContext } from '@adonisjs/core/http'
 
 export default class PostsController {
@@ -92,31 +94,34 @@ Os validadores são criados dentro do diretório `app/validators`. O arquivo do 
 
 No exemplo a seguir, definimos `createPostValidator` e `updatePostValidator`. Ambos os validadores têm uma pequena variação em seus esquemas. Durante a criação, permitimos que o usuário forneça um slug personalizado para a postagem, enquanto não permitimos sua atualização.
 
-:::note
+::: info NOTA
 Não se preocupe muito com a duplicação dentro dos esquemas do validador. Recomendamos que você opte por esquemas fáceis de entender em vez de evitar duplicação a todo custo. A [analogia da base de código molhada](https://www.deconstructconf.com/2019/dan-abramov-the-wet-codebase) pode ajudá-lo a adotar a duplicação.
 :::
 
 ```ts
-// title: app/validators/post_validator.ts
+// app/validators/post_validator.ts
+
 import vine from '@vinejs/vine'
 
 /**
- * Validates the post's creation action
+ * Valida a ação de criação da postagem
  */
 export const createPostValidator = vine.compile(
   vine.object({
-    title: vine.string().trim().minLength(6),
+    vine.string().trim().minLength(6),
+
     slug: vine.string().trim(),
     description: vine.string().trim().escape()
   })
 )
 
 /**
- * Validates the post's update action
+ * Valida a ação de atualização da postagem
  */
 export const updatePostValidator = vine.compile(
   vine.object({
-    title: vine.string().trim().minLength(6),
+    vine.string().trim().minLength(6),
+
     description: vine.string().trim().escape()
   })
 )
@@ -127,28 +132,22 @@ Vamos voltar ao `PostsController` e usar os validadores para validar o corpo da 
 
 ```ts
 import { HttpContext } from '@adonisjs/core/http'
-// insert-start
-import {
-  createPostValidator,
-  updatePostValidator
-} from '#validators/post_validator'
-// insert-end
+import {                            // [!code ++]
+  createPostValidator,              // [!code ++]
+  updatePostValidator               // [!code ++]
+} from '#validators/post_validator' // [!code ++]
 
 export default class PostsController {
   async store({ request }: HttpContext) {
-    // insert-start
-    const data = request.all()
-    const payload = await createPostValidator.validate(data)
-    return payload
-    // insert-end
+    const data = request.all()                                // [!code ++]
+    const payload = await createPostValidator.validate(data)  // [!code ++]
+    return payload                                            // [!code ++]
   }
 
   async update({ request }: HttpContext) {
-    // insert-start
-    const data = request.all()
-    const payload = await updatePostValidator.validate(data)
-    return payload
-    // insert-end
+    const data = request.all()                                // [!code ++]
+    const payload = await updatePostValidator.validate(data)  // [!code ++]
+    return payload                                            // [!code ++]
   }
 }
 ```
@@ -160,19 +159,18 @@ Além disso, você não precisa encapsular a chamada do método `validate` dentr
 ## Tratamento de erros
 O [HttpExceptionHandler](./exception_handling.md) converterá os erros de validação em uma resposta HTTP automaticamente. O manipulador de exceções usa negociação de conteúdo e retorna uma resposta com base no valor do cabeçalho [Accept](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept).
 
-:::tip
+::: tip DICA
 Você pode dar uma olhada na [base de código do ExceptionHandler](https://github.com/adonisjs/http-server/blob/main/src/exception_handler.ts#L343-L345) e ver como as exceções de validação são convertidas em uma resposta HTTP.
 
 Além disso, o middleware de sessão [substitui o método `renderValidationErrorAsHTML`](https://github.com/adonisjs/session/blob/main/src/session_middleware.ts#L30-L37) e usa mensagens flash para compartilhar os erros de validação com o formulário.
 :::
 
-[SimpleErrorReporter](https://github.com/vinejs/vine/blob/main/src/reporters/simple_error_reporter.ts).
-[JSON API](https://jsonapi.org/format/#errors) spec.
-[session package](./session.md) will receive the errors via 
+* [SimpleErrorReporter](https://github.com/vinejs/vine/blob/main/src/reporters/simple_error_reporter.ts).
+* Especificações [JSON API](https://jsonapi.org/format/#errors).
+* Receberá os erros via [sessão](./session.md) 
+* Todas as outras solicitações receberão erros de volta como texto simples.
 
-- Todas as outras solicitações receberão erros de volta como texto simples.
-
-## O método request.validateUsing
+## O método `request.validateUsing`
 A maneira recomendada de executar validações dentro de controladores é usar o método `request.validateUsing`. Ao usar o método `request.validateUsing`, você não precisa definir os dados de validação explicitamente; o **corpo da solicitação**, os **valores da sequência de consulta** e os **arquivos** são mesclados e passados ​​como dados para o validador.
 
 ```ts
@@ -184,23 +182,15 @@ import {
 
 export default class PostsController {
   async store({ request }: HttpContext) {
-    // delete-start
-    const data = request.all()
-    const payload = await createPostValidator.validate(data)
-    // delete-end
-    // insert-start
-    const payload = await request.validateUsing(createPostValidator)
-    // insert-end
+    const data = request.all()                                        // [!code --]
+    const payload = await createPostValidator.validate(data)          // [!code --]
+    const payload = await request.validateUsing(createPostValidator)  // [!code ++]
   }
 
   async update({ request }: HttpContext) {
-    // delete-start
-    const data = request.all()
-    const payload = await updatePostValidator.validate(data)
-    // delete-end
-    // insert-start
-    const payload = await request.validateUsing(updatePostValidator)
-    // insert-end
+    const data = request.all()                                        // [!code --]
+    const payload = await updatePostValidator.validate(data)          // [!code --]
+    const payload = await request.validateUsing(updatePostValidator)  // [!code ++]
   }
 }
 ```
@@ -211,19 +201,19 @@ Ao usar o método `request.validateUsing`, você pode validar cookies, cabeçalh
 ```ts
 const validator = vine.compile(
   vine.object({
-    // Fields in request body
+    // Campos no corpo da solicitação
     username: vine.string(),
     password: vine.string(),
 
-    // Validate cookies
+    // Validar cookies
     cookies: vine.object({
     }),
 
-    // Validate headers
+    // Validar cabeçalhos
     headers: vine.object({
     }),
 
-    // Validate route params
+    // Validar parâmetros de rota
     params: vine.object({
     }),
   })
@@ -239,16 +229,14 @@ No entanto, se um validador precisar acessar alguns dados de tempo de execução
 
 Vamos dar um exemplo da regra de validação `unique`. Queremos garantir que o e-mail do usuário seja único no banco de dados, mas pular a linha para o usuário conectado no momento.
 
-```ts
+```ts {7}
 export const updateUserValidator = vine
   .compile(
     vine.object({
       email: vine.string().unique(async (db, value, field) => {
         const user = await db
           .from('users')
-          // highlight-start
           .whereNot('id', field.meta.userId)
-          // highlight-end
           .where('email', value)
           .first()
         return !user
@@ -279,9 +267,7 @@ No exemplo a seguir, usamos a função `vine.withMetaData` para definir o tipo e
 
 ```ts
 export const updateUserValidator = vine
-  // insert-start
-  .withMetaData<{ userId: number }>()
-  // insert-end
+  .withMetaData<{ userId: number }>() // [!code ++]
   .compile(
     vine.object({
       email: vine.string().unique(async (db, value, field) => {
@@ -300,7 +286,7 @@ Observe que o VineJS não valida os metadados em tempo de execução. No entanto
 
 ```ts
 vine.withMetaData<{ userId: number }>((meta) => {
-  // validate metadata
+  // valide o metadata
 })
 ```
 
@@ -314,16 +300,17 @@ node ace make:preload validator
 No exemplo a seguir, nós [definimos mensagens de erro personalizadas](https://vinejs.dev/docs/custom_error_messages).
 
 ```ts
-// title: start/validator.ts
+// start/validator.ts
+
 import vine, { SimpleMessagesProvider } from '@vinejs/vine'
 
 vine.messagesProvider = new SimpleMessagesProvider({
-  // Applicable for all fields
+  // Aplicável para todos os campos
   'required': 'The {{ field }} field is required',
   'string': 'The value of {{ field }} field must be a string',
   'email': 'The value is not a valid email address',
 
-  // Error message for the username field
+  // Mensagem de erro para o campo de nome de usuário
   'username.required': 'Please choose a username for your account',
 })
 ```
@@ -331,7 +318,8 @@ vine.messagesProvider = new SimpleMessagesProvider({
 No exemplo a seguir, nós [registramos um relator de erro personalizado](https://vinejs.dev/docs/error_reporter).
 
 ```ts
-// title: start/validator.ts
+// start/validator.ts
+
 import vine, { SimpleMessagesProvider } from '@vinejs/vine'
 import { JSONAPIErrorReporter } from '../app/validation_reporters.js'
 
@@ -345,7 +333,7 @@ O tipo de esquema [`vine.file`](https://github.com/adonisjs/core/blob/main/provi
 
 ## O que vem a seguir?
 
-[mensagens personalizadas](https://vinejs.dev/docs/custom_error_messages) no VineJS.
-[relatores de erro](https://vinejs.dev/docs/error_reporter) no VineJS.
-[schema API](https://vinejs.dev/docs/schema_101).
-[traduções i18n](../digging_deeper/i18n.md#translating-validation-messages) para definir mensagens de erro de validação.
+* [Mensagens personalizadas](https://vinejs.dev/docs/custom_error_messages) no VineJS.
+* [Relatores de erro](https://vinejs.dev/docs/error_reporter) no VineJS.
+* [Schema API](https://vinejs.dev/docs/schema_101).
+* [Traduções i18n](../digging_deeper/i18n.md#translating-validation-messages) para definir mensagens de erro de validação.

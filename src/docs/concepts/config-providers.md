@@ -32,9 +32,7 @@ Digamos que o driver `Scrypt` precisa de uma instância da classe Emitter para e
 
 ```ts
 import { Scrypt } from '@adonisjs/core/hash/drivers/scrypt'
-// insert-start
-import emitter from '@adonisjs/core/services/emitter'
-// insert-end
+import emitter from '@adonisjs/core/services/emitter' // [!code ++]
 
 export default {
   default: 'scrypt',
@@ -44,9 +42,7 @@ export default {
       blockSize: 8,
       parallelization: 1,
       maxMemory: 33554432,
-    // insert-start
-    }, emitter)
-    // insert-end
+    }, emitter) // [!code ++]
   }
 }
 ```
@@ -58,16 +54,10 @@ Na verdade, não. Não vamos usar o serviço de contêiner e criar uma instânci
 
 ```ts
 import { Scrypt } from '@adonisjs/core/hash/drivers/scrypt'
-// delete-start
-import emitter from '@adonisjs/core/services/emitter'
-// delete-end
-// insert-start
-import { Emitter } from '@adonisjs/core/events'
-// insert-end
+import emitter from '@adonisjs/core/services/emitter' // [!code --]
+import { Emitter } from '@adonisjs/core/events' // [!code ++]
 
-// insert-start
-const emitter = new Emitter()
-// insert-end
+const emitter = new Emitter() // [!code ++]
 
 export default {
   default: 'scrypt',
@@ -87,23 +77,18 @@ Agora, temos um novo problema. A instância `emitter` que criamos para o driver 
 Portanto, você pode querer mover a construção da classe `Emitter` para seu arquivo e exportar uma instância dela. Dessa forma, você pode passar a instância do emissor para o driver e usá-la para ouvir eventos.
 
 ```ts
-// title: start/emitter.ts
+// start/emitter.ts
+
 import { Emitter } from '@adonisjs/core/events'
 export const emitter = new Emitter()
 ```
 
 ```ts
 import { Scrypt } from '@adonisjs/core/hash/drivers/scrypt'
-// delete-start
-import { Emitter } from '@adonisjs/core/events'
-// delete-end
-// insert-start
-import { emitter } from '#start/emitter'
-// insert-end
+import { Emitter } from '@adonisjs/core/events' // [!code --]
+import { emitter } from '#start/emitter' // [!code ++]
 
-// delete-start
-const emitter = new Emitter()
-// delete-end
+const emitter = new Emitter() // [!code --]
 
 export default {
   default: 'scrypt',
@@ -125,16 +110,13 @@ Com o AdonisJS, nos esforçamos para escrever o mínimo de código boilerplate e
 ## Com o provedor de configuração
 Agora, vamos reescrever o arquivo `config/hash.ts` e usar um provedor de configuração dessa vez. Provedor de configuração é um nome chique para uma função que aceita uma [instância da classe Application](./application.md) e resolve suas dependências usando o contêiner.
 
-```ts
-// highlight-start
+```ts {1,7-16}
 import { configProvider } from '@adonisjs/core'
-// highlight-end
 import { Scrypt } from '@adonisjs/core/hash/drivers/scrypt'
 
 export default {
   default: 'scrypt',
   list: {
-    // highlight-start
     scrypt: configProvider.create(async (app) => {
       const emitter = await app.container.make('emitter')
 
@@ -145,7 +127,6 @@ export default {
         maxMemory: 33554432,
       }, emitter)
     })
-    // highlight-end
   }
 }
 ```
@@ -156,17 +137,13 @@ Como os provedores de configuração são assíncronos, você pode querer import
 
 ```ts
 import { configProvider } from '@adonisjs/core'
-// delete-start
-import { Scrypt } from '@adonisjs/core/hash/drivers/scrypt'
-// delete-end
+import { Scrypt } from '@adonisjs/core/hash/drivers/scrypt' // [!code --]
 
 export default {
   default: 'scrypt',
   list: {
     scrypt: configProvider.create(async (app) => {
-      // insert-start
-      const { Scrypt } = await import('@adonisjs/core/hash/drivers/scrypt')
-      // insert-end
+      const { Scrypt } = await import('@adonisjs/core/hash/drivers/scrypt') // [!code ++]
       const emitter = await app.container.make('emitter')
 
       return () => new Scrypt({

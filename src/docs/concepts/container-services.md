@@ -13,7 +13,7 @@ No exemplo a seguir, antes de usar a classe `Database`, você terá que criar um
 ```ts
 import { Database } from '@adonisjs/lucid'
 export const db = new Database(
-  // inject config and other dependencies
+  // injetar configuração e outras dependências
 )
 ```
 
@@ -44,13 +44,9 @@ export { db as default }
 Dentro do seu aplicativo, você pode substituir a chamada `container.make` por uma importação apontando para o arquivo `services/db.ts`.
 
 ```ts
-// delete-start
-import app from '@adonisjs/core/services/app'
-const db = await app.container.make('lucid.db')
-// delete-end
-// insert-start
-import db from '@adonisjs/lucid/services/db'
-// insert-end
+import app from '@adonisjs/core/services/app' // [!code --]
+const db = await app.container.make('lucid.db') // [!code --]
+import db from '@adonisjs/lucid/services/db' // [!code ++]
 ```
 
 Como você pode ver, ainda estamos contando com o contêiner para resolver uma instância da classe Database para nós. No entanto, com uma camada de indireção, podemos substituir a chamada `container.make` por uma instrução `import` regular.
@@ -63,23 +59,19 @@ Os serviços de contêiner são uma alternativa à injeção de dependência. Po
 
 No exemplo a seguir, usamos o decorador `@inject` para injetar uma instância da classe `Disk`.
 
-```ts
+```ts {4-7,12}
 import { Disk } from '@adonisjs/drive'
 import { inject } from '@adonisjs/core'
 
-  // highlight-start
 @inject()
 export class PostService {
   constructor(protected disk: Disk) {
   }
-  // highlight-end  
 
   async save(post: Post, coverImage: File) {
     const coverImageName = 'random_name.jpg'
 
-    // highlight-start
     await this.disk.put(coverImageName, coverImage)
-    // highlight-end
     
     post.coverImage = coverImageName
     await post.save()
@@ -89,17 +81,15 @@ export class PostService {
 
 Ao usar o serviço `drive`, chamamos o método `drive.use` para obter uma instância de `Disk` com o driver `s3`.
 
-```ts
+```ts {7-8}
 import drive from '@adonisjs/drive/services/main'
 
 export class PostService {
   async save(post: Post, coverImage: File) {
     const coverImageName = 'random_name.jpg'
 
-    // highlight-start
     const disk = drive.use('s3')
     await disk.put(coverImageName, coverImage)
-    // highlight-end
     
     post.coverImage = coverImageName
     await post.save()
@@ -125,7 +115,7 @@ import { PostService } from '#services/post_service'
 
 test('save post', async ({ assert }) => {
   /**
-   * Fake s3 disk
+   * Disco s3 falso
    */
   drive.fake('s3')
  
@@ -133,12 +123,12 @@ test('save post', async ({ assert }) => {
   await postService.save(post, coverImage)
   
   /**
-   * Write assertions
+   * Escrever afirmações
    */
   assert.isTrue(await drive.use('s3').exists(coverImage.name))
   
   /**
-   * Restore fake
+   * Restaurar falso
    */
   drive.restore('s3')
 })
@@ -148,135 +138,16 @@ test('save post', async ({ assert }) => {
 
 A tabela a seguir descreve uma lista de ligações de contêiner e seus serviços relacionados exportados pelo núcleo do framework e pacotes primários.
 
-<table>
-  <thead>
-    <tr>
-      <th width="100px">Binding</th>
-      <th width="140px">Class</th>
-      <th>Service</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <code>app</code>
-      </td>
-      <td>
-        <a href="https://github.com/adonisjs/application/blob/main/src/application.ts">Application</a>
-      </td>
-      <td>
-        <code>@adonisjs/core/services/app</code>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code>ace</code>
-      </td>
-      <td>
-        <a href="https://github.com/adonisjs/core/blob/main/modules/ace/kernel.ts">Kernel</a>
-      </td>
-      <td>
-        <code>@adonisjs/core/services/kernel</code>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code>config</code>
-      </td>
-      <td>
-        <a href="https://github.com/adonisjs/config/blob/main/src/config.ts">Config</a>
-      </td>
-      <td>
-        <code>@adonisjs/core/services/config</code>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code>encryption</code>
-      </td>
-      <td>
-        <a href="https://github.com/adonisjs/encryption/blob/main/src/encryption.ts">Encryption</a>
-      </td>
-      <td>
-        <code>@adonisjs/core/services/encryption</code>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code>emitter</code>
-      </td>
-      <td>
-        <a href="https://github.com/adonisjs/events/blob/main/src/emitter.ts">Emitter</a>
-      </td>
-      <td>
-        <code>@adonisjs/core/services/emitter</code>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code>hash</code>
-      </td>
-      <td>
-        <a href="https://github.com/adonisjs/hash/blob/main/src/hash_manager.ts">HashManager</a>
-      </td>
-      <td>
-        <code>@adonisjs/core/services/hash</code>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code>logger</code>
-      </td>
-      <td>
-        <a href="https://github.com/adonisjs/logger/blob/main/src/logger_manager.ts">LoggerManager</a>
-      </td>
-      <td>
-        <code>@adonisjs/core/services/logger</code>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code>repl</code>
-      </td>
-      <td>
-        <a href="https://github.com/adonisjs/repl/blob/main/src/repl.ts">Repl</a>
-      </td>
-      <td>
-        <code>@adonisjs/core/services/repl</code>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code>router</code>
-      </td>
-      <td>
-        <a href="https://github.com/adonisjs/http-server/blob/main/src/router/main.ts">Router</a>
-      </td>
-      <td>
-        <code>@adonisjs/core/services/router</code>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code>server</code>
-      </td>
-      <td>
-        <a href="https://github.com/adonisjs/http-server/blob/main/src/server/main.ts">Server</a>
-      </td>
-      <td>
-        <code>@adonisjs/core/services/server</code>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code> testUtils</code>
-      </td>
-      <td>
-        <a href="https://github.com/adonisjs/core/blob/main/src/test_utils/main.ts">TestUtils</a>
-      </td>
-      <td>
-        <code>@adonisjs/core/services/test_utils</code>
-      </td>
-    </tr>
-  </tbody>
-</table>
+| Binding     | Classe                                                                              | Serviço                               |
+|-------------|-------------------------------------------------------------------------------------|---------------------------------------|
+| `app`       | [Application](https://github.com/adonisjs/application/blob/main/src/application.ts) | `@adonisjs/core/services/app`         |
+| `ace`       | [Kernel](https://github.com/adonisjs/core/blob/main/modules/ace/kernel.ts)          | `@adonisjs/core/services/kernel`      |
+| `config`    | [Config](https://github.com/adonisjs/config/blob/main/src/config.ts)                | `@adonisjs/core/services/config`      |
+| `encryption`| [Encryption](https://github.com/adonisjs/encryption/blob/main/src/encryption.ts)    | `@adonisjs/core/services/encryption`  |
+| `emitter`   | [Emitter](https://github.com/adonisjs/events/blob/main/src/emitter.ts)              | `@adonisjs/core/services/emitter`     |
+| `hash`      | [HashManager](https://github.com/adonisjs/hash/blob/main/src/hash_manager.ts)       | `@adonisjs/core/services/hash`        |
+| `logger`    | [LoggerManager](https://github.com/adonisjs/logger/blob/main/src/logger_manager.ts) | `@adonisjs/core/services/logger`      |
+| `repl`      | [Repl](https://github.com/adonisjs/repl/blob/main/src/repl.ts)                      | `@adonisjs/core/services/repl`        |
+| `router`    | [Router](https://github.com/adonisjs/http-server/blob/main/src/router/main.ts)      | `@adonisjs/core/services/router`      |
+| `server`    | [Server](https://github.com/adonisjs/http-server/blob/main/src/server/main.ts)      | `@adonisjs/core/services/server`      |
+| `testUtils` | [TestUtils](https://github.com/adonisjs/core/blob/main/src/test_utils/main.ts)      | `@adonisjs/core/services/test_utils`  |

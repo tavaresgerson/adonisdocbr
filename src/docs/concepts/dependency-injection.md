@@ -8,7 +8,7 @@ No coração de cada aplicativo AdonisJS está um contêiner IoC que pode constr
 
 O contêiner IoC atende aos dois casos de uso principais a seguir.
 
-[bindings later](#container-bindings)).
+- [Bindings later](#container-bindings).
 - Resolva e injete dependências automaticamente em um construtor de classe ou métodos de classe.
 
 Vamos começar injetando dependências em uma classe.
@@ -23,7 +23,8 @@ No exemplo a seguir, criamos uma classe `EchoService` e injetamos uma instância
 Comece criando a classe `EchoService` dentro da pasta `app/services`.
 
 ```ts
-// title: app/services/echo_service.ts
+// app/services/echo_service.ts
+
 export default class EchoService {
   respond() {
     return 'hello'
@@ -38,7 +39,8 @@ Crie um novo controlador HTTP dentro da pasta `app/controllers`. Como alternativ
 Importe o `EchoService` no arquivo do controlador e aceite-o como uma dependência do construtor.
 
 ```ts
-// title: app/controllers/home_controller.ts
+// app/controllers/home_controller.ts
+
 import EchoService from '#services/echo_service'
 
 export default class HomeController {
@@ -57,13 +59,9 @@ Para fazer a resolução automática de dependência funcionar, teremos que usar
 
 ```ts
 import EchoService from '#services/echo_service'
-// insert-start
-import { inject } from '@adonisjs/core'
-// insert-end
+import { inject } from '@adonisjs/core' // [!code ++]
 
-// insert-start
-@inject()
-// insert-end
+@inject() // [!code ++]
 export default class HomeController {
   constructor(protected echo: EchoService) {
   }
@@ -89,20 +87,15 @@ No momento, a classe `EchoService` não tem dependências, e usar o contêiner p
 Vamos atualizar o construtor da classe e fazê-lo aceitar uma instância da classe `HttpContext`.
 
 ```ts
-// title: app/services/echo_service.ts
-// insert-start
-import { inject } from '@adonisjs/core'
-import { HttpContext } from '@adonisjs/core/http'
-// insert-end
+// app/services/echo_service.ts
 
-// insert-start
-@inject()
-// insert-end
+import { inject } from '@adonisjs/core' // [!code ++]
+import { HttpContext } from '@adonisjs/core/http' // [!code ++]
+
+@inject() // [!code ++]
 export default class EchoService {
-  // insert-start
-  constructor(protected ctx: HttpContext) {
-  }
-  // insert-end
+  constructor(protected ctx: HttpContext) { // [!code ++]
+  } // [!code ++]
 
   respond() {
     return `Hello from ${this.ctx.request.url()}`
@@ -114,7 +107,7 @@ Novamente, precisamos colocar nosso espião (o decorador `@inject`) na classe `E
 
 Voilá, é tudo o que precisamos fazer. Sem alterar uma única linha de código dentro do controlador, você pode executar novamente o código, e a classe `EchoService` receberá uma instância da classe `HttpContext`.
 
-:::note
+::: info NOTA
 A melhor coisa sobre usar o contêiner é que você pode ter dependências profundamente aninhadas, e o contêiner pode resolver a árvore inteira para você. O único problema é usar o decorador `@inject`.
 :::
 
@@ -124,30 +117,25 @@ A injeção de método é usada para injetar dependências dentro de um método 
 
 Vamos continuar com nosso exemplo anterior e mover a dependência `EchoService` do construtor `HomeController` para o método `handle`.
 
-:::note
+::: info NOTA
 Ao usar injeção de método dentro de um controlador, lembre-se de que o primeiro parâmetro recebe um valor fixo (ou seja, o contexto HTTP) e o restante dos parâmetros são resolvidos usando o contêiner.
 :::
 
 ```ts
-// title: app/controllers/home_controller.ts
+// app/controllers/home_controller.ts
+
 import EchoService from '#services/echo_service'
 import { inject } from '@adonisjs/core'
 
-// delete-start
-@inject()
-// delete-end
+@inject() // [!code --]
 export default class HomeController {
-  // delete-start
-  constructor(private echo: EchoService) {
-  }
-  // delete-end
+  constructor(private echo: EchoService) {  // [!code --]
+  } // [!code --]
   
-  // insert-start
-  @inject()
-  handle(ctx, echo: EchoService) {
-    return echo.respond()
-  }
-  // insert-end
+  @inject() // [!code ++]
+  handle(ctx, echo: EchoService) {  // [!code ++]
+    return echo.respond() // [!code ++]
+  } // [!code ++]
 }
 ```
 
@@ -182,8 +170,8 @@ class SomeService {
 }
 
 /**
- * Same as making a new instance of the class, but
- * will have the benefit of automatic DI
+ * O mesmo que criar uma nova instância da classe, mas
+ * terá o benefício de DI automático
  */
 const service = await app.container.make(SomeService)
 
@@ -209,8 +197,8 @@ class SomeService {
 const service = await app.container.make(SomeService)
 
 /**
- * An instance of Echo class will get passed
- * the run method
+ * Uma instância da classe Echo será passada
+ * o método run
  */
 await app.container.call(service, 'run')
 ```
@@ -240,7 +228,7 @@ app.container.bind('cache', function () {
 })
 
 const cache = await app.container.make('cache')
-console.log(cache.get('foo')) // returns foo!
+console.log(cache.get('foo')) // retorna 'foo'!
 ```
 
 ### Quando usar ligações de contêiner?
@@ -254,7 +242,7 @@ A seguir estão alguns exemplos que usam vinculações de contêiner dentro dos 
 [Registrando BodyParserMiddleware dentro do contêiner](https://github.com/adonisjs/core/blob/main/providers/app_provider.ts#L134-L139): Como a classe de middleware requer configuração armazenada dentro do arquivo `config/bodyparser.ts`, não há como a injeção automática de dependência funcionar. Nesse caso, construímos manualmente a instância da classe de middleware registrando-a como uma vinculação.
 [Registrando o serviço de criptografia como um singleton](https://github.com/adonisjs/core/blob/main/providers/app_provider.ts#L97-L100): A classe Encryption requer o `appKey` armazenado dentro do arquivo `config/app.ts`, portanto, usamos a vinculação de contêiner como uma ponte para ler o `appKey` do aplicativo do usuário e configurar uma instância singleton da classe Encryption.
 
-:::importante
+::: danger ATENÇÃO
 O conceito de vinculações de contêiner não é comumente usado no ecossistema JavaScript. Portanto, sinta-se à vontade para [entrar em nossa comunidade Discord](https://discord.gg/vDcEjq6) para esclarecer suas dúvidas.
 :::
 
@@ -328,7 +316,7 @@ Em seu aplicativo AdonisJS, você pode escrever o bloco de código acima dentro 
 
 O contêiner permite que você crie uma camada de abstração para seu aplicativo. Você pode definir uma ligação para uma interface e resolvê-la para uma implementação concreta.
 
-:::note
+::: info NOTA
 Este método é útil quando você deseja aplicar a Arquitetura Hexagonal, também conhecida como princípios de Porta e Adaptador, ao seu aplicativo.
 :::
 
@@ -348,11 +336,11 @@ import { PaymentService } from '#contracts/payment_service'
 
 export class StripePaymentService implements PaymentService {
   async charge(amount: number) {
-    // Charge the amount using Stripe
+    // Cobrar o valor usando Stripe
   }
 
   async refund(amount: number) {
-    // Refund the amount using Stripe
+    // Reembolsar o valor usando Stripe
   }
 }
 ```
@@ -360,7 +348,8 @@ export class StripePaymentService implements PaymentService {
 Agora, você pode registrar a interface `PaymentService` e a implementação concreta `StripePaymentService` dentro do contêiner dentro do seu `AppProvider`.
 
 ```ts
-// title: providers/app_provider.ts
+// providers/app_provider.ts
+
 import { PaymentService } from '#contracts/payment_service'
 
 export default class AppProvider {
@@ -432,22 +421,18 @@ O método `container.swap` aceita o construtor de classe que você deseja trocar
 
 ```ts
 import UserService from '#services/user_service'
-// insert-start
-import app from '@adonisjs/core/services/app'
-// insert-end
+import app from '@adonisjs/core/services/app' // [!code ++]
 
 test('get all users', async ({ client }) => {
-  // insert-start
-  class FakeService extends UserService {
-    all() {
-      return [{ id: 1, username: 'virk' }]
-    }
-  }
-    
-  app.container.swap(UserService, () => {
-    return new FakeService()
-  })
-  // insert-end
+  class FakeService extends UserService {     // [!code ++]
+    all() {                                   // [!code ++]
+      return [{ id: 1, username: 'virk' }]    // [!code ++]
+    }                                         // [!code ++]
+  }                                           // [!code ++]
+
+  app.container.swap(UserService, () => {     // [!code ++]
+    return new FakeService()                  // [!code ++]
+  })                                          // [!code ++]
   
   const response = await client.get('users')
   response.assertBody({
@@ -461,10 +446,10 @@ Depois que uma troca for definida, o contêiner a usará em vez da classe real. 
 ```ts
 app.container.restore(UserService)
 
-// Restore UserService and PostService
+// Restaurar UserService e PostService
 app.container.restoreAll([UserService, PostService])
 
-// Restore all
+// Restaurar todos
 app.container.restoreAll()
 ```
 
@@ -558,5 +543,5 @@ emitter.on('container_binding:resolved', (event) => {
 
 ## Veja também
 
-[O arquivo README do contêiner](https://github.com/adonisjs/fold/blob/develop/README.md) abrange a API do contêiner de maneira agnóstica ao framework.
-[Por que você precisa de um contêiner IoC?](https://github.com/thetutlage/meta/discussions/4) Neste artigo, o criador do framework compartilha seu raciocínio para usar o contêiner IoC.
+* [O arquivo README do contêiner](https://github.com/adonisjs/fold/blob/develop/README.md) abrange a API do contêiner de maneira agnóstica ao framework.
+* [Por que você precisa de um contêiner IoC?](https://github.com/thetutlage/meta/discussions/4) Neste artigo, o criador do framework compartilha seu raciocínio para usar o contêiner IoC.

@@ -21,7 +21,6 @@ export default [
         }
       ],
     },
-
     {
       text: 'Getting started',
       collapsed: true,

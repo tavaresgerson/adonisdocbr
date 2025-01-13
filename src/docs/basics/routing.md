@@ -9,7 +9,8 @@ Os usuários do seu site ou aplicativo da web podem visitar diferentes URLs como
 No AdonisJS, as rotas são definidas dentro do arquivo `start/routes.ts`. Uma rota é uma combinação de um **padrão de URI** e um **manipulador** para manipular solicitações para essa rota específica. Por exemplo:
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import router from '@adonisjs/core/services/router'
 
 router.get('/', () => {
@@ -45,7 +46,8 @@ Os parâmetros de rota permitem que você defina URIs que podem aceitar valores 
 Um parâmetro de rota sempre começa com dois pontos `:`, seguido pelo nome do parâmetro.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import router from '@adonisjs/core/services/router'
 
 router.get('/posts/:id', ({ params }) => {
@@ -62,7 +64,8 @@ router.get('/posts/:id', ({ params }) => {
 Um URI também pode aceitar múltiplos parâmetros. Cada parâmetro deve ter um nome exclusivo.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import router from '@adonisjs/core/services/router'
 
 router.get('/posts/:id/comments/:commentId', ({ params }) => {
@@ -81,7 +84,8 @@ router.get('/posts/:id/comments/:commentId', ({ params }) => {
 Os parâmetros de rota também podem ser opcionais, acrescentando um ponto de interrogação `?` no final do nome do parâmetro. Os parâmetros opcionais devem vir depois dos parâmetros obrigatórios.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import router from '@adonisjs/core/services/router'
 
 router.get('/posts/:id?', ({ params }) => {
@@ -98,7 +102,8 @@ router.get('/posts/:id?', ({ params }) => {
 Para capturar todos os segmentos de um URI, você pode definir um parâmetro curinga. O parâmetro curinga é especificado usando uma palavra-chave especial `*` e deve ser definido na última posição.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import router from '@adonisjs/core/services/router'
 
 router.get('/docs/:category/*', ({ params }) => {
@@ -107,10 +112,10 @@ router.get('/docs/:category/*', ({ params }) => {
 })
 ```
 
-| URL                  | Category | Wildcard param   |
-|----------------------|----------|------------------|
-| `/docs/http/context` | `http`   | `['context']`    |
-| `/docs/api/sql/orm`  | `api`    | `['sql', 'orm']` |
+| URL                  | Categoria  | Parâmetro curinga |
+|----------------------|------------|-------------------|
+| `/docs/http/context` | `http`     | `['context']`     |
+| `/docs/api/sql/orm`  | `api`      | `['sql', 'orm']`  |
 
 ### Correspondentes de parâmetros
 
@@ -121,7 +126,8 @@ Um correspondente é registrado encadeando o método `where()`. O primeiro argum
 No exemplo a seguir, definimos um regex para validar o id como um número válido. A rota será ignorada caso a validação falhe.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import router from '@adonisjs/core/services/router'
 
 router
@@ -134,7 +140,8 @@ router
 Juntamente com o regex `match`, você também pode definir uma função `cast` para converter o valor do parâmetro em seu tipo de dados correto. Neste exemplo, podemos converter o id em um número.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import router from '@adonisjs/core/services/router'
 
 router
@@ -152,16 +159,17 @@ router
 O roteador é fornecido com os seguintes métodos auxiliares para tipos de dados comumente usados.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import router from '@adonisjs/core/services/router'
 
-// Validate id to be numeric + cast to number data type
+// Validar id para ser numérico + converter para tipo de dados numérico
 router.where('id', router.matchers.number())
 
-// Validate id to be a valid UUID
+// Validar id para ser um UUID válido
 router.where('id', router.matchers.uuid())
 
-// Validate slug to match a given slug regex: regexr.com/64su0
+// Validar slug para corresponder a um regex slug fornecido: regexr.com/64su0
 router.where('slug', router.matchers.slug())
 ```
 
@@ -170,15 +178,16 @@ router.where('slug', router.matchers.slug())
 Os correspondentes de rota podem ser definidos globalmente na instância do roteador. A menos que explicitamente substituído no nível da rota, um correspondente global é aplicado em todas as rotas.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import router from '@adonisjs/core/services/router'
 
-// Global matcher
+// Correspondente global
 router.where('id', router.matchers.uuid())
 
 router
   .get('/posts/:id', () => {})
-  // Overridden at route level
+  // Substituído no nível de rota
   .where('id', router.matchers.number())
 ```
 
@@ -187,36 +196,39 @@ router
 O método `router.get()` cria uma rota que responde ao [método HTTP GET](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET). Da mesma forma, você pode usar os seguintes métodos para registrar rotas para diferentes métodos HTTP.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import router from '@adonisjs/core/services/router'
 
-// GET method
+// Método GET
 router.get('users', () => {})
 
-// POST method
+// Método POST
 router.post('users', () => {})
 
-// PUT method
+// Método PUT
 router.put('users/:id', () => {})
 
-// PATCH method
+// Método PATCH
 router.patch('users/:id', () => {})
 
-// DELETE method
+// Método DELETE
 router.delete('users/:id', () => {})
 ```
 
 Você pode usar o método `router.any()` para criar uma rota que responde a todos os métodos HTTP padrão.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router.any('reports', () => {})
 ```
 
 Finalmente, você pode criar uma rota para métodos HTTP personalizados usando o método `router.route()`.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router.route('/', ['TRACE'], () => {})
 ```
 
@@ -227,13 +239,14 @@ O manipulador de rota manipula a solicitação retornando uma resposta ou gerand
 Um manipulador pode ser um retorno de chamada em linha (como visto neste guia) ou uma referência a um método de controlador.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router.post('users', () => {
-  // Do something
+  // Faça algo
 })
 ```
 
-:::note
+::: info NOTA
 Os manipuladores de rota podem ser funções assíncronas, e o AdonisJS manipulará a resolução de promessa automaticamente.
 :::
 
@@ -242,7 +255,8 @@ No exemplo a seguir, importamos a classe `UsersController` e a vinculamos à rot
 Veja também: Guia dedicado em [controladores](./controllers.md).
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 const UsersController = () => import('#controllers/users_controller')
 
 router.post('users', [UsersController, 'store'])
@@ -255,7 +269,8 @@ Você pode definir um middleware em uma rota encadeando o método `use()`. O mé
 A seguir está um exemplo mínimo de definição de um middleware de rota. Recomendamos a leitura do [guia dedicado em middleware](./middleware.md) para explorar todas as opções disponíveis e o fluxo de execução do middleware.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router
   .get('posts', () => {
     console.log('Inside route handler')
@@ -275,7 +290,8 @@ Cada rota tem um identificador exclusivo que você pode usar para referenciar a 
 Por padrão, o padrão de rota é o identificador de rota. No entanto, você pode atribuir um nome exclusivo e memorável à rota usando o método `route.as`.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router.get('users', () => {}).as('users.index')
 
 router.post('users', () => {}).as('users.store')
@@ -303,11 +319,12 @@ const url = router.builder().make('users.delete', [user.id])
 Grupos de rotas oferecem uma camada de conveniência para configuração em massa aninhada dentro de um grupo. Você pode criar um grupo de rotas usando o método `router.group`.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router.group(() => {
   /**
-   * All routes registered inside the callback
-   * are part of the surrounding group
+   * Todas as rotas registradas dentro do retorno de chamada
+   * fazem parte do grupo circundante
    */
   router.get('users', () => {})
   router.post('users', () => {})
@@ -317,7 +334,8 @@ router.group(() => {
 Grupos de rotas podem ser aninhados uns dentro dos outros, e o AdonisJS mesclará ou substituirá propriedades com base no comportamento da configuração aplicada.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router.group(() => {
   router.get('posts', () => {})
 
@@ -332,7 +350,8 @@ router.group(() => {
 O padrão URI de rotas dentro de um grupo pode ser prefixado usando o método `group.prefix`. O exemplo a seguir criará rotas para os padrões URI `/api/users` e `/api/payments`.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router
   .group(() => {
     router.get('users', () => {})
@@ -344,7 +363,8 @@ router
 No caso de grupos aninhados, o prefixo será aplicado do grupo externo para o interno. O exemplo a seguir criará rotas para os padrões URI `/api/v1/users` e `/api/v1/payments`.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router
   .group(() => {
     router
@@ -361,17 +381,18 @@ router
 
 Semelhante a prefixar o padrão de rota, você também pode prefixar os nomes de rota dentro de um grupo usando o método `group.as`.
 
-:::note
+::: info NOTA
 As rotas dentro de um grupo devem ter nomes antes que você possa prefixá-las.
 :::
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router
   .group(() => {
     route
       .get('users', () => {})
-      .as('users.index') // final name - api.users.index
+      .as('users.index') // nome final - api.users.index
   })
   .prefix('api')
   .as('api')
@@ -380,7 +401,8 @@ router
 No caso de grupos aninhados, os nomes serão prefixados do grupo externo para o interno.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router
   .group(() => {
     route
@@ -408,7 +430,8 @@ No caso de grupos aninhados, o middleware do grupo mais externo será executado 
 Veja também: [Guia de middleware](./middleware.md)
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router
   .group(() => {
     router
@@ -434,7 +457,8 @@ No exemplo a seguir, definimos dois conjuntos de rotas.
 - Rotas que são correspondidas quando o domínio/nome de host corresponde ao valor do nome de domínio predefinido.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router.group(() => {
   router.get('/users', () => {})
   router.get('/payments', () => {})
@@ -455,7 +479,8 @@ Você pode especificar subdomínios dinâmicos usando o método `group.domain`. 
 No exemplo a seguir, o segmento `tenant` aceita qualquer subdomínio, e você pode acessar seu valor usando o objeto `HttpContext.subdomains`.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router
  .group(() => {
    router.get('users', ({ subdomains }) => {
@@ -471,17 +496,20 @@ Você pode usar o método `router.on().render()` se tiver um manipulador de rota
 
 O método render aceita o nome do modelo edge a ser renderizado. Opcionalmente, você pode passar os dados do modelo como o segundo argumento.
 
-:::warning
+::: warning ATENÇÃO
 O método `route.on().render()` só existe quando você configurou o [provedor de serviços Edge](../views-and-templates/edgejs.md)
 :::
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import router from '@adonisjs/core/services/router'
 
 router.on('/').render('home')
-router.on('about').render('about', { title: 'About us' })
-router.on('contact').render('contact', { title: 'Contact us' })
+router.on('about').render('about', { 'About us' })
+
+router.on('contact').render('contact', { 'Contact us' })
+
 ```
 
 ## Renderizar a visualização Inertia de uma rota
@@ -490,17 +518,20 @@ Se você estiver usando o adaptador Inertia.js, poderá usar o método `router.o
 
 O método renderInertia aceita o nome do componente Inertia a ser renderizado. Opcionalmente, você pode passar os dados do componente como o segundo argumento.
 
-:::warning
+::: warning ATENÇÃO
 O método `route.on().renderInertia()` só existe quando você configurou o [provedor de serviços Inertia](../views-and-templates/inertia.md)
 :::
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import router from '@adonisjs/core/services/router'
 
 router.on('/').renderInertia('home')
-router.on('about').renderInertia('about', { title: 'About us' })
-router.on('contact').renderInertia('contact', { title: 'Contact us' })
+router.on('about').renderInertia('about', { 'About us' })
+
+router.on('contact').renderInertia('contact', { 'Contact us' })
+
 ```
 
 ## Redirecionar de uma rota
@@ -510,13 +541,14 @@ Se você estiver definindo um manipulador de rota para redirecionar a solicitaç
 O método `redirect` aceita o identificador de rota. Enquanto o método `redirectToPath` aceita um caminho/URL estático.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import router from '@adonisjs/core/services/router'
 
-// Redirect to a route
+// Redirecionar para uma rota
 router.on('/posts').redirect('/articles')
 
-// Redirect to a URL
+// Redirecionar para uma URL
 router.on('/posts').redirectToPath('https://medium.com/my-blog')
 ```
 
@@ -525,7 +557,8 @@ router.on('/posts').redirectToPath('https://medium.com/my-blog')
 No exemplo a seguir, o valor de `id` da solicitação original será usado para construir a rota `/articles/:id`. Então, se uma requisição vier para `/posts/20`, ela será redirecionada para `/articles/20`.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import router from '@adonisjs/core/services/router'
 
 router.on('/posts/:id').redirect('/articles/:id')
@@ -536,10 +569,11 @@ router.on('/posts/:id').redirect('/articles/:id')
 Você também pode especificar os parâmetros de rota explicitamente como o segundo argumento. Neste caso, os parâmetros da requisição atual serão ignorados.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import router from '@adonisjs/core/services/router'
 
-// Always redirect to /articles/1
+// Sempre redirecionar para /articles/1
 router.on('/posts/:id').redirect('/articles/:id', {
   id: 1
 })
@@ -550,7 +584,8 @@ router.on('/posts/:id').redirect('/articles/:id', {
 A string de consulta para a URL de redirecionamento pode ser definida dentro do objeto options.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import router from '@adonisjs/core/services/router'
 
 router.on('/posts').redirect('/articles', {
@@ -566,7 +601,8 @@ router.on('/posts').redirect('/articles', {
 A rota da requisição atual pode ser acessada usando a propriedade [`HttpContext.route`](../concepts/http_context.md#http-context-properties). Ela inclui o **padrão de rota**, **nome**, **referência ao seu armazenamento de middleware** e **referência ao manipulador de rota**.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router.get('payments', ({ route }) => {
   console.log(route)
 })
@@ -575,7 +611,8 @@ router.get('payments', ({ route }) => {
 Você também pode verificar se a solicitação atual é para uma rota específica ou não usando o método `request.matchesRoute`. O método aceita o padrão URI da rota ou o nome da rota.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router.get('/posts/:id', ({ request }) => {
   if (request.matchesRoute('/posts/:id')) {
   }
@@ -583,7 +620,8 @@ router.get('/posts/:id', ({ request }) => {
 ```
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router
   .get('/posts/:id', ({ request }) => {
     if (request.matchesRoute('posts.show')) {
@@ -596,7 +634,7 @@ Você também pode corresponder a várias rotas. O método retornará true assim
 
 ```ts
 if (request.matchesRoute(['/posts/:id', '/posts/:id/comments'])) {
-  // do something
+  // faça alguma coisa
 }
 ```
 
@@ -609,7 +647,8 @@ Se você tiver duas rotas semelhantes, primeiro deve registrar a rota mais espec
 No exemplo a seguir, a solicitação para a URL `/posts/archived` será tratada pela primeira rota (ou seja, `/posts/:id` ) porque o parâmetro dinâmico `id` capturará o valor `archived`.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import router from '@adonisjs/core/services/router'
 
 router.get('posts/:id', () => {})
@@ -619,7 +658,8 @@ router.get('posts/archived', () => {})
 Esse comportamento pode ser corrigido reordenando as rotas colocando a rota mais específica antes da rota com um parâmetro dinâmico.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router.get('posts/archived', () => {})
 router.get('posts/:id', () => {})
 ```
@@ -632,6 +672,7 @@ Para exibir uma página 404 para o usuário, você pode capturar a exceção `E_
 
 ```ts
 // app/exceptions/handler.ts
+
 import { errors } from '@adonisjs/core'
 import { HttpContext, ExceptionHandler } from '@adonisjs/core/http'
 
@@ -653,7 +694,8 @@ Você pode usar o construtor de URL para criar URLs para rotas predefinidas em s
 O método `router.builder` cria uma instância da classe [URL builder](https://github.com/adonisjs/http-server/blob/main/src/router/lookup_store/url_builder.ts), e você pode usar a API fluente do builder para procurar uma rota e criar uma URL para ela.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import router from '@adonisjs/core/services/router'
 const PostsController = () => import('#controllers/posts_controller')
 
@@ -665,7 +707,8 @@ router
 Você pode gerar a URL para a rota `posts.show` da seguinte forma.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import router from '@adonisjs/core/services/router'
 
 router
@@ -682,7 +725,8 @@ router
 Os parâmetros podem ser especificados como uma matriz de argumentos posicionais. Ou você pode defini-los como um par chave-valor.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router
  .builder()
  .params({ id: 1 })
@@ -694,7 +738,8 @@ router
 Os parâmetros de consulta podem ser definidos usando o método `builder.qs`. O método aceita um objeto de par chave-valor e o serializa para uma string de consulta.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router
   .builder()
   .qs({ page: 1, sort: 'asc' })
@@ -704,7 +749,8 @@ router
 A sequência de consulta é serializada usando o pacote npm [qs](https://www.npmjs.com/package/qs). Você pode [configurar suas configurações](https://github.com/adonisjs/http-server/blob/main/src/define_config.ts#L49-L54) dentro do arquivo `config/app.ts` sob o objeto `http`.
 
 ```ts
-// title: config/app.js
+// config/app.js
+
 http: defineConfig({
   qs: {
     stringify: {
@@ -719,7 +765,8 @@ http: defineConfig({
 Você pode prefixar uma URL base para a saída usando o método `builder.prefixUrl`.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router
   .builder()
   .prefixUrl('https://blog.adonisjs.com')
@@ -740,7 +787,8 @@ Por exemplo, você tem uma URL para cancelar a assinatura de usuários do seu bo
 Para evitar que alguém altere o ID do usuário de `231` para outra coisa, você pode assinar esta URL e verificar a assinatura ao lidar com solicitações para esta rota.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router.get('unsubscribe/:id', ({ request, response }) => {
   if (!request.hasValidSignature()) {
     return response.badRequest('Invalid or expired URL')
@@ -752,32 +800,30 @@ router.get('unsubscribe/:id', ({ request, response }) => {
 
 Você pode usar o método `makeSigned` para criar uma URL assinada.
 
-```ts
-// title: start/routes.ts
+```ts {7}
+// start/routes.ts
+
 router
   .builder()
   .prefixUrl('https://blog.adonisjs.com')
   .params({ id: 231 })
-  // highlight-start
   .makeSigned('unsubscribe')
-  // highlight-end
 ```
 
 #### Expiração de URL assinada
 
 Você pode gerar URLs assinadas que expiram após uma duração determinada usando a opção `expiresIn`. O valor pode ser um número em milissegundos ou uma string de expressão de tempo.
 
-```ts
-// title: start/routes.ts
+```ts {7-9}
+// start/routes.ts
+
 router
   .builder()
   .prefixUrl('https://blog.adonisjs.com')
   .params({ id: 231 })
-  // highlight-start
   .makeSigned('unsubscribe', {
     expiresIn: '3 days'
   })
-  // highlight-end
 ```
 
 ### Desabilitando a pesquisa de rota
@@ -787,7 +833,8 @@ O construtor de URL executa uma pesquisa de rota com o identificador de rota for
 Se você quiser criar uma URL para rotas definidas fora do seu aplicativo AdonisJS, você pode desabilitar a pesquisa de rota e fornecer o padrão de rota aos métodos `make` e `makeSigned`.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router
   .builder()
   .prefixUrl('https://your-app.com')
@@ -800,7 +847,8 @@ router
 Você pode criar URLs para rotas registradas em um domínio específico usando o método `router.builderForDomain`. O método aceita o padrão de rota que você usou no momento da definição das rotas.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import router from '@adonisjs/core/services/router'
 const PostsController = () => import('#controllers/posts_controller')
 
@@ -814,7 +862,8 @@ router.group(() => {
 Você pode criar URL para a rota `posts.show` no domínio `blog.adonisjs.com` da seguinte forma.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 router
   .builderForDomain('blog.adonisjs.com')
   .params({ id: 1 })
@@ -866,7 +915,8 @@ Router.getter('propertyName', function (this: Router) {
 ```
 
 ```ts
-// title: types/http.ts
+// types/http.ts
+
 declare module '@adonisjs/core/http' {
   export interface Router {
     property: valueType
@@ -890,7 +940,8 @@ Router.getter('property', function (this: Route) {
 ```
 
 ```ts
-// title: types/http.ts
+// types/http.ts
+
 declare module '@adonisjs/core/http' {
   export interface Route {
     property: valueType
@@ -916,7 +967,8 @@ RouteGroup.getter('property', function (this: RouteGroup) {
 ```
 
 ```ts
-// title: types/http.ts
+// types/http.ts
+
 declare module '@adonisjs/core/http' {
   export interface RouteGroup {
     property: valueType
@@ -942,7 +994,8 @@ RouteResource.getter('property', function (this: RouteResource) {
 ```
 
 ```ts
-// title: types/http.ts
+// types/http.ts
+
 declare module '@adonisjs/core/http' {
   export interface RouteResource {
     property: valueType
@@ -968,7 +1021,8 @@ BriskRouter.getter('property', function (this: BriskRoute) {
 ```
 
 ```ts
-// title: types/http.ts
+// types/http.ts
+
 declare module '@adonisjs/core/http' {
   export interface BriskRoute {
     property: valueType

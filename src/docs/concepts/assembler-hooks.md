@@ -44,7 +44,8 @@ Recomendamos usar importações dinâmicas para carregar hooks. Isso garante que
 Um hook é apenas uma função simples. Vamos dar um exemplo de um hook que deve executar uma tarefa de build personalizada.
 
 ```ts
-// title: hooks/on_build_starting.ts
+// hooks/on_build_starting.ts
+
 import type { AssemblerHookHandler } from '@adonisjs/core/types/app'
 
 const buildHook: AssemblerHookHandler = async ({ logger }) => {
@@ -61,7 +62,8 @@ Observe que o hook deve ser exportado por padrão.
 Uma vez que este gancho tenha sido definido, tudo o que você precisa fazer é adicioná-lo ao arquivo `adonisrc.ts` assim:
 
 ```ts
-// title: adonisrc.ts
+// adonisrc.ts
+
 import { defineConfig } from '@adonisjs/core/app'
 
 export default defineConfig({

@@ -8,7 +8,7 @@ Aplicativos escritos em TypeScript devem ser compilados em JavaScript antes que 
 
 A compilação de arquivos de origem do TypeScript pode ser realizada usando muitas ferramentas de construção diferentes. No entanto, com o AdonisJS, seguimos a abordagem mais direta e usamos as seguintes ferramentas testadas pelo tempo.
 
-:::note
+::: info NOTA
 Todas as ferramentas mencionadas abaixo vêm pré-instaladas como dependências de desenvolvimento com kits iniciais oficiais.
 :::
 
@@ -41,17 +41,20 @@ node --loader="ts-node/esm" bin/server.js
 Você pode repetir esse processo para outros arquivos TypeScript também. Por exemplo:
 
 ```sh
-// title: Run tests
+# Executar testes
+
 node --loader ts-node/esm bin/test.js
 ```
 
 ```sh
-// title: Run ace commands
+# Executar comandos ace
+
 node --loader ts-node/esm bin/console.js
 ```
 
 ```sh
-// title: Run some other TypeScript file
+# Executar algum outro arquivo TypeScript
+
 node --loader ts-node/esm path/to/file.js
 ```
 
@@ -97,11 +100,11 @@ O build de produção do seu aplicativo AdonisJS é criado usando o comando `nod
 - Remova a pasta `./build` existente (se houver).
 - Reescreva o arquivo `ace.js` **do zero** para remover o carregador `ts-node/esm`.
 - Compile os ativos do frontend usando o Vite (se configurado).
-[`tsc`](https://www.typescriptlang.org/docs/handbook/compiler-options.html).
-[`metaFiles`](../concepts/adonisrc_file.md#metafiles) array para a pasta `./build`.
+- [`tsc`](https://www.typescriptlang.org/docs/handbook/compiler-options.html).
+- [`metaFiles`](../concepts/adonisrc_file.md#metafiles) array para a pasta `./build`.
 - Copie os arquivos `package.json` e `package-lock.json/yarn.lock` para a pasta `./build`.
 
-:::warning
+::: warning ATENÇÃO
 Quaisquer modificações no arquivo `ace.js` serão perdidas durante o processo de build, pois o arquivo é reescrito do zero. Se você quiser ter algum código adicional que seja executado antes do Ace iniciar, você deve fazê-lo dentro do arquivo `bin/console.ts`.
 :::
 
@@ -116,10 +119,10 @@ Depois que o build for criado, você pode `cd` para a pasta `build`, instalar de
 ```sh
 cd build
 
-# Install production dependencies
+# Instalar dependências de produção
 npm i --omit=dev
 
-# Run server
+# Executar servidor
 node bin/server.js
 ```
 

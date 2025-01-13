@@ -49,14 +49,13 @@ Além disso, é essencial definir as rotas, o middleware e o manipulador de exce
 ## Ciclo de vida da solicitação HTTP
 Agora que temos um servidor HTTP escutando solicitações de entrada. Vamos ver como o AdonisJS lida com uma determinada solicitação HTTP.
 
-:::note
-**Veja também:**
+::: info **Veja também:**
 
-[Fluxo de execução do middleware](../basics/middleware.md#middleware-execution-flow)\
-[Middleware e tratamento de exceções](../basics/middleware.md#middleware-and-exception-handling)
+* [Fluxo de execução do middleware](../basics/middleware.md#middleware-execution-flow)
+* [Middleware e tratamento de exceções](../basics/middleware.md#middleware-and-exception-handling)
 :::
 
-### Criando o HttpContext
+### Criando o `HttpContext`
 
 Como primeira etapa, o módulo do servidor cria uma instância da classe [HttpContext](./http_context.md) e a passa como uma referência ao middleware, aos manipuladores de rota e ao manipulador de exceção global.
 

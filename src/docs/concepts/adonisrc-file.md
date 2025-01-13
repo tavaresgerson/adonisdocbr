@@ -6,7 +6,7 @@ summary: 'O arquivo `adonisrc.ts` é usado para configurar as configurações do
 
 O arquivo `adonisrc.ts` é usado para configurar as configurações do espaço de trabalho do seu aplicativo. Neste arquivo, você pode [registrar provedores](#providers), definir [aliases de comando](#commandsaliases), especificar os [arquivos a serem copiados](#metafiles) para a compilação de produção e muito mais.
 
-:::warning
+::: warning ATENÇÃO
 O arquivo `adonisrc.ts` é importado por ferramentas diferentes do seu aplicativo AdonisJS. Portanto, você não deve escrever nenhum código específico do aplicativo ou condicionais específicos do ambiente neste arquivo.
 :::
 
@@ -73,7 +73,7 @@ Você pode definir o ambiente no qual importar o arquivo. As opções válidas s
 - O ambiente `repl` se refere ao processo iniciado usando o comando `node ace repl`.
 - Finalmente, o ambiente `test` se refere ao processo iniciado para executar os testes.
 
-:::note
+::: info NOTA
 Você pode criar e registrar um arquivo de pré-carregamento usando o comando `node ace make:preload`.
 :::
 
@@ -106,7 +106,7 @@ A matriz `metaFiles` é uma coleção de arquivos que você deseja copiar para a
 
 Esses são arquivos não TypeScript/JavaScript que devem existir na compilação de produção para que seu aplicativo funcione. Por exemplo, os modelos Edge, arquivos de idioma i18n, etc.
 
-[padrão glob](https://github.com/sindresorhus/globby#globbing-patterns) para encontrar arquivos correspondentes.
+* [padrão glob](https://github.com/sindresorhus/globby#globbing-patterns) para encontrar arquivos correspondentes.
 - `reloadServer`: Recarrega o servidor de desenvolvimento quando os arquivos correspondentes mudam.
 
 ```ts
@@ -202,7 +202,7 @@ Por padrão, os provedores são carregados em todos os ambientes. No entanto, vo
 - O ambiente `repl` se refere ao processo iniciado usando o comando `node ace repl`.
 - Finalmente, o ambiente `test` se refere ao processo iniciado para executar os testes.
 
-:::note
+::: info NOTA
 Os provedores são carregados na mesma ordem em que são registrados dentro da matriz `providers`.
 :::
 

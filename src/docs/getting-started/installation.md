@@ -8,13 +8,13 @@ Antes de criar um novo aplicativo, você deve garantir que tenha o Node.js e o n
 
 Você pode instalar o Node.js usando os [instaladores oficiais](https://nodejs.org/en/download/) ou [Volta](https://docs.volta.sh/guide/getting-started). O Volta é um gerenciador de pacotes multiplataforma que instala e executa várias versões do Node.js no seu computador.
 
-```sh
-// title: Verify Node.js version
+```bash
+# Verifique a versão do Node.js
 node -v
 # v22.0.0
 ```
 
-:::dica
+::: tip DICA
 **Você é mais um aprendiz visual?** - Confira a série de screencasts gratuitos [Vamos aprender AdonisJS 6](https://adocasts.com/series/lets-learn-adonisjs-6) dos nossos amigos da Adocasts.
 :::
 
@@ -24,7 +24,7 @@ Você pode criar um novo projeto usando [npm init](https://docs.npmjs.com/cli/v7
 
 Você pode personalizar a saída inicial do projeto usando um dos seguintes sinalizadores CLI.
 
-[starter kit](#starter-kits) para o projeto. Você pode escolher entre **web**, **api**, **slim** ou **inertia**.
+* [starter kit](#starter-kits) para o projeto. Você pode escolher entre **web**, **api**, **slim** ou **inertia**.
 
 - `--db`: Especifique o dialeto de banco de dados de sua escolha. Você pode escolher entre **sqlite**, **postgres**, **mysql** ou **mssql**.
 
@@ -32,10 +32,9 @@ Você pode personalizar a saída inicial do projeto usando um dos seguintes sina
 
 - `--auth-guard`: Especifique o guarda de autenticação de sua escolha. Você pode escolher entre **session**, **access_tokens** ou **basic_auth**.
 
-:::codegroup
+::: code-group
 
-```sh
-// title: npm
+```sh [npm]
 npm init adonisjs@latest hello-world
 ```
 
@@ -44,16 +43,16 @@ npm init adonisjs@latest hello-world
 Ao passar sinalizadores CLI usando o comando `npm init`, certifique-se de usar [traços duplos duas vezes](https://stackoverflow.com/questions/43046885/what-does-do-when-running-an-npm-command). Caso contrário, `npm init` não passará os sinalizadores para o pacote inicializador `create-adonisjs`. Por exemplo:
 
 ```sh
-# Create a project and get prompted for all options
+# Crie um projeto e seja solicitado para todas as opções
 npm init adonisjs@latest hello-world
 
-# Create a project with MySQL
+# Crie um projeto com MySQL
 npm init adonisjs@latest hello-world -- --db=mysql
 
-# Create a project with PostgreSQL and API starter kit
+# Crie um projeto com PostgreSQL e API starter kit
 npm init adonisjs@latest hello-world -- --db=postgres --kit=api
 
-# Create a project with API starter kit and access tokens guard
+# Crie um projeto com API starter kit e access tokens guard
 npm init adonisjs@latest hello-world -- --kit=api --auth-guard=access_tokens
 ```
 
@@ -61,7 +60,7 @@ npm init adonisjs@latest hello-world -- --kit=api --auth-guard=access_tokens
 
 Os kits iniciais servem como um ponto de partida para criar aplicativos usando AdonisJS. Eles vêm com uma [estrutura de pastas opinativa](./folder_structure.md), pacotes AdonisJS pré-configurados e as ferramentas necessárias durante o desenvolvimento.
 
-:::note
+::: info NOTA
 Os kits iniciais oficiais usam módulos ES e TypeScript. Essa combinação permite que você use construções JavaScript modernas e aproveite a segurança do tipo estático.
 :::
 
@@ -76,52 +75,22 @@ Mais tarde, você pode usar [Hotwire](https://hotwired.dev), [HTMX](http://htmx.
 ```sh
 npm init adonisjs@latest -- -K=web
 
-# Switch database dialect
+# Trocar dialeto do banco de dados
 npm init adonisjs@latest -- -K=web --db=mysql
 ```
 
 O kit inicial da Web vem com os seguintes pacotes.
 
-<table>
-<thead>
-<tr>
-<th width="180px">Pacote</th>
-<th>Descrição</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>@adonisjs/core</code></td>
-<td>O núcleo do framework tem os recursos básicos que você pode usar ao criar aplicativos de backend.</td>
-</tr>
-<tr>
-<td><code>edge.js</code></td>
-<td>O mecanismo de modelo <a href="https://edgejs.dev">edge</a> para compor páginas HTML.</td>
-</tr>
-<tr>
-<td><code>@vinejs/vine</code></td>
-<td><a href="https://vinejs.dev">VineJS</a> é uma das bibliotecas de validação mais rápidas no Node.js ecossistema.</td>
-</tr>
-<tr>
-<td><code>@adonisjs/lucid</code></td>
-<td>Lucid é um ORM SQL mantido pela equipe principal do AdonisJS.</td>
-</tr>
-<tr>
-<td><code>@adonisjs/auth</code></td>
-<td>A camada de autenticação do framework. Ele é configurado para usar sessões.</td>
-</tr>
-<tr>
-<td><code>@adonisjs/shield</code></td>
-<td>Um conjunto de primitivas de segurança para manter seus aplicativos da web protegidos contra ataques como <strong>CSRF</strong> e <strong>‌ XSS</strong>.</td>
-</tr>
-<tr>
-<td><code>@adonisjs/static</code></td>
-<td>Middleware para servir ativos estáticos do diretório <code>/public</code> do seu aplicativo.</td>
-</tr>
-<tr>
-<td><code>vite</code></td>
-<td><a href="https://vitejs.dev/">Vite</a> é usado para compilar os ativos do frontend.</td>
-</tr>
-</tbody></table>
+| Pacote            | Descrição                                                                                         |
+|-------------------|---------------------------------------------------------------------------------------------------|
+| @adonisjs/core    | O núcleo do framework tem os recursos básicos que você pode usar ao criar aplicativos de backend. |
+| edge.js           | O mecanismo de modelo [edge](https://edgejs.dev) para compor páginas HTML. |
+| @vinejs/vine      | [VineJS](https://vinejs.dev) é uma das bibliotecas de validação mais rápidas no Node.js ecossistema. |
+| @adonisjs/lucid   | Lucid é um ORM SQL mantido pela equipe principal do AdonisJS.|
+| @adonisjs/auth    | A camada de autenticação do framework. Ele é configurado para usar sessões.
+| @adonisjs/shield  | Um conjunto de primitivas de segurança para manter seus aplicativos da web protegidos contra ataques como **CSRF** e **XSS**.|
+| @adonisjs/static  | Middleware para servir ativos estáticos do diretório `/public` do seu aplicativo. |
+| vite              | [Vite](https://vitejs.dev/) é usado para compilar os ativos do frontend. |
 
 ---
 
@@ -132,7 +101,7 @@ O kit inicial da API é personalizado para criar servidores JSON API. É uma ver
 ```sh
 npm init adonisjs@latest -- -K=api
 
-# Switch database dialect
+# Trocar dialeto do banco de dados
 npm init adonisjs@latest -- -K=api --db=mysql
 ```
 
@@ -159,7 +128,7 @@ Para minimalistas, criamos um kit inicial `slim`. Ele vem apenas com o núcleo d
 ```sh
 npm init adonisjs@latest -- -K=slim
 
-# Switch database dialect
+# Trocar dialeto do banco de dados
 npm init adonisjs@latest -- -K=slim --db=mysql
 ```
 
@@ -174,10 +143,10 @@ Você pode usar o sinalizador `--adapter` para escolher o framework de frontend 
 Você também pode usar os sinalizadores `--ssr` e `--no-ssr` para ativar ou desativar a renderização do lado do servidor.
 
 ```sh
-# React with server-side rendering
+# React com renderização do lado do servidor
 npm init adonisjs@latest -- -K=inertia --adapter=react --ssr
 
-# Vue without server-side rendering
+# Vue sem renderização do lado do servidor
 npm init adonisjs@latest -- -K=inertia --adapter=vue --no-ssr
 ```
 
@@ -189,10 +158,10 @@ Os kits iniciais são projetos pré-criados hospedados em um provedor de reposit
 ```sh
 npm init adonisjs@latest -- -K="github_user/repo"
 
-# Download from GitLab
+# Baixar do GitLab
 npm init adonisjs@latest -- -K="gitlab:user/repo"
 
-# Download from BitBucket
+# Baixar do BitBucket
 npm init adonisjs@latest -- -K="bitbucket:user/repo"
 ```
 
@@ -248,19 +217,19 @@ Os kits iniciais oficiais vêm pré-configurados com ESLint e Prettier e usam as
 Por fim, recomendamos que você instale os plugins ESLint e Prettier para seu editor de código para que você tenha um loop de feedback mais apertado durante o desenvolvimento do aplicativo. Além disso, você pode usar os seguintes comandos para `lint` e `format` seu código a partir da linha de comando.
 
 ```sh
-# Runs ESLint
+# Executa ESLint
 npm run lint
 
-# Run ESLint and auto-fix issues
+# Executa ESLint e corrige problemas automaticamente
 npm run lint -- --fix
 
-# Runs prettier
+# Executa mais bonito
 npm run format
 ```
 
 ## Extensões VSCode
 Você pode desenvolver um aplicativo AdonisJS em qualquer editor de código que suporte TypeScript. No entanto, desenvolvemos várias extensões para VSCode para aprimorar ainda mais a experiência de desenvolvimento.
 
-[**AdonisJS**](https://marketplace.visualstudio.com/items?itemName=jripouteau.adonis-vscode-extension) - Visualize rotas de aplicativos, execute comandos ace, migre o banco de dados e leia a documentação diretamente do seu editor de código.
-[**Edge**](https://marketplace.visualstudio.com/items?itemName=AdonisJS.vscode-edge) - Turbine seu fluxo de trabalho de desenvolvimento com suporte para realce de sintaxe, preenchimento automático e snippets de código.
-[**Japa**](https://marketplace.visualstudio.com/items?itemName=jripouteau.japa-vscode) - Execute testes sem sair do seu editor de código usando atalhos de teclado ou execute-os diretamente da barra lateral de atividades.
+* [**AdonisJS**](https://marketplace.visualstudio.com/items?itemName=jripouteau.adonis-vscode-extension) - Visualize rotas de aplicativos, execute comandos ace, migre o banco de dados e leia a documentação diretamente do seu editor de código.
+* [**Edge**](https://marketplace.visualstudio.com/items?itemName=AdonisJS.vscode-edge) - Turbine seu fluxo de trabalho de desenvolvimento com suporte para realce de sintaxe, preenchimento automático e snippets de código.
+* [**Japa**](https://marketplace.visualstudio.com/items?itemName=jripouteau.japa-vscode) - Execute testes sem sair do seu editor de código usando atalhos de teclado ou execute-os diretamente da barra lateral de atividades.

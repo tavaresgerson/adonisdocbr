@@ -8,7 +8,7 @@ Os arquivos de configuração do seu aplicativo AdonisJS são armazenados dentro
 
 Sinta-se à vontade para criar arquivos adicionais que seu aplicativo requer dentro do diretório `config`.
 
-:::note
+::: info NOTA
 Recomendamos usar [variáveis ​​de ambiente](./environment_variables.md) para armazenar segredos e configuração específica do ambiente.
 :::
 
@@ -32,7 +32,7 @@ O serviço de configuração oferece uma API alternativa para ler os valores de 
 import config from '@adonisjs/core/services/config'
 
 config.get('app.appKey')
-config.get('app.http.cookie') // read nested values
+config.get('app.http.cookie') // ler valores aninhados
 ```
 
 O método `config.get` aceita uma chave separada por pontos e a analisa da seguinte forma.
@@ -50,7 +50,7 @@ Se você estiver criando um pacote de terceiros, não deve importar diretamente 
 
 Em vez disso, você deve usar o serviço de configuração para acessar os valores de configuração dentro de um provedor de serviços. Por exemplo:
 
-```ts
+```ts {8-9}
 import { ApplicationService } from '@adonisjs/core/types'
 
 export default class DriveServiceProvider {
@@ -58,10 +58,8 @@ export default class DriveServiceProvider {
   
   register() {
     this.app.container.singleton('drive', () => {
-      // highlight-start
       const driveConfig = this.app.config.get('drive')
       return new DriveManager(driveConfig)
-      // highlight-end
     })
   }
 }
@@ -117,7 +115,7 @@ Fundamentalmente, essa limitação impacta positivamente sua base de código por
 
 Você pode alterar os valores de configuração em tempo de execução usando o serviço de configuração. O `config.set` atualiza o valor dentro da memória, e nenhuma alteração é feita nos arquivos no disco.
 
-:::note
+::: info NOTA
 O valor config é mutado para todo o aplicativo, não apenas para uma única solicitação HTTP. Isso ocorre porque o Node.js não é um tempo de execução encadeado, e a memória no Node.js é compartilhada entre várias solicitações HTTP.
 :::
 

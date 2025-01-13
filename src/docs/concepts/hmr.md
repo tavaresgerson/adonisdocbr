@@ -65,7 +65,7 @@ Além disso, você pode querer atualizar o script `dev` dentro do arquivo `packa
 
 ## Recargas completas vs HMR
 
-:::note
+::: info NOTA
 Esta seção explica o funcionamento subjacente do `hot-hook`. Sinta-se à vontade para ignorá-la se não estiver com vontade de ler teoria técnica estendida 🤓
 
 Ou, leia o [arquivo README](https://github.com/Julien-R44/hot-hook) do pacote se quiser uma explicação ainda mais aprofundada.

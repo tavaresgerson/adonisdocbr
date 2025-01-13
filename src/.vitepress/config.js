@@ -31,7 +31,7 @@ export default {
     darkModeSwitchLabel: 'Aparência',
     outline: {
       label: 'Nesta página',
-      deep: 3
+      deep: 4
     },
     logo: { light: '/header_logo.svg', dark: '/header_logo_black.svg' },
     socialLinks: [

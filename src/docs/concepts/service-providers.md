@@ -10,7 +10,7 @@ Um provedor de serviços pode registrar [vinculações no contêiner](../concept
 
 Provedores de serviços são o ponto de entrada para um aplicativo AdonisJS com a capacidade de modificar o estado do aplicativo antes que ele seja considerado pronto. **Ele é usado principalmente por pacotes externos para se conectar ao ciclo de vida do aplicativo**.
 
-:::note
+::: info NOTA
 Se você deseja injetar dependências apenas em uma de suas classes, pode usar o recurso [injeção de dependência](../concepts/dependency_injection.md).
 :::
 
@@ -102,7 +102,7 @@ export default class AppProvider {
   async boot() {
    const validator = await this.app.container.make('validator')
     
-   // Add custom validation rules
+   // Adicionar regras de validação personalizadas
    validator.rule('foo', () => {})
   }
 }
@@ -126,24 +126,12 @@ O método `start` é chamado depois do `boot` e antes do método `ready`. Ele pe
 
 O método `ready` é chamado em diferentes estágios com base no ambiente do aplicativo.
 
-<table>
-<tr>
-<td width="100"><code> web </code></td>
-<td>O método <code>ready</code> é chamado depois que o servidor HTTP é iniciado e está pronto para aceitar solicitações.</td>
-</tr>
-<tr>
-<td width="100"><code>console</code></td>
-<td>O método <code>ready</code> é chamado logo antes do método <code>run</code> do comando principal.</td>
-</tr>
-<tr>
-<td width="100"><code>test</code></td>
-<td>O método <code>ready</code> é chamado logo antes de executar todos os testes. No entanto, os arquivos de teste são importados antes do método <code>ready</code>.</td>
-</tr>
-<tr>
-<td width="100"><code>repl</code></td>
-<td>O método <code>ready</code> é chamado antes que o prompt REPL seja exibido no terminal.</td>
-</tr>
-</table>
+| Contexto  | Descrição                                                                                                      |
+|-----------|----------------------------------------------------------------------------------------------------------------|
+| `web`     | O método `ready` é chamado depois que o servidor HTTP é iniciado e está pronto para aceitar solicitações.      |
+| `console` | O método `ready` é chamado logo antes do método `run` do comando principal.                                     |
+| `test`    | O método `ready` é chamado logo antes de executar todos os testes. No entanto, os arquivos de teste são importados antes do método `ready`. |
+| `repl`    | O método `ready` é chamado antes que o prompt REPL seja exibido no terminal.                                   |
 
 ```ts
 export default class AppProvider {
@@ -172,7 +160,7 @@ O evento de sair do aplicativo depende do ambiente em que o aplicativo está sen
 ```ts
 export default class AppProvider {
   async shutdown() {
-    // perform the cleanup
+    // executar a limpeza
   }
 }
 ```
