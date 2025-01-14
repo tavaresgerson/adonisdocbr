@@ -27,7 +27,7 @@ No entanto, o hash fornece uma maneira de verificar se um determinado valor de t
 import hash from '@adonisjs/core/services/hash'
 
 if (await hash.verify(existingHash, plainTextValue)) {
-  // password is correct
+  // a senha está correta
 }
 ```
 
@@ -36,7 +36,8 @@ if (await hash.verify(existingHash, plainTextValue)) {
 A configuração para hash é armazenada dentro do arquivo `config/hash.ts`. O driver padrão é definido como `scrypt` porque o scrypt usa o módulo de criptografia nativo do Node.js e não requer nenhum pacote de terceiros.
 
 ```ts
-// title: config/hash.ts
+// config/hash.ts
+
 import { defineConfig, drivers } from '@adonisjs/core/hash'
 
 export default defineConfig({
@@ -46,12 +47,12 @@ export default defineConfig({
     scrypt: drivers.scrypt(),
 
     /**
-     * Uncomment when using argon2
+     * Descomente ao usar argon2
        argon: drivers.argon2(),
      */
 
     /**
-     * Uncomment when using bcrypt
+     * Descomente ao usar bcrypt
        bcrypt: drivers.bcrypt(),
      */
   }
@@ -68,16 +69,14 @@ npm i argon2
 
 Configuramos o driver Argon com padrões seguros, mas sinta-se à vontade para ajustar as opções de configuração de acordo com os requisitos do seu aplicativo. A seguir está a lista de opções disponíveis.
 
-```ts
+```ts {2-3}
 export default defineConfig({
-  // highlight-start
-  // Make sure to update the default driver to argon
+  // Certifique-se de atualizar o driver padrão para argon
   default: 'argon',
-  // highlight-end
 
   list: {
     argon: drivers.argon2({
-      version: 0x13, // hex code for 19
+      version: 0x13, // código hexadecimal para 19
       variant: 'id',
       iterations: 3,
       memory: 65536,
@@ -141,12 +140,10 @@ npm i bcrypt
 
 A seguir está a lista de opções de configuração disponíveis.
 
-```ts
+```ts {2-3}
 export default defineConfig({
-  // highlight-start
-  // Make sure to update the default driver to bcrypt
+  // Certifique-se de atualizar o driver padrão para bcrypt
   default: 'bcrypt',
-  // highlight-end
 
   list: {
     bcrypt: drivers.bcrypt({
@@ -178,12 +175,10 @@ A versão do algoritmo de hash. Os valores suportados são `2a` e `2b`. Usar a v
 
 O driver scrypt usa o módulo crypto do Node.js para calcular o hash da senha. As opções de configuração são as mesmas aceitas pelo [método `scrypt` do Node.js](https://nodejs.org/dist/latest-v19.x/docs/api/crypto.html#cryptoscryptpassword-salt-keylen-options-callback).
 
-```ts
+```ts {2-3}
 export default defineConfig({
-  // highlight-start
-  // Make sure to update the default driver to scrypt
+  // Certifique-se de atualizar o driver padrão para scrypt
   default: 'scrypt',
-  // highlight-end
 
   list: {
     scrypt: drivers.scrypt({
@@ -202,7 +197,7 @@ export default defineConfig({
 
 Como você usará o serviço `hash` para fazer hash de senhas de usuários, pode ser útil colocar a lógica dentro do gancho de modelo `beforeSave`.
 
-:::note
+::: info NOTA
 Se você estiver usando o módulo `@adonisjs/auth`, o hash de senhas dentro do seu modelo é desnecessário. O `AuthFinder` manipula automaticamente o hash de senha, garantindo que suas credenciais de usuário sejam processadas com segurança. Saiba mais sobre esse processo [aqui](../authentication/verifying_user_credentials.md#hashing-user-password).
 :::
 
@@ -229,13 +224,13 @@ O método `hash.use` aceita o nome de mapeamento do arquivo de configuração e 
 ```ts
 import hash from '@adonisjs/core/services/hash'
 
-// uses "list.scrypt" mapping from the config file
+// usa o mapeamento "list.scrypt" do arquivo de configuração
 await hash.use('scrypt').make('secret')
 
-// uses "list.bcrypt" mapping from the config file
+// usa o mapeamento "list.bcrypt" do arquivo de configuração
 await hash.use('bcrypt').make('secret')
 
-// uses "list.argon" mapping from the config file
+// usa o mapeamento "list.argon" do arquivo de configuração
 await hash.use('argon').make('secret')
 ```
 
@@ -260,7 +255,7 @@ Você pode atribuir um valor de texto simples para `user.password` se usar ganch
 
 ```ts
 if (await hash.needsReHash(user.password)) {
-  // Let the model hook rehash the password
+  // Deixe o gancho do modelo refazer o hash da senha
   user.password = plainTextPassword
   await user.save()
 }
@@ -283,20 +278,16 @@ test('get users list', async ({ client }) => {
 
 No entanto, depois que você falsificar o serviço de hash, o mesmo teste será executado em ordem de magnitude mais rápido.
 
-```ts
+```ts {4,9}
 import hash from '@adonisjs/core/services/hash'
 
 test('get users list', async ({ client }) => {
-  // highlight-start
   hash.fake()
-  // highlight-end
   
   await UserFactory().createMany(20)    
   const response = await client.get('users')
 
-  // highlight-start
   hash.restore()
-  // highlight-end
 })
 ```
 
@@ -310,34 +301,33 @@ import {
 } from '@adonisjs/core/types/hash'
 
 /**
- * Config accepted by the hash driver
+ * Configuração aceita pelo driver de hash
  */
 export type PbkdfConfig = {
 }
 
 /**
- * Driver implementation
+ * Implementação do driver
  */
 export class Pbkdf2Driver implements HashDriverContract {
   constructor(public config: PbkdfConfig) {
   }
 
   /**
-   * Check if the hash value is formatted as per
-   * the hashing algorithm.
+   * Verifique se o valor hash está formatado de acordo com
+   * o algoritmo de hash.
    */
   isValidHash(value: string): boolean {
   }
 
   /**
-   * Convert raw value to Hash
+   * Converter valor bruto para Hash
    */
   async make(value: string): Promise<string> {
   }
 
   /**
-   * Verify if the plain value matches the provided
-   * hash
+   * Verifique se o valor simples corresponde ao hash fornecido
    */
   async verify(
     hashedValue: string,
@@ -346,16 +336,16 @@ export class Pbkdf2Driver implements HashDriverContract {
   }
 
   /**
-   * Check if the hash needs to be re-hashed because
-   * the config parameters have changed
+   * Verifique se o hash precisa ser refeito porque
+   * os parâmetros de configuração foram alterados
    */
   needsReHash(value: string): boolean {
   }
 }
 
 /**
- * Factory function to reference the driver
- * inside the config file.
+ * Função de fábrica para referenciar o driver
+ * dentro do arquivo de configuração.
  */
 export function pbkdf2Driver (config: PbkdfConfig): ManagerDriverFactory {
   return () => {
@@ -377,14 +367,15 @@ No exemplo de código acima, exportamos os seguintes valores.
 Depois que a implementação for concluída, você pode referenciar o driver dentro do arquivo de configuração usando a função de fábrica `pbkdf2Driver`.
 
 ```ts
-// title: config/hash.ts
+// config/hash.ts
+
 import { defineConfig } from '@adonisjs/core/hash'
 import { pbkdf2Driver } from 'my-custom-package'
 
 export default defineConfig({
   list: {
     pbkdf2: pbkdf2Driver({
-      // config goes here
+      // a configuração vai aqui
     }),
   }
 })

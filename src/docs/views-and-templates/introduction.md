@@ -9,10 +9,10 @@ O AdonisJS é uma excelente opção para criar aplicativos tradicionais renderiz
 O fluxo de trabalho típico de um aplicativo renderizado por servidor no AdonisJS é o seguinte.
 
 * Escolha um mecanismo de modelo para renderizar HTML dinamicamente.
-[Vite](../basics/vite.md) para agrupar CSS e JavaScript de frontend.
-[HTMX](https://htmx.org/) ou
+* [Vite](../basics/vite.md) para agrupar CSS e JavaScript de frontend.
+* [HTMX](https://htmx.org/) ou
 
-:::note
+::: info NOTA
 A equipe principal do AdonisJS criou um mecanismo de modelo independente de framework chamado [Edge.js](https://edgejs.dev), mas não o força a usá-lo. Você pode usar qualquer outro mecanismo de modelo que desejar dentro de um aplicativo AdonisJS.
 :::
 
@@ -20,9 +20,9 @@ A equipe principal do AdonisJS criou um mecanismo de modelo independente de fram
 
 A seguir está a lista de mecanismos de modelo populares que você pode usar dentro de um aplicativo AdonisJS (assim como qualquer outro aplicativo Node.js).
 
-[**EdgeJS**](https://edgejs.dev) é um mecanismo de modelo simples, moderno e com baterias incluídas, criado e mantido pela equipe principal do AdonisJS para Node.js.
-[**Pug**](https://pugjs.org) é um mecanismo de modelo fortemente influenciado por Haml.
-[**Nunjucks**](https://mozilla.github.io/nunjucks) é um mecanismo de modelo rico em recursos inspirado no Jinja2.
+* [**EdgeJS**](https://edgejs.dev) é um mecanismo de modelo simples, moderno e com baterias incluídas, criado e mantido pela equipe principal do AdonisJS para Node.js.
+* [**Pug**](https://pugjs.org) é um mecanismo de modelo fortemente influenciado por Haml.
+* [**Nunjucks**](https://mozilla.github.io/nunjucks) é um mecanismo de modelo rico em recursos inspirado no Jinja2.
 
 ## Aplicativos híbridos
 

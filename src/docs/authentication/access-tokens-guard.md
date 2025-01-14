@@ -12,25 +12,21 @@ O AdonisJS usa tokens de acesso opacos que são estruturados e armazenados da se
 - Um token é representado por um valor aleatório criptograficamente seguro sufixado com uma soma de verificação CRC32.
 - Um hash do valor do token é persistido no banco de dados. Este hash é usado para verificar o token no momento da autenticação.
 - O valor final do token é codificado em base64 e prefixado com `oat_`. O prefixo pode ser personalizado.
-[ferramentas de varredura secreta](https://docs.github.com/en/code-security/secret-scanning/about-secret-scanning) identificam um token e evitam que ele vaze dentro de uma base de código.
+- [Ferramentas de varredura secreta](https://docs.github.com/en/code-security/secret-scanning/about-secret-scanning) identificam um token e evitam que ele vaze dentro de uma base de código.
 
 ## Configurando o modelo de usuário
 Antes de usar a proteção de tokens de acesso, você deve configurar um provedor de tokens com o modelo de usuário. **O provedor de tokens é usado para criar, listar e verificar tokens de acesso**.
 
 O pacote auth vem com um provedor de tokens de banco de dados, que persiste tokens dentro de um banco de dados SQL. Você pode configurá-lo da seguinte forma.
 
-```ts
+```ts {2,7}
 import { BaseModel } from '@adonisjs/lucid/orm'
-// highlight-start
 import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
-// highlight-end
 
 export default class User extends BaseModel {
-  // ...rest of the model properties
+  // ...resto das propriedades do modelo
 
-  // highlight-start
   static accessTokens = DbAccessTokensProvider.forModel(User)
-  // highlight-end
 }
 ```
 
@@ -38,7 +34,7 @@ O `DbAccessTokensProvider.forModel` aceita o modelo de usuário como o primeiro 
 
 ```ts
 export default class User extends BaseModel {
-  // ...rest of the model properties
+  // ...resto das propriedades do modelo
 
   static accessTokens = DbAccessTokensProvider.forModel(User, {
     expiresIn: '30 days',
@@ -162,15 +158,12 @@ router.post('users/:id/tokens', ({ params }) => {
   const user = await User.findOrFail(params.id)
   const token = await User.accessTokens.create(user)
 
-  // delete-start
-  return {
-    type: 'bearer',
-    value: token.value!.release(),
-  }
-  // delete-end
-  // insert-start
-  return token
-  // insert-end
+  return {                          // [!code --]
+    type: 'bearer',                 // [!code --]
+    value: token.value!.release(),  // [!code --]
+  }                                 // [!code --]
+
+  return token                      // [!code ++]
 })
 
 /**
@@ -205,7 +198,7 @@ Você não deve confundir habilidades do token com [verificações de autorizaç
 
 Você pode escrever uma habilidade de bouncer para este caso de uso da seguinte forma.
 
-:::note
+::: info NOTA
 O `user.currentAccessToken` se refere ao token de acesso usado para autenticação durante a solicitação HTTP atual. Você pode aprender mais sobre isso na seção [autenticando solicitações](#the-current-access-token).
 :::
 
@@ -216,17 +209,17 @@ import { Bouncer } from '@adonisjs/bouncer'
 export const createProject = Bouncer.ability(
   (user: User & { currentAccessToken?: AccessToken }) => {
     /**
-     * If there is no "currentAccessToken" token property, it means
-     * the user authenticated without an access token
+     * Se não houver nenhuma propriedade de token "currentAccessToken", significa
+     * o usuário foi autenticado sem um token de acesso
      */
     if (!user.currentAccessToken) {
       return user.isAdmin
     }
 
     /**
-     * Otherwise, check the user isAdmin and the token they
-     * used for authentication allows "project:create"
-     * ability.
+     * Caso contrário, verifique se o usuário éAdmin e o token que ele
+     * usou para autenticação permite "project:create"
+     * capacidade.
      */
     return user.isAdmin && user.currentAccessToken.allows('project:create')
   }
@@ -240,10 +233,10 @@ A expiração pode ser definida como um valor numérico representando segundos o
 
 ```ts
 await User.accessTokens.create(
-  user, // for user
-  ['*'], // with all abilities
+  user, // para usuário
+  ['*'], // com todas as habilidades
   {
-    expiresIn: '30 days' // expires in 30 days
+    expiresIn: '30 days' // expira em 30 dias
   }
 )
 ```
@@ -265,24 +258,21 @@ await User.accessTokens.create(
 ## Configurando o guard
 Agora que podemos emitir tokens, vamos configurar um guard de autenticação para verificar solicitações e autenticar usuários. O guard deve ser configurado dentro do arquivo `config/auth.ts` sob o objeto `guards`.
 
-```ts
-// title: config/auth.ts
+```ts {3,9-14}
+// config/auth.ts
+
 import { defineConfig } from '@adonisjs/auth'
-// highlight-start
 import { tokensGuard, tokensUserProvider } from '@adonisjs/auth/access_tokens'
-// highlight-end
 
 const authConfig = defineConfig({
   default: 'api',
   guards: {
-    // highlight-start
     api: tokensGuard({
       provider: tokensUserProvider({
         tokens: 'accessTokens',
         model: () => import('#models/user'),
       })
     }),
-    // highlight-end
   },
 })
 
@@ -305,10 +295,10 @@ O método `auth.authenticate` retorna uma instância do modelo User para o usuá
 import router from '@adonisjs/core/services/router'
 
 router.post('projects', async ({ auth }) => {
-  // Authenticate using the default guard
+  // Autentique usando o guarda padrão
   const user = await auth.authenticate()
 
-  // Authenticate using a named guard
+  // Autentique usando um guarda nomeado
   const user = await auth.authenticateUsing(['api'])
 })
 ```
@@ -371,9 +361,7 @@ Você pode usar o objeto `currentAccessToken` para obter as habilidades do token
 
 Se você referenciar o modelo User com `currentAccessToken` como um tipo no restante da base de código, talvez queira declarar essa propriedade no próprio modelo.
 
-:::caption{for="error"}
-**Instead of merging `currentAccessToken`**
-:::
+::: danger **Em vez de mesclar `currentAccessToken`**
 
 ```ts
 import { AccessToken } from '@adonisjs/auth/access_tokens'
@@ -383,11 +371,10 @@ Bouncer.ability((
 ) => {
 })
 ```
-
-:::caption{for="success"}
-**Declare it as a property on the model**
 :::
 
+
+::: tip **Declare como uma propriedade no modelo**
 ```ts
 import { AccessToken } from '@adonisjs/auth/access_tokens'
 
@@ -396,10 +383,14 @@ export default class User extends BaseModel {
 }
 ```
 
+<br>
+
 ```ts
 Bouncer.ability((user: User) => {
 })
 ```
+:::
+
 
 ## Listando todos os tokens
 Você pode usar o provedor de tokens para obter uma lista de todos os tokens usando o método `accessTokens.all`. O valor de retorno será uma matriz de instâncias da classe `AccessToken`.

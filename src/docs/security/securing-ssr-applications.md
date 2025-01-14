@@ -8,7 +8,7 @@ Se você estiver criando um aplicativo renderizado pelo servidor usando o Adonis
 
 O pacote vem pré-configurado com o **web starter kit**. No entanto, você pode instalar e configurar manualmente o pacote da seguinte forma.
 
-:::note
+::: info NOTA
 O pacote `@adonisjs/shield` tem uma dependência de peer no pacote `@adonisjs/session`, então certifique-se de [configurar o pacote de sessão](../basics/session.md) primeiro.
 :::
 
@@ -22,10 +22,10 @@ node ace add @adonisjs/shield
 
 2. Registra o seguinte provedor de serviços dentro do arquivo `adonisrc.ts`.
 
-```ts
+   ```ts
    {
      providers: [
-       // ...other providers
+       // ...outros provedores
        () => import('@adonisjs/shield/shield_provider'),
      ]
    }
@@ -35,9 +35,9 @@ node ace add @adonisjs/shield
 
 4. Registra o seguinte middleware dentro do arquivo `start/kernel.ts`.
 
-```ts
-   router.use([() => import('@adonisjs/shield/shield_middleware')])
-   ```
+    ```ts
+    router.use([() => import('@adonisjs/shield/shield_middleware')])
+    ```
 
 :::
 
@@ -51,36 +51,28 @@ Para se proteger contra ataques CSRF, você deve definir um campo de entrada ocu
 
 Depois de configurar o pacote `@adonisjs/shield`, todos os envios de formulários sem um token CSRF falharão automaticamente. Portanto, você deve usar o auxiliar de borda `csrfField` para definir um campo de entrada oculto com o token CSRF.
 
-:::caption{for="info"}
-**Edge helper**
-:::
-
-```edge
+::: info **Edge helper**
+```edge {2}
 <form method="POST" action="/">
-  // highlight-start
   {{ csrfField() }}
-  // highlight-end
   <input type="name" name="name" placeholder="Enter your name">
   <button type="submit"> Submit </button>
 </form>
 ```
-
-:::caption{for="info"}
-**Saída HTML**
 :::
 
-```html
 
+::: info **Saída HTML**
+```html {2}
 <form method="POST" action="/">
-    // highlight-start
     <input type="hidden" name="_csrf" value="Q9ghWSf0-3FD9eCiu5YxvKaxLEZ6F_K4DL8o"/>
-    // highlight-end
     <input type="name" name="name" placeholder="Enter your name"/>
     <button type="submit">Submit</button>
 </form>
 ```
+:::
 
-Durante o envio do formulário, o ``shield_middleware` verificará automaticamente o token `_csrf`, permitindo apenas os envios do formulário com um token CSRF válido.
+Durante o envio do formulário, o `shield_middleware` verificará automaticamente o token `_csrf`, permitindo apenas os envios do formulário com um token CSRF válido.
 
 ### Lidando com exceções
 
@@ -88,12 +80,10 @@ O Shield gera uma exceção `E_BAD_CSRF_TOKEN` quando o token CSRF está ausente
 
 Você pode acessar a mensagem flash da seguinte forma dentro de um modelo edge.
 
-```edge
-// highlight-start
+```edge {1-3}
 @error('E_BAD_CSRF_TOKEN')
   <p> {{ $message }} </p>
 @end
-// highlight-end
 
 <form method="POST" action="/">
   {{ csrfField() }}
@@ -104,20 +94,19 @@ Você pode acessar a mensagem flash da seguinte forma dentro de um modelo edge.
 
 Você também pode automanipular a exceção `E_BAD_CSRF_TOKEN` dentro do [manipulador de exceção global](../basics/exception_handling.md#handling-exceptions) da seguinte forma.
 
-```ts
+```ts {7-11}
 import app from '@adonisjs/core/services/app'
 import { errors } from '@adonisjs/shield'
 import { HttpContext, ExceptionHandler } from '@adonisjs/core/http'
 
 export default class HttpExceptionHandler extends ExceptionHandler {
   async handle(error: unknown, ctx: HttpContext) {
-    // highlight-start
     if (error instanceof errors.E_BAD_CSRF_TOKEN) {
       return ctx.response
         .status(error.status)
         .send('Page has expired')
     }
-    // highlight-end
+
     return super.handle(error, ctx)
   }
 }
@@ -155,7 +144,7 @@ Para casos de uso mais avançados, você pode registrar uma função para isenta
 ```ts
 {
   exceptRoutes: (ctx) => {
-    // exempt all routes starting with /api/
+    // isentar todas as rotas que começam com /api/
     return ctx.request.url().includes('/api/')
   }
 }
@@ -189,7 +178,7 @@ const shieldConfig = defineConfig({
   csp: {
     enabled: true,
     directives: {
-      // policy directives go here
+      // as diretivas de política vão aqui
     },
     reportOnly: false,
   },
@@ -206,17 +195,15 @@ Ative ou desative a proteção CSP.
 
 Configure as diretivas CSP. Você pode visualizar a lista de diretivas disponíveis em [https://content-security-policy.com/](https://content-security-policy.com/#directive)
 
-```ts
+```ts {4-8}
 const shieldConfig = defineConfig({
   csp: {
     enabled: true,
-    // highlight-start
     directives: {
       defaultSrc: [`'self'`],
       scriptSrc: [`'self'`, 'https://cdnjs.cloudflare.com'],
       fontSrc: [`'self'`, 'https://fonts.googleapis.com']
     },
-    // highlight-end
     reportOnly: false,
   },
 })
@@ -228,19 +215,15 @@ export default shieldConfig
 
 A política CSP não bloqueará os recursos quando o sinalizador `reportOnly` estiver habilitado. Em vez disso, ele relatará as violações em um endpoint configurado usando a diretiva `reportUri`.
 
-```ts
+```ts {6,8}
 const shieldConfig = defineConfig({
   csp: {
     enabled: true,
     directives: {
       defaultSrc: [`'self'`],
-      // highlight-start
       reportUri: ['/csp-report']
-      // highlight-end
     },
-    // highlight-start
     reportOnly: true,
-    // highlight-end
   },
 })
 ```
@@ -258,10 +241,10 @@ Você pode permitir tags `script` e `style` inline definindo o [atributo nonce](
 
 ```edge
 <script nonce="{{ cspNonce }}">
-  // Inline JavaScript
+  // JavaScript inline 
 </script>
 <style nonce="{{ cspNonce }}">
-  /* Inline CSS */
+  /* CSS inline  */
 </style>
 ```
 
@@ -298,12 +281,8 @@ Se você estiver implantando a saída empacotada Vite em um servidor CDN, você 
 
 ```ts
 directives: {
-  // delete-start
-  defaultSrc: [`'self'`, '@viteDevUrl'],
-  // delete-end
-  // insert-start
-  defaultSrc: [`'self'`, '@viteUrl'],
-  // insert-end
+  defaultSrc: [`'self'`, '@viteDevUrl'], // [!code --]
+  defaultSrc: [`'self'`, '@viteUrl'], // [!code ++]
   connectSrc: ['@viteHmrUrl']
 },
 ```
@@ -338,14 +317,14 @@ Define o atributo `max-age`. O valor deve ser um número em segundos ou uma expr
 
 ```ts
 {
-  // Remember for 10 seconds
+  // Lembre-se por 10 segundos
   maxAge: 10,
 }
 ```
 
 ```ts
 {
-  // Remember for 2 days
+  // Lembre-se por 2 dias
   maxAge: '2 days',
 }
 ```
@@ -357,7 +336,7 @@ Define a diretiva `includeSubDomains` para aplicar a configuração em subdomín
 ## Configurando a proteção X-Frame
 O cabeçalho [**X-Frame-Options**](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options) é usado para indicar se um navegador tem permissão para renderizar um site incorporado dentro de uma tag `iframe`, `frame`, `embed` ou `object`.
 
-:::note
+::: info NOTA
 Se você configurou o CSP, você pode usar a diretiva [frame-ancestors](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors) e desabilitar a proteção `xFrame`.
 :::
 

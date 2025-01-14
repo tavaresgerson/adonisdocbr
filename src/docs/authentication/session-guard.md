@@ -40,9 +40,9 @@ Você pode fazer login de um usuário usando o método `login` do seu guard. O m
 
 No exemplo a seguir:
 
-[AuthFinder mixin](./verifying_user_credentials.md#using-the-auth-finder-mixin) para encontrar um usuário por e-mail e senha.
+- [AuthFinder mixin](./verifying_user_credentials.md#using-the-auth-finder-mixin) para encontrar um usuário por e-mail e senha.
 
-[SessionGuard](https://github.com/adonisjs/auth/blob/main/modules/session_guard/guard.ts) configurado dentro do arquivo `config/auth.ts` (`web` é o nome do guard definido na sua configuração).
+- [SessionGuard](https://github.com/adonisjs/auth/blob/main/modules/session_guard/guard.ts) configurado dentro do arquivo `config/auth.ts` (`web` é o nome do guard definido na sua configuração).
 
 - Em seguida, chamamos o método `auth.use('web').login(user)` para criar uma sessão de login para o usuário.
 
@@ -55,22 +55,22 @@ import { HttpContext } from '@adonisjs/core/http'
 export default class SessionController {
   async store({ request, auth, response }: HttpContext) {
     /**
-     * Step 1: Get credentials from the request body
+     * Etapa 1: Obtenha credenciais do corpo da solicitação
      */
     const { email, password } = request.only(['email', 'password'])
 
     /**
-     * Step 2: Verify credentials
+     * Etapa 2: Verifique as credenciais
      */
     const user = await User.verifyCredentials(email, password)
 
     /**
-     * Step 3: Login user
+     * Etapa 3: Faça login no usuário
      */
     await auth.use('web').login(user)
 
     /**
-     * Step 4: Send them to a protected route
+     * Etapa 4: Envie-os para uma rota protegida
      */
     response.redirect('/dashboard')
   }
@@ -91,36 +91,30 @@ export const middleware = router.named({
 
 Aplique o middleware `auth` às rotas que você deseja proteger de usuários não autenticados.
 
-```ts
-// highlight-start
+```ts {1,6}
 import { middleware } from '#start/kernel'
-// highlight-end
 import router from '@adonisjs/core/services/router'
 
 router
  .get('dashboard', () => {})
- // highlight-start
  .use(middleware.auth())
- // highlight-end
 ```
 
 Por padrão, o middleware auth autenticará o usuário contra o guard `default` (conforme definido no arquivo de configuração). No entanto, você pode especificar uma matriz de guards ao atribuir o middleware `auth`.
 
 No exemplo a seguir, o middleware auth tentará autenticar a solicitação usando os guards `web` e `api`.
 
-```ts
+```ts {6-10}
 import { middleware } from '#start/kernel'
 import router from '@adonisjs/core/services/router'
 
 router
  .get('dashboard', () => {})
- // highlight-start
  .use(
    middleware.auth({
      guards: ['web', 'api']
    })
  )
- // highlight-end
 ```
 
 ### Lidando com exceção de autenticação
@@ -128,49 +122,43 @@ router
 O middleware auth lança o [E_UNAUTHORIZED_ACCESS](https://github.com/adonisjs/auth/blob/main/src/errors.ts#L21) se o usuário não for autenticado. A exceção é tratada automaticamente usando as seguintes regras de negociação de conteúdo.
 
 - A solicitação com o cabeçalho `Accept=application/json` receberá uma matriz de erros com a propriedade `message`.
-
-[JSON API](https://jsonapi.org/format/#errors) spec.
-
+- Específicações [JSON API](https://jsonapi.org/format/#errors).
 - O usuário será redirecionado para a página `/login` para aplicativos renderizados pelo servidor. Você pode configurar o endpoint de redirecionamento dentro da classe de middleware `auth`.
 
 ## Obtendo acesso ao usuário logado
 
 Você pode acessar a instância do usuário logado usando a propriedade `auth.user`. O valor só está disponível ao usar o middleware `auth` ou `silent_auth` ou se você chamar os métodos `auth.authenticate` ou `auth.check` manualmente.
 
-```ts
-// Using auth middleware
+```ts {8}
+// Usando middleware auth
 
 import { middleware } from '#start/kernel'
 import router from '@adonisjs/core/services/router'
 
 router
   .get('dashboard', async ({ auth }) => {
-    // highlight-start
     await auth.user!.getAllMetrics()
-    // highlight-end
   })
   .use(middleware.auth())
 ```
 
-```ts
-// Manually calling authenticate method
+```ts {8-16}
+// Chamando manualmente o método authenticate
 
 import { middleware } from '#start/kernel'
 import router from '@adonisjs/core/services/router'
 
 router
   .get('dashboard', async ({ auth }) => {
-    // highlight-start
     /**
-     * First, authenticate the user
+     * Primeiro, autentique o usuário
      */
     await auth.authenticate()
 
     /**
-     * Then access the user object
+     * Depois acesse o objeto do usuário
      */ 
     await auth.user!.getAllMetrics()
-    // highlight-end
   })
 ```
 
@@ -196,17 +184,15 @@ router.use([
 ### Verifique se a solicitação é autenticada
 Você pode verificar se uma solicitação foi autenticada usando o sinalizador `auth.isAuthenticated`. O valor de `auth.user` sempre será definido para uma solicitação autenticada.
 
-```ts
+```ts {6-8}
 import { middleware } from '#start/kernel'
 import router from '@adonisjs/core/services/router'
 
 router
   .get('dashboard', async ({ auth }) => {
-    // highlight-start
     if (auth.isAuthenticated) {
       await auth.user!.getAllMetrics()
     }
-    // highlight-end
   })
   .use(middleware.auth())
 ```
@@ -215,16 +201,14 @@ router
 
 Se você não gosta de usar o [operador de asserção não nulo](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#non-null-assertion-operator-postfix-) na propriedade `auth.user`, você pode usar o método `auth.getUserOrFail`. Este método retornará o objeto do usuário ou lançará a exceção [E_UNAUTHORIZED_ACCESS](../references/exceptions.md#e_unauthorized_access).
 
-```ts
+```ts {6-7}
 import { middleware } from '#start/kernel'
 import router from '@adonisjs/core/services/router'
 
 router
   .get('dashboard', async ({ auth }) => {
-    // highlight-start
     const user = auth.getUserOrFail()
     await user.getAllMetrics()
-    // highlight-end
   })
   .use(middleware.auth())
 ```
@@ -242,14 +226,14 @@ Se você quiser buscar informações do usuário conectado em uma rota não prot
 
 ```edge
 {{--
-  This is a public page; therefore, it is not protected by the auth
-  middleware. However, we still want to display the logged-in
-  user info in the header of the website.
+  Esta é uma página pública; portanto, não é protegida pelo middleware auth.
+  No entanto, ainda queremos exibir as informações do usuário
+  logado no cabeçalho do site.
 
-  For that, we use the `auth.check` method to silently check if the
-  user is logged in and then displays their email in the header.
+  Para isso, usamos o método `auth.check` para verificar silenciosamente se o
+  usuário está logado e, em seguida, exibir seu e-mail no cabeçalho.
 
-  You get the idea!
+  Você entendeu a ideia!
 --}}
 
 @eval(await auth.check())
@@ -322,25 +306,21 @@ export default class extends BaseSchema {
 ### Configurando o provedor de tokens
 Para ler e gravar tokens, você terá que atribuir o [DbRememberMeTokensProvider](https://github.com/adonisjs/auth/blob/main/modules/session_guard/token_providers/db.ts) ao modelo User.
 
-```ts
+```ts {2,7}
 import { BaseModel } from '@adonisjs/lucid/orm'
-// highlight-start
 import { DbRememberMeTokensProvider } from '@adonisjs/auth/session'
-// highlight-end
 
 export default class User extends BaseModel {
-  // ...rest of the model properties
+  // ...resto das propriedades do modelo
 
-  // highlight-start
   static rememberMeTokens = DbRememberMeTokensProvider.forModel(User)
-  // highlight-end
 }
 ```
 
 ### Habilitando tokens de Lembre-se de mim dentro da configuração
 Finalmente, vamos habilitar o sinalizador `useRememberTokens` na configuração do guarda de sessão dentro do arquivo `config/auth.ts`.
 
-```ts
+```ts  {8-9}
 import { defineConfig } from '@adonisjs/auth'
 import { sessionGuard, sessionUserProvider } from '@adonisjs/auth/session'
 
@@ -348,10 +328,8 @@ const authConfig = defineConfig({
   default: 'web',
   guards: {
     web: sessionGuard({
-      // highlight-start
       useRememberMeTokens: true,
       rememberMeTokensAge: '2 years',
-      // highlight-end
       provider: sessionUserProvider({
         model: () => import('#models/user'),
       }),
@@ -365,7 +343,7 @@ export default authConfig
 ### Lembrando usuários durante o login
 Depois que a configuração for concluída, você pode gerar o token de lembre-se de mim e o cookie usando o método `guard.login` da seguinte forma.
 
-```ts
+```ts {11-14}
 import User from '#models/user'
 import { HttpContext } from '@adonisjs/core/http'
 
@@ -376,12 +354,10 @@ export default class SessionController {
 
     await auth.use('web').login(
       user,
-      // highlight-start
       /**
-       * Generate token when "remember_me" input exists
+       * Gere token quando a entrada "remember_me" existir
        */
       !!request.input('remember_me')
-      // highlight-end
     )
     
     response.redirect('/dashboard')
@@ -414,4 +390,5 @@ router
 Finalmente, você pode configurar a rota de redirecionamento para os usuários conectados dentro do arquivo `./app/middleware/guest_middleware.ts`.
 
 ## Eventos
+
 Consulte o [guia de referência de eventos](../references/events.md#session_authcredentials_verified) para visualizar a lista de eventos disponíveis emitidos pelo pacote Auth.

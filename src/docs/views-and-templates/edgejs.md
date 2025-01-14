@@ -6,7 +6,7 @@ summary: Aprenda a usar o Edge.js para criação de modelos no AdonisJS
 
 O Edge é um mecanismo de modelo **simples**, **moderno** e com **baterias incluídas** criado e mantido pela equipe principal do AdonisJS para Node.js. O Edge é semelhante a escrever JavaScript. Se você conhece JavaScript, conhece o Edge.
 
-:::note
+::: info NOTA
 A documentação do Edge está disponível em [https://edgejs.dev](https://edgejs.dev)
 :::
 
@@ -24,10 +24,10 @@ node ace add edge
 
 2. Registra o seguinte provedor de serviços dentro do arquivo `adonisrc.ts`.
 
-```ts
+    ```ts
     {
       providers: [
-        // ...other providers
+        // ...outros provedores
         () => import('@adonisjs/core/providers/edge_provider')
       ]
     }
@@ -93,18 +93,19 @@ node ace make:preload view
 ```
 
 ```ts
-// title: start/view.ts
+// start/view.ts
+
 import edge from 'edge.js'
 import env from '#start/env'
 import { edgeIconify } from 'edge-iconify'
 
 /**
- * Register a plugin
+ * Registre um plugin
  */
 edge.use(edgeIconify)
 
 /**
- * Define a global property
+ * Defina uma propriedade global
  */
 edge.global('appUrl', env.get('APP_URL'))
 ```
@@ -115,7 +116,7 @@ Consulte o [guia de referência de ajudantes do Edge](../references/edge.md) par
 
 ## Saiba mais
 
-[Documentação do Edge.js](https://edgejs.dev)
-[Componentes](https://edgejs.dev/docs/components/introduction)
-[Ícones SVG](https://edgejs.dev/docs/edge-iconify)
-[Série Edge do Adocasts](https://adocasts.com/topics/edge)
+* [Documentação do Edge.js](https://edgejs.dev)
+* [Componentes](https://edgejs.dev/docs/components/introduction)
+* [Ícones SVG](https://edgejs.dev/docs/edge-iconify)
+* [Série Edge do Adocasts](https://adocasts.com/topics/edge)

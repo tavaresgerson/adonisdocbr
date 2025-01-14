@@ -9,22 +9,18 @@ O auth guard básico é uma implementação da [estrutura de autenticação HTTP
 ## Configurando o guard
 Os guards de autenticação são definidos dentro do arquivo `config/auth.ts`. Você pode configurar vários guards dentro deste arquivo sob o objeto `guards`.
 
-```ts
+```ts {2,7-11}
 import { defineConfig } from '@adonisjs/auth'
-// highlight-start
 import { basicAuthGuard, basicAuthUserProvider } from '@adonisjs/auth/basic_auth'
-// highlight-end
 
 const authConfig = defineConfig({
   default: 'basicAuth',
   guards: {
-    // highlight-start
     basicAuth: basicAuthGuard({
       provider: basicAuthUserProvider({
         model: () => import('#models/user'),
       }),
     })
-    // highlight-end
   },
 })
 
@@ -38,25 +34,19 @@ O método `basicAuthUserProvider` cria uma instância da classe [BasicAuthLucidU
 ## Preparando o modelo User
 O modelo (modelo `User` neste exemplo) configurado com o `basicAuthUserProvider` deve usar o mixin [AuthFinder](./verifying_user_credentials.md#using-the-auth-finder-mixin) para verificar as credenciais do usuário durante a autenticação.
 
-```ts
+```ts {4-5,7-10,12}
 import { DateTime } from 'luxon'
 import { compose } from '@adonisjs/core/helpers'
 import { BaseModel, column } from '@adonisjs/lucid/orm'
-// highlight-start
 import hash from '@adonisjs/core/services/hash'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
-// highlight-end
 
-// highlight-start
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],
   passwordColumnName: 'password',
 })
-// highlight-end
 
-// highlight-start
 export default class User extends compose(BaseModel, AuthFinder) {
-  // highlight-end
   @column({ isPrimary: true })
   declare id: number
 
@@ -88,10 +78,8 @@ export const middleware = router.named({
 })
 ```
 
-```ts
-// highlight-start
+```ts {1,9}
 import { middleware } from '#start/kernel'
-// highlight-end
 import router from '@adonisjs/core/services/router'
 
 router
@@ -99,9 +87,7 @@ router
     return auth.user
   })
   .use(middleware.auth({
-    // highlight-start
     guards: ['basicAuth']
-    // highlight-end
   }))
 ```
 
@@ -128,16 +114,14 @@ router
 ### Obter usuário autenticado ou falhar
 Se você não gosta de usar o [operador de asserção não nulo](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#non-null-assertion-operator-postfix-) na propriedade `auth.user`, você pode usar o método `auth.getUserOrFail`. Este método retornará o objeto do usuário ou lançará a exceção [E_UNAUTHORIZED_ACCESS](../references/exceptions.md#e_unauthorized_access).
 
-```ts
+```ts {6-7}
 import { middleware } from '#start/kernel'
 import router from '@adonisjs/core/services/router'
 
 router
   .get('dashboard', ({ auth }) => {
-    // highlight-start
     const user = auth.getUserOrFail()
     return `You are authenticated as ${user.email}`
-    // highlight-end
   })
   .use(middleware.auth({
     guards: ['basicAuth']

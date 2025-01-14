@@ -24,7 +24,7 @@ Instale e configure o pacote usando o seguinte comando:
 ```sh
 node ace add @adonisjs/ally
 
-# Define providers as CLI flags
+# Definir provedores como sinalizadores CLI
 node ace add @adonisjs/ally --providers=github --providers=google
 ```
 
@@ -34,10 +34,10 @@ node ace add @adonisjs/ally --providers=github --providers=google
 
 2. Registra o seguinte provedor de serviços dentro do arquivo `adonisrc.ts`.
 
-```ts
+    ```ts
     {
       providers: [
-        // ...other providers
+        // ...outros provedores
         () => import('@adonisjs/ally/ally_provider')
       ]
     }
@@ -81,16 +81,16 @@ Depois que o pacote for configurado, você pode interagir com as APIs do Ally us
 
 ```ts
 router.get('/github/redirect', ({ ally }) => {
-  // GitHub driver instance
+  // Instância do driver GitHub
   const gh = ally.use('github')
 })
 
 router.get('/twitter/redirect', ({ ally }) => {
-  // Twitter driver instance
+  // Instância do driver Twitter
   const twitter = ally.use('twitter')
 })
 
-// You could also dynamically retrieve the driver
+// Você também pode recuperar dinamicamente o driver
 router.get('/:provider/redirect', ({ ally, params }) => {
   const driverInstance = ally.use(params.provider)
 }).where('provider', /github|twitter/)
@@ -109,15 +109,13 @@ router.get('/github/redirect', ({ ally }) => {
 
 Você pode passar uma função de retorno de chamada para definir escopos personalizados ou valores de string de consulta durante o redirecionamento.
 
-```ts
+```ts {5-6}
 router.get('/github/redirect', ({ ally }) => {
   return ally
     .use('github')
     .redirect((request) => {
-      // highlight-start
       request.scopes(['user:email', 'repo:invite'])
       request.param('allow_signup', false)
-      // highlight-end
     })
 })
 ```
@@ -132,30 +130,30 @@ router.get('/github/callback', async ({ ally }) => {
   const gh = ally.use('github')
 
   /**
-   * User has denied access by canceling
-   * the login flow
+   * O usuário negou o acesso cancelando
+   * o fluxo de login
    */
   if (gh.accessDenied()) {
     return 'You have cancelled the login process'
   }
 
   /**
-   * OAuth state verification failed. This happens when the
-   * CSRF cookie gets expired.
+   * A verificação do estado OAuth falhou. Isso acontece quando o
+   * cookie CSRF expira.
    */
   if (gh.stateMisMatch()) {
     return 'We are unable to verify the request. Please try again'
   }
 
   /**
-   * GitHub responded with some error
+   * O GitHub respondeu com algum erro
    */
   if (gh.hasError()) {
     return gh.getError()
   }
 
   /**
-   * Access user info
+   * Acessar informações do usuário
    */
   const user = await gh.user()
   return user
@@ -213,7 +211,7 @@ user.token.expiresAt
 user.token.expiresIn
 ```
 
-| Property        | Protocol        | Description |
+| Propriedade     | Protocolo       | Descrição   |
 |-----------------|-----------------|-------------|
 | `token`         | OAuth2 / OAuth1 | O valor do token de acesso. O valor está disponível para os protocolos `OAuth2` e `OAuth1`. |
 | `secret`        | OAuth1          | O segredo do token aplicável somente para o protocolo `OAuth1`. Atualmente, o Twitter é o único driver oficial usando OAuth1. |
@@ -239,59 +237,53 @@ Graças ao TypeScript, você obterá sugestões de preenchimento automático par
 
 ![](../digging_deeper/ally_autocomplete.png)
 
-```ts
-// title: config/ally.ts
+```ts {8}
+// config/ally.ts
+
 github: {
   driver: 'github',
   clientId: env.get('GITHUB_CLIENT_ID')!,
   clientSecret: env.get('GITHUB_CLIENT_SECRET')!,
   callbackUrl: '',
-  // highlight-start
   scopes: ['read:user', 'repo:invite'],
-  // highlight-end
 }
 ```
 
-```ts
-// title: During redirect
+```ts {6}
+// Durante o redirecionamento
+
 ally
   .use('github')
   .redirect((request) => {
-    // highlight-start
     request.scopes(['read:user', 'repo:invite'])
-    // highlight-end
   })
 ```
 
 ## Definindo parâmetros de consulta de redirecionamento
 Você pode personalizar os parâmetros de consulta para a solicitação de redirecionamento junto com os escopos. No exemplo a seguir, definimos os parâmetros `prompt` e `access_type` aplicáveis ​​com o [provedor do Google](https://developers.google.com/identity/protocols/oauth2/web-server#httprest).
 
-```ts
+```ts {5-7}
 router.get('/google/redirect', async ({ ally }) => {
   return ally
     .use('google')
     .redirect((request) => {
-      // highlight-start
       request
         .param('access_type', 'offline')
         .param('prompt', 'select_account')
-      // highlight-end
     })
 })
 ```
 
 Você pode limpar quaisquer parâmetros existentes usando o método `.clearParam()` na solicitação. Isso pode ser útil se os padrões de parâmetros forem definidos na configuração e você precisar redefini-los para um fluxo de autenticação personalizado separado.
 
-```ts
+```ts {5-7}
 router.get('/google/redirect', async ({ ally }) => {
   return ally
     .use('google')
     .redirect((request) => {
-      // highlight-start
       request
         .clearParam('redirect_uri')
         .param('redirect_uri', '')
-      // highlight-end
     })
 })
 ```
@@ -323,12 +315,14 @@ O Ally cria um token CSRF e o salva dentro de um cookie criptografado, que é ve
 No entanto, se você não puder usar cookies por algum motivo, você pode habilitar o modo sem estado no qual nenhuma verificação de estado ocorrerá e, portanto, nenhum cookie CSRF será gerado.
 
 ```ts
-// title: Redirecting
+// Redirecionando
+
 ally.use('github').stateless().redirect()
 ```
 
 ```ts
-// title: Handling callback response
+// Manipulando resposta de retorno de chamada
+
 const gh = ally.use('github').stateless()
 await gh.user()
 ```
@@ -344,7 +338,7 @@ A seguir está a referência de configuração completa para todos os drivers. V
     clientSecret: '',
     callbackUrl: '',
 
-    // GitHub specific
+    // Específico do GitHub
     login: 'adonisjs',
     scopes: ['user', 'gist'],
     allowSignup: true,
@@ -361,7 +355,7 @@ A seguir está a referência de configuração completa para todos os drivers. V
     clientSecret: '',
     callbackUrl: '',
 
-    // Google specific
+    // Específico do  Google
     prompt: 'select_account',
     accessType: 'offline',
     hostedDomain: 'adonisjs.com',
@@ -392,7 +386,7 @@ A seguir está a referência de configuração completa para todos os drivers. V
     clientSecret: '',
     callbackUrl: '',
 
-    // Discord specific
+    // Específico do Discord
     prompt: 'consent' | 'none',
     guildId: '',
     disableGuildSelect: false,
@@ -412,7 +406,7 @@ A seguir está a referência de configuração completa para todos os drivers. V
     clientSecret: '',
     callbackUrl: '',
 
-    // LinkedIn specific
+    // Específico do LinkedIn
     scopes: ['r_emailaddress', 'r_liteprofile'],
   })
 }
@@ -427,7 +421,7 @@ A seguir está a referência de configuração completa para todos os drivers. V
     clientSecret: '',
     callbackUrl: '',
 
-    // Facebook specific
+    // Específico do Facebook
     scopes: ['email', 'user_photos'],
     userFields: ['first_name', 'picture', 'email'],
     display: '',
@@ -446,7 +440,7 @@ A seguir está a referência de configuração completa para todos os drivers. V
     clientSecret: '',
     callbackUrl: '',
 
-    // Spotify specific
+    // Específico do Spotify
     scopes: ['user-read-email', 'streaming'],
     showDialog: false
   })

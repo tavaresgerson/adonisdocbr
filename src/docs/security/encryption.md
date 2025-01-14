@@ -8,7 +8,7 @@ Usando o serviço de criptografia, você pode criptografar e descriptografar val
 
 O serviço de `criptografia` usa a `appKey` armazenada dentro do arquivo `config/app.ts` como o segredo para criptografar os valores.
 
-[variáveis ​​de ambiente](../getting_started/environment_variables.md). Qualquer pessoa com acesso a essa chave pode descriptografar valores.
+- [Variáveis ​​de ambiente](../getting_started/environment_variables.md). Qualquer pessoa com acesso a essa chave pode descriptografar valores.
 
 - A chave deve ter pelo menos 16 caracteres e ter um valor aleatório criptograficamente seguro. Você pode gerar a chave usando o comando `node ace generate:key`.
 
@@ -73,7 +73,7 @@ encryption.encrypt(10)
 // BigInt
 encryption.encrypt(BigInt(10))
 
-// Data objects are converted to ISO string
+// Objetos Date são convertidos em string ISO
 encryption.encrypt(new Date())
 ```
 

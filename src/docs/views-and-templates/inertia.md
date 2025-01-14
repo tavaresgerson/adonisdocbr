@@ -10,10 +10,10 @@ summary: Aprenda a usar o Inertia com o AdonisJS para criar aplicativos renderiz
 
 Usar o Inertia permitirá que você crie um SPA com seu framework de frontend favorito (Vue.js, React, Svelte ou Solid.js) sem criar uma API separada.
 
-:::codegroup
+::: code-group
 
-```ts
-// title: app/controllers/users_controller.ts
+```ts [app/controllers/users_controller.ts]
+
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class UsersController {
@@ -25,9 +25,8 @@ export default class UsersController {
 }
 ```
 
+```vue [inertia/pages/users/index.vue]
 
-```vue
-// title: inertia/pages/users/index.vue
 <script setup lang="ts">
 import { Link, Head } from '@inertiajs/vue3'
 
@@ -53,16 +52,15 @@ defineProps<{
 
 ## Instalação
 
-:::note
+::: info NOTA
 Você está iniciando um novo projeto e quer usar o Inertia? Confira o [Inertia starter kit](https://docs.adonisjs.com/guides/getting-started/installation#inertia-starter-kit).
 :::
 
 Instale o pacote do registro npm executando:
 
-:::codegroup
+::: code-group
 
-```sh
-// title: npm
+```sh [npm]
 npm i @adonisjs/inertia
 ```
 
@@ -78,7 +76,7 @@ node ace configure @adonisjs/inertia
 
 1. Registra o seguinte provedor de serviço e comando dentro do arquivo `adonisrc.ts`.
 
-```ts
+    ```ts
     {
       providers: [
         // ...other providers
@@ -88,7 +86,7 @@ node ace configure @adonisjs/inertia
     ```
 2. Registra o seguinte middleware dentro do arquivo `start/kernel.ts`
 
-```ts
+   ```ts
    router.use([() => import('@adonisjs/inertia/inertia_middleware')])
    ```
 
@@ -118,7 +116,7 @@ node ace configure @adonisjs/inertia
 
 Uma vez feito, você deve estar pronto para usar o Inertia em seu aplicativo AdonisJS. Inicie seu servidor de desenvolvimento e visite `localhost:3333` para ver a página inicial renderizada usando o Inertia com seu framework de frontend selecionado.
 
-:::note
+::: info NOTA
 **Leia a [documentação oficial do Inertia](https://inertiajs.com/)**.
 
 O Inertia é uma biblioteca independente de backend. Acabamos de criar um adaptador para fazê-lo funcionar com o AdonisJS. Você deve estar familiarizado com os conceitos do Inertia antes de ler esta documentação.
@@ -132,10 +130,9 @@ Se você usou o comando `configure` ou `add`, o pacote terá criado um arquivo d
 
 Basicamente, este arquivo será o ponto de entrada principal para seu aplicativo de frontend e será usado para inicializar o Inertia e seu framework de frontend. Este arquivo deve ser o ponto de entrada carregado pelo seu modelo raiz do Edge com a tag `@vite`.
 
-:::codegroup
+:::code-group
 
-```ts
-// title: Vue
+```ts [Vue]
 import { createApp, h } from 'vue'
 import type { DefineComponent } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
@@ -144,7 +141,8 @@ import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 const appName = import.meta.env.VITE_APP_NAME || 'AdonisJS'
 
 createInertiaApp({
-  title: (title) => {{ `${title} - ${appName}` }},
+  (title) => {{ `${title} - ${appName}` }},
+
   resolve: (name) => {
     return resolvePageComponent(
       `../pages/${name}.vue`,
@@ -159,8 +157,7 @@ createInertiaApp({
 })
 ```
 
-```tsx
-// title: React
+```tsx [React]
 import { createRoot } from 'react-dom/client';
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
@@ -170,7 +167,8 @@ const appName = import.meta.env.VITE_APP_NAME || 'AdonisJS'
 createInertiaApp({
   progress: { color: '#5468FF' },
 
-  title: (title) => `${title} - ${appName}`,
+  (title) => `${title} - ${appName}`,
+
 
   resolve: (name) => {
     return resolvePageComponent(
@@ -186,8 +184,7 @@ createInertiaApp({
 });
 ```
 
-```ts
-// title: Svelte
+```ts [Svelte]
 import { createInertiaApp } from '@inertiajs/svelte'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 
@@ -196,7 +193,8 @@ const appName = import.meta.env.VITE_APP_NAME || 'AdonisJS'
 createInertiaApp({
   progress: { color: '#5468FF' },
 
-  title: (title) => `${title} - ${appName}`,
+  (title) => `${title} - ${appName}`,
+
 
   resolve: (name) => {
     return resolvePageComponent(
@@ -211,8 +209,7 @@ createInertiaApp({
 })
 ```
 
-```ts
-// title: Solid
+```ts [Solid]
 import { render } from 'solid-js/web'
 import { createInertiaApp } from 'inertia-adapter-solid'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
@@ -222,7 +219,8 @@ const appName = import.meta.env.VITE_APP_NAME || 'AdonisJS'
 createInertiaApp({
   progress: { color: '#5468FF' },
 
-  title: (title) => `${title} - ${appName}`,
+  (title) => `${title} - ${appName}`,
+
 
   resolve: (name) => {
     return resolvePageComponent(
@@ -246,13 +244,12 @@ Ao configurar seu pacote, um `inertia_middleware` foi registrado dentro do arqui
 
 Para renderizar uma visualização usando Inertia, use o método `inertia.render`. O método aceita o nome da visualização e os dados a serem passados ​​para o componente como props.
 
-```ts
-// title: app/controllers/home_controller.ts
+```ts {5}
+// app/controllers/home_controller.ts
+
 export default class HomeController {
   async index({ inertia }: HttpContext) {
-    // highlight-start
     return inertia.render('home', { user: { name: 'julien' } })
-    // highlight-end
   }
 }
 ```
@@ -261,10 +258,9 @@ Você vê o `home` passado para o método `inertia.render`? Deve ser o caminho p
 
 Seu componente frontend receberá o objeto `user` como prop:
 
-:::codegroup
+:::code-group
 
-```vue
-// title: Vue
+```vue [Vue]
 <script setup lang="ts">
 defineProps<{
   user: { name: string }
@@ -276,15 +272,13 @@ defineProps<{
 </template>
 ```
 
-```tsx
-// title: React
+```tsx [React]
 export default function Home(props: { user: { name: string } }) {
   return <p>Hello {props.user.name}</p>
 }
 ```
 
-```svelte
-// title: Svelte
+```svelte [Svelte]
 <script lang="ts">
 export let user: { name: string }
 </script>
@@ -294,8 +288,7 @@ export let user: { name: string }
 </Layout>
 ```
 
-```jsx
-// title: Solid
+```jsx [Solid]
 export default function Home(props: { user: { name: string } }) {
   return <p>Hello {props.user.name}</p>
 }
@@ -305,7 +298,7 @@ export default function Home(props: { user: { name: string } }) {
 
 Simples assim.
 
-:::warning
+::: warning ATENÇÃO
 Ao passar dados para o frontend, tudo é serializado para JSON. Não espere passar instâncias de modelos, datas ou outros objetos complexos.
 :::
 
@@ -313,10 +306,9 @@ Ao passar dados para o frontend, tudo é serializado para JSON. Não espere pass
 
 O modelo Root é um modelo Edge regular que será carregado na primeira visita à página do seu aplicativo. É o lugar onde você deve incluir seus arquivos CSS e Javascript e também onde você deve incluir a tag `@inertia`. Um modelo raiz típico se parece com isso:
 
-:::codegroup
+:::code-group
 
-```edge
-// title: Vue
+```edge [Vue]
 <!DOCTYPE html>
 <html>
 
@@ -336,8 +328,7 @@ O modelo Root é um modelo Edge regular que será carregado na primeira visita �
 </html>
 ```
 
-```edge
-// title: React
+```edge [React]
 <!DOCTYPE html>
 <html>
 
@@ -358,8 +349,7 @@ O modelo Root é um modelo Edge regular que será carregado na primeira visita �
 </html>
 ```
 
-```edge
-// title: Svelte
+```edge [Svelte]
 <!DOCTYPE html>
 <html>
 
@@ -379,8 +369,7 @@ O modelo Root é um modelo Edge regular que será carregado na primeira visita �
 </html>
 ```
 
-```edge
-// title: Solid
+```edge [Solid]
 <!DOCTYPE html>
 <html>
 
@@ -408,8 +397,8 @@ Você pode configurar o caminho do modelo raiz no arquivo `config/inertia.ts`. P
 import { defineConfig } from '@adonisjs/inertia'
 
 export default defineConfig({
-  // The path to the root template relative 
-  // to the `resources/views` directory
+  // O caminho para o modelo raiz relativo
+  // ao diretório `resources/views`
   rootView: 'app_root', 
 })
 ```
@@ -435,15 +424,15 @@ export default defineConfig({
 
 Você pode querer compartilhar dados com seu modelo raiz do Edge. Por exemplo, para adicionar um metatítulo ou tags de gráfico aberto. Você pode fazer isso usando o terceiro argumento do método `inertia.render`:
 
-```ts
-// title: app/controllers/posts_controller.ts
+```ts {6-8}
+// app/controllers/posts_controller.ts
+
 export default class PostsController {
   async index({ inertia }: HttpContext) {
     return inertia.render('posts/details', post, {
-      // highlight-start
-      title: post.title,
+      post.title,
+
       description: post.description
-      // highlight-end
     })
   }
 }
@@ -452,7 +441,8 @@ export default class PostsController {
 O `title` e a `description` agora estarão disponíveis para o modelo raiz do Edge:
 
 ```edge
-// title: resources/views/root.edge
+<!-- resources/views/root.edge -->
+
 <html>
   <title>{{ title }}</title>
   <meta name="description" content="{{ description }}">
@@ -472,12 +462,12 @@ export default class UsersController {
   async store({ response }: HttpContext) {
     await User.create(request.body())
 
-    // 👇 You can use standard AdonisJS redirections
+    // 👇 Você pode usar redirecionamentos AdonisJS padrão
     return response.redirect().toRoute('users.index')
   }
 
   async externalRedirect({ inertia }: HttpContext) {
-    // 👇 Or use the inertia.location for external redirects
+    // 👇 Ou usar o inertia.location para redirecionamentos externos
     return inertia.location('https://adonisjs.com')
   }
 }
@@ -498,11 +488,11 @@ import { defineConfig } from '@adonisjs/inertia'
 
 export default defineConfig({
   sharedData: {
-    // 👇 This will be available in all views
+    // 👇 Isso estará disponível em todas as visualizações
     appName: 'My App' ,
-    // 👇 Scoped to the current request
+    // 👇 Com escopo para a solicitação atual
     user: (ctx) => ctx.auth?.user, 
-    // 👇 Scoped to the current request
+    // 👇 Com escopo para a solicitação atual
     errors: (ctx) => ctx.session.flashMessages.get('errors'),
   },
 })
@@ -536,19 +526,19 @@ Sobre avaliação de dados preguiçosa, aqui está como funciona no AdonisJS:
 export default class UsersController {
   async index({ inertia }: HttpContext) {
     return inertia.render('users/index', {
-      // ALWAYS included on first visit.
-      // OPTIONALLY included on partial reloads.
-      // ALWAYS evaluated
+      // SEMPRE incluído na primeira visita.
+      // OPCIONALMENTE incluído em recargas parciais.
+      // SEMPRE avaliado
       users: await User.all(),
 
-      // ALWAYS included on first visit.
-      // OPTIONALLY included on partial reloads.
-      // ONLY evaluated when needed
+      // SEMPRE incluído na primeira visita.
+      // OPCIONALMENTE incluído em recargas parciais.
+      // SOMENTE avaliado quando necessário
       users: () => User.all(),
 
-      // NEVER included on first visit.
-      // OPTIONALLY included on partial reloads.
-      // ONLY evaluated when needed
+      // NUNCA incluído na primeira visita.
+      // OPCIONALMENTE incluído em recargas parciais.
+      // SOMENTE avaliado quando necessário
       users: inertia.lazy(() => User.all())
     }),
   }
@@ -559,10 +549,9 @@ export default class UsersController {
 
 Normalmente, você desejará compartilhar os tipos de dados que está passando para os componentes das páginas do seu frontend. Uma maneira simples de fazer isso é usar o tipo `InferPageProps`.
 
-:::codegroup
+:::code-group
 
-```ts
-// title: app/controllers/users_controller.ts
+```ts [app/controllers/users_controller.ts]
 export class UsersController {
   index() {
     return inertia.render('users/index', {
@@ -576,15 +565,14 @@ export class UsersController {
 }
 ```
 
-```tsx
-// title: inertia/pages/users/index.tsx
+```tsx [inertia/pages/users/index.tsx]
 import { InferPageProps } from '@adonisjs/inertia/types'
 import type { UsersController } from '../../controllers/users_controller.ts'
 
 export function UsersPage(
-  // 👇 It will be correctly typed based
-  // on what you passed to inertia.render
-  // in your controller
+  // 👇 Ele será tipado corretamente com base
+  // no que você passou para o inertia.render
+  // no seu controlador
   props: InferPageProps<UsersController, 'index'>
 ) {
   return (
@@ -602,7 +590,7 @@ Se estiver usando o Vue, você terá que definir manualmente cada propriedade no
 import { InferPageProps } from '@adonisjs/inertia'
 
 defineProps<{
-  // 👇 You will have to manually define each prop
+  // 👇 Você terá que definir manualmente cada suporte
   users: InferPageProps<UsersController, 'index'>['users'],
   posts: InferPageProps<PostsController, 'index'>['posts'],
 }>()
@@ -635,10 +623,9 @@ Dependendo dos tipos que você usa, pode ser necessário adicionar outras direti
 
 Uma coisa importante a saber sobre `InferPageProps` é que ele "serializará no nível de tipo" os dados que você passar. Por exemplo, se você passar um objeto `Date` para `inertia.render`, o tipo resultante de `InferPageProps` será `string`:
 
-:::codegroup
+:::code-group
 
-```ts
-// title: app/controllers/users_controller.ts
+```ts [app/controllers/users_controller.ts]
 export default class UsersController {
   async index({ inertia }: HttpContext) {
     const users = [
@@ -650,8 +637,7 @@ export default class UsersController {
 }
 ```
 
-```tsx
-// title: inertia/pages/users/index.tsx
+```tsx [inertia/pages/users/index.tsx]
 import type { InferPageProps } from '@adonisjs/inertia/types'
 
 export function UsersPage(
@@ -673,10 +659,9 @@ Mantendo o último ponto em mente, outra coisa importante a saber é que se voc�
 - Converta seu modelo em um objeto simples antes de passá-lo para `inertia.render`:
 - Use um sistema DTO (Data Transfer Object) para transformar seus modelos em objetos simples antes de passá-los para `inertia.render`.
 
-:::codegroup
+:::code-group
 
-```ts
-// title: Casting
+```ts [Casting]
 class UsersController {
   async edit({ inertia, params }: HttpContext) {
     const user = users.serialize() as {
@@ -689,8 +674,7 @@ class UsersController {
 }
 ```
 
-```ts
-// title: DTOs
+```ts [DTOs]
 class UserDto {
   constructor(private user: User) {}
 
@@ -719,7 +703,8 @@ Agora você terá tipos precisos em seu componente frontend.
 Para ter os tipos de seus [dados compartilhados](#sharing-data-with-all-views) em seus componentes, certifique-se de ter executado o aumento do módulo em seu arquivo `config/inertia.ts` da seguinte forma:
 
 ```ts
-// file: config/inertia.ts
+// config/inertia.ts
+
 const inertiaConfig = defineConfig({
   sharedData: {
     appName: 'My App',
@@ -730,8 +715,8 @@ export default inertiaConfig;
 
 declare module '@adonisjs/inertia/types' {
   export interface SharedProps extends InferSharedProps<typeof inertiaConfig> {
-    // If necessary, you can also manually add some shared props,
-    // such as those shared from a middleware for example
+    // Se necessário, você também pode adicionar manualmente alguns props compartilhados,
+    // como aqueles compartilhados de um middleware, por exemplo
     propsSharedFromAMiddleware: number;
   }
 }
@@ -746,7 +731,8 @@ Além disso, certifique-se de adicionar esta [diretiva de referência](#referenc
 Depois de fazer isso, você terá acesso aos seus props compartilhados em seus componentes via `InferPageProps`. `InferPageProps` conterá os tipos de seus props compartilhados e os props passados ​​por `inertia.render`:
 
 ```tsx
-// file: inertia/pages/users/index.tsx
+// inertia/pages/users/index.tsx
+
 
 import type { InferPageProps } from '@adonisjs/inertia/types'
 
@@ -808,10 +794,9 @@ Precisamos adicionar um ponto de entrada do servidor que seja super semelhante a
 
 Você deve criar um `inertia/app/ssr.ts` que exporte por padrão uma função como esta:
 
-:::codegroup
+:::code-group
 
-```ts
-// title: Vue 
+```ts [Vue]
 import { createInertiaApp } from '@inertiajs/vue3'
 import { renderToString } from '@vue/server-renderer'
 import { createSSRApp, h, type DefineComponent } from 'vue'
@@ -832,8 +817,7 @@ export default function render(page) {
 }
 ```
 
-```tsx
-// title: React
+```tsx [React]
 import ReactDOMServer from 'react-dom/server'
 import { createInertiaApp } from '@inertiajs/react'
 
@@ -850,8 +834,7 @@ export default function render(page) {
 }
 ```
 
-```ts
-// title: Svelte
+```ts [Svelte]
 import { createInertiaApp } from '@inertiajs/svelte'
 import createServer from '@inertiajs/svelte/server'
 
@@ -866,8 +849,7 @@ export default function render(page) {
 }
 ```
 
-```tsx
-// title: Solid
+```tsx [Solid]
 import { hydrate } from 'solid-js/web'
 import { createInertiaApp } from 'inertia-adapter-solid'
 
@@ -965,23 +947,20 @@ E, finalmente, você também pode testar seus endpoints do Inertia para garantir
 
 Primeiro, certifique-se de configurar os plugins `inertiaApiClient` e `apiClient` no seu arquivo `test/bootsrap.ts` se você ainda não fez isso:
 
-```ts
-// title: tests/bootstrap.ts
+```ts {6-7,12-13}
+// tests/bootstrap.ts
+
 import { assert } from '@japa/assert'
 import app from '@adonisjs/core/services/app'
 import { pluginAdonisJS } from '@japa/plugin-adonisjs'
-// highlight-start
 import { apiClient } from '@japa/api-client'
 import { inertiaApiClient } from '@adonisjs/inertia/plugins/api_client'
-// highlight-end
 
 export const plugins: Config['plugins'] = [
   assert(), 
   pluginAdonisJS(app),
-  // highlight-start
   apiClient(),
   inertiaApiClient(app)
-  // highlight-end
 ]
 ```
 
@@ -1047,10 +1026,10 @@ Além disso, você pode acessar as seguintes propriedades em `ApiResponse`:
 test('returns correct data', async ({ client }) => {
   const response = await client.get('/home').withInertia()
 
-  // 👇 The component returned by the server
+  // 👇 O componente retornado pelo servidor
   console.log(response.inertiaComponent) 
 
-  // 👇 The props returned by the server
+  // 👇 Os props retornados pelo servidor
   console.log(response.inertiaProps)
 })
 ```
@@ -1105,9 +1084,9 @@ Então é altamente provável que você esteja importando código de backend par
 Geralmente, esse erro ocorre quando você tenta compartilhar um tipo com seu frontend. Se é isso que você está tentando fazer, certifique-se de sempre importar esse tipo somente via `import type` em vez de `import`:
 
 ```ts
-// ✅ Correct
+// ✅ Correto
 import type { User } from '#models/user'
 
-// ❌ Incorrect
+// ❌ Incorreto
 import { User } from '#models/user'
 ``

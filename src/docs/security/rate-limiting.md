@@ -21,7 +21,7 @@ node ace add @adonisjs/limiter
 1. Instala o pacote `@adonisjs/limiter` usando o gerenciador de pacotes detectado.
 
 2. Registra o seguinte provedor de serviços dentro do arquivo `adonisrc.ts`.
-```ts
+    ```ts
     {
       providers: [
         // ...other providers
@@ -35,7 +35,7 @@ node ace add @adonisjs/limiter
 4. Crie o arquivo `start/limiter.ts`. Este arquivo é usado para definir o middleware HTTP throttle.
 
 5. Defina a seguinte variável de ambiente junto com sua validação dentro do arquivo `start/env.ts`.
-```ts
+   ```ts
    LIMITER_STORE=redis
    ```
 
@@ -121,8 +121,8 @@ Para reduzir a carga no banco de dados, você pode definir o número de solicita
   requests: 10,
 
   /**
-   * After 12 requests, block the key within the
-   * memory and stop consulting the database.
+   * Após 12 solicitações, bloqueie a chave dentro da
+   * memória e pare de consultar o banco de dados.
    */
   inMemoryBlockOnConsumed: 12,
 }
@@ -169,7 +169,7 @@ O armazenamento `database` tem uma dependência de peer no pacote `@adonisjs/luc
 
 A seguir está a lista de opções que o armazenamento de banco de dados aceita (junto com as opções compartilhadas).
 
-:::note
+::: info NOTA
 Somente bancos de dados MySQL e PostgreSQL podem ser usados ​​com o armazenamento de banco de dados.
 :::
 
@@ -214,7 +214,8 @@ Se você abrir o arquivo `start/limiter.ts`, encontrará um middleware de limita
 No exemplo a seguir, o middleware de limitação global permite que os usuários façam **10 solicitações/min** com base em seu endereço IP.
 
 ```ts
-// title: start/limiter.ts
+// start/limiter.ts
+
 import limiter from '@adonisjs/limiter/services/main'
 
 export const throttle = limiter.define('global', () => {
@@ -224,18 +225,15 @@ export const throttle = limiter.define('global', () => {
 
 Você pode aplicar o middleware `throttle` a uma rota da seguinte maneira.
 
-```ts
-// title: start/routes.ts
+```ts {4,8}
+// start/routes.ts
+
 import router from '@adonisjs/core/services/router'
-// highlight-start
 import { throttle } from '#start/limiter'
-// highlight-end
 
 router
   .get('/', () => {})
-  // highlight-start
   .use(throttle)
-  // highlight-end
 ```
 
 ### Limitação de taxa dinâmica
@@ -243,11 +241,12 @@ router
 Vamos criar outro middleware para proteger um endpoint de API. Desta vez, aplicaremos limites de taxa dinâmicos com base no status de autenticação de uma solicitação.
 
 ```ts
-// title: start/limiter.ts
+// start/limiter.ts
+
 export const apiThrottle = limiter.define('api', (ctx) => {
   /**
-   * Allow logged-in users to make 100 requests by
-   * their user ID
+   * Permitir que usuários logados façam 100 solicitações por
+   * seu ID de usuário
    */
   if (ctx.auth.user) {
     return limiter
@@ -257,7 +256,7 @@ export const apiThrottle = limiter.define('api', (ctx) => {
   }
 
   /**
-   * Allow guest users to make 10 requests by ip address
+   * Permitir que usuários convidados façam 10 solicitações por endereço IP
    */
   return limiter
     .allowRequests(10)
@@ -267,7 +266,8 @@ export const apiThrottle = limiter.define('api', (ctx) => {
 ```
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import { apiThrottle } from '#start/limiter'
 
 router
@@ -278,41 +278,35 @@ router
 ### Trocando o armazenamento de backend
 Você pode usar um armazenamento de backend específico com middleware de aceleração usando o método `store`. Por exemplo:
 
-```ts
+```ts {4}
 limiter
   .allowRequests(10)
   .every('1 minute')
-  // highlight-start
   .store('redis')
-  // highlight-end
 ```
 
 ### Usando uma chave personalizada
 Por padrão, as solicitações são limitadas por taxa pelo endereço IP do usuário. No entanto, você pode especificar uma chave personalizada usando o método `usingKey`.
 
-```ts
+```ts {4}
 limiter
   .allowRequests(10)
   .every('1 minute')
-  // highlight-start
   .usingKey(`user_${ctx.auth.user.id}`)
-  // highlight-end
 ```
 
 ### Bloqueando usuário
 Você pode bloquear um usuário por uma duração especificada se ele continuar a fazer solicitações mesmo depois de esgotar sua cota usando o método `blockFor`. O método aceita a duração em segundos ou a expressão de tempo.
 
-```ts
+```ts {4-8}
 limiter
   .allowRequests(10)
   .every('1 minute')
-  // highlight-start
   /**
-   * Will be blocked for 30mins, if they send more than
-   * 10 requests under one minute
+   * Serão bloqueados por 30 minutos, se enviarem mais de
+   * 10 solicitações com menos de um minuto
    */
   .blockFor('30 mins')
-  // highlight-end
 ```
 
 ## Lidando com ThrottleException
@@ -322,11 +316,11 @@ O middleware throttle lança a exceção [E_TOO_MANY_REQUESTS](../references/exc
 
 - As solicitações HTTP com o cabeçalho `Accept=application/vnd.api+json` receberão uma matriz de mensagens de erro formatadas de acordo com a especificação JSON API.
 
-[páginas de status](../basics/exception_handling.md#status-pages) para mostrar uma página de erro personalizada para erros de limitador.
+- [Páginas de status](../basics/exception_handling.md#status-pages) para mostrar uma página de erro personalizada para erros de limitador.
 
 Você também pode autogerenciar o erro dentro do [manipulador de exceção global](../basics/exception_handling.md#handling-exceptions).
 
-```ts
+```ts {9-18}
 import { errors } from '@adonisjs/limiter'
 import { HttpContext, ExceptionHandler } from '@adonisjs/core/http'
 
@@ -335,7 +329,6 @@ export default class HttpExceptionHandler extends ExceptionHandler {
   protected renderStatusPages = app.inProduction
 
   async handle(error: unknown, ctx: HttpContext) {
-    // highlight-start
     if (error instanceof errors.E_TOO_MANY_REQUESTS) {
       const message = error.getResponseMessage(ctx)
       const headers = error.getDefaultHeaders()
@@ -346,7 +339,6 @@ export default class HttpExceptionHandler extends ExceptionHandler {
 
       return ctx.response.status(error.status).send(message)
     }
-    // highlight-end
 
     return super.handle(error, ctx)
   }
@@ -356,20 +348,18 @@ export default class HttpExceptionHandler extends ExceptionHandler {
 ### Personalizando a mensagem de erro
 Em vez de manipular a exceção globalmente, você pode personalizar a mensagem de erro, o status e os cabeçalhos de resposta usando o hook ``limitExceeded`.
 
-```ts
+```ts {7-11}
 import limiter from '@adonisjs/limiter/services/main'
 
 export const throttle = limiter.define('global', () => {
   return limiter
     .allowRequests(10)
     .every('1 minute')
-    // highlight-start
     .limitExceeded((error) => {
       error
         .setStatus(400)
         .setMessage('Cannot process request. Try again later')
     })
-    // highlight-end
 })
 ```
 
@@ -377,7 +367,8 @@ export const throttle = limiter.define('global', () => {
 Se você configurou o pacote [@adonisjs/i18n](../digging_deeper/i18n.md), você pode definir a tradução para a mensagem de erro usando a chave `errors.E_TOO_MANY_REQUESTS`. Por exemplo:
 
 ```json
-// title: resources/lang/fr/errors.json
+// resources/lang/fr/errors.json
+
 {
   "E_TOO_MANY_REQUESTS": "Trop de demandes"
 }
@@ -401,11 +392,11 @@ Além de limitar solicitações HTTP, você também pode usar o limitador para a
 
 Antes de aplicar a limitação de taxa em uma ação, você deve obter uma instância da classe [Limiter](https://github.com/adonisjs/limiter/blob/main/src/limiter.ts) usando o método `limiter.use`. O método `use` aceita o nome do armazenamento de backend e as seguintes opções de limitação de taxa.
 
-- `requests`: O número de solicitações a serem permitidas para uma determinada duração.
-[expressão de tempo](../references/helpers.md#seconds) string.
-- `block (opcional)`: A duração para a qual bloquear a chave após todas as solicitações terem sido esgotadas.
-[shared options](#shared-options)
-[shared options](#shared-options)
+* `requests`: O número de solicitações a serem permitidas para uma duração dada.
+* `duration`: A duração em segundos ou uma string de [expressão de tempo](/docs/references/helpers#seconds).
+* `block` (opcional): A duração para a qual bloquear a chave após todas as solicitações terem sido esgotadas.
+* `inMemoryBlockOnConsumed` (opcional): Veja [opções compartilhadas](/docs/security/rate-limiting#shared-options)
+* `inMemoryBlockDuration` (opcional): Veja [opções compartilhadas](/docs/security/rate-limiting#shared-options)
 
 ```ts
 import limiter from '@adonisjs/limiter/services/main'
@@ -439,9 +430,9 @@ O método `attempt` retorna o resultado da função de retorno de chamada (se fo
 const key = 'user_1_reports'
 
 /**
- * Attempt to run an action for the given key.
- * The result will be the callback function return
- * value or undefined if no callback was executed.
+ * Tenta executar uma ação para a chave fornecida.
+ * O resultado será o retorno da função de retorno
+ * valor ou indefinido se nenhum retorno de chamada foi executado.
  */ 
 const executed = reportsLimiter.attempt(key, async () => {
   await generateReport()
@@ -449,7 +440,7 @@ const executed = reportsLimiter.attempt(key, async () => {
 })
 
 /**
- * Notify users that they have exceeded the limit
+ * Notificar os usuários de que eles excederam o limite
  */
 if (!executed) {
   const availableIn = await reportsLimiter.availableIn(key)
@@ -481,7 +472,7 @@ export default class SessionController {
     const { email, password } = request.only(['email', 'passwords'])
 
     /**
-     * Create a limiter
+     * Crie um limitador
      */
     const loginLimiter = limiter.use({
       requests: 5,
@@ -490,25 +481,25 @@ export default class SessionController {
     })
 
     /**
-     * Use IP address + email combination. This ensures if an 
-     * attacker is misusing emails; we do not block actual
-     * users from logging in and only penalize the attacker
-     * IP address.
+     * Use a combinação de endereço IP + e-mail. Isso garante que se um
+     * invasor estiver usando e-mails de forma indevida; não bloqueamos usuários reais
+     * de fazer login e apenas penalizamos o invasor
+     * endereço IP.
      */
     const key = `login_${request.ip()}_${email}`
 
     /**
-     * Wrap User.verifyCredentials inside the "penalize" method, so
-     * that we consume one request for every invalid credentials
-     * error
+     * Envolva User.verifyCredentials dentro do método "penalize", para que
+     * consumamos uma solicitação para cada credencial inválida
+     * erro
      */
     const [error, user] = await loginLimiter.penalize(key, () => {
       return User.verifyCredentials(email, password)
     })
 
     /**
-     * On ThrottleException, redirect the user back with a
-     * custom error message
+     * Em ThrottleException, redirecione o usuário de volta com uma
+     * mensagem de erro personalizada
      */
     if (error) {
       session.flashAll()
@@ -519,7 +510,7 @@ export default class SessionController {
     }
 
     /**
-     * Otherwise, login the user
+     * Caso contrário, faça login com o usuário
      */
   }
 }
@@ -530,7 +521,7 @@ Juntamente com os métodos `attempt` e `penalize`, você pode interagir com o li
 
 No exemplo a seguir, usamos o método `remaining` para verificar se uma determinada chave consumiu todas as solicitações. Caso contrário, use o método `increment` para consumir uma solicitação.
 
-```ts
+```ts {8-13}
 import limiter from '@adonisjs/limiter/services/main'
 
 const requestsLimiter = limiter.use({
@@ -538,14 +529,12 @@ const requestsLimiter = limiter.use({
   duration: '1 minute'
 })
 
-// highlight-start
 if (await requestsLimiter.remaining('unique_key') > 0) {
   await requestsLimiter.increment('unique_key')
   await performAction()
 } else {
   return 'Too many requests'
 }
-// highlight-end
 ```
 
 Você pode encontrar uma condição de corrida no exemplo acima entre chamar os métodos `remaining` e `increment`. Portanto, você pode querer usar o método `consume`. O método `consume` incrementará a contagem de solicitações e lançará uma exceção se todas as solicitações tiverem sido consumidas.
@@ -568,32 +557,30 @@ Além de consumir solicitações, você pode bloquear uma chave por mais tempo s
 
 O bloqueio é realizado pelos métodos `consume`, `attempt` e `penalize` automaticamente quando você cria uma instância de limitador com a opção `blockDuration`. Por exemplo:
 
-```ts
+```ts {6}
 import limiter from '@adonisjs/limiter/services/main'
 
 const requestsLimiter = limiter.use({
   requests: 10,
   duration: '1 minute',
-  // highlight-start
   blockDuration: '30 mins'
-  // highlight-end
 })
 
 /**
- * A user can make 10 requests in a minute. However, if
- * they send the 11th request, we will block the key
- * for 30 mins.
+ * Um usuário pode fazer 10 solicitações em um minuto. No entanto, se
+ * eles enviarem a 11ª solicitação, bloquearemos a chave
+ * por 30 minutos.
  */ 
 await requestLimiter.consume('a_unique_key')
 
 /**
- * Same behavior as consume
+ * Mesmo comportamento que consumir
  */
 await requestLimiter.attempt('a_unique_key', () => {
 })
 
 /**
- * Allow 10 failures and then block the key for 30 mins.
+ * Permitir 10 falhas e então bloquear a chave por 30 minutos.
  */
 await requestLimiter.penalize('a_unique_key', () => {
 })
@@ -615,8 +602,9 @@ Você pode usar um dos seguintes métodos para diminuir o número de solicitaç�
 
 O método `decrement` reduz a contagem de solicitações em 1, e o método `delete` exclui a chave. Observe que o método `decrement` não é atômico e pode definir a contagem de solicitações como `-1` quando a simultaneidade for muito alta.
 
-```ts
-// title: Decrement requests count
+```ts {18}
+// Decrementar a contagem de solicitações
+
 import limiter from '@adonisjs/limiter/services/main'
 
 const jobsLimiter = limiter.use({
@@ -628,18 +616,17 @@ await jobsLimiter.attempt('unique_key', async () => {
   await processJob()
 
   /**
-   * Decrement the consumed requests after we are done
-   * processing the job. This will allow other workers
-   * to use the slot.
+   * Diminua as solicitações consumidas depois que terminarmos
+   * de processar o trabalho. Isso permitirá que outros trabalhadores
+   * usem o slot.
    */
-  // highlight-start
   await jobsLimiter.decrement('unique_key')
-  // highlight-end
 })
 ```
 
 ```ts
-// title: Delete key
+// Apagar chave
+
 import limiter from '@adonisjs/limiter/services/main'
 
 const requestsLimiter = limiter.use({
@@ -653,8 +640,9 @@ await requestsLimiter.delete('unique_key')
 ## Testes
 Se você usar um único armazenamento (ou seja, padrão) para limitação de taxa, talvez queira alternar para o armazenamento `memory` durante o teste definindo a variável de ambiente `LIMITER_STORE` dentro do arquivo `.env.test`.
 
-```dotenv
-// title: .env.test
+```
+// .env.test
+
 LIMITER_STORE=memory
 ```
 
@@ -662,26 +650,22 @@ Você pode limpar o armazenamento de limitação de taxa entre os testes usando 
 
 Ao usar o Redis, é recomendável usar um banco de dados separado para o limitador de taxa. Caso contrário, o método `clear` limpará todo o banco de dados, e isso pode afetar outras partes dos aplicativos.
 
-```ts
+```ts {4-6}
 import limiter from '@adonisjs/limiter/services/main'
 
 test.group('Reports', (group) => {
-  // highlight-start
   group.each.setup(() => {
     return () => limiter.clear(['redis', 'memory'])
   })
-  // highlight-end
 })
 ```
 
 Alternativamente, você pode chamar o método `clear` sem nenhum argumento, e todos os armazenamentos configurados serão limpos.
 
-```ts
+```ts {3}
 test.group('Reports', (group) => {
   group.each.setup(() => {
-    // highlight-start
     return () => limiter.clear()
-    // highlight-end
   })
 })
 ```
@@ -700,7 +684,7 @@ import {
 } from '@adonisjs/limiter/types'
 
 /**
- * A custom set of options you want to accept.
+ * Um conjunto personalizado de opções que você deseja aceitar.
  */
 export type MongoDbLimiterConfig = {
   client: MongoDBConnection
@@ -719,27 +703,27 @@ export class MongoDbLimiterStore implements LimiterStoreContract {
   }
 
   /**
-   * Consume one request for the given key. This method
-   * should throw an error when all requests have been
-   * already consumed.
+   * Consumir uma requisição para a chave fornecida. Este método
+   * deve lançar um erro quando todas as requisições já foram
+   * consumidas.
    */
   async consume(key: string | number): Promise<LimiterResponse> {
   }
 
   /**
-   * Consume one request for the given key, but do not throw an
-   * error when all requests have been consumed.
+   * Consuma uma solicitação para a chave fornecida, mas não gere um
+   * erro quando todas as solicitações forem consumidas.
    */
   async increment(key: string | number): Promise<LimiterResponse> {}
 
   /**
-   * Reward one request to the given key. If possible, do not set
-   * the requests count to a negative value.
+   * Recompense uma solicitação para a chave fornecida. Se possível, não defina
+   * a contagem de solicitações para um valor negativo.
    */
   async decrement(key: string | number): Promise<LimiterResponse> {}
 
   /**
-   * Block a key for the specified duration.
+   * Bloqueie uma tecla pelo período especificado.
    */ 
   async block(
     key: string | number,
@@ -747,9 +731,9 @@ export class MongoDbLimiterStore implements LimiterStoreContract {
   ): Promise<LimiterResponse> {}
   
   /**
-   * Set the number of consumed requests for a given key. The duration
-   * should be inferred from the config if no explicit duration
-   * is provided.
+   * Defina o número de solicitações consumidas para uma determinada chave. A duração
+   * deve ser inferida da configuração se nenhuma duração explícita
+   * for fornecida.
    */ 
   async set(
     key: string | number,
@@ -758,18 +742,18 @@ export class MongoDbLimiterStore implements LimiterStoreContract {
   ): Promise<LimiterResponse> {}
 
   /**
-   * Delete the key from the storage
+   * Exclua a chave do armazenamento
    */
   async delete(key: string | number): Promise<boolean> {}
 
   /**
-   * Flush all keys from the database
+   * Descarregar todas as chaves do banco de dados
    */
   async clear(): Promise<void> {}
 
   /**
-   * Get a limiter response for a given key. Return `null` if the
-   * key does not exist.
+   * Obtenha uma resposta limitadora para uma determinada chave. Retorne `null` se a
+   * chave não existir.
    */
   async get(key: string | number): Promise<LimiterResponse | null> {}
 }
@@ -785,8 +769,8 @@ Você pode escrever a seguinte função dentro do mesmo arquivo que a implementa
 import { LimiterManagerStoreFactory } from '@adonisjs/limiter/types'
 
 /**
- * Config helper to use the mongoDb store
- * inside the config file
+ * Auxiliar de configuração para usar o armazenamento mongoDb
+ * dentro do arquivo de configuração
  */
 export function mongoDbStore(config: MongoDbLimiterConfig) {
   const storeFactory: LimiterManagerStoreFactory = (runtimeOptions) => {
@@ -802,23 +786,20 @@ export function mongoDbStore(config: MongoDbLimiterConfig) {
 
 Uma vez feito, você pode usar o auxiliar `mongoDbStore` da seguinte forma.
 
-```ts
-// title: config/limiter.ts
+```ts {4,11-13}
+// config/limiter.ts
+
 import env from '#start/env'
-// highlight-start
 import { mongoDbStore } from 'my-custom-package'
-// highlight-end
 import { defineConfig } from '@adonisjs/limiter'
 
 const limiterConfig = defineConfig({
   default: env.get('LIMITER_STORE'),
 
   stores: {
-    // highlight-start
     mongodb: mongoDbStore({
-      client: mongoDb // create mongoDb client
+      client: mongoDb // criar um cliente mongoDb
     })
-    // highlight-end
   },
 })
 ```
@@ -842,14 +823,14 @@ export class MongoDbLimiterStore extends RateLimiterBridge {
         points: config.requests,
         duration: string.seconds.parse(config.duration),
         blockDuration: string.seconds.parse(this.config.blockDuration)
-        // ... provide other options as well
+        // ... fornecer outras opções também
       })
     )
   }
 
   /**
-   * Self-implement the clear method. Ideally, use the
-   * config.client to issue a delete query
+   * Autoimplemente o método clear. Idealmente, use o
+   * config.client para emitir uma consulta de exclusão
    */
   async clear() {}
 }

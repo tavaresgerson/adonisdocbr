@@ -8,11 +8,11 @@ Você pode escrever verificações de autorização em seu aplicativo AdonisJS u
 
 O objetivo das habilidades e políticas é abstrair a lógica de autorizar uma ação para um único lugar e reutilizá-la no restante da base de código.
 
-[Habilidades](#defining-abilities) são definidas como funções e podem ser uma ótima opção se seu aplicativo tiver menos verificações de autorização e mais simples.
+- [Habilidades](#defining-abilities) são definidas como funções e podem ser uma ótima opção se seu aplicativo tiver menos verificações de autorização e mais simples.
 
-[Políticas](#defining-policies) são definidas como classes, e você deve criar uma política para cada recurso em seu aplicativo. As políticas também podem se beneficiar de
+- [Políticas](#defining-policies) são definidas como classes, e você deve criar uma política para cada recurso em seu aplicativo. As políticas também podem se beneficiar de
 
-:::note
+::: info NOTA
 O Bouncer não é uma implementação de RBAC ou ACL. Em vez disso, ele fornece uma API de baixo nível com controle refinado para autorizar ações em seus aplicativos AdonisJS.
 :::
 
@@ -30,14 +30,14 @@ node ace add @adonisjs/bouncer
 
 2. Registra o seguinte provedor de serviço e comando dentro do arquivo `adonisrc.ts`.
 
-```ts
+    ```ts
     {
       commands: [
-        // ...other commands
+        // ...outros comandos
         () => import('@adonisjs/bouncer/commands')
       ],
       providers: [
-        // ...other providers
+        // ...outros provedores
         () => import('@adonisjs/bouncer/bouncer_provider')
       ]
     }
@@ -51,7 +51,7 @@ node ace add @adonisjs/bouncer
 
 6. Registre o seguinte middleware dentro do arquivo `start/kernel.ts`.
 
-```ts
+    ```ts
     router.use([
       () => import('#middleware/initialize_bouncer_middleware')
     ])
@@ -59,7 +59,7 @@ node ace add @adonisjs/bouncer
 
 :::
 
-:::tip
+::: tip DICA
 **Você aprende mais visualmente?** - Confira a série de screencasts gratuitos [AdonisJS Bouncer](https://adocasts.com/series/adonisjs-bouncer) dos nossos amigos da Adocasts.
 :::
 
@@ -68,7 +68,7 @@ Durante a configuração, criamos e registramos o middleware `#middleware/initia
 
 Além disso, compartilhamos a mesma instância do Bouncer com os modelos do Edge usando o método `ctx.view.share`. Sinta-se à vontade para remover as seguintes linhas de código do middleware se não estiver usando o Edge dentro do seu aplicativo.
 
-:::note
+::: info NOTA
 Você é o proprietário do código-fonte do seu aplicativo, incluindo os arquivos criados durante a configuração inicial. Portanto, não hesite em alterá-los e fazê-los funcionar com o ambiente do seu aplicativo.
 :::
 
@@ -80,14 +80,12 @@ async handle(ctx: HttpContext, next: NextFn) {
     policies
   ).setContainerResolver(ctx.containerResolver)
 
-  // delete-start
-  /**
-   * Remove if not using Edge
-   */
-  if ('view' in ctx) {
-    ctx.view.share(ctx.bouncer.edgeHelpers)
-  }
-  // delete-end
+  /**                                         // [!code --]
+   * Remover se não estiver usando o Edge     // [!code --]
+   */                                         // [!code --]
+  if ('view' in ctx) {                        // [!code --]
+    ctx.view.share(ctx.bouncer.edgeHelpers)   // [!code --]
+  }                                           // [!code --]
 
   return next()
 }
@@ -99,12 +97,13 @@ Habilidades são funções JavaScript geralmente escritas dentro do arquivo `./a
 
 No exemplo a seguir, definimos uma habilidade chamada `editPost` usando o método `Bouncer.ability`. O retorno de chamada de implementação deve retornar `true` para autorizar o usuário e retornar `false` para negar acesso.
 
-:::note
+::: info NOTA
 Uma habilidade deve sempre aceitar o `Usuário` como o primeiro parâmetro, seguido por parâmetros adicionais necessários para a verificação de autorização.
 :::
 
 ```ts
-// title: app/abilities/main.ts
+// app/abilities/main.ts
+
 import User from '#models/user'
 import Post from '#models/post'
 import { Bouncer } from '@adonisjs/bouncer'
@@ -119,29 +118,25 @@ Depois de definir uma habilidade, você pode executar uma verificação de autor
 
 O Bouncer passará automaticamente o usuário atualmente logado para o callback de habilidade como o primeiro parâmetro, e você deve fornecer o restante dos parâmetros manualmente.
 
-```ts
+```ts {2,16-18}
 import Post from '#models/post'
-// highlight-start
 import { editPost } from '#abilities/main'
-// highlight-end
 import router from '@adonisjs/core/services/router'
 
 router.put('posts/:id', async ({ bouncer, params, response }) => {
   /**
-   * Find a post by ID so that we can perform an
-   * authorization check for it.
+   * Encontre uma postagem por ID para que possamos executar uma
+   * verificação de autorização para ela.
    */
   const post = await Post.findOrFail(params.id)
 
   /**
-   * Use the ability to see if the logged-in user
-   * is allowed to perform the action.
+   * Use a capacidade de ver se o usuário logado
+   * tem permissão para executar a ação.
    */
-  // highlight-start
   if (await bouncer.allows(editPost, post)) {
-    return 'You can edit the post'
+    return 'Você pode editar a postagem'
   }
-  // highlight-end
 
   return response.forbidden('You cannot edit the post')
 })
@@ -162,29 +157,26 @@ No entanto, você pode querer definir certas habilidades que podem funcionar com
 
 Você pode definir uma habilidade que permita usuários convidados usando a opção `allowGuest`. Neste caso, as opções serão definidas como o primeiro parâmetro, e o callback será o segundo parâmetro.
 
-```ts
+```ts {2}
 export const viewPost = Bouncer.ability(
-  // highlight-start
   { allowGuest: true },
-  // highlight-end
   (user: User | null, post: Post) => {
     /**
-     * Allow everyone to access published posts
+     * Permitir que todos acessem postagens publicadas
      */
     if (post.isPublished) {
       return true
     }
 
     /**
-     * Guest cannot view non-published posts
+     * O convidado não pode visualizar postagens não publicadas
      */
     if (!user) {
       return false
     }
 
     /**
-     * The creator of the post can view non-published posts
-     * as well.
+     * O criador da postagem também pode visualizar postagens não publicadas.
      */
     return user.id === post.userId
   }
@@ -194,14 +186,12 @@ export const viewPost = Bouncer.ability(
 ### Autorizando usuários diferentes do usuário logado
 Se você quiser autorizar um usuário diferente do usuário logado, você pode usar o construtor `Bouncer` para criar uma nova instância do bouncer para um determinado usuário.
 
-```ts
+```ts {5}
 import User from '#models/user'
 import { Bouncer } from '@adonisjs/bouncer'
 
 const user = await User.findOrFail(1)
-// highlight-start
 const bouncer = new Bouncer(user)
-// highlight-end
 
 if (await bouncer.allows(editPost, post)) {
 }
@@ -221,7 +211,8 @@ node ace make:policy post
 A classe policy estende a classe [BasePolicy](https://github.com/adonisjs/bouncer/blob/main/src/base_policy.ts) e você pode implementar métodos para as verificações de autorização que deseja executar. No exemplo a seguir, definimos verificações de autorização para `criar`, `editar` e `excluir` uma postagem.
 
 ```ts
-// title: app/policies/post_policy.ts
+// app/policies/post_policy.ts
+
 import User from '#models/user'
 import Post from '#models/post'
 import { BasePolicy } from '@adonisjs/bouncer'
@@ -229,21 +220,21 @@ import { AuthorizerResponse } from '@adonisjs/bouncer/types'
 
 export default class PostPolicy extends BasePolicy {
   /**
-   * Every logged-in user can create a post
+   * Cada usuário logado pode criar uma postagem
    */
   create(user: User): AuthorizerResponse {
     return true
   }
 
   /**
-   * Only the post creator can edit the post
+   * Somente o criador da postagem pode editar a postagem
    */
   edit(user: User, post: Post): AuthorizerResponse {
     return user.id === post.userId
   }
 
   /**
-   * Only the post creator can delete the post
+   * Somente o criador da postagem pode excluir a postagem
    */
   delete(user: User, post: Post): AuthorizerResponse {
     return user.id === post.userId
@@ -254,50 +245,42 @@ export default class PostPolicy extends BasePolicy {
 ### Executando autorização
 Depois de criar uma política, você pode usar o método `bouncer.with` para especificar a política que deseja usar para autorização e, em seguida, encadear os métodos `bouncer.allows` ou `bouncer.denies` para executar a verificação de autorização.
 
-:::note
-
+::: info NOTA
 Os métodos `allows` e `denies` encadeados após os métodos `bouncer.with` são seguros para o tipo e mostrarão uma lista de conclusões com base nos métodos que você definiu na classe de política.
-
 :::
 
-```ts
+```ts {7-9,17-19,27-29}
 import Post from '#models/post'
 import PostPolicy from '#policies/post_policy'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class PostsController {
   async create({ bouncer, response }: HttpContext) {
-    // highlight-start
     if (await bouncer.with(PostPolicy).denies('create')) {
       return response.forbidden('Cannot create a post')
     }
-    // highlight-end
 
-    //Continue with the controller logic
+    // Continue com a lógica do controlador
   }
 
   async edit({ bouncer, params, response }: HttpContext) {
     const post = await Post.findOrFail(params.id)
 
-    // highlight-start
     if (await bouncer.with(PostPolicy).denies('edit', post)) {
       return response.forbidden('Cannot edit the post')
     }
-    // highlight-end
 
-    //Continue with the controller logic
+    // Continue com a lógica do controlador
   }
 
   async delete({ bouncer, params, response }: HttpContext) {
     const post = await Post.findOrFail(params.id)
 
-    // highlight-start
     if (await bouncer.with(PostPolicy).denies('delete', post)) {
       return response.forbidden('Cannot delete the post')
     }
-    // highlight-end
 
-    //Continue with the controller logic
+    // Continue com a lógica do controlador
   }
 }
 ```
@@ -315,22 +298,21 @@ export default class PostPolicy extends BasePolicy {
   @allowGuest()
   view(user: User | null, post: Post): AuthorizerResponse {
     /**
-     * Allow everyone to access published posts
+     * Permitir que todos acessem postagens publicadas
      */
     if (post.isPublished) {
       return true
     }
 
     /**
-     * Guest cannot view non-published posts
+     * O convidado não pode visualizar postagens não publicadas
      */
     if (!user) {
       return false
     }
 
     /**
-     * The creator of the post can view non-published posts
-     * as well.
+     * O criador da postagem também pode visualizar postagens não publicadas.
      */
     return user.id === post.userId
   }
@@ -340,7 +322,7 @@ export default class PostPolicy extends BasePolicy {
 ### Ganchos de política
 Você pode definir os métodos de modelo `before` e `after` em uma classe de política para executar ações em torno de uma verificação de autorização. Um caso de uso comum é sempre permitir ou negar acesso a um determinado usuário.
 
-:::note
+::: info NOTA
 Os métodos `before` e `after` são sempre invocados, independentemente de um usuário conectado. Portanto, certifique-se de lidar com o caso em que o valor de `user` será `null`.
 :::
 
@@ -354,7 +336,7 @@ A resposta de `before` é interpretada da seguinte forma.
 export default class PostPolicy extends BasePolicy {
   async before(user: User | null, action: string, ...params: any[]) {
     /**
-     * Always allow an admin user without performing any check
+     * Sempre permitir um usuário administrador sem realizar nenhuma verificação
      */
     if (user && user.isAdmin) {
       return true
@@ -389,18 +371,14 @@ export default class PostPolicy extends BasePolicy {
 ### Injeção de dependência
 As classes de política são criadas usando o [contêiner IoC](../concepts/dependency_injection.md); portanto, você pode dar uma dica de tipo e injetar dependências dentro do construtor de política usando o decorador `@inject`.
 
-```ts
+```ts {4,7}
 import { inject } from '@adonisjs/core'
 import { PermissionsResolver } from '#services/permissions_resolver'
 
-// highlight-start
 @inject()
-// highlight-end
 export class PostPolicy extends BasePolicy {
   constructor(
-    // highlight-start
     protected permissionsResolver: PermissionsResolver
-    // highlight-end
   ) {
     super()
   }
@@ -409,17 +387,13 @@ export class PostPolicy extends BasePolicy {
 
 Se uma classe de política for criada durante uma solicitação HTTP, você também pode injetar uma instância de [HttpContext](../concepts/http_context.md) dentro dela.
 
-```ts
-// highlight-start
+```ts {1,6}
 import { HttpContext } from '@adonisjs/core/http'
-// highlight-end
 import { PermissionsResolver } from '#services/permissions_resolver'
 
 @inject()
 export class PostPolicy extends BasePolicy {
-  // highlight-start
   constructor(protected ctx: HttpContext) {
-  // highlight-end
     super()
   }
 }
@@ -428,16 +402,14 @@ export class PostPolicy extends BasePolicy {
 ## Lançando AuthorizationException
 Juntamente com os métodos `allows` e `denies`, você pode usar o método `bouncer.authorize` para executar a verificação de autorização. Este método lançará a [AuthorizationException](https://github.com/adonisjs/bouncer/blob/main/src/errors.ts#L19) quando a verificação falhar.
 
-```ts
+```ts {3}
 router.put('posts/:id', async ({ bouncer, params }) => {
   const post = await Post.findOrFail(post)
-  // highlight-start
   await bouncer.authorize(editPost, post)
-  // highlight-end
 
   /**
-   * If no exception was raised, you can consider the user
-   * is allowed to edit the post.
+   * Se nenhuma exceção foi levantada, você pode considerar que o usuário
+   * tem permissão para editar a postagem.
    */
 })
 ```
@@ -446,13 +418,13 @@ O AdonisJS converterá a `AuthorizationException` em uma resposta HTTP `403 - Fo
 
 - As solicitações HTTP com o cabeçalho `Accept=application/json` receberão uma matriz de mensagens de erro. Cada elemento da matriz será um objeto com a propriedade `message`.
 
-[JSON API](https://jsonapi.org/format/#errors) spec.
+- [JSON API](https://jsonapi.org/format/#errors) spec.
 
-[páginas de status](../basics/exception_handling.md#status-pages) para mostrar uma página de erro personalizada para erros de autorização.
+- [Páginas de status](../basics/exception_handling.md#status-pages) para mostrar uma página de erro personalizada para erros de autorização.
 
 Você também pode automanipular erros `AuthorizationException` dentro do [manipulador de exceção global](../basics/exception_handling.md).
 
-```ts
+```ts {9-14}
 import { errors } from '@adonisjs/bouncer'
 import { HttpContext, ExceptionHandler } from '@adonisjs/core/http'
 
@@ -461,14 +433,12 @@ export default class HttpExceptionHandler extends ExceptionHandler {
   protected renderStatusPages = app.inProduction
 
   async handle(error: unknown, ctx: HttpContext) {
-    // highlight-start
     if (error instanceof errors.E_AUTHORIZATION_FAILURE) {
       return ctx
         .response
         .status(error.status)
         .send(error.getResponseMessage(ctx))
     }
-    // highlight-end
 
     return super.handle(error, ctx)
   }
@@ -480,7 +450,7 @@ Em vez de retornar um valor booleano de habilidades e políticas, você pode con
 
 A classe `AuthorizationResponse` fornece controle refinado para definir um código de status HTTP personalizado e a mensagem de erro.
 
-```ts
+```ts {10}
 import User from '#models/user'
 import Post from '#models/post'
 import { Bouncer, AuthorizationResponse } from '@adonisjs/bouncer'
@@ -490,25 +460,21 @@ export const editPost = Bouncer.ability((user: User, post: Post) => {
     return true
   }
 
-  // highlight-start
   return AuthorizationResponse.deny('Post not found', 404)
-  // highlight-end
 })
 ```
 
 Se você estiver usando o pacote [@adonisjs/i18n](../digging_deeper/i18n.md), você pode retornar uma resposta localizada usando o método `.t`. A mensagem de tradução será usada sobre a mensagem padrão durante uma solicitação HTTP com base no idioma do usuário.
 
-```ts
+```ts {6-8}
 export const editPost = Bouncer.ability((user: User, post: Post) => {
   if (user.id === post.userId) {
     return true
   }
 
-  // highlight-start
   return AuthorizationResponse
-    .deny('Post not found', 404) // default message
-    .t('errors.not_found') // translation identifier
-  // highlight-end
+    .deny('Post not found', 404) // mensagem padrão
+    .t('errors.not_found') // identificador de tradução
 })
 ```
 
@@ -543,46 +509,38 @@ Pré-registrar habilidades e políticas pode ser menos útil dentro da sua base 
 
 Veja os seguintes exemplos de código de modelos Edge com e sem pré-registro de uma política.
 
-:::caption{for="error"}
-**Sem pré-registro. Não, não é super limpo**
-:::
-
+::: danger **Sem pré-registro. Não, não é super limpo**
 ```edge
-{{-- First import the ability --}}
+{{-- Primeiro importe a habilidade --}}
 @let(editPost = (await import('#abilities/main')).editPost)
 
 @can(editPost, post)
-  {{-- Can edit post --}}
+  {{-- Pode editar postagem --}}
 @end
 ```
-
-:::caption{for="success"}
-**Com pré-registro**
 :::
 
+::: tip **Com pré-registro**
 ```edge
-{{-- Reference ability name as a string --}}
+{{-- Nome da habilidade de referência como uma string --}}
 @can('editPost', post)
-  {{-- Can edit post --}}
+  {{-- Pode editar a postagem --}}
 @end
 ```
+:::
 
 Se você abrir o arquivo `initialize_bouncer_middleware.ts`, você nos verá já importando e pré-registrando habilidades e políticas ao criar a instância do Bouncer.
 
-```ts
-// highlight-start
+```ts {1-2,8-9}
 import * as abilities from '#abilities/main'
 import { policies } from '#policies/main'
-// highlight-end
 
 export default InitializeBouncerMiddleware {
   async handle(ctx, next) {
     ctx.bouncer = new Bouncer(
       () => ctx.auth.user,
-      // highlight-start
       abilities,
       policies
-      // highlight-end
     )
   }
 }
@@ -595,7 +553,8 @@ export default InitializeBouncerMiddleware {
 - No caso de políticas, toda vez que você executar o comando `make:policy`, certifique-se de aceitar o prompt para registrar a política dentro da coleção de políticas. A coleção de políticas é definida dentro do arquivo `./app/policies/main.ts`.
 
 ```ts
-  // title: app/policies/main.ts
+  // app/policies/main.ts
+
   export const policies = {
     PostPolicy: () => import('#policies/post_policy'),
     CommentPolicy: () => import('#policies/comment_policy')
@@ -605,44 +564,34 @@ export default InitializeBouncerMiddleware {
 ### Referenciando habilidades e políticas pré-registradas
 No exemplo a seguir, nos livramos das importações e referenciamos habilidades e políticas por seus nomes. Observe que **a API baseada em string também é segura para tipos**, mas o recurso "Ir para definição" do seu editor de código pode não funcionar.
 
-```ts
-// title: Ability usage example
-// delete-start
+```ts {3}
+// Exemplo de uso de habilidade
+
 import { editPost } from '#abilities/main'
-// delete-end
 
 router.put('posts/:id', async ({ bouncer, params, response }) => {
   const post = await Post.findOrFail(params.id)
 
-  // delete-start
-  if (await bouncer.allows(editPost, post)) {
-  // delete-end
-  // insert-start
-  if (await bouncer.allows('editPost', post)) {
-  // insert-end
+  if (await bouncer.allows(editPost, post)) {     // [!code --]
+  if (await bouncer.allows('editPost', post)) {   // [!code ++]
     return 'You can edit the post'
   }
 })
 ```
 
 ```ts
-// title: Policy usage example
-// delete-start
-import PostPolicy from '#policies/post_policy'
-// delete-end
+// Exemplo de uso de política
+
+import PostPolicy from '#policies/post_policy'                // [!code --]
 
 export default class PostsController {
   async create({ bouncer, response }: HttpContext) {
-    // delete-start
-    if (await bouncer.with(PostPolicy).denies('create')) {
-    // delete-end
-    // insert-start
-    if (await bouncer.with('PostPolicy').denies('create')) {
-    // insert-end
+    if (await bouncer.with(PostPolicy).denies('create')) {    // [!code --]
+    if (await bouncer.with('PostPolicy').denies('create')) {  // [!code ++]
       return response.forbidden('Cannot create a post')
     }
 
-    //Continue with the controller logic
+    // Continue com a lógica do controlador
   }
 }
 ```
@@ -653,24 +602,26 @@ Antes de poder executar verificações de autorização dentro de modelos Edge, 
 Essas tags aceitam o nome `ability` ou o nome `policy.method` como o primeiro parâmetro, seguido pelo restante dos parâmetros aceitos pela habilidade ou uma política.
 
 ```edge
-// title: Usage with ability
+// Uso com habilidade
+
 @can('editPost', post)
-  {{-- Can edit post --}}
+  {{-- Pode editar postagem --}}
 @end
 
 @cannot('editPost', post)
-  {{-- Cannot edit post --}}
+  {{-- Não pode editar postagem --}}
 @end
 ```
 
 ```edge
-// title: Usage with policy
+// Uso com política
+
 @can('PostPolicy.edit', post)
-  {{-- Can edit post --}}
+  {{-- Pode editar postagem --}}
 @end
 
 @cannot('PostPolicy.edit', post)
-  {{-- Cannot edit post --}}
+  {{-- Não pode editar postagem --}}
 @end
 ```
 

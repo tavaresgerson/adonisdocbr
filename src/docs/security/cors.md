@@ -24,7 +24,7 @@ node ace add @adonisjs/cors
 
 2. Registra o seguinte provedor de serviços dentro do arquivo `adonisrc.ts`.
 
-```ts
+    ```ts
     {
       providers: [
         // ...other providers
@@ -37,7 +37,7 @@ node ace add @adonisjs/cors
 
 4. Registra o seguinte middleware dentro do arquivo `start/kernel.ts`.
 
-```ts
+    ```ts
     server.use([
       () => import('@adonisjs/cors/cors_middleware')
     ])
