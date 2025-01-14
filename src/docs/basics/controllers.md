@@ -49,7 +49,7 @@ router.get('users', [UsersController, 'index'])
 Como você deve ter notado, não criamos uma instância da classe do controlador e, em vez disso, a passamos diretamente para a rota. Isso permite que o AdonisJS:
 
 - Crie uma nova instância do controlador para cada solicitação.
-[Contêiner IoC](../concepts/dependency_injection.md), que permite que você aproveite a injeção automática de dependência.
+- [Contêiner IoC](../concepts/dependency_injection.md), que permite que você aproveite a injeção automática de dependência.
 
 Você também pode notar que estamos carregando o controlador lentamente usando uma função.
 

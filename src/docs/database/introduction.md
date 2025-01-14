@@ -6,7 +6,7 @@ summary: Opções disponíveis para bibliotecas SQL e ORMs em aplicativos Adonis
 
 Bancos de dados SQL são populares para armazenar os dados do aplicativo em armazenamento persistente. Você pode usar quaisquer bibliotecas e ORMs para fazer consultas SQL dentro de um aplicativo AdonisJS.
 
-:::note
+::: info NOTA
 A equipe principal do AdonisJS construiu o [Lucid ORM](./lucid.md), mas não o força a usá-lo. Você pode usar quaisquer outras bibliotecas SQL e ORMs que desejar dentro de um aplicativo AdonisJS.
 :::
 
@@ -14,12 +14,12 @@ A equipe principal do AdonisJS construiu o [Lucid ORM](./lucid.md), mas não o f
 
 A seguir está a lista de outras bibliotecas SQL e ORMs populares que você pode usar dentro de um aplicativo AdonisJS (assim como qualquer outro aplicativo Node.js).
 
-[**Lucid**](./lucid.md) é um construtor de consultas SQL e um **ORM Active Record** construído sobre
-[**Prisma**](https://prisma.io/orm) O Prisma ORM é outro ORM popular no ecossistema Node.js. Ele tem uma grande comunidade de seguidores. Ele oferece modelos de dados intuitivos, migrações automatizadas, segurança de tipo e preenchimento automático.
-[**Kysely**](https://kysely.dev/docs/getting-started) é um construtor de consultas de tipo seguro de ponta a ponta para Node.js. O Kysely é uma ótima opção se você precisa de um construtor de consultas enxuto sem nenhum modelo. Escrevemos um artigo explicando
-[**Drizzle ORM**](https://orm.drizzle.team/) é usado por muitos desenvolvedores AdonisJS em nossa comunidade. Não temos experiência com este ORM, mas você pode querer dar uma olhada e ver se ele é uma excelente opção para seu caso de uso.
-[**Mikro ORM**](https://mikro-orm.io/docs/guide/first-entity) é um ORM subestimado no ecossistema Node.js. O MikroORM é um pouco prolixo em comparação ao Lucid. No entanto, ele é mantido ativamente e também construído sobre o Knex.
-[**TypeORM**](https://typeorm.io) é um ORM popular no ecossistema TypeScript.
+* [**Lucid**](./lucid.md) é um construtor de consultas SQL e um **ORM Active Record** construído sobre
+* [**Prisma**](https://prisma.io/orm) O Prisma ORM é outro ORM popular no ecossistema Node.js. Ele tem uma grande comunidade de seguidores. Ele oferece modelos de dados intuitivos, migrações automatizadas, segurança de tipo e preenchimento automático.
+* [**Kysely**](https://kysely.dev/docs/getting-started) é um construtor de consultas de tipo seguro de ponta a ponta para Node.js. O Kysely é uma ótima opção se você precisa de um construtor de consultas enxuto sem nenhum modelo. Escrevemos um artigo explicando
+* [**Drizzle ORM**](https://orm.drizzle.team/) é usado por muitos desenvolvedores AdonisJS em nossa comunidade. Não temos experiência com este ORM, mas você pode querer dar uma olhada e ver se ele é uma excelente opção para seu caso de uso.
+* [**Mikro ORM**](https://mikro-orm.io/docs/guide/first-entity) é um ORM subestimado no ecossistema Node.js. O MikroORM é um pouco prolixo em comparação ao Lucid. No entanto, ele é mantido ativamente e também construído sobre o Knex.
+* [**TypeORM**](https://typeorm.io) é um ORM popular no ecossistema TypeScript.
 
 ## Usando outras bibliotecas SQL e ORMs
 
@@ -38,12 +38,12 @@ import type { Users } from '../../types/db.js' // Specific to Kysely
 
 export class SessionKyselyUserProvider implements SessionUserProviderContract<Users> {
   /**
-   * Used by the event emitter to add type information to the events emitted by the session guard.
-   */   
+   * Usado pelo emissor do evento para adicionar informações de tipo aos eventos emitidos pelo guarda de sessão.
+   */
   declare [symbols.PROVIDER_REAL_USER]: Users
 
   /**
-   * Bridge between the session guard and your provider.
+   * Ponte entre o guarda da sessão e seu provedor.
    */
   async createUserForGuard(user: Users): Promise<SessionGuardUser<Users>> {
     return {
@@ -57,7 +57,7 @@ export class SessionKyselyUserProvider implements SessionUserProviderContract<Us
   }
 
   /**
-   * Find a user using the user id using your custom SQL library or ORM.
+   * Encontre um usuário usando o ID do usuário usando sua biblioteca SQL personalizada ou ORM.
    */
   async findById(identifier: number): Promise<SessionGuardUser<Users> | null> {
     const user = await db
@@ -90,7 +90,7 @@ const authConfig = defineConfig({
       
       provider: configProvider.create(async () => {
         const { SessionKyselyUserProvider } = await import(
-          '../app/auth/session_user_provider.js' // Path to the file
+          '../app/auth/session_user_provider.js' // Caminho para o arquivo
         )
 
         return new SessionKyselyUserProvider()

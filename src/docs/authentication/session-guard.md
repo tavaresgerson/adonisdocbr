@@ -10,24 +10,21 @@ Sessões e cookies estão na internet há muito tempo e funcionam muito bem para
 ## Configurando o guarda
 Os guardas de autenticação são definidos dentro do arquivo `config/auth.ts`. Você pode configurar vários guardas dentro deste arquivo sob o objeto `guards`.
 
-```ts
-// title: config/auth.ts
+```ts {4,9-14}
+// config/auth.ts
+
 import { defineConfig } from '@adonisjs/auth'
-// highlight-start
 import { sessionGuard, sessionUserProvider } from '@adonisjs/auth/session'
-// highlight-end
 
 const authConfig = defineConfig({
   default: 'web',
   guards: {
-    // highlight-start
     web: sessionGuard({
       useRememberMeTokens: false,
       provider: sessionUserProvider({
         model: () => import('#models/user'),
       }),
     })
-    // highlight-end
   },
 })
 
@@ -51,13 +48,12 @@ No exemplo a seguir:
 
 - Finalmente, redirecionamos o usuário para o endpoint `/dashboard`. Sinta-se à vontade para personalizar o endpoint de redirecionamento.
 
-```ts
+```ts {6-24}
 import User from '#models/user'
 import { HttpContext } from '@adonisjs/core/http'
 
 export default class SessionController {
   async store({ request, auth, response }: HttpContext) {
-    // highlight-start
     /**
      * Step 1: Get credentials from the request body
      */
@@ -77,7 +73,6 @@ export default class SessionController {
      * Step 4: Send them to a protected route
      */
     response.redirect('/dashboard')
-    // highlight-end
   }
 }
 ```
@@ -143,7 +138,8 @@ O middleware auth lança o [E_UNAUTHORIZED_ACCESS](https://github.com/adonisjs/a
 Você pode acessar a instância do usuário logado usando a propriedade `auth.user`. O valor só está disponível ao usar o middleware `auth` ou `silent_auth` ou se você chamar os métodos `auth.authenticate` ou `auth.check` manualmente.
 
 ```ts
-// title: Using auth middleware
+// Using auth middleware
+
 import { middleware } from '#start/kernel'
 import router from '@adonisjs/core/services/router'
 
@@ -157,7 +153,8 @@ router
 ```
 
 ```ts
-// title: Manually calling authenticate method
+// Manually calling authenticate method
+
 import { middleware } from '#start/kernel'
 import router from '@adonisjs/core/services/router'
 
@@ -186,7 +183,8 @@ Este middleware é útil quando você deseja sempre autenticar o usuário para e
 Se você planeja usar este middleware, deve registrá-lo na lista de [middleware do roteador](../basics/middleware.md#router-middleware-stack).
 
 ```ts
-// title: start/kernel.ts
+// start/kernel.ts
+
 import router from '@adonisjs/core/services/router'
 
 router.use([

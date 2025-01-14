@@ -6,7 +6,7 @@ summary: Visão geral rápida do Lucid ORM, um construtor de consultas SQL e um 
 
 O Lucid é um construtor de consultas SQL e um ORM Active Record construído sobre o [Knex](https://knexjs.org) criado e mantido pela equipe principal do AdonisJS. O Lucid se esforça para alavancar o SQL em seu potencial máximo e oferece uma API limpa para muitas operações SQL avançadas.
 
-:::note
+::: info NOTA
 A documentação do Lucid está disponível em [https://lucid.adonisjs.com](https://lucid.adonisjs.com)
 :::
 
@@ -41,14 +41,14 @@ Instale e configure o Lucid usando o seguinte comando.
 node ace add @adonisjs/lucid
 ```
 
-::: detalhes Veja as etapas executadas pelo comando configure
+::: details Veja as etapas executadas pelo comando configure
 
 1. Registra o seguinte provedor de serviços dentro do arquivo `adonisrc.ts`.
 
 ```ts
    {
      providers: [
-       // ...other providers
+       // ...outros provedores
        () => import('@adonisjs/lucid/database_provider'),
      ]
    }
@@ -59,7 +59,7 @@ node ace add @adonisjs/lucid
 ```ts
    {
      commands: [
-       // ...other commands
+       // ...outros comandos
        () => import('@adonisjs/lucid/commands'),
      ]
    }
@@ -147,13 +147,13 @@ O Lucid vem com um Query Builder fluente criado sobre o Knex. Você pode usar o 
 import db from '@adonisjs/lucid/services/db'
 
 /**
- * Creates query builder instance
+ * Cria uma instância do construtor de consultas
  */
 const query = db.query()
 
 /**
- * Creates query builder instance and also selects
- * the table
+ * Cria uma instância do construtor de consultas e também seleciona
+ * a tabela
  */
 const queryWithTableSelection = db.from('users')
 ```
@@ -176,7 +176,7 @@ Os modelos Lucid têm métodos integrados para executar operações CRUD no banc
 import User from '#models/user'
 
 /**
- * Create a new user
+ * Criar um novo usuário
  */
 const user = await User.create({
   username: 'rlanz',
@@ -184,20 +184,19 @@ const user = await User.create({
 })
 
 /**
- * Find a user by primary key
+ * Encontre um usuário pela chave primária
  */
 const user = await User.find(1)
 
 /**
- * Update a user
+ * Atualizar um usuário
  */
-
 const user = await User.find(1)
 user.username = 'romain'
 await user.save()
 
 /**
- * Delete a user
+ * Excluir um usuário
  */
 const user = await User.find(1)
 await user.delete()
@@ -207,9 +206,9 @@ Saiba mais sobre as operações CRUD visitando a [documentação oficial](https:
 
 ## Saiba mais
 
-[Documentação do Lucid](https://lucid.adonisjs.com)
-[Instalação e uso](https://lucid.adonisjs.com/docs/installation)
-[Operações CRUD](https://lucid.adonisjs.com/docs/crud-operations)
-[Ganchos de modelo](https://lucid.adonisjs.com/docs/model-hooks)
-[Relações](https://lucid.adonisjs.com/docs/relationships)
-[Série Lucid do Adocasts](https://adocasts.com/topics/lucid)
+* [Documentação do Lucid](https://lucid.adonisjs.com)
+* [Instalação e uso](https://lucid.adonisjs.com/docs/installation)
+* [Operações CRUD](https://lucid.adonisjs.com/docs/crud-operations)
+* [Ganchos de modelo](https://lucid.adonisjs.com/docs/model-hooks)
+* [Relações](https://lucid.adonisjs.com/docs/relationships)
+* [Série Lucid do Adocasts](https://adocasts.com/topics/lucid)

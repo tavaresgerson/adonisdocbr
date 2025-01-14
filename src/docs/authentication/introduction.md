@@ -12,7 +12,7 @@ O pacote de autenticação é construído em torno de **guardas** e **provedores
 
 - Os provedores são usados ​​para procurar usuários e tokens em um banco de dados. Você pode usar os provedores integrados ou implementar os seus próprios.
 
-:::note
+::: info NOTA
 Para garantir a segurança dos seus aplicativos, fazemos hash adequadamente nas senhas e tokens dos usuários. Além disso, os primitivos de segurança do AdonisJS são protegidos contra [ataques de temporização](https://en.wikipedia.org/wiki/Timing_attack) e [ataques de fixação de sessão](https://owasp.org/www-community/attacks/Session_fixation).
 :::
 
@@ -22,7 +22,7 @@ O pacote auth foca estritamente na autenticação de solicitações HTTP, e os s
 
 - Recursos de registro de usuário como **formulários de registro**, **verificação de e-mail** e **ativação de conta**.
 - Recursos de gerenciamento de conta como **recuperação de senha** ou **atualização de e-mail**.
-[use bouncer](../security/authorization.md) para implementar verificações de autorização em seu aplicativo.
+- [Use bouncer](../security/authorization.md) para implementar verificações de autorização em seu aplicativo.
 
 ## Escolhendo um auth guard
 
@@ -64,13 +64,13 @@ Nós enviamos com um provedor de usuário Lucid para os guardas integrados, que 
 O sistema auth vem pré-configurado com os kits iniciais `web` e `api`. No entanto, você pode instalá-lo e configurá-lo manualmente dentro de um aplicativo da seguinte forma.
 
 ```sh
-# Configure with session guard (default)
+# Configurar com guarda de sessão (padrão)
 node ace add @adonisjs/auth --guard=session
 
-# Configure with access tokens guard
+# Configurar com guarda de tokens de acesso
 node ace add @adonisjs/auth --guard=access_tokens
 
-# Configure with basic auth guard
+# Configurar com guarda de autenticação básica
 node ace add @adonisjs/auth --guard=basic_auth
 ```
 
@@ -80,10 +80,10 @@ node ace add @adonisjs/auth --guard=basic_auth
 
 2. Registra o seguinte provedor de serviços dentro do arquivo `adonisrc.ts`.
 
-```ts
+    ```ts
     {
       providers: [
-        // ...other providers
+        // ...outros provedores
         () => import('@adonisjs/auth/auth_provider')
       ]
     }
@@ -91,16 +91,16 @@ node ace add @adonisjs/auth --guard=basic_auth
 
 3. Cria e registra o seguinte middleware dentro do arquivo `start/kernel.ts`.
 
-```ts
+    ```ts
     router.use([
       () => import('@adonisjs/auth/initialize_auth_middleware')
     ])
     ```
 
-```ts
+    ```ts
     router.named({
       auth: () => import('#middleware/auth_middleware'),
-      // only if using the session guard
+      // somente se estiver usando o guarda de sessão
       guest: () => import('#middleware/guest_middleware')
     })
     ```
@@ -155,6 +155,6 @@ Além disso, atualize o modelo `User` se você definir, renomear ou remover colu
 
 ## Próximas etapas
 
-[Verificar credenciais do usuário](./verifying_user_credentials.md) sem comprometer a segurança do seu aplicativo.
-[Session guard](./session_guard.md) para autenticação com estado.
-[Access tokens guard](./access_tokens_guard.md) para autenticação baseada em tokens.
+* [Verificar credenciais do usuário](./verifying_user_credentials.md) sem comprometer a segurança do seu aplicativo.
+* [Session guard](./session_guard.md) para autenticação com estado.
+* [Access tokens guard](./access_tokens_guard.md) para autenticação baseada em tokens.

@@ -13,49 +13,43 @@ Neste guia, abordaremos o processo de encontrar um usuário por um UID e verific
 ## Exemplo básico
 Você pode usar o modelo User diretamente para encontrar um usuário e verificar sua senha. No exemplo a seguir, encontramos um usuário por e-mail e usamos o serviço [hash](../security/hashing.md) para verificar o hash da senha.
 
-```ts
-// highlight-start
+```ts {1-2,9-17,19-26}
 import User from '#models/user'
 import hash from '@adonisjs/core/services/hash'
-// highlight-end
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class SessionController {
   async store({ request, response }: HttpContext) {
     const { email, password } = request.only(['email', 'password'])
 
-    // highlight-start
     /**
-     * Find a user by email. Return error if a user does
-     * not exists
+     * Encontre um usuário por e-mail. Retorne erro se um usuário não
+     * existe
      */
     const user = await User.findBy('email', email)
 
     if (!user) {
       return response.abort('Invalid credentials')
     }
-    // highlight-end
 
-    // highlight-start
     /**
-     * Verify the password using the hash service
+     * Verifique a senha usando o serviço de hash
      */
     const isPasswordValid = await hash.verify(user.password, password)
 
     if (!isPasswordValid) {
       return response.abort('Invalid credentials')
     }
-    // highlight-end
 
     /**
-     * Now login the user or create a token for them
+     * Agora faça login com o usuário ou crie um token para ele
      */
     // ...
   }
 }
 ```
 
-::: danger ERROR
+::: danger ERROR!
 **Problemas com a abordagem acima**
 :::
 
@@ -76,25 +70,19 @@ O mixin Auth finder adiciona os métodos `findForAuth` e `verifyCredentials` ao 
 
 Você pode importar e aplicar o mixin em um modelo da seguinte maneira.
 
-```ts
+```ts {4-5,7-10,12}
 import { DateTime } from 'luxon'
 import { compose } from '@adonisjs/core/helpers'
 import { BaseModel, column } from '@adonisjs/lucid/orm'
-// highlight-start
 import hash from '@adonisjs/core/services/hash'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
-// highlight-end
 
-// highlight-start
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],
   passwordColumnName: 'password',
 })
-// highlight-end
 
-// highlight-start
 export default class User extends compose(BaseModel, AuthFinder) {
-  // highlight-end
   @column({ isPrimary: true })
   declare id: number
 
@@ -129,40 +117,31 @@ Depois de aplicar o mixin Auth finder, você pode substituir todo o código do m
 ```ts
 import { HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
-// delete-start
-import hash from '@adonisjs/core/services/hash'
-// delete-end
+import hash from '@adonisjs/core/services/hash'  // [!code --]
 
 export default class SessionController {
-  // delete-start
-  async store({ request, response }: HttpContext) {
-  // delete-end
-  // insert-start
-  async store({ request }: HttpContext) {
-  // insert-end
+  async store({ request, response }: HttpContext) { // [!code --]
+  async store({ request }: HttpContext) { // [!code ++]
     const { email, password } = request.only(['email', 'password'])
 
-    // delete-start
-    /**
-     * Find a user by email. Return error if a user does
-     * not exists
-     */ 
-    const user = await User.findBy('email', email)
-    if (!user) {
-      response.abort('Invalid credentials')
-    }
+    /**                                                                 // [!code --]
+     * Encontre um usuário por e-mail. Retorne erro se um usuário não   // [!code --]
+     * existe                                                           // [!code --]
+     */                                                                 // [!code --]
+    const user = await User.findBy('email', email)                      // [!code --]
+    if (!user) {                                                        // [!code --]
+      response.abort('Invalid credentials')                             // [!code --]
+    }                                                                   // [!code --]
+
+    /**                                                                 // [!code --]
+     * Verifique a senha usando o serviço de hash                       // [!code --]
+     */                                                                 // [!code --]
+    await hash.verify(user.password, password)                          // [!code --]
+
+    const user = await User.verifyCredentials(email, password)          // [!code ++]
 
     /**
-     * Verify the password using the hash service
-     */
-    await hash.verify(user.password, password)
-    // delete-end
-    // insert-start
-    const user = await User.verifyCredentials(email, password)
-    // insert-end
-
-    /**
-     * Now login the user or create a token for them
+     * Agora faça login com o usuário ou crie um token para ele
      */
   }
 }
@@ -177,16 +156,14 @@ A exceção é automanipulada e será convertida em uma resposta usando as segui
 
 - Solicitações HTTP com o cabeçalho `Accept=application/vnd.api+json` receberão uma matriz de mensagens de erro formatadas de acordo com a especificação JSON API.
 
-[mensagens flash de sessão](../basics/session.md#flash-messages).
+- [Mensagens flash de sessão](../basics/session.md#flash-messages).
 
 - Todas as outras solicitações receberão erros de volta como texto simples.
 
 No entanto, se necessário, você pode manipular a exceção dentro do [manipulador de exceção global](../basics/exception_handling.md) da seguinte forma.
 
-```ts
-// highlight-start
+```ts {1,9-14}
 import { errors } from '@adonisjs/auth'
-// highlight-end
 import { HttpContext, ExceptionHandler } from '@adonisjs/core/http'
 
 export default class HttpExceptionHandler extends ExceptionHandler {
@@ -194,14 +171,12 @@ export default class HttpExceptionHandler extends ExceptionHandler {
   protected renderStatusPages = app.inProduction
 
   async handle(error: unknown, ctx: HttpContext) {
-    // highlight-start
     if (error instanceof errors.E_INVALID_CREDENTIALS) {
       return ctx
         .response
         .status(error.status)
         .send(error.getResponseMessage(error, ctx))
     }
-    // highlight-end
 
     return super.handle(error, ctx)
   }
