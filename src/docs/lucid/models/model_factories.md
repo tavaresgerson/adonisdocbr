@@ -17,14 +17,15 @@ Ao final deste guia, você saberá:
 
 As fábricas de modelos são armazenadas dentro do diretório `databases/factories`. Você pode definir todas as fábricas em um único arquivo ou criar arquivos dedicados para cada modelo, a escolha é sua.
 
-:::note
+::: info NOTA
 Você pode usar o comando `make:factory` para criar uma nova fábrica. O comando aceita o nome do modelo para o qual você deseja criar a fábrica.
 :::
 
 Ao contrário de seeders ou modelos, as fábricas são declarativas por natureza, conforme mostrado no exemplo a seguir:
 
 ```ts
-// title: database/factories/user.ts
+// database/factories/user.ts
+
 import User from '#models/user'
 import Factory from '@adonisjs/lucid/factories'
 
@@ -88,7 +89,8 @@ import { Factory } from '@adonisjs/lucid/factories'
 
 export const PostFactory = Factory.define(Post, ({ faker }) => {
   return {
-    title: faker.lorem.sentence(),
+    faker.lorem.sentence(),
+
     content: faker.lorem.paragraphs(4),
     status: 'DRAFT',
   }
@@ -111,7 +113,8 @@ As fábricas de modelos tornam super simples trabalhar com relacionamentos. Cons
 ```ts
 export const PostFactory = Factory.define(Post, ({ faker }) => {
   return {
-    title: faker.lorem.sentence(),
+    faker.lorem.sentence(),
+
     content: faker.lorem.paragraphs(4),
     status: 'DRAFT',
   }
@@ -179,7 +182,7 @@ await UserFactory.with('teams', 1, (team) => {
 
 Você pode passar uma matriz de objetos para o método `pivotAttributes` ao criar várias instâncias do relacionamento.
 
-:::note
+::: info NOTA
 O tamanho do array deve corresponder à contagem de linhas de relacionamento que você está prestes a criar.
 :::
 
@@ -204,7 +207,7 @@ As chamadas stubbed nunca atingirão o banco de dados e atribuirão um `id` num�
 
 ### Personalizando o id do stub
 
-:::note
+::: info NOTA
 Quando dizemos `id`, queremos dizer a chave primária de um modelo e não um atributo fixo nomeado `id`.
 :::
 

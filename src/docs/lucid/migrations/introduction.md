@@ -19,7 +19,7 @@ Você cria um novo arquivo de migração para cada alteração de esquema de ban
 
 Você pode criar uma nova migração executando o seguinte comando Ace. Os arquivos de migração são armazenados dentro do diretório `database/migrations`.
 
-:::note
+::: info NOTA
 Você também pode criar um modelo Lucid e a migração juntos executando o sinalizador `node ace make:model -m`.
 :::
 
@@ -96,13 +96,13 @@ A seguir estão as colunas dentro da tabela `adonis_schema`.
 Você pode reverter migrações executando o comando `migration:rollback`. A ação de reversão é realizada nas migrações do lote mais recente. No entanto, você também pode especificar um número de lote personalizado até o qual deseja reverter.
 
 ```sh
-# Rollback the latest batch
+# Reverter o lote mais recente
 node ace migration:rollback
 
-# Rollback until the start of the migration
+# Reverter até o início da migração
 node ace migration:rollback --batch=0
 
-# Rollback until batch 1
+# Reverter até o lote 1
 node ace migration:rollback --batch=1
 ```
 
@@ -115,7 +115,7 @@ node ace migration:reset
 Para reverter um número específico de migrações, você pode usar o sinalizador `--step`.
 
 ```sh
-# Rollback the last 3 migrations
+# Reverter as últimas 3 migrações
 node ace migration:rollback --step=3
 ```
 
@@ -128,7 +128,7 @@ O comando `migration:refresh` reverterá todas as suas migrações e, em seguida
 ```sh
 node ace migration:refresh
 
-# Refresh the database and run all seeders
+# Atualizar o banco de dados e executar todos os seeders
 node ace migration:refresh --seed
 ```
 
@@ -139,11 +139,11 @@ Ao contrário do comando `migration:refresh`, o comando `migration:fresh` não e
 ```sh
 node ace migration:fresh
 
-# Drop all tables, migrate, and run seeders
+# Remover todas as tabelas, migrar e executar os seeders
 node ace migration:fresh --seed
 ```
 
-:::warning
+::: warning ATENÇÃO
 Os comandos `migration:fresh` e `db:wipe` excluirão todas as tabelas do banco de dados. Esses comandos devem ser usados ​​com cautela ao desenvolver em um banco de dados compartilhado com outros aplicativos.
 :::
 
@@ -163,20 +163,18 @@ Em vez disso, você deve criar um novo arquivo de migração para alterar a tabe
 
 Você pode usar o método `schema.createTable` para criar uma nova tabela de banco de dados. O método aceita o nome da tabela como o primeiro argumento e uma função de retorno de chamada para definir as colunas da tabela.
 
-```ts
+```ts {7-11}
 import { BaseSchema } from '@adonisjs/lucid/schema'
 
 export default class extends BaseSchema {
   protected tableName = 'users'
 
   async up() {
-    // highlight-start
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })
-    // highlight-end
   }
 
   async down() {
@@ -191,16 +189,14 @@ export default class extends BaseSchema {
 
 Você pode alterar uma tabela de banco de dados existente usando o método `schema.alterTable`. O método aceita o nome da tabela como o primeiro argumento e uma função de retorno de chamada para alterar/adicionar as colunas da tabela.
 
-```ts
+```ts {3-7}
 export default class extends BaseSchema {
   async up() {
-    // highlight-start
     this.schema.alterTable('user', (table) => {
       table.dropColumn('name')
       table.string('first_name')
       table.string('last_name')
     })
-    // highlight-end
   }
 }
 ```
@@ -209,25 +205,21 @@ export default class extends BaseSchema {
 
 Você pode renomear a tabela usando `schema.renameTable`. O método aceita o nome da tabela existente como o primeiro argumento e o novo nome como o segundo argumento.
 
-```ts
+```ts {2-4}
 export default class extends BaseSchema {
-  // highlight-start
   async up() {
     this.schema.renameTable('user', 'app_users')
   }
-  // highlight-end
 }
 ```
 
 Você pode remover a tabela usando `schema.dropTable`. O método aceita o nome da tabela como o único argumento.
 
-```ts
+```ts {2-4}
 export default class extends BaseSchema {
-  // highlight-start
   async down() {
     this.schema.dropTable('users')
   }
-  // highlight-end
 }
 ```
 
@@ -236,10 +228,10 @@ export default class extends BaseSchema {
 O modo de execução a seco das migrações permite que você visualize as consultas SQL no console em vez de executá-las. Basta passar o sinalizador `--dry-run` para os comandos de migração para ativar o modo de execução a seco.
 
 ```sh
-# Run
+# Executar
 node ace migration:run --dry-run
 
-# Rollback
+# Reverter
 node ace migration:rollback --dry-run
 ```
 
@@ -249,18 +241,17 @@ Muitas vezes, você terá requisitos para executar consultas SQL além de apenas
 
 Você deve definir essas operações usando o método `this.defer`, conforme mostrado abaixo.
 
-:::note
+::: info NOTA
 Migramos os e-mails da tabela `users` para a tabela `user_emails` no exemplo a seguir.
 :::
 
-```ts
+```ts {7-14}
 export default class extends BaseSchema {
   async up() {
     this.schema.createTable('user_emails', (table) => {
-      // table columns
+      // colunas da tabela
     })
 
-    // highlight-start
     this.defer(async (db) => {
       const users = await db.from('users').select('*')
       await Promise.all(
@@ -269,7 +260,6 @@ export default class extends BaseSchema {
         })
       )
     })
-    // highlight-end
 
     this.schema.alterTable('users', (table) => {
       table.dropColumn('email')
@@ -290,22 +280,18 @@ A primeira opção é manter as migrações separadas para cada conexão de banc
 
 Defina o caminho das migrações ao lado da configuração da conexão do banco de dados.
 
-```ts
+```ts {5,11}
 {
   users: {
     client: 'mysql2',
     migrations: {
-      // highlight-start
       paths: ['./database/users/migrations']
-      // highlight-end
     }
   },
   products: {
     client: 'mysql2',
     migrations: {
-      // highlight-start
       paths: ['./database/products/migrations']
-      // highlight-end
     }
   }
 }

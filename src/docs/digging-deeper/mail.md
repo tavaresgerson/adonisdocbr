@@ -20,7 +20,7 @@ Instale e configure o pacote usando o seguinte comando:
 ```sh
 node ace add @adonisjs/mail
 
-# Pre-define transports to use via CLI flag
+# Pré-defina transportes para usar via sinalizador CLI
 node ace add @adonisjs/mail --transports=resend --transports=smtp
 ```
 
@@ -30,14 +30,14 @@ node ace add @adonisjs/mail --transports=resend --transports=smtp
 
 2. Registra o seguinte provedor de serviço e comando dentro do arquivo `adonisrc.ts`.
 
-```ts
+    ```ts
     {
       commands: [
-        // ...other commands
+        // ...outros comandos
         () => import('@adonisjs/mail/commands')
       ],
       providers: [
-        // ...other providers
+        // ...outros provedores
         () => import('@adonisjs/mail/mail_provider')
       ]
     }
@@ -63,8 +63,8 @@ const mailConfig = defineConfig({
   default: 'smtp',
 
   /**
-   * A static address for the "from" property. It will be
-   * used unless an explicit from address is set on the
+   * Um endereço estático para a propriedade "from". Ele será
+   * usado a menos que um endereço from explícito seja definido no
    * Email
    */
   from: {
@@ -73,9 +73,9 @@ const mailConfig = defineConfig({
   },
 
   /**
-   * A static address for the "reply-to" property. It will be
-   * used unless an explicit replyTo address is set on the
-   * Email
+   * Um endereço estático para a propriedade "reply-to". Ele será
+   * usado a menos que um endereço replyTo explícito seja definido no
+   * E-mail
    */
   replyTo: {
     address: '',
@@ -83,9 +83,9 @@ const mailConfig = defineConfig({
   },
 
   /**
-   * The mailers object can be used to configure multiple mailers
-   * each using a different transport or the same transport with a different
-   * options.
+   * O objeto mailers pode ser usado para configurar vários mailers
+   * cada um usando um transporte diferente ou o mesmo transporte com um
+   * opções diferentes.
    */
   mailers: {
     smtp: transports.smtp({
@@ -135,8 +135,8 @@ As seguintes opções de configuração são enviadas para o endpoint da API [`/
       domain: env.get('MAILGUN_DOMAIN'),
 
       /**
-       * The following options can be overridden at
-       * runtime when calling the `mail.send` method.
+       * As seguintes opções podem ser substituídas em
+       * tempo de execução ao chamar o método `mail.send`.
        */
       oDkim: true,
       oTags: ['transactional', 'adonisjs_app'],
@@ -146,12 +146,12 @@ As seguintes opções de configuração são enviadas para o endpoint da API [`/
       oTrackingClick: false,
       oTrackingOpens: false,
       headers: {
-        // h:prefixed headers
+        // h:prefixed cabeçalhos
       },
       variables: {
         appId: '',
         userId: '',
-        // v:prefixed variables
+        // v:prefixed variáveis
       }
     })
   }
@@ -204,7 +204,7 @@ Certifique-se de instalar o pacote `@aws-sdk/client-ses` para usar o transporte 
   mailers: {
     ses: transports.ses({
       /**
-       * Forwarded to aws sdk
+       * Encaminhado para aws sdk
        */
       apiVersion: '2010-12-01',
       region: 'us-east-1',
@@ -214,7 +214,7 @@ Certifique-se de instalar o pacote `@aws-sdk/client-ses` para usar o transporte 
       },
 
       /**
-       * Nodemailer specific
+       * Específico do Nodemailer
        */
       sendingRate: 10,
       maxConnections: 5,
@@ -237,8 +237,8 @@ As seguintes opções de configuração são enviadas para o endpoint da API [`/
       key: env.get('SPARKPOST_API_KEY'),
 
       /**
-       * The following options can be overridden at
-       * runtime when calling the `mail.send` method.
+       * As seguintes opções podem ser substituídas em
+       * tempo de execução ao chamar o método `mail.send`.
        */
       startTime: new Date(),
       openTracking: false,
@@ -267,8 +267,8 @@ As seguintes opções de configuração são enviadas para o endpoint da API [`/
       key: env.get('RESEND_API_KEY'),
 
       /**
-       * The following options can be overridden at
-       * runtime when calling the `mail.send` method.
+       * As seguintes opções podem ser substituídas em
+       * tempo de execução ao chamar o método `mail.send`.
        */
       tags: [
         {
@@ -290,22 +290,19 @@ O método `mail.send` passa uma instância da classe [Message](https://github.co
 
 No exemplo a seguir, disparamos um e-mail do controlador após criar uma nova conta de usuário.
 
-```ts
+```ts {3,13-19}
 import User from '#models/user'
 import { HttpContext } from '@adonisjs/core/http'
-// highlight-start
 import mail from '@adonisjs/mail/services/main'
-// highlight-end
 
 export default class UsersController {
   async store({ request }: HttpContext) {
     /**
-     * For demonstration only. You should validate the data
-     * before storing it inside the database.
+     * Apenas para demonstração. Você deve validar os dados
+     * antes de armazená-los dentro do banco de dados.
      */
     const user = await User.create(request.all())
 
-    // highlight-start
     await mail.send((message) => {
       message
         .to(user.email)
@@ -313,7 +310,6 @@ export default class UsersController {
         .subject('Verify your email address')
         .htmlView('emails/verify_email', { user })
     })
-    // highlight-end
   }
 }
 ```
@@ -324,12 +320,8 @@ Como o envio de e-mails pode ser demorado, você pode querer colocá-los em uma 
 O método `sendLater` aceita os mesmos parâmetros que o método `send`. No entanto, em vez de enviar o e-mail imediatamente, ele usará o **Mail messenger** para colocá-lo na fila.
 
 ```ts
-// delete-start
-await mail.send((message) => {
-// delete-end
-// insert-start
-await mail.sendLater((message) => {
-// insert-end
+await mail.send((message) => {  // [!code --]
+await mail.sendLater((message) => { // [!code ++]
   message
     .to(user.email)
     .from('info@example.org')
@@ -350,15 +342,12 @@ No exemplo a seguir, usamos o método `mail.setMessenger` para configurar uma fi
 
 Armazenamos o e-mail compilado, a configuração de tempo de execução e o nome do mailer dentro do trabalho. Mais tarde, usaremos esses dados para enviar e-mails dentro de um processo de trabalho.
 
-```ts
+```ts {4,6-16}
 import { Queue } from 'bullmq'
 import mail from '@adonisjs/mail/services/main'
 
-// highlight-start
 const emailsQueue = new Queue('emails')
-// highlight-end
 
-// highlight-start
 mail.setMessenger((mailer) => {
   return {
     async queue(mailMessage, config) {
@@ -370,7 +359,6 @@ mail.setMessenger((mailer) => {
     }
   }
 })
-// highlight-end
 ```
 
 Finalmente, vamos escrever o código para a fila Worker. Dependendo do fluxo de trabalho do seu aplicativo, você pode ter que iniciar outro processo para os workers processarem os trabalhos.
@@ -408,8 +396,8 @@ Você pode alternar entre os mailers configurados usando o método `mail.use`. O
 ```ts
 import mail from '@adonisjs/mail/services/main'
 
-mail.use() // Instance of default mailer
-mail.use('mailgun') // Mailgun mailer instance
+mail.use() // Instância do mailer padrão
+mail.use('mailgun') // Instância do mailer Mailgun
 ```
 
 Você pode chamar os métodos `mailer.send` ou `mailer.sendLater` para enviar e-mail usando uma instância do mailer. Por exemplo:
@@ -434,13 +422,12 @@ As instâncias do mailer são armazenadas em cache durante o ciclo de vida do pr
 import mail from '@adonisjs/mail/services/main'
 
 /**
- * Close transport and remove instance from
- * cache
+ * Feche o transporte e remova a instância do cache
  */
 await mail.close('mailgun')
 
 /**
- * Create a fresh instance
+ * Criar uma nova instância
  */
 mail.use('mailgun')
 ```
@@ -469,33 +456,27 @@ Consulte o [guia de referência de eventos](../references/events.md#mailsending)
 
 As propriedades de um e-mail são definidas usando a classe [Message](https://github.com/adonisjs/mail/blob/main/src/message.ts). Uma instância desta classe é fornecida para a função de retorno de chamada criada usando os métodos `mail.send` ou `mail.sendLater`.
 
-```ts
+```ts {5,9}
 import { Message } from '@adonisjs/mail'
 import mail from '@adonisjs/mail/services/main'
 
 await mail.send((message) => {
-  // highlight-start
   console.log(message instanceof Message) // true
-  // highlight-end
 })
 
 await mail.sendLater((message) => {
-  // highlight-start
   console.log(message instanceof Message) // true
-  // highlight-end
 })
 ```
 
 ### Definindo assunto e remetente
 Você pode definir o assunto do e-mail usando o método `message.subject` e o remetente do e-mail usando o método `message.from`.
 
-```ts
+```ts {3-4}
 await mail.send((message) => {
   message
-  // highlight-start
     .subject('Verify your email address')
     .from('info@example.org')
-  // highlight-end
 })
 ```
 
@@ -571,13 +552,11 @@ await mail.send((message) => {
 
 Você também pode definir o endereço de e-mail `replyTo` usando o método `message.replyTo`.
 
-```ts
+```ts {4}
 await mail.send((message) => {
   message
     .from('info@example.org')
-    // highlight-start
     .replyTo('noreply@example.org')
-    // highlight-end
 })
 ```
 
@@ -585,7 +564,7 @@ await mail.send((message) => {
 ```ts
 await mail.send((message) => {
   /**
-   * HTML contents
+   * Conteúdo HTML
    */
   message.html(`
     <h1> Verify email address </h1>
@@ -593,7 +572,7 @@ await mail.send((message) => {
   `)
 
   /**
-   * Plain text contents
+   * Conteúdo de texto simples
    */
   message.text(`
     Verify email address
@@ -607,13 +586,15 @@ await mail.send((message) => {
 Como escrever conteúdo em linha pode ser trabalhoso, você pode usar modelos do Edge. Se você já [configurou o Edge](../views-and-templates/introduction.md#configuring-edge), você pode usar os métodos `message.htmlView` e `message.textView` para renderizar modelos.
 
 ```sh
-// title: Create templates
+# Criar modelos
+
 node ace make:view emails/verify_email_html
 node ace make:view emails/verify_email_text
 ```
 
 ```ts
-// title: Use them for defining contents
+// Use-os para definir conteúdos
+
 await mail.send((message) => {
   message.htmlView('emails/verify_email_html', stateToShare)
   message.textView('emails/verify_email_text', stateToShare)
@@ -631,7 +612,7 @@ npm i mjml
 
 Uma vez feito isso, você pode escrever a marcação MJML dentro dos seus modelos Edge, envolvendo-a dentro da tag `@mjml`.
 
-:::note
+::: info NOTA
 Como a saída do MJML contém as tags `html`, `head` e `body`, não é necessário defini-las dentro dos seus modelos Edge.
 :::
 
@@ -683,37 +664,17 @@ message.attach(app.makePath('uploads/invoice.pdf'), {
 
 A lista completa de opções aceitas pelo método `message.attach` segue.
 
-<table>
-<thead>
-<tr>
-<th>Opção</th>
-<th>Descrição</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>filename</code></td>
-<td>O nome de exibição do anexo. O padrão é o nome base do caminho do anexo.</td>
-</tr>
-<tr>
-<td><code>contentType</code></td>
-<td>O tipo de conteúdo do anexo. Se não for definido, o <code>contentType</code> será inferido da extensão do arquivo.</td>
-</tr>
-<tr>
-<td><code>contentDisposition</code></td>
-<td>Tipo de disposição de conteúdo do anexo. O padrão é <code>attachment</code></td>
-</tr>
-<tr>
-<td><code>headers</code></td>
-<td>
-<p>Cabeçalhos personalizados para o nó do anexo. A propriedade headers é um par chave-valor</p>
-</td>
-</tr>
-</tbody></table>
+| Opção               | Descrição                                                                                           |
+|---------------------|-----------------------------------------------------------------------------------------------------|
+| `filename`          | O nome de exibição do anexo. O padrão é o nome base do caminho do anexo.                            |
+| `contentType`       | O tipo de conteúdo do anexo. Se não for definido, o `contentType` será inferido da extensão do arquivo. |
+| `contentDisposition`| Tipo de disposição de conteúdo do anexo. O padrão é `attachment`.                                   |
+| `headers`           | Cabeçalhos personalizados para o nó do anexo. A propriedade headers é um par chave-valor.           |
 
 #### Anexando arquivos de fluxos e buffers
 Você pode criar anexos de e-mail de fluxos e buffers usando o método `message.attachData`. O método aceita um fluxo legível ou o buffer como o primeiro argumento e o objeto de opções como o segundo argumento.
 
-:::note
+::: info NOTA
 O método `message.attachData` não deve ser usado ao enfileirar e-mails usando o método `mail.sendLater`. Como os trabalhos enfileirados são serializados e persistidos dentro de um banco de dados, anexar dados brutos aumentará o tamanho do armazenamento.
 
 Além disso, enfileirar um e-mail falhará se você anexar um fluxo usando o método `message.attachData`.
@@ -787,16 +748,14 @@ Como definir o conteúdo do arquivo de evento manualmente pode ser trabalhoso, v
 
 O objeto `calendar` fornecido para a função de retorno de chamada é uma referência do pacote npm [ical-generator](https://www.npmjs.com/package/ical-generator), então certifique-se de ler o arquivo README do pacote também.
 
-```ts
+```ts {2-7}
 message.icalEvent((calendar) => {
-  // highlight-start
   calendar
     .createEvent({
       summary: 'Adding support for ALS',
       start: DateTime.local().plus({ minutes: 30 }),
       end: DateTime.local().plus({ minutes: 60 }),
     })
-  // highlight-end
 }, {
   method: 'PUBLISH',
   filename: 'invite.ics',
@@ -833,7 +792,7 @@ Você pode definir cabeçalhos de e-mail adicionais usando o método `message.he
 message.header('x-my-key', 'header value')
 
 /**
- * Define an array of values
+ * Defina uma matriz de valores
  */
 message.header('x-my-key', ['header value', 'another value'])
 ```
@@ -865,7 +824,7 @@ message.listUnsubscribe({
 
 ```ts
 /**
- * Repeating header multiple times
+ * Repetindo o cabeçalho várias vezes
  */
 message.listSubscribe('admin@example.com?subject=subscribe')
 message.listSubscribe({
@@ -939,7 +898,8 @@ Certifique-se de referenciar a [implementação original](https://github.com/ado
 Você pode chamar o método `mail.send` e passar uma instância da classe mail para enviar o e-mail. Por exemplo:
 
 ```ts
-// title: Send mail
+// Enviar e-mail
+
 import mail from '@adonisjs/mail/services/main'
 import VerifyEmailNotification from '#mails/verify_email'
 
@@ -947,7 +907,8 @@ await mail.send(new VerifyEmailNotification())
 ```
 
 ```ts
-// title: Queue mail
+// Fila de e-mail
+
 import mail from '@adonisjs/mail/services/main'
 import VerifyEmailNotification from '#mails/verify_email'
 
@@ -958,13 +919,13 @@ Você pode compartilhar dados com a classe mail usando argumentos construtores. 
 
 ```ts
 /**
- * Creating a user
+ * Criando um usuário
  */
 const user = await User.create(payload)
 
 await mail.send(
   /**
-   * Passing user to the mail class
+   * Passando o usuário para a classe de e-mail
    */
   new VerifyEmailNotification(user)
 )
@@ -983,15 +944,15 @@ test.group('Verify email notification', () => {
     const email = new VerifyEmailNotification()
 
     /**
-     * Build email message and render templates to
-     * compute the email HTML and plain text
-     * contents
+     * Crie uma mensagem de e-mail e renderize modelos para
+     * calcular o HTML do e-mail e o texto simples
+     * conteúdo
      */
     await email.buildWithContents()
 
     /**
-     * Write assertions to ensure the message is built
-     * as expected
+     * Escreva afirmações para garantir que a mensagem seja construída
+     * conforme o esperado
      */
     email.message.assertTo('user@example.org')
     email.message.assertFrom('info@example.org')
@@ -1003,29 +964,25 @@ test.group('Verify email notification', () => {
 
 Você pode escrever asserções para o conteúdo da mensagem da seguinte forma.
 
-```ts
+```ts {4-7}
 const email = new VerifyEmailNotification()
 await email.buildWithContents()
 
-// highlight-start
 email.message.assertHtmlIncludes(
   `<a href="/emails/1/verify"> Verify email address </a>`
 )
 email.message.assertTextIncludes('Verify email address')
-// highlight-end
 ```
 
 Além disso, você pode escrever asserções para os anexos. As asserções funcionam apenas com anexos baseados em arquivo e não para fluxos ou conteúdo bruto.
 
-```ts
+```ts {4-6}
 const email = new VerifyEmailNotification()
 await email.buildWithContents()
 
-// highlight-start
 email.message.assertAttachment(
   app.makePath('uploads/invoice.pdf')
 )
-// highlight-end
 ```
 
 Sinta-se à vontade para olhar o código-fonte da classe [Message](https://github.com/adonisjs/mail/blob/main/src/message.ts) para todos os métodos de asserção disponíveis.
@@ -1035,34 +992,31 @@ Você pode querer usar o Fake mailer durante o teste para impedir que seu aplica
 
 No exemplo a seguir:
 
-[FakeMailer](https://github.com/adonisjs/mail/blob/main/src/fake_mailer.ts) usando o método `mail.fake`.
+- [FakeMailer](https://github.com/adonisjs/mail/blob/main/src/fake_mailer.ts) usando o método `mail.fake`.
 - Em seguida, chamamos a API de endpoint `/register`.
 - Por fim, usamos a propriedade `mails` do remetente falso para afirmar que `VerifyEmailNotification` foi enviado.
 
-```ts
+```ts {7-10,19-27}
 import { test } from '@japa/runner'
 import mail from '@adonisjs/mail/services/main'
 import VerifyEmailNotification from '#mails/verify_email'
 
 test.group('Users | register', () => {
   test('create a new user account', async ({ client, route }) => {
-    // highlight-start
     /**
-     * Turn on the fake mode
+     * Ative o modo falso
      */
     const { mails } = mail.fake()
-    // highlight-end
 
     /**
-     * Make an API call
+     * Faça uma chamada de API
      */
     await client
       .post(route('users.store'))
       .send(userData)
 
-    // highlight-start
     /**
-     * Assert the controller indeed sent the
+     * Afirme que o controlador realmente enviou o
      * VerifyEmailNotification mail
      */
     mails.assertSent(VerifyEmailNotification, ({ message }) => {
@@ -1070,7 +1024,6 @@ test.group('Users | register', () => {
         .hasTo(userData.email)
         .hasSubject('Verify email address')
     })
-    // highlight-end
   })
 })
 ```
@@ -1082,8 +1035,8 @@ test('create a new user account', async ({ client, route, cleanup }) => {
   const { mails } = mail.fake()
 
   /**
-   * The cleanup hooks are executed after the test
-   * finishes successfully or with an error.
+   * Os ganchos de limpeza são executados após o teste
+   * terminar com sucesso ou com um erro.
    */
   cleanup(() => {
     mail.restore()
@@ -1099,7 +1052,7 @@ O método `mails.assertSent` aceita o construtor da classe mail como o primeiro 
 const { mails } = mail.fake()
 
 /**
- * Asser the email was sent
+ * Afirme que o e-mail foi enviado
  */
 mails.assertSent(VerifyEmailNotification)
 ```
@@ -1123,8 +1076,8 @@ mails.assertSent(VerifyEmailNotification, (email) => {
   email.message.assertSubject('Verify your email address')
 
   /**
-   * All assertions passed, so return true to consider the
-   * email as sent.
+   * Todas as asserções foram aprovadas, então retorne true para considerar o
+   * e-mail como enviado.
    */
   return true
 })
@@ -1147,17 +1100,17 @@ Finalmente, você pode afirmar a contagem de e-mails enviados usando os métodos
 ```ts
 const { mails } = mail.fake()
 
-// Assert 2 emails were sent in total
+// Afirmar que 2 e-mails foram enviados no total
 mails.assertSentCount(2)
 
-// Assert only one VerifyEmailNotification was sent
+// Afirmar que apenas um VerifyEmailNotification foi enviado
 mails.assertSentCount(VerifyEmailNotification, 1)
 ```
 
 ```ts
 const { mails } = mail.fake()
 
-// Assert zero emails were sent
+// Afirmar que zero e-mails foram enviados
 mails.assertNoneSent()
 ```
 
@@ -1169,32 +1122,32 @@ Se você tiver e-mails enfileirados usando o método `mail.sendLater`, você pod
 const { mails } = mail.fake()
 
 /**
- * Assert "VerifyEmailNotification" email was queued
- * Optionally, you may pass the finder function to
- * narrow down the email
+ * Afirmar que o e-mail "VerifyEmailNotification" foi enfileirado
+ * Opcionalmente, você pode passar a função finder para
+ * restringir o e-mail
  */
 mails.assertQueued(VerifyEmailNotification)
 
 /**
- * Assert "VerifyEmailNotification" email was not queued
- * Optionally, you may pass the finder function to
- * narrow down the email
+ * Afirmar que o e-mail "VerifyEmailNotification" não foi enfileirado
+ * Opcionalmente, você pode passar a função finder para
+ * restringir o e-mail
  */
 mails.assertNotQueued(PasswordResetNotification)
 
 /**
- * Assert two emails were queued in total.
+ * Afirmar que dois e-mails foram enfileirados no total.
  */
 mails.assertQueuedCount(2)
 
 /**
- * Assert "VerifyEmailNotification" email was queued
- * only once
+ * Afirmar que o e-mail "VerifyEmailNotification" foi colocado na fila
+ * apenas uma vez
  */
 mails.assertQueuedCount(VerifyEmailNotification , 1)
 
 /**
- * Assert nothing was queued
+ * Afirmar que nada foi enfileirado
  */
 mails.assertNoneQueued()
 ```
@@ -1243,7 +1196,7 @@ import type {
 } from '@adonisjs/mail/types'
 
 /**
- * Configuration accepted by the transport
+ * Configuração aceita pelo transporte
  */
 export type PostMarkConfig = {
   auth: {
@@ -1252,7 +1205,7 @@ export type PostMarkConfig = {
 }
 
 /**
- * Transport implementation
+ * Implementação do transporte
  */
 export class PostMarkTransport implements MailTransportContract {
   #config: PostMarkConfig
@@ -1269,7 +1222,7 @@ export class PostMarkTransport implements MailTransportContract {
     config?: PostMarkConfig
   ): Promise<MailResponse> {
     /**
-     * Create nodemailer transport
+     * Criar transporte nodemailer
      */
     const transporter = this.#createNodemailerTransport({
       ...this.#config,
@@ -1277,12 +1230,12 @@ export class PostMarkTransport implements MailTransportContract {
     })
 
     /**
-     * Send email
+     * Enviar e-mail
      */
     const response = await transporter.sendMail(message)
 
     /**
-     * Normalize response to an instance of the "MailResponse" class
+     * Normalizar resposta a uma instância da classe "MailResponse"
      */
     return new MailResponse(response.messageId, response.envelope, response)
   }
@@ -1298,9 +1251,7 @@ Você pode escrever o código a seguir dentro do mesmo arquivo da implementaçã
 import type {
   NodeMailerMessage,
   MailTransportContract,
-  // insert-start
-  MailManagerTransportFactory
-  // insert-end
+  MailManagerTransportFactory // [!code ++]
 } from '@adonisjs/mail/types'
 
 export function postMarkTransport(

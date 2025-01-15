@@ -4,10 +4,9 @@ O construtor de tabelas permite que você **crie**, **remova** ou **renomeie** c
 
 Você obtém acesso à instância do construtor de tabelas chamando um dos seguintes métodos do construtor de esquemas.
 
-```ts
+```ts {3-9}
 class UserSchema extends BaseSchema {
   async up() {
-    // highlight-start
     this.schema.createTable('users', (table) => {
       console.log(table) // 👈 Table builder
     })
@@ -15,7 +14,6 @@ class UserSchema extends BaseSchema {
     this.schema.table('users', (table) => {
       console.log(table) // 👈 Table builder
     })
-    // highlight-end
   }
 }
 ```
@@ -81,7 +79,7 @@ this.schema.createTable('users', (table) => {
 ## `bigInteger`
 Adiciona uma coluna `bigint` no MYSQL e no PostgreSQL. Para todos os outros drivers de banco de dados, o padrão é um inteiro normal.
 
-:::note
+::: info NOTA
 Os valores da coluna BigInt são retornados como uma string nos resultados da consulta.
 :::
 
@@ -109,7 +107,7 @@ Adicione uma coluna de string com um comprimento opcional. O comprimento padrão
 this.schema.createTable('posts', (table) => {
   table.string('title')
 
-  // Explicit length
+  // Comprimento explícito
   table.string('title', 100)
 })
 ```
@@ -123,7 +121,7 @@ this.schema.createTable('products', (table) => {
   table.float('price')
 
   /**
-   * Explicit precision and scale
+   * Precisão e escala explícitas
    */
   table.float('price', 8, 2)
 })
@@ -140,7 +138,7 @@ this.schema.createTable('products', (table) => {
   table.decimal('price')
 
   /**
-   * Explicit precision and scale
+   * Precisão e escala explícitas
    */
   table.decimal('price', 8, 2)
 })
@@ -177,7 +175,7 @@ this.schema.createTable('users', (table) => {
     .dateTime('some_time', { useTz: true })
     .defaultTo(this.now())
 
-  // Or define the precision
+  // Ou defina a precisão
   table
     .dateTime('some_time', { precision: 6 })
     .defaultTo(this.now(6))
@@ -204,10 +202,10 @@ Adiciona uma coluna de timestamp à tabela do banco de dados. O método aceita o
 this.schema.createTable('users', (table) => {
   table.timestamp('created_at')
 
-  // Enable timestampz and DATETIME2 for MSSQL
+  // Habilite timestampz e DATETIME2 para MSSQL
   table.timestamp('created_at', { useTz: true })
 
-  // Use precision with MySQL
+  // Use precisão com MySQL
   table.timestamp('created_at', { precision: 6 })
 })
 ```
@@ -215,7 +213,7 @@ this.schema.createTable('users', (table) => {
 ## `timestamps`
 Adiciona colunas `created_at` e `updated_at` à tabela do banco de dados.
 
-:::warning
+::: warning ATENÇÃO
 Como o AdonisJS usa o Knex.js por baixo dos panos, o recurso de preenchimento automático do seu editor listará o método `timestamps` na lista de métodos disponíveis.
 
 No entanto, recomendamos não usar esse método e, em vez disso, usar o método `timestamp` pelos seguintes motivos.
@@ -235,7 +233,7 @@ Por padrão, o método `timestamps` cria uma coluna **DATETIME**. No entanto, vo
 ```ts
 this.schema.createTable('users', (table) => {
   /**
-   * Creates timestamp column
+   * Cria coluna de timestamp
    */
   table.timestamps(true)
 })
@@ -244,9 +242,9 @@ this.schema.createTable('users', (table) => {
 ```ts
 this.schema.createTable('users', (table) => {
   /**
-   * Creates timestamp column
+   * Cria coluna de timestamp
    * +
-   * Set the default value to "CURRENT_TIMESTAMP"
+   * Defina o valor padrão como "CURRENT_TIMESTAMP"
    */
   table.timestamps(true, true)
 })
@@ -297,7 +295,7 @@ this.schema.raw('DROP TYPE IF EXISTS "user_account_status"')
 this.schema.dropTable('users')
 ```
 
-## json
+## `json`
 Adiciona uma coluna JSON, usando o tipo JSON integrado no **PostgreSQL**, **MySQL** e **SQLite**, assumindo como padrão uma coluna de texto em versões mais antigas ou em bancos de dados não suportados.
 
 ```ts
@@ -508,7 +506,7 @@ this.schema.alterTable('posts', (table) => {
 ## `dropNullable`
 Remove a restrição anulável da coluna.
 
-:::warning
+::: warning ATENÇÃO
 A operação falhará quando a coluna já tiver valores nulos.
 :::
 
@@ -526,13 +524,13 @@ A seguir está a lista de métodos que você pode encadear nos métodos de const
 
 Marca a coluna como um alters/modify em vez do add padrão. O método não é suportado pelos drivers SQLite ou Amazon Redshift.
 
-:::note
+::: info NOTA
 A instrução alter não é incremental. Você deve redefinir as restrições que deseja aplicar à coluna.
 :::
 
 ```ts
 this.schema.alterTable('posts', (table) => {
-  // drops both NOT NULL constraint and the default value (if applied earlier)
+  // elimina a restrição NOT NULL e o valor padrão (se aplicado anteriormente)
   table.integer('age').alter()
 })
 ```
@@ -640,7 +638,7 @@ No MSSQL, uma opção constraintName pode ser passada para garantir um nome de r
 this.schema.table('posts', (table) => {
   table.boolean('is_published').defaultTo(false)
 
-  // For MSSQL
+  // Para MSSQL
   table
     .boolean('is_published')
     .defaultTo(false, { constraintName: 'df_table_value' })
@@ -663,7 +661,7 @@ this.schema.table('posts', (table) => {
 ## `notNullable`
 Marque a coluna atual como NÃO anulável.
 
-:::note
+::: info NOTA
 Considere usar o método [dropNullable](#dropnullable) ao alterar a coluna.
 :::
 
@@ -676,7 +674,7 @@ this.schema.table('users', (table) => {
 ## `nullable`
 Marque a coluna atual como anulável.
 
-:::note
+::: info NOTA
 Considere usar o método [setNullable](#setnullable) ao alterar a coluna.
 :::
 

@@ -23,7 +23,7 @@ export default {
   ignoreDeadLinks: true,
   themeConfig: {
     nav: [
-      { text: 'Lucid v 21.x', link: '/' },
+      { text: 'Lucid v 21.x', link: '/docs/lucid/guides/introduction' },
     ],
     returnToTopLabel: 'Retornar ao Topo',
     lightModeSwitchTitle: 'Trocar para tema claro',

@@ -2,7 +2,7 @@
 summary: Use o pacote `@adonisjs/lock` para gerenciar bloqueios atômicos em seu aplicativo AdonisJS.
 ---
 
-# Bloqueios tomic
+# Bloqueios Atômicos
 
 Um bloqueio atômico, também conhecido como `mutex`, é usado para sincronizar o acesso a um recurso compartilhado. Em outras palavras, ele impede que vários processos, ou código simultâneo, executem uma seção de código ao mesmo tempo.
 
@@ -21,10 +21,10 @@ node ace add @adonisjs/lock
 1. Instale o pacote `@adonisjs/lock` usando o gerenciador de pacotes detectado.
 
 2. Registra o seguinte provedor de serviços dentro do arquivo `adonisrc.ts`.
-```ts
+    ```ts
     {
       providers: [
-        // ...other providers
+        // ...outros provedores
         () => import('@adonisjs/lock/lock_provider')
       ]
     }
@@ -33,9 +33,9 @@ node ace add @adonisjs/lock
 3. Crie o arquivo `config/lock.ts`.
 
 4. Defina a seguinte variável de ambiente junto com sua validação dentro do arquivo `start/env.ts`.
-```ts
-   LOCK_STORE=redis
-   ```
+    ```ts
+    LOCK_STORE=redis
+    ```
 
 5. Opcionalmente, crie a migração do banco de dados para a tabela `locks` se estiver usando o armazenamento `database`.
 
@@ -89,10 +89,10 @@ Além disso, a variável de ambiente deve ser validada para permitir um dos arma
 }
 ```
 
-### Loja Redis
-A loja `redis` tem uma dependência de peer no pacote `@adonisjs/redis`; portanto, você deve configurar este pacote antes de usar a loja Redis.
+### Store Redis
+A store `redis` tem uma dependência de peer no pacote `@adonisjs/redis`; portanto, você deve configurar este pacote antes de usar a store Redis.
 
-A seguir está a lista de opções que a loja Redis aceita:
+A seguir está a lista de opções que a store Redis aceita:
 
 ```ts
 {
@@ -106,9 +106,9 @@ A seguir está a lista de opções que a loja Redis aceita:
 
 A propriedade `connectionName` se refere a uma conexão definida dentro do arquivo `config/redis.ts`.
 
-### Loja de banco de dados
+### Store de banco de dados
 
-A loja `database` tem uma dependência de peer no pacote `@adonisjs/lucid` e, portanto, você deve configurar este pacote antes de usar a loja de banco de dados.
+A store `database` tem uma dependência de peer no pacote `@adonisjs/lucid` e, portanto, você deve configurar este pacote antes de usar a store de banco de dados.
 
 A seguir está a lista de opções que o armazenamento de banco de dados aceita:
 
@@ -147,10 +147,9 @@ Depois de configurar seu armazenamento de bloqueio, você pode começar a usar b
 
 Aqui está um exemplo simples de como usar bloqueios para proteger um recurso.
 
-:::codegroup
+:::code-group
 
-```ts
-// title: Manual locking
+```ts [Bloqueio manual]
 import { errors } from '@adonisjs/lock'
 import locks from '@adonisjs/lock/services/main'
 import { HttpContext } from '@adonisjs/core/http'
@@ -160,7 +159,7 @@ export default class OrderController {
     const orderId = request.input('order_id')
 
     /**
-     * Try to acquire the lock immediately ( without retrying )
+     * Tente adquirir o bloqueio imediatamente (sem tentar novamente)
      */
     const lock = locks.createLock(`order.processing.${orderId}`)
     const acquired = await lock.acquireImmediately()
@@ -169,16 +168,16 @@ export default class OrderController {
     }
 
     /**
-     * Lock has been acquired. We can process the order
+     * O bloqueio foi adquirido. Podemos processar o pedido
      */
     try {
       await processOrder()
       return 'Order processed successfully'
     } finally {
       /**
-       * Always release the lock using the `finally` block, so that
-       * we are sure that the lock is released even when an exception
-       * is thrown during the processing.
+       * Sempre libere o bloqueio usando o bloco `finally`, para que
+       * tenhamos certeza de que o bloqueio será liberado mesmo quando uma exceção
+       * for lançada durante o processamento.
        */
       await lock.release()
     }
@@ -186,8 +185,7 @@ export default class OrderController {
 }
 ```
 
-```ts
-// title: Automatic locking
+```ts [Bloqueio automático]
 import { errors } from '@adonisjs/lock'
 import locks from '@adonisjs/lock/services/main'
 import { HttpContext } from '@adonisjs/core/http'
@@ -197,22 +195,22 @@ export default class OrderController {
     const orderId = request.input('order_id')
 
     /**
-     * Will run the function only if lock is available
-     * Lock will also be automatically released once the function
-     * has been executed
+     * Executará a função somente se o bloqueio estiver disponível
+     * O bloqueio também será liberado automaticamente assim que a função
+     * for executada
      */
     const [executed, result] = await locks
       .createLock(`order.processing.${orderId}`)
       .runImmediately(async (lock) => {
         /**
-         * Lock has been acquired. We can process the order
+         * O bloqueio foi adquirido. Podemos processar o pedido
          */
         await processOrder()
         return 'Order processed successfully'
       })
 
     /**
-     * Lock could not be acquired and function was not executed
+     * O bloqueio não pôde ser adquirido e a função não foi executada
      */
     if (!executed) return 'Order is already being processed'
 
@@ -252,7 +250,8 @@ const lock = locks.createLock('order.processing.1')
 Às vezes, você pode querer ter um processo criando e adquirindo um bloqueio, e outro processo liberando-o. Por exemplo, você pode querer adquirir um bloqueio dentro de uma solicitação da web e liberá-lo dentro de um trabalho em segundo plano. Isso é possível usando o método `restoreLock`.
 
 ```ts
-// title: Your main server
+// Seu servidor principal
+
 import locks from '@adonisjs/lock/services/main'
 
 export class OrderController {
@@ -263,10 +262,10 @@ export class OrderController {
     await lock.acquire()
 
     /**
-     * Dispatch a background job to process the order.
-     * 
-     * We also pass the serialized lock to the job, so that the job
-     * can release the lock once the order has been processed.
+     * Despachar um trabalho em segundo plano para processar o pedido.
+     *
+     * Também passamos o bloqueio serializado para o trabalho, para que o trabalho
+     * possa liberar o bloqueio assim que o pedido for processado.
      */
     queue.dispatch('app/jobs/process_order', {
       lock: lock.serialize()
@@ -276,23 +275,24 @@ export class OrderController {
 ```
 
 ```ts
-// title: Your background job
+// Seu trabalho em segundo plano
+
 import locks from '@adonisjs/lock/services/main'
 
 export class ProcessOrder {
   async handle({ lock }) {
     /**
-     * We are restoring the lock from the serialized version
+     * Estamos restaurando o bloqueio da versão serializada
      */
     const handle = locks.restoreLock(lock)
 
     /**
-     * Process the order
+     * Processe o pedido
      */
     await processOrder()
 
     /**
-     * Release the lock
+     * Libere o bloqueio
      */
     await handle.release()
   }
@@ -303,8 +303,9 @@ export class ProcessOrder {
 
 Durante os testes, você pode usar o armazenamento `memory` para evitar fazer solicitações de rede reais para adquirir bloqueios. Você pode fazer isso definindo a variável de ambiente `LOCK_STORE` como `memory` dentro do arquivo `.env.testing`.
 
-```env
-// title: .env.test
+```
+// .env.test
+
 LOCK_STORE=memory
 ```
 
@@ -319,48 +320,48 @@ import type { LockStore } from '@adonisjs/lock/types'
 
 class NoopStore implements LockStore {
   /**
-   * Save the lock in the store.
-   * This method should return false if the given key is already locked
+   * Salvar o bloqueio no armazenamento.
+   * Este método deve retornar falso se a chave fornecida já estiver bloqueada
    *
-   * @param key The key to lock
-   * @param owner The owner of the lock
-   * @param ttl The time to live of the lock in milliseconds. Null means no expiration
+   * @param key A chave para bloquear
+   * @param owner O proprietário do bloqueio
+   * @param ttl O tempo de vida do bloqueio em milissegundos. Nulo significa sem expiração
    *
-   * @returns True if the lock was acquired, false otherwise
+   * @returns True se o bloqueio foi adquirido, false caso contrário
    */
   async save(key: string, owner: string, ttl: number | null): Promise<boolean> {
     return false
   }
 
   /**
-   * Delete the lock from the store if it is owned by the given owner
-   * Otherwise should throws a E_LOCK_NOT_OWNED error
+   * Exclua o bloqueio do armazenamento se ele for de propriedade do proprietário fornecido
+   * Caso contrário, deve gerar um erro E_LOCK_NOT_OWNED
    *
-   * @param key The key to delete
-   * @param owner The owner
+   * @param key A chave para apagar
+   * @param owner O dono
    */
   async delete(key: string, owner: string): Promise<void> {
     return false
   }
 
   /**
-   * Force delete the lock from the store without checking the owner
+   * Forçar a exclusão do bloqueio do store sem verificar o proprietário
    */
   async forceDelete(key: string): Promise<Void> {
     return false
   }
 
   /**
-   * Check if the lock exists. Returns true if so, false otherwise
+   * Verifica se o bloqueio existe. Retorna true se sim, false caso contrário
    */
   async exists(key: string): Promise<boolean> {
     return false
   }
 
   /**
-   * Extend the lock expiration. Throws an error if the lock is not owned by 
-   * the given owner
-   * Duration is in milliseconds
+   * Estender a expiração do bloqueio. Lança um erro se o bloqueio não for de propriedade de
+   * o proprietário fornecido
+   * A duração é em milissegundos
    */
   async extend(key: string, owner: string, duration: number): Promise<void> {
     return false
@@ -368,9 +369,9 @@ class NoopStore implements LockStore {
 }
 ```
 
-### Definindo a fábrica da loja
+### Definindo a fábrica da store
 
-Depois de criar sua loja, você deve definir uma função de fábrica simples que será usada por `@adonisjs/lock` para criar uma instância da sua loja.
+Depois de criar sua store, você deve definir uma função de fábrica simples que será usada por `@adonisjs/lock` para criar uma instância da sua store.
 
 ```ts
 function noopStore(options: MyNoopStoreConfig) {
@@ -378,7 +379,7 @@ function noopStore(options: MyNoopStoreConfig) {
 }
 ```
 
-### Usando a loja personalizada
+### Usando a store personalizada
 
 Depois de feito, você pode usar a função `noopStore` da seguinte forma:
 

@@ -18,7 +18,7 @@ O processo de transformar instâncias de classe para objetos JSON simples é con
 
 Você pode executar todas essas transformações dentro de seus modelos sem criar quaisquer transformadores ou classes de recursos separados.
 
-:::note
+::: info NOTA
 Não há necessidade de serializar seus modelos para JSON ao usá-los dentro dos modelos do Edge. A serialização é necessária apenas para servidores de API que retornam respostas JSON.
 :::
 
@@ -60,7 +60,7 @@ const paginationJSON = posts.serialize()
 
 Durante o processo de serialização, o modelo retorna um objeto com propriedades usando o decorador `@column`. Se você quiser serializar quaisquer propriedades adicionais, use o decorador `@computed`.
 
-```ts
+```ts {12-15}
 import { DateTime } from 'luxon'
 import string from '@adonisjs/core/helpers/string'
 import { BaseModel, column, computed } from '@adonisjs/lucid/orm'
@@ -72,12 +72,10 @@ export default class Post extends BaseModel {
   @column()
   declare body: string
 
-  // highlight-start
   @computed()
   get excerpt() {
     return string.truncate(this.body, 50)
   }
-  // highlight-end
 }
 ```
 
@@ -85,11 +83,11 @@ export default class Post extends BaseModel {
 
 Você pode renomear os nomes de propriedades serializadas usando a opção `serializeAs`. Você ainda acessará a propriedade pelo seu nome real no modelo, mas a saída serializada usará o nome `serializeAs`. Por exemplo:
 
-:::note
+::: info NOTA
 Use [Estratégia de nomenclatura de modelo](./naming_strategy.md) se quiser substituir a convenção de nomenclatura para todas as propriedades serializadas.
 :::
 
-```ts
+```ts {8-9}
 import { DateTime } from 'luxon'
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 
@@ -97,10 +95,8 @@ export default class Post extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
-  // highlight-start
   @column({ serializeAs: 'content' })
   declare body: string
-  // highlight-end
 }
 ```
 
@@ -120,7 +116,7 @@ post.serialize()
 
 Você pode remover as propriedades do modelo da saída serializada definindo o valor `serializeAs` como `null`. Por exemplo:
 
-```ts
+```ts {11-12}
 import { DateTime } from 'luxon'
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 
@@ -131,10 +127,8 @@ export default class User extends BaseModel {
   @column()
   declare email: string
 
-  // highlight-start
   @column({ serializeAs: null })
   declare password: string
-  // highlight-end
 }
 ```
 
@@ -154,11 +148,11 @@ user.serialize()
 
 Você também pode transformar um valor de propriedade durante a serialização definindo o método `serialize`. Ele recebe o valor atual da propriedade e o valor de retorno é passado para a saída serializada.
 
-:::note
+::: info NOTA
 Certifique-se de proteger a implementação do método contra os valores `null`.
 :::
 
-```ts
+```ts {8-14}
 import { DateTime } from 'luxon'
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 
@@ -166,7 +160,6 @@ export default class Post extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
-  // highlight-start
   @column.dateTime({
     autoCreate: true,
     serialize: (value: DateTime | null) => {
@@ -174,7 +167,6 @@ export default class Post extends BaseModel {
     },
   })
   declare createdAt: DateTime
-  // highlight-end
 }
 ```
 
@@ -203,7 +195,7 @@ No exemplo acima, os `comentários` para todas as postagens serão serializados 
 
 Você pode alterar o nome da propriedade do relacionamento definindo a opção `serializeAs` na definição do relacionamento.
 
-```ts
+```ts {10-13}
 import { DateTime } from 'luxon'
 import Comment from '#models/comment'
 import type { HasMany } from '@adonisjs/lucid/types/relations'
@@ -213,12 +205,10 @@ export default class Post extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
-  // highlight-start
   @hasMany(() => Comment, {
     serializeAs: 'postComments',
   })
   comments: HasMany<typeof Comment>
-  // highlight-end
 }
 ```
 
@@ -272,7 +262,7 @@ Você também pode serializar o objeto `$extras` definindo a seguinte propriedad
 ```ts
 class Post extends BaseModel {
   /**
-   * Serialize the `$extras` object as it is
+   * Serializar o objeto `$extras` como ele está
    */
   serializeExtras = true
 }

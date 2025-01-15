@@ -8,14 +8,13 @@ Os escopos de consulta são a função reutilizável para aplicar a uma instânc
 
 Os métodos são definidos como propriedades estáticas na classe de modelo e recebem a consulta atual como o primeiro argumento. Por exemplo:
 
-```ts
-// title: app/models/post.ts
+```ts {6}
+// app/models/post.ts
+
 import { DateTime } from 'luxon'
 
 import {
-  // highlight-start
   scope,
-  // highlight-end
   column,
   BaseModel,
 } from '@adonisjs/lucid/orm'
@@ -49,7 +48,7 @@ export default class Project extends BaseModel {
     }
 
     /**
-     * Non-admin users can only view their own team's projects
+     * Usuários não administradores podem visualizar apenas os projetos de sua própria equipe
      */
     query.where('teamId', user.teamId)
   })
@@ -70,21 +69,17 @@ No entanto, o método de escopo é estático, então ele não está ciente do mo
 
 Portanto, precisamos criar um tipo `Builder` da seguinte forma:
 
-```ts
+```ts {3}
 import { ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
 
-// highlight-start
 type Builder = ModelQueryBuilderContract<typeof Post>
-// highlight-end
 ```
 
 Então, você pode sugerir a propriedade `builder` da seguinte forma:
 
-```ts
+```ts {2}
 export default class Post extends BaseModel {
-  // highlight-start
   static firstScope = scope((query: Builder) => {
-  // highlight-end
     query.withScopes((scopes) => scopes.secondScope())
   })
 
@@ -96,12 +91,10 @@ export default class Post extends BaseModel {
 
 Se você também quiser passar argumentos, você precisa converter a `query` dentro do método:
 
-```ts
+```ts {3}
 export default class Post extends BaseModel {
   static firstScope = scope((scopeQuery, user: User) => {
-    // highlight-start
     const query = scopeQuery as Builder
-    // highlight-end
     query
       .withScopes((scopes) => scopes.secondScope())
       .where('teamId', user.teamId)

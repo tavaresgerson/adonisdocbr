@@ -2,7 +2,7 @@
 summary: Aprenda a analisar corpos de solicitação usando o middleware BodyParser.
 ---
 
-# Middleware do analisador de corpo
+# Body parser
 
 Os dados da solicitação são analisados ​​usando o middleware `BodyParser` registrado dentro do arquivo `start/kernel.ts`.
 

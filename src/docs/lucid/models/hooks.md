@@ -4,11 +4,10 @@ Hooks são as **ações que você pode executar em uma instância de modelo** du
 
 Um ótimo exemplo de hooks é o hash de senha. Você pode definir um hook que seja executado antes da chamada `save` e converta a senha de texto simples em um hash.
 
-```ts
-// title: app/models/user.ts
-// highlight-start
+```ts {3,16-21}
+// app/models/user.ts
+
 import hash from '@adonisjs/core/services/hash'
-// highlight-end
 import { column, beforeSave, BaseModel } from '@adonisjs/lucid/orm'
 
 export default class User extends BaseModel {
@@ -21,14 +20,12 @@ export default class User extends BaseModel {
   @column()
   declare password: string
 
-  // highlight-start
   @beforeSave()
   static async hashPassword(user: User) {
     if (user.$dirty.password) {
       user.password = await hash.make(user.password)
     }
   }
-  // highlight-end
 }
 ```
 
@@ -36,8 +33,7 @@ export default class User extends BaseModel {
 - Hooks podem ser assíncronos. Então você pode usar a palavra-chave `await` dentro deles.
 - Hooks são sempre definidos como funções estáticas e recebem a instância do modelo como o primeiro argumento.
 
-:::tip
-**Entendendo a propriedade `$dirty`**
+::: tip **Entendendo a propriedade `$dirty`**
 
 O hook `beforeSave` é chamado toda vez que um novo usuário é **criado** ou **atualizado** usando a instância do modelo.
 

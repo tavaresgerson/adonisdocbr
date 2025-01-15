@@ -12,7 +12,7 @@ node ace list
 
 ![](../ace/ace_help_screen.jpeg)
 
-:::note
+::: info NOTA
 A saída da tela de ajuda é formatada de acordo com o padrão [docopt](http://docopt.org/).
 :::
 
@@ -99,10 +99,10 @@ O comando `add` combina os comandos `npm install <package-name>` e `node ace con
 O comando `add` detectará automaticamente o gerenciador de pacotes usado pelo seu aplicativo e o usará para instalar o pacote. No entanto, você sempre pode optar por um gerenciador de pacotes específico usando o sinalizador CLI `--package-manager`.
 
 ```sh
-# Install and configure the @adonisjs/lucid package
+# Instalar e configurar o pacote @adonisjs/lucid
 node ace add @adonisjs/lucid
 
-# Install the package as a development dependency and configure it
+# Instalar o pacote como uma dependência de desenvolvimento e configurá-lo
 node ace add my-dev-package --dev
 ```
 
@@ -152,10 +152,10 @@ Ejeta stubs de um determinado pacote para o diretório `stubs` do seu aplicativo
 Veja também: [Personalizando stubs](../concepts/scaffolding.md#ejecting-stubs)
 
 ```sh
-# Copy stub from @adonisjs/core package
+# Copiar stub do pacote @adonisjs/core
 node ace eject make/controller
 
-# Copy stub from @adonisjs/bouncer package
+# Copiar stub do pacote @adonisjs/bouncer
 node ace eject make/policy --pkg=@adonisjs/bouncer
 ```
 
@@ -192,7 +192,7 @@ node ace make:controller users
 Você também gera um controlador com nomes de ação personalizados, conforme mostrado no exemplo a seguir.
 
 ```sh
-# Generates controller with "index", "show", and "store" methods
+# Gera controlador com métodos "index", "show" e "store"
 node ace make:controller users index show store
 ```
 
@@ -250,10 +250,10 @@ Crie um novo arquivo validador VineJS. Os validadores são armazenados dentro do
 - Recomendação: você deve criar arquivos validadores em torno dos recursos do seu aplicativo.
 
 ```sh
-# A validator for managing a user
+# Um validador para gerenciar um usuário
 node ace make:validator user
 
-# A validator for managing a post
+# Um validador para gerenciar uma postagem
 node ace make:validator post
 ```
 
@@ -291,7 +291,7 @@ node ace make:listener sendShipmentNotification --event=shipment_received
 
 Crie uma nova classe de serviço. As classes de serviço são armazenadas dentro do diretório `app/services` e usam as seguintes convenções de nomenclatura.
 
-:::note
+::: info NOTA
 Um serviço não tem significado predefinido, e você pode usá-lo para extrair a lógica de negócios dentro do seu aplicativo. Por exemplo, se seu aplicativo gera muitos PDFs, você pode criar um serviço chamado `PdfGeneratorService` e reutilizá-lo em vários lugares.
 :::
 
@@ -480,10 +480,10 @@ O comando `env:add` permite que você adicione novas variáveis ​​de ambient
 Você pode simplesmente executar o comando e ele solicitará o nome da variável, o valor e as regras de validação. Ou você pode passá-los como argumentos.
 
 ```sh
-# Will prompt for the variable name, value, and validation rules
+# Solicitará o nome da variável, valor e regras de validação
 node ace env:add
 
-# Define the variable name, value, and validation rule
+# Defina o nome da variável, valor e regra de validação
 node ace env:add MY_VARIABLE value --type=string
 ```
 

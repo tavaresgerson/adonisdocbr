@@ -2,7 +2,7 @@
 summary: Aprenda a usar o auth guard básico para autenticar usuários usando a estrutura de autenticação HTTP.
 ---
 
-# Basic authentication guard
+# Proteção de autenticação básica
 
 O auth guard básico é uma implementação da [estrutura de autenticação HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication), na qual o cliente deve passar as credenciais do usuário como uma string codificada em base64 por meio do cabeçalho `Authorization`. O servidor permite a solicitação se as credenciais forem válidas. Caso contrário, um prompt nativo da Web é exibido para inserir novamente as credenciais.
 

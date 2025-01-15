@@ -1,10 +1,10 @@
 export default [
   {
-    text: 'Preface',
+    text: 'Prefácio',
     collapsed: false,
     items: [
         {
-          text: 'Introduction',
+          text: 'Introdução',
           link: '/docs/preface/introduction.md',
         },
         {
@@ -12,80 +12,79 @@ export default [
           link: '/docs/preface/faqs.md',
         },
         {
-          text: 'Governance',
+          text: 'Governança',
           link: '/docs/preface/governance.md',
         },
         {
-          text: 'Contribution Guide',
+          text: 'Contribuindo',
           link: '/docs/preface/contribution-guide.md',
         }
       ],
     },
     {
-      text: 'Getting started',
+      text: 'Começando',
       collapsed: true,
       items: [
           {
-            text: 'Installation',
+            text: 'Instalação',
             link: '/docs/getting-started/installation.md',
           },
           {
-            text: 'Configuration',
+            text: 'Configuração',
             link: '/docs/getting-started/configuration.md',
           },
           {
-            text: 'Environment variables',
+            text: 'Variáveis de ambiente',
             link: '/docs/getting-started/environment-variables.md',
           },
           {
-            text: 'Folder structure',
+            text: 'Estrutura de pastas',
             link: '/docs/getting-started/folder-structure.md',
           },
           {
-            text: 'Deployment',
+            text: 'Implantação',
             link: '/docs/getting-started/deployment.md',
           }
       ],
     },
-    
     {
-      text: 'Concepts',
+      text: 'Conceitos',
       collapsed: true,
       items: [
           {
-            text: 'AdonisRC file',
+            text: 'Arquivo AdonisRC',
             link: '/docs/concepts/adonisrc-file.md',
           },
           {
-            text: 'Async local storage',
+            text: 'Armazenamento local assíncrono',
             link: '/docs/concepts/async-local-storage.md',
           },
           {
-            text: 'Assembler hooks',
+            text: 'Ganchos do Assembler',
             link: '/docs/concepts/assembler-hooks.md',
           },
           {
-            text: 'Application',
+            text: 'Aplicativo',
             link: '/docs/concepts/application.md',
           },
           {
-            text: 'Application lifecycle',
+            text: 'Ciclo de vida do aplicativo',
             link: '/docs/concepts/application-lifecycle.md',
           },
           {
-            text: 'Config providers',
+            text: 'Provedores de configuração',
             link: '/docs/concepts/config-providers.md',
           },
           {
-            text: 'Container services',
+            text: 'Serviços de contêiner',
             link: '/docs/concepts/container-services.md',
           },
           {
-            text: 'Dependency injection (DI)',
+            text: 'Injeção de dependência (DI)',
             link: '/docs/concepts/dependency-injection.md',
           },
           {
-            text: 'Extending the framework',
+            text: 'Estendendo o framework',
             link: '/docs/concepts/extending-the-framework.md',
           },
           {
@@ -93,15 +92,15 @@ export default [
             link: '/docs/concepts/hmr.md',
           },
           {
-            text: 'HTTP overview',
+            text: 'Visão geral do HTTP',
             link: '/docs/concepts/http-overview.md',
           },
           {
-            text: 'HTTP context',
+            text: 'Contexto HTTP',
             link: '/docs/concepts/http-context.md',
           },
           {
-            text: 'Service providers',
+            text: 'Provedores de serviços',
             link: '/docs/concepts/service-providers.md',
           },
           {
@@ -109,25 +108,25 @@ export default [
             link: '/docs/concepts/scaffolding.md',
           },
           {
-            text: 'Tooling config',
+            text: 'Configuração de ferramentas',
             link: '/docs/concepts/tooling-config.md',
           },
           {
-            text: 'TypeScript build process',
+            text: 'Processo de construção do TypeScript',
             link: '/docs/concepts/typescript-build-process.md',
           }
       ],
     },
     {
-      text: 'Basics',
+      text: 'Básico',
       collapsed: true,
       items: [
           {
-            text: 'Routing',
+            text: 'Roteamento',
             link: '/docs/basics/routing.md',
           },
           {
-            text: 'Controllers',
+            text: 'Controladores',
             link: '/docs/basics/controllers.md',
           },
           {
@@ -147,15 +146,15 @@ export default [
             link: '/docs/basics/response.md',
           },
           {
-            text: 'Validation',
+            text: 'Validação',
             link: '/docs/basics/validation.md',
           },
           {
-            text: 'File uploads',
+            text: 'Uploads de arquivo',
             link: '/docs/basics/file-uploads.md',
           },
           {
-            text: 'Session',
+            text: 'Sessão',
             link: '/docs/basics/session.md',
           },
           {
@@ -163,11 +162,11 @@ export default [
             link: '/docs/basics/cookies.md',
           },
           {
-            text: 'Exception handling',
+            text: 'Tratamento de exceções',
             link: '/docs/basics/exception-handling.md',
           },
           {
-            text: 'Debugging',
+            text: 'Depuração',
             link: '/docs/basics/debugging.md',
           },
           {
@@ -175,17 +174,17 @@ export default [
             link: '/docs/basics/vite.md',
           },
           {
-            text: 'Static file server',
+            text: 'Servidor de arquivos estáticos',
             link: '/docs/basics/static-file-server.md',
           }
       ],
     },
     {
-      text: 'Database',
+      text: 'Banco de dados',
       collapsed: true, 
       items: [
           {
-            text: 'Introduction',
+            text: 'Introdução',
             link: '/docs/database/introduction.md',
           },
           {
@@ -199,35 +198,35 @@ export default [
       ],
     },
     {
-      text: 'Authentication',
+      text: 'Autenticação',
       collapsed: true,
       items: [
         {
-          text: 'Introduction',
+          text: 'Introdução',
           link: '/docs/authentication/introduction.md',
         },
         {
-          text: 'Verifying user credentials',
+          text: 'Verificando as credênciais do usuário',
           link: '/docs/authentication/verifying-user-credentials.md',
         },
         {
-          text: 'Session guard',
+          text: 'Guarda de sessão',
           link: '/docs/authentication/session-guard.md',
         },
         {
-          text: 'Access tokens guard',
+          text: 'Guarda de tokens de acesso',
           link: '/docs/authentication/access-tokens-guard.md',
         },
         {
-          text: 'Basic auth guard',
+          text: 'Proteção de autenticação básica',
           link: '/docs/authentication/basic-auth-guard.md',
         },
         {
-          text: 'Custom auth guard',
+          text: 'Guarda de autenticação personalizado',
           link: '/docs/authentication/custom-auth-guard.md',
         },
         {
-          text: 'Social authentication',
+          text: 'Autenticação social',
           link: '/docs/authentication/social-authentication.md',
         }
       ],
@@ -237,11 +236,11 @@ export default [
       collapsed: true,
       items: [
         {
-          text: 'Authorization',
+          text: 'Autorização',
           link: '/docs/security/authorization.md',
         },
         {
-          text: 'Encryption',
+          text: 'Criptografia',
           link: '/docs/security/encryption.md',
         },
         {
@@ -253,11 +252,11 @@ export default [
           link: '/docs/security/cors.md',
         },
         {
-          text: 'Securing SSR apps',
+          text: 'Protegendo aplicativos SSR pelo servidor',
           link: '/docs/security/securing-ssr-applications.md',
         },
         {
-          text: 'Rate limiting',
+          text: 'Limitação de taxa',
           link: '/docs/security/rate-limiting.md',
         }
       ],
@@ -267,7 +266,7 @@ export default [
       collapsed: true,
       items: [
           {
-            text: 'Introduction',
+            text: 'Introdução',
             link: '/docs/views-and-templates/introduction.md',
           },
           {
@@ -281,27 +280,27 @@ export default [
       ],
     },
     {
-      text: 'Testing',
+      text: 'Testando',
       collapsed: true,
       items: [
         {
-          text: 'Introduction',
+          text: 'Introdução',
           link: '/docs/testing/introduction.md',
         },
         {
-          text: 'HTTP tests',
+          text: 'Testes HTTP',
           link: '/docs/testing/http-tests.md',
         },
         {
-          text: 'Browser tests',
+          text: 'Testes de navegador',
           link: '/docs/testing/browser-tests.md',
         },
         {
-          text: 'Console tests',
+          text: 'Testes de console',
           link: '/docs/testing/console-tests.md',
         },
         {
-          text: 'Database',
+          text: 'Testes de banco de dados',
           link: '/docs/testing/database.md',
         },
         {
@@ -311,7 +310,7 @@ export default [
       ],
     },
     {
-      text: 'Digging deeper',
+      text: 'Cavando mais fundo',
       collapsed: true,
       items: [
         {
@@ -357,19 +356,19 @@ export default [
       collapsed: true,
       items: [
           {
-            text: 'Introduction',
+            text: 'Introdução',
             link: '/docs/ace/introduction.md',
           },
           {
-            text: 'Creating commands',
+            text: 'Criando comandos',
             link: '/docs/ace/creating-commands.md',
           },
           {
-            text: 'Command arguments',
+            text: 'Argumentos de comando',
             link: '/docs/ace/args.md',
           },
           {
-            text: 'Command flags',
+            text: 'Sinalizadores de comando',
             link: '/docs/ace/flags.md',
           },
           {
@@ -383,23 +382,23 @@ export default [
       ],
     },
     {
-      text: 'References',
+      text: 'Referências',
       collapsed: true,
       items: [
         {
-          text: 'Commands',
+          text: 'Comandos',
           link: '/docs/references/commands.md',
         },
         {
-          text: 'Edge helpers and tags',
+          text: 'Auxiliares e tags do Edge',
           link: '/docs/references/edge.md',
         },
         {
-          text: 'Events',
+          text: 'Eventos',
           link: '/docs/references/events.md',
         },
         {
-          text: 'Exceptions',
+          text: 'Exceções',
           link: '/docs/references/exceptions.md',
         },
         {
@@ -413,41 +412,41 @@ export default [
       collapsed: true,
       items: [
         {
-          text: 'Guides',
+          text: 'Guias',
           collapsed: false,
           items: [
             {
-              text: 'Introduction',
+              text: 'Introdução',
               link: '/docs/lucid/guides/introduction.md',
             },
             {
-              text: 'Installation and Usage',
+              text: 'Instalação e uso',
               link: '/docs/lucid/guides/installation.md',
             },
             {
-              text: 'Debugging',
+              text: 'Depuração',
               link: '/docs/lucid/guides/debugging.md',
             },
             {
-              text: 'Transactions',
+              text: 'Transações',
               link: '/docs/lucid/guides/transactions.md',
             },
             {
-              text: 'Pagination',
+              text: 'Paginação',
               link: '/docs/lucid/guides/pagination.md',
             },
             {
-              text: 'Database seeders',
+              text: 'Seeders de banco de dados',
               link: '/docs/lucid/guides/seeders.md',
             },
             {
-              text: 'Validation rules',
+              text: 'Regras de validação',
               link: '/docs/lucid/guides/validation.md',
             },
           ]
         },
         {
-          text: 'Query builders',
+          text: 'Construtores de consultas',
           collapsed: false,
           items: [
             {
@@ -465,11 +464,11 @@ export default [
           ]
         },
         {
-          text: 'Migrations',
+          text: 'Migrações',
           collapsed: false,
           items: [
             {
-              text: 'Introduction',
+              text: 'Introdução',
               link: '/docs/lucid/migrations/introduction.md',
             },
             {
@@ -477,21 +476,21 @@ export default [
               link: '/docs/lucid/migrations/schema_builder.md',
             },
             {
-              text: 'Table builder',
+              text: 'Construtor de tabelas',
               link: '/docs/lucid/migrations/table_builder.md',
             },
           ]
         },
         {
-          text: 'Models',
+          text: 'Modelos',
           collapsed: false,
           items: [
             {
-              text: 'Introduction',
+              text: 'Introdução',
               link: '/docs/lucid/models/introduction.md',
             },
             {
-              text: 'CRUD operations',
+              text: 'Operações CRUD',
               link: '/docs/lucid/models/crud_operations.md',
             },
             {
@@ -499,27 +498,27 @@ export default [
               link: '/docs/lucid/models/hooks.md',
             },
             {
-              text: 'Query builder',
+              text: 'Construtor de consultas de modelo',
               link: '/docs/lucid/models/query_builder.md',
             },
             {
-              text: 'Naming strategy',
+              text: 'Estratégia de nomenclatura',
               link: '/docs/lucid/models/naming_strategy.md',
             },
             {
-              text: 'Query scopes',
+              text: 'Escopos de consulta',
               link: '/docs/lucid/models/query_scopes.md',
             },
             {
-              text: 'Serializing models',
+              text: 'Serializando modelos',
               link: '/docs/lucid/models/serializing_models.md',
             },
             {
-              text: 'Relationships',
+              text: 'Relacionamentos',
               link: '/docs/lucid/models/relationships.md',
             },
             {
-              text: 'Model factories',
+              text: 'Fábricas de modelos',
               link: '/docs/lucid/models/model_factories.md',
             }
           ]

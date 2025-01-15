@@ -8,8 +8,9 @@ Você pode depurar consultas SQL primeiro habilitando o modo `debug` e então es
 
 O modo de depuração pode ser habilitado globalmente para uma conexão de banco de dados definindo o sinalizador `debug` como `true` dentro do arquivo `config/database.ts`. Por exemplo:
 
-```ts
-// title: config/database.ts
+```ts {18}
+// config/database.ts
+
 import env from '#start/env'
 import { defineConfig } from '@adonisjs/lucid'
 
@@ -25,9 +26,7 @@ const dbConfig = defineConfig({
         password: env.get('DB_PASSWORD'),
         database: env.get('DB_DATABASE'),
       },
-      // highlight-start
       debug: true
-      // highlight-end
     },
   },
 })
@@ -35,35 +34,26 @@ const dbConfig = defineConfig({
 
 Ou você pode habilitá-lo para uma consulta individual usando o método `debug` no construtor de consultas.
 
-:::codegroup
+:::code-group
 
-```ts
-// title: Select
+```ts {4} [Select]
 db
   .query()
   .select('*')
-  // highlight-start
   .debug(true)
-  // highlight-end
 ```
 
-```ts
-// title: Insert
+```ts {3} [Insert]
 db
   .insertQuery()
-  // highlight-start
   .debug(true)
-  // highlight-end
   .insert({})
 ```
 
-```ts
-// title: Raw
+```ts {3} [Raw]
 db
   .rawQuery('select * from users')
-  // highlight-start
   .debug(true)
-  // highlight-end
 ```
 
 :::
@@ -73,15 +63,14 @@ Depois que a depuração for habilitada, você pode definir o sinalizador `prett
 
 Este sinalizador registrará um ouvinte de eventos para o evento `db:query` e imprimirá as consultas SQL no console.
 
-```ts
-// title: config/database.ts
+```ts {7}
+// config/database.ts
+
 import env from '#start/env'
 import { defineConfig } from '@adonisjs/lucid'
 
 const dbConfig = defineConfig({
-  // highlight-start
   prettyPrintDebugQueries: true,
-  // highlight-end
   connection: 'postgres',
   connections: {
     postgres: {
@@ -101,7 +90,8 @@ Se você não quiser imprimir consultas SQL e gravá-las no console, poderá aut
 No exemplo a seguir, usamos o registrador de aplicativos para registrar as consultas.
 
 ```ts
-// title: start/events.ts
+// start/events.ts
+
 import emitter from '@adonisjs/core/services/emitter'
 
 emitter.on('db:query', function (query) {

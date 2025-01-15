@@ -8,13 +8,12 @@ Você pode obter uma instância do [select query builder](https://github.com/ado
 import db from '@adonisjs/lucid/services/db'
 
 /**
- * Creates query builder instance
+ * Cria instância do construtor de consultas
  */
 const query = db.query()
 
 /**
- * Creates query builder instance and also selects
- * the table
+ * Cria instância do construtor de consultas e também seleciona a tabela
  */
 const queryWithTableSelection = db.from('users')
 ```
@@ -47,7 +46,7 @@ db
   .select({
     id: 'id',
 
-    // Key is alias name
+    // A chave é o nome do alias
     userEmail: 'email'
   })
 ```
@@ -127,14 +126,16 @@ db
 ```
 
 ```ts
-// title: Using luxon to make the date
+// Usando luxon para fazer a data
+
 db
   .from('users')
   .where('created_at', '>', DateTime.local().toSQLDate())
 ```
 
 ```ts
-// title: Using like operator
+// Usando operador like
+
 db
   .from('posts')
   .where('title', 'like', '%Adonis 101%')
@@ -143,7 +144,8 @@ db
 Você pode criar grupos `where` passando um retorno de chamada para o método `where`. Por exemplo:
 
 ```ts
-// title: where groups
+// grupo de where
+
 db
   .from('users')
   .where((query) => {
@@ -173,7 +175,8 @@ SELECT * FROM "users"
 O valor do método `where` também pode ser uma subconsulta.
 
 ```ts
-// title: With subqueries
+// Com subconsultas
+
 db
   .from('user_groups')
   .where(
@@ -188,7 +191,8 @@ db
 Da mesma forma, você também pode definir uma consulta bruta.
 
 ```ts
-// title: With raw queries
+// Com consultas brutas
+
 db
   .from('user_groups')
   .where(
@@ -202,13 +206,13 @@ db
 ### variantes do método where
 A seguir está a lista das variações do método `where` e compartilha a mesma API.
 
-| Método        | Descrição   |
-|---------------|-------------|
-| `andWhere`    | Alias ​​para o método `where` |
-| `orWhere`     | Adiciona uma cláusula **or where** |
-| `whereNot`    | Adiciona uma cláusula **where not** |
-| `orWhereNot`  | Adiciona uma cláusula **or where not** |
-| `andWhereNot` | Alias ​​para `whereNot` |
+| Método        | Descrição                               |
+|---------------|-----------------------------------------|
+| `andWhere`    | Alias ​​para o método `where`             |
+| `orWhere`     | Adiciona uma cláusula **or where**      |
+| `whereNot`    | Adiciona uma cláusula **where not**     |
+| `orWhereNot`  | Adiciona uma cláusula **or where not**  |
+| `andWhereNot` | Alias ​​para `whereNot`                   |
 
 ### `whereColumn`
 O método `whereColumn` permite que você defina uma coluna como o valor para a cláusula where. O método geralmente é útil com consultas e junções. Por exemplo:
@@ -286,7 +290,8 @@ db
 Você também pode calcular os valores `whereIn` usando uma subconsulta.
 
 ```ts
-// title: With subqueries
+// Com subconsultas
+
 db
   .from('users')
   .whereIn(
@@ -325,13 +330,13 @@ db
 ### Variantes do método `whereIn`
 A seguir está a lista das variações do método `whereIn` e compartilha a mesma API.
 
-| Método | Descrição |
-|-----------------|-------------------------------|
-| `andWhereIn`    | Alias ​​para o método `whereIn`  |
-| `orWhereIn`     | Adiciona uma cláusula **or where in**  |
-| `whereNotIn`    | Adiciona uma cláusula **where not in**  |
-| `orWhereNotIn`  | Adiciona uma cláusula **or where not in**  |
-| `andWhereNotIn` | Alias ​​para `whereNotIn`  |
+| Método          | Descrição                                   |
+|-----------------|---------------------------------------------|
+| `andWhereIn`    | Alias ​​para o método `whereIn`               |
+| `orWhereIn`     | Adiciona uma cláusula **or where in**       |
+| `whereNotIn`    | Adiciona uma cláusula **where not in**      |
+| `orWhereNotIn`  | Adiciona uma cláusula **or where not in**   |
+| `andWhereNotIn` | Alias ​​para `whereNotIn`                     |
 
 ### `whereNull`
 O método `whereNull` adiciona uma cláusula where null à consulta.
@@ -345,13 +350,13 @@ db
 ### Variantes do método `whereNull`
 A seguir está a lista de variações do método `whereNull` e compartilha a mesma API.
 
-| Método | Descrição |
-|--------|-------------|
-| `andWhereNull`    | Alias ​​para o método `whereNull` |
-| `orWhereNull`     | Adiciona uma cláusula **or where null** |
-| `whereNotNull`    | Adiciona uma cláusula **where not null** |
+| Método            | Descrição                                   |
+|-------------------|---------------------------------------------|
+| `andWhereNull`    | Alias ​​para o método `whereNull`             |
+| `orWhereNull`     | Adiciona uma cláusula **or where null**     |
+| `whereNotNull`    | Adiciona uma cláusula **where not null**    |
 | `orWhereNotNull`  | Adiciona uma cláusula **or where not null** |
-| `andWhereNotNull` | Alias ​​para `whereNotNull` |
+| `andWhereNotNull` | Alias ​​para `whereNotNull`                   |
 
 ### `whereExists`
 O método `whereExists` permite adicionar restrições where verificando a existência de resultados em uma subconsulta. Por exemplo: Selecione todos os usuários que fizeram login pelo menos uma vez.
@@ -394,13 +399,13 @@ db
 
 A seguir está a lista de variações do método `whereExists` e compartilha a mesma API.
 
-| Método | Descrição |
-|--------|-------------|
-| `andWhereExists` | Alias ​​para o método `whereExists` |
-| `orWhereExists` | Adiciona uma cláusula **or where exists** |
-| `whereNotExists` | Adiciona uma cláusula **where not exists** |
-| `orWhereNotExists` | Adiciona uma cláusula **or where not exists** |
-| `andWhereNotExists` | Alias ​​para o método `whereNotExists` |
+| Método              | Descrição                                     |
+|---------------------|-----------------------------------------------|
+| `andWhereExists`    | Alias ​​para o método `whereExists`             |
+| `orWhereExists`     | Adiciona uma cláusula **or where exists**     |
+| `whereNotExists`    | Adiciona uma cláusula **where not exists**    |
+| `orWhereNotExists`  | Adiciona uma cláusula **or where not exists** |
+| `andWhereNotExists` | Alias ​​para o método `whereNotExists`          |
 
 ### `whereBetween`
 O método `whereBetween` adiciona a cláusula **where between**. Ele aceita o nome da coluna como o primeiro argumento e uma matriz de valores como o segundo argumento.
@@ -414,7 +419,8 @@ db
 Você também pode usar subconsultas para derivar os valores de uma tabela de banco de dados diferente.
 
 ```ts
-// title: With sub queries
+// Com subconsultas
+
 db
   .from('users')
   .whereBetween('age', [
@@ -426,7 +432,8 @@ db
 Você também pode usar consultas brutas para derivar valores de outra tabela de banco de dados.
 
 ```ts
-// title: With raw queries
+// Com consultas brutas
+
 db
   .from('users')
   .whereBetween('age', [
@@ -438,36 +445,32 @@ db
 ### Variantes do método `whereBetween`
 A seguir está a lista das variações do método `whereBetween` e compartilha a mesma API.
 
-| Método | Descrição |
-|--------|-------------|
-| `andWhereBetween` | Alias ​​para o método `whereBetween` |
-| `orWhereBetween` | Adiciona uma cláusula **or where between** |
-| `whereNotBetween` | Adiciona uma cláusula **where not between** |
-| `orWhereNotBetween` | Adiciona uma cláusula **or where not between** |
-| `andWhereNotBetween` | Alias ​​para o método `whereNotBetween` |
+| Método                | Descrição                                       |
+|-----------------------|-------------------------------------------------|
+| `andWhereBetween`     | Alias ​​para o método `whereBetween`              |
+| `orWhereBetween`      | Adiciona uma cláusula **or where between**      |
+| `whereNotBetween`     | Adiciona uma cláusula **where not between**     |
+| `orWhereNotBetween`   | Adiciona uma cláusula **or where not between**  |
+| `andWhereNotBetween`  | Alias ​​para o método `whereNotBetween`           |
 
 ### `whereRaw`
 Você pode usar o método `whereRaw` para expressar condições não cobertas pelos métodos existentes do construtor de consultas. Certifique-se sempre de usar parâmetros de vinculação para definir valores de consulta.
 
-:::caption{for="error"}
-**Codificação de valores dentro da consulta**
-:::
-
+::: danger **Codificação de valores dentro da consulta**
 ```ts
 db
   .from('users')
   .whereRaw(`username = ${username}`)
 ```
-
-:::caption{for="success"}
-**Usando parâmetros de vinculação**
 :::
 
+::: tip **Usando parâmetros de vinculação**
 ```ts
 db
   .from('users')
   .whereRaw('username = ?', [username])
 ```
+:::
 
 Você também pode definir os nomes das colunas dinamicamente usando `??`.
 
@@ -480,10 +483,10 @@ db
 ### Variantes do método `whereRaw`
 A seguir está a lista das variações do método `whereRaw` e compartilha a mesma API.
 
-| Método | Descrição |
-|--------|-------------|
+| Método        | Descrição                               |
+|---------------|-----------------------------------------|
 | `andWhereRaw` | Alias ​​para o método `whereRaw` |
-| `orWhereRaw` | Adiciona uma cláusula **or where raw** |
+| `orWhereRaw`  | Adiciona uma cláusula **or where raw** |
 
 ### `whereJson`
 Adicione uma cláusula where com um objeto para corresponder ao valor de uma coluna JSON dentro do banco de dados.
@@ -511,13 +514,13 @@ db
 ### Variantes do método `whereJson`
 A seguir está a lista das variações do método `whereJson` e compartilha a mesma API.
 
-| Método | Descrição |
-|--------|-------------|
-| `orWhereJson` | Adicione uma cláusula **or where** correspondente ao valor de uma coluna JSON |
-| `andWhereJson` | Alias ​​para `whereJson` |
-| `whereNotJson` | Adicione uma cláusula **where not** em uma coluna JSON |
-| `orWhereNotJson` | Adicionar uma cláusula **or where not** em uma coluna JSON |
-| `andWhereNotJson` | Alias ​​para `whereNotJson` |
+| Método            | Descrição                                                                       |
+|-------------------|---------------------------------------------------------------------------------|
+| `orWhereJson`     | Adicione uma cláusula **or where** correspondente ao valor de uma coluna JSON   |
+| `andWhereJson`    | Alias ​​para `whereJson`                                                          |
+| `whereNotJson`    | Adicione uma cláusula **where not** em uma coluna JSON                          |
+| `orWhereNotJson`  | Adicionar uma cláusula **or where not** em uma coluna JSON                      |
+| `andWhereNotJson` | Alias ​​para `whereNotJson`                                                       |
 
 ### `whereJsonSuperset`
 Adicionar uma cláusula onde o valor da coluna JSON é o superconjunto do objeto definido. No exemplo a seguir, o endereço do usuário é armazenado como JSON e encontramos pelo usuário pelo seu código PIN.
@@ -531,13 +534,13 @@ db
 ### Variantes do método `whereJsonSuperset`
 A seguir está a lista das variações do método `whereJsonSuperset` e compartilha a mesma API.
 
-| Método | Descrição |
-|--------|-------------|
-| `orWhereJsonSuperset` | Adicionar uma cláusula **or where** correspondente ao valor de uma coluna JSON |
-| `andWhereJsonSuperset` | Alias ​​para `whereJsonSuperset` |
-| `whereNotJsonSuperset` | Adicionar uma cláusula **where not** em uma coluna JSON |
-| `orWhereNotJsonSuperset` | Adicione uma cláusula **or where not** em uma coluna JSON |
-| `andWhereNotJsonSuperset` | Alias ​​para `whereNotJsonSuperset` |
+| Método                    | Descrição                                                                       |
+|---------------------------|---------------------------------------------------------------------------------|
+| `orWhereJsonSuperset`     | Adicionar uma cláusula **or where** correspondente ao valor de uma coluna JSON  |
+| `andWhereJsonSuperset`    | Alias ​​para `whereJsonSuperset`                                                  |
+| `whereNotJsonSuperset`    | Adicionar uma cláusula **where not** em uma coluna JSON                         |
+| `orWhereNotJsonSuperset`  | Adicione uma cláusula **or where not** em uma coluna JSON                       |
+| `andWhereNotJsonSuperset` | Alias ​​para `whereNotJsonSuperset`                                               |
 
 ### `whereJsonSubset`
 Adicione uma cláusula onde o valor da coluna JSON é o subconjunto do objeto definido. No exemplo a seguir, o endereço do usuário é armazenado como JSON e encontramos o usuário pelo código PIN ou pelo nome da cidade.
@@ -551,13 +554,13 @@ db
 ### Variantes do método `whereJsonSubset`
 A seguir está a lista das variações do método `whereJsonSubset` e compartilha a mesma API.
 
-| Método | Descrição |
-|--------|-------------|
-| `orWhereJsonSubset` | Adicione uma cláusula **or where** correspondente ao valor de uma coluna JSON |
-| `andWhereJsonSubset` | Alias ​​para `whereJsonSubset` |
-| `whereNotJsonSubset` | Adicionar uma cláusula **where not** em uma coluna JSON |
-| `orWhereNotJsonSubset` | Adicionar uma cláusula **or where not** em uma coluna JSON |
-| `andWhereNotJsonSubset` | Alias ​​para `whereNotJsonSubset` |
+| Método                  | Descrição                                                                     |
+|-------------------------|-------------------------------------------------------------------------------|
+| `orWhereJsonSubset`     | Adicione uma cláusula **or where** correspondente ao valor de uma coluna JSON |
+| `andWhereJsonSubset`    | Alias ​​para `whereJsonSubset`                                                  |
+| `whereNotJsonSubset`    | Adicionar uma cláusula **where not** em uma coluna JSON                       |
+| `orWhereNotJsonSubset`  | Adicionar uma cláusula **or where not** em uma coluna JSON                    |
+| `andWhereNotJsonSubset` | Alias ​​para `whereNotJsonSubset`                                               |
 
 ### `join`
 O método `join` permite especificar junções SQL entre duas tabelas. Por exemplo: Selecione as colunas `ip_address` e `country` unindo a tabela `user_logins`.
@@ -573,16 +576,14 @@ db
 
 Você pode passar um retorno de chamada como o 2º argumento para definir mais restrições de junção.
 
-```ts
+```ts {3-7}
 db
   .from('users')
-  // highlight-start
   .join('user_logins', (query) => {
     query
       .on('users.id', '=', 'user_logins.user_id')
       .andOnVal('user_logins.created_at', '>', '2020-10-09')
   })
-  // highlight-end
   .select('users.*')
   .select('user_logins.ip_address')
   .select('user_logins.country')
@@ -590,12 +591,11 @@ db
 
 Para agrupar restrições de junção, você pode passar um retorno de chamada para o método `on`.
 
-```ts
+```ts {5-14}
 db
   .from('users')
   .join('user_logins', (query) => {
     query
-      // highlight-start
       .on((subquery) => {
         subquery
           .on('users.id', '=', 'user_logins.user_id')
@@ -606,7 +606,6 @@ db
           .on('users.id', '=', 'user_logins.account_id')
           .andOnVal('user_logins.created_at', '>', '2020-10-09')
       })
-      // highlight-end
   })
   .select('users.*')
   .select('user_logins.ip_address')
@@ -764,16 +763,16 @@ db
 
 A seguir está a lista de todos os métodos **having** disponíveis.
 
-| Método | Descrição |
-|--------|-------------|
-| `havingIn` | Adiciona uma cláusula having in à consulta. Ele aceita uma matriz de valores. |
-| `havingNotIn` | Adiciona uma cláusula having not in à consulta. Ele aceita uma matriz de valores. |
-| `havingNull` | Adiciona uma cláusula having null à consulta. |
-| `havingNotNull` | Adiciona uma cláusula having not null à consulta. |
-| `havingExists` | Adiciona uma cláusula having exists à consulta. |
-| `havingNotExists` | Adiciona uma cláusula having not exists à consulta. |
-| `havingBetween` | Adiciona uma cláusula having between à consulta. Ela aceita uma matriz de valores. |
-| `havingNotBetween` | Adiciona uma cláusula having not between à consulta. Ela aceita uma matriz de valores |
+| Método              | Descrição                                                                             |
+|---------------------|---------------------------------------------------------------------------------------|
+| `havingIn`          | Adiciona uma cláusula having in à consulta. Ele aceita uma matriz de valores.         |
+| `havingNotIn`       | Adiciona uma cláusula having not in à consulta. Ele aceita uma matriz de valores.     |
+| `havingNull`        | Adiciona uma cláusula having null à consulta.                                         |
+| `havingNotNull`     | Adiciona uma cláusula having not null à consulta.                                     |
+| `havingExists`      | Adiciona uma cláusula having exists à consulta.                                       |
+| `havingNotExists`   | Adiciona uma cláusula having not exists à consulta.                                   |
+| `havingBetween`     | Adiciona uma cláusula having between à consulta. Ela aceita uma matriz de valores.    |
+| `havingNotBetween`  | Adiciona uma cláusula having not between à consulta. Ela aceita uma matriz de valores |
 
 ### `distinct`
 O método `distinct` aplica a cláusula **distinct** à instrução select. Você pode definir um ou mais nomes de colunas como vários argumentos.
@@ -915,11 +914,11 @@ db
 ### `count`
 O método `count` permite que você use o **count agregado** em suas consultas SQL.
 
-:::note
+::: info NOTA
 As chaves para os valores agregados são específicas do dialeto e, portanto, recomendamos que você sempre defina aliases para saída previsível.
 :::
 
-:::note
+::: info NOTA
 No PostgreSQL, o método count retorna uma representação de string de um tipo de dados bigint.
 :::
 
@@ -958,15 +957,15 @@ console.log(users[0].active)
 ### Outros métodos agregados
 A API para todos os métodos agregados a seguir é idêntica ao método `count`.
 
-| Método | Descrição |
-|--------|-------------|
-| `countDistinct` | Conta apenas as linhas distintas |
-| `min` | Agrega valores usando a função **min** |
-| `max` | Agrega valores usando a função **max** |
-| `sum` | Agrega valores usando a função **sum** |
-| `sumDistinct` | Agrega valores apenas para linhas distintas usando a função **sum** |
-| `avg` | Agregar valores usando a **função avg** |
-| `avgDistinct` | Agregar valores somente para linhas distintas usando a **função avg** |
+| Método          | Descrição                                                             |
+|-----------------|-----------------------------------------------------------------------|
+| `countDistinct` | Conta apenas as linhas distintas                                      |
+| `min`           | Agrega valores usando a função **min**                                |
+| `max`           | Agrega valores usando a função **max**                                |
+| `sum`           | Agrega valores usando a função **sum**                                |
+| `sumDistinct`   | Agrega valores apenas para linhas distintas usando a função **sum**   |
+| `avg`           | Agrega valores usando a **função avg**                                |
+| `avgDistinct`   | Agrega valores somente para linhas distintas usando a **função avg**  |
 
 ### `union`
 O método `union` permite que você crie uma consulta de união usando várias instâncias do construtor de consultas. Por exemplo:
@@ -1005,11 +1004,10 @@ UNION
 
 Você pode passar uma matriz de retornos de chamada para definir várias consultas de união.
 
-```ts
+```ts {4-11,13-19}
 db
   .from('users')
   .whereNull('last_name')
-  // highlight-start
   .union([
     (query) => {
       query.from('users').whereNull('first_name')
@@ -1018,9 +1016,7 @@ db
       query.from('users').whereNull('email')
     },
   ], true)
-  // highlight-end
 
-// highlight-start
 /**
 SELECT * FROM "users" WHERE "last_name" IS NULL
 UNION
@@ -1028,21 +1024,18 @@ UNION
 UNION
 (SELECT * FROM "users" WHERE "email" IS NULL)
 */
-// highlight-end
 ```
 
 Você também pode definir consultas de união passando uma instância de um construtor de consultas.
 
-```ts
+```ts {4-7}
 db
   .from('users')
   .whereNull('last_name')
-  // highlight-start
   .union([
     db.from('users').whereNull('first_name'),
     db.from('users').whereNull('email')
   ], true)
-  // highlight-end
 ```
 
 Os métodos a seguir têm a mesma API que o método `union`.
@@ -1186,7 +1179,7 @@ const rows = db
   .where('id', 1)
   .update(
     { email: 'virk@adonisjs.com' },
-    ['id', 'email'] // columns to return
+    ['id', 'email'] // colunas para retornar
   )
 
 console.log(rows[0].id)
@@ -1272,7 +1265,7 @@ await trx.commit()
 ### `forUpdate`
 O método `forUpdate` adquire um bloqueio de atualização nas linhas selecionadas no PostgreSQL e MySQL.
 
-:::note
+::: info NOTA
 Certifique-se de sempre fornecer o objeto de transação usando o método `useTransaction` antes de usar `forUpdate` ou bloqueios semelhantes.
 :::
 
@@ -1436,7 +1429,7 @@ const users = await db.from('users').exec()
 ### `first`
 As consultas select sempre retornam uma matriz de objetos, mesmo quando a consulta tem a intenção de buscar uma única linha. No entanto, usar o método `first` fornecerá a primeira linha ou nulo (quando não houver linhas).
 
-:::note
+::: warning ATENÇÃO
 First NÃO significa a primeira linha na tabela. Significa a primeira linha da matriz results em qualquer ordem em que você a buscou do banco de dados.
 :::
 
@@ -1548,7 +1541,7 @@ result.getUrl(1) // /?page=1
 Retorna a URL para a próxima página
 
 ```ts
-// Assuming the current page is 2
+// Supondo que a página atual seja 2
 
 result.getNextPageUrl() // /?page=3
 ```
@@ -1557,7 +1550,7 @@ result.getNextPageUrl() // /?page=3
 Retorna a URL para a página anterior
 
 ```ts
-// Assuming the current page is 2
+// Supondo que a página atual seja 2
 
 result.getPreviousPageUrl() // /?page=1
 ```
@@ -1763,7 +1756,7 @@ db
       .whereColumn('users.id', 'user_logins.user_id')
       .orderBy('id', 'desc')
       .limit(1)
-      .as('last_login_ip') // 👈 Query alias
+      .as('last_login_ip') // 👈 query alias
   )
 ```
 
@@ -1787,8 +1780,8 @@ db
   .from('users')
   .if(
     condition,
-    (query) => {}, // if condition met
-    (query) => {}, // otherwise execute this
+    (query) => {}, // se a condição for atendida
+    (query) => {}, // caso contrário, execute isto
   )
 ```
 
@@ -1800,8 +1793,8 @@ db
   .from('projects')
   .unless(filters.status, () => {
     /**
-     * Fetch projects with "active" status when
-     * not status is defined in filters
+     * Buscar projetos com status "ativo" quando
+     * status não definido em filtros
      */
     query.where('status', 'active')
   })
@@ -1814,8 +1807,8 @@ db
   .from('users')
   .unless(
     condition,
-    (query) => {}, // if condition met
-    (query) => {}, // otherwise execute this
+    (query) => {}, // se a condição for atendida
+    (query) => {}, // caso contrário, execute isto
   )
 ```
 
@@ -1829,14 +1822,14 @@ db
   .query()
   .match(
     [
-      // Run this is user is a super user
+      // Execute isto se o usuário for um superusuário
       auth.isSuperUser, (query) => query.whereIn('status', ['published', 'draft'])
     ],
     [
-      // Run this is user is loggedin
+      // Execute isto se o usuário estiver logado
       auth.user, (query) => query.where('user_id', auth.user.id)
     ],
-    // Otherwise run this
+    // caso contrário, execute isto
     (query) => query.where('status', 'published').where('is_public', true)
   )
 ```
@@ -1860,8 +1853,8 @@ Você pode definir o método else passando outro retorno de chamada como o segun
 db
   .from('users')
   .ifDialect('postgres',
-    (query) => {}, // if dialect is postgres
-    (query) => {}, // otherwise execute this
+    (query) => {}, // se o dialeto for postgres
+    (query) => {}, // caso contrário, execute isto
   )
 ```
 
@@ -1883,7 +1876,7 @@ db
   .from('users')
   .query()
   .unlessDialect('postgres',
-    (query) => {}, // if dialect is anything other than postgres
-    (query) => {}  // otherwise execute this
+    (query) => {}, // se o dialeto for qualquer coisa diferente de postgres
+    (query) => {}  // caso contrário, execute isto
   )
 ```

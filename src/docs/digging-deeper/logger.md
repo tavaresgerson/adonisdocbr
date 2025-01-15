@@ -34,7 +34,8 @@ router.get('/users/:id', async ({ logger, params }) => {
 A configuração do registrador é armazenada no arquivo `config/logger.ts`. Por padrão, apenas um registrador é configurado. No entanto, você pode definir a configuração para vários registradores se quiser usar mais de um em seu aplicativo.
 
 ```ts
-// title: config/logger.ts
+// config/logger.ts
+
 import env from '#start/env'
 import { defineConfig } from '@adonisjs/core/logger'
 
@@ -64,13 +65,13 @@ O objeto `loggers` é um par de chave-valor para configurar vários loggers. A c
 ## Alvos de transporte
 Os transportes no pino desempenham um papel essencial, pois gravam logs em um destino. Você pode configurar [vários alvos](https://getpino.io/#/docs/api?id=transport-object) dentro do seu arquivo de configuração, e o pino entregará logs para todos eles. Cada alvo também pode especificar um nível do qual deseja receber os logs.
 
-:::note
+::: info NOTA
 Se você não definiu o `level` dentro da configuração do alvo, os alvos configurados o herdarão do logger pai.
 
 Esse comportamento é diferente do pino. No Pino, os alvos não herdam níveis do logger pai.
 :::
 
-```ts
+```ts {8-23}
 {
   loggers: {
     app: {
@@ -78,7 +79,6 @@ Esse comportamento é diferente do pino. No Pino, os alvos não herdam níveis d
       name: env.get('APP_NAME'),
       level: env.get('LOG_LEVEL', 'info'),
       
-      // highlight-start
       transport: {
         targets: [
           {
@@ -95,7 +95,6 @@ Esse comportamento é diferente do pino. No Pino, os alvos não herdam níveis d
           },
         ]
       }
-      // highlight-end
     }
   }
 }
@@ -178,12 +177,11 @@ loggers: {
 
 O AdonisJS tem suporte de primeira classe para configurar vários registradores. O nome exclusivo e a configuração do registrador são definidos no arquivo `config/logger.ts`.
 
-```ts
+```ts {5-14}
 export default defineConfig({
   default: 'app',
   
   loggers: {
-    // highlight-start
     app: {
       enabled: true,
       name: env.get('APP_NAME'),
@@ -194,7 +192,6 @@ export default defineConfig({
       name: 'payments',
       level: env.get('LOG_LEVEL', 'info')
     },
-    // highlight-start
   }
 })
 ```
@@ -207,7 +204,7 @@ import logger from '@adonisjs/core/services/logger'
 logger.use('payments')
 logger.use('app')
 
-// Get an instance of the default logger
+// Obter uma instância do registrador padrão
 logger.use()
 ```
 
@@ -217,17 +214,13 @@ Ao usar injeção de dependência, você pode dar uma dica de tipo na classe `Lo
 
 Se a classe for construída durante uma solicitação HTTP, o contêiner injetará a instância do Logger com reconhecimento de solicitação.
 
-```ts
+```ts {4,6}
 import { inject } from '@adonisjs/core'
 import { Logger } from '@adonisjs/core/logger'
 
-// highlight-start
 @inject()
-// highlight-end
 class UserService {
-  // highlight-start
   constructor(protected logger: Logger) {}
-  // highlight-end
 
   async find(userId: string | number) {
     this.logger.info('Fetching user by id %s', userId)
@@ -352,7 +345,7 @@ O Pino não tem suporte interno para rotação de arquivos e, portanto, você pr
 npm i pino-roll
 ```
 
-```ts
+```ts {8-16}
 app: {
   enabled: true,
   name: env.get('APP_NAME'),
@@ -360,7 +353,6 @@ app: {
 
   transport: {
     targets: targets()
-      // highlight-start
       .push({
         target: 'pino-roll',
         level: 'info',
@@ -370,7 +362,6 @@ app: {
           mkdir: true
         }
       })
-      // highlight-end
      .toArray()
   }
 }
@@ -382,18 +373,17 @@ Os logs podem se tornar a fonte de vazamento de dados sensíveis. Portanto, é r
 
 No Pino, você pode usar a opção `redact` para ocultar/remover pares de chave-valor sensíveis dos logs. Por baixo do capô, o pacote [fast-redact](https://github.com/davidmarkclements/fast-redact) é usado, e você pode consultar sua documentação para visualizar as expressões disponíveis.
 
-```ts
-// title: config/logger.ts
+```ts {8-10}
+// config/logger.ts
+
 app: {
   enabled: true,
   name: env.get('APP_NAME'),
   level: env.get('LOG_LEVEL', 'info')
 
-  // highlight-start
   redact: {
     paths: ['password', '*.password']
   }
-  // highlight-end
 }
 ```
 
@@ -415,7 +405,7 @@ redact: {
   censor: '[PRIVATE]'
 }
 
-// Remove property
+// Remover propriedade
 redact: {
   paths: ['password', '*.password'],
   remove: true
@@ -431,13 +421,9 @@ Uma alternativa à redação é encapsular valores sensíveis dentro da classe S
 import { Secret } from '@adonisjs/core/helpers'
 
 const username = request.input('username')
-// delete-start
-const password = request.input('password')
-// delete-end
-// insert-start
-const password = new Secret(request.input('password'))
-// insert-end
+const password = request.input('password')  // [!code --]
+const password = new Secret(request.input('password')) // [!code ++]
 
 logger.info({ username, password }, 'user signup')
-// output: {"username":"virk","password":"[redacted]","msg":"user signup"}
+// saída: {"username":"virk","password":"[redacted]","msg":"user signup"}
 ```

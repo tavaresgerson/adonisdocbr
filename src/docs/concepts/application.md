@@ -2,7 +2,7 @@
 summary: Aprenda sobre a classe Application e como acessar o ambiente, estado e criar URLs e caminhos para arquivos de projeto.
 ---
 
-# Application
+# Aplicativo
 
 A classe [Application](https://github.com/adonisjs/application/blob/main/src/application.ts) faz todo o trabalho pesado de conectar um aplicativo AdonisJS. Você pode usar essa classe para saber sobre o ambiente em que seu aplicativo está sendo executado, obter o estado atual do aplicativo ou criar caminhos para diretórios específicos.
 

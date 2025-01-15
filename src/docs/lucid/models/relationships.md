@@ -12,10 +12,9 @@ A seguir está um exemplo de estrutura de tabela para o relacionamento `has one`
 
 A seguir estão os exemplos de migrações para as tabelas `users` e `profiles`.
 
-:::codegroup
+:::code-group
 
-```ts
-// title: users
+```ts {9} [users]
 import { BaseSchema } from '@adonisjs/lucid/schema'
 
 export default class Users extends BaseSchema {
@@ -23,9 +22,7 @@ export default class Users extends BaseSchema {
 
   async up() {
     this.schema.createTable(this.tableName, (table) => {
-      // highlight-start
       table.increments('id').primary()
-      // highlight-end
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })
@@ -33,8 +30,7 @@ export default class Users extends BaseSchema {
 }
 ```
 
-```ts
-// title: profiles
+```ts {9} [profiles]
 import { BaseSchema } from '@adonisjs/lucid/schema'
 
 export default class Profiles extends BaseSchema {
@@ -43,9 +39,7 @@ export default class Profiles extends BaseSchema {
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      // highlight-start
-      table.integer('user_id').unsigned().references('users.id').onDelete('CASCADE') // delete profile when user is deleted
-      // highlight-end
+      table.integer('user_id').unsigned().references('users.id').onDelete('CASCADE') // excluir perfil quando o usuário for excluído
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })
@@ -61,16 +55,14 @@ Depois de criar as tabelas com as colunas necessárias, você também terá que 
 
 O relacionamento has one é definido usando o decorador [@hasOne](https://github.com/adonisjs/lucid/blob/develop/src/orm/decorators/index.ts#L80) em uma propriedade do modelo.
 
-```ts
+```ts {6-7}
 import Profile from '#models/profile'
 import type { HasOne } from '@adonisjs/lucid/types/relations'
 import { column, BaseModel, hasOne } from '@adonisjs/lucid/orm'
 
 export default class User extends BaseModel {
-  // highlight-start
   @hasOne(() => Profile)
   declare profile: HasOne<typeof Profile>
-  // highlight-end
 }
 ```
 
@@ -80,12 +72,12 @@ Por padrão, `foreignKey` é a **representação snake_case do nome do modelo pa
 
 ```ts
 @hasOne(() => Profile, {
-  foreignKey: 'profileUserId', // defaults to userId
+  foreignKey: 'profileUserId', // padrão para userId
 })
 declare profile: HasOne<typeof Profile>
 ```
 
-:::note
+::: info NOTA
 Lembre-se, se você pretende usar camelCase para sua definição de chave estrangeira, tenha em mente que a [estratégia de nomenclatura](./naming_strategy.md) padrão irá convertê-la automaticamente para snake_case.
 :::
 
@@ -93,7 +85,7 @@ A chave local é sempre a **chave primária do modelo pai**, mas também pode se
 
 ```ts
 @hasOne(() => Profile, {
-  localKey: 'uuid', // defaults to id
+  localKey: 'uuid', // padrão para id
 })
 declare profile: HasOne<typeof Profile>
 ```
@@ -108,10 +100,9 @@ A seguir está um exemplo de estrutura de tabela para o relacionamento hasMany. 
 
 A seguir estão os exemplos de migrações para as tabelas `users` e `posts`.
 
-:::codegroup
+:::code-group
 
-```ts
-// title: users
+```ts {8} [users]
 import { BaseSchema } from '@adonisjs/lucid/schema'
 
 export default class Users extends BaseSchema {
@@ -119,9 +110,7 @@ export default class Users extends BaseSchema {
 
   async up() {
     this.schema.createTable(this.tableName, (table) => {
-      // highlight-start
       table.increments('id').primary()
-      // highlight-end
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })
@@ -129,8 +118,7 @@ export default class Users extends BaseSchema {
 }
 ```
 
-```ts
-// title: posts
+```ts {9} [posts]
 import { BaseSchema } from '@adonisjs/lucid/schema'
 
 export default class Posts extends BaseSchema {
@@ -139,9 +127,7 @@ export default class Posts extends BaseSchema {
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      // highlight-start
-      table.integer('user_id').unsigned().references('users.id').onDelete('CASCADE') // delete post when user is deleted
-      // highlight-end
+      table.integer('user_id').unsigned().references('users.id').onDelete('CASCADE') // excluir postagem quando o usuário for excluído
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })
@@ -157,16 +143,14 @@ Depois de criar as tabelas com as colunas necessárias, você também terá que 
 
 O relacionamento has many é definido usando o decorador [@hasMany](https://github.com/adonisjs/lucid/blob/develop/src/orm/decorators/index.ts#L91) em uma propriedade do modelo.
 
-```ts
+```ts {6-7}
 import Post from '#models/post'
 import type { HasMany } from '@adonisjs/lucid/types/relations'
 import { column, BaseModel, hasMany } from '@adonisjs/lucid/orm'
 
 export default class User extends BaseModel {
-  // highlight-start
   @hasMany(() => Post)
  declare posts: HasMany<typeof Post>
-  // highlight-end
 }
 ```
 
@@ -176,7 +160,7 @@ Por padrão, `foreignKey` é a **representação camelCase do nome do modelo pai
 
 ```ts
 @hasMany(() => Post, {
-  foreignKey: 'authorId', // defaults to userId
+  foreignKey: 'authorId', // padrão para userId
 })
 declare posts: HasMany<typeof Post>
 ```
@@ -189,7 +173,7 @@ A chave local é sempre a **chave primária do modelo pai**, mas também pode se
 
 ```ts
 @hasMany(() => Post, {
-  localKey: 'uuid', // defaults to id
+  localKey: 'uuid', // padrão para id
 })
 declare posts: HasMany<typeof Post>
 ```
@@ -202,20 +186,18 @@ Você pode aproveitar a mesma estrutura de tabela e as mesmas convenções de ch
 
 O relacionamento pertence a é definido usando o decorador [@belongsTo](https://github.com/adonisjs/lucid/blob/develop/src/orm/decorators/index.ts#L64) em uma propriedade de modelo.
 
-```ts
+```ts {10-11}
 import User from '#models/user'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import { column, BaseModel, belongsTo } from '@adonisjs/lucid/orm'
 
 export default class Profile extends BaseModel {
-  // Foreign key is still on the same model
+  // A chave estrangeira ainda está no mesmo modelo
   @column()
   declare userId: number
 
-  // highlight-start
   @belongsTo(() => User)
   declare user: BelongsTo<typeof User>
-  // highlight-end
 }
 ```
 
@@ -231,10 +213,9 @@ No exemplo a seguir, a tabela `skill_user` tem as chaves estrangeiras para as ta
 
 A seguir estão os exemplos de migrações para as tabelas `users`, `skills` e `skill_user`.
 
-:::codegroup
+:::code-group
 
-```ts
-// title: users
+```ts {9} [users]
 import { BaseSchema } from '@adonisjs/lucid/schema'
 
 export default class Users extends BaseSchema {
@@ -242,9 +223,7 @@ export default class Users extends BaseSchema {
 
   async up() {
     this.schema.createTable(this.tableName, (table) => {
-      // highlight-start
       table.increments('id').primary()
-      // highlight-end
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })
@@ -252,8 +231,7 @@ export default class Users extends BaseSchema {
 }
 ```
 
-```ts
-// title: skills
+```ts {9} [skills]
 import { BaseSchema } from '@adonisjs/lucid/schema'
 
 export default class Skills extends BaseSchema {
@@ -261,9 +239,7 @@ export default class Skills extends BaseSchema {
 
   async up() {
     this.schema.createTable(this.tableName, (table) => {
-      // highlight-start
       table.increments('id').primary()
-      // highlight-end
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })
@@ -271,8 +247,7 @@ export default class Skills extends BaseSchema {
 }
 ```
 
-```ts
-// title: skill_user
+```ts {9-11} [skill_user]
 import { BaseSchema } from '@adonisjs/lucid/schema'
 
 export default class SkillUsers extends BaseSchema {
@@ -281,11 +256,9 @@ export default class SkillUsers extends BaseSchema {
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
-      // highlight-start
       table.integer('user_id').unsigned().references('users.id')
       table.integer('skill_id').unsigned().references('skills.id')
       table.unique(['user_id', 'skill_id'])
-      // highlight-end
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })
@@ -301,11 +274,11 @@ Depois de criar as tabelas com as colunas necessárias, você também terá que 
 
 O relacionamento muitos para muitos é definido usando o decorador [@manyToMany](https://github.com/adonisjs/lucid/blob/develop/src/orm/decorators/index.ts#L102) em uma propriedade do modelo.
 
-:::note
+::: info NOTA 
 Não há necessidade de criar um modelo para a tabela dinâmica.
 :::
 
-```ts
+```ts {9-10}
 import Skill from '#models/skill'
 import type { ManyToMany } from '@adonisjs/lucid/types/relations'
 import { column, BaseModel, manyToMany } from '@adonisjs/lucid/orm'
@@ -314,10 +287,8 @@ export default class User extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
-  // highlight-start
   @manyToMany(() => Skill)
   declare skills: ManyToMany<typeof Skill>
-  // highlight-end
 }
 ```
 
@@ -343,7 +314,7 @@ Um relacionamento manyToMany depende de muitas chaves diferentes para configurar
 declare skills: ManyToMany<typeof Skill>
 ```
 
-:::note
+::: info NOTA
 Lembre-se, se você pretende usar camelCase para sua definição de chave estrangeira, tenha em mente que a [estratégia de nomenclatura](./naming_strategy.md) padrão irá convertê-la automaticamente para snake_case.
 :::
 
@@ -376,7 +347,7 @@ declare skills: ManyToMany<typeof Skill>
 Você pode habilitar o suporte para carimbos de data/hora **criado em** e **atualizado em** para suas tabelas dinâmicas usando a propriedade `pivotTimestamps`.
 
 - Uma vez definido, o Lucid definirá/atualizará automaticamente esses carimbos de data/hora em consultas de inserção e atualização.
-[Luxon Datetime](https://moment.github.io/luxon/api-docs/index.html#datetime) classe durante a busca.
+- [Luxon Datetime](https://moment.github.io/luxon/api-docs/index.html#datetime) classe durante a busca.
 
 ```ts
 @manyToMany(() => Skill, {
@@ -403,7 +374,7 @@ Para desabilitar um carimbo de data/hora específico, você pode definir seu val
 @manyToMany(() => Skill, {
   pivotTimestamps: {
     createdAt: 'creation_date',
-    updatedAt: false // turn off update at timestamp field
+    updatedAt: false // desativar atualização no campo de registro de data e hora
   }
 })
 skills: ManyToMany<typeof Skill>
@@ -420,10 +391,9 @@ O modelo relacionado (ou seja, Post) tem uma referência de chave estrangeira co
 
 A seguir estão os exemplos de migrações para as tabelas `countries`, `users` e `posts`.
 
-:::codegroup
+:::code-group
 
-```ts
-// title: countries
+```ts {8} [countries]
 import { BaseSchema } from '@adonisjs/lucid/schema'
 
 export default class Countries extends BaseSchema {
@@ -431,9 +401,7 @@ export default class Countries extends BaseSchema {
 
   async up() {
     this.schema.createTable(this.tableName, (table) => {
-      // highlight-start
       table.increments('id').primary()
-      // highlight-end
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })
@@ -441,8 +409,7 @@ export default class Countries extends BaseSchema {
 }
 ```
 
-```ts
-// title: users
+```ts {8-9} [users]
 import { BaseSchema } from '@adonisjs/lucid/schema'
 
 export default class Users extends BaseSchema {
@@ -450,10 +417,8 @@ export default class Users extends BaseSchema {
 
   async up() {
     this.schema.createTable(this.tableName, (table) => {
-      // highlight-start
       table.increments('id').primary()
       table.integer('country_id').unsigned().references('countries.id')
-      // highlight-end
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })
@@ -461,8 +426,7 @@ export default class Users extends BaseSchema {
 }
 ```
 
-```ts
-// title: posts
+```ts {8-9} [posts]
 import { BaseSchema } from '@adonisjs/lucid/schema'
 
 export default class Posts extends BaseSchema {
@@ -470,10 +434,8 @@ export default class Posts extends BaseSchema {
 
   async up() {
     this.schema.createTable(this.tableName, (table) => {
-      // highlight-start
       table.increments('id').primary()
       table.integer('user_id').unsigned().references('users.id')
-      // highlight-end
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })
@@ -489,7 +451,7 @@ Depois de criar as tabelas com as colunas necessárias, você também terá que 
 
 O relacionamento has many through é definido usando o decorador [@hasManyThrough](https://github.com/adonisjs/lucid/blob/develop/src/orm/decorators/index.ts#L118) em uma propriedade do modelo.
 
-```ts
+```ts {10-11}
 import Post from '#models/post'
 import User from '#models/user'
 import type { HasManyThrough } from '@adonisjs/lucid/types/relations'
@@ -499,10 +461,8 @@ export default class Country extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
-  // highlight-start
   @hasManyThrough([() => Post, () => User])
   declare posts: HasManyThrough<typeof Post>
-  // highlight-end
 }
 ```
 
@@ -580,11 +540,11 @@ Junto com o pré-carregamento, você também pode carregar relacionamentos diret
 ```ts
 const user = await User.find(1)
 
-// Lazy load the profile
+// Carregar o perfil de forma preguiçosa
 await user.load('profile')
 console.log(user.profile) // Profile | null
 
-// Lazy load the posts
+// Carregar as postagens de forma preguiçosa
 await user.load('posts')
 console.log(user.posts) // Post[]
 ```
@@ -600,13 +560,13 @@ await user.load('profile', (profileQuery) => {
 Você pode carregar vários relacionamentos chamando o método `load` várias vezes ou pegando uma instância do carregador de relacionamento subjacente.
 
 ```ts
-// Calling "load" method multiple times
+// Chamar o método "load" várias vezes
 await user.load('profile')
 await user.load('posts')
 ```
 
 ```ts
-// Using the relationships loader
+// Usar o carregador de relacionamentos
 await user.load((loader) => {
   loader.load('profile').load('posts')
 })
@@ -652,10 +612,10 @@ Você também pode filtrar os registros da consulta principal verificando a exis
 Você pode filtrar por relacionamento usando os métodos `has` ou `whereHas`. Eles aceitam o nome do relacionamento como o primeiro argumento. Opcionalmente, você também pode passar um operador e o número de linhas esperadas.
 
 ```ts
-// Get posts with one or more comments
+// Obter postagens com um ou mais comentários
 const posts = await Post.query().has('comments')
 
-// Get posts with more than 2 comments
+// Obter postagens com mais de 2 comentários
 const posts = await Post.query().has('comments', '>', 2)
 ```
 
@@ -694,7 +654,7 @@ A API de relacionamentos do Lucid também permite que você carregue os agregado
 
 O método `withAggregate` aceita o relacionamento como o primeiro argumento e um retorno de chamada obrigatório para definir a função de agregação do valor e o nome da propriedade.
 
-:::note
+::: info NOTA
 No exemplo a seguir, a propriedade `comments_count` é movida para o objeto `$extras` porque não está definida como uma propriedade no modelo.
 :::
 
@@ -724,18 +684,14 @@ posts.forEach((post) => {
 
 Você também pode fornecer um nome personalizado para a propriedade count usando o método `as`.
 
-```ts
+```ts {2-4,7}
 const posts = await Post.query()
-  // highlight-start
   .withCount('comments', (query) => {
     query.as('commentsCount')
   })
-// highlight-end
 
 posts.forEach((post) => {
-  // highlight-start
   console.log(post.$extras.commentsCount)
-  // highlight-end
 })
 ```
 
@@ -775,7 +731,7 @@ Você pode definir um gancho de relacionamento `onQuery` no momento de definir u
 
 O método `onQuery` geralmente é útil quando você sempre aplica certas restrições à consulta de relacionamento.
 
-```ts
+```ts {10-12}
 import UserEmail from '#models/user_email'
 import type { HasMany } from '@adonisjs/lucid/types/model'
 import { column, BaseModel, hasMany } from '@adonisjs/lucid/orm'
@@ -785,11 +741,9 @@ export default class User extends BaseModel {
   declare emails: HasMany<typeof UserEmail>
 
   @hasMany(() => UserEmail, {
-    // highlight-start
     onQuery: (query) => {
       query.where('isActive', true)
     },
-    // highlight-start
   })
   declare activeEmails: HasMany<typeof UserEmail>
 }
@@ -889,7 +843,7 @@ O método `attach` precisa apenas do `id` do modelo relacionado para formar o re
 const user = await User.find(1)
 const skill = await Skill.find(1)
 
-// Performs insert query inside the pivot table
+// Executar consulta de inserção dentro da tabela dinâmica
 await user.related('skills').attach([skill.id])
 ```
 
@@ -915,7 +869,7 @@ const skill = await Skill.find(1)
 
 await user.related('skills').detach([skill.id])
 
-// Remove all skills for the user
+// Remover todas as habilidades do usuário
 await user.related('skills').detach()
 ```
 
@@ -931,7 +885,7 @@ O método `sync` permite que você sincronize as linhas dinâmicas. A carga úti
 ```ts
 const user = await User.find(1)
 
-// Only skills with id 1, 2, 3 will stay in the pivot table
+// Somente habilidades com id 1, 2, 3 permanecerão na tabela dinâmica
 await user.related('skills').sync([1, 2, 3])
 ```
 
@@ -958,8 +912,8 @@ Você pode desabilitar a opção `detach` para sincronizar linhas sem remover ne
 ```ts
 await user
   .related('skills')
-  // Add skills with id 1,2,3, but do not remove any
-  // rows from the pivot table
+  // Adicionar habilidades com id 1,2,3, mas não remover nenhuma
+  // linha da tabela dinâmica
   .sync([1, 2, 3], false)
 ```
 
@@ -976,15 +930,13 @@ Você também pode usar a ação `onDelete` do banco de dados para remover os da
 
 A seguir, um exemplo de migração para definir a ação `onDelete`.
 
-```ts
+```ts {7}
 this.schema.createTable(this.tableName, (table) => {
   table.increments('id')
   table
     .integer('user_id')
     .unsigned()
     .references('users.id')
-    // highlight-start
     .onDelete('CASCADE')
-  // highlight-end
 })
 ```

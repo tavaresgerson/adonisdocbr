@@ -4,20 +4,17 @@ O Lucid vem pré-configurado com os kits iniciais `web` e `api`. No entanto, voc
 
 Instale o pacote do registro de pacotes npm usando um dos seguintes comandos.
 
-:::codegroup
+:::code-group
 
-```sh
-// title: npm
+```sh [npm]
 npm i @adonisjs/lucid
 ```
 
-```sh
-// title: yarn
+```sh [yarn]
 yarn add @adonisjs/lucid
 ```
 
-```sh
-// title: pnpm
+```sh [pnpm]
 pnpm add @adonisjs/lucid
 ```
 
@@ -33,18 +30,18 @@ Uma vez feito isso, você deve executar o seguinte comando para configurar o Luc
 ```sh
 node ace configure @adonisjs/lucid
 
-# Configure with MYSQL
+# Configurar com MYSQL
 node ace configure @adonisjs/lucid --db=mysql
 ```
 
-:::disclosure{title="Veja as etapas executadas pelo comando configure"}
+::: details Veja as etapas executadas pelo comando configure
 
 1. Registra o seguinte provedor de serviços dentro do arquivo `adonisrc.ts`.
 
-```ts
+   ```ts
    {
      providers: [
-       // ...other providers
+       // ...outros provedores
        () => import('@adonisjs/lucid/database_provider'),
      ]
    }
@@ -52,10 +49,10 @@ node ace configure @adonisjs/lucid --db=mysql
 
 2. Registra o seguinte comando dentro do arquivo `adonisrc.ts`.
 
-```ts
+   ```ts
    {
      commands: [
-       // ...other commands
+       // ...outros comandos
        () => import('@adonisjs/lucid/commands'),
      ]
    }
@@ -118,7 +115,7 @@ O valor da propriedade `connection` é o mesmo que o [objeto de configuração](
 
 O Lucid oferece suporte a réplicas de leitura e gravação como um cidadão de primeira classe. Você pode configurar um servidor de banco de dados de gravação, juntamente com vários servidores de leitura. Todas as consultas de leitura são enviadas para os servidores de leitura em rodízio, e as consultas de gravação são enviadas para o servidor de gravação.
 
-:::note
+::: info NOTA
 O Lucid não executa nenhuma replicação de dados para você. Portanto, você ainda precisa confiar no seu servidor de banco de dados para isso.
 :::
 
@@ -131,33 +128,29 @@ const dbConfig = defineConfig({
     postgres: {
       client: 'pg',
       connection: {
-        // delete-start
-        host: env.get('DB_HOST'),
-        port: env.get('DB_PORT'),
-        // delete-end
+        host: env.get('DB_HOST'),       // [!code --]
+        port: env.get('DB_PORT'),       // [!code --]
         user: env.get('DB_USER'),
         password: env.get('DB_PASSWORD'),
         database: env.get('DB_DATABASE'),
       },
-      // insert-start
-      replicas: {
-        read: {
-          connection: [
-            {
-              host: '192.168.1.1',
-            },
-            {
-              host: '192.168.1.2',
-            },
-          ],
-        },
-        write: {
-          connection: {
-            host: '196.168.1.3',
-          },
-        },
-      },
-      // insert-end
+      replicas: {                     // [!code ++]
+        read: {                       // [!code ++]
+          connection: [               // [!code ++]
+            {                         // [!code ++]
+              host: '192.168.1.1',    // [!code ++]
+            },                        // [!code ++]
+            {                         // [!code ++]
+              host: '192.168.1.2',    // [!code ++]
+            },                        // [!code ++]
+          ],                          // [!code ++]
+        },                            // [!code ++]
+        write: {                      // [!code ++]
+          connection: {               // [!code ++]
+            host: '196.168.1.3',      // [!code ++]
+          },                          // [!code ++]
+        },                            // [!code ++]
+      },                              // [!code ++]
       migrations: {
         naturalSort: true,
         paths: ['database/migrations'],
@@ -171,11 +164,10 @@ const dbConfig = defineConfig({
 
 Depois de configurar o Lucid, você pode começar a usar o construtor de consultas do banco de dados para criar e executar consultas SQL. Nos exemplos de código a seguir, realizamos operações CRUD na tabela `posts`.
 
-```ts
-// title: Select query with pagination
-// highlight-start
+```ts {3,11-16}
+// Selecionar consulta com paginação
+
 import db from '@adonisjs/lucid/services/db'
-// highlight-end
 import { HttpContext } from '@adonisjs/core/http'
 
 export default class PostsController {
@@ -183,25 +175,22 @@ export default class PostsController {
     const page = request.input('page', 1)
     const limit = 20
 
-    // highlight-start
     const posts = await db
       .query()
       .from('posts')
       .select('*')
       .orderBy('id', 'desc')
       .paginate(page, limit)
-    // highlight-end
 
     return posts
   }
 }
 ```
 
-```ts
-// title: Insert query
-// highlight-start
+```ts {3,11-18}
+// Inserir consulta
+
 import db from '@adonisjs/lucid/services/db'
-// highlight-end
 import { HttpContext } from '@adonisjs/core/http'
 
 export default class PostsController {
@@ -209,7 +198,6 @@ export default class PostsController {
     const title = request.input('title')
     const description = request.input('description')
 
-    // highlight-start
     const id = await db
       .insertQuery()
       .table('posts')
@@ -218,16 +206,14 @@ export default class PostsController {
         description,
       })
       .returning('id')
-    // highlight-end
   }
 }
 ```
 
-```ts
-// title: Update row by id
-// highlight-start
+```ts {3,12-19}
+// Atualizar linha por id
+
 import db from '@adonisjs/lucid/services/db'
-// highlight-end
 import { HttpContext } from '@adonisjs/core/http'
 
 export default class PostsController {
@@ -236,7 +222,6 @@ export default class PostsController {
     const title = request.input('title')
     const description = request.input('description')
 
-    // highlight-start
     const updateRowsCount = await db
       .query()
       .from('posts')
@@ -245,29 +230,25 @@ export default class PostsController {
         title,
         description,
       })
-    // highlight-end
   }
 }
 ```
 
-```ts
-// title: Delete row by id
-// highlight-start
+```ts {3,10-14}
+// Excluir linha por id
+
 import db from '@adonisjs/lucid/services/db'
-// highlight-end
 import { HttpContext } from '@adonisjs/core/http'
 
 export default class PostsController {
   async delete({ request, params }: HttpContext) {
     const id = params.id
 
-    // highlight-start
     const updateRowsCount = await db
       .query()
       .from('posts')
       .where('id', id)
       .delete()
-    // highlight-end
   }
 }
 ```
@@ -279,12 +260,12 @@ Desde que você pode definir várias conexões dentro do arquivo `config/databas
 import db from '@adonisjs/lucid/services/db'
 
 /**
- * Get query client for "pg" connection
+ * Obter cliente de consulta para conexão "pg"
  */
 const pg = db.connection('pg')
 
 /**
- * Execute query
+ * Executar consulta
  */
 await pg.query().select('*').from('posts')
 ```

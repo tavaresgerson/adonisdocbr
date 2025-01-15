@@ -21,7 +21,7 @@ Você pode visualizar a lista de comandos disponíveis executando o arquivo de p
 ```sh
 node ace
 
-# Same as above
+# O mesmo que acima
 node ace list
 ```
 
@@ -33,7 +33,7 @@ Você pode visualizar a ajuda para um único comando digitando o nome do comando
 node ace make:controller --help
 ```
 
-:::note
+::: info NOTA
 A saída da tela de ajuda é formatada de acordo com o padrão [docopt](http://docopt.org/).
 :::
 
@@ -42,10 +42,10 @@ A saída da tela de ajuda é formatada de acordo com o padrão [docopt](http://d
 O Ace detecta o ambiente CLI no qual está sendo executado e desabilita a saída colorida se o terminal não suportar cores. No entanto, você pode habilitar ou desabilitar manualmente as cores usando o sinalizador `--ansi`.
 
 ```sh
-# Disable colors
+# Desabilitar cores
 node ace list --no-ansi
 
-# Force enable colors
+# Forçar habilitar cores
 node ace list --ansi
 ```
 
@@ -75,13 +75,13 @@ node ace resource admin
 
     Por exemplo, se você executar o seguinte comando
 
-```sh
+    ```sh
     node ace resource admin --help
     ```
 
     Ele será expandido para
 
-```sh
+    ```sh
     make:controller --resource --singular admin --help
     ```
 
@@ -110,7 +110,7 @@ Você pode usar o método `ace.hasCommand` para verificar se um comando existe a
 import ace from '@adonisjs/core/services/ace'
 
 /**
- * Boot method will load commands (if not already loaded)
+ * O método de inicialização carregará os comandos (se ainda não estiverem carregados)
  */
 await ace.boot()
 

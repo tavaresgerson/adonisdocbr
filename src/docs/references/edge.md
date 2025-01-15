@@ -18,30 +18,30 @@ Referência à instância da [solicitação HTTP](../basics/request.md) em andam
 Funções auxiliares para criar URL para uma rota usando o [construtor de URL](../basics/routing.md#url-builder). Ao contrário do construtor de URL, os auxiliares de visualização não têm uma API fluente e aceitam os seguintes parâmetros.
 
 <table>
-    <tr>
-        <td>Posição</td>
-        <td>Descrição</td>
-    </tr>
-    <tr>
-        <td>1st</td>
-        <td>O identificador de rota ou o padrão de rota</td>
-    </tr>
-    <tr>
-        <td>2nd</td>
-        <td>Os parâmetros de rota são definidos como uma matriz ou um objeto.</td>
-    </tr>
-    <tr>
-        <td>3rd</td>
-        <td>
-          <p>O objeto options com as seguintes propriedades.</p>
-          <ul>
-          <li><code>qs</code>: Defina parâmetros de string de consulta como um objeto.</li>
-          <li><code>domain</code>: Pesquise rotas em um domínio específico.</li>
-          <li><code>prefixUrl</code>: Prefixe uma URL para a saída.</li>
-          <li><code>disableRouteLookup</code>: Habilita/desabilita a pesquisa de rotas.</li>
-          </ul>
-        </td>
-    </tr>
+<tr>
+<td>Posição</td>
+<td>Descrição</td>
+</tr>
+<tr>
+<td>1st</td>
+<td>O identificador de rota ou o padrão de rota</td>
+</tr>
+<tr>
+<td>2nd</td>
+<td>Os parâmetros de rota são definidos como uma matriz ou um objeto.</td>
+</tr>
+<tr>
+<td>3rd</td>
+<td>
+<p>O objeto options com as seguintes propriedades.</p>
+<ul>
+<li><code>qs</code>: Defina parâmetros de string de consulta como um objeto.</li>
+<li><code>domain</code>: Pesquise rotas em um domínio específico.</li>
+<li><code>prefixUrl</code>: Prefixe uma URL para a saída.</li>
+<li><code>disableRouteLookup</code>: Habilita/desabilita a pesquisa de rotas.</li>
+</ul>
+</td>
+</tr>
 </table>
 
 ```edge
@@ -165,10 +165,7 @@ Os auxiliares `embedImage` e `embedImageData` são adicionados pelo pacote [mail
 ## `@flashMessage`
 A tag `@flashMessage` fornece um DX melhor para ler mensagens flash para uma determinada chave condicionalmente.
 
-:::caption{for="error"}
-**Em vez de escrever condicionais**
-:::
-
+::: danger **Em vez de escrever condicionais**
 ```edge
 @if(flashMessages.has('notification'))
   <div class="notification {{ flashMessages.get('notification').type }}">
@@ -176,11 +173,9 @@ A tag `@flashMessage` fornece um DX melhor para ler mensagens flash para uma det
   </div>
 @end
 ```
-
-:::caption{for="success"}
-**Você pode preferir usar a tag**
 :::
 
+::: tip **Você pode preferir usar a tag**
 ```edge
 @flashMessage('notification')
   <div class="notification {{ $message.type }}">
@@ -188,37 +183,31 @@ A tag `@flashMessage` fornece um DX melhor para ler mensagens flash para uma det
   </div>
 @end
 ```
+:::
 
 ## `@error`
 A tag `@error` fornece um DX melhor para ler mensagens de erro armazenadas dentro da chave `errorsBag` em `flashMessages`.
 
-:::caption{for="error"}
-**Em vez de escrever condicionais**
-:::
-
+::: danger **Em vez de escrever condicionais**
 ```edge
 @if(flashMessages.has('errorsBag.E_BAD_CSRF_TOKEN'))
   <p>{{ flashMessages.get('errorsBag.E_BAD_CSRF_TOKEN') }}</p>
 @end
 ```
-
-:::caption{for="success"}
-**Você pode preferir usar a tag**
 :::
 
+::: tip **Você pode preferir usar a tag**
 ```edge
 @error('E_BAD_CSRF_TOKEN')
   <p>{{ $message }}</p>
 @end
 ```
+:::
 
 ## `@inputError`
 A tag `@inputError` fornece um DX melhor para ler mensagens de erro de validação armazenadas dentro da chave `inputErrorsBag` em `flashMessages`.
 
-:::caption{for="error"}
-**Em vez de escrever condicionais**
-:::
-
+::: danger **Em vez de escrever condicionais**
 ```edge
 @if(flashMessages.has('inputErrorsBag.title'))
   @each(message in flashMessages.get('inputErrorsBag.title'))
@@ -226,11 +215,9 @@ A tag `@inputError` fornece um DX melhor para ler mensagens de erro de validaç�
   @end
 @end
 ```
-
-:::caption{for="success"}
-**Você pode preferir usar a tag**
 :::
 
+::: tip **Você pode preferir usar a tag**
 ```edge
 @inputError('title')
   @each(message in $messages)
@@ -238,17 +225,16 @@ A tag `@inputError` fornece um DX melhor para ler mensagens de erro de validaç�
   @end
 @end
 ```
+:::
 
 ## `@vite`
 A tag `@vite` aceita uma matriz de caminhos de ponto de entrada e retorna as tags `script` e `link` para o mesmo. O caminho que você fornece para a tag `@vite` deve corresponder exatamente ao caminho registrado dentro do arquivo `vite.config.js`.
 
-```ts
+```ts {4}
 export default defineConfig({
   plugins: [
     adonisjs({
-      // highlight-start
       entrypoints: ['resources/js/app.js'],
-      // highlight-end
     }),
   ]
 })
@@ -294,20 +280,20 @@ Veja também: [Pré-registro de habilidades e políticas](../security/authorizat
 
 ```edge
 @can('editPost', post)
-  {{-- Can edit post --}}
+  {{-- Pode editar a postagem --}}
 @end
 
 @can('PostPolicy.edit', post)
-  {{-- Can edit post --}}
+  {{-- Pode editar a postagem --}}
 @end
 ```
 
 ```edge
 @cannot('editPost', post)
-  {{-- Cannot edit post --}}
+  {{-- Não pode editar a postagem --}}
 @end
 
 @cannot('editPost', post)
-  {{-- Cannot edit post --}}
+  {{-- Não pode editar a postagem --}}
 @end
 ```

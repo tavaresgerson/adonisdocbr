@@ -12,7 +12,7 @@ O AdonisJS fornece um punhado de [verificações de integridade](#available-heal
 
 Você pode configurar verificações de integridade em seu aplicativo executando o seguinte comando. O comando criará um arquivo `start/health.ts` e configurará verificações de integridade para **uso de memória** e **espaço em disco usado**. Sinta-se à vontade para modificar este arquivo e remover/adicionar verificações de integridade adicionais.
 
-:::note
+::: info NOTA
 Certifique-se de ter instalado `@adonisjs/core@6.12.1` antes de usar o comando a seguir.
 :::
 
@@ -21,7 +21,8 @@ node ace configure health_checks
 ```
 
 ```ts
-// title: start/health.ts
+// start/health.ts
+
 import { HealthChecks, DiskSpaceCheck, MemoryHeapCheck } from '@adonisjs/core/health'
 
 export const healthChecks = new HealthChecks().register([
@@ -37,7 +38,8 @@ Uma abordagem comum para executar verificações de integridade é expor um endp
 Então, vamos definir uma rota dentro do arquivo `start/routes.ts` e vincular o `HealthChecksController` a ele. O arquivo `health_checks_controller.ts` é criado durante a configuração inicial e fica dentro do diretório `app/controllers`.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import router from '@adonisjs/core/services/router'
 const HealthChecksController = () => import('#controllers/health_checks_controller')
 
@@ -132,14 +134,12 @@ const HealthChecksController = () => import('#controllers/health_checks_controll
 
 router
   .get('/health', [HealthChecksController])
-  // insert-start
-  .use(({ request, response }, next) => {
-    if (request.header('x-monitoring-secret') === 'some_secret_value') {
-      return next()
-    }
-    response.unauthorized({ message: 'Unauthorized access' })
-  })
-  // insert-end
+  .use(({ request, response }, next) => { // [!code ++]
+    if (request.header('x-monitoring-secret') === 'some_secret_value') { // [!code ++]
+      return next() // [!code ++]
+    } // [!code ++]
+    response.unauthorized({ message: 'Unauthorized access' }) // [!code ++]
+  }) // [!code ++]
 ```
 
 ## Verificações de integridade disponíveis
@@ -160,13 +160,11 @@ export const healthChecks = new HealthChecks().register([
 
 Por padrão, o limite de aviso é definido como 75% e o limite de falha é definido como 80%. No entanto, você também pode definir limites personalizados.
 
-```ts
+```ts {3-4}
 export const healthChecks = new HealthChecks().register([
   new DiskSpaceCheck()
-    // highlight-start
-    .warnWhenExceeds(80) // warn when used over 80%
-    .failWhenExceeds(90), // fail when used over 90%
-  // highlight-end
+    .warnWhenExceeds(80) // avisa quando usado acima de 80%
+    .failWhenExceeds(90), // falha quando usado acima de 90%
 ])
 ```
 
@@ -184,13 +182,11 @@ export const healthChecks = new HealthChecks().register([
 
 Por padrão, o limite de aviso é definido como **250 MB** e o limite de falha é definido como **300 MB**. No entanto, você também pode definir limites personalizados.
 
-```ts
+```ts {3-4}
 export const healthChecks = new HealthChecks().register([
   new MemoryHeapCheck()
-    // highlight-start
     .warnWhenExceeds('300 mb')
     .failWhenExceeds('700 mb'),
-  // highlight-end
 ])
 ```
 
@@ -208,13 +204,11 @@ export const healthChecks = new HealthChecks().register([
 
 Por padrão, o limite de aviso é definido como **320 MB** e o limite de falha é definido como **350 MB**. No entanto, você também pode definir limites personalizados.
 
-```ts
+```ts {3-4}
 export const healthChecks = new HealthChecks().register([
   new MemoryRSSCheck()
-    // highlight-start
     .warnWhenExceeds('600 mb')
     .failWhenExceeds('800 mb'),
-  // highlight-end
 ])
 ```
 
@@ -222,25 +216,22 @@ export const healthChecks = new HealthChecks().register([
 O `DbCheck` é fornecido pelo pacote `@adonisjs/lucid` para monitorar a conexão com um banco de dados SQL. Você pode importá-lo e usá-lo da seguinte maneira.
 
 ```ts
-// insert-start
-import db from '@adonisjs/lucid/services/db'
-import { DbCheck } from '@adonisjs/lucid/database'
-// insert-end
+import db from '@adonisjs/lucid/services/db' // [!code ++]
+import { DbCheck } from '@adonisjs/lucid/database' // [!code ++]
 import { HealthChecks, DiskSpaceCheck, MemoryHeapCheck } from '@adonisjs/core/health'
 
 export const healthChecks = new HealthChecks().register([
   new DiskSpaceCheck(),
   new MemoryHeapCheck(),
-  // insert-start
-  new DbCheck(db.connection()),
-  // insert-end
+  new DbCheck(db.connection()), // [!code ++]
 ])
 ```
 
 A seguir está um relatório de exemplo da verificação de integridade do banco de dados.
 
 ```json
-// title: Report sample
+// Exemplo de relatório
+
 {
   "name": "Database health check (postgres)",
   "isCached": false,
@@ -259,15 +250,14 @@ A seguir está um relatório de exemplo da verificação de integridade do banco
 A classe `DbCheck` aceita uma conexão de banco de dados para monitoramento. Registre esta verificação várias vezes para cada conexão se quiser monitorar várias conexões. Por exemplo:
 
 ```ts
-// title: Monitoring multiple connections
+// Monitorando múltiplas conexões
+
 export const healthChecks = new HealthChecks().register([
   new DiskSpaceCheck(),
   new MemoryHeapCheck(),
-  // insert-start
-  new DbCheck(db.connection()),
-  new DbCheck(db.connection('mysql')),
-  new DbCheck(db.connection('pg')),
-  // insert-end
+  new DbCheck(db.connection()),         // [!code ++]
+  new DbCheck(db.connection('mysql')),  // [!code ++]
+  new DbCheck(db.connection('pg')),     // [!code ++]
 ])
 ```
 
@@ -276,25 +266,24 @@ O `DbConnectionCountCheck` monitora as conexões ativas no servidor de banco de 
 
 ```ts
 import db from '@adonisjs/lucid/services/db'
-// insert-start
-import { DbCheck, DbConnectionCountCheck } from '@adonisjs/lucid/database'
-// insert-end
+import { DbCheck, DbConnectionCountCheck } from '@adonisjs/lucid/database' // [!code ++]
 import { HealthChecks, DiskSpaceCheck, MemoryHeapCheck } from '@adonisjs/core/health'
 
 export const healthChecks = new HealthChecks().register([
   new DiskSpaceCheck(),
   new MemoryHeapCheck(),
   new DbCheck(db.connection()),
-  // insert-start
-  new DbConnectionCountCheck(db.connection())
-  // insert-end
+
+  new DbConnectionCountCheck(db.connection())  // [!code ++]
+
 ])
 ```
 
 A seguir está um relatório de exemplo da verificação de integridade da contagem de conexões do banco de dados.
 
 ```json
-// title: Report sample
+// Exemplo de relatório
+
 {
   "name": "Connection count health check (postgres)",
   "isCached": false,
@@ -327,25 +316,24 @@ new DbConnectionCountCheck(db.connection())
 O `RedisCheck` é fornecido pelo pacote `@adonisjs/redis` para monitorar a conexão com um banco de dados Redis (incluindo Cluster). Você pode importar e usar da seguinte forma.
 
 ```ts
-// insert-start
-import redis from '@adonisjs/redis/services/main'
-import { RedisCheck } from '@adonisjs/redis'
-// insert-end
+import redis from '@adonisjs/redis/services/main' // [!code ++]
+import { RedisCheck } from '@adonisjs/redis'      // [!code ++]
 import { HealthChecks, DiskSpaceCheck, MemoryHeapCheck } from '@adonisjs/core/health'
 
 export const healthChecks = new HealthChecks().register([
   new DiskSpaceCheck(),
   new MemoryHeapCheck(),
-  // insert-start
-  new RedisCheck(redis.connection()),
-  // insert-end
+
+  new RedisCheck(redis.connection()), // [!code ++]
+
 ])
 ```
 
 A seguir está um exemplo de relatório da verificação de integridade do banco de dados.
 
 ```json
-// title: Report sample
+// Exemplo de relatório
+
 {
   "name": "Redis health check (main)",
   "isCached": false,
@@ -364,15 +352,14 @@ A seguir está um exemplo de relatório da verificação de integridade do banco
 A classe `RedisCheck` aceita uma conexão redis para monitorar. Registre esta verificação várias vezes para cada conexão se quiser monitorar várias conexões. Por exemplo:
 
 ```ts
-// title: Monitoring multiple connections
+// Monitoramento de múltiplas conexões
+
 export const healthChecks = new HealthChecks().register([
   new DiskSpaceCheck(),
   new MemoryHeapCheck(),
-  // insert-start
-  new RedisCheck(redis.connection()),
-  new RedisCheck(redis.connection('cache')),
-  new RedisCheck(redis.connection('locks')),
-  // insert-end
+  new RedisCheck(redis.connection()),         // [!code ++]
+  new RedisCheck(redis.connection('cache')),  // [!code ++]
+  new RedisCheck(redis.connection('locks')),  // [!code ++]
 ])
 ```
 
@@ -380,26 +367,23 @@ export const healthChecks = new HealthChecks().register([
 O `RedisMemoryUsageCheck` monitora o consumo de memória do servidor redis e relata um aviso/erro quando um determinado limite é excedido.
 
 ```ts
-import redis from '@adonisjs/redis/services/main'
-// insert-start
-import { RedisCheck, RedisMemoryUsageCheck } from '@adonisjs/redis'
-// insert-end
+import redis from '@adonisjs/redis/services/main
+import { RedisCheck, RedisMemoryUsageCheck } from '@adonisjs/redis' // [!code ++]
 import { HealthChecks, DiskSpaceCheck, MemoryHeapCheck } from '@adonisjs/core/health'
 
 export const healthChecks = new HealthChecks().register([
   new DiskSpaceCheck(),
   new MemoryHeapCheck(),
   new RedisCheck(redis.connection()),
-  // insert-start
-  new RedisMemoryUsageCheck(redis.connection())
-  // insert-end
+  new RedisMemoryUsageCheck(redis.connection()) // [!code ++]
 ])
 ```
 
 A seguir está um exemplo de relatório da verificação de integridade do uso de memória redis.
 
 ```json
-// title: Report sample
+// Exemplo de relatório
+
 {
   "name": "Redis memory consumption health check (main)",
   "isCached": false,
@@ -436,7 +420,7 @@ Por exemplo, monitorar o espaço em disco a cada minuto não é muito útil, mas
 
 Portanto, permitimos que você armazene em cache os resultados de verificações de integridade individuais ao registrá-las. Por exemplo:
 
-```ts
+```ts {9}
 import {
   HealthChecks,
   MemoryRSSCheck,
@@ -445,11 +429,9 @@ import {
 } from '@adonisjs/core/health'
 
 export const healthChecks = new HealthChecks().register([
-  // highlight-start
   new DiskSpaceCheck().cacheFor('1 hour'),
-  // highlight-end
-  new MemoryHeapCheck(), // do not cache
-  new MemoryRSSCheck(), // do not cache
+  new MemoryHeapCheck(), // não armazenar em cache
+  new MemoryRSSCheck(), // não armazenar em cache
 ])
 ```
 
@@ -464,7 +446,7 @@ import type { HealthCheckResult } from '@adonisjs/core/types/health'
 export class ExampleCheck extends BaseCheck {
   async run(): Promise<HealthCheckResult> {
     /**
-     * The following checks are for reference purposes only
+     * As verificações a seguir são apenas para fins de referência
      */
     if (checkPassed) {
       return Result.ok('Success message to display')
@@ -493,17 +475,13 @@ Result.ok('Database connection is healthy').mergeMetaData({
 ### Registrando verificação de integridade personalizada
 Você pode importar sua classe de verificação de integridade personalizada dentro do arquivo `start/health.ts` e registrá-la criando uma nova instância de classe.
 
-```ts
-// highlight-start
+```ts {1,7}
 import { ExampleCheck } from '../app/health_checks/example.js'
-// highlight-end
 
 export const healthChecks = new HealthChecks().register([
   new DiskSpaceCheck().cacheFor('1 hour'),
   new MemoryHeapCheck(),
   new MemoryRSSCheck(),
-  // highlight-start
   new ExampleCheck()
-  // highlight-end
 ])
 ```

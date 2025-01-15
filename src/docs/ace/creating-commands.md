@@ -78,16 +78,14 @@ Por padrão, o AdonisJS não inicializa o aplicativo ao executar um comando Ace.
 
 No entanto, se o seu comando depende do estado do aplicativo, você pode dizer ao Ace para iniciar o aplicativo antes de executar o comando.
 
-```ts
+```ts {5-7}
 import { BaseCommand } from '@adonisjs/core/ace'
 import { CommandOptions } from '@adonisjs/core/types/ace'
 
 export default class GreetCommand extends BaseCommand {
-  // highlight-start
   static options: CommandOptions = {
     startApp: true
   }
-  // highlight-end
 }
 ```
 
@@ -95,16 +93,14 @@ export default class GreetCommand extends BaseCommand {
 
 Por padrão, o Ace imprime um erro se você passar um sinalizador desconhecido para o comando. No entanto, você pode desabilitar a análise de sinalizadores estritos no nível do comando usando a propriedade `options.allowUnknownFlags`.
 
-```ts
+```ts {5-7}
 import { BaseCommand } from '@adonisjs/core/ace'
 import { CommandOptions } from '@adonisjs/core/types/ace'
 
 export default class GreetCommand extends BaseCommand {
-  // highlight-start
   static options: CommandOptions = {
     allowUnknownFlags: true
   }
-  // highlight-end
 }
 ```
 
@@ -114,16 +110,14 @@ O AdonisJS encerra implicitamente o aplicativo após executar o comando `run` do
 
 Veja também: seções [Terminando o aplicativo](#terminating-application) e [limpando antes que o aplicativo termine](#cleaning-up-before-the-app-terminates).
 
-```ts
+```ts {5-7}
 import { BaseCommand } from '@adonisjs/core/ace'
 import { CommandOptions } from '@adonisjs/core/types/ace'
 
 export default class GreetCommand extends BaseCommand {
-  // highlight-start
   static options: CommandOptions = {
     staysAlive: true
   }
-  // highlight-end
 }
 ```
 
@@ -229,7 +223,7 @@ export default class GreetCommand extends BaseCommand {
       this.logger.error(this.error.message)
       
       /**
-       * Notify Ace that error has been handled
+       * Notifique o Ace que o erro foi corrigido
        */
       return true
     }
@@ -243,7 +237,7 @@ Por padrão, o Ace encerrará o aplicativo após executar o comando. No entanto,
 
 Vamos supor que fazemos uma conexão redis para monitorar a memória do servidor. Ouvimos o evento `error` na conexão redis e encerramos o aplicativo quando a conexão falha.
 
-```ts
+```ts {12-15}
 import { BaseCommand } from '@adonisjs/core/ace'
 import { CommandOptions } from '@adonisjs/core/types/ace'
 
@@ -255,12 +249,10 @@ export default class GreetCommand extends BaseCommand {
   async run() {
     const redis = createRedisConnection()
     
-    // highlight-start
     redis.on('error', (error) => {
       this.logger.error(error)
       this.terminate()
     })
-    // highlight-end
   }
 }
 ```
@@ -282,7 +274,7 @@ export default class GreetCommand extends BaseCommand {
   
   prepare() {
     this.app.terminating(() => {
-      // perform the cleanup
+      // realizar a limpeza
     })
   }
   

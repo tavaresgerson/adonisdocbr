@@ -6,7 +6,7 @@ summary: Aprenda a enviar atualizações em tempo real com SSE do seu servidor A
 
 Transmit é um módulo nativo Server-Sent-Event (SSE) opinativo criado para AdonisJS. É uma maneira simples e eficiente de enviar atualizações em tempo real para o cliente, como notificações, mensagens de chat ao vivo ou qualquer outro tipo de dados em tempo real.
 
-:::note
+::: info NOTA
 A transmissão de dados ocorre apenas do servidor para o cliente, não o contrário. Você precisa usar um formulário ou uma solicitação de busca para obter a comunicação do cliente para o servidor.
 :::
 
@@ -74,7 +74,7 @@ export default defineConfig({
 })
 ```
 
-:::note
+::: info NOTA
 Certifique-se de ter `ioredis` instalado ao usar o transporte `redis`.
 :::
 
@@ -83,7 +83,8 @@ Certifique-se de ter `ioredis` instalado ao usar o transporte `redis`.
 Você precisa registrar as rotas de transmissão para permitir que o cliente se conecte ao servidor. As rotas são registradas manualmente.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import transmit from '@adonisjs/transmit/services/main'
 
 transmit.registerRoutes()
@@ -92,7 +93,8 @@ transmit.registerRoutes()
 Você também pode registrar cada rota manualmente vinculando o controlador manualmente.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 const EventStreamController = () => import('@adonisjs/transmit/controllers/event_stream_controller')
 const SubscribeController = () => import('@adonisjs/transmit/controllers/subscribe_controller')
 const UnsubscribeController = () => import('@adonisjs/transmit/controllers/unsubscribe_controller')
@@ -105,17 +107,18 @@ router.post('/__transmit/unsubscribe', [UnsubscribeController])
 Se você quiser modificar a definição da rota, por exemplo, para usar o [`Rate Limiter`](../security/rate_limiting.md) e o middleware auth para evitar abuso de algumas rotas de transmissão, você pode alterar a definição da rota ou passar um retorno de chamada para o método `transmit.registerRoutes`.
 
 ```ts
-// title: start/routes.ts
+// start/routes.ts
+
 import transmit from '@adonisjs/transmit/services/main'
 
 transmit.registerRoutes((route) => {
-  // Ensure you are authenticated to register your client
+  // Certifique-se de que você está autenticado para registrar seu cliente
   if (route.getPattern() === '__transmit/events') {
     route.middleware(middleware.auth())
     return
   }
 
-  // Add a throttle middleware to other transmit routes
+  // Adicione um middleware de aceleração a outras rotas de transmissão
   route.use(throttle)
 })
 ```
@@ -137,7 +140,7 @@ transmit.broadcast('chats/1/messages', { message: 'Hello' })
 transmit.broadcast('users/1', { message: 'Hello' })
 ```
 
-:::tip
+::: tip DICA
 Os nomes de canais usam a mesma sintaxe que route no AdonisJS, mas não estão relacionados a eles. Você pode definir livremente uma rota http e um canal com a mesma chave.
 :::
 
@@ -146,7 +149,7 @@ Os nomes de canais usam a mesma sintaxe que route no AdonisJS, mas não estão r
 Você pode autorizar ou rejeitar uma conexão a um canal usando o método `authorize`. O método recebe o nome do canal e o `HttpContext`. Ele deve retornar um valor booleano.
 
 ```ts
-// title: start/transmit.ts
+// start/transmit.ts
 
 import transmit from '@adonisjs/transmit/services/main'
 import Chat from '#models/chat'
@@ -199,7 +202,7 @@ export const transmit = new Transmit({
 })
 ```
 
-:::tip
+::: tip DICA
 Você deve criar apenas uma instância da classe `Transmit` e reutilizá-la em todo o seu aplicativo.
 :::
 
@@ -270,7 +273,7 @@ await subscription.create()
 
 O método `create` registra a assinatura no servidor. Ele retorna uma promessa de que você pode `await` ou `void`.
 
-:::note
+::: info NOTA
 Se você não chamar o método `create`, a assinatura não será registrada no servidor e você não receberá nenhum evento.
 :::
 
@@ -301,7 +304,7 @@ const stopListening = subscription.onMessage((data) => {
   console.log(data)
 })
 
-// Stop listening
+// Pare de ouvir
 stopListening()
 ```
 
@@ -321,7 +324,7 @@ Se sua implantação usar um proxy reverso (como Traefik ou Nginx) ou outro midd
 
 ### Exemplo de configuração para o Traefik
 
-```plaintext
+```txt
 traefik.http.middlewares.gzip.compress=true
 traefik.http.middlewares.gzip.compress.excludedcontenttypes=text/event-stream
 traefik.http.routers.my-router.middlewares=gzip

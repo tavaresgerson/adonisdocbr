@@ -22,7 +22,8 @@ Cada arquivo seeder deve estender a classe `BaseSeeder` e implementar o método 
 O exemplo a seguir usa um modelo Lucid para criar vários usuários. No entanto, você também pode usar o construtor de consultas do banco de dados diretamente. **Em outras palavras, os seeders não se importam com o que você escreve dentro do método `run`**.
 
 ```ts
-// title: database/seeders/user.ts
+// database/seeders/user.ts
+
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
 import User from '#models/user'
 
@@ -47,7 +48,7 @@ export default class UserSeeder extends BaseSeeder {
 Você pode executar todos ou alguns seeders de banco de dados executando o seguinte comando Ace.
 
 ```sh
-# runs all
+# executa tudo
 node ace db:seed
 ```
 
@@ -63,7 +64,7 @@ Você também pode selecionar os arquivos do seeder interativamente executando o
 node ace db:seed -i
 ```
 
-::video{url="https://res.cloudinary.com/adonis-js/video/upload/q_auto/v1618896667/v5/db-seed-interactive.mp4" controles}
+<video src="./db-seed-interactive.mp4" controls />
 
 ## Semeadores específicos do ambiente
 
@@ -196,7 +197,7 @@ Após a seguinte alteração, o comando `db:seed` escaneará o diretório `./dat
 {
   mysql: {
     client: 'mysql2',
-    // ... rest of the config
+    // ... resto da configuração
     seeders: {
       paths: ['./database/seeders/main']
     }
@@ -210,7 +211,7 @@ Após a seguinte alteração, o comando `db:seed` escaneará o diretório `./dat
 
 Agora, você pode importar manualmente todos os seeders dentro do arquivo **index_seeder** e executá-los em qualquer ordem que desejar.
 
-:::note
+::: info NOTA
 A seguir está um exemplo de implementação do seeder principal. Sinta-se à vontade para personalizá-lo conforme suas necessidades.
 :::
 
@@ -221,7 +222,7 @@ import app from '@adonisjs/core/services/app'
 export default class IndexSeeder extends BaseSeeder {
   private async seed(Seeder: { default: typeof BaseSeeder }) {
     /**
-     * Do not run when not in a environment specified in Seeder
+     * Não execute quando não estiver em um ambiente especificado no Seeder
      */
     if (
       !Seeder.default.environment ||

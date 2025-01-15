@@ -24,7 +24,7 @@ export default class GreetCommand extends BaseCommand {
     this.logger.success('Account created')
     this.logger.warning('Running out of disk space')
 
-    // Writes to stderr
+    // Escreve para stderr
     this.logger.error(new Error('Unable to write. Disk full'))
     this.logger.fatal(new Error('Unable to write. Disk full'))
   }
@@ -56,12 +56,12 @@ const animation = this.logger.await('installing packages', {
 
 animation.start()
 
-// Update the message
+// Atualizar a mensagem
 animation.update('unpacking packages', {
   suffix: undefined
 })
 
-// Stop animation
+// Parar animação
 animation.stop()
 ```
 
@@ -228,7 +228,7 @@ export default class GreetCommand extends BaseCommand {
   async run() {
     const tasks = this.ui.tasks()
     
-    // ... rest of the code to follow
+    // ... resto do código a seguir
   }
 }
 ```
@@ -237,14 +237,13 @@ Tarefas individuais são adicionadas usando o método `tasks.add`. O método ace
 
 Você deve retornar o status da tarefa do retorno de chamada. Todos os valores de retorno são considerados mensagens de sucesso até que você os envolva dentro do método `task.error` ou lance uma exceção dentro do retorno de chamada.
 
-```ts
+```ts {7-17}
 import { BaseCommand } from '@adonisjs/core/ace'
 
 export default class GreetCommand extends BaseCommand {
   async run() {
     const tasks = this.ui.tasks()
 
-    // highlight-start
     await tasks
       .add('clone repo', async (task) => {
         return 'Completed'
@@ -256,7 +255,6 @@ export default class GreetCommand extends BaseCommand {
         return 'Installed'
       })
       .run()
-    // highlight-end
   }
 }
 ```

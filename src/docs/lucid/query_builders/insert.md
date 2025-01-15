@@ -9,7 +9,7 @@ import db from '@adonisjs/lucid/services/db'
 
 db.insertQuery()
 
-// selecting table also returns an instance of the query builder
+// selecionar tabela também retorna uma instância do construtor de consultas
 db.table('users')
 ```
 
@@ -83,12 +83,10 @@ console.log(rows[0].id, rows[0].username)
 ### `debug`
 O método `debug` permite habilitar ou desabilitar a depuração em um nível de consulta individual. Aqui está um [guia completo](../guides/debugging.md) sobre consultas de depuração.
 
-```ts
+```ts {3}
 const rows = db
   .table('users')
-  // highlight-start
   .debug(true)
-  // highlight-end
   .insert({
     username: 'virk',
     email: 'virk@adonisjs.com',
@@ -101,12 +99,10 @@ Defina o `timeout` para a consulta. Uma exceção é gerada após o tempo limite
 
 O valor do tempo limite é sempre em milissegundos.
 
-```ts
+```ts {3}
 db
   .table('users')
-  // highlight-start
   .timeout(2000)
-  // highlight-end
   .insert({
     username: 'virk',
     email: 'virk@adonisjs.com',
@@ -130,7 +126,7 @@ db
 ### `toSQL`
 O método `toSQL` retorna o SQL da consulta e as ligações como um objeto.
 
-```ts
+```ts {8}
 const output = db
   .table('users')
   .insert({
@@ -138,9 +134,7 @@ const output = db
     email: 'virk@adonisjs.com',
     password: 'secret',
   })
-  // highlight-start
   .toSQL()
-  // highlight-end
 
 console.log(output)
 ```

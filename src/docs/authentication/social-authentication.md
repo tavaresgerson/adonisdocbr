@@ -235,7 +235,7 @@ Os escopos podem ser definidos dentro do arquivo `config/ally.ts`, ou você pode
 
 Graças ao TypeScript, você obterá sugestões de preenchimento automático para todos os escopos disponíveis.
 
-![](../digging_deeper/ally_autocomplete.png)
+![](../digging-deeper/ally_autocomplete.png)
 
 ```ts {8}
 // config/ally.ts

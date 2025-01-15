@@ -81,7 +81,7 @@ Trunque uma string em um determinado número de caracteres.
 import string from '@adonisjs/core/helpers/string'
 
 string.truncate('This is a very long, maybe not that long title', 12)
-// Output: This is a ve...
+// Saída: This is a ve...
 ```
 
 Por padrão, a string é truncada exatamente no índice fornecido. No entanto, você pode instruir o método a esperar que as palavras sejam concluídas.
@@ -90,7 +90,7 @@ Por padrão, a string é truncada exatamente no índice fornecido. No entanto, v
 string.truncate('This is a very long, maybe not that long title', 12, {
   completeWords: true,
 })
-// Output: This is a very...
+// Saída: This is a very...
 ```
 
 Você pode personalizar o sufixo usando a opção `suffix`.
@@ -100,7 +100,7 @@ string.truncate('This is a very long, maybe not that long title', 12, {
   completeWords: true,
   suffix: '... <a href="/1"> Read more </a>',
 })
-// Output: This is a very... <a href="/1"> Read more </a>
+// Saída: This is a very... <a href="/1"> Read more </a>
 ```
 
 ## `excerpt`
@@ -113,7 +113,7 @@ import string from '@adonisjs/core/helpers/string'
 string.excerpt('<p>This is a <strong>very long</strong>, maybe not that long title</p>', 12, {
   completeWords: true,
 })
-// Output: This is a very...
+// Saída: This is a very...
 ```
 
 ## `slug`
@@ -237,8 +237,8 @@ string.camelCase('user_name') // userName
 
 A seguir estão alguns exemplos de conversão.
 
-| Input            | Output        |
-|----------------|-------------|
+| Entrada          | Saída         |
+|------------------|---------------|
 | 'test'           | 'test'        |
 | 'test string'    | 'testString'  |
 | 'Test String'    | 'testString'  |
@@ -259,8 +259,8 @@ string.capitalCase('helloWorld') // Hello World
 
 A seguir estão alguns exemplos de conversão.
 
-| Input            | Output           |
-|----------------|----------------|
+| Entrada          | Saída            |
+|------------------|------------------|
 | 'test'           | 'Test'           |
 | 'test string'    | 'Test String'    |
 | 'Test String'    | 'Test String'    |
@@ -286,8 +286,8 @@ string.dashCase('helloWorld', { capitalize: true }) // Hello-World
 
 Following are some of the conversion examples.
 
-| Input            | Output         |
-|----------------|--------------|
+| Entrada          | Saída          |
+|------------------|----------------|
 | 'test'           | 'test'         |
 | 'test string'    | 'test-string'  |
 | 'Test String'    | 'test-string'  |
@@ -314,8 +314,8 @@ string.dotCase('helloWorld', { lowerCase: true }) // hello.world
 
 Following are some of the conversion examples.
 
-| Input            | Output         |
-|----------------|--------------|
+| Entrada          | Saída          |
+|------------------|----------------|
 | 'test'           | 'test'         |
 | 'test string'    | 'test.string'  |
 | 'Test String'    | 'Test.String'  |
@@ -337,8 +337,8 @@ string.noCase('helloWorld') // hello world
 
 A seguir estão alguns exemplos de conversão.
 
-| Input                  | Output                 |
-|----------------------|----------------------|
+| Entrada                | Saída                  |
+|------------------------|------------------------|
 | 'test'                 | 'test'                 |
 | 'TEST'                 | 'test'                 |
 | 'testString'           | 'test string'          |
@@ -378,8 +378,8 @@ string.pascalCase('user team') // UserTeam
 
 A seguir estão alguns exemplos de conversão.
 
-| Input            | Output        |
-|----------------|-------------|
+| Entrada          | Saída         |
+|------------------|---------------|
 | 'test'           | 'Test'        |
 | 'test string'    | 'TestString'  |
 | 'Test String'    | 'TestString'  |
@@ -400,8 +400,8 @@ string.sentenceCase('getting_started-with-adonisjs')
 
 A seguir estão alguns exemplos de conversão.
 
-| Input            | Output           |
-|----------------|----------------|
+| Entrada          | Saída            |
+|------------------|------------------|
 | 'test'           | 'Test'           |
 | 'test string'    | 'Test string'    |
 | 'Test String'    | 'Test string'    |
@@ -421,8 +421,8 @@ string.snakeCase('user team') // user_team
 
 A seguir estão alguns exemplos de conversão.
 
-| Input            | Output         |
-|----------------|--------------|
+| Entrada          | Saída          |
+|------------------|----------------|
 | '\_id'           | 'id'           |
 | 'test'           | 'test'         |
 | 'test string'    | 'test_string'  |
@@ -445,8 +445,8 @@ string.titleCase('small word ends on')
 
 A seguir estão alguns exemplos de conversão.
 
-| Input                              | Output                             |
-|----------------------------------|----------------------------------|
+| Entrada                            | Saída                              |
+|------------------------------------|------------------------------------|
 | 'one. two.'                        | 'One. Two.'                        |
 | 'a small word starts'              | 'A Small Word Starts'              |
 | 'small word ends on'               | 'Small Word Ends On'               |
@@ -739,8 +739,8 @@ const options: Partial<Options> = {}
 await fsReadAll(location, options)
 ```
 
-| Argumento   | Descrição |
-|------------|------------|
+| Argumento           | Descrição   |
+|---------------------|-------------|
 | `ignoreMissingRoot` | Por padrão, uma exceção é gerada quando o diretório raiz está ausente. Definir `ignoreMissingRoot` como true não resultará em erro, e uma matriz vazia será retornada. |
 | `filter`            | Defina um filtro para ignorar certos caminhos. O método é chamado na lista final de arquivos. |
 | `sort`              | Defina um método personalizado para classificar caminhos de arquivo. Por padrão, os arquivos são classificados usando classificação natural. |
@@ -775,12 +775,12 @@ const options: Partial<Options> = {}
 await fsImportAll(location, options)
 ```
 
-| Argumento | Descrição |
-|------------|------------|
+| Argumento           | Descrição   |
+|---------------------|-------------|
 | `ignoreMissingRoot` | Por padrão, uma exceção é gerada quando o diretório raiz está ausente. Definir `ignoreMissingRoot` como true não resultará em erro e um objeto vazio será retornado. |
-| `filter` | Defina um filtro para ignorar certos caminhos. Por padrão, apenas arquivos terminados com `.js`, `.ts`, `.json`, `.cjs` e `.mjs` são importados. |
-| `sort` | Defina um método personalizado para classificar caminhos de arquivo. Por padrão, os arquivos são classificados usando classificação natural. |
-| `transformKeys` | Defina um método de retorno de chamada para transformar as chaves para o objeto final. O método recebe uma matriz de chaves aninhadas e deve retornar uma matriz. |
+| `filter`            | Defina um filtro para ignorar certos caminhos. Por padrão, apenas arquivos terminados com `.js`, `.ts`, `.json`, `.cjs` e `.mjs` são importados. |
+| `sort`              | Defina um método personalizado para classificar caminhos de arquivo. Por padrão, os arquivos são classificados usando classificação natural. |
+| `transformKeys`     | Defina um método de retorno de chamada para transformar as chaves para o objeto final. O método recebe uma matriz de chaves aninhadas e deve retornar uma matriz. |
 
 ## Construtor de strings
 

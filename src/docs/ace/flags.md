@@ -174,7 +174,7 @@ Os aliases de sinalizadores podem ser combinados ao executar o comando.
 ```ts
 make:controller -rs
 
-# Same as
+# O mesmo que
 make:controller --resource --singular
 ```
 
@@ -225,8 +225,8 @@ export default class MakeControllerCommand extends BaseCommands {
     console.log(this.parsed.flags)
     
     /**
-     * Names of flags mentioned but not
-     * accepted by the command
+     * Nomes de sinalizadores mencionados, mas não
+     * aceitos pelo comando
      */
     console.log(this.parsed.unknownFlags)
   }

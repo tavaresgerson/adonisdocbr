@@ -25,11 +25,11 @@ O método `save` executa a consulta **INSERT** ao persistir a instância do mode
 import User from '#models/user'
 const user = new User()
 
-// Assign username and email
+// Atribuir nome de usuário e e-mail
 user.username = 'virk'
 user.email = 'virk@adonisjs.com'
 
-// Insert to the database
+// Inserir no banco de dados
 await user.save()
 
 console.log(user.$isPersisted) // true
@@ -41,7 +41,7 @@ Além disso, você pode usar o método `fill` para definir todos os atributos co
 import User from '#models/user'
 const user = new User()
 
-// Assign username and email using the fill method and then save
+// Atribuir nome de usuário e e-mail usando o método de preenchimento e depois salvar
 await user
   .fill({ username: 'virk', email: 'virk@adonisjs.com' })
   .save()
@@ -53,7 +53,7 @@ console.log(user.$isPersisted) // true
 
 Criar várias instâncias de um modelo e persisti-las no banco de dados. O método `createMany` aceita as mesmas opções que o método `create`.
 
-:::note
+::: info NOTA
 Uma consulta de inserção é emitida para cada instância do modelo para executar os ganchos do ciclo de vida para cada instância.
 :::
 
@@ -138,7 +138,7 @@ A variação `orFail` gerará uma exceção `E_ROW_NOT_FOUND` com statusCode `40
 
 Os métodos estáticos mencionados acima abrangem os casos de uso comuns para consultar o banco de dados. No entanto, você não está limitado apenas a esses métodos e também pode aproveitar a API do construtor de consultas para fazer consultas SQL avançadas.
 
-:::note
+::: info NOTA
 O [ModelQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/orm/query_builder/index.ts) retorna uma matriz de instâncias de modelo e não os objetos JavaScript simples.
 :::
 
@@ -168,7 +168,7 @@ A maneira padrão de executar atualizações usando o modelo é consultar o regi
 ```ts
 const user = await User.findOrFail(1)
 
-user.lastLoginAt = DateTime.local() // Luxon dateTime is used
+user.lastLoginAt = DateTime.local() // Luxon dateTime é usado
 
 await user.save()
 ```

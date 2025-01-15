@@ -15,7 +15,7 @@ A exceção é gerada quando o servidor HTTP recebe uma solicitação para uma r
 ```ts
 import { errors } from '@adonisjs/core'
 if (error instanceof errors.E_ROUTE_NOT_FOUND) {
-  // handle error
+  // lidar com erro
 }
 ```
 
@@ -28,7 +28,7 @@ A exceção é gerada quando a consulta ao banco de dados para encontrar um item
 ```ts
 import { errors as lucidErrors } from '@adonisjs/lucid'
 if (error instanceof lucidErrors.E_ROW_NOT_FOUND) {
-  // handle error
+  // lidar com erro
   console.log(`${error.model?.name || 'Row'} not found`)
 }
 ```
@@ -143,7 +143,7 @@ A exceção é gerada quando você tenta criar uma URL para uma rota usando o [U
 ```ts
 import { errors } from '@adonisjs/core'
 if (error instanceof errors.E_CANNOT_LOOKUP_ROUTE) {
-  // handle error
+  // lidar com erro
 }
 ```
 
@@ -154,7 +154,8 @@ A `E_HTTP_EXCEPTION` é uma exceção genérica para gerar erros durante uma sol
 - **Autogerenciado**: Sim
 
 ```ts
-// title: Throw exception
+// Throw exception
+
 import { errors } from '@adonisjs/core'
 
 throw errors.E_HTTP_EXCEPTION.invoke(
@@ -166,10 +167,11 @@ throw errors.E_HTTP_EXCEPTION.invoke(
 ```
 
 ```ts
-// title: Handle exception
+// Handle exception
+
 import { errors } from '@adonisjs/core'
 if (error instanceof errors.E_HTTP_EXCEPTION) {
-  // handle error
+  // lidar com erro
 }
 ```
 
@@ -179,7 +181,7 @@ A `E_HTTP_REQUEST_ABORTED` é uma subclasse da exceção `E_HTTP_EXCEPTION`. Ess
 ```ts
 import { errors } from '@adonisjs/core'
 if (error instanceof errors.E_HTTP_REQUEST_ABORTED) {
-  // handle error
+  // lidar com erro
 }
 ```
 
@@ -192,7 +194,7 @@ A exceção é gerada quando o comprimento de `appKey` é menor que 16 caractere
 ```ts
 import { errors } from '@adonisjs/core'
 if (error instanceof errors.E_INSECURE_APP_KEY) {
-  // handle error
+  // lidar com erro
 }
 ```
 
@@ -205,7 +207,7 @@ A exceção é gerada quando a propriedade `appKey` não é definida dentro do a
 ```ts
 import { errors } from '@adonisjs/core'
 if (error instanceof errors.E_MISSING_APP_KEY) {
-  // handle error
+  // lidar com erro
 }
 ```
 

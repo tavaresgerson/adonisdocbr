@@ -34,8 +34,8 @@ emitter.on('http:server_ready', (event) => {
   console.log(event.port)
 
   /**
-   * Time it took to boot the app and start
-   * the HTTP server.
+   * Tempo que levou para inicializar o aplicativo e iniciar
+   * o servidor HTTP.
    */
   console.log(event.duration)
 })
@@ -195,7 +195,7 @@ emitter.on('session_auth:login_succeeded', (event) => {
   console.log(event.guardName)
   console.log(event.sessionId)
   console.log(event.user)
-  console.log(event.rememberMeToken) // (if created one)
+  console.log(event.rememberMeToken) // (se criado um)
 })
 ```
 
@@ -222,7 +222,7 @@ emitter.on('session_auth:authentication_succeeded', (event) => {
   console.log(event.sessionId)
 
   console.log(event.user)
-  console.log(event.rememberMeToken) // if authenticated using token
+  console.log(event.rememberMeToken) // se autenticado usando token
 })
 ```
 
@@ -251,8 +251,8 @@ emitter.on('session_auth:logged_out', (event) => {
   console.log(event.sessionId)
 
   /**
-   * The value of the user will be null when logout is called
-   * during a request where no user was logged in in the first place.
+   * O valor do usuário será nulo quando o logout for chamado
+   * durante uma solicitação em que nenhum usuário estava logado em primeiro lugar.
    */
   console.log(event.user)
 })

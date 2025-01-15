@@ -1,10 +1,10 @@
 ---
-summary: Atualize seu aplicativo AdonisJS sem reiniciar o processo usando a substituição de módulo a quente (HMR).
+summary: Atualize seu aplicativo AdonisJS sem reiniciar o processo usando a Hot module replacement (HMR).
 ---
 
-# Substituição de módulo a quente
+# Hot module replacement
 
-A substituição de módulo a quente (HMR) se refere ao processo de recarregar módulos JavaScript após a modificação sem reiniciar todo o processo. O HMR geralmente resulta em um loop de feedback mais rápido, pois, após uma alteração de arquivo, você não precisa esperar que todo o processo reinicie.
+A *Hot module replacement* (HMR) se refere ao processo de recarregar módulos JavaScript após a modificação sem reiniciar todo o processo. O HMR geralmente resulta em um loop de feedback mais rápido, pois, após uma alteração de arquivo, você não precisa esperar que todo o processo reinicie.
 
 O termo HMR é usado há muitos anos no ecossistema de front-end, onde ferramentas como o Vite podem recarregar módulos a quente e aplicar alterações a uma página da web, mantendo seu estado existente.
 

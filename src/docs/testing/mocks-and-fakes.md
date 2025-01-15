@@ -2,7 +2,7 @@
 summary: Aprenda como simular ou falsificar dependências durante os testes no AdonisJS.
 ---
 
-# Simulações e falsificações
+# Mocks & Fakes
 
 Ao testar seus aplicativos, você pode querer simular ou falsificar dependências específicas para evitar que implementações reais sejam executadas. Por exemplo, você deseja evitar enviar e-mails para seus clientes ao executar testes e nem chamar serviços de terceiros, como um gateway de pagamento.
 
@@ -14,10 +14,10 @@ Fakes são objetos com implementações funcionais criadas explicitamente para t
 
 Nós fornecemos implementações falsas para os seguintes serviços de contêiner. A API fakes é documentada junto com a documentação do módulo.
 
-[Falso emissor](../digging_deeper/emitter.md#faking-events-during-tests)
-[Falso hash](../security/hashing.md#faking-hash-service-during-tests)
-[Mailer falso](../digging_deeper/mail.md#fake-mailer)
-[Falso drive](../digging_deeper/drive.md#faking-disks)
+* [Fake Emitter](../digging_deeper/emitter.md#faking-events-during-tests)
+* [Fake Hash](../security/hashing.md#faking-hash-service-during-tests)
+* [Fake Mailer](../digging_deeper/mail.md#fake-mailer)
+* [Fake Drive](../digging_deeper/drive.md#faking-disks)
 
 ## Injeção de dependência e fakes
 
@@ -37,12 +37,11 @@ export default class UsersController {
 
 Durante o teste, podemos fornecer uma implementação alternativa/falsa da classe `UserService` da seguinte forma.
 
-```ts
+```ts {5-20}
 import UserService from '#services/user_service'
 import app from '@adonisjs/core/services/app'
 
 test('get all users', async () => {
-  // highlight-start
   class FakeService extends UserService {
     all() {
       return [{ id: 1, username: 'virk' }]
@@ -50,17 +49,15 @@ test('get all users', async () => {
   }
   
   /**
-   * Swap `UserService` with an instance of
-   * `FakeService`
+   * Troque `UserService` por uma instância de `FakeService`
    */  
   app.container.swap(UserService, () => {
     return new FakeService()
   })
   
   /**
-   * Test logic goes here
+   * A lógica de teste vai aqui
    */
-  // highlight-end
 })
 ```
 
@@ -69,10 +66,10 @@ Depois que o teste for concluído, você deve restaurar a falsificação usando 
 ```ts
 app.container.restore(UserService)
 
-// Restore UserService and PostService
+// Restaurar UserService e PostService
 app.container.restoreAll([UserService, PostService])
 
-// Restore all
+// Restaurar todos
 app.container.restoreAll()
 ```
 
@@ -120,7 +117,7 @@ import { timeTravel } from '#test_helpers'
 
 test('expire token after 2 hours', async ({ assert }) => {
   /**
-   * Travel 3 hours into the future
+   * Viaje 3 horas para o futuro
    */
   timeTravel(60 * 60 * 3)
 })

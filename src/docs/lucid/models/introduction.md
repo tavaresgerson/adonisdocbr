@@ -2,7 +2,7 @@
 summary: Uma introdução aos modelos de dados Lucid ORM, construídos no padrão de registro ativo.
 ---
 
-# Modelos
+# Introdução
 
 Junto com o construtor de consultas do banco de dados, o Lucid também tem modelos de dados construídos sobre o [padrão de registro ativo](https://en.wikipedia.org/wiki/Active_record_pattern).
 
@@ -14,7 +14,7 @@ Recomendamos usar modelos extensivamente e recorrer ao construtor de consultas p
 
 O registro ativo também é o nome do ORM usado pelo Ruby on Rails. No entanto, o padrão de registro ativo é um conceito mais amplo que qualquer linguagem de programação ou estrutura pode implementar.
 
-:::note
+::: info NOTA
 Sempre que dizemos o termo **registro ativo**, estamos falando sobre o padrão em si e não sobre a implementação do Rails.
 :::
 
@@ -52,7 +52,7 @@ E use-o da seguinte forma:
 
 ```ts
 const users = await User.all()
-return users.map((user) => user.toJSON()) // date is formatted during `toJSON` call
+return users.map((user) => user.toJSON()) // a data é formatada durante a chamada `toJSON`
 ```
 
 ## Criando seu primeiro modelo
@@ -181,7 +181,7 @@ O Lucid permite que você transforme os valores das colunas antes de salvá-los 
 Por exemplo, você está armazenando um valor "secreto" no banco de dados e deseja criptografá-lo antes de salvá-lo e descriptografá-lo depois de buscá-lo.
 
 ```ts
-// In this example, we are using the `encryption` module from the `@adonisjs/core` package
+// Neste exemplo, estamos usando o módulo `encryption` do pacote `@adonisjs/core`
 // @see https://docs.adonisjs.com/guides/security/encryption
 import encryption from '@adonisjs/core/services/encryption'
 import { BaseModel, column } from '@adonisjs/lucid/orm'
@@ -291,7 +291,7 @@ export default class User extends BaseModel {
 
 Instrua o modelo a usar uma conexão de banco de dados personalizada definida dentro do arquivo `config/database`.
 
-:::note
+::: info NOTA
 NÃO use esta propriedade para alternar a conexão em tempo de execução. Esta propriedade define apenas um nome de conexão estática que permanece o mesmo durante todo o ciclo de vida do aplicativo.
 :::
 

@@ -2,7 +2,7 @@
 
 O [ModelQueryBuilder](https://github.com/adonisjs/lucid/blob/develop/src/orm/query_builder/index.ts) estende o [SelectQueryBuilder](../query_builders/select.md) padrão e, portanto, todos os métodos também estão disponíveis para o construtor de consultas de modelo.
 
-:::note
+::: info NOTA
 Este documento abrange apenas os métodos/propriedades adicionais exclusivos do construtor de consultas de modelo.
 :::
 
@@ -13,7 +13,7 @@ Além disso, o construtor de consultas de modelo está ciente do modelo e de seu
 ```ts
 class User extends BaseModel {}
 
-// Returns model query builder instance
+// Retorna a instância do construtor de consulta do modelo
 User.query()
 ```
 
@@ -118,13 +118,13 @@ await User.query().has('posts', '>=', 2)
 
 O método `has` tem as seguintes variantes.
 
-| Método | Descrição |
-|--------|-------------|
-| `orHas` | Adiciona uma cláusula or has para um determinado relacionamento. |
-| `andHas` | Alias ​​para o método `has`. |
-| `doesntHave` | Oposto do método `has`. |
-| `orDoesntHave` | Oposto do método `orHas`. |
-| `andDoesntHave` | Alias ​​para o método `doesntHave`. |
+| Método          | Descrição                                                         |
+|-----------------|-------------------------------------------------------------------|
+| `orHas`         | Adiciona uma cláusula or has para um determinado relacionamento.  |
+| `andHas`        | Alias ​​para o método `has`.                                        |
+| `doesntHave`    | Oposto do método `has`.                                           |
+| `orDoesntHave`  | Oposto do método `orHas`.                                         |
+| `andDoesntHave` | Alias ​​para o método `doesntHave`.                                 |
 
 ## `whereHas`
 Semelhante ao método `has`. No entanto, o método `whereHas` permite definir restrições adicionais passando um retorno de chamada como o 2º argumento.
@@ -139,13 +139,13 @@ await User.query().whereHas('posts', (postsQuery) => {
 
 O método `whereHas` tem as seguintes variantes
 
-| Método | Descrição |
-|--------|-------------|
-| `orWhereHas` | Adiciona uma cláusula or has para um determinado relacionamento. |
-| `andWhereHas` | Alias ​​para o método `whereHas`. |
-| `whereDoesntHave` | Oposto do método `whereHas`. |
-| `orWhereDoesntHave` | Oposto do método `orWhereHas`. |
-| `andWhereDoesntHave` | Alias ​​para o método `whereDoesntHave`. |
+| Método                | Descrição                                                         |
+|-----------------------|-------------------------------------------------------------------|
+| `orWhereHas`          | Adiciona uma cláusula or has para um determinado relacionamento.  |
+| `andWhereHas`         | Alias ​​para o método `whereHas`.                                   |
+| `whereDoesntHave`     | Oposto do método `whereHas`.                                      |
+| `orWhereDoesntHave`   | Oposto do método `orWhereHas`.                                    |
+| `andWhereDoesntHave`  | Alias ​​para o método `whereDoesntHave`.                            |
 
 ## `sideload`
 O método `sideload` funciona como um pipeline para passar um objeto arbitrário para a(s) instância(s) do modelo criada(s) após a execução da consulta.

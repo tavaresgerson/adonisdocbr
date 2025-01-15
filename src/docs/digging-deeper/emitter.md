@@ -23,7 +23,8 @@ node ace make:preload events
 Você deve usar `emitter.on` para ouvir um evento. O método aceita o nome do evento como o primeiro argumento e o ouvinte como o segundo argumento.
 
 ```ts
-// title: start/events.ts
+// start/events.ts
+
 import emitter from '@adonisjs/core/services/emitter'
 
 emitter.on('user:registered', function (user) {
@@ -58,7 +59,7 @@ O AdonisJS torna obrigatório definir tipos estáticos para cada evento que voc�
 
 No exemplo a seguir, registramos o modelo `User` como o tipo de dados para o evento `user:registered`.
 
-:::note
+::: info NOTA
 Se você achar que definir tipos para cada evento é trabalhoso, pode alternar para [eventos baseados em classe](#class-based-events).
 :::
 
@@ -89,15 +90,16 @@ import User from '#models/user'
 
 export default class SendVerificationEmail {
   handle(user: User) {
-    // Send email
+    // Enviar e-mail
   }
 }
 ```
 
 Como etapa final, você deve vincular a classe listener a um evento dentro do arquivo `start/events.ts`. Você pode importar o listener usando o alias `#listeners`. Os aliases são definidos usando o [recurso de importações de subcaminho do Node.js](../getting_started/folder_structure.md#the-sub-path-imports).
 
-```ts
-// title: start/events.ts
+```ts 
+// start/events.ts
+
 import emitter from '@adonisjs/core/services/emitter'
 import SendVerificationEmail from '#listeners/send_verification_email'
 
@@ -110,19 +112,15 @@ emitter.on('user:registered', [SendVerificationEmail, 'handle'])
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
-// delete-start
-import SendVerificationEmail from '#listeners/send_verification_email'
-// delete-end
-// insert-start
-const SendVerificationEmail = () => import('#listeners/send_verification_email')
-// insert-end
+import SendVerificationEmail from '#listeners/send_verification_email' // [!code --]
+const SendVerificationEmail = () => import('#listeners/send_verification_email') // [!code ++]
 
 emitter.on('user:registered', [SendVerificationEmail, 'handle'])
 ```
 
 ### Injeção de dependência
 
-:::warning
+::: warning ATENÇÃO
 Você não pode injetar o `HttpContext` dentro de uma classe ouvinte. Como os eventos são processados ​​de forma assíncrona, o ouvinte pode ser executado após a conclusão da solicitação HTTP.
 :::
 
@@ -131,7 +129,8 @@ As classes ouvintes são instanciadas usando o [contêiner IoC](../concepts/depe
 No exemplo a seguir, damos dicas de tipo no `TokensService` como um argumento do construtor. Ao invocar este ouvinte, o contêiner IoC injetará uma instância da classe `TokensService`.
 
 ```ts
-// title: Constructor injection
+// Injeção de construtor
+
 import { inject } from '@adonisjs/core'
 import TokensService from '#services/tokens_service'
 
@@ -148,7 +147,8 @@ export default class SendVerificationEmail {
 No exemplo a seguir, injetamos o `TokensService` dentro do método handle. No entanto, lembre-se, o primeiro argumento sempre será a carga útil do evento.
 
 ```ts
-// title: Method injection
+// Método de injeção
+
 import { inject } from '@adonisjs/core'
 import TokensService from '#services/tokens_service'
 import UserRegistered from '#events/user_registered'
@@ -181,7 +181,8 @@ node ace make:event UserRegistered
 A classe event não tem comportamento. Em vez disso, é um contêiner de dados para o evento. Você pode aceitar dados de evento por meio do construtor de classe e disponibilizá-los como uma propriedade de instância.
  
 ```ts
-// title: app/events/user_registered.ts
+// app/events/user_registered.ts
+
 import { BaseEvent } from '@adonisjs/core/events'
 import User from '#models/user'
 
@@ -229,7 +230,7 @@ export default class UsersController {
     const user = await User.create(data)
     
     /**
-     * Dispatch/emit the event
+     * Despachar/emitir o evento
      */
     UserRegistered.dispatch(user)
   }
@@ -287,7 +288,7 @@ import emitter from '@adonisjs/core/services/emitter'
 
 const unsubscribe = emitter.on('user:registered', () => {})
 
-// Remove the listener
+// Remover o ouvinte
 unsubscribe()
 ```
 
@@ -298,10 +299,10 @@ import emitter from '@adonisjs/core/services/emitter'
 
 function sendEmail () {}
 
-// Listen for event
+// Ouvir o evento
 emitter.on('user:registered', sendEmail)
 
-// Remove listener
+// Remover o ouvinte
 emitter.off('user:registered', sendEmail)
 ```
 
@@ -318,10 +319,10 @@ emitter.offAny(callback)
 O método `emitter.clearListeners` remove todos os ouvintes de um determinado evento.
 
 ```ts
-//String-based event
+// Evento baseado em string
 emitter.clearListeners('user:registered')
 
-//Class-based event
+// Evento baseado em classe
 emitter.clearListeners(UserRegistered)
 ```
 
@@ -344,18 +345,16 @@ Ao escrever testes, você pode querer evitar enviar e-mails para o usuário cria
 
 Você pode desabilitar os ouvintes de eventos falsificando o emissor do evento. No exemplo a seguir, chamamos `emitter.fake` antes de fazer uma solicitação HTTP para inscrever um usuário. Após a solicitação, usamos o método `events.assertEmitted` para garantir que o `SignupController` emita um evento específico.
 
-```ts
+```ts {6-9,19-20}
 import emitter from '@adonisjs/core/services/emitter'
 import UserRegistered from '#events/user_registered'
 
 test.group('User signup', () => {
   test('create a user account', async ({ client, cleanup }) => {
-    // highlight-start
     const events = emitter.fake()
     cleanup(() => {
       emitter.restore()
     })
-    // highlight-end
   
     await client
       .post('signup')
@@ -365,10 +364,8 @@ test.group('User signup', () => {
       })
   })
   
-  // highlight-start
-  // Assert the event was emitted
+  // Afirmar que o evento foi emitido
   events.assertEmitted(UserRegistered)
-  // highlight-end
 })
 ```
 
@@ -380,10 +377,10 @@ test.group('User signup', () => {
 O método `emitter.fake` falsifica todos os eventos se você invocar o método sem nenhum argumento. Se você quiser falsificar um evento específico, passe o nome do evento ou a classe como o primeiro argumento.
 
 ```ts
-// Fakes only the user:registered event
+// Falsifica apenas o evento user:registered
 emitter.fake('user:registered')
 
-// Fake multiple events
+// Falsifica vários eventos
 emitter.fake([UserRegistered, OrderUpdated])
 ```
 
@@ -402,21 +399,23 @@ events.assertNotEmitted(OrderUpdated)
 ```
 
 ```ts
-// title: With a callback
+// Com um retorno de chamada
+
 events.assertEmitted(OrderUpdated, ({ data }) => {
   /**
-   * Only consider the event as emitted, if
-   * the orderId matches
+   * Considere o evento como emitido somente se
+   * o orderId corresponder
    */
   return data.order.id === orderId
 })
 ```
 
 ```ts
-// title: Asserting events count
-// Assert count of a specific event
+// Afirmar a contagem de eventos
+
+// Afirmar a contagem de um evento específico
 events.assertEmittedCount(OrderUpdated, 1)
 
-// Assert no events were emitted
+// Afirmar que nenhum evento foi emitido
 events.assertNoneEmitted()
 ```

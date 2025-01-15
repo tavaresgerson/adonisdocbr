@@ -141,15 +141,13 @@ Os grupos de teste são criados usando o método `test.group`. Os grupos adicion
 
 Continuando o exemplo anterior, vamos mover o teste de hash de senha para dentro de um grupo.
 
-```ts
+```ts {6,16}
 import { test } from '@japa/runner'
 
 import User from '#models/User'
 import hash from '@adonisjs/core/services/hash'
 
-// highlight-start
 test.group('creating user', () => {
-// highlight-end
   test('hashes user password', async ({ assert }) => {
     const user = new User()
     user.password = 'secret'
@@ -159,9 +157,7 @@ test.group('creating user', () => {
     assert.isTrue(hash.isValidHash(user.password))
     assert.isTrue(await hash.verify(user.password, 'secret'))
   })
-// highlight-start
 })
-// highlight-end
 ```
 
 Se você notou, removemos o fragmento **"ao criar um novo usuário"** do título do nosso teste. Isso ocorre porque o título do grupo esclarece que todos os testes sob esse grupo têm como escopo **criar um novo usuário**.
@@ -172,9 +168,8 @@ Os ganchos de ciclo de vida são usados ​​para executar ações em torno dos
 
 Veja também - [Japa docs para Lifecycle hooks](https://japa.dev/docs/lifecycle-hooks)
 
-```ts
+```ts {2-16}
 test.group('creating user', (group) => {
-  // highlight-start
   group.each.setup(async () => {
     console.log('runs before every test')
   })
@@ -190,7 +185,6 @@ test.group('creating user', (group) => {
   group.teardown(async () => {
     console.log('runs once after all the tests')
   })
-  // highlight-end
 
   test('hashes user password', async ({ assert }) => {
     const user = new User()
@@ -208,9 +202,9 @@ test.group('creating user', (group) => {
 
 Agora que você conhece os conceitos básicos de criação e escrita de testes. Recomendamos que você explore os seguintes tópicos na documentação do Japa.
 
-[Explore a API da função `test`](https://japa.dev/docs/underlying-test-class)
-[Aprenda a testar código assíncrono de forma eficaz](https://japa.dev/docs/testing-async-code)
-[Usando conjuntos de dados para evitar testes repetitivos](https://japa.dev/docs/datasets)
+* [Explore a API da função `test`](https://japa.dev/docs/underlying-test-class)
+* [Aprenda a testar código assíncrono de forma eficaz](https://japa.dev/docs/testing-async-code)
+* [Usando conjuntos de dados para evitar testes repetitivos](https://japa.dev/docs/datasets)
 
 ## Executando testes
 
@@ -239,13 +233,11 @@ Você pode aplicar filtros usando os sinalizadores de linha de comando ao execut
 
 Veja também: [Guia de testes de filtragem Japa](https://japa.dev/docs/filtering-tests)
 
-:::dica
-
+::: tip DICA
 **Usando VSCode?** Use a [extensão Japa](https://marketplace.visualstudio.com/items?itemName=jripouteau.japa-vscode) para executar testes selecionados dentro do seu editor de código usando atalhos de teclado ou a barra lateral de atividades.
-
 :::
 
-| Sinalizar     | Descrição                                                                                                                                                                                            |
+| Sinalizador  | Descrição                                                                                                                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `--tests`    | Filtrar teste pelo título do teste. Este filtro corresponde ao título exato do teste. |
 | `--files`    | Filtrar testes pelo subconjunto do nome do arquivo de teste. A correspondência é realizada no final do nome do arquivo sem `.spec.ts`. Você pode executar testes para uma pasta completa usando a expressão curinga. `folder/*` |
@@ -267,7 +259,7 @@ node ace test --force-exit
 Você pode tentar novamente os testes com falha várias vezes usando o sinalizador `--retries`. O sinalizador será aplicado a todos os testes sem uma contagem explícita de tentativas definida no nível do teste.
 
 ```sh
-# Retry failing tests 2 times
+# Tentar novamente os testes com falha 2 vezes
 node ace test --retries=2
 ```
 
@@ -282,10 +274,10 @@ node ace test --failed
 O Japa permite que você registre vários repórteres de teste dentro do arquivo de configuração, mas não os ativa por padrão. Você pode ativar repórteres dentro do arquivo de configuração ou usando o sinalizador de linha de comando `--reporter`.
 
 ```sh
-# Activate spec reporter
+# Ativar repórter de especificações
 node ace test --reporter=spec
 
-# Activate spec and json reporters
+# Ativar repórteres de especificações e json
 node ace test --reporter=spec,json
 ```
 
@@ -310,7 +302,7 @@ Você pode usar o arquivo `.env.test` para definir as variáveis ​​de ambien
 
 O `SESSION_DRIVER` durante o teste deve ser definido como `memory`.
 
-```dotenv
-// title: .env.test
+```
+// .env.test
 SESSION_DRIVER=memory
 ```

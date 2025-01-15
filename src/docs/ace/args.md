@@ -28,17 +28,15 @@ export default class GreetCommand extends BaseCommand {
 
 Para aceitar vários valores sob o mesmo nome de argumento, você pode usar o decorador `@agrs.spread`. Observe que o argumento spread deve ser o último.
 
-```ts
+```ts {7-8}
 import { BaseCommand, args, flags } from '@adonisjs/core/ace'
 
 export default class GreetCommand extends BaseCommand {
   static commandName = 'greet'
   static description = 'Greet a user by name'
   
-  // highlight-start
   @args.spread()
   declare names: string[]
-  // highlight-start
 
   run() {
     console.log(this.names)

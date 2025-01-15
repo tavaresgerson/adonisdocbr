@@ -13,10 +13,9 @@ Se você quiser testar seus aplicativos da web dentro de um navegador real e int
 ## Configuração
 O primeiro passo é instalar os seguintes pacotes do registro de pacotes npm.
 
-:::codegroup
+::: code-group
 
-```sh
-// title: npm
+```sh [npm]
 npm i -D @japa/api-client
 ```
 
@@ -26,15 +25,13 @@ npm i -D @japa/api-client
 
 Antes de prosseguir, registre o plugin dentro do arquivo `tests/bootstrap.ts`.
 
-```ts
-// title: tests/bootstrap.ts
+```ts {6}
+// tests/bootstrap.ts
 import { apiClient } from '@japa/api-client'
 
 export const plugins: Config['plugins'] = [
   assert(),
-  // highlight-start
   apiClient(),
-  // highlight-end
   pluginAdonisJS(app),
 ]
 ```
@@ -93,18 +90,17 @@ O AdonisJS não oferece ferramentas para gerar arquivos de esquema da API aberta
 
 Depois de ter um arquivo de especificação, salve-o dentro do diretório `resources` (crie o diretório se estiver faltando) e registre-o com o plugin `assert` dentro do arquivo `tests/bootstrap.ts`.
 
-```ts
-// title: tests/bootstrap.ts
+```ts {6-10}
+// tests/bootstrap.ts
+
 import app from '@adonisjs/core/services/app'
 
 export const plugins: Config['plugins'] = [
-  // highlight-start
   assert({
     openApi: {
       schemas: [app.makePath('resources/open_api_schema.yaml')]
     }
   }),
-  // highlight-end
   apiClient(),
   pluginAdonisJS(app)
 ]
@@ -126,12 +122,13 @@ test('paginate posts', async ({ client }) => {
 Somente a forma da resposta é testada, não os valores reais. Portanto, você pode ter que escrever asserções adicionais. Por exemplo:
 
 ```ts
-// Assert that the response is as per the schema
+// Afirme que a resposta está de acordo com o esquema
 response.assertAgainstApiSpec()
 
-// Assert for expected values
+// Afirme para valores esperados
 response.assertBodyContains({
-  data: [{ title: 'Adonis 101' }, { title: 'Lucid 101' }]
+  data: [{ 'Adonis 101' }, { 'Lucid 101' }]
+
 })
 ```
 
@@ -182,25 +179,23 @@ Se você estiver usando o pacote [`@adonisjs/session`](../basics/session.md) par
 ### Configuração
 O primeiro passo é registrar o plugin dentro do arquivo `tests/bootstrap.ts`.
 
-```ts
-// title: tests/bootstrap.ts
-// insert-start
+```ts {3,8}
+// tests/bootstrap.ts
+
 import { sessionApiClient } from '@adonisjs/session/plugins/api_client'
-// insert-end
 
 export const plugins: Config['plugins'] = [
   assert(),
   pluginAdonisJS(app),
-  // insert-start
   sessionApiClient(app)
-  // insert-end
 ]
 ```
 
 E então, atualize o arquivo `.env.test` (crie um se estiver faltando) e defina o `SESSON_DRIVER` para `memory`.
 
-```dotenv
-// title: .env.test
+```
+// .env.test
+
 SESSION_DRIVER=memory
 ```
 
@@ -211,11 +206,10 @@ O método `withSession` criará um novo ID de sessão e preencherá o armazename
 
 Após a conclusão da solicitação, o ID da sessão e seus dados serão destruídos.
 
-```ts
+```ts {4-15}
 test('checkout with cart items', async ({ client }) => {
   await client
     .post('/checkout')
-    // highlight-start
     .withSession({
       cartItems: [
         {
@@ -228,7 +222,6 @@ test('checkout with cart items', async ({ client }) => {
         }
       ]
     })
-    // highlight-end
 })
 ```
 
@@ -251,12 +244,13 @@ Você pode acessar o conjunto de dados de sessão pelo seu servidor AdonisJS usa
 const response = await client
   .post('/posts')
   .json({
-    title: 'some title',
+    'some title',
+
     body: 'some description',
   })
 
-console.log(response.session()) // all session data
-console.log(response.session('post_id')) // value of post_id
+console.log(response.session()) // todos os dados da sessão
+console.log(response.session('post_id')) // valor de post_id
 ```
 
 Você pode ler mensagens flash da resposta usando o método `response.flashMessage` ou `response.flashMessages`.
@@ -275,8 +269,8 @@ Finalmente, você pode escrever asserções para os dados da sessão usando um d
 const response = await client.post('/posts')
 
 /**
- * Assert a specific key (with optional value) exists
- * in the session store
+ * Afirma que uma chave específica (com valor opcional) existe
+ * no armazenamento de sessão
  */
 response.assertSession('cart_items')
 response.assertSession('cart_items', [{
@@ -286,25 +280,24 @@ response.assertSession('cart_items', [{
 }])
 
 /**
- * Assert a specific key is not in the session store
+ * Afirmar que uma chave específica não está no armazenamento de sessão
  */
 response.assertSessionMissing('cart_items')
 
 /**
- * Assert a flash message exists (with optional value)
- * in the flash messages store
+ * Afirma que existe uma mensagem flash (com valor opcional)
+ * no armazenamento de mensagens flash
  */
 response.assertFlashMessage('success')
 response.assertFlashMessage('success', 'Post created successfully')
 
 /**
- * Assert a specific key is not in the flash messages store
+ * Afirmar que uma chave específica não está no armazenamento de mensagens flash
  */
 response.assertFlashMissing('errors')
 
 /**
- * Assert for validation errors in the flash messages
- * store
+ * Afirmar erros de validação no armazenamento de mensagens flash
  */
 response.assertHasValidationError('title')
 response.assertValidationError('title', 'Enter post title')
@@ -321,17 +314,14 @@ Se você usar o pacote `@adonisjs/auth` para autenticar usuários em seu aplicat
 O primeiro passo é registrar o plugin dentro do arquivo `tests/bootstrap.ts`.
 
 ```ts
-// title: tests/bootstrap.ts
-// insert-start
-import { authApiClient } from '@adonisjs/auth/plugins/api_client'
-// insert-end
+// tests/bootstrap.ts
+
+import { authApiClient } from '@adonisjs/auth/plugins/api_client' // [!code ++]
 
 export const plugins: Config['plugins'] = [
   assert(),
   pluginAdonisJS(app),
-  // insert-start
-  authApiClient(app)
-  // insert-end
+  authApiClient(app) // [!code ++]
 ]
 ```
 
@@ -339,7 +329,7 @@ Se você estiver usando autenticação baseada em sessão, certifique-se de tamb
 
 Isso é tudo. Agora, você pode fazer login de usuários usando o método `loginAs`. O método aceita o objeto do usuário como o único argumento e marca o usuário como logado para a solicitação HTTP atual.
 
-```ts
+```ts {8}
 import User from '#models/user'
 
 test('get payments list', async ({ client }) => {
@@ -347,21 +337,17 @@ test('get payments list', async ({ client }) => {
 
   await client
     .get('/me/payments')
-    // highlight-start
     .loginAs(user)
-    // highlight-end
 })
 ```
 
 O método `loginAs` usa o guard padrão configurado dentro do arquivo `config/auth.ts` para autenticação. No entanto, você pode especificar uma proteção personalizada usando o método `withGuard`. Por exemplo:
 
-```ts
+```ts {3-4}
 await client
     .get('/me/payments')
-    // highlight-start
     .withGuard('api_tokens')
     .loginAs(user)
-    // highlight-end
 ```
 
 ## Fazendo uma solicitação com um token CSRF
@@ -370,19 +356,16 @@ Se os formulários em seu aplicativo usarem [proteção CSRF](../security/securi
 Antes de usar o método `withCsrfToken`, registre os seguintes plug-ins Japa dentro do arquivo `tests/bootstrap.ts` e também certifique-se de [trocar a variável de ambiente `SESSION_DRIVER`](#setup-1) para `memory`.
 
 ```ts
-// title: tests/bootstrap.ts
-// insert-start
-import { shieldApiClient } from '@adonisjs/shield/plugins/api_client'
-import { sessionApiClient } from '@adonisjs/session/plugins/api_client'
-// insert-end
+// tests/bootstrap.ts
+
+import { shieldApiClient } from '@adonisjs/shield/plugins/api_client'   // [!code ++]
+import { sessionApiClient } from '@adonisjs/session/plugins/api_client' // [!code ++]
 
 export const plugins: Config['plugins'] = [
   assert(),
   pluginAdonisJS(app),
-  // insert-start
-  sessionApiClient(app),
-  shieldApiClient()
-  // insert-end
+  sessionApiClient(app),  // [!code ++]
+  shieldApiClient()       // [!code ++]
 ]
 ```
 
@@ -400,12 +383,10 @@ Você pode usar o auxiliar `route` do TestContext para criar uma URL para uma ro
 
 O auxiliar `route` aceita o mesmo conjunto de argumentos aceitos pelo método de modelo global [route](../basics/routing.md#url-builder).
 
-```ts
+```ts {3}
 test('get a list of users', async ({ client, route }) => {
   const response = await client.get(
-    // highlight-start
     route('users.list')
-    // highlight-end
   )
 
   response.assertStatus(200)

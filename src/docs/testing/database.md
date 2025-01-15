@@ -15,7 +15,8 @@ Antes de executar seus testes que interagem com o banco de dados, você deve exe
 A primeira opção que temos é `testUtils.db().migrate()`. Este gancho executará primeiro todas as suas migrações e, em seguida, reverterá tudo.
 
 ```ts
-// title: tests/bootstrap.ts
+// tests/bootstrap.ts
+
 import testUtils from '@adonisjs/core/services/test_utils'
 
 export const runnerHooks: Required<Pick<Config, 'setup' | 'teardown'>> = {
@@ -40,7 +41,8 @@ Redefinir o banco de dados após cada ciclo de execução é uma boa opção, ma
 No final de cada ciclo de execução, as tabelas serão apenas truncadas, mas nosso esquema será mantido. Então, na próxima vez que executarmos nossos testes, teremos um banco de dados vazio, mas o esquema já estará em vigor, então não há necessidade de executar cada migração novamente.
 
 ```ts
-// title: tests/bootstrap.ts
+// tests/bootstrap.ts
+
 import testUtils from '@adonisjs/core/services/test_utils'
 
 export const runnerHooks: Required<Pick<Config, 'setup' | 'teardown'>> = {
@@ -55,7 +57,8 @@ export const runnerHooks: Required<Pick<Config, 'setup' | 'teardown'>> = {
 Se você precisar semear seu banco de dados, você pode usar o gancho `testUtils.db().seed()`. Este gancho executará todas as suas sementes antes de executar seus testes.
 
 ```ts
-// title: tests/bootstrap.ts
+// tests/bootstrap.ts
+
 import testUtils from '@adonisjs/core/services/test_utils'
 
 export const runnerHooks: Required<Pick<Config, 'setup' | 'teardown'>> = {
@@ -72,7 +75,8 @@ export const runnerHooks: Required<Pick<Config, 'setup' | 'teardown'>> = {
 Ao executar testes, você pode querer manter seu banco de dados limpo entre cada teste. Para isso, você pode usar o gancho `testUtils.db().withGlobalTransaction()`. Este gancho iniciará uma transação antes de cada teste e a reverterá no final do teste.
 
 ```ts
-// title: tests/unit/user.spec.ts
+// tests/unit/user.spec.ts
+
 import { test } from '@japa/runner'
 import testUtils from '@adonisjs/core/services/test_utils'
 
@@ -88,7 +92,8 @@ Observe que se você estiver usando qualquer transação em seu código testado,
 Como mencionado acima, a transação global não funcionará se você estiver usando transações no seu código testado. Neste caso, você pode usar o hook `testUtils.db().truncate()`. Este hook truncará todas as suas tabelas após cada teste.
 
 ```ts
-// title: tests/unit/user.spec.ts
+// tests/unit/user.spec.ts
+
 import { test } from '@japa/runner'
 
 test.group('User', (group) => {

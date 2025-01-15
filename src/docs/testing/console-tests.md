@@ -50,17 +50,17 @@ import ace from '@adonisjs/core/services/ace'
 test.group('Commands greet', () => {
   test('should greet the user and finish with exit code 1', async () => {
     /**
-     * Create an instance of the Greet command class
+     * Crie uma instância da classe de comando Greet
      */
     const command = await ace.create(Greet, [])
 
     /**
-     * Execute command
+     * Execute o comando
      */
     await command.exec()
 
     /**
-     * Assert command exited with status code 0
+     * O comando Assert saiu com o código de status 0
      */
     command.assertSucceeded()
   })
@@ -81,44 +81,40 @@ No modo `raw`, o ace não gravará nenhum log no terminal. Em vez disso, os mant
 
 Usaremos o gancho Japa `each.setup` para alternar para dentro e para fora do modo `raw`.
 
-```ts
+```ts {2-5}
 test.group('Commands greet', (group) => {
-  // highlight-start
   group.each.setup(() => {
     ace.ui.switchMode('raw')
     return () => ace.ui.switchMode('normal')
   })
-  // highlight-end
   
-  // test goes here
+  // teste vai aqui
 })
 ```
 
 Depois que o gancho for definido, você pode atualizar seu teste da seguinte forma.
 
-```ts
+```ts {17-20}
 test('should greet the user and finish with exit code 1', async () => {
   /**
-   * Create an instance of the Greet command class
+   * Criar uma instância da classe de comando Greet
    */
   const command = await ace.create(Greet, [])
 
   /**
-   * Execute command
+   * Executar comando
    */
   await command.exec()
 
   /**
-   * Assert command exited with status code 0
+   * Declarar que o comando saiu com o código de status 0
    */
   command.assertSucceeded()
 
-  // highlight-start
   /**
-   * Assert the command printed the following log message
+   * Declarar que o comando imprimiu a seguinte mensagem de log
    */
   command.assertLog('[ blue(info) ] Hello world from "Greet"')
-  // highlight-end
 })
 ```
 
@@ -164,14 +160,12 @@ Os traps são removidos automaticamente após o prompt ser acionado. Um erro ser
 
 No exemplo a seguir, colocamos uma armadilha em um prompt intitulado `"Qual é seu nome?"` e respondemos usando o método `replyWith`.
 
-```ts
+```ts {3-5}
 const command = await ace.create(Greet, [])
 
-// highlight-start
 command.prompt
   .trap('What is your name?')
   .replyWith('Virk')
-// highlight-end
 
 await command.exec()
 
@@ -217,7 +211,7 @@ Para testar o comportamento de validação de um prompt, você pode usar os mét
 ```ts
 command.prompt
   .trap('What is your name?')
-  // assert the prompt fails when an empty value is provided
+  // afirmar que o prompt falha quando um valor vazio é fornecido
   .assertFails('', 'Please enter your name')
   
 command.prompt

@@ -16,13 +16,13 @@ Instale e configure o pacote `@adonisjs/drive` usando o seguinte comando:
 node ace add @adonisjs/drive
 ```
 
-::: detalhes Veja as etapas executadas pelo comando add
+::: details Veja as etapas executadas pelo comando add
 
 1. Instala o pacote `@adonisjs/drive` usando o gerenciador de pacotes detectado.
 
 2. Registra o seguinte provedor de serviços dentro do arquivo `adonisrc.ts`.
 
-```ts
+   ```ts
    {
      providers: [
        // ...other providers
@@ -55,7 +55,7 @@ const driveConfig = defineConfig({
 
   services: {
     /**
-     * Persist files on the local filesystem
+     * Persistir arquivos no sistema de arquivos local
      */
     fs: services.fs({
       location: app.makePath('storage'),
@@ -65,7 +65,7 @@ const driveConfig = defineConfig({
     }),
 
     /**
-     * Persist files on Digital Ocean spaces
+     * Persistir arquivos em espaços do Digital Ocean
      */
     spaces: services.s3({
       credentials: {
@@ -93,19 +93,18 @@ Além disso, a variável de ambiente `DRIVE_DISK` define o disco/serviço padrã
 
 Depois de configurar o Drive, você pode importar o serviço `drive` para interagir com suas APIs. No exemplo a seguir, lidamos com uma operação de upload de arquivo usando o Drive.
 
-:::note
+::: info NOTA
 Já que a integração do AdonisJS é um wrapper fino sobre o FlyDrive. Para entender melhor suas APIs, você deve ler [FlyDrive docs](https://flydrive.dev).
 :::
 
-```ts
+```ts {21,28}
 import { cuid } from '@adonisjs/core/helpers'
 import drive from '@adonisjs/drive/services/main'
 import router from '@adonisjs/core/services/router'
 
 router.put('/me', async ({ request, response }) => {
   /**
-   * Step 1: Grab the image from the request and perform basic
-   * validations
+   * Etapa 1: Pegue a imagem da solicitação e execute validações básicas
    */
   const image = request.file('avatar', {
     size: '2mb',
@@ -116,21 +115,17 @@ router.put('/me', async ({ request, response }) => {
   }
 
   /**
-   * Step 2: Move the image with a unique name using Drive
+   * Etapa 2: Mova a imagem com um nome exclusivo usando o Drive
    */
   const key = `uploads/${cuid()}.${image.extname}`
-  // highlight-start
   await image.moveToDisk(key)
-  // highlight-end
 
   /**
-   * Respond with the file's public URL
+   * Responda com a URL pública do arquivo
    */
   return {
     message: 'Image uploaded',
-    // highlight-start
     url: await drive.use().getUrl(key),
-    // highlight-end
   }
 })
 ```
@@ -151,17 +146,17 @@ import drive from '@adonisjs/drive/services/main'
 drive instanceof DriveManager // true
 
 /**
- * Returns instance of the default disk
+ * Retorna instância do disco padrão
  */
 const disk = drive.use()
 
 /**
- * Returns instance of a disk named r2
+ * Retorna instância de um disco chamado r2
  */
 const disk = drive.use('r2')
 
 /**
- * Returns instance of a disk named spaces
+ * Retorna instância de um disco chamado spaces
  */
 const disk = drive.use('spaces')
 ```
@@ -235,7 +230,7 @@ Dentro dos modelos do Edge, você pode usar um dos seguintes métodos auxiliares
 ```edge
 <img src="{{ await driveUrl(user.avatar) }}" />
 
-<!-- Generate URL for a named disk -->
+<!-- Gerar URL para um disco nomeado -->
 <img src="{{ await driveUrl(user.avatar, 's3') }}" />
 <img src="{{ await driveUrl(user.avatar, 'r2') }}" />
 ```
@@ -245,12 +240,12 @@ Dentro dos modelos do Edge, você pode usar um dos seguintes métodos auxiliares
   Download Invoice
 </a>
 
-<!-- Generate URL for a named disk -->
+<!-- Gerar URL para um disco nomeado -->
 <a href="{{ await driveSignedUrl(invoice.key, 's3') }}">
   Download Invoice
 </a>
 
-<!-- Generate URL with signed options -->
+<!-- Gerar URL com opções assinadas -->
 <a href="{{ await driveSignedUrl(invoice.key, {
   expiresIn: '30 mins',
 }) }}">
@@ -267,18 +262,18 @@ const image = request.file('image')!
 const key = 'user-1-avatar.png'
 
 /**
- * Move file to the default disk
+ * Mover arquivo para o disco padrão
  */
 await image.moveToDisk(key)
 
 /**
- * Move file to a named disk
+ * Mover arquivo para um disco nomeado
  */
 await image.moveToDisk(key, 's3')
 
 /**
- * Define additional properties during the
- * move operation
+ * Defina propriedades adicionais durante a
+ * operação de movimentação
  */
 await image.moveToDisk(key, 's3', {
   contentType: 'image/png',
@@ -293,7 +288,8 @@ Esses arquivos são excluídos automaticamente após você restaurar uma falsifi
 Veja também: [Documentação de falsificações do FlyDrive](https://flydrive.dev/docs/drive_manager#using-fakes)
 
 ```ts
-// title: tests/functional/users/update.spec.ts
+// tests/functional/users/update.spec.ts
+
 import { test } from '@japa/runner'
 import drive from '@adonisjs/drive/services/main'
 import fileGenerator from '@poppinss/file-generator'
@@ -301,25 +297,24 @@ import fileGenerator from '@poppinss/file-generator'
 test.group('Users | update', () => {
   test('should be able to update my avatar', async ({ client, cleanup }) => {
     /**
-     * Fake the "spaces" disk and restore the fake
-     * after the test finishes
+     * Falsifique o disco "espaços" e restaure o falso
+     * após o término do teste
      */
     const fakeDisk = drive.fake('spaces')
     cleanup(() => drive.restore('spaces'))
 
     /**
-     * Create user to perform the login and update
+     * Crie um usuário para executar o login e atualizar
      */
     const user = await UserFactory.create()
 
     /**
-     * Generate a fake in-memory png file with size of
-     * 1mb
+     * Gere um arquivo png falso na memória com tamanho de 1 MB
      */
     const { contents, mime, name } = await fileGenerator.generatePng('1mb')
 
     /**
-     * Make put request and send the file
+     * Faça uma solicitação put e envie o arquivo
      */
     await client
       .put('me')
@@ -330,7 +325,7 @@ test.group('Users | update', () => {
       .loginAs(user)
 
     /**
-     * Assert the file exists
+     * Afirme que o arquivo existe
      */
     fakeDisk.assertExists(user.avatar)
   })

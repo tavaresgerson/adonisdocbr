@@ -12,7 +12,7 @@ Toda estratégia de nomenclatura deve implementar o contrato `NamingStrategyCont
 import { CamelCaseNamingStrategy } from '@adonisjs/lucid/orm'
 
 class MyCustomNamingStrategy extends CamelCaseNamingStrategy {
-  //... define all the required methods
+  //... definir todos os métodos necessários
 }
 ```
 
@@ -106,7 +106,7 @@ class MyCustomNamingStrategy extends CamelCaseNamingStrategy {
 ### `relationForeignKey`
 Retorna a chave estrangeira para um determinado relacionamento. A estratégia de nomenclatura padrão combina os nomes de coluna `modelName` e `primaryKey` e os converte para camelCase.
 
-:::note
+::: info NOTA
 A foreignKey aponta para a propriedade do modelo e não para o nome da coluna do banco de dados. Derivamos o nome da coluna do banco de dados do nome da propriedade do modelo.
 :::
 

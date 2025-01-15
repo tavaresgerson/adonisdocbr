@@ -17,17 +17,15 @@ class UserSchema extends BaseSchema {
 ## `createTable`
 Cria uma nova tabela de banco de dados. O método aceita o nome da tabela e um retorno de chamada que recebe a instância [table builder](./table_builder.md) para criar colunas de tabela.
 
-```ts
+```ts {3-8}
 class UserSchema extends BaseSchema {
   async up() {
-    // highlight-start
     this.schema.createTable('users', (table) => {
       table.increments()
       table.string('name')
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })
-    // highlight-end
   }
 }
 ```
@@ -35,12 +33,10 @@ class UserSchema extends BaseSchema {
 ## `createSchema`
 Cria o esquema PostgreSQL. Ele aceita o nome do esquema.
 
-```ts
+```ts {3}
 class FoundationSchema extends BaseSchema {
   async up() {
-    // highlight-start
     this.schema.createSchema('public')
-    // highlight-end
   }
 }
 ```
@@ -48,23 +44,21 @@ class FoundationSchema extends BaseSchema {
 ## `table` / `alterTable`
 Selecione uma tabela SQL para alterar suas colunas. O método aceita o nome da tabela e um retorno de chamada que recebe a instância [table builder](./table_builder.md) para modificar as colunas da tabela.
 
-```ts
+```ts {3-14}
 class UserSchema extends BaseSchema {
   async up() {
-    // highlight-start
     this.schema.alterTable('user', (table) => {
       /**
-       * Drop the name column
+       * Remova a coluna 'name'
        */
       table.dropColumn('name')
 
       /**
-       * Add first_name and last_name columns
+       * Adicione as colunas first_name e last_name
        */
       table.string('first_name')
       table.string('last_name')
     })
-    // highlight-end
   }
 }
 ```
@@ -72,12 +66,10 @@ class UserSchema extends BaseSchema {
 ## `renameTable`
 Renomeia uma tabela. O método aceita o nome da tabela existente como o primeiro argumento e o novo nome como o segundo argumento.
 
-```ts
+```ts {3}
 class UserSchema extends BaseSchema {
   async up() {
-    // highlight-start
     this.schema.renameTable('user', 'app_users')
-    // highlight-end
   }
 }
 ```
@@ -85,12 +77,10 @@ class UserSchema extends BaseSchema {
 ## `dropTable`
 Remove uma tabela SQL existente. O método aceita o nome da tabela como o único argumento.
 
-```ts
+```ts {3}
 class UserSchema extends BaseSchema {
   async down() {
-    // highlight-start
     this.schema.dropTable('users')
-    // highlight-end
   }
 }
 ```
@@ -98,12 +88,10 @@ class UserSchema extends BaseSchema {
 ## `dropTableIfExists`
 Semelhante ao método `dropTable`, mas remove condicionalmente a tabela se ela existir.
 
-```ts
+```ts {3}
 class UserSchema extends BaseSchema {
   async down() {
-    // highlight-start
     this.schema.dropTableIfExists('users')
-    // highlight-end
   }
 }
 ```
@@ -111,12 +99,10 @@ class UserSchema extends BaseSchema {
 ## `dropSchema`
 Remove um esquema PostgreSQL existente. O método aceita o nome do esquema como o único argumento.
 
-```ts
+```ts {3}
 class FoundationSchema extends BaseSchema {
   async down() {
-    // highlight-start
     this.schema.dropSchema('public')
-    // highlight-end
   }
 }
 ```
@@ -124,12 +110,10 @@ class FoundationSchema extends BaseSchema {
 ## `dropSchemaIfExists`
 Semelhante ao método `dropSchema`, mas condicionalmente descarta o esquema se ele existir.
 
-```ts
+```ts {3}
 class FoundationSchema extends BaseSchema {
   async down() {
-    // highlight-start
     this.schema.dropSchemaIfExists('public')
-    // highlight-end
   }
 }
 ```
@@ -137,13 +121,11 @@ class FoundationSchema extends BaseSchema {
 ## `raw`
 Execute uma consulta SQL a partir da string bruta. Ao contrário do [construtor de consultas brutas](../query_builders/raw.md), o método `schema.raw` não aceita vinculações separadamente.
 
-```ts
+```ts {3-4}
 class UserSchema extends BaseSchema {
   async up() {
-    // highlight-start
     this.schema
       .raw("SET sql_mode='TRADITIONAL'")
-      // highlight-end
       .table('users', (table) => {
         table.dropColumn('name')
         table.string('first_name')
@@ -156,13 +138,11 @@ class UserSchema extends BaseSchema {
 ## `withSchema`
 Especifique o esquema a ser selecionado ao executar as instruções SQL DDL. O método aceita o nome do esquema como o único argumento.
 
-```ts
+```ts {3-4}
 class UserSchema extends BaseSchema {
   async up() {
-    // highlight-start
     this.schema
       .withSchema('public')
-      // highlight-end
       .createTable('users', (table) => {
         table.increments()
         table.string('name')

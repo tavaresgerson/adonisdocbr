@@ -14,12 +14,14 @@ const trx = await db.transaction()
 Assim como o módulo `db`. Você também pode usar o objeto `trx` para criar uma instância do construtor de consultas.
 
 ```ts
-// title: Insert
+// Insert
+
 await trx.insertQuery().table('users').insert({ username: 'virk' })
 ```
 
 ```ts
-// title: Select
+// Select
+
 await trx.query().select('*').from('users')
 ```
 
@@ -60,7 +62,7 @@ Você também pode retornar um valor do retorno de chamada e acessá-lo no escop
 const userId = await db.transaction(async (trx) => {
   const response = await trx.insertQuery().table('users').insert({ username: 'virk' })
 
-  return response[0] // 👈 return value
+  return response[0] // 👈 valor de retorno
 })
 ```
 
@@ -79,7 +81,7 @@ A seguir está um exemplo de definição do nível de isolamento com uma transa�
 ```ts
 await db.transaction(
   async (trx) => {
-    // use trx here
+    // use trx aqui
   },
   {
     isolationLevel: 'read committed',
@@ -102,13 +104,13 @@ Toda vez que você cria uma transação aninhada, o Lucid cria nos bastidores um
 ```ts
 import db from '@adonisjs/lucid/services/db'
 
-// Transaction is created
+// A transação é criada
 const trx = await db.transaction()
 
-// This time, a save point is created
+// Desta vez, um ponto de salvamento é criado
 const savepoint = await trx.transaction()
 
-// also rollbacks the savepoint
+// também reverte o ponto de salvamento
 await trx.rollback()
 ```
 
@@ -116,32 +118,30 @@ await trx.rollback()
 
 A API de transações não se limita apenas a criar uma instância do construtor de consultas a partir de um objeto de transação. Você também pode passá-la para instâncias ou modelos existentes do construtor de consultas.
 
-```ts
-// title: During inserts
+```ts {8}
+// Durante inserções
+
 import db from '@adonisjs/lucid/services/db'
 
 const trx = await db.transaction()
 
 await db
-  // highlight-start
   .insertQuery({ client: trx })
-  // highlight-end
   .table('users')
   .insert({ username: 'virk' })
 
 await trx.commit()
 ```
 
-```ts
-// title: During select, update or delete
+```ts {8}
+// Durante seleção, atualização ou exclusão
+
 import db from '@adonisjs/lucid/services/db'
 
 const trx = await db.transaction()
 
 await db
-  // highlight-start
   .query({ client: trx })
-  // highlight-end
   .from('users')
   .where('id', 1)
   .update(payload)
@@ -155,11 +155,10 @@ Você pode passar a transação para uma instância de modelo usando o método `
 
 Na classe de modelo, você pode acessar o objeto de transação usando a propriedade `this.$trx`. A propriedade só está disponível durante uma transação em andamento. Após ``commit` ou `rollback`, ela será redefinida para `undefined`.
 
-```ts
+```ts {4-10}
 import User from '#models/user'
 import db from '@adonisjs/lucid/services/db'
 
-// highlight-start
 await db.transaction(async (trx) => {
   const user = new User()
   user.username = 'virk'
@@ -167,23 +166,20 @@ await db.transaction(async (trx) => {
   user.useTransaction(trx)
   await user.save()
 })
-// highlight-end
 ```
 
 ### Construtor de consulta de modelo
 
 Assim como o construtor de consulta padrão, você também pode passar a transação para o construtor de consulta de modelo.
 
-```ts
+```ts {7}
 import db from '@adonisjs/lucid/services/db'
 import User from '#models/user'
 
 const trx = await db.transaction()
 
 const users = await User
-  // highlight-start
   .query({ client: trx })
-  // highlight-end
   .where('is_active', true)
 ```
 
@@ -191,11 +187,10 @@ const users = await User
 
 O caso de uso mais comum para transações é persistir relacionamentos. Considere o seguinte exemplo de **criação de um novo usuário** e **seu perfil** envolvendo-os dentro de uma única transação.
 
-```ts
+```ts {4-19}
 import db from '@adonisjs/lucid/services/db'
 import User from '#models/user'
 
-// highlight-start
 await db.transaction(async (trx) => {
   const user = new User()
   user.username = 'virk'
@@ -204,35 +199,32 @@ await db.transaction(async (trx) => {
   await user.save()
 
   /**
-   * The relationship will implicitly reference the
-   * transaction from the user instance
+   * O relacionamento referenciará implicitamente a
+   * transação da instância do usuário
    */
   await user.related('profile').create({
     fullName: 'Harminder Virk',
     avatar: 'some-url.jpg',
   })
 })
-// highlight-end
 ```
 
 No exemplo a seguir, buscamos um usuário existente e criamos um novo perfil para ele.
 
-```ts
+```ts {4-15}
 import db from '@adonisjs/lucid/services/db'
 import User from '#models/user'
 
-// highlight-start
 await db.transaction(async (trx) => {
   const user = await User.findOrFail(1, { client: trx })
 
   /**
-   * The relationship will implicitly reference the
-   * transaction from the user instance
+   * O relacionamento referenciará implicitamente a
+   * transação da instância do usuário
    */
   await user.related('profile').create({
     fullName: 'Harminder Virk',
     avatar: 'some-url.jpg',
   })
 })
-// highlight-end
 ```

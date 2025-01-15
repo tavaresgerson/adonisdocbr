@@ -13,10 +13,9 @@ Em vez disso, usaremos o plug-in [Cliente do navegador](https://japa.dev/docs/pl
 ## Configuração
 O primeiro passo é instalar os seguintes pacotes do registro de pacotes npm.
 
-:::codegroup
+:::code-group
 
-```sh
-// title: npm
+```sh [npm]
 npm i -D playwright @japa/browser-client
 ```
 
@@ -25,11 +24,10 @@ npm i -D playwright @japa/browser-client
 ### Registrando o conjunto de navegadores
 Vamos começar criando um novo conjunto de testes para testes de navegadores dentro do arquivo `adonisrc.ts`. Os arquivos de teste para o conjunto de navegadores serão armazenados dentro do diretório `tests/browser`.
 
-```ts
+```ts {4-10}
 {
   tests: {
     suites: [
-      // highlight-start
       {
         files: [
           'tests/browser/**/*.spec(.ts|.js)'
@@ -37,7 +35,6 @@ Vamos começar criando um novo conjunto de testes para testes de navegadores den
         name: 'browser',
         timeout: 300000
       }
-      // highlight-end
     ]
   }
 }
@@ -46,17 +43,15 @@ Vamos começar criando um novo conjunto de testes para testes de navegadores den
 ### Configurando o plugin
 Antes de começar a escrever testes, você deve registrar o plugin `browserClient` dentro do arquivo `tests/bootstrap.ts`.
 
-```ts
+```ts {6-8}
 import { browserClient } from '@japa/browser-client'
 
 export const plugins: Config['plugins'] = [
   assert(),
   apiClient(),
-  // highlight-start
   browserClient({
     runInSuites: ['browser']
   }),
-  // highlight-end
   pluginAdonisJS(app)
 ]
 ```
@@ -72,7 +67,8 @@ node ace make:test pages/home --suite=browser
 ```
 
 ```ts
-// title: tests/browser/pages/home.spec.ts
+// tests/browser/pages/home.spec.ts
+
 import { test } from '@japa/runner'
 
 test.group('Home page', () => {
@@ -96,17 +92,15 @@ Ao testar dentro de um navegador real, os cookies são persistidos durante todo 
 
 O Japa cria um novo contexto do navegador para cada teste. Portanto, os cookies de um teste não vazarão para outros testes. No entanto, várias visitas de página dentro de um único teste compartilharão os cookies porque usam o mesmo `browserContext`.
 
-```ts
+```ts {3}
 test.group('Home page', () => {
   test('see welcome message', async ({ visit, browserContext }) => {
-    // highlight-start
     await browserContext.setCookie('username', 'virk')
-    // highlight-end
     
-    // The "username" cookie will be sent during the request
+    // O cookie "username" será enviado durante a solicitação
     const homePage = await visit('/')
 
-    // The "username" cookie will also be sent during this request
+    // O cookie "username" também será enviado durante esta solicitação
     const aboutPage = await visit('/about')
   })
 })
@@ -114,25 +108,21 @@ test.group('Home page', () => {
 
 Da mesma forma, os cookies definidos pelo servidor podem ser acessados ​​usando o método `browserContext.getCookie`.
 
-```ts
+```ts {4}
 import router from '@adonisjs/core/services/router'
 
 router.get('/', async ({ response }) => {
-  // highlight-start
   response.cookie('cartTotal', '100')
-  // highlight-end
 
   return 'It works!'
 })
 ```
 
-```ts
+```ts {4}
 test.group('Home page', () => {
   test('see welcome message', async ({ visit, browserContext }) => {
     const page = await visit('/')
-    // highlight-start
     console.log(await browserContext.getCookie('cartTotal'))
-    // highlight-end
   })
 })
 ```
@@ -140,11 +130,11 @@ test.group('Home page', () => {
 Você pode usar os seguintes métodos para ler/gravar cookies criptografados e simples.
 
 ```ts
-// Write
+// Escreve
 await browserContext.setEncryptedCookie('username', 'virk')
 await browserContext.setPlainCookie('username', 'virk')
 
-// Read
+// Lê
 await browserContext.getEncryptedCookie('cartTotal')
 await browserContext.getPlainCookie('cartTotal')
 ```
@@ -156,23 +146,20 @@ Se você estiver usando o pacote [`@adonisjs/session`](../basics/session.md) par
 O primeiro passo é registrar o plugin dentro do arquivo `tests/bootstrap.ts`.
 
 ```ts
-// insert-start
-import { sessionBrowserClient } from '@adonisjs/session/plugins/browser_client'
-// insert-end
+import { sessionBrowserClient } from '@adonisjs/session/plugins/browser_client'  // [!code ++]
 
 export const plugins: Config['plugins'] = [
   assert(),
   pluginAdonisJS(app),
-  // insert-start
-  sessionBrowserClient(app)
-  // insert-end
+  sessionBrowserClient(app)   // [!code ++]
 ]
 ```
 
 E então, atualize o arquivo `.env.test` (crie um se estiver faltando) e defina o `SESSON_DRIVER` para `memory`.
 
-```dotenv
-// title: .env.test
+```
+// .env.test
+
 SESSION_DRIVER=memory
 ```
 
@@ -181,9 +168,8 @@ Você pode usar o método `browserContext.setSession` para definir os dados de s
 
 Todas as visitas de página usando o mesmo contexto do navegador terão acesso aos mesmos dados da sessão. No entanto, os dados da sessão serão removidos quando o navegador ou o contexto for fechado.
 
-```ts
+```ts {2-13}
 test('checkout with cart items', async ({ browserContext, visit }) => {
-  // highlight-start
   await browserContext.setSession({
     cartItems: [
       {
@@ -196,7 +182,6 @@ test('checkout with cart items', async ({ browserContext, visit }) => {
       }
     ]
   })
-  // highlight-end
 
   const page = await visit('/checkout')
 })
@@ -206,7 +191,7 @@ Assim como o método `setSession`, você pode usar o método `browser.setFlashMe
 
 ```ts
 /**
- * Define flash messages
+ * Definir mensagens flash
  */
 await browserContext.setFlashMessages({
   success: 'Post created successfully',
@@ -215,8 +200,8 @@ await browserContext.setFlashMessages({
 const page = await visit('/posts/1')
 
 /**
- * Assert the post page shows the flash message
- * inside ".alert-success" div.
+ * Afirme que a página de postagem mostra a mensagem flash
+ * dentro da div ".alert-success".
  */
 await page.assertExists(page.locator(
   'div.alert-success',
@@ -238,17 +223,14 @@ Se você estiver usando o pacote `@adonisjs/auth` para autenticar usuários em s
 O primeiro passo é registrar o plugin dentro do arquivo `tests/bootstrap.ts`.
 
 ```ts
-// title: tests/bootstrap.ts
-// insert-start
-import { authBrowserClient } from '@adonisjs/auth/plugins/browser_client'
-// insert-end
+// tests/bootstrap.ts
+
+import { authBrowserClient } from '@adonisjs/auth/plugins/browser_client' // [!code ++]
 
 export const plugins: Config['plugins'] = [
   assert(),
   pluginAdonisJS(app),
-  // insert-start
-  authBrowserClient(app)
-  // insert-end
+  authBrowserClient(app) // [!code ++]
 ]
 ```
 
@@ -258,14 +240,12 @@ Isso é tudo. Agora, você pode fazer login de usuários usando o método `login
 
 Todas as visitas de página usando o mesmo contexto do navegador terão acesso ao usuário conectado. No entanto, a sessão do usuário será destruída quando o navegador ou o contexto for fechado.
 
-```ts
+```ts {4-5}
 import User from '#models/user'
 
 test('get payments list', async ({ browserContext, visit }) => {
-  // highlight-start
   const user = await User.create(payload)
   await browserContext.loginAs(user)
-  // highlight-end
 
   const page = await visit('/dashboard')
 })
@@ -285,12 +265,10 @@ Você pode usar o auxiliar `route` do TestContext para criar uma URL para uma ro
 
 O auxiliar `route` aceita o mesmo conjunto de argumentos aceitos pelo método de modelo global [route](../basics/routing.md#url-builder).
 
-```ts
+```ts {3}
 test('see list of users', async ({ visit, route }) => {
   const page = await visit(
-    // highlight-start
     route('users.list')
-    // highlight-end
   )
 })
 ```

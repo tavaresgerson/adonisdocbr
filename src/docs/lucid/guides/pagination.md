@@ -28,7 +28,7 @@ SimplePaginator {
 }
 ```
 
-:::note
+::: info NOTA
 É recomendável usar o método `orderBy` ao usar paginação para evitar uma ordem diferente toda vez que você consultar os dados.
 :::
 
@@ -47,7 +47,7 @@ class PostsController {
 
     const posts = await db.from('posts').paginate(page, limit)
 
-    // Changes the baseURL for the pagination links
+    // Altera a baseURL para os links de paginação
     posts.baseUrl('/posts')
 
     return view.render('posts/index', { posts })
@@ -152,7 +152,7 @@ return posts.toJSON()
 
 Você também pode atribuir uma estratégia de nomenclatura personalizada ao construtor de classe `SimplePaginator` para substituí-lo globalmente dentro de um [provedor de serviços](https://docs.adonisjs.com/guides/service-providers)
 
-```ts
+```ts {8-14}
 import db from '@adonisjs/lucid/services/db'
 import type { ApplicationService } from '@adonisjs/core/types'
 
@@ -160,15 +160,13 @@ export default class AppProvider {
   constructor(protected app: ApplicationService) {}
 
   async ready() {
-    // highlight-start
     db.SimplePaginator.namingStrategy = {
       paginationMetaKeys() {
         return {
-          // ... same as above
+          // ... o mesmo que acima
         }
       },
     }
-    // highlight-end
   }
 }
 ```

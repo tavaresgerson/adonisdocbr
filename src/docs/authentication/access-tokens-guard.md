@@ -2,7 +2,8 @@
 summary: Aprenda a usar o access tokens guard para autenticar solicitações HTTP usando tokens de acesso.
 ---
 
-# Access tokens guard
+# Guarda de tokens de acesso
+
 Os tokens de acesso autenticam solicitações HTTP em contextos de API onde o servidor não pode persistir cookies no dispositivo do usuário final, por exemplo, acesso de terceiros a uma API ou autenticação para um aplicativo móvel.
 
 Os tokens de acesso podem ser gerados em qualquer formato; por exemplo, os tokens que estão em conformidade com o padrão JWT são conhecidos como tokens de acesso JWT, e os tokens em um formato proprietário são conhecidos como tokens de acesso opacos.

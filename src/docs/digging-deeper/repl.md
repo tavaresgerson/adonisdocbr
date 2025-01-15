@@ -15,7 +15,7 @@ Além de um REPL Node.js padrão, AdonisJS fornece os seguintes recursos.
 
 - Importar e executar arquivos TypeScript.
 - Métodos abreviados para importar serviços de contêiner como o serviço `router`, `helpers`, `hash` e assim por diante.
-[Contêiner IoC](../concepts/dependency_injection.md#constructing-a-tree-of-dependencies).
+- [Contêiner IoC](../concepts/dependency_injection.md#constructing-a-tree-of-dependencies).
 - API extensível para adicionar métodos personalizados e comandos REPL.
 
 ## Interagindo com REPL

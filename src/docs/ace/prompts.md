@@ -158,7 +158,11 @@ Formate ao vivo o valor de entrada conforme o usuário digita. A formatação é
 
 </td>
 
-<td>Todos os prompts</td>
+<td>
+
+Todos os prompts
+
+</td>
 
 <td>
 
@@ -174,6 +178,7 @@ Valide a entrada do usuário. Retornar `true` do método passará na validação
 }
 ```
 
+</td>
 </tr>
 
 <tr>
@@ -207,7 +212,7 @@ await this.prompt.ask('Enter the model name')
 ```
 
 ```ts
-// Validate input
+// Validar entrada
 await this.prompt.ask('Enter the model name', {
   validate(value) {
     return value.length > 0
@@ -216,7 +221,7 @@ await this.prompt.ask('Enter the model name', {
 ```
 
 ```ts
-// Default value
+// Valor padrão
 await this.prompt.ask('Enter the model name', {
   default: 'User'
 })

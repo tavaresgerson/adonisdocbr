@@ -2,7 +2,7 @@
 
 O raw query builder permite que você execute consultas de uma string SQL. Mesmo que você esteja executando diretamente strings SQL brutas, você ainda pode manter suas consultas seguras de injeção de SQL usando marcadores de posição para valores.
 
-:::note
+::: info NOTA
 Ao executar consultas brutas, os resultados do driver subjacente são retornados como estão.
 :::
 
@@ -86,12 +86,14 @@ Há duas maneiras de criar consultas brutas usando o serviço `db`, ou seja, `db
 As consultas criadas usando o método `db.rawQuery` podem ser executadas como consultas autônomas. Enquanto isso, as consultas criadas usando o método `db.raw` são métodos para passar por referência a outras consultas. Por exemplo:
 
 ```ts
-// title: Self executable raw query
+// Consulta bruta autoexecutável
+
 const result = await db.rawQuery('select * from users')
 ```
 
 ```ts
-// title: Passing raw query by reference
+// Passando consulta bruta por referência
+
 await db.select(
   'id',
   db.raw('select ip_address from user_logins'),
