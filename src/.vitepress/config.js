@@ -7,7 +7,7 @@ export default {
   head: [
     [
       'script',
-      { async: '', src: 'https://www.googletagmanager.com/gtag/js?id=G-JSBVEGFEQ9' }
+      { async: '', src: 'https://www.googletagmanager.com/gtag/js?id=G-W4L9CQ28VL' }
     ],
     [
       'script',
@@ -16,7 +16,7 @@ export default {
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
 
-          gtag('config', 'G-JSBVEGFEQ9');`
+          gtag('config', 'G-W4L9CQ28VL');`
     ],
     ['link', { rel: 'icon', href: '/favicon.ico' }]
   ],
